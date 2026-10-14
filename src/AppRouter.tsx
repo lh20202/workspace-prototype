@@ -21,7 +21,7 @@ export default function AppRouter() {
           <span className="launcher-eyebrow">INTERACTIVE WORKSPACES</span>
           <h1>Workspace prototypes</h1>
           <p>
-            Interactive examples of different Microsoft 365 workspace patterns.
+            interactive workspace examples
           </p>
           <div className="launcher-options">
             <a href="/planning">
