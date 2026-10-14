@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Warning16Regular } from "@fluentui/react-icons";
 export default function PrototypeNavigator({
   active,
   teams = false,
@@ -40,6 +41,13 @@ export default function PrototypeNavigator({
           Campaign logistics workspace
         </a>
         {isTeams && <a href="/logistics">← Back to logistics workspace</a>}
+        <aside className="demo-caveat" aria-label="Demonstration caveat">
+          <Warning16Regular aria-hidden="true" />
+          <div>
+            <strong>Fictional workspace titles</strong>
+            <small>Not real site names</small>
+          </div>
+        </aside>
       </nav>
     </div>
   );

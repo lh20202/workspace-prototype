@@ -23,7 +23,7 @@
     Menlo,
     Consolas,
     monospace;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 .demo-controls > span {
   color: #ffffff;
@@ -697,6 +697,42 @@
 }
 @media (max-width: 800px) {
   .sp-calendar-toolbar label {
+    margin-left: 0;
+  }
+}
+
+.demo-caveat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 6px 10px;
+  border: 1px solid #e6c879;
+  border-left: 3px solid #e6c879;
+  border-radius: 3px;
+  background: #fff4ce;
+  color: #554214;
+  font:
+    11px "Segoe UI",
+    Arial,
+    sans-serif;
+  line-height: 1.3;
+}
+.demo-caveat svg {
+  flex-shrink: 0;
+}
+.demo-caveat strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+}
+.demo-caveat small {
+  display: block;
+  font-size: 10px;
+  margin-top: 1px;
+}
+@media (max-width: 800px) {
+  .demo-caveat {
     margin-left: 0;
   }
 }
