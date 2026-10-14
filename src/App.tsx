@@ -47,6 +47,7 @@ import {
   documents,
   libraries,
   currentUser,
+  accessContact,
   departments,
   quickLinks,
   currentCycle,
@@ -61,6 +62,8 @@ import {
   canAccessRestricted,
   type Filters,
   filtersFromParams,
+  childFolders,
+  browseDocuments,
 } from "./utils/documents";
 const icons = {
   planning: Folder24Regular,
@@ -141,9 +144,10 @@ export default function App() {
       ) ?? null
     );
   });
-  const [modal, setModal] = useState<"about" | "version" | "milestones" | null>(
-    null,
-  );
+  const [modal, setModal] = useState<
+    "about" | "version" | "milestones" | "access" | null
+  >(null);
+  const [requestReason, setRequestReason] = useState("");
   const [toast, setToast] = useState("");
   const [sort, setSort] = useState<keyof Document>("name");
   const [descending, setDescending] = useState(false);
@@ -218,6 +222,18 @@ export default function App() {
     sort,
     descending,
   );
+  const folderMode =
+    view === "All Documents" &&
+    !search.trim() &&
+    !Object.values(filters).some(Boolean);
+  const folders = childFolders(scoped, folder);
+  const displayRows = folderMode
+    ? browseDocuments(scoped, folder).sort(
+        (a, b) =>
+          String(a[sort]).localeCompare(String(b[sort])) *
+          (descending ? -1 : 1),
+      )
+    : rows;
   const activeFilters = Object.values(filters).filter(Boolean).length;
   function updateFilters(next: Filters) {
     setFilters(next);
@@ -236,7 +252,13 @@ export default function App() {
     navigate(page, "", next, filters);
   }
   function openDocument(doc: Document) {
-    navigate(doc.library, doc.cycle, "All Documents", emptyFilters, doc.id);
+    navigate(
+      doc.library,
+      doc.folderPath,
+      "All Documents",
+      emptyFilters,
+      doc.id,
+    );
   }
   async function copyLink(doc: Document) {
     const url = `${location.origin}/${doc.library}?document=${doc.id}`;
@@ -649,16 +671,25 @@ export default function App() {
                   <button onClick={() => navigate(library.id)}>
                     {library.name}
                   </button>
-                  {folder && (
-                    <>
-                      <span>/</span>
-                      <span>{folder}</span>
-                    </>
-                  )}
+                  {folder
+                    .split("/")
+                    .filter(Boolean)
+                    .map((part, i, parts) => (
+                      <span className="breadcrumb-part" key={i}>
+                        <span>/</span>
+                        <button
+                          onClick={() =>
+                            navigate(page, parts.slice(0, i + 1).join("/"))
+                          }
+                        >
+                          {part}
+                        </button>
+                      </span>
+                    ))}
                 </div>
                 <div className="library-heading">
                   <div>
-                    <h2>{folder || library.name}</h2>
+                    <h2>{folder.split("/").pop() || library.name}</h2>
                     <p>{library.description}</p>
                   </div>
                   <span
@@ -692,6 +723,22 @@ export default function App() {
                       Access is limited to colleagues involved in the relevant
                       review and decision-making.
                     </p>
+                    <div className="access-help">
+                      <p>
+                        Need access? Contact <strong>{accessContact}</strong>,
+                        Planning Coordinator.
+                      </p>
+                      <p>
+                        If urgent,{" "}
+                        <button
+                          className="text-link"
+                          onClick={() => setModal("access")}
+                        >
+                          click here to submit an access request to IT
+                        </button>
+                        .
+                      </p>
+                    </div>
                     <Button
                       appearance="primary"
                       onClick={() => navigate("planning")}
@@ -801,8 +848,9 @@ export default function App() {
                         onChange={(_, data) => setSearch(data.value)}
                       />
                       <span>
-                        {documentCount(rows.length)}
-                        {folder ? " in this cycle" : ""}
+                        {folderMode
+                          ? `${folders.length} folders${displayRows.length ? ` · ${documentCount(displayRows.length)}` : ""}`
+                          : documentCount(rows.length)}
                       </span>
                       {(search || activeFilters > 0) && (
                         <button
@@ -865,45 +913,47 @@ export default function App() {
                         </Button>
                       </div>
                     )}
-                    {!folder &&
-                      view === "All Documents" &&
-                      !search &&
-                      !activeFilters &&
-                      library.folders.length > 0 && (
-                        <div className="folder-list">
-                          {library.folders.map((f) => (
-                            <button key={f} onClick={() => navigate(page, f)}>
-                              <Folder24Regular />
-                              <strong>{f}</strong>
-                              <span>
-                                {documentCount(
-                                  scoped.filter((d) => d.cycle === f).length,
-                                )}
-                              </span>
-                              <ArrowRight20Regular />
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    {documentTable(rows)}
-                    {!rows.length && (
-                      <div className="empty-state">
-                        <Search20Regular />
-                        <h3>No documents match</h3>
-                        <p>
-                          Try another view or clear your search and filters.
-                        </p>
-                        <Button
-                          onClick={() => {
-                            setSearch("");
-                            updateFilters(emptyFilters);
-                            setView("All Documents");
-                          }}
-                        >
-                          Show all documents
-                        </Button>
+                    {folderMode && folders.length > 0 && (
+                      <div className="folder-list">
+                        {folders.map((f) => (
+                          <button
+                            key={f.path}
+                            onClick={() => navigate(page, f.path)}
+                          >
+                            <Folder24Regular />
+                            <strong>{f.name}</strong>
+                            <span>
+                              {childFolders(scoped, f.path).length
+                                ? `${childFolders(scoped, f.path).length} folders`
+                                : documentCount(
+                                    browseDocuments(scoped, f.path).length,
+                                  )}
+                            </span>
+                            <ArrowRight20Regular />
+                          </button>
+                        ))}
                       </div>
                     )}
+                    {displayRows.length > 0 && documentTable(displayRows)}
+                    {!displayRows.length &&
+                      (!folderMode || !folders.length) && (
+                        <div className="empty-state">
+                          <Search20Regular />
+                          <h3>No documents match</h3>
+                          <p>
+                            Try another view or clear your search and filters.
+                          </p>
+                          <Button
+                            onClick={() => {
+                              setSearch("");
+                              updateFilters(emptyFilters);
+                              setView("All Documents");
+                            }}
+                          >
+                            Show all documents
+                          </Button>
+                        </div>
+                      )}
                   </>
                 )}
               </>
@@ -944,7 +994,7 @@ export default function App() {
               </div>
               <p className="detail-location">
                 {libraries.find((l) => l.id === selected.library)?.name} /{" "}
-                {selected.cycle}
+                {selected.folderPath || selected.cycle}
               </p>
               <div className="detail-actions">
                 <Button
@@ -1013,11 +1063,32 @@ export default function App() {
                 ? "About this prototype"
                 : modal === "milestones"
                   ? "2027 Annual Planning milestones"
-                  : "Version history"}
+                  : modal === "access"
+                    ? "Request access to Restricted Planning"
+                    : "Version history"}
             </DialogTitle>
             <DialogContent>
               {modal === "about" ? (
                 <p>This prototype uses fictional content.</p>
+              ) : modal === "access" ? (
+                <>
+                  <p>Describe why you need access and why it is urgent.</p>
+                  <label
+                    className="access-request-label"
+                    htmlFor="access-reason"
+                  >
+                    Reason for access
+                  </label>
+                  <textarea
+                    id="access-reason"
+                    value={requestReason}
+                    onChange={(e) => setRequestReason(e.target.value)}
+                    rows={4}
+                  />
+                  <p className="muted">
+                    This is a prototype. No request will be sent to IT.
+                  </p>
+                </>
               ) : modal === "milestones" ? (
                 <>
                   <span className="open-status">
@@ -1075,6 +1146,21 @@ export default function App() {
               )}
             </DialogContent>
             <DialogActions>
+              {modal === "access" && (
+                <Button
+                  appearance="primary"
+                  disabled={!requestReason.trim()}
+                  onClick={() => {
+                    setModal(null);
+                    setRequestReason("");
+                    setToast(
+                      "Access request simulated. No request has been sent to IT.",
+                    );
+                  }}
+                >
+                  Submit access request
+                </Button>
+              )}
               <Button appearance="primary" onClick={() => setModal(null)}>
                 Close
               </Button>

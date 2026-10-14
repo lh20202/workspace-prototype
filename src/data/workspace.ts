@@ -13,6 +13,7 @@ export interface Document {
   library: LibraryId;
   name: string;
   cycle: string;
+  folderPath: string;
   type: string;
   area: string;
   status: string;
@@ -47,7 +48,7 @@ export const libraries: {
     id: "strategy",
     name: "Strategy Development",
     description: "Develop and review our longer-term organisational direction.",
-    folders: ["2027–2030 Strategy Refresh", "Strategic Priorities Review"],
+    folders: ["Current strategy · 2025–2030", "Archive"],
   },
   {
     id: "reporting",
@@ -155,32 +156,42 @@ const seeds: Record<LibraryId, Seed[]> = {
     ],
   ],
   strategy: [
-    ["External environment scan.docx", "Analysis", "Organisation-wide"],
     [
-      "Strategic priorities workshop notes.docx",
-      "Supporting data",
-      "Organisation-wide",
-    ],
-    [
-      "Strategy options v2.pptx",
-      "Presentation",
-      "Organisation-wide",
-      "In review",
-    ],
-    [
-      "Strategic framework draft.docx",
+      "Organisational strategy working framework 2025–2030.docx",
       "Working draft",
       "Organisation-wide",
       "In review",
     ],
-    ["Capability assumptions.xlsx", "Supporting data", "Human Resources"],
-    ["Strategy decision log.xlsx", "Decision log", "Organisation-wide"],
-    ["Consultation synthesis.docx", "Analysis", "Marketing"],
     [
-      "Strategic priorities review.docx",
-      "Review",
+      "Annual strategy priorities 2027.docx",
+      "Plan",
       "Organisation-wide",
-      "Ready for review",
+      "Draft",
+    ],
+    [
+      "Multi-year strategy delivery plan 2025–2030.xlsx",
+      "Plan",
+      "Organisation-wide",
+      "In progress",
+    ],
+    ["Operations roadmap 2025–2030.xlsx", "Plan", "Operations", "In review"],
+    [
+      "Digital & Technology roadmap 2025–2030.pptx",
+      "Presentation",
+      "Digital & Technology",
+      "Draft",
+    ],
+    [
+      "Organisational strategy 2020–2024.pdf",
+      "Plan",
+      "Organisation-wide",
+      "Superseded",
+    ],
+    [
+      "Organisational strategy 2015–2019.pdf",
+      "Plan",
+      "Organisation-wide",
+      "Superseded",
     ],
   ],
   reporting: [
@@ -231,7 +242,7 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Approved",
     ],
     [
-      "Organisational Strategy 2024–2027.pdf",
+      "Organisational Strategy 2025–2030.pdf",
       "Plan",
       "Organisation-wide",
       "Approved",
@@ -269,62 +280,64 @@ const owners = [
   "Casey Blake",
   "Robin Avery",
 ];
-export const documents: Document[] = Object.entries(seeds).flatMap(
-  ([lib, rows]) =>
-    rows.map(([name, type, area, status], i) => {
-      const library = lib as LibraryId;
-      const cycle =
-        library === "planning"
-          ? i === 9
-            ? "2026 Mid-Year Review"
-            : i === 10
-              ? "2026 Year-End Review"
-              : currentCycle
-          : library === "strategy"
-            ? i === 7
-              ? "Strategic Priorities Review"
-              : "2027–2030 Strategy Refresh"
-            : library === "reporting"
-              ? name === "Performance reporting template 2027.xlsx"
-                ? currentCycle
-                : i < 4
-                  ? "2026 Mid-Year Review"
-                  : "2026 Year-End Review"
-              : library === "approved"
-                ? i === 1
-                  ? "2026 Mid-Year Review"
-                  : i === 3
-                    ? "2025 Year-End Review"
-                    : i === 2
-                      ? "2024–2027 Strategy"
-                      : "2026 Annual Planning"
-                : currentCycle;
-      return {
-        id: `${library}-${i}`,
-        library,
-        name,
-        type,
-        area,
-        status: status ?? "In progress",
-        cycle,
-        owner: owners[i % owners.length],
-        modifiedBy: owners[(i + 1) % owners.length],
-        modified: `2026-10-${String(14 - (i % 9)).padStart(2, "0")}`,
-        sensitivity: library === "restricted" ? "Restricted" : "Internal",
-        recordState:
-          library === "approved"
-            ? "Final record"
-            : type === "Guidance"
-              ? "Working reference"
-              : "Working information",
-        ...(library === "approved"
-          ? {
-              approvedDate: i === 1 ? "2026-07-30" : "2026-01-28",
-              recordCategory: "Organisational planning record",
-            }
-          : {}),
-      };
-    }),
+const allDocuments: Document[] = Object.entries(seeds).flatMap(([lib, rows]) =>
+  rows.map(([name, type, area, status], i) => {
+    const library = lib as LibraryId;
+    const cycle =
+      library === "planning"
+        ? i === 9
+          ? "2026 Mid-Year Review"
+          : i === 10
+            ? "2026 Year-End Review"
+            : currentCycle
+        : library === "strategy"
+          ? i === 5
+            ? "2020–2024 Strategy"
+            : i === 6
+              ? "2015–2019 Strategy"
+              : "2025–2030 Strategy"
+          : library === "reporting"
+            ? name === "Performance reporting template 2027.xlsx"
+              ? currentCycle
+              : i < 4
+                ? "2026 Mid-Year Review"
+                : "2026 Year-End Review"
+            : library === "approved"
+              ? i === 1
+                ? "2026 Mid-Year Review"
+                : i === 3
+                  ? "2025 Year-End Review"
+                  : i === 2
+                    ? "2025–2030 Strategy"
+                    : "2026 Annual Planning"
+              : currentCycle;
+    return {
+      id: `${library}-${i}`,
+      library,
+      name,
+      folderPath: "",
+      type,
+      area,
+      status: status ?? "In progress",
+      cycle,
+      owner: owners[i % owners.length],
+      modifiedBy: owners[(i + 1) % owners.length],
+      modified: `2026-10-${String(14 - (i % 9)).padStart(2, "0")}`,
+      sensitivity: library === "restricted" ? "Restricted" : "Internal",
+      recordState:
+        library === "approved"
+          ? "Final record"
+          : type === "Guidance"
+            ? "Working reference"
+            : "Working information",
+      ...(library === "approved"
+        ? {
+            approvedDate: i === 1 ? "2026-07-30" : "2026-01-28",
+            recordCategory: "Organisational planning record",
+          }
+        : {}),
+    };
+  }),
 );
 export const milestones = [
   ["Guidance issued", "6 Oct 2026"],
@@ -359,3 +372,58 @@ export const quickLinks = [
   },
   { label: "Decision log", name: "Planning decision log.xlsx" },
 ];
+
+const strategyPaths = [
+  "Current strategy · 2025–2030/Organisational strategy",
+  "Current strategy · 2025–2030/Annual strategy",
+  "Current strategy · 2025–2030/Multi-year strategy",
+  "Current strategy · 2025–2030/Department roadmaps",
+  "Current strategy · 2025–2030/Department roadmaps",
+  "Archive/2020–2024",
+  "Archive/2015–2019",
+];
+const omitted = new Set([
+  "planning-5",
+  "planning-8",
+  "reporting-1",
+  "reporting-2",
+  "reporting-3",
+  "reporting-6",
+  "reporting-7",
+  "approved-3",
+  "approved-4",
+  "restricted-1",
+  "restricted-2",
+  "restricted-4",
+]);
+export const documents: Document[] = allDocuments
+  .filter((d) => !omitted.has(d.id))
+  .map((d) => {
+    let folderPath = d.cycle;
+    if (d.library === "planning")
+      folderPath =
+        d.cycle !== currentCycle
+          ? d.cycle
+          : d.type === "Submission"
+            ? `${currentCycle}/Department submissions/${d.area}`
+            : ["Guidance", "Decision log"].includes(d.type)
+              ? `${currentCycle}/Guidance & decisions`
+              : `${currentCycle}/Organisational plan`;
+    if (d.library === "strategy")
+      folderPath = strategyPaths[Number(d.id.split("-")[1])];
+    if (d.library === "reporting")
+      folderPath =
+        d.type === "Guidance"
+          ? `${d.cycle}/Guidance & templates`
+          : `${d.cycle}/Review & reporting`;
+    if (d.library === "approved" || d.library === "restricted") folderPath = "";
+    return {
+      ...d,
+      folderPath,
+      recordState:
+        d.library === "strategy" && d.status === "Superseded"
+          ? "Working reference"
+          : d.recordState,
+    };
+  });
+export const accessContact = "Jordan Ellis";

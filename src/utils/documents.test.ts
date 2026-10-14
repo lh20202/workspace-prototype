@@ -94,3 +94,62 @@ describe("home shortcuts", () => {
     ).toBe(true);
   });
 });
+
+import { childFolders, browseDocuments } from "./documents";
+describe("folder browsing", () => {
+  it("shows only cycle folders at the planning root", () => {
+    const planning = documents.filter((d) => d.library === "planning");
+    expect(childFolders(planning, "").map((f) => f.name)).toEqual([
+      currentCycle,
+      "2026 Mid-Year Review",
+      "2026 Year-End Review",
+    ]);
+    expect(browseDocuments(planning, "")).toEqual([]);
+    expect(browseDocuments(planning, currentCycle)).toEqual([]);
+  });
+  it("keeps current strategy and archives separate", () => {
+    const strategy = documents.filter((d) => d.library === "strategy");
+    expect(childFolders(strategy, "").map((f) => f.name)).toEqual([
+      "Current strategy · 2025–2030",
+      "Archive",
+    ]);
+    expect(
+      childFolders(strategy, "Current strategy · 2025–2030").map((f) => f.name),
+    ).toEqual([
+      "Organisational strategy",
+      "Annual strategy",
+      "Multi-year strategy",
+      "Department roadmaps",
+    ]);
+    const archived = queryDocuments(
+      strategy,
+      "All Documents",
+      "",
+      emptyFilters,
+      "Archive",
+    );
+    expect(archived).toHaveLength(2);
+    expect(archived.every((d) => d.status === "Superseded")).toBe(true);
+  });
+  it("keeps individual working folders small", () => {
+    const working = documents.filter((d) =>
+      ["planning", "strategy", "reporting"].includes(d.library),
+    );
+    for (const folder of new Set(working.map((d) => d.folderPath)))
+      expect(browseDocuments(working, folder).length).toBeLessThanOrEqual(2);
+  });
+  it("finds review material across child folders", () => {
+    const planning = documents.filter((d) => d.library === "planning");
+    expect(
+      queryDocuments(
+        planning,
+        "In Review",
+        "",
+        emptyFilters,
+        currentCycle,
+      ).some(
+        (d) => d.name === "Consolidated organisational plan draft v3.docx",
+      ),
+    ).toBe(true);
+  });
+});

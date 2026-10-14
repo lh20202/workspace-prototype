@@ -1273,3 +1273,37 @@ tbody tr:hover {
     height: 9px;
   }
 }
+.breadcrumb-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.access-help {
+  margin: 24px 0;
+  padding: 16px;
+  border-top: 1px solid #edebe9;
+  border-bottom: 1px solid #edebe9;
+}
+.access-help p {
+  font-size: 13px;
+}
+.text-link {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #0078d4;
+  text-decoration: underline;
+  font-size: inherit;
+}
+.access-request-label {
+  display: block;
+  margin-bottom: 8px;
+}
+#access-reason {
+  width: 100%;
+  border: 1px solid #8a8886;
+  border-radius: 2px;
+  padding: 10px;
+  font: inherit;
+  resize: vertical;
+}

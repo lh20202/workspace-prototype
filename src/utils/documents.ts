@@ -31,7 +31,9 @@ export function queryDocuments(
   return docs
     .filter(
       (d) =>
-        (!folder || d.cycle === folder) &&
+        (!folder ||
+          d.folderPath === folder ||
+          d.folderPath.startsWith(folder + "/")) &&
         (view !== "Current Planning Cycle" || d.cycle === currentCycle) &&
         (view !== "In Review" ||
           ["In review", "Ready for review"].includes(d.status)) &&
@@ -57,4 +59,19 @@ export function filtersFromParams(params: URLSearchParams): Filters {
     area: params.get("area") ?? "",
     status: params.get("status") ?? "",
   };
+}
+
+export function childFolders(docs: Document[], parent: string) {
+  const prefix = parent ? parent + "/" : "";
+  return [
+    ...new Set(
+      docs
+        .filter((d) => d.folderPath.startsWith(prefix))
+        .map((d) => d.folderPath.slice(prefix.length).split("/")[0])
+        .filter(Boolean),
+    ),
+  ].map((name) => ({ name, path: prefix + name }));
+}
+export function browseDocuments(docs: Document[], parent: string) {
+  return docs.filter((d) => d.folderPath === parent);
 }
