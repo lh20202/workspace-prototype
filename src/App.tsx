@@ -1,3 +1,5 @@
+import FileIcon from "./components/DocumentIcon";
+import { planningPath, planningPage } from "./utils/routes";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -87,20 +89,6 @@ const formatDate = (date: string) =>
     month: "short",
     year: "numeric",
   });
-function FileIcon({ name }: { name: string }) {
-  const ext = name.split(".").pop()!;
-  return (
-    <span className={`file-icon ${ext}`} aria-label={`${ext} file`}>
-      {ext === "xlsx"
-        ? "X"
-        : ext === "pptx"
-          ? "P"
-          : ext === "pdf"
-            ? "PDF"
-            : "W"}
-    </span>
-  );
-}
 function Status({ status }: { status: string }) {
   return (
     <span className={`status ${status.toLowerCase().replaceAll(" ", "-")}`}>
@@ -111,7 +99,7 @@ function Status({ status }: { status: string }) {
 }
 function route() {
   const params = new URLSearchParams(location.search);
-  const page = location.pathname.split("/")[1];
+  const page = planningPage(location.pathname);
   return {
     page: libraries.some((l) => l.id === page) ? (page as LibraryId) : "home",
     folder: params.get("folder") ?? "",
@@ -194,8 +182,9 @@ export default function App() {
     history.pushState(
       {},
       "",
-      `/${next === "home" ? "" : next}${params.size ? "?" + params : ""}`,
+      `${planningPath(next)}${params.size ? "?" + params : ""}`,
     );
+    window.scrollTo({ top: 0, behavior: "instant" });
     setLocationState(route());
     setSearch("");
     setFilters(nextFilters);
@@ -261,7 +250,7 @@ export default function App() {
     );
   }
   async function copyLink(doc: Document) {
-    const url = `${location.origin}/${doc.library}?document=${doc.id}`;
+    const url = `${location.origin}${planningPath(doc.library)}?document=${doc.id}`;
     try {
       await navigator.clipboard.writeText(url);
       setToast("Document link copied.");
