@@ -14,7 +14,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 - `/logistics`: Street & Telephone Campaign Logistics Home.
 - `/logistics/operations`, `/logistics/locations`, `/logistics/resources`, `/logistics/training`, `/logistics/records`: operational libraries and the structured Locations & Permits list.
 - `/logistics/rota?type=street` and `/logistics/rota?type=telephone`: weekly operational rotas.
-- `/logistics/calendar`: shared operational agenda with period, activity and search controls.
+- `/logistics/calendar`: SharePoint-style monthly list calendar with month navigation, activity/search filters, an optional agenda view and day details linking to the same source records.
 - `/logistics/teams?channel=central-city&tab=Posts`: Teams simulation. Logistics channels also support Shared, Notes and Planner.
 - `/logistics/teams?channel=coaches&tab=Planner`: the existing Coach & Team Lead Planner used by the Home shortcut.
 - `/service-desk/access-request`: Jira Service Management-style access request. The urgent Restricted Planning link populates its `location` query parameter with the attempted path.
@@ -46,3 +46,5 @@ Use the existing static service connected to `lh20202/workspace-prototype`, bran
 - https://fluent2.microsoft.design/components/web/react/
 - https://learn.microsoft.com/en-us/sharepoint/information-architecture-modern-experience
 - https://learn.microsoft.com/en-us/sharepoint/information-architecture-principles
+
+Calendar reference: Microsoft Support, “Create a calendar view from a list” (https://support.microsoft.com/en-us/sharepoint/lists/create-a-calendar-view-from-a-list). The prototype follows the modern list calendar pattern and day details pane. Today returns to the fixed fictional example date, 14 October 2026.

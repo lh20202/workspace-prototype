@@ -497,3 +497,206 @@
     gap: 8px;
   }
 }
+
+/* Modern SharePoint list calendar: month grid and a day details pane. */
+.sp-calendar-commandbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edebe9;
+  font-size: 13px;
+}
+.calendar-view-select {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.sp-calendar-commandbar select,
+.sp-calendar-toolbar select {
+  border: 1px solid #d2d0ce;
+  background: white;
+  border-radius: 2px;
+  padding: 7px;
+  color: #323130;
+}
+.sp-calendar-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 18px 0;
+}
+.sp-calendar-toolbar h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 16px 0 4px;
+}
+.sp-calendar-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-size: 12px;
+}
+.sp-calendar-toolbar .fui-Input {
+  max-width: 190px;
+}
+.sp-calendar-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+.sp-calendar-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+.sp-month-calendar {
+  width: 100%;
+  min-width: 650px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: white;
+}
+.sp-month-calendar th {
+  font-size: 11px;
+  font-weight: 400;
+  text-align: center;
+  color: #605e5c;
+  padding: 12px 3px;
+  border-bottom: 1px solid #d2d0ce;
+}
+.sp-month-calendar td {
+  height: 116px;
+  vertical-align: top;
+  border: 1px solid #edebe9;
+  padding: 6px 3px;
+}
+.sp-month-calendar td.outside-month {
+  background: #faf9f8;
+  color: #a19f9d;
+}
+.sp-month-calendar td.selected-day {
+  background: #f0f6fc;
+  box-shadow: inset 0 0 0 1px #0078d4;
+}
+.calendar-day-number {
+  display: block;
+  margin: 0 4px 5px auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.calendar-day-number.calendar-today {
+  color: white;
+  background: #0078d4;
+}
+.calendar-event {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-left: 3px solid #0078d4;
+  background: #e8f2fc;
+  color: #134b78;
+  padding: 4px;
+  margin: 3px 0;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.calendar-event:hover {
+  background: #cfe5fa;
+}
+.calendar-event span {
+  font-weight: 600;
+}
+.calendar-more {
+  border: 0;
+  background: transparent;
+  color: #0078d4;
+  font-size: 11px;
+  cursor: pointer;
+}
+.calendar-day-details {
+  width: 280px;
+  flex-shrink: 0;
+  padding: 16px;
+  border: 1px solid #edebe9;
+  border-left: 0;
+  background: white;
+}
+.calendar-detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calendar-detail-heading h3 {
+  font-size: 14px;
+  margin: 0;
+  flex: 1;
+}
+.calendar-day-details article {
+  padding: 20px 0;
+  border-bottom: 1px solid #edebe9;
+}
+.calendar-day-details h4 {
+  font-size: 14px;
+  margin: 12px 0;
+}
+.calendar-day-details p {
+  font-size: 12px;
+  color: #605e5c;
+}
+.calendar-day-details .fui-Button {
+  padding-left: 0;
+  font-size: 12px;
+  color: #0078d4;
+}
+.calendar-empty {
+  text-align: center;
+  padding: 12px;
+  color: #605e5c;
+  font-size: 13px;
+}
+.calendar-list-view > button {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  background: white;
+  border: 0;
+  border-bottom: 1px solid #edebe9;
+  text-align: left;
+  cursor: pointer;
+}
+.calendar-list-view > button strong {
+  flex: 1;
+}
+@media (max-width: 1200px) {
+  .sp-calendar-layout {
+    flex-direction: column;
+  }
+  .sp-calendar-scroll {
+    width: 100%;
+  }
+  .calendar-day-details {
+    width: 100%;
+    border-left: 1px solid #edebe9;
+  }
+}
+@media (max-width: 800px) {
+  .sp-calendar-toolbar label {
+    margin-left: 0;
+  }
+}
