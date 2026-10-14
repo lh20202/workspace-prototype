@@ -19,7 +19,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 - `/logistics/teams?channel=coaches&tab=Planner`: the existing Coach & Team Lead Planner used by the Home shortcut.
 - `/service-desk/access-request`: Jira Service Management-style access request. The urgent Restricted Planning link populates its `location` query parameter with the attempted path.
 
-The inset cream, monospaced **DEMO CONTROLS** strip is external to the Microsoft and service-desk interfaces. The landing page links enter workspaces; normal SharePoint/Teams links switch collaboration surfaces within logistics. Legacy `/strategy`, `/reporting`, `/approved`, and `/restricted` addresses still resolve to planning. `/planning` is Home; Planning Cycles is `/planning/cycles`.
+The inset dark grey, monospaced **DEMO CONTROLS** strip is external to the Microsoft and service-desk interfaces. The landing page links enter workspaces; normal SharePoint/Teams links switch collaboration surfaces within logistics. Legacy `/strategy`, `/reporting`, `/approved`, and `/restricted` addresses still resolve to planning. `/planning` is Home; Planning Cycles is `/planning/cycles`.
 
 ## Content and shared records
 

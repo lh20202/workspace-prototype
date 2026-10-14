@@ -12,11 +12,11 @@
   min-height: 56px;
   padding: 10px 16px;
   gap: 10px;
-  background: #fff1c7;
-  color: #44391f;
-  border: 1px solid #cdbb7d;
+  background: #242424;
+  color: #ffffff;
+  border: 1px solid #424242;
   border-radius: 6px;
-  box-shadow: 0 4px 10px #69552b35;
+  box-shadow: 0 4px 10px #00000035;
   font:
     11px ui-monospace,
     SFMono-Regular,
@@ -26,8 +26,8 @@
   flex-wrap: nowrap;
 }
 .demo-controls > span {
-  color: #6c5425;
-  border-right: 1px solid #cfba7d;
+  color: #ffffff;
+  border-right: 1px solid #616161;
   font:
     700 10px ui-monospace,
     SFMono-Regular,
@@ -40,23 +40,23 @@
 }
 .demo-controls a {
   font: inherit;
-  color: #4e3f21;
+  color: #ffffff;
   border: 1px solid transparent;
   padding: 8px 10px;
   border-radius: 3px;
   white-space: nowrap;
 }
 .demo-controls a:hover {
-  background: #f5e3ab;
-  border-color: #d6c38b;
+  background: #383838;
+  border-color: #616161;
 }
 .demo-controls a[aria-current="page"] {
-  background: #f0dda3;
-  color: #392f1b;
-  border-color: #d5bc74;
+  background: #454545;
+  color: #ffffff;
+  border-color: #777777;
 }
 .demo-controls a:focus-visible {
-  outline-color: #806120;
+  outline-color: #ffffff;
 }
 .demo-control-frame + .app-shell .workspace {
   min-height: calc(100vh - 242px);
