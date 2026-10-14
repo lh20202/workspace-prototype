@@ -54,7 +54,7 @@ export const libraries: {
     name: "Performance & Reporting",
     description:
       "Bring together progress inputs, review performance and prepare consolidated reporting.",
-    folders: ["2026 Mid-Year Review", "2026 Year-End Review"],
+    folders: ["2026 Mid-Year Review", "2026 Year-End Review", currentCycle],
   },
   {
     id: "approved",
@@ -87,23 +87,18 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Ready for review",
     ],
     [
-      "People & Culture submission 2027.docx",
+      "Human Resources submission 2027.docx",
       "Submission",
-      "People & Culture",
+      "Human Resources",
       "In progress",
     ],
     [
-      "Digital Services submission 2027.pptx",
+      "Digital & Technology submission 2027.pptx",
       "Submission",
-      "Digital Services",
+      "Digital & Technology",
       "In review",
     ],
-    [
-      "External Relations submission 2027.docx",
-      "Submission",
-      "External Relations",
-      "Draft",
-    ],
+    ["Marketing submission 2027.docx", "Submission", "Marketing", "Draft"],
     [
       "Financial assumptions 2027.xlsx",
       "Supporting data",
@@ -140,6 +135,24 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Organisation-wide",
       "Draft",
     ],
+    [
+      "Organisation-wide Logframe 2027.xlsx",
+      "Plan",
+      "Organisation-wide",
+      "In review",
+    ],
+    [
+      "Budget and staffing submission 2027.xlsx",
+      "Submission",
+      "Finance",
+      "In progress",
+    ],
+    [
+      "Manufacturing submission 2027.xlsx",
+      "Submission",
+      "Manufacturing",
+      "Draft",
+    ],
   ],
   strategy: [
     ["External environment scan.docx", "Analysis", "Organisation-wide"],
@@ -160,9 +173,9 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Organisation-wide",
       "In review",
     ],
-    ["Capability assumptions.xlsx", "Supporting data", "People & Culture"],
+    ["Capability assumptions.xlsx", "Supporting data", "Human Resources"],
     ["Strategy decision log.xlsx", "Decision log", "Organisation-wide"],
-    ["Consultation synthesis.docx", "Analysis", "External Relations"],
+    ["Consultation synthesis.docx", "Analysis", "Marketing"],
     [
       "Strategic priorities review.docx",
       "Review",
@@ -178,8 +191,12 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Approved",
     ],
     ["Operations progress input.xlsx", "Submission", "Operations"],
-    ["People progress input.docx", "Submission", "People & Culture"],
-    ["Digital Services progress input.xlsx", "Submission", "Digital Services"],
+    ["Human Resources progress input.docx", "Submission", "Human Resources"],
+    [
+      "Digital & Technology progress input.xlsx",
+      "Submission",
+      "Digital & Technology",
+    ],
     [
       "Risk and dependency review.xlsx",
       "Review",
@@ -198,6 +215,12 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Organisation-wide",
     ],
     ["Reporting decision log.xlsx", "Decision log", "Organisation-wide"],
+    [
+      "Performance reporting template 2027.xlsx",
+      "Guidance",
+      "Organisation-wide",
+      "Approved",
+    ],
   ],
   approved: [
     ["Organisational Plan 2026.pdf", "Plan", "Organisation-wide", "Approved"],
@@ -223,7 +246,7 @@ const seeds: Record<LibraryId, Seed[]> = {
   ],
   restricted: [
     ["Operating model scenario A.docx", "Analysis", "Organisation-wide"],
-    ["Workforce scenario options.xlsx", "Analysis", "People & Culture"],
+    ["Workforce scenario options.xlsx", "Analysis", "Human Resources"],
     ["Financial sensitivity assumptions.xlsx", "Supporting data", "Finance"],
     [
       "Organisational change impact assessment.docx",
@@ -262,9 +285,11 @@ export const documents: Document[] = Object.entries(seeds).flatMap(
               ? "Strategic Priorities Review"
               : "2027–2030 Strategy Refresh"
             : library === "reporting"
-              ? i < 4
-                ? "2026 Mid-Year Review"
-                : "2026 Year-End Review"
+              ? name === "Performance reporting template 2027.xlsx"
+                ? currentCycle
+                : i < 4
+                  ? "2026 Mid-Year Review"
+                  : "2026 Year-End Review"
               : library === "approved"
                 ? i === 1
                   ? "2026 Mid-Year Review"
@@ -307,4 +332,30 @@ export const milestones = [
   ["Consolidation", "2–13 Nov 2026"],
   ["Leadership review", "18 Nov 2026"],
   ["Final approval", "30 Nov 2026"],
+];
+
+export const currentUser: { name: string; role: Role } = {
+  name: "Maya Chen",
+  role: "Workspace Member",
+};
+export const departments = [
+  "Marketing",
+  "Manufacturing",
+  "Finance",
+  "Human Resources",
+  "Digital & Technology",
+  "Operations",
+];
+export const quickLinks = [
+  { label: "Logframe", name: "Organisation-wide Logframe 2027.xlsx" },
+  {
+    label: "Budget & staffing submission",
+    name: "Budget and staffing submission 2027.xlsx",
+  },
+  { label: "Planning guidance", name: "Planning guidance 2027.docx" },
+  {
+    label: "Reporting template",
+    name: "Performance reporting template 2027.xlsx",
+  },
+  { label: "Decision log", name: "Planning decision log.xlsx" },
 ];

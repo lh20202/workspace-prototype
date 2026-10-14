@@ -1,6 +1,6 @@
 # Organisational Planning & Reporting
 
-A fictional SharePoint-style document collaboration prototype for Northstar Organisation. React, TypeScript, Vite and Fluent UI React v9. No authentication, backend or actual documents.
+A fictional SharePoint-style document collaboration prototype. React, TypeScript, Vite and Fluent UI React v9. No authentication, backend or actual documents.
 
 ## Development
 
@@ -8,7 +8,7 @@ Use Node 24 (at least 22.12). Run `npm ci`, then `npm run dev`. Checks: `npm run
 
 ## Content and interactions
 
-Synthetic libraries, files, metadata, roles and milestones live in `src/data/workspace.ts`. Discovery and access rules are in `src/utils/documents.ts`. Views, search, metadata filters and shallow cycle folders operate on local data. Role selection persists locally; other state is reflected in major library URLs. Document links open details directly. Upload, open, approval and version history are explicitly simulated. The role switcher illustrates an access boundary; it is not a security control.
+Synthetic libraries, files, metadata, roles and milestones live in `src/data/workspace.ts`. Discovery and access rules are in `src/utils/documents.ts`. Views, search, metadata filters and shallow cycle folders operate on local data. Maya Chen is the fictional signed-in workspace contributor; no role switcher is exposed. Department shortcuts open current-cycle submissions filtered by planning area, with filters preserved in URLs. Document links open details directly. Upload, open, approval and version history are explicitly simulated. Restricted Planning shows the protected-area access state to the ordinary contributor; client-side rules are not a security control.
 
 ## Render
 

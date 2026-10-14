@@ -49,3 +49,12 @@ export function queryDocuments(
       );
     });
 }
+
+export function filtersFromParams(params: URLSearchParams): Filters {
+  return {
+    cycle: params.get("cycle") ?? "",
+    type: params.get("type") ?? "",
+    area: params.get("area") ?? "",
+    status: params.get("status") ?? "",
+  };
+}

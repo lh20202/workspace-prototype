@@ -32,15 +32,26 @@ import {
   ArrowRight20Regular,
   GridDots24Regular,
   ChevronDown16Regular,
+  Alert24Regular,
+  QuestionCircle24Regular,
+  Settings24Regular,
+  People24Regular,
+  Star20Filled,
+  Calendar20Regular,
+  PeopleTeam24Regular,
+  DocumentTable20Regular,
+  Money20Regular,
+  ClipboardTask20Regular,
 } from "@fluentui/react-icons";
 import {
   documents,
   libraries,
-  roles,
+  currentUser,
+  departments,
+  quickLinks,
   currentCycle,
   milestones,
   type Document,
-  type Role,
   type View,
   type LibraryId,
 } from "./data/workspace";
@@ -49,6 +60,7 @@ import {
   emptyFilters,
   canAccessRestricted,
   type Filters,
+  filtersFromParams,
 } from "./utils/documents";
 const icons = {
   planning: Folder24Regular,
@@ -64,6 +76,8 @@ const views: View[] = [
   "Approved",
   "By Planning Area",
 ];
+const documentCount = (count: number) =>
+  `${count} document${count === 1 ? "" : "s"}`;
 const formatDate = (date: string) =>
   new Date(date + "T12:00:00").toLocaleDateString("en-GB", {
     day: "numeric",
@@ -92,14 +106,6 @@ function Status({ status }: { status: string }) {
     </span>
   );
 }
-function readRole(): Role {
-  try {
-    const value = localStorage.getItem("workspace-role");
-    return roles.includes(value as Role) ? (value as Role) : "Workspace Member";
-  } catch {
-    return "Workspace Member";
-  }
-}
 function route() {
   const params = new URLSearchParams(location.search);
   const page = location.pathname.split("/")[1];
@@ -114,10 +120,16 @@ function route() {
 export default function App() {
   const [locationState, setLocationState] = useState(route);
   const { page, folder, view } = locationState;
-  const [role, setRole] = useState<Role>(readRole);
+  const role = currentUser.role;
+  const [workspaceSearch, setWorkspaceSearch] = useState("");
+  const [favorite, setFavorite] = useState(true);
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState<Filters>(emptyFilters);
-  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<Filters>(() =>
+    filtersFromParams(new URLSearchParams(location.search)),
+  );
+  const [filterOpen, setFilterOpen] = useState(
+    () => !!filtersFromParams(new URLSearchParams(location.search)).area,
+  );
   const [selected, setSelected] = useState<Document | null>(() => {
     const id = new URLSearchParams(location.search).get("document");
     return (
@@ -129,16 +141,30 @@ export default function App() {
       ) ?? null
     );
   });
-  const [modal, setModal] = useState<"about" | "version" | null>(null);
+  const [modal, setModal] = useState<"about" | "version" | "milestones" | null>(
+    null,
+  );
   const [toast, setToast] = useState("");
   const [sort, setSort] = useState<keyof Document>("name");
   const [descending, setDescending] = useState(false);
   useEffect(() => {
     const listener = () => {
       setLocationState(route());
-      setSelected(null);
       setSearch("");
-      setFilters(emptyFilters);
+      setModal(null);
+      setFilterOpen(
+        !!filtersFromParams(new URLSearchParams(location.search)).area,
+      );
+      setFilters(filtersFromParams(new URLSearchParams(location.search)));
+      const id = new URLSearchParams(location.search).get("document");
+      setSelected(
+        documents.find(
+          (d) =>
+            d.id === id &&
+            d.library === route().page &&
+            d.library !== "restricted",
+        ) ?? null,
+      );
     };
     window.addEventListener("popstate", listener);
     return () => window.removeEventListener("popstate", listener);
@@ -152,10 +178,15 @@ export default function App() {
     next: string,
     nextFolder = "",
     nextView: View = "All Documents",
+    nextFilters: Filters = emptyFilters,
+    documentId = "",
   ) {
     const params = new URLSearchParams();
     if (nextFolder) params.set("folder", nextFolder);
     if (nextView !== "All Documents") params.set("view", nextView);
+    for (const [key, value] of Object.entries(nextFilters))
+      if (value) params.set(key, value);
+    if (documentId) params.set("document", documentId);
     history.pushState(
       {},
       "",
@@ -163,9 +194,17 @@ export default function App() {
     );
     setLocationState(route());
     setSearch("");
-    setFilters(emptyFilters);
-    setSelected(null);
-    setFilterOpen(false);
+    setFilters(nextFilters);
+    setSelected(
+      documents.find(
+        (d) =>
+          d.id === documentId &&
+          d.library === next &&
+          d.library !== "restricted",
+      ) ?? null,
+    );
+    setFilterOpen(!!nextFilters.area);
+    setWorkspaceSearch("");
   }
   const library = libraries.find((l) => l.id === page);
   const allowed = page !== "restricted" || canAccessRestricted(role);
@@ -180,14 +219,30 @@ export default function App() {
     descending,
   );
   const activeFilters = Object.values(filters).filter(Boolean).length;
+  function updateFilters(next: Filters) {
+    setFilters(next);
+    const params = new URLSearchParams(location.search);
+    for (const key of Object.keys(emptyFilters) as (keyof Filters)[]) {
+      if (next[key]) params.set(key, next[key]);
+      else params.delete(key);
+    }
+    history.replaceState(
+      {},
+      "",
+      `${location.pathname}${params.size ? "?" + params : ""}`,
+    );
+  }
   function setView(next: View) {
-    navigate(page, "", next);
+    navigate(page, "", next, filters);
+  }
+  function openDocument(doc: Document) {
+    navigate(doc.library, doc.cycle, "All Documents", emptyFilters, doc.id);
   }
   async function copyLink(doc: Document) {
     const url = `${location.origin}/${doc.library}?document=${doc.id}`;
     try {
       await navigator.clipboard.writeText(url);
-      setToast("Demo document link copied. This prototype has no stored file.");
+      setToast("Document link copied.");
     } catch {
       setToast("Clipboard is unavailable in this browser.");
     }
@@ -275,56 +330,151 @@ export default function App() {
         Skip to content
       </a>
       <header className="m365-header">
-        <GridDots24Regular />
+        <button
+          className="global-icon"
+          aria-label="Microsoft 365 apps"
+          onClick={() =>
+            setToast(
+              "Microsoft 365 app launcher is not connected in this prototype.",
+            )
+          }
+        >
+          <GridDots24Regular />
+        </button>
         <span className="product">SharePoint</span>
-        <span className="tenant">Northstar Organisation</span>
-        <div className="demo-role">
-          <label htmlFor="role">Demo as</label>
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => {
-              const next = e.target.value as Role;
-              setRole(next);
-              setSelected(null);
-              setModal(null);
-              try {
-                localStorage.setItem("workspace-role", next);
-              } catch {
-                /* Storage may be disabled. */
-              }
+        <div className="workspace-search">
+          <Input
+            contentBefore={<Search20Regular />}
+            placeholder="Search this workspace"
+            aria-label="Search this workspace"
+            value={workspaceSearch}
+            onChange={(_, data) => setWorkspaceSearch(data.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setWorkspaceSearch("");
             }}
+          />
+          {workspaceSearch.trim() && (
+            <div
+              className="workspace-results"
+              aria-label="Workspace search results"
+            >
+              <div className="search-results-heading">Documents</div>
+              {documents
+                .filter(
+                  (d) =>
+                    d.library !== "restricted" &&
+                    d.name
+                      .toLowerCase()
+                      .includes(workspaceSearch.trim().toLowerCase()),
+                )
+                .map((d) => (
+                  <button key={d.id} onClick={() => openDocument(d)}>
+                    <FileIcon name={d.name} />
+                    <span>
+                      {d.name}
+                      <small>
+                        {libraries.find((l) => l.id === d.library)?.name}
+                      </small>
+                    </span>
+                  </button>
+                ))}
+              {!documents.some(
+                (d) =>
+                  d.library !== "restricted" &&
+                  d.name
+                    .toLowerCase()
+                    .includes(workspaceSearch.trim().toLowerCase()),
+              ) && <p>No documents found.</p>}
+            </div>
+          )}
+        </div>
+        <div className="global-utilities">
+          <button
+            className="global-icon"
+            aria-label="Notifications"
+            onClick={() => setToast("You're up to date. No new notifications.")}
           >
-            {roles.map((r) => (
-              <option key={r}>{r}</option>
-            ))}
-          </select>
-          <span className="avatar">
-            {role === "Executive Reviewer"
-              ? "ER"
-              : role === "Planning Coordinator"
-                ? "PC"
-                : "WM"}
-          </span>
+            <Alert24Regular />
+          </button>
+          <button
+            className="global-icon"
+            aria-label="Help"
+            onClick={() =>
+              setToast(
+                "Use Quick links for key documents, or search by filename. Library filters narrow results by planning metadata.",
+              )
+            }
+          >
+            <QuestionCircle24Regular />
+          </button>
+          <button
+            className="global-icon"
+            aria-label="Settings"
+            onClick={() =>
+              setToast(
+                "Workspace preferences use the default reading and document view.",
+              )
+            }
+          >
+            <Settings24Regular />
+          </button>
+          <button
+            className="profile-button"
+            aria-label="Signed in as Maya Chen"
+            onClick={() =>
+              setToast("Maya Chen · Workspace member and contributor")
+            }
+          >
+            <img src="/maya-avatar.svg" alt="Illustrated avatar of Maya Chen" />
+          </button>
         </div>
       </header>
       <div className="site-header">
-        <div className="site-mark">OP</div>
-        <div>
-          <span className="eyebrow">
-            NORTHSTAR ORGANISATION · SHARED WORKSPACE
-          </span>
-          <h1>Organisational Planning & Reporting</h1>
+        <div className="site-mark" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
-        <span className="site-members">
-          <span className="member-dots">AM&nbsp; JE&nbsp; TR</span> Workspace
-          members
-        </span>
+        <div className="site-title">
+          <h1>Organisational Planning & Reporting</h1>
+          <button
+            className="teams-button"
+            aria-label="Microsoft Teams connection"
+            title="Microsoft Teams"
+            onClick={() =>
+              setToast("This workspace's Teams connection is illustrative.")
+            }
+          >
+            <PeopleTeam24Regular />
+            <b>T</b>
+          </button>
+        </div>
+        <div className="site-context">
+          <span>Private group</span>
+          <button
+            onClick={() => setFavorite(!favorite)}
+            aria-pressed={favorite}
+          >
+            <Star20Filled />
+            {favorite ? "Added to favorites" : "Add to favorites"}
+          </button>
+          <button
+            onClick={() =>
+              setToast(
+                "34 workspace members collaborate on organisational planning and reporting.",
+              )
+            }
+          >
+            <People24Regular />
+            34 members
+          </button>
+        </div>
       </div>
       <div className="workspace">
         <aside className="sidebar">
           <nav aria-label="Workspace navigation">
             <button
+              aria-current={page === "home" ? "page" : undefined}
               className={page === "home" ? "nav-active" : ""}
               onClick={() => navigate("home")}
             >
@@ -337,22 +487,17 @@ export default function App() {
               return (
                 <button
                   key={l.id}
+                  aria-current={page === l.id ? "page" : undefined}
                   className={page === l.id ? "nav-active" : ""}
                   onClick={() => navigate(l.id)}
                 >
                   <Icon />
                   <span>{l.name}</span>
-                  {l.id === "restricted" && <span className="nav-lock">·</span>}
                 </button>
               );
             })}
           </nav>
           <div className="sidebar-footer">
-            <p>
-              One workspace.
-              <br />
-              Organised around the work.
-            </p>
             <button onClick={() => setModal("about")}>
               <Info20Regular />
               About this prototype
@@ -361,92 +506,140 @@ export default function App() {
         </aside>
         <main id="main-content" className="main-content">
           {page === "home" ? (
-            <>
-              <div className="page-heading">
-                <span className="eyebrow">WORKSPACE HOME</span>
-                <h2>A shared place to plan what’s next.</h2>
-                <p>
-                  Shared workspace for organisation-wide strategy, planning,
-                  review and performance reporting.
-                </p>
-              </div>
-              <section className="current-cycle">
-                <div className="cycle-top">
-                  <div>
-                    <span className="eyebrow">CURRENT CYCLE</span>
-                    <h3>2027 Annual Planning</h3>
-                    <p>
-                      Bring our priorities, resources and contributions
-                      together.
-                    </p>
-                  </div>
-                  <span className="open-status">
-                    <span />
-                    Open for contributions
-                  </span>
+            <div className="home-layout">
+              <div className="home-main">
+                <div className="page-heading">
+                  <h2>Organisational Planning & Reporting</h2>
+                  <p>
+                    Shared workspace for organisation-wide strategy, planning,
+                    review and performance reporting.
+                  </p>
                 </div>
-                <div className="milestones">
-                  {milestones.map(([name, date], i) => (
-                    <div key={name} className={i === 0 ? "complete" : ""}>
-                      <span className="milestone-dot">
-                        {i === 0 ? "✓" : i + 1}
-                      </span>
-                      <strong>{name}</strong>
-                      <span>{date}</span>
+                <section
+                  className="current-cycle"
+                  aria-labelledby="cycle-title"
+                >
+                  <div className="cycle-top">
+                    <div>
+                      <span className="eyebrow">CURRENT PLANNING CYCLE</span>
+                      <h3 id="cycle-title">2027 Annual Planning</h3>
                     </div>
+                    <span className="open-status">
+                      <span />
+                      Open for contributions
+                    </span>
+                  </div>
+                  <div className="cycle-next">
+                    <Calendar20Regular />
+                    <span>
+                      Business-area inputs due <strong>30 October 2026</strong>
+                    </span>
+                    <button onClick={() => setModal("milestones")}>
+                      View all milestones <ArrowRight20Regular />
+                    </button>
+                  </div>
+                </section>
+                <section className="quick-links-section">
+                  <div className="section-heading">
+                    <h3>Quick links</h3>
+                  </div>
+                  <div className="quick-links">
+                    {quickLinks.map((link, i) => {
+                      const Icon = [
+                        DocumentTable20Regular,
+                        Money20Regular,
+                        Document24Regular,
+                        ClipboardTask20Regular,
+                        History20Regular,
+                      ][i];
+                      return (
+                        <button
+                          key={link.label}
+                          onClick={() => {
+                            const doc = documents.find(
+                              (d) => d.name === link.name,
+                            );
+                            if (doc) openDocument(doc);
+                          }}
+                        >
+                          <span className="quick-link-icon">
+                            <Icon />
+                          </span>
+                          <span>{link.label}</span>
+                        </button>
+                      );
+                    })}
+                    <button onClick={() => setModal("milestones")}>
+                      <span className="quick-link-icon">
+                        <Calendar20Regular />
+                      </span>
+                      <span>Current milestones</span>
+                    </button>
+                  </div>
+                </section>
+                <section className="recent">
+                  <div className="section-heading">
+                    <h3>Recent documents</h3>
+                    <button onClick={() => navigate("planning")}>
+                      See all <ArrowRight20Regular />
+                    </button>
+                  </div>
+                  <div className="recent-list">
+                    {[...documents]
+                      .filter((d) => d.library !== "restricted")
+                      .sort((a, b) => b.modified.localeCompare(a.modified))
+                      .slice(0, 5)
+                      .map((d) => (
+                        <button key={d.id} onClick={() => openDocument(d)}>
+                          <FileIcon name={d.name} />
+                          <span className="recent-name">
+                            {d.name}
+                            <small>
+                              {libraries.find((l) => l.id === d.library)?.name}{" "}
+                              · {d.cycle}
+                            </small>
+                          </span>
+                          <span className="recent-date">
+                            {formatDate(d.modified)}
+                          </span>
+                        </button>
+                      ))}
+                  </div>
+                </section>
+              </div>
+              <aside className="home-aside" aria-label="Planning shortcuts">
+                <section className="department-jumps">
+                  <h3>Jump to department submissions</h3>
+                  <p>2027 Annual Planning</p>
+                  {departments.map((department) => (
+                    <button
+                      key={department}
+                      onClick={() =>
+                        navigate("planning", currentCycle, "All Documents", {
+                          ...emptyFilters,
+                          area: department,
+                          type: "Submission",
+                        })
+                      }
+                    >
+                      <span>{department}</span>
+                      <ArrowRight20Regular />
+                    </button>
                   ))}
-                </div>
-                <div className="cycle-bottom">
-                  <Button
-                    appearance="primary"
-                    icon={<Folder24Regular />}
-                    onClick={() => navigate("planning", currentCycle)}
-                  >
-                    Open current planning cycle
-                  </Button>
-                  <span>Next milestone: contributions due 30 October</span>
-                </div>
-              </section>
-              <div className="quick-links">
-                <button onClick={() => navigate("planning", "", "In Review")}>
-                  <History20Regular />
-                  <div>
-                    <strong>Documents in review</strong>
-                    <span>See what needs a second look</span>
-                  </div>
-                  <ArrowRight20Regular />
-                </button>
-                <button onClick={() => navigate("approved")}>
-                  <CheckmarkCircle24Regular />
-                  <div>
-                    <strong>Approved plans and reports</strong>
-                    <span>Find our authoritative outputs</span>
-                  </div>
-                  <ArrowRight20Regular />
-                </button>
-              </div>
-              <section className="recent">
-                <div className="section-heading">
-                  <h3>Recent documents</h3>
-                  <button onClick={() => navigate("planning")}>
-                    Go to Planning Cycles <ArrowRight20Regular />
+                </section>
+                <section className="home-reference">
+                  <h3>Review & reference</h3>
+                  <button onClick={() => navigate("planning", "", "In Review")}>
+                    <History20Regular />
+                    Documents in review
                   </button>
-                </div>
-                {documentTable(
-                  [...documents]
-                    .filter((d) => d.library !== "restricted")
-                    .sort((a, b) => b.modified.localeCompare(a.modified))
-                    .slice(0, 5),
-                  true,
-                )}
-              </section>
-              <div className="home-foot">
-                <CheckmarkCircle24Regular />
-                <span>
-                  Working together, with a clear place for the final record.
-                </span>
-              </div>
-            </>
+                  <button onClick={() => navigate("approved")}>
+                    <CheckmarkCircle24Regular />
+                    Approved plans & reports
+                  </button>
+                </section>
+              </aside>
+            </div>
           ) : (
             library && (
               <>
@@ -496,8 +689,8 @@ export default function App() {
                       restricted planning material.
                     </p>
                     <p>
-                      Your ordinary workspace membership gives you access to the
-                      shared working libraries and approved outputs.
+                      Access is limited to colleagues involved in the relevant
+                      review and decision-making.
                     </p>
                     <Button
                       appearance="primary"
@@ -505,10 +698,6 @@ export default function App() {
                     >
                       Return to Planning Cycles
                     </Button>
-                    <span>
-                      For this demonstration, choose Executive Reviewer in “Demo
-                      as” to explore this area.
-                    </span>
                   </section>
                 ) : (
                   <>
@@ -563,18 +752,6 @@ export default function App() {
                             >
                               Upload
                             </Button>
-                            {role === "Planning Coordinator" && (
-                              <Button
-                                appearance="subtle"
-                                onClick={() =>
-                                  setToast(
-                                    "Demo: library settings manage shared metadata and inherited workspace access.",
-                                  )
-                                }
-                              >
-                                Library settings
-                              </Button>
-                            )}
                           </>
                         )}
                         <Button
@@ -589,7 +766,7 @@ export default function App() {
                               );
                           }}
                         >
-                          Copy library link
+                          Copy link
                         </Button>
                       </div>
                       <div>
@@ -624,13 +801,14 @@ export default function App() {
                         onChange={(_, data) => setSearch(data.value)}
                       />
                       <span>
-                        {rows.length} documents{folder ? " in this cycle" : ""}
+                        {documentCount(rows.length)}
+                        {folder ? " in this cycle" : ""}
                       </span>
                       {(search || activeFilters > 0) && (
                         <button
                           onClick={() => {
                             setSearch("");
-                            setFilters(emptyFilters);
+                            updateFilters(emptyFilters);
                           }}
                         >
                           Clear filters
@@ -661,7 +839,7 @@ export default function App() {
                                 }
                                 value={filters[key]}
                                 onChange={(e) =>
-                                  setFilters({
+                                  updateFilters({
                                     ...filters,
                                     [key]: e.target.value,
                                   })
@@ -679,7 +857,7 @@ export default function App() {
                         )}
                         <Button
                           onClick={() => {
-                            setFilters(emptyFilters);
+                            updateFilters(emptyFilters);
                             setSearch("");
                           }}
                         >
@@ -698,8 +876,9 @@ export default function App() {
                               <Folder24Regular />
                               <strong>{f}</strong>
                               <span>
-                                {scoped.filter((d) => d.cycle === f).length}{" "}
-                                documents
+                                {documentCount(
+                                  scoped.filter((d) => d.cycle === f).length,
+                                )}
                               </span>
                               <ArrowRight20Regular />
                             </button>
@@ -717,7 +896,7 @@ export default function App() {
                         <Button
                           onClick={() => {
                             setSearch("");
-                            setFilters(emptyFilters);
+                            updateFilters(emptyFilters);
                             setView("All Documents");
                           }}
                         >
@@ -725,12 +904,6 @@ export default function App() {
                         </Button>
                       </div>
                     )}
-                    <div className="library-foot">
-                      {page === "approved"
-                        ? "Final records · Approved outputs · Read access for workspace members"
-                        : "Shared metadata · One shallow cycle layer · Version history"}
-                      <span>Fictional demonstration content</span>
-                    </div>
                   </>
                 )}
               </>
@@ -823,18 +996,6 @@ export default function App() {
                   </div>
                 ))}
               </dl>
-              {role === "Executive Reviewer" &&
-                selected.recordState !== "Final record" && (
-                  <Button
-                    onClick={() =>
-                      setToast(
-                        "Demo: an approval would be recorded before an authoritative output is published to Approved Plans & Reports.",
-                      )
-                    }
-                  >
-                    Review / approve
-                  </Button>
-                )}
             </>
           )}
         </DrawerBody>
@@ -848,28 +1009,38 @@ export default function App() {
         <DialogSurface>
           <DialogBody>
             <DialogTitle>
-              {modal === "about" ? "About this prototype" : "Version history"}
+              {modal === "about"
+                ? "About this prototype"
+                : modal === "milestones"
+                  ? "2027 Annual Planning milestones"
+                  : "Version history"}
             </DialogTitle>
             <DialogContent>
               {modal === "about" ? (
+                <p>This prototype uses fictional content.</p>
+              ) : modal === "milestones" ? (
                 <>
-                  <p>
-                    This prototype uses fictional content to demonstrate
-                    document workspace structure, metadata, views and access
-                    boundaries.
-                  </p>
-                  <p>
-                    One shared workspace contains purpose-built libraries.
-                    Recognisable cycles provide a shallow folder layer; metadata
-                    offers different ways to find the same information. Approved
-                    outputs form a controlled record library, while sensitive
-                    scenarios have a bounded access group.
-                  </p>
-                  <p>
-                    Roles, files, uploads, approval and version history are
-                    demonstrations. There is no authentication or document
-                    backend.
-                  </p>
+                  <span className="open-status">
+                    <span />
+                    Open for contributions
+                  </span>
+                  <ol className="milestone-list">
+                    {milestones.map(([name, date], i) => (
+                      <li key={name}>
+                        <span className={i === 0 ? "milestone-done" : ""}>
+                          {i === 0 ? (
+                            <CheckmarkCircle24Regular />
+                          ) : (
+                            <Calendar20Regular />
+                          )}
+                        </span>
+                        <div>
+                          <strong>{name}</strong>
+                          <span>{date}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
                 </>
               ) : (
                 <>
