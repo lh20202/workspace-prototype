@@ -1,5 +1,5 @@
 import FileIcon from "./components/DocumentIcon";
-import { planningPath, planningPage } from "./utils/routes";
+import { planningPath, planningPage, accessRequestHref } from "./utils/routes";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -132,10 +132,9 @@ export default function App() {
       ) ?? null
     );
   });
-  const [modal, setModal] = useState<
-    "about" | "version" | "milestones" | "access" | null
-  >(null);
-  const [requestReason, setRequestReason] = useState("");
+  const [modal, setModal] = useState<"about" | "version" | "milestones" | null>(
+    null,
+  );
   const [toast, setToast] = useState("");
   const [sort, setSort] = useState<keyof Document>("name");
   const [descending, setDescending] = useState(false);
@@ -721,7 +720,9 @@ export default function App() {
                         If urgent,{" "}
                         <button
                           className="text-link"
-                          onClick={() => setModal("access")}
+                          onClick={() =>
+                            window.location.assign(accessRequestHref(folder))
+                          }
                         >
                           click here to submit an access request to IT
                         </button>
@@ -1052,32 +1053,11 @@ export default function App() {
                 ? "About this prototype"
                 : modal === "milestones"
                   ? "2027 Annual Planning milestones"
-                  : modal === "access"
-                    ? "Request access to Restricted Planning"
-                    : "Version history"}
+                  : "Version history"}
             </DialogTitle>
             <DialogContent>
               {modal === "about" ? (
                 <p>This prototype uses fictional content.</p>
-              ) : modal === "access" ? (
-                <>
-                  <p>Describe why you need access and why it is urgent.</p>
-                  <label
-                    className="access-request-label"
-                    htmlFor="access-reason"
-                  >
-                    Reason for access
-                  </label>
-                  <textarea
-                    id="access-reason"
-                    value={requestReason}
-                    onChange={(e) => setRequestReason(e.target.value)}
-                    rows={4}
-                  />
-                  <p className="muted">
-                    This is a prototype. No request will be sent to IT.
-                  </p>
-                </>
               ) : modal === "milestones" ? (
                 <>
                   <span className="open-status">
@@ -1135,21 +1115,6 @@ export default function App() {
               )}
             </DialogContent>
             <DialogActions>
-              {modal === "access" && (
-                <Button
-                  appearance="primary"
-                  disabled={!requestReason.trim()}
-                  onClick={() => {
-                    setModal(null);
-                    setRequestReason("");
-                    setToast(
-                      "Access request simulated. No request has been sent to IT.",
-                    );
-                  }}
-                >
-                  Submit access request
-                </Button>
-              )}
               <Button appearance="primary" onClick={() => setModal(null)}>
                 Close
               </Button>

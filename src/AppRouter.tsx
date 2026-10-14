@@ -2,7 +2,8 @@ import { useEffect, lazy, Suspense } from "react";
 const App = lazy(() => import("./App"));
 import PrototypeNavigator from "./components/PrototypeNavigator";
 const LogisticsApp = lazy(() => import("./logistics/LogisticsApp"));
-import { prototypeForPath } from "./utils/routes";
+const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
+import { pageTitle, prototypeForPath } from "./utils/routes";
 import {
   ArrowRight24Regular,
   Folder24Regular,
@@ -11,12 +12,7 @@ import {
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   useEffect(() => {
-    document.title =
-      prototype === "launcher"
-        ? "Workspace prototypes"
-        : prototype === "planning"
-          ? "Organisational Planning & Reporting"
-          : "Street & Telephone Campaign Logistics";
+    document.title = pageTitle(location.pathname);
   }, [prototype]);
   if (prototype === "launcher")
     return (
@@ -54,7 +50,10 @@ export default function AppRouter() {
     );
   return (
     <>
-      <PrototypeNavigator active={prototype} />
+      <PrototypeNavigator
+        active={prototype}
+        teams={location.pathname.startsWith("/logistics/teams")}
+      />
       <Suspense
         fallback={
           <div className="workspace-loading" role="status">
@@ -62,7 +61,13 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "planning" ? <App /> : <LogisticsApp />}
+        {prototype === "service-desk" ? (
+          <AccessRequest />
+        ) : prototype === "planning" ? (
+          <App />
+        ) : (
+          <LogisticsApp />
+        )}
       </Suspense>
     </>
   );

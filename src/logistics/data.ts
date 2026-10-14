@@ -767,6 +767,7 @@ export interface Post {
   reply?: string;
   locationLink?: boolean;
   pet?: string;
+  image?: { src: string; alt: string };
 }
 export const posts: Post[] = [
   {
@@ -895,13 +896,13 @@ export const posts: Post[] = [
     fileIds: [],
   },
   {
-    id: "post-pickle",
+    id: "post-daisy",
     channel: "pets",
-    author: "Alex Morgan",
+    author: "Maya Chen",
     time: "10:20",
-    text: "Meet Pickle, today’s remote-working supervisor.",
+    text: "important mews coming in live",
     fileIds: [],
-    pet: "🐶",
+    image: { src: "/images/daisy.jpg", alt: "Daisy the cat" },
   },
   {
     id: "post-miso",

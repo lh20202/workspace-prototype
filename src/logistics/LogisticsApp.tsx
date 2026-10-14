@@ -1,3 +1,4 @@
+import { RotaView, CalendarView } from "./OperationalSchedule";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -32,6 +33,9 @@ import {
   Info20Regular,
   History20Regular,
   Document24Regular,
+  Calendar24Regular,
+  Call24Regular,
+  People24Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import WorkspaceHeader from "./WorkspaceHeader";
@@ -112,9 +116,7 @@ export default function LogisticsApp() {
   }, []);
   useEffect(() => {
     document.title =
-      route.page === "teams"
-        ? `Microsoft Teams | ${workspaceTitle}`
-        : workspaceTitle;
+      route.page === "teams" ? `${workspaceTitle} | Teams` : workspaceTitle;
   }, [route.page]);
   useEffect(() => {
     if (!toast) return;
@@ -130,6 +132,7 @@ export default function LogisticsApp() {
       "",
       `/logistics${page === "home" ? "" : `/${page}`}${query.size ? "?" + query : ""}`,
     );
+    window.dispatchEvent(new Event("workspace:navigation"));
     window.scrollTo({ top: 0, behavior: "instant" });
     const next = logisticsRoute();
     setRoute(next);
@@ -219,7 +222,12 @@ export default function LogisticsApp() {
                 {libraries.slice(0, 1).map((l) => (
                   <button
                     key={l.id}
-                    className={route.page === l.id ? "nav-active" : ""}
+                    className={
+                      route.page === l.id ||
+                      (route.page === "rota" && l.id === "operations")
+                        ? "nav-active"
+                        : ""
+                    }
                     onClick={() => navigate(l.id)}
                   >
                     <Folder24Regular />
@@ -232,6 +240,13 @@ export default function LogisticsApp() {
                 >
                   <Location24Regular />
                   Locations & Permits
+                </button>
+                <button
+                  className={route.page === "calendar" ? "nav-active" : ""}
+                  onClick={() => navigate("calendar")}
+                >
+                  <Calendar24Regular />
+                  Shared calendar
                 </button>
                 {libraries.slice(1).map((l) => {
                   const Icon = libraryIcons[l.id];
@@ -263,6 +278,40 @@ export default function LogisticsApp() {
                     <div className="page-heading">
                       <h2>{workspaceTitle}</h2>
                       <p>{workspacePurpose}</p>
+                    </div>
+                    <div
+                      className="operational-shortcuts"
+                      aria-label="Operational shortcuts"
+                    >
+                      <Button
+                        icon={<Calendar24Regular />}
+                        onClick={() => navigate("rota", { type: "street" })}
+                      >
+                        Street rota
+                      </Button>
+                      <Button
+                        icon={<Call24Regular />}
+                        onClick={() => navigate("rota", { type: "telephone" })}
+                      >
+                        Telephone rota
+                      </Button>
+                      <Button
+                        icon={<People24Regular />}
+                        onClick={() =>
+                          navigate("teams", {
+                            channel: "coaches",
+                            tab: "Planner",
+                          })
+                        }
+                      >
+                        Coach & team lead planner
+                      </Button>
+                      <Button
+                        icon={<Calendar24Regular />}
+                        onClick={() => navigate("calendar")}
+                      >
+                        Shared calendar
+                      </Button>
                     </div>
                     <section className="current-operations">
                       <div className="section-heading">
@@ -405,10 +454,20 @@ export default function LogisticsApp() {
                   <div className="breadcrumb">
                     <button onClick={() => navigate("home")}>Workspace</button>
                     <span>/</span>
-                    <button onClick={() => navigate(route.page)}>
-                      {route.page === "locations"
-                        ? "Locations & Permits"
-                        : (library?.name ?? "Workspace")}
+                    <button
+                      onClick={() =>
+                        navigate(
+                          route.page === "rota" ? "operations" : route.page,
+                        )
+                      }
+                    >
+                      {route.page === "calendar"
+                        ? "Shared calendar"
+                        : route.page === "rota"
+                          ? "Campaign Operations"
+                          : route.page === "locations"
+                            ? "Locations & Permits"
+                            : (library?.name ?? "Workspace")}
                     </button>
                     {route.folder && (
                       <>
@@ -417,7 +476,19 @@ export default function LogisticsApp() {
                       </>
                     )}
                   </div>
-                  {route.page === "locations" ? (
+                  {route.page === "rota" ? (
+                    <RotaView
+                      type={
+                        new URLSearchParams(location.search).get("type") ===
+                        "telephone"
+                          ? "telephone"
+                          : "street"
+                      }
+                      onOpen={openFile}
+                    />
+                  ) : route.page === "calendar" ? (
+                    <CalendarView onOpen={openFile} onNavigate={navigate} />
+                  ) : route.page === "locations" ? (
                     <LocationsList onMessage={setToast} />
                   ) : library ? (
                     <>

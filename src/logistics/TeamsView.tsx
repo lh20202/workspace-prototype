@@ -463,6 +463,13 @@ export default function TeamsView({
                     </div>
                     {p.title && <h3>{p.title}</h3>}
                     <p>{p.text}</p>
+                    {p.image && (
+                      <img
+                        className="post-photo"
+                        src={p.image.src}
+                        alt={p.image.alt}
+                      />
+                    )}
                     {p.pet && (
                       <div
                         className="pet-thumbnail"
