@@ -304,11 +304,11 @@ export default function TeamsView({
                     ) : (
                       <ChevronRight16Regular />
                     )}
-                    <span className="team-monogram logistics">CL</span>
+                    <span className="team-monogram logistics">AA</span>
                     <strong>
-                      STREET & TELEPHONE
+                      ACQUISITION & ACTIVATION
                       <br />
-                      CAMPAIGN LOGISTICS
+                      LOGISTICS
                     </strong>
                   </button>
                   {logisticsOpen &&

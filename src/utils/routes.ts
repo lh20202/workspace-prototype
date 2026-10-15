@@ -20,9 +20,9 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/service-desk/"))
     return "Access request | Service Desk";
   if (pathname.startsWith("/logistics/teams"))
-    return "Street & Telephone Campaign Logistics | Teams";
+    return "Acquisition & Activation Logistics | Teams";
   if (pathname.startsWith("/logistics"))
-    return "Street & Telephone Campaign Logistics";
+    return "Acquisition & Activation Logistics";
   return pathname === "/"
     ? "Workspace prototypes"
     : "Organisational Planning & Reporting";

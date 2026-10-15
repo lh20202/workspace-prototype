@@ -9,8 +9,8 @@ import {
 export const savedViews = [
   "All Documents",
   "Current Campaigns",
-  "Street Operations",
-  "Telephone Operations",
+  "In-person Operations",
+  "Calling Operations",
   "Travel Campaign",
   "Current This Week",
   "Completed Campaigns",
@@ -47,10 +47,10 @@ export function queryFiles(
         ) &&
         (view !== "Current Campaigns" ||
           ["Current", "Active", "In review"].includes(f.status)) &&
-        (view !== "Street Operations" ||
-          ["City street", "Travelling street"].includes(f.operation)) &&
-        (view !== "Telephone Operations" || f.operation === "Telephone") &&
-        (view !== "Travel Campaign" || f.operation === "Travelling street") &&
+        (view !== "In-person Operations" ||
+          ["Local in-person", "Travelling in-person"].includes(f.operation)) &&
+        (view !== "Calling Operations" || f.operation === "Calling") &&
+        (view !== "Travel Campaign" || f.operation === "Travelling in-person") &&
         (view !== "Current This Week" ||
           (f.validFrom <= weekEnd &&
             f.validTo >= weekStart &&

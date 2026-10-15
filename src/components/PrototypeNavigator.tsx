@@ -38,7 +38,7 @@ export default function PrototypeNavigator({
           href="/logistics"
           aria-current={active === "logistics" ? "page" : undefined}
         >
-          Campaign logistics workspace
+          Acquisition & Activation Logistics
         </a>
         {isTeams && <a href="/logistics">← Back to logistics workspace</a>}
         <aside className="demo-caveat" aria-label="Demonstration caveat">

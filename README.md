@@ -11,7 +11,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 - `/`: Workspace prototypes. Two large links to the planning and campaign logistics workspaces.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
-- `/logistics`: Street & Telephone Campaign Logistics Home.
+- `/logistics`: Acquisition & Activation Logistics Home.
 - `/logistics/operations`, `/logistics/locations`, `/logistics/resources`, `/logistics/training`, `/logistics/records`: operational libraries and the structured Locations & Permits list.
 - `/logistics/rota?type=street` and `/logistics/rota?type=telephone`: weekly operational rotas.
 - `/logistics/calendar`: SharePoint-style monthly list calendar with month navigation, activity/search filters, an optional agenda view and day details linking to the same source records.

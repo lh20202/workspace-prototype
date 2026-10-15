@@ -18,7 +18,7 @@ describe("launcher and service desk routes", () => {
   it("sets distinct product and page titles", () => {
     expect(pageTitle("/")).toBe("Workspace prototypes");
     expect(pageTitle("/logistics/teams")).toBe(
-      "Street & Telephone Campaign Logistics | Teams",
+      "Acquisition & Activation Logistics | Teams",
     );
     expect(pageTitle("/service-desk/access-request")).toBe(
       "Access request | Service Desk",
@@ -61,7 +61,7 @@ describe("operational schedules share source records", () => {
     expect(all.some((e) => e.kind === "Coach coverage")).toBe(true);
     expect(all.some((e) => e.taskId === "task-script")).toBe(true);
     expect(
-      queryCalendar("Next week", "Telephone shift", "welcome").map((e) => e.id),
+      queryCalendar("Next week", "Calling shift", "welcome").map((e) => e.id),
     ).toEqual(["welcome-mon"]);
   });
 });

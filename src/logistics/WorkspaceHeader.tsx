@@ -152,7 +152,7 @@ export default function WorkspaceHeader({
           <button
             onClick={() =>
               onMessage(
-                "42 members coordinate street, travelling and telephone operations.",
+                "42 members coordinate in-person, travelling and calling operations.",
               )
             }
           >

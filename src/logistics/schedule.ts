@@ -16,7 +16,7 @@ export interface Duty {
   start: string;
   finish: string;
   shift: string;
-  kind: "Street deployment" | "Telephone shift" | "Training" | "Coach coverage";
+  kind: "In-person deployment" | "Calling shift" | "Training" | "Coach coverage";
   status?: string;
 }
 // These are shift details attached to existing operational file/permit records, not a second document store.
@@ -25,22 +25,22 @@ export const duties: Duty[] = [
     id: "central-wed",
     date: "2026-10-14",
     fileId: "central-deployment",
-    group: "Street crew A",
+    group: "In-person crew A",
     start: "09:00",
     finish: "17:00",
     shift: "Day",
-    kind: "Street deployment",
+    kind: "In-person deployment",
   },
   {
     id: "north-fri",
     date: "2026-10-16",
     fileId: "north-schedule",
     permitId: "permit-north",
-    group: "Street crew B",
+    group: "In-person crew B",
     start: "09:30",
     finish: "17:00",
     shift: "Day",
-    kind: "Street deployment",
+    kind: "In-person deployment",
   },
   {
     id: "travel-sat",
@@ -51,18 +51,18 @@ export const duties: Duty[] = [
     start: "10:00",
     finish: "16:30",
     shift: "Day",
-    kind: "Street deployment",
+    kind: "In-person deployment",
   },
   {
     id: "central-sun",
     date: "2026-10-18",
     fileId: "central-deployment",
     permitId: "permit-central",
-    group: "Street crew A",
+    group: "In-person crew A",
     start: "10:00",
     finish: "16:00",
     shift: "Day",
-    kind: "Street deployment",
+    kind: "In-person deployment",
   },
   {
     id: "renewal-wed",
@@ -72,7 +72,7 @@ export const duties: Duty[] = [
     start: "09:00",
     finish: "12:30",
     shift: "Morning",
-    kind: "Telephone shift",
+    kind: "Calling shift",
   },
   {
     id: "renewal-thu",
@@ -82,7 +82,7 @@ export const duties: Duty[] = [
     start: "13:00",
     finish: "17:00",
     shift: "Afternoon",
-    kind: "Telephone shift",
+    kind: "Calling shift",
   },
   {
     id: "welcome-mon",
@@ -92,7 +92,7 @@ export const duties: Duty[] = [
     start: "09:00",
     finish: "12:30",
     shift: "Morning",
-    kind: "Telephone shift",
+    kind: "Calling shift",
     status: "Scheduled",
   },
   {
@@ -140,7 +140,7 @@ export function rotaRows(type: RotaType, period = "This week") {
     .filter(
       (d) =>
         d.kind ===
-        (type === "street" ? "Street deployment" : "Telephone shift"),
+        (type === "street" ? "In-person deployment" : "Calling shift"),
     )
     .map(resolveDuty)
     .filter((d) => inPeriod(d.date, period))
@@ -182,7 +182,7 @@ export function calendarEntries(): CalendarEntry[] {
             ? d.group
             : d.kind === "Coach coverage"
               ? "Coach & team lead coverage"
-              : d.kind === "Telephone shift"
+              : d.kind === "Calling shift"
                 ? `${row.campaign} · ${d.shift}`
                 : `${row.campaign} · ${row.location}`,
         kind: d.kind,

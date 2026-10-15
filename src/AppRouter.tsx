@@ -39,8 +39,8 @@ export default function AppRouter() {
                 <PeopleTeam24Regular />
               </span>
               <span>
-                <small>CAMPAIGN OPERATIONS</small>View Street & Telephone
-                Campaign Logistics
+                <small>CAMPAIGN OPERATIONS</small>View Acquisition & Activation
+                Logistics
               </span>
               <ArrowRight24Regular />
             </a>

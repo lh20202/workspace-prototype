@@ -287,13 +287,13 @@ export default function LogisticsApp() {
                         icon={<Calendar24Regular />}
                         onClick={() => navigate("rota", { type: "street" })}
                       >
-                        Street rota
+                        In-person rota
                       </Button>
                       <Button
                         icon={<Call24Regular />}
                         onClick={() => navigate("rota", { type: "telephone" })}
                       >
-                        Telephone rota
+                        Calling rota
                       </Button>
                       <Button
                         icon={<People24Regular />}

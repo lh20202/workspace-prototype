@@ -26,7 +26,7 @@ export default function LocationsList({
         <div>
           <h2>Locations & Permits</h2>
           <p>
-            Shared location confirmations and permit status for upcoming street
+            Shared location confirmations and permit status for upcoming in-person
             operations.
           </p>
         </div>

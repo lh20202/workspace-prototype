@@ -34,9 +34,9 @@ export function RotaView({
     <>
       <div className="library-heading">
         <div>
-          <h2>{type === "street" ? "Street rota" : "Telephone rota"}</h2>
+          <h2>{type === "street" ? "In-person rota" : "Calling rota"}</h2>
           <p>
-            Weekly {type === "street" ? "street deployments" : "calling shifts"}{" "}
+            Weekly {type === "street" ? "in-person deployments" : "calling shifts"}{" "}
             coordinated through Campaign Operations.
           </p>
         </div>
@@ -230,8 +230,8 @@ export function CalendarView({
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
             <option value="">All activities</option>
             {[
-              "Street deployment",
-              "Telephone shift",
+              "In-person deployment",
+              "Calling shift",
               "Training",
               "Coach coverage",
               "Permit",

@@ -60,20 +60,20 @@ describe("one shared document model", () => {
   });
 });
 describe("operational views and lists", () => {
-  it("filters street, telephone and travelling operations", () => {
+  it("filters in-person, calling and travelling operations", () => {
     expect(
-      queryFiles(files, "Telephone Operations", "", emptyFilters).every(
-        (f) => f.operation === "Telephone",
+      queryFiles(files, "Calling Operations", "", emptyFilters).every(
+        (f) => f.operation === "Calling",
       ),
     ).toBe(true);
     expect(
-      queryFiles(files, "Street Operations", "", emptyFilters).every((f) =>
-        f.operation.includes("street"),
+      queryFiles(files, "In-person Operations", "", emptyFilters).every((f) =>
+        f.operation.includes("in-person"),
       ),
     ).toBe(true);
     expect(
       queryFiles(files, "Travel Campaign", "", emptyFilters).every(
-        (f) => f.operation === "Travelling street",
+        (f) => f.operation === "Travelling in-person",
       ),
     ).toBe(true);
   });
