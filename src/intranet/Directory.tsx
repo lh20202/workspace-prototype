@@ -118,7 +118,8 @@ export default function Directory() {
                   </div>
                   <span className="directory-open">
                     <img src="/images/sharepoint-logo.svg" alt="" />
-                    SharePoint <ArrowRight20Regular />
+                    <span className="directory-product-label">SharePoint</span>
+                    <ArrowRight20Regular />
                   </span>
                 </a>
               );
@@ -143,7 +144,9 @@ export default function Directory() {
                     {d.name}
                     <small>
                       <img src="/images/teams-logo.svg" alt="Teams" />
-                      Open in Teams
+                      <span className="department-open-label">
+                        Open in Teams
+                      </span>
                     </small>
                   </span>
                   <ChevronRight16Regular />
