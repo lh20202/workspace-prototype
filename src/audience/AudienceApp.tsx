@@ -315,7 +315,8 @@ export default function AudienceApp() {
                   </td>
                   {experiments ? (
                     <td>
-                      {i.experiment!.decision}
+                      {decisions.find((d) => d.initiativeId === i.id)?.status ??
+                        i.experiment!.decision}
                       <small>
                         <a href={`${base}/decisions?initiative=${i.id}`}>
                           Evidence & decisions
