@@ -487,3 +487,105 @@
 .directory-content .directory-tile small {
   font-size: 8px;
 }
+
+.functional-home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.42fr);
+  gap: 38px;
+  max-width: 1200px;
+}
+.functional-home-layout section {
+  margin: 22px 0 30px;
+}
+.functional-current-work > p,
+.functional-teams-links > p {
+  color: #616161;
+  line-height: 1.5;
+  margin: 8px 0 10px;
+}
+.functional-current-work .functional-work-row {
+  align-items: flex-start;
+}
+.functional-current-work .functional-work-row span {
+  line-height: 1.45;
+}
+.functional-recent-file {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid #ededed;
+  text-decoration: none;
+  color: #242424;
+}
+.functional-recent-file > svg {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 24px;
+}
+.functional-recent-file small {
+  display: block;
+  color: #666;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.functional-recent-file:hover {
+  color: #0067b1;
+  background: #fafafa;
+}
+.functional-home-handoffs {
+  display: grid;
+}
+.functional-home-handoffs a {
+  padding: 10px 0;
+  line-height: 1.45;
+  text-decoration: none;
+  border-bottom: 1px solid #ededed;
+}
+.functional-teams-links h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.functional-teams-links img {
+  width: 20px;
+  height: 20px;
+}
+.functional-teams-links > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  border-bottom: 1px solid #ededed;
+  padding: 11px 0;
+}
+.functional-teams-links > a span {
+  margin-left: auto;
+}
+.functional-app .sp-library-description {
+  max-width: 80ch;
+}
+@media (max-width: 1000px) {
+  .functional-home-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .functional-home-aside {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+@media (max-width: 650px) {
+  .functional-home-aside {
+    display: block;
+  }
+  .functional-current-work .functional-work-row {
+    display: grid;
+    gap: 6px;
+  }
+  .functional-current-work .functional-work-row span {
+    max-width: none;
+  }
+}

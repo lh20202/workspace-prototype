@@ -501,3 +501,23 @@
     animation: none !important;
   }
 }
+
+.sp-library-purpose {
+  margin: 0 0 16px;
+  color: #616161;
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 72ch;
+}
+.sp-library-column-metadata {
+  min-width: 100px;
+  max-width: 200px;
+}
+.sp-library-template-cue {
+  margin: -8px 0 0;
+  padding-left: 10px;
+  border-left: 2px solid #d1d1d1;
+  color: #616161;
+  font-size: 13px;
+  line-height: 20px;
+}

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { functionalConfigs } from "../workspaces/config";
-import { technicalChannels } from "../workspaces/technicalTeams";
+import {
+  functionalLibraries,
+  functionalLibraryDocuments,
+  libraryForFile,
+} from "../workspaces/siteArchitecture";
 import TechnicalConversation from "../workspaces/TechnicalConversation";
 import { workspaces, staff, rememberStaff, selectedStaffId } from "./catalog";
 import {
@@ -9,43 +13,45 @@ import {
 } from "../logistics/data";
 import { documents as serviceFiles } from "../services/data";
 import { files as audienceFiles } from "../audience/data";
+import {
+  documentFor as audienceDocument,
+  libraryFor as audienceLibrary,
+  definitions as audienceDefinitions,
+} from "../audience/libraries";
+import {
+  documentFor as contentDocument,
+  libraryFor as contentLibrary,
+  definitions as contentDefinitions,
+} from "../content/libraries";
+import {
+  financialDocument,
+  libraries as financeLibraries,
+  definitions as financeDefinitions,
+} from "../finance/libraries";
+import { executiveDocument, executiveDefinition } from "../executive/libraries";
 import { files as contentFiles } from "../content/data";
 import { files as financialFiles } from "../finance/data";
 import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
 import DepartmentChannel from "../coordination/DivisionChannel";
-import {
-  departments,
-  departmentHref,
-  resolveDepartment,
-} from "../coordination/data";
+import { resolveDepartment } from "../coordination/data";
 import { currentProjects, projectHref, projectTitle } from "../projects/data";
-import TeamsShell, {
-  TeamsComposer,
-  initials,
-  type TeamsGroup,
-} from "../teams/TeamsShell";
+import TeamsShell, { TeamsComposer, initials } from "../teams/TeamsShell";
 import DocumentLibrary, {
   type LibraryDocument,
 } from "../sharepoint/DocumentLibrary";
 import { planningPath } from "../utils/routes";
 
-// Conversation contexts are chosen deliberately; SharePoint areas are not channels.
-const channelMap: Record<string, string[]> = {
-  projects: ["General"],
-  planning: ["General", "Planning coordination"],
-  logistics: [
-    "General",
-    "In-person Operations",
-    "Calling Campaigns",
-    "Pet photos",
-  ],
-  services: ["General"],
-  audience: ["General", "Research coordination"],
-  content: ["General", "Production coordination"],
-  finance: ["General", "Close coordination"],
-  executive: ["General"],
-};
+import { teamsGroups } from "../teams/navigation";
+import {
+  canSeeDepartment,
+  canSeeProject,
+  canSeeWorkspace,
+  canSeeWorkspaceChannel,
+  workspaceChannels,
+} from "../teams/visibility";
+import TeamsAdministration from "../teams/Administration";
+
 export const sharedFiles: Record<string, OperationalFile[]> = {
   logistics: logisticsFiles,
   services: serviceFiles,
@@ -55,8 +61,6 @@ export const sharedFiles: Record<string, OperationalFile[]> = {
   executive: executiveFiles("base"),
 };
 for (const config of functionalConfigs) {
-  channelMap[config.id] =
-    config.id === "digital" ? technicalChannels : ["General"];
   sharedFiles[config.id] = config.files;
 }
 const logisticsChannel: Record<string, string> = {
@@ -87,9 +91,9 @@ export default function TeamsPreview() {
     workspaces.find((w) => w.id === params.get("workspace")) ||
     workspaces.find((w) => w.id === person.workspace)!;
   const requested = params.get("channel") || "General";
-  const initialChannel = (channelMap[workspace.id] || ["General"]).includes(
-    requested,
-  )
+  const initialChannel = (
+    workspaceChannels[workspace.id] || ["General"]
+  ).includes(requested)
     ? requested
     : "General";
   const [channel, setChannel] = useState(initialChannel);
@@ -99,6 +103,9 @@ export default function TeamsPreview() {
       : "Posts",
   );
   const [search, setSearch] = useState("");
+  const [sharedLibraryId, setSharedLibraryId] = useState(
+    params.get("documentLibrary") || "",
+  );
   useEffect(() => {
     rememberStaff(person.id);
     if (!department && workspace.id === "logistics") {
@@ -135,7 +142,7 @@ export default function TeamsPreview() {
       const query = new URLSearchParams(location.search);
       const name = query.get("channel") || "General";
       setChannel(
-        (channelMap[workspace.id] || ["General"]).includes(name)
+        (workspaceChannels[workspace.id] || ["General"]).includes(name)
           ? name
           : "General",
       );
@@ -149,50 +156,29 @@ export default function TeamsPreview() {
     window.addEventListener("popstate", back);
     return () => window.removeEventListener("popstate", back);
   }, [workspace.id]);
-  const groups: TeamsGroup[] = [
-    ...workspaces
-      .filter((w) => w.id !== "projects")
-      .map((w) => ({
-        id: w.id,
-        label: w.title,
-        channels: (channelMap[w.id] || ["General"]).map((name) => ({
-          id: `${w.id}:${name}`,
-          label: name,
-          unread: w.id === "digital" && name === "AI Lab",
-          private: name === "Security Engineering",
-          onSelect: () => chooseChannel(w.id, name),
-        })),
-      })),
-    ...departments.map((d) => ({
-      id: d.id,
-      label: d.name,
-      channels: [
-        {
-          id: `${d.id}:General`,
-          label: "General",
-          private: d.channelAccess === "Department-only",
-          onSelect: () => location.assign(departmentHref(person.id, d.id)),
-        },
-      ],
+  const groups = teamsGroups(person).map((group) => ({
+    ...group,
+    channels: group.channels.map((item) => ({
+      ...item,
+      onSelect:
+        group.id === workspace.id && !department
+          ? () => chooseChannel(workspace.id, item.label)
+          : item.onSelect,
     })),
-    ...currentProjects.map((p) => ({
-      id: p.code,
-      label: projectTitle(p),
-      channels: [
-        {
-          id: `${p.code}:General`,
-          label: "General",
-          private: p.access === "Restricted",
-          onSelect: () =>
-            location.assign(`${projectHref(p)}/teams?staff=${person.id}`),
-        },
-      ],
-    })),
-  ];
+  }));
+  const workspaceDenied = department
+    ? !canSeeDepartment(person, department.id)
+    : workspace.id === "projects"
+      ? !currentProjects.some((p) => canSeeProject(person, p.code))
+      : !canSeeWorkspace(person, workspace.id);
+  const channelDenied =
+    !department &&
+    workspace.id !== "projects" &&
+    !canSeeWorkspaceChannel(person, workspace.id, channel);
   const securityDenied =
     workspace.id === "digital" && channel === "Security Engineering";
   const files = (sharedFiles[workspace.id] || []).filter((f) => {
-    if (securityDenied) return false;
+    if (securityDenied || workspaceDenied || channelDenied) return false;
     if (workspace.id === "digital" && channel !== "General")
       return (
         (f as OperationalFile & { area: string }).area === digitalArea[channel]
@@ -202,30 +188,134 @@ export default function TeamsPreview() {
     return true;
   });
   const documents: LibraryDocument[] =
-    workspace.id === "planning"
-      ? planningFiles
-          .filter((f) => f.library !== "restricted")
-          .map((f) => ({
-            id: f.id,
-            name: f.name,
-            folder: f.folderPath,
-            modified: f.modified,
-            owner: f.owner,
-            status: f.status,
-          }))
-      : files.map((f) => ({
-          id: f.id,
-          name: f.name,
-          folder: f.folder,
-          modified: f.modified,
-          owner: f.owner,
-          status: f.status,
-        }));
+    workspaceDenied || channelDenied
+      ? []
+      : workspace.id === "planning"
+        ? planningFiles
+            .filter((f) => f.library !== "restricted")
+            .map((f) => ({
+              id: f.id,
+              name: f.name,
+              folder: f.folderPath,
+              modified: f.modified,
+              owner: f.owner,
+              status: f.status,
+            }))
+        : functionalConfigs.some((config) => config.id === workspace.id)
+          ? functionalLibraries[workspace.id]
+              .flatMap((library) =>
+                functionalLibraryDocuments(
+                  functionalConfigs.find(
+                    (config) => config.id === workspace.id,
+                  )!,
+                  library,
+                ),
+              )
+              .filter((document) =>
+                files.some((file) => file.id === document.id),
+              )
+          : files.map((f) =>
+              workspace.id === "audience"
+                ? audienceDocument(
+                    audienceFiles.find((source) => source.id === f.id)!,
+                  )
+                : workspace.id === "content"
+                  ? contentDocument(
+                      contentFiles.find((source) => source.id === f.id)!,
+                    )
+                  : workspace.id === "finance"
+                    ? financialDocument(f)
+                    : workspace.id === "executive"
+                      ? executiveDocument(
+                          executiveFiles("base").find(
+                            (source) => source.id === f.id,
+                          )!,
+                        )
+                      : {
+                          id: f.id,
+                          name: f.name,
+                          folder: f.folder,
+                          modified: f.modified,
+                          owner: f.owner,
+                          status: f.status,
+                        },
+            );
+  const selectedFileId = new URLSearchParams(location.search).get("file");
+  const selectedAudience = audienceFiles.find((f) => f.id === selectedFileId);
+  const selectedContent = contentFiles.find((f) => f.id === selectedFileId);
+  const selectedFinance = financialFiles.find((f) => f.id === selectedFileId);
+  const defaultDefinition =
+    workspace.id === "audience"
+      ? audienceDefinitions[
+          selectedAudience ? audienceLibrary(selectedAudience) : "research"
+        ]
+      : workspace.id === "content"
+        ? contentDefinitions[
+            selectedContent ? contentLibrary(selectedContent) : "production"
+          ]
+        : workspace.id === "finance"
+          ? financeDefinitions[
+              financeLibraries.find((l) =>
+                l.areas.includes(selectedFinance?.folder || "income"),
+              )!.id
+            ]
+          : workspace.id === "executive"
+            ? executiveDefinition("coordination")
+            : functionalConfigs.some((config) => config.id === workspace.id)
+              ? libraryForFile(
+                  functionalConfigs.find(
+                    (config) => config.id === workspace.id,
+                  )!,
+                  selectedFileId || "",
+                ) || functionalLibraries[workspace.id][0]
+              : undefined;
+  const availableLibraries =
+    workspace.id === "audience"
+      ? Object.values(audienceDefinitions)
+      : workspace.id === "content"
+        ? Object.values(contentDefinitions)
+        : workspace.id === "finance"
+          ? Object.values(financeDefinitions)
+          : functionalLibraries[workspace.id] ||
+            (defaultDefinition ? [defaultDefinition] : []);
+  const definition =
+    availableLibraries.find((library) => library.id === sharedLibraryId) ||
+    defaultDefinition;
+  const documentsForLibrary =
+    definition && availableLibraries.length > 1
+      ? documents.filter((document) => {
+          const audience = audienceFiles.find(
+            (file) => file.id === document.id,
+          );
+          const content = contentFiles.find((file) => file.id === document.id);
+          const finance = financialFiles.find(
+            (file) => file.id === document.id,
+          );
+          const functionalConfig = functionalConfigs.find(
+            (config) => config.id === workspace.id,
+          );
+          const libraryId =
+            workspace.id === "audience" && audience
+              ? audienceLibrary(audience)
+              : workspace.id === "content" && content
+                ? contentLibrary(content)
+                : workspace.id === "finance" && finance
+                  ? financeLibraries.find((library) =>
+                      library.areas.includes(finance.folder),
+                    )?.id
+                  : functionalConfig
+                    ? libraryForFile(functionalConfig, document.id)?.id
+                    : undefined;
+          return libraryId === definition.id;
+        })
+      : documents;
   const visibleDocuments = search.trim()
-    ? documents.filter((f) =>
-        `${f.name} ${f.folder}`.toLowerCase().includes(search.toLowerCase()),
+    ? documentsForLibrary.filter((f) =>
+        `${f.name} ${f.folder} ${f.contentType || ""} ${Object.values(f.metadata || {}).join(" ")}`
+          .toLowerCase()
+          .includes(search.toLowerCase()),
       )
-    : documents;
+    : documentsForLibrary;
   function openSharePoint() {
     const id = new URLSearchParams(location.search).get("file");
     const source = files.find((f) => f.id === id) as
@@ -240,21 +330,30 @@ export default function TeamsPreview() {
         );
       return;
     }
-    let suffix = source?.area ? `/${source.area}` : "";
+    let suffix = source?.area
+      ? `/${source.area}`
+      : definition
+        ? `/${definition.id}`
+        : "";
+    const functionalConfig = functionalConfigs.find(
+      (config) => config.id === workspace.id,
+    );
+    if (source && functionalConfig) {
+      const sourceLibrary = libraryForFile(functionalConfig, source.id);
+      if (sourceLibrary) suffix = `/${sourceLibrary.id}`;
+    }
     if (source && workspace.id === "finance") suffix = `/${source.folder}`;
+    if (source && workspace.id === "audience") {
+      const audience = audienceFiles.find((f) => f.id === id);
+      if (audience) suffix = `/${audienceLibrary(audience)}`;
+    }
     if (source && workspace.id === "content") {
       const content = contentFiles.find((f) => f.id === id);
-      suffix =
-        content &&
-        ["PKG-101", "PKG-103", "PKG-104", "PKG-105"].includes(content.packageId)
-          ? "/production"
-          : content?.area === "editorial"
-            ? "/editorial"
-            : "/creative";
+      if (content) suffix = `/${contentLibrary(content)}`;
     }
     if (source && workspace.id === "executive") suffix = "/coordination";
     location.assign(
-      `${workspace.href}${suffix}${id ? `?file=${encodeURIComponent(id)}` : ""}`,
+      `${workspace.href}${suffix}${id ? `?${new URLSearchParams({ file: id, folder: documents.find((f) => f.id === id)?.folder || "" })}` : ""}`,
     );
   }
   if (!department && workspace.id === "logistics")
@@ -273,11 +372,24 @@ export default function TeamsPreview() {
       privateChannel={
         department?.channelAccess === "Department-only" || securityDenied
       }
-      onOpenSharePoint={department ? undefined : openSharePoint}
+      onOpenSharePoint={
+        department || workspaceDenied || channelDenied || securityDenied
+          ? undefined
+          : openSharePoint
+      }
+      navigationFooter={<TeamsAdministration person={person} groups={groups} />}
       searchValue={search}
       onSearchChange={setSearch}
     >
-      {department ? (
+      {workspaceDenied || channelDenied ? (
+        <section className="m365-teams-empty">
+          <h2>Access denied</h2>
+          <p>This team or channel is not included in your membership.</p>
+          <button onClick={() => location.assign(`/teams?staff=${person.id}`)}>
+            Open your Teams view
+          </button>
+        </section>
+      ) : department ? (
         <DepartmentChannel
           key={`${department.id}-${person.id}`}
           department={department}
@@ -294,23 +406,48 @@ export default function TeamsPreview() {
       ) : workspace.id === "projects" ? (
         <div className="m365-teams-files">
           <h2>Project teams</h2>
-          {currentProjects.map((p) => (
-            <button
-              key={p.code}
-              onClick={() =>
-                location.assign(`${projectHref(p)}/teams?staff=${person.id}`)
-              }
-            >
-              {projectTitle(p)}
-            </button>
-          ))}
+          {currentProjects
+            .filter((p) => canSeeProject(person, p.code))
+            .map((p) => (
+              <button
+                key={p.code}
+                onClick={() =>
+                  location.assign(`${projectHref(p)}/teams?staff=${person.id}`)
+                }
+              >
+                {projectTitle(p)}
+              </button>
+            ))}
         </div>
       ) : tab === "Shared" ? (
         <div className="m365-teams-files">
+          {availableLibraries.length > 1 && (
+            <label className="teams-shared-library-picker">
+              Document library
+              <select
+                value={definition?.id || ""}
+                onChange={(event) => {
+                  setSharedLibraryId(event.target.value);
+                  const query = new URLSearchParams(location.search);
+                  query.set("documentLibrary", event.target.value);
+                  for (const field of ["library", "folder", "file", "view"])
+                    query.delete(field);
+                  history.replaceState({}, "", `${location.pathname}?${query}`);
+                }}
+              >
+                {availableLibraries.map((library) => (
+                  <option key={library.id} value={library.id}>
+                    {library.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <DocumentLibrary
-            key={`${workspace.id}:${channel}:${search}`}
-            title="Documents"
+            key={`${workspace.id}:${channel}:${definition?.id}:${search}`}
+            title={definition?.name || "Documents"}
             files={visibleDocuments}
+            definition={definition}
             headingLevel={2}
             readOnly={["planning", "archives", "executive"].includes(
               workspace.id,

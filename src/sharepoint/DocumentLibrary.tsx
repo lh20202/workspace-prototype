@@ -43,18 +43,31 @@ import {
   libraryDate,
   libraryFolders,
   libraryLocation,
-  libraryViews,
+  libraryColumns,
+  libraryFields,
+  libraryValue,
+  libraryViewDefinitions,
+  contentTypeDefaults,
   normaliseFolder,
   queryLibrary,
   type LibraryDocument,
+  type LibraryDefinition,
+  type LibraryColumn,
   type LibrarySort,
   type LibraryView,
 } from "./library";
 import "./styles.css";
 
-export type { LibraryDocument } from "./library";
+export type {
+  LibraryDocument,
+  LibraryDefinition,
+  LibraryColumn,
+  LibraryContentType,
+  LibraryViewDefinition,
+} from "./library";
 export interface DocumentLibraryProps {
   title: string;
+  definition?: LibraryDefinition;
   files: LibraryDocument[];
   folders?: string[];
   readOnly?: boolean;
@@ -70,6 +83,7 @@ type Surface =
 /** A small, working SharePoint-style library. Supplied file IDs remain canonical. */
 export default function DocumentLibrary({
   title,
+  definition,
   files,
   folders = [],
   readOnly = false,
@@ -108,11 +122,20 @@ export default function DocumentLibrary({
       ? "preview"
       : null,
   );
-  const [view, setView] = useState<LibraryView>("All Documents");
+  const views = libraryViewDefinitions(definition);
+  const defaultView = views[0].id;
+  const [view, setView] = useState<LibraryView>(defaultView);
+  const isDefaultView = view === defaultView;
+  const columns = libraryColumns(definition, view);
+  const fields = libraryFields(definition);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
-  const [sort, setSort] = useState<LibrarySort>(embedded ? "modified" : "name");
-  const [descending, setDescending] = useState(embedded);
+  const [sort, setSort] = useState<LibrarySort>(
+    embedded ? "modified" : (views[0].sortBy ?? "name"),
+  );
+  const [descending, setDescending] = useState(
+    embedded || (views[0].descending ?? views[0].sortBy === "modified"),
+  );
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [created, setCreated] = useState<LibraryDocument[]>([]);
   const [createdFolders, setCreatedFolders] = useState<string[]>([]);
@@ -127,13 +150,35 @@ export default function DocumentLibrary({
   const [editStatus, setEditStatus] = useState("");
   const [editOwner, setEditOwner] = useState("");
   const [formError, setFormError] = useState("");
+  const [newMetadata, setNewMetadata] = useState<Record<string, string>>({});
+  const [editMetadata, setEditMetadata] = useState<Record<string, string>>({});
+  const [editContentType, setEditContentType] = useState("Document");
+  const selectedType = definition?.contentTypes?.find(
+    (type) => type.id === newKind || type.name === newKind,
+  );
+  const editingType = definition?.contentTypes?.find(
+    (type) => type.id === editContentType || type.name === editContentType,
+  );
+  const metadataFields = (typeFields?: string[]) =>
+    fields.filter(
+      (field) =>
+        ![
+          "name",
+          "modified",
+          "owner",
+          "status",
+          "contentType",
+          "folder",
+        ].includes(field.key) &&
+        (!typeFields || typeFields.includes(field.key)),
+    );
   const allFiles = [...files, ...created].map((file) =>
     edits[file.id] ? { ...file, ...edits[file.id] } : file,
   );
   const active = allFiles.find((file) => file.id === activeId);
   const paths = libraryFolders(allFiles, [...folders, ...createdFolders]);
   const folderPaths =
-    !embedded && view === "All Documents" && !search && !status
+    !embedded && isDefaultView && !search && !status
       ? childLibraryFolders(paths, folder)
       : [];
   const rows = queryLibrary(allFiles, {
@@ -144,6 +189,7 @@ export default function DocumentLibrary({
     sort,
     descending,
     embedded,
+    definition,
   });
   const visibleRows = embedded ? rows.slice(0, 5) : rows;
   const statuses = [
@@ -193,7 +239,7 @@ export default function DocumentLibrary({
     setSelected(new Set());
     setSearch("");
     setStatus("");
-    setView("All Documents");
+    setView(defaultView);
     setSurface(null);
     setActiveId(null);
     updateUrl(path, undefined, true);
@@ -257,7 +303,7 @@ export default function DocumentLibrary({
       const filename =
         surface === "upload" || /\.[a-z0-9]{1,6}$/i.test(name)
           ? name
-          : `${name}.docx`;
+          : `${name}.${selectedType?.extension?.replace(/^\./, "") ?? "docx"}`;
       if (
         allFiles.some(
           (file) => file.name === filename && file.folder === folder,
@@ -266,6 +312,14 @@ export default function DocumentLibrary({
         setFormError("A file with this name already exists here.");
         return;
       }
+      const required = metadataFields(selectedType?.fields).find(
+        (field) => field.required && !newMetadata[field.key]?.trim(),
+      );
+      if (required) {
+        setFormError(`Enter ${required.label.toLocaleLowerCase()}.`);
+        return;
+      }
+      const defaults = contentTypeDefaults(selectedType);
       setCreated((current) => [
         ...current,
         {
@@ -273,16 +327,18 @@ export default function DocumentLibrary({
           name: filename,
           folder,
           modified: new Date().toISOString().slice(0, 10),
-          owner: "You",
-          status: "Draft",
-          summary: "New working document.",
+          owner: defaults.owner,
+          status: defaults.status,
+          contentType: selectedType?.id ?? "Document",
+          metadata: { ...defaults.metadata, ...newMetadata },
+          summary: selectedType?.template ?? "New working document.",
         },
       ]);
       setNotice(`“${filename}” ${surface === "upload" ? "added" : "created"}.`);
     }
     setSearch("");
     setStatus("");
-    setView("All Documents");
+    setView(defaultView);
     setSurface(null);
     setFormError("");
     setNewName("");
@@ -293,6 +349,8 @@ export default function DocumentLibrary({
     setEditName(file.name);
     setEditOwner(file.owner ?? "");
     setEditStatus(file.status ?? "Draft");
+    setEditMetadata({ ...file.metadata });
+    setEditContentType(file.contentType ?? "Document");
     setSurface("edit");
   }
 
@@ -301,17 +359,72 @@ export default function DocumentLibrary({
       setFormError("Enter a file name and owner.");
       return;
     }
+    const required = metadataFields(editingType?.fields).find(
+      (field) => field.required && !editMetadata[field.key]?.trim(),
+    );
+    if (required) {
+      setFormError(`Enter ${required.label.toLocaleLowerCase()}.`);
+      return;
+    }
     setEdits((current) => ({
       ...current,
       [active.id]: {
         name: editName.trim(),
         owner: editOwner.trim(),
         status: editStatus,
+        contentType: editContentType,
+        metadata: editMetadata,
       },
     }));
     setNotice("Properties updated.");
     setSurface("details");
     setFormError("");
+  }
+
+  function beginNew(kind: string) {
+    const type = definition?.contentTypes?.find((item) => item.id === kind);
+    setNewKind(kind);
+    setNewName("");
+    setNewMetadata(contentTypeDefaults(type).metadata);
+    setFormError("");
+    setSurface("new");
+  }
+
+  function metadataInput(
+    field: LibraryColumn,
+    values: Record<string, string>,
+    onChange: (values: Record<string, string>) => void,
+  ) {
+    const value = values[field.key] ?? "";
+    return (
+      <label key={field.key}>
+        {field.label}
+        {field.required ? " *" : ""}
+        {field.choices?.length ? (
+          <select
+            value={value}
+            onChange={(event) =>
+              onChange({ ...values, [field.key]: event.target.value })
+            }
+          >
+            <option value="">Choose {field.label.toLocaleLowerCase()}</option>
+            {[...new Set([...field.choices, ...(value ? [value] : [])])].map(
+              (choice) => (
+                <option key={choice}>{choice}</option>
+              ),
+            )}
+          </select>
+        ) : (
+          <Input
+            type={field.type === "date" ? "date" : "text"}
+            value={value}
+            onChange={(_, data) =>
+              onChange({ ...values, [field.key]: data.value })
+            }
+          />
+        )}
+      </label>
+    );
   }
 
   function fileActions(file: LibraryDocument) {
@@ -360,6 +473,9 @@ export default function DocumentLibrary({
         <Heading id={headingId}>{title}</Heading>
         {readOnly && <span className="sp-library-readonly">Read only</span>}
       </div>
+      {!embedded && definition?.purpose && (
+        <p className="sp-library-purpose">{definition.purpose}</p>
+      )}
       {!embedded && (
         <>
           {folder && (
@@ -406,23 +522,55 @@ export default function DocumentLibrary({
             <div className="sp-library-commands">
               {!readOnly && (
                 <>
-                  <Button
-                    appearance="primary"
-                    icon={<Add20Regular />}
-                    onClick={() => {
-                      setNewKind("Document");
-                      setNewName("");
-                      setFormError("");
-                      setSurface("new");
-                    }}
-                  >
-                    New
-                  </Button>
+                  <Menu>
+                    <MenuTrigger disableButtonEnhancement>
+                      <Button
+                        appearance="primary"
+                        icon={<Add20Regular />}
+                        iconPosition="before"
+                      >
+                        New <ChevronDown16Regular />
+                      </Button>
+                    </MenuTrigger>
+                    <MenuPopover>
+                      <MenuList>
+                        <MenuItem
+                          icon={<Document20Regular />}
+                          onClick={() => beginNew("Document")}
+                        >
+                          Document
+                        </MenuItem>
+                        {(definition?.contentTypes ?? [])
+                          .filter(
+                            (type) =>
+                              type.id !== "Document" &&
+                              type.name !== "Document",
+                          )
+                          .map((type) => (
+                            <MenuItem
+                              key={type.id}
+                              icon={<Document20Regular />}
+                              onClick={() => beginNew(type.id)}
+                            >
+                              {type.name}
+                            </MenuItem>
+                          ))}
+                        <MenuItem
+                          icon={<Folder24Filled />}
+                          onClick={() => beginNew("Folder")}
+                        >
+                          Folder
+                        </MenuItem>
+                      </MenuList>
+                    </MenuPopover>
+                  </Menu>
                   <Button
                     appearance="subtle"
                     icon={<ArrowUpload20Regular />}
                     onClick={() => {
                       setUploadName("");
+                      setNewKind("Document");
+                      setNewMetadata({});
                       setFormError("");
                       setSurface("upload");
                     }}
@@ -468,14 +616,20 @@ export default function DocumentLibrary({
                   const next = event.target.value as LibraryView;
                   setView(next);
                   setSelected(new Set());
-                  if (next === "Recent documents") {
-                    setSort("modified");
-                    setDescending(true);
-                  }
+                  const nextView = views.find((item) => item.id === next);
+                  const nextSort =
+                    nextView?.sortBy ??
+                    (next === "Recent documents" ? "modified" : "name");
+                  setSort(nextSort);
+                  setDescending(
+                    nextView?.descending ?? nextSort === "modified",
+                  );
                 }}
               >
-                {libraryViews.map((name) => (
-                  <option key={name}>{name}</option>
+                {views.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
                 ))}
               </select>
               <ChevronDown16Regular aria-hidden="true" />
@@ -509,14 +663,14 @@ export default function DocumentLibrary({
               </select>
               <ChevronDown16Regular aria-hidden="true" />
             </label>
-            {(search || status || view !== "All Documents") && (
+            {(search || status || !isDefaultView) && (
               <Button
                 appearance="transparent"
                 size="small"
                 onClick={() => {
                   setSearch("");
                   setStatus("");
-                  setView("All Documents");
+                  setView(defaultView);
                 }}
               >
                 Clear filters
@@ -574,17 +728,10 @@ export default function DocumentLibrary({
                 </th>
               )}
               <th className="sp-library-type" aria-label="File type" />
-              {(
-                [
-                  ["name", "Name"],
-                  ["modified", "Modified"],
-                  ["owner", "Modified by"],
-                  ["status", "Status"],
-                ] as const
-              ).map(([key, label]) => (
+              {columns.map(({ key, label }) => (
                 <th
                   key={key}
-                  className={`sp-library-column-${key}`}
+                  className={`sp-library-column-${["name", "modified", "owner", "status"].includes(key) ? key : "metadata"}`}
                   aria-sort={
                     sort === key
                       ? descending
@@ -627,7 +774,7 @@ export default function DocumentLibrary({
                       {count} document{count === 1 ? "" : "s"}
                     </span>
                   </td>
-                  <td colSpan={3} />
+                  {columns.length > 1 && <td colSpan={columns.length - 1} />}
                   <td />
                 </tr>
               );
@@ -658,29 +805,37 @@ export default function DocumentLibrary({
                 <td className="sp-library-type">
                   <DocumentIcon name={file.name} />
                 </td>
-                <td className="sp-library-column-name">
-                  <button
-                    className="sp-library-name"
-                    onClick={() => openFile(file)}
+                {columns.map((column) => (
+                  <td
+                    key={column.key}
+                    className={`sp-library-column-${["name", "modified", "owner", "status"].includes(column.key) ? column.key : "metadata"}`}
                   >
-                    {file.name}
-                  </button>
-                  {(embedded || search || view !== "All Documents") &&
-                    file.folder && (
-                      <small className="sp-library-file-location">
-                        {file.folder}
-                      </small>
+                    {column.key === "name" ? (
+                      <>
+                        <button
+                          className="sp-library-name"
+                          onClick={() => openFile(file)}
+                        >
+                          {file.name}
+                        </button>
+                        {(embedded || search || !isDefaultView) &&
+                          file.folder && (
+                            <small className="sp-library-file-location">
+                              {file.folder}
+                            </small>
+                          )}
+                      </>
+                    ) : column.key === "status" ? (
+                      <span className="sp-library-status">
+                        {file.status ?? "Draft"}
+                      </span>
+                    ) : column.type === "date" || column.key === "modified" ? (
+                      libraryDate(libraryValue(file, column.key, definition))
+                    ) : (
+                      libraryValue(file, column.key, definition) || "—"
                     )}
-                </td>
-                <td className="sp-library-column-modified">
-                  {libraryDate(file.modified)}
-                </td>
-                <td className="sp-library-column-owner">{file.owner ?? "—"}</td>
-                <td className="sp-library-column-status">
-                  <span className="sp-library-status">
-                    {file.status ?? "Draft"}
-                  </span>
-                </td>
+                  </td>
+                ))}
                 <td className="sp-library-actions">{fileActions(file)}</td>
               </tr>
             ))}
@@ -691,17 +846,17 @@ export default function DocumentLibrary({
         <div className="sp-library-empty">
           <Search20Regular />
           <p>
-            {search || status || view !== "All Documents"
+            {search || status || !isDefaultView
               ? "No documents match this view."
               : "This folder is empty."}
           </p>
-          {(search || status || view !== "All Documents") && (
+          {(search || status || !isDefaultView) && (
             <Button
               appearance="transparent"
               onClick={() => {
                 setSearch("");
                 setStatus("");
-                setView("All Documents");
+                setView(defaultView);
               }}
             >
               Show all documents
@@ -768,7 +923,7 @@ export default function DocumentLibrary({
                 )}
               </div>
               <dl>
-                {documentProperties(active).map(([key, value]) => (
+                {documentProperties(active, definition).map(([key, value]) => (
                   <div key={key}>
                     <dt>{key}</dt>
                     <dd>{value}</dd>
@@ -832,12 +987,14 @@ export default function DocumentLibrary({
                         `Working information for ${active.folder || title}.`}
                     </p>
                     <dl>
-                      {documentProperties(active).map(([key, value]) => (
-                        <div key={key}>
-                          <dt>{key}</dt>
-                          <dd>{value}</dd>
-                        </div>
-                      ))}
+                      {documentProperties(active, definition).map(
+                        ([key, value]) => (
+                          <div key={key}>
+                            <dt>{key}</dt>
+                            <dd>{value}</dd>
+                          </div>
+                        ),
+                      )}
                     </dl>
                   </article>
                 </div>
@@ -875,12 +1032,35 @@ export default function DocumentLibrary({
                         Item type
                         <select
                           value={newKind}
-                          onChange={(event) => setNewKind(event.target.value)}
+                          onChange={(event) => {
+                            const kind = event.target.value;
+                            const type = definition?.contentTypes?.find(
+                              (item) => item.id === kind,
+                            );
+                            setNewKind(kind);
+                            setNewMetadata(contentTypeDefaults(type).metadata);
+                          }}
                         >
                           <option>Document</option>
+                          {(definition?.contentTypes ?? [])
+                            .filter(
+                              (type) =>
+                                type.id !== "Document" &&
+                                type.name !== "Document",
+                            )
+                            .map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
                           <option>Folder</option>
                         </select>
                       </label>
+                      {selectedType?.template && (
+                        <p className="sp-library-template-cue">
+                          {selectedType.template}
+                        </p>
+                      )}
                       <label>
                         {newKind === "Folder" ? "Folder name" : "Document name"}
                         <Input
@@ -893,6 +1073,10 @@ export default function DocumentLibrary({
                           }
                         />
                       </label>
+                      {newKind !== "Folder" &&
+                        metadataFields(selectedType?.fields).map((field) =>
+                          metadataInput(field, newMetadata, setNewMetadata),
+                        )}
                     </>
                   ) : (
                     <label>
@@ -906,6 +1090,10 @@ export default function DocumentLibrary({
                       />
                     </label>
                   )}
+                  {surface === "upload" &&
+                    metadataFields().map((field) =>
+                      metadataInput(field, newMetadata, setNewMetadata),
+                    )}
                   {formError && (
                     <p className="sp-library-form-error" role="alert">
                       {formError}
@@ -922,8 +1110,32 @@ export default function DocumentLibrary({
                       onChange={(_, data) => setEditName(data.value)}
                     />
                   </label>
+                  {!!definition?.contentTypes?.length && (
+                    <label>
+                      Content type
+                      <select
+                        value={editContentType}
+                        onChange={(event) =>
+                          setEditContentType(event.target.value)
+                        }
+                      >
+                        <option>Document</option>
+                        {definition.contentTypes
+                          .filter(
+                            (type) =>
+                              type.id !== "Document" &&
+                              type.name !== "Document",
+                          )
+                          .map((type) => (
+                            <option key={type.id} value={type.id}>
+                              {type.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                  )}
                   <label>
-                    Owner
+                    Modified by
                     <Input
                       value={editOwner}
                       onChange={(_, data) => setEditOwner(data.value)}
@@ -940,6 +1152,9 @@ export default function DocumentLibrary({
                       ))}
                     </select>
                   </label>
+                  {metadataFields(editingType?.fields).map((field) =>
+                    metadataInput(field, editMetadata, setEditMetadata),
+                  )}
                   {formError && (
                     <p className="sp-library-form-error" role="alert">
                       {formError}

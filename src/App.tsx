@@ -1,3 +1,4 @@
+import { documentVersions } from "./sharepoint/library";
 import FileIcon from "./components/DocumentIcon";
 import { planningPath, planningPage, accessRequestHref } from "./utils/routes";
 import { useEffect, useState } from "react";
@@ -374,7 +375,16 @@ export default function App() {
                 .filter(
                   (d) =>
                     d.library !== "restricted" &&
-                    d.name
+                    [
+                      d.name,
+                      d.folderPath,
+                      d.type,
+                      d.cycle,
+                      d.area,
+                      d.owner,
+                      d.status,
+                    ]
+                      .join(" ")
                       .toLowerCase()
                       .includes(workspaceSearch.trim().toLowerCase()),
                 )
@@ -1023,7 +1033,9 @@ export default function App() {
                   ["Department / scope", selected.area],
                   ["Document type", selected.type],
                   ["Status", selected.status],
-                  ["Sensitivity", selected.sensitivity],
+                  ...(selected.sensitivity === "Restricted"
+                    ? [["Sensitivity", selected.sensitivity]]
+                    : []),
                   ["Record state", selected.recordState],
                   ...(selected.approvedDate
                     ? [
@@ -1092,27 +1104,26 @@ export default function App() {
                     Illustrative history · no actual stored versions
                   </p>
                   <div className="version-list">
-                    {(selected?.status === "Approved"
-                      ? [
-                          ["1.0", "Approved baseline"],
-                          ["0.3", "Review comments incorporated"],
-                          ["0.2", "Area input incorporated"],
-                          ["0.1", "Initial draft"],
-                        ]
-                      : [
-                          ["0.3", "Review comments incorporated"],
-                          ["0.2", "Area input incorporated"],
-                          ["0.1", "Initial draft"],
-                        ]
-                    ).map(([v, n]) => (
-                      <div key={v}>
-                        <strong>v{v}</strong>
-                        <span>
-                          {n}
-                          <small>{selected?.modifiedBy}</small>
-                        </span>
-                      </div>
-                    ))}
+                    {selected &&
+                      documentVersions({
+                        id: selected.id,
+                        name: selected.name,
+                        folder: selected.folderPath,
+                        owner: selected.modifiedBy,
+                        modified: selected.modified,
+                        status: selected.status,
+                        versions: selected.versions,
+                      }).map((version) => (
+                        <div key={version.version}>
+                          <strong>{version.version}</strong>
+                          <span>
+                            {version.note}
+                            <small>
+                              {version.date} · {version.author}
+                            </small>
+                          </span>
+                        </div>
+                      ))}
                   </div>
                 </>
               )}

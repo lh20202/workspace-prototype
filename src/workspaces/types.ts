@@ -1,4 +1,5 @@
 import type { OperationalFile } from "../logistics/data";
+import type { LibraryDocument } from "../sharepoint/library";
 export interface FunctionalArea {
   id: string;
   name: string;
@@ -20,6 +21,11 @@ export interface WorkingFile extends OperationalFile {
   area: string;
   workType: string;
   reference: string;
+  documentLibrary?: string;
+  folderPath?: string;
+  contentType?: string;
+  metadata?: Record<string, string>;
+  versions?: LibraryDocument["versions"];
 }
 export interface ProtectedSubject {
   id: string;

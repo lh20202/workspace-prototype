@@ -1,3 +1,4 @@
+import type { LibraryDefinition } from "../sharepoint/library";
 import { staff, selectedStaffId } from "../intranet/catalog";
 export type Project = {
   code: string;
@@ -116,22 +117,28 @@ export const currentProjects: Project[] = seeds.map((s, i) => ({
   end: s[7],
   access: s[8] as Project["access"],
   members:
-    i === 2
-      ? ["robin"]
-      : i === 5
-        ? ["sam", "robin"]
-        : i === 7
-          ? ["jordan", "robin"]
-          : [],
+    i === 0
+      ? ["devon"]
+      : i === 1
+        ? ["jordan"]
+        : i === 2
+          ? ["robin"]
+          : i === 5
+            ? ["sam", "robin"]
+            : i === 7
+              ? ["jordan", "robin"]
+              : [],
   sponsor: "Robin Avery",
   lead:
-    i === 5
-      ? "Sam Patel"
-      : i === 4
-        ? "Elena Rossi"
-        : i === 1
-          ? "Jordan Lee"
-          : "Casey Blake",
+    i === 0
+      ? "Devon Park"
+      : i === 5
+        ? "Sam Patel"
+        : i === 4
+          ? "Elena Rossi"
+          : i === 1
+            ? "Jordan Lee"
+            : "Casey Blake",
 }));
 export const archivePeriods = [
   "2024–2026 Projects",
@@ -194,6 +201,18 @@ export const projectFiles = (p: Project) =>
     id: `${p.code}-F${i}`,
     name,
     projectCode: p.code,
+    folder:
+      i === 2
+        ? "Delivery/Review"
+        : i >= 4
+          ? "Closure/Handover"
+          : "Planning/Delivery",
+    owner: p.lead,
+    status: p.archived ? "Closed" : i === 2 ? "In review" : "In progress",
+    modified: p.archived ? p.end : `2026-10-${String(8 + i).padStart(2, "0")}`,
+    contentType:
+      i === 0 ? "project-brief" : i === 2 ? "stage-review" : undefined,
+    metadata: { Project: p.code, Stage: p.stage, "Review date": p.end },
     summary: [
       p.purpose,
       "Coordination milestones and dependencies. Detailed engineering remains in the delivery workspace.",
@@ -218,3 +237,45 @@ export const reviewRows = currentProjects.map((p, i) => ({
   reviewer: "Robin Avery",
   status: "Scheduled",
 }));
+
+export const projectLibraryDefinition: LibraryDefinition = {
+  id: "project-documents",
+  name: "Project Documents",
+  columns: [
+    { key: "name", label: "Name" },
+    { key: "contentType", label: "Document type" },
+    { key: "status", label: "Status" },
+    { key: "owner", label: "Owner" },
+    { key: "modified", label: "Modified", type: "date" },
+  ],
+  fields: [
+    { key: "Project", label: "Project" },
+    { key: "Stage", label: "Stage" },
+    { key: "Review date", label: "Review date", type: "date" },
+  ],
+  contentTypes: [
+    {
+      id: "project-brief",
+      name: "Project Brief",
+      template: "Purpose, scope, sponsor, outcomes and delivery approach.",
+      fields: ["Project", "Stage", "Review date"],
+    },
+    {
+      id: "stage-review",
+      name: "Stage Review",
+      template: "Progress, options, risks and decision requested.",
+      extension: "pptx",
+      fields: ["Project", "Stage"],
+    },
+  ],
+  views: [
+    { id: "all", name: "All Documents" },
+    {
+      id: "review",
+      name: "Needs Review",
+      filters: [{ field: "status", value: "In review" }],
+      recursive: true,
+    },
+    { id: "stage", name: "By Stage", sortBy: "Stage", recursive: true },
+  ],
+};

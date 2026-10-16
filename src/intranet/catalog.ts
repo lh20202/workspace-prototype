@@ -67,6 +67,8 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   robin: { departmentId: "executive-office", unitId: "ceo-office" },
   devon: { departmentId: "strategy-technology", unitId: "it-services" },
   elena: { departmentId: "people-culture", unitId: "learning-and-capability" },
+  harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
+  morgan: { departmentId: "strategy-technology", unitId: "it-services" },
 };
 export const staff = [
   ...baseStaff,
@@ -82,7 +84,20 @@ export const staff = [
     role: "Learning Partner",
     workspace: "people",
   },
+  {
+    id: "harper",
+    name: "Harper Cole",
+    role: "Legal Adviser",
+    workspace: "legal",
+  },
+  {
+    id: "morgan",
+    name: "Morgan Reed",
+    role: "Information Management Specialist",
+    workspace: "archives",
+  },
 ].map((s) => ({ ...s, ...memberships[s.id] }));
+export type StaffPerson = (typeof staff)[number];
 export function selectedStaffId() {
   const id = sessionStorage.getItem("workspace-preview-staff");
   return staff.some((s) => s.id === id) ? id! : "maya";

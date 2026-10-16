@@ -1,3 +1,4 @@
+import type { LibraryVersion } from "../sharepoint/library";
 import { departments as organisationDepartments } from "../coordination/data";
 export type Role =
   "Workspace Member" | "Planning Coordinator" | "Executive Reviewer";
@@ -25,6 +26,7 @@ export interface Document {
   modifiedBy: string;
   approvedDate?: string;
   recordCategory?: string;
+  versions?: LibraryVersion[];
 }
 export const roles: Role[] = [
   "Workspace Member",
@@ -108,7 +110,7 @@ const seeds: Record<LibraryId, Seed[]> = {
       "In review",
     ],
     [
-      "Consolidated organisational plan draft v3.docx",
+      "Consolidated organisational plan draft.docx",
       "Working draft",
       "Organisation-wide",
       "In review",
@@ -432,6 +434,14 @@ export const documents: Document[] = allDocuments
     return {
       ...d,
       folderPath,
+      modified:
+        d.library === "approved"
+          ? d.approvedDate || "2026-07-30"
+          : d.status === "Superseded"
+            ? d.name.includes("2020")
+              ? "2024-12-18"
+              : "2019-12-16"
+            : d.modified,
       recordState:
         d.library === "strategy" && d.status === "Superseded"
           ? "Working reference"
@@ -439,3 +449,142 @@ export const documents: Document[] = allDocuments
     };
   });
 export const accessContact = "Jordan Ellis";
+
+// Related working sets complement the deliberately small reference/archive folders.
+const additionalPlanningFiles: [string, string, string, string, string][] = [
+  [
+    "planning-0",
+    "planning-contribution-checklist",
+    "Contribution review checklist.docx",
+    "Guidance",
+    "Approved",
+  ],
+  [
+    "planning-0",
+    "planning-dependency-guide",
+    "Cross-department dependency guidance.docx",
+    "Guidance",
+    "Approved",
+  ],
+  [
+    "planning-10",
+    "planning-assumption-register",
+    "Planning assumptions register.xlsx",
+    "Supporting data",
+    "In progress",
+  ],
+  [
+    "planning-10",
+    "planning-outcome-map",
+    "Organisational outcomes map.pptx",
+    "Presentation",
+    "In review",
+  ],
+  [
+    "strategy-0",
+    "strategy-evidence",
+    "Strategic context and evidence.docx",
+    "Analysis",
+    "In progress",
+  ],
+  [
+    "strategy-0",
+    "strategy-options",
+    "Strategic options assessment.xlsx",
+    "Analysis",
+    "In review",
+  ],
+  [
+    "strategy-1",
+    "strategy-annual-measures",
+    "Annual priority measures 2027.xlsx",
+    "Supporting data",
+    "Draft",
+  ],
+  [
+    "strategy-1",
+    "strategy-annual-dependencies",
+    "Annual delivery dependencies.docx",
+    "Review",
+    "In progress",
+  ],
+  [
+    "strategy-2",
+    "strategy-milestones",
+    "Multi-year milestones and dependencies.xlsx",
+    "Supporting data",
+    "In review",
+  ],
+  [
+    "strategy-3",
+    "strategy-roadmap-assumptions",
+    "Department roadmap assumptions.docx",
+    "Supporting data",
+    "Draft",
+  ],
+  [
+    "reporting-5",
+    "reporting-evidence",
+    "Progress evidence summary.xlsx",
+    "Analysis",
+    "In review",
+  ],
+  [
+    "reporting-5",
+    "reporting-commentary",
+    "Performance commentary review.docx",
+    "Review",
+    "Ready for review",
+  ],
+  [
+    "reporting-8",
+    "reporting-measure-guide",
+    "Outcome measurement guidance.docx",
+    "Guidance",
+    "Approved",
+  ],
+];
+for (const [source, id, name, type, status] of additionalPlanningFiles) {
+  const original = documents.find((document) => document.id === source);
+  if (!original) throw new Error(`Missing Planning context ${source}`);
+  documents.push({
+    ...original,
+    id,
+    name,
+    type,
+    status,
+    modified: `2026-10-${String(4 + (documents.length % 12)).padStart(2, "0")}`,
+    recordState:
+      type === "Guidance" ? "Working reference" : "Working information",
+  });
+}
+
+const guidance = documents.find((document) => document.id === "planning-0");
+if (guidance)
+  guidance.versions = [
+    {
+      version: "2.0",
+      date: guidance.modified,
+      author: guidance.modifiedBy,
+      note: "2027 contribution guidance issued",
+      current: true,
+    },
+    {
+      version: "1.2",
+      date: "2026-10-08",
+      author: "Casey Blake",
+      note: "Clarified dependency and review steps",
+    },
+    {
+      version: "1.1",
+      date: "2026-10-02",
+      author: "Jordan Ellis",
+      note: "Updated department submission requirements",
+    },
+    {
+      version: "1.0",
+      date: "2026-09-24",
+      author: "Casey Blake",
+      note: "Initial planning guidance",
+    },
+  ];

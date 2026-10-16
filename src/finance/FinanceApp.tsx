@@ -1,3 +1,4 @@
+import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useState } from "react";
 import {
   Button,
@@ -8,9 +9,7 @@ import {
 } from "@fluentui/react-components";
 import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentLibrary, {
-  type LibraryDocument,
-} from "../sharepoint/DocumentLibrary";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   title,
   description,
@@ -18,7 +17,6 @@ import {
   systems,
   items,
   files,
-  fileContext,
   protectedSubjects,
   checklist,
   variance,
@@ -28,52 +26,7 @@ import {
 import "../services/styles.css";
 import "./styles.css";
 const base = "/financial-operations";
-const libraries = [
-  {
-    id: "income-documents",
-    name: "Income & Reconciliation",
-    areas: ["income", "reconciliation"],
-  },
-  { id: "payment-documents", name: "Payments & Close", areas: ["payments"] },
-  {
-    id: "planning-documents",
-    name: "Planning & Analysis",
-    areas: ["planning"],
-  },
-  {
-    id: "accounting-documents",
-    name: "Accounting & Reporting",
-    areas: ["accounting"],
-  },
-  { id: "treasury-documents", name: "Treasury & Banking", areas: ["treasury"] },
-];
-const folderNames: Record<string, string> = {
-  income: "Income guidance",
-  reconciliation: "Reconciliation",
-  payments: "Supplier payments",
-  planning: "Budgets & forecasts",
-  accounting: "Financial reporting",
-  treasury: "Cash forecasts",
-};
-function folderFor(id: string, area: string) {
-  return `${folderNames[area]}/${id === "FIN-05" ? "2027 budget" : id === "FIN-02" ? "Q4 2026" : "October 2026"}`;
-}
-function libraryFiles(l: (typeof libraries)[number]): LibraryDocument[] {
-  return files
-    .filter((f) => l.areas.includes(f.folder))
-    .map((f) => ({
-      id: f.id,
-      name: f.name,
-      folder: folderFor(f.id, f.folder),
-      owner: f.owner,
-      modified: f.modified,
-      status: f.status,
-      summary: fileContext[f.id],
-      metadata: {
-        Period: f.id === "FIN-05" ? "2027" : "2026",
-      },
-    }));
-}
+import { libraries, libraryFiles, definitions, folderNames } from "./libraries";
 export default function FinanceApp() {
   const parts = location.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home",
@@ -228,7 +181,11 @@ export default function FinanceApp() {
           if (l)
             location.assign(`${base}/${l.id}?file=${encodeURIComponent(f.id)}`);
         }}
-        onTeams={() => location.assign("/teams?staff=sam")}
+        onTeams={() =>
+          location.assign(
+            `/teams?staff=${teamsStaffForWorkspace("finance")}&workspace=finance`,
+          )
+        }
         onMessage={setNotice}
         helpText="Financial working documents, close coordination and planning contributions."
       />
@@ -304,11 +261,16 @@ export default function FinanceApp() {
             <>
               <h1>{title}</h1>
               <p className="finance-intro">{description}</p>
-              <DocumentLibrary
-                title="Income & Reconciliation"
-                files={libraryFiles(libraries[0])}
-                embedded
-              />
+              <section>
+                <h2>October close preparation</h2>
+                <p>
+                  Resolve reconciliation questions and confirm contribution
+                  owners ahead of the 30 October close.
+                </p>
+                <a href={`${base}/close-checklist`}>
+                  Continue the close checklist →
+                </a>
+              </section>
               <section>
                 <h2>Upcoming deadlines</h2>
                 {calendar.slice(0, 3).map((e) => (
@@ -319,15 +281,22 @@ export default function FinanceApp() {
                 <a href={`${base}/calendar`}>Financial calendar →</a>
               </section>
               <section>
-                <h2>Quick links</h2>
+                <h2>Current contributions</h2>
                 <div className="functional-context-links">
                   <a href={`${base}/close-checklist`}>Close Checklist</a>
                   <a href={`${base}/reconciliation-issues`}>
                     Reconciliation Issues
                   </a>
-                  <a href={`${base}/planning`}>Forecast contributions</a>
+                  <a href={`${base}/planning-documents?file=FIN-05`}>
+                    2027 budget commentary
+                  </a>
                 </div>
               </section>
+              <DocumentLibrary
+                title="Recently updated guidance"
+                files={libraries.flatMap(libraryFiles)}
+                embedded
+              />
             </>
           ) : page === "close-checklist" ? (
             closeChecklist()
@@ -397,6 +366,7 @@ export default function FinanceApp() {
               <DocumentLibrary
                 key={`${library.id}-${page}`}
                 title={library.name}
+                definition={definitions[library.id]}
                 files={libraryFiles(library)}
                 initialFolder={area ? folderNames[area.id] : undefined}
               />

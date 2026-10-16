@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Menu,
   MenuTrigger,
@@ -23,9 +23,12 @@ import {
   type TaskState,
 } from "./data";
 import { fileHref, filesForChannel } from "./query";
-import { staff, selectedStaffId } from "../intranet/catalog";
+import { staff, selectedStaffId, rememberStaff } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
+import { teamsGroups } from "../teams/navigation";
+import { canSeeLogisticsChannel } from "../teams/visibility";
+import TeamsAdministration from "../teams/Administration";
 import "../teams/integrations.css";
 import DocumentIcon from "../components/DocumentIcon";
 export default function TeamsView({
@@ -50,6 +53,7 @@ export default function TeamsView({
         (new URLSearchParams(location.search).get("staff") ||
           selectedStaffId()),
     ) || staff[1];
+  useEffect(() => rememberStaff(person.id), [person.id]);
   const channel = channels.find((c) => c.id === channelId) ?? channels[2];
   const tab =
     channel.team === "company"
@@ -70,14 +74,21 @@ export default function TeamsView({
   );
   const [liked, setLiked] = useState<string[]>([]);
   const [saved, setSaved] = useState<string[]>([]);
-  const visiblePosts = posts.filter((p) => p.channel === channel.id);
-  const channelFiles = filesForChannel(channel);
-  const searchChannels = channels.filter((c) =>
+  const allowed = canSeeLogisticsChannel(person, channel);
+  const permittedChannels = channels.filter((c) =>
+    canSeeLogisticsChannel(person, c),
+  );
+  const permittedFileIds = new Set(permittedChannels.flatMap((c) => c.fileIds));
+  const visiblePosts = allowed
+    ? posts.filter((p) => p.channel === channel.id)
+    : [];
+  const channelFiles = allowed ? filesForChannel(channel) : [];
+  const searchChannels = permittedChannels.filter((c) =>
     c.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
-  const searchFiles = files.filter((f) =>
-    f.name.toLowerCase().includes(search.trim().toLowerCase()),
-  );
+  const searchFiles = files
+    .filter((f) => permittedFileIds.has(f.id))
+    .filter((f) => f.name.toLowerCase().includes(search.trim().toLowerCase()));
   function selectChannel(id: string) {
     onNavigate(id, "Posts");
     setSearch("");
@@ -92,35 +103,19 @@ export default function TeamsView({
         channel.team === "logistics" ? workspaceTitle : "Company Updates"
       }
       channelName={channel.name}
-      groups={[
-        {
-          id: "company",
-          label: "Company Updates",
-          initials: "CU",
-          channels: channels
-            .filter((c) => c.team === "company")
-            .map((c) => ({
-              id: c.id,
-              label: c.name,
-              unread: ["important", "pets"].includes(c.id),
-              onSelect: () => selectChannel(c.id),
-            })),
-        },
-        {
-          id: "logistics",
-          label: workspaceTitle,
-          initials: "AA",
-          channels: channels
-            .filter((c) => c.team === "logistics")
-            .map((c) => ({
-              id: c.id,
-              label: c.name,
-              unread: ["central-city", "telephone"].includes(c.id),
-              onSelect: () => selectChannel(c.id),
-            })),
-        },
-      ]}
-      selectedChannelId={channel.id}
+      groups={teamsGroups(person).map((group) => ({
+        ...group,
+        channels: group.channels.map((item) => ({
+          ...item,
+          onSelect: ["company", "logistics"].includes(group.id)
+            ? () => selectChannel(item.id.split(":")[1])
+            : item.onSelect,
+        })),
+      }))}
+      navigationFooter={
+        <TeamsAdministration person={person} groups={teamsGroups(person)} />
+      }
+      selectedChannelId={`${channel.team}:${channel.id}`}
       activeTab={tab}
       tabs={
         channel.team === "logistics"
@@ -129,7 +124,7 @@ export default function TeamsView({
       }
       onTabChange={(next) => onNavigate(channel.id, next)}
       onOpenSharePoint={
-        channel.team === "logistics"
+        channel.team === "logistics" && allowed
           ? () => {
               const params = new URLSearchParams(location.search);
               const selectedFile = channelFiles.find(
@@ -194,7 +189,15 @@ export default function TeamsView({
       <div
         className={`teams-logistics-content ${tab === "Posts" ? "teams-conversation" : ""} ${channel.id === "pets" && tab === "Posts" ? "pets-canvas" : ""}`}
       >
-        {tab === "Posts" ? (
+        {!allowed ? (
+          <section className="m365-teams-empty">
+            <h2>Access denied</h2>
+            <p>This operational channel is limited to its team members.</p>
+            <button onClick={() => selectChannel("important")}>
+              Open company updates
+            </button>
+          </section>
+        ) : tab === "Posts" ? (
           <>
             {visiblePosts.map((p) => (
               <article

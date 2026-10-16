@@ -1,5 +1,13 @@
+import { resolveDepartment } from "../coordination/data";
 import { Warning16Regular } from "@fluentui/react-icons";
 import { staff, selectedStaffId, rememberStaff } from "../intranet/catalog";
+import { channels } from "../logistics/data";
+import {
+  canSeeDepartment,
+  canSeeLogisticsChannel,
+  canSeeProject,
+  canSeeWorkspaceChannel,
+} from "../teams/visibility";
 export default function PrototypeNavigator() {
   const teams =
     location.pathname === "/teams" || location.pathname.includes("/teams");
@@ -30,8 +38,46 @@ export default function PrototypeNavigator() {
               onChange={(e) => {
                 rememberStaff(e.target.value);
                 const params = new URLSearchParams(location.search);
-                params.set("staff", e.target.value);
-                location.assign(`${location.pathname}?${params}`);
+                const nextPerson = staff.find(
+                  (member) => member.id === e.target.value,
+                )!;
+                params.set("staff", nextPerson.id);
+                let keepContext = true;
+                if (location.pathname === "/teams") {
+                  const departmentId =
+                    params.get("department") || params.get("division");
+                  keepContext = departmentId
+                    ? canSeeDepartment(
+                        nextPerson,
+                        resolveDepartment(departmentId)?.id || departmentId,
+                      )
+                    : canSeeWorkspaceChannel(
+                        nextPerson,
+                        params.get("workspace") || person.workspace,
+                        params.get("channel") || "General",
+                      );
+                } else if (location.pathname === "/logistics/teams") {
+                  const channel = channels.find(
+                    (item) => item.id === params.get("channel"),
+                  );
+                  if (channel && !canSeeLogisticsChannel(nextPerson, channel)) {
+                    params.set("channel", "important");
+                    params.set("tab", "Posts");
+                  }
+                } else if (location.pathname.startsWith("/projects/")) {
+                  keepContext = canSeeProject(
+                    nextPerson,
+                    location.pathname
+                      .split("/")
+                      .find((part) => part.startsWith("PRJ-")) || "",
+                  );
+                } else if (location.pathname.startsWith("/emergency-response"))
+                  keepContext = false;
+                location.assign(
+                  keepContext
+                    ? `${location.pathname}?${params}`
+                    : `/teams?staff=${nextPerson.id}`,
+                );
               }}
             >
               {staff.map((s) => (

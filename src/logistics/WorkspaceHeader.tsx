@@ -31,14 +31,29 @@ export default function WorkspaceHeader({
   title?: string;
   userName?: string;
   userRole?: string;
-  searchFiles?: OperationalFile[];
+  searchFiles?: (OperationalFile & {
+    metadata?: Record<string, string>;
+    contentType?: string;
+    folderPath?: string;
+  })[];
   memberCount?: number;
   helpText?: string;
 }) {
   const [query, setQuery] = useState("");
   const [favorite, setFavorite] = useState(true);
   const results = searchFiles.filter((f) =>
-    f.name.toLowerCase().includes(query.trim().toLowerCase()),
+    [
+      f.name,
+      f.folderPath || f.folder,
+      f.campaign,
+      f.owner,
+      f.status,
+      f.contentType,
+      ...Object.values(f.metadata || {}),
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(query.trim().toLowerCase()),
   );
   return (
     <>

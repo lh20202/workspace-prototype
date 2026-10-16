@@ -38,7 +38,10 @@ export function queryDocuments(
         (view !== "In Review" ||
           ["In review", "Ready for review"].includes(d.status)) &&
         (view !== "Approved" || d.status === "Approved") &&
-        d.name.toLowerCase().includes(search.trim().toLowerCase()) &&
+        [d.name, d.folderPath, d.type, d.cycle, d.area, d.owner, d.status]
+          .join(" ")
+          .toLowerCase()
+          .includes(search.trim().toLowerCase()) &&
         Object.entries(filters).every(
           ([key, value]) => !value || d[key as keyof Filters] === value,
         ),

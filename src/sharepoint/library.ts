@@ -8,17 +8,148 @@ export interface LibraryDocument {
   status?: string;
   summary?: string;
   metadata?: Record<string, string>;
+  contentType?: string;
+  versions?: LibraryVersion[];
 }
 
-export type LibraryView =
-  "All Documents" | "Recent documents" | "In review" | "Approved";
-export type LibrarySort = "name" | "modified" | "owner" | "status";
+/** A library only declares properties that help its ordinary work. */
+export interface LibraryColumn {
+  key: string;
+  label: string;
+  type?: "text" | "date" | "choice";
+  choices?: string[];
+  required?: boolean;
+}
+export interface LibraryContentType {
+  id: string;
+  name: string;
+  template?: string;
+  extension?: string;
+  fields?: string[];
+  defaults?: Record<string, string>;
+}
+export interface LibraryFilter {
+  field: string;
+  value: string | string[];
+  operator?: "equals" | "contains" | "not-equals" | "before" | "after";
+}
+export interface LibraryViewDefinition {
+  id: string;
+  name: string;
+  filters?: LibraryFilter[];
+  sortBy?: string;
+  descending?: boolean;
+  columns?: string[];
+  recursive?: boolean;
+}
+export interface LibraryDefinition {
+  id: string;
+  name: string;
+  purpose?: string;
+  columns: LibraryColumn[];
+  fields?: LibraryColumn[];
+  contentTypes?: LibraryContentType[];
+  views?: LibraryViewDefinition[];
+}
+export interface LibraryVersion {
+  version: string;
+  date: string;
+  author: string;
+  note: string;
+  current?: boolean;
+}
+export type LibraryView = string;
+export type LibrarySort = string;
+export const defaultLibraryColumns: LibraryColumn[] = [
+  { key: "name", label: "Name" },
+  { key: "modified", label: "Modified", type: "date" },
+  { key: "owner", label: "Modified by" },
+  { key: "status", label: "Status" },
+];
 export const libraryViews: LibraryView[] = [
   "All Documents",
   "Recent documents",
   "In review",
   "Approved",
 ];
+
+export function libraryFields(definition?: LibraryDefinition) {
+  const fields = [
+    ...(definition?.columns ?? defaultLibraryColumns),
+    ...(definition?.fields ?? []),
+  ];
+  return fields.filter(
+    (field, i) => fields.findIndex((other) => other.key === field.key) === i,
+  );
+}
+
+export function libraryContentType(
+  file: Pick<LibraryDocument, "contentType">,
+  definition?: LibraryDefinition,
+) {
+  return definition?.contentTypes?.find(
+    (type) => type.id === file.contentType || type.name === file.contentType,
+  );
+}
+
+export function libraryValue(
+  file: LibraryDocument,
+  key: string,
+  definition?: LibraryDefinition,
+): string {
+  switch (key) {
+    case "name":
+      return file.name;
+    case "modified":
+      return file.modified ?? "";
+    case "owner":
+      return file.owner ?? "";
+    case "status":
+      return file.status ?? "Draft";
+    case "contentType":
+      return (
+        libraryContentType(file, definition)?.name ??
+        file.contentType ??
+        "Document"
+      );
+    case "folder":
+      return file.folder;
+    default:
+      return file.metadata?.[key] ?? "";
+  }
+}
+
+export function libraryViewDefinitions(
+  definition?: LibraryDefinition,
+): LibraryViewDefinition[] {
+  return definition?.views?.length
+    ? definition.views
+    : libraryViews.map((name) => ({ id: name, name }));
+}
+
+export function libraryColumns(definition?: LibraryDefinition, view?: string) {
+  const all = libraryFields(definition);
+  const active = libraryViewDefinitions(definition).find(
+    (item) => item.id === view || item.name === view,
+  );
+  const columns = active?.columns
+    ? active.columns
+        .map((key) => all.find((column) => column.key === key))
+        .filter((column): column is LibraryColumn => !!column)
+    : (definition?.columns ?? defaultLibraryColumns);
+  return columns.some((column) => column.key === "name")
+    ? columns
+    : [{ key: "name", label: "Name" }, ...columns];
+}
+
+export function contentTypeDefaults(type?: LibraryContentType) {
+  const defaults = { ...(type?.defaults ?? {}) };
+  const status = defaults.status ?? "Draft";
+  const owner = defaults.owner ?? "You";
+  delete defaults.status;
+  delete defaults.owner;
+  return { status, owner, metadata: defaults };
+}
 
 export function normaliseFolder(folder: string) {
   return folder
@@ -60,15 +191,22 @@ export function queryLibrary(
     sort?: LibrarySort;
     descending?: boolean;
     embedded?: boolean;
+    definition?: LibraryDefinition;
   },
 ) {
   const folder = normaliseFolder(options.folder);
   const query = (options.search ?? "").trim().toLocaleLowerCase();
-  const view = options.view ?? "All Documents";
+  const view = options.view ?? libraryViewDefinitions(options.definition)[0].id;
+  const savedView = libraryViewDefinitions(options.definition).find(
+    (item) => item.id === view || item.name === view,
+  );
+  const isDefault =
+    savedView?.id === libraryViewDefinitions(options.definition)[0].id;
   const recursive = !!(
     query ||
     options.status ||
-    view !== "All Documents" ||
+    savedView?.recursive ||
+    !isDefault ||
     options.embedded
   );
   const rows = files.filter((file) => {
@@ -83,6 +221,49 @@ export function queryLibrary(
       (view !== "In review" || /review|approval|submitted/i.test(status)) &&
       (view !== "Approved" ||
         /approved|published|current|final/i.test(status)) &&
+      (savedView?.filters ?? []).every((filter) => {
+        const value = libraryValue(
+          file,
+          filter.field,
+          options.definition,
+        ).toLocaleLowerCase();
+        const expected = (
+          Array.isArray(filter.value) ? filter.value : [filter.value]
+        ).map((item) => item.toLocaleLowerCase());
+        switch (filter.operator) {
+          case "contains":
+            return expected.some((item) => value.includes(item));
+          case "not-equals":
+            return (
+              !expected.includes(value) &&
+              !(
+                filter.field === "contentType" &&
+                expected.includes(
+                  (file.contentType ?? "Document").toLocaleLowerCase(),
+                )
+              )
+            );
+          case "before":
+          case "after": {
+            if (!value) return false;
+            const actualDate = calendarDate(value)?.getTime();
+            const expectedDate = calendarDate(expected[0])?.getTime();
+            const order =
+              actualDate !== undefined && expectedDate !== undefined
+                ? actualDate - expectedDate
+                : value.localeCompare(expected[0]);
+            return filter.operator === "before" ? order < 0 : order > 0;
+          }
+          default:
+            return (
+              expected.includes(value) ||
+              (filter.field === "contentType" &&
+                expected.includes(
+                  (file.contentType ?? "Document").toLocaleLowerCase(),
+                ))
+            );
+        }
+      }) &&
       (!query ||
         [
           file.name,
@@ -90,6 +271,8 @@ export function queryLibrary(
           file.owner,
           status,
           file.summary,
+          file.contentType,
+          libraryContentType(file, options.definition)?.name,
           ...Object.values(file.metadata ?? {}),
         ]
           .join(" ")
@@ -99,13 +282,18 @@ export function queryLibrary(
   });
   const sort =
     options.sort ??
+    savedView?.sortBy ??
     (view === "Recent documents" || options.embedded ? "modified" : "name");
-  const descending = options.descending ?? sort === "modified";
+  const descending =
+    options.descending ?? savedView?.descending ?? sort === "modified";
   return rows.sort((a, b) => {
-    const first = a[sort] ?? "";
-    const second = b[sort] ?? "";
+    const first = libraryValue(a, sort, options.definition);
+    const second = libraryValue(b, sort, options.definition);
     const dateComparison =
-      sort === "modified"
+      sort === "modified" ||
+      libraryFields(options.definition).some(
+        (field) => field.key === sort && field.type === "date",
+      )
         ? (calendarDate(first)?.getTime() ?? 0) -
           (calendarDate(second)?.getTime() ?? 0)
         : undefined;
@@ -192,25 +380,61 @@ export function libraryDate(value?: string) {
       });
 }
 
-export function documentProperties(file: LibraryDocument) {
-  const fields: [string, string][] = [
-    ["Modified", libraryDate(file.modified)],
-    ["Modified by", file.owner ?? "Not recorded"],
-    ["Status", file.status ?? "Draft"],
-    ["Location", file.folder || "Library root"],
+export function documentProperties(
+  file: LibraryDocument,
+  definition?: LibraryDefinition,
+) {
+  const keys = [
+    ...(file.contentType || definition?.contentTypes?.length
+      ? ["contentType"]
+      : []),
+    ...libraryFields(definition)
+      .map((field) => field.key)
+      .filter((key) => !["name", "modified", "owner"].includes(key)),
+    "owner",
+    "modified",
   ];
-  const extra = Object.entries(file.metadata ?? {}).find(
-    ([name, value]) =>
-      value &&
-      !fields.some(
-        ([key]) => key.toLocaleLowerCase() === name.toLocaleLowerCase(),
-      ),
-  );
-  if (extra) fields.push(extra);
+  const labels: Record<string, string> = {
+    contentType: "Content type",
+    owner: "Modified by",
+    modified: "Modified",
+    status: "Status",
+  };
+  const fields: [string, string][] = [...new Set(keys)].flatMap((key) => {
+    const field = libraryFields(definition).find((item) => item.key === key);
+    const value = libraryValue(file, key, definition);
+    if (!value) return [];
+    return [
+      [
+        field?.label ?? labels[key] ?? key,
+        field?.type === "date" || key === "modified"
+          ? libraryDate(value)
+          : value,
+      ],
+    ];
+  });
+  if (!definition) {
+    const extra = Object.entries(file.metadata ?? {}).find(
+      ([name, value]) =>
+        value &&
+        !fields.some(
+          ([key]) => key.toLocaleLowerCase() === name.toLocaleLowerCase(),
+        ),
+    );
+    if (extra) fields.push(extra);
+  }
+  fields.push(["Version", documentVersions(file)[0]?.version ?? "0.1"]);
+  fields.push(["Location", file.folder || "Library root"]);
   return fields;
 }
 
 export function documentVersions(file: LibraryDocument) {
+  if (file.versions?.length)
+    return file.versions.map((version, i) => ({
+      ...version,
+      date: libraryDate(version.date),
+      current: version.current ?? i === 0,
+    }));
   const isApproved = /approved|published|current|final/i.test(
     file.status ?? "",
   );
@@ -248,4 +472,80 @@ export function documentVersions(file: LibraryDocument) {
       current: false,
     },
   ];
+}
+
+/** Development audit: highlight sparse/busy leaf folders without changing their contents. */
+export function auditLibraryFolders(
+  files: LibraryDocument[],
+  explicit: string[] = [],
+) {
+  const folders = libraryFolders(files, explicit);
+  const leaves = folders.filter(
+    (folder) => !folders.some((other) => other.startsWith(folder + "/")),
+  );
+  if (files.some((file) => !normaliseFolder(file.folder))) leaves.unshift("");
+  return leaves.map((folder) => {
+    const count = files.filter(
+      (file) => normaliseFolder(file.folder) === folder,
+    ).length;
+    return {
+      folder,
+      count,
+      flag:
+        count === 0
+          ? "empty"
+          : count === 1
+            ? "single"
+            : count > 12
+              ? "busy"
+              : undefined,
+    };
+  });
+}
+
+/** Configuration checks are developer diagnostics, never product-facing taxonomy. */
+export function auditLibraryDefinition(
+  definition: LibraryDefinition,
+  files: LibraryDocument[],
+) {
+  const issues: string[] = [];
+  const valid = new Set([
+    "name",
+    "modified",
+    "owner",
+    "status",
+    "contentType",
+    "folder",
+    ...libraryFields(definition).map((field) => field.key),
+  ]);
+  for (const view of definition.views ?? []) {
+    for (const field of [
+      ...(view.columns ?? []),
+      ...(view.filters ?? []).map((filter) => filter.field),
+      ...(view.sortBy ? [view.sortBy] : []),
+    ]) {
+      if (!valid.has(field))
+        issues.push(`View ${view.name} references unknown field ${field}`);
+    }
+  }
+  for (const type of definition.contentTypes ?? []) {
+    for (const key of type.fields ?? [])
+      if (!valid.has(key))
+        issues.push(
+          `Content type ${type.name} references unknown field ${key}`,
+        );
+  }
+  for (const file of files) {
+    if (
+      file.contentType &&
+      file.contentType !== "Document" &&
+      !libraryContentType(file, definition)
+    )
+      issues.push(
+        `File ${file.id} references unknown content type ${file.contentType}`,
+      );
+    if (file.folder !== normaliseFolder(file.folder))
+      issues.push(`File ${file.id} has an invalid folder path`);
+  }
+  return issues;
 }

@@ -6,6 +6,9 @@ import {
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
+import { teamsGroups } from "../teams/navigation";
+import { canSeeProject, projectChannels } from "../teams/visibility";
+import TeamsAdministration from "../teams/Administration";
 import DocumentIcon from "../components/DocumentIcon";
 import "../teams/integrations.css";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
@@ -23,6 +26,7 @@ import {
   controlRoles,
   supportRoles,
   projectFiles,
+  projectLibraryDefinition,
   projectAccessHref,
   reviewRows,
   type Project,
@@ -216,23 +220,11 @@ export default function ProjectsApp() {
     </>
   );
   const documents = project && permitted ? projectFiles(project) : [];
-  const libraryFiles: LibraryDocument[] = documents.map((f, i) => ({
-    ...f,
-    folder: [
-      "Initiation/Brief",
-      "Planning/Delivery",
-      "Delivery/Review",
-      "Planning/People",
-      "Closure/Handover",
-      "Closure/Final records",
-    ][i],
-    owner: project?.lead,
-    modified: "16 Oct 2026",
-    status: readOnly ? "Closed" : "In progress",
-  }));
+  const libraryFiles: LibraryDocument[] = documents;
   const filesView = (embedded = false, initialFolder?: string) => (
     <DocumentLibrary
       title="Project Documents"
+      definition={projectLibraryDefinition}
       files={libraryFiles}
       readOnly={readOnly}
       embedded={embedded}
@@ -719,11 +711,6 @@ export default function ProjectsApp() {
     );
   };
   if (teams && project) {
-    const projectChannels = [
-      "General",
-      "Project Delivery",
-      "Decisions & Actions",
-    ];
     const selectedChannel = projectChannels.includes(channel)
       ? channel
       : "General";
@@ -746,60 +733,59 @@ export default function ProjectsApp() {
         teamName={title}
         channelName={selectedChannel}
         privateChannel={project.access === "Restricted"}
-        groups={[
-          {
-            id: project.code,
-            label: title,
-            initials: "PR",
-            channels: projectChannels.map((name) => ({
-              id: name,
-              label: name,
-              private: project.access === "Restricted",
-              onSelect: () => changeTeamsLocation(name, "Posts"),
-            })),
-          },
-          ...currentProjects
-            .filter(
-              (p) => p.code !== project.code && canOpenProject(p, person.id),
-            )
-            .map((p) => ({
-              id: p.code,
-              label: projectTitle(p),
-              initials: "PR",
-              channels: [
-                {
-                  id: p.code + "-general",
-                  label: "General",
-                  private: p.access === "Restricted",
-                  onSelect: () =>
-                    location.assign(
-                      `${projectHref(p)}/teams?staff=${person.id}`,
-                    ),
-                },
-              ],
-            })),
-        ]}
-        selectedChannelId={selectedChannel}
+        groups={teamsGroups(person).map((group) =>
+          group.id === project.code
+            ? {
+                ...group,
+                channels: group.channels.map((item) => ({
+                  ...item,
+                  onSelect: () => changeTeamsLocation(item.label, "Posts"),
+                })),
+              }
+            : group,
+        )}
+        navigationFooter={
+          <TeamsAdministration person={person} groups={teamsGroups(person)} />
+        }
+        selectedChannelId={`${project.code}:${selectedChannel}`}
         activeTab={tab}
         onTabChange={(next) => changeTeamsLocation(selectedChannel, next)}
-        onOpenSharePoint={() => {
-          if (tab !== "Shared") {
-            location.assign(root);
-            return;
-          }
-          const params = new URLSearchParams(location.search);
-          params.delete("channel");
-          params.delete("tab");
-          location.assign(`${root}/documents?${params}`);
-        }}
+        onOpenSharePoint={
+          !canSeeProject(person, project.code) || !permitted
+            ? undefined
+            : () => {
+                if (tab !== "Shared") {
+                  location.assign(root);
+                  return;
+                }
+                const params = new URLSearchParams(location.search);
+                params.delete("channel");
+                params.delete("tab");
+                location.assign(`${root}/documents?${params}`);
+              }
+        }
         searchValue={query}
         onSearchChange={setQuery}
-        searchResults={searchResults}
+        searchResults={
+          canSeeProject(person, project.code) && permitted
+            ? searchResults
+            : undefined
+        }
       >
         <div
           className={`teams-project-content ${tab === "Posts" ? "teams-conversation" : ""}`}
         >
-          {!permitted ? (
+          {!canSeeProject(person, project.code) ? (
+            <section className="m365-teams-empty">
+              <h2>Access denied</h2>
+              <p>This project team is limited to its assigned members.</p>
+              <button
+                onClick={() => location.assign(`/teams?staff=${person.id}`)}
+              >
+                Open your Teams view
+              </button>
+            </section>
+          ) : !permitted ? (
             denied()
           ) : tab === "Shared" ? (
             filesView()

@@ -10,6 +10,10 @@ import {
 } from "@fluentui/react-components";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
+import { teamsGroups } from "../teams/navigation";
+import { isInformationManager } from "../teams/visibility";
+import TeamsAdministration from "../teams/Administration";
+import { staff } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   initialIncidents,
@@ -23,6 +27,9 @@ import {
 import "./styles.css";
 import "./emergency-teams.css";
 export default function EmergencyApp() {
+  const requestedPerson = staff.find(
+    (s) => s.id === new URLSearchParams(location.search).get("staff"),
+  );
   const [incidents, setIncidents] = useState(initialIncidents),
     [tab, setTab] = useState("Posts"),
     [post, setPost] = useState("");
@@ -30,6 +37,40 @@ export default function EmergencyApp() {
   const [selectedId, setSelectedId] = useState(initialId || "");
   const incident = incidents.find((i) => i.id === selectedId),
     archived = incident?.status === "Archived";
+  const responseLead =
+    !requestedPerson || incident?.lead === requestedPerson.name;
+  const responseAccess =
+    !requestedPerson ||
+    !!incident?.participants.some((p) => p.name === requestedPerson.name);
+  const visibleIncidents =
+    requestedPerson && !isInformationManager(requestedPerson)
+      ? incidents.filter((i) =>
+          i.participants.some((p) => p.name === requestedPerson.name),
+        )
+      : incidents;
+  const baseGroups = teamsGroups(requestedPerson || staff[0]).filter(
+    (g) =>
+      g.id !== "emergency" &&
+      (requestedPerson || ["company", "logistics"].includes(g.id)),
+  );
+  const groups = [
+    ...baseGroups,
+    ...(visibleIncidents.length
+      ? [
+          {
+            id: "emergency",
+            label: "Emergency Response",
+            initials: "ER",
+            channels: visibleIncidents.map((i) => ({
+              id: `emergency:${i.id}`,
+              label: `${i.id} · ${i.title}`,
+              private: true,
+              onSelect: () => openIncident(i.id),
+            })),
+          },
+        ]
+      : []),
+  ];
   useEffect(() => {
     const back = () => {
       setSelectedId(location.pathname.split("/")[3] || "");
@@ -71,10 +112,15 @@ export default function EmergencyApp() {
     setDecisionRationale("Maintain continuity while assessment continues.");
     setError("");
     setTab("Posts");
-    history.pushState({}, "", `/emergency-response/incidents/${id}`);
+    history.pushState(
+      {},
+      "",
+      `/emergency-response/incidents/${id}${requestedPerson ? `?staff=${requestedPerson.id}` : ""}`,
+    );
     window.dispatchEvent(new Event("workspace:navigation"));
   }
   function submitFlow() {
+    if (!responseLead) return;
     setError("");
     if (flow === "create") {
       if (
@@ -128,25 +174,13 @@ export default function EmergencyApp() {
   return (
     <div className="emergency-app">
       <TeamsShell
-        userName={incident?.lead || "Drew Ellis"}
+        userName={requestedPerson?.name || incident?.lead || "Drew Ellis"}
         teamName="Emergency Response"
         channelName={
           incident ? `${incident.id} · ${incident.title}` : "Incident responses"
         }
-        groups={[
-          {
-            id: "emergency",
-            label: "Emergency Response",
-            initials: "ER",
-            channels: incidents.map((i) => ({
-              id: i.id,
-              label: `${i.id} · ${i.title}`,
-              private: true,
-              onSelect: () => openIncident(i.id),
-            })),
-          },
-        ]}
-        selectedChannelId={selectedId}
+        groups={groups}
+        selectedChannelId={`emergency:${selectedId}`}
         activeTab={tab === "Files" ? "Shared" : tab}
         onTabChange={(next) => setTab(next === "Shared" ? "Files" : next)}
         tabs={
@@ -164,7 +198,7 @@ export default function EmergencyApp() {
         privateChannel={!!incident}
         onChannelInfo={incident ? () => setTab("Participants") : undefined}
         headerActions={
-          incident && !archived ? (
+          incident && !archived && responseLead ? (
             <Button
               appearance="subtle"
               onClick={() => {
@@ -178,23 +212,38 @@ export default function EmergencyApp() {
           ) : undefined
         }
         navigationFooter={
-          <Button
-            appearance="subtle"
-            onClick={() => {
-              setError("");
-              setFlow("create");
-            }}
-          >
-            Create incident response
-          </Button>
+          <>
+            {requestedPerson && (
+              <TeamsAdministration person={requestedPerson} groups={groups} />
+            )}
+            {responseLead && (
+              <Button
+                appearance="subtle"
+                onClick={() => {
+                  setError("");
+                  setFlow("create");
+                }}
+              >
+                Create incident response
+              </Button>
+            )}
+          </>
         }
       >
         <div className="emergency-channel-surface">
           <div className="emergency-channel-content">
-            {!incident ? (
+            {requestedPerson && !responseAccess ? (
+              <section className="m365-teams-empty">
+                <h2>Access denied</h2>
+                <p>
+                  Private response content is limited to the incident’s
+                  participants.
+                </p>
+              </section>
+            ) : !incident ? (
               <>
                 {initialId && <h2>Response not available</h2>}
-                {incidents.map((i) => (
+                {visibleIncidents.map((i) => (
                   <button
                     className="incident-overview"
                     key={i.id}
@@ -425,7 +474,7 @@ export default function EmergencyApp() {
                         </tbody>
                       </table>
                     </div>
-                    {!archived && (
+                    {!archived && responseLead && (
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
@@ -493,7 +542,7 @@ export default function EmergencyApp() {
                           <strong>{p.name}</strong>
                           <small>{p.role} · This incident only</small>
                         </div>
-                        {p.name !== incident.lead && (
+                        {p.name !== incident.lead && responseLead && (
                           <Button
                             disabled={archived}
                             onClick={() =>
@@ -518,7 +567,7 @@ export default function EmergencyApp() {
                       </div>
                     ))}
                     <Button
-                      disabled={archived}
+                      disabled={archived || !responseLead}
                       onClick={() => {
                         setError("");
                         setFlow("participant");

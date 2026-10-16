@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Drawer,
@@ -8,130 +8,27 @@ import {
 } from "@fluentui/react-components";
 import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentLibrary, {
-  type LibraryDocument,
-} from "../sharepoint/DocumentLibrary";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import DocumentIcon from "../components/DocumentIcon";
+import { teamsStaffForWorkspace } from "../teams/navigation";
+import { staff } from "../intranet/catalog";
 import { workspaceRegistry, workspaceById } from "./registry";
 import { configById } from "./config";
-import type { WorkingFile, WorkingItem } from "./types";
+import type { WorkingItem } from "./types";
+import {
+  functionalLibraries,
+  functionalLibraryDocuments,
+  functionalFolder,
+  libraryForFile,
+  functionalHomes,
+  protectedNavigation,
+  protectedHeading,
+  type FunctionalLibrary,
+} from "./siteArchitecture";
 import ArchivePane from "./ArchivePane";
 import "../services/styles.css";
 import "./styles.css";
 
-type SiteLibrary = { id: string; name: string; areas: string[] };
-const libraries: Record<string, SiteLibrary[]> = {
-  services: [
-    {
-      id: "documents",
-      name: "Documents",
-      areas: ["office", "purchasing", "travel", "reception"],
-    },
-  ],
-  quality: [
-    {
-      id: "quality-documents",
-      name: "Quality & Monitoring",
-      areas: ["monitoring", "reviews"],
-    },
-    {
-      id: "improvement-documents",
-      name: "Process & Improvement",
-      areas: ["process", "improvement"],
-    },
-    { id: "eco-documents", name: "Eco Practice", areas: ["eco"] },
-  ],
-  digital: [
-    {
-      id: "engineering-documents",
-      name: "Engineering Work",
-      areas: [
-        "engineering",
-        "web-crm",
-        "systems-engineering",
-        "ai-automation",
-        "m365",
-      ],
-    },
-    {
-      id: "architecture-documents",
-      name: "Architecture & Governance",
-      areas: ["information-architecture", "architecture"],
-    },
-    {
-      id: "operations-documents",
-      name: "Platform Operations",
-      areas: ["operations"],
-    },
-  ],
-  legal: [
-    {
-      id: "legal-documents",
-      name: "Legal & Compliance Work",
-      areas: ["review", "compliance", "policy"],
-    },
-    {
-      id: "privacy-documents",
-      name: "Privacy & Assurance",
-      areas: ["privacy", "risk", "audit"],
-    },
-    { id: "contract-documents", name: "Contract Review", areas: ["contracts"] },
-  ],
-  people: [
-    {
-      id: "workforce-documents",
-      name: "Workforce & Culture",
-      areas: [
-        "workforce",
-        "culture",
-        "employment",
-        "communities",
-        "analytics",
-        "wellbeing",
-      ],
-    },
-    { id: "hiring-documents", name: "Hiring & Talent", areas: ["hiring"] },
-    {
-      id: "learning-documents",
-      name: "Capability & Learning",
-      areas: ["learning"],
-    },
-    {
-      id: "communications-documents",
-      name: "Internal Communications",
-      areas: ["communications"],
-    },
-  ],
-  archives: [
-    {
-      id: "working-documents",
-      name: "Archive Working Documents",
-      areas: [
-        "retention",
-        "transfer",
-        "cataloguing",
-        "preservation",
-        "projects",
-      ],
-    },
-  ],
-  customer: [
-    {
-      id: "care-documents",
-      name: "Customer Care & Quality",
-      areas: ["care", "premium", "quality"],
-    },
-    {
-      id: "relationship-documents",
-      name: "Relationships & Accounts",
-      areas: ["relationships", "accounts", "partnerships", "stakeholders"],
-    },
-    {
-      id: "meeting-documents",
-      name: "Meetings & Negotiations",
-      areas: ["meetings"],
-    },
-  ],
-};
 const networks = [
   "Black, Indigenous & People of Colour Network",
   "LGBTQIA+ Network",
@@ -157,11 +54,14 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
     page === "systems"
       ? config.tools.find((t) => t.id === parts[2])
       : undefined;
-  const siteLibraries = libraries[workspace.id] || [];
+  const siteLibraries = functionalLibraries[workspace.id] || [];
   const library = siteLibraries.find(
-    (l) => l.id === page || l.areas.includes(page),
+    (l) =>
+      l.id === page ||
+      l.aliases?.includes(page) ||
+      (workspace.id !== "archives" && l.areas.includes(page)),
   );
-  const primaryLibrary = siteLibraries[0];
+  const home = functionalHomes[workspace.id];
   const isList =
     page === "actions" || (workspace.id === "quality" && page === "reviews");
   const isCommunityPage = workspace.id === "people" && page === "communities";
@@ -169,97 +69,62 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
   const [selected, setSelected] = useState<WorkingItem>();
   const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("");
-  const [view, setView] = useState("Current");
+  const [view, setView] = useState(() => {
+    const requested =
+      new URLSearchParams(location.search).get("view") || "Current";
+    return ["Current", "Needs review", "Complete", "All actions"].includes(
+      requested,
+    )
+      ? requested
+      : "Current";
+  });
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Record<string, string[]>>({});
-  const actor =
-    workspace.id === "digital"
-      ? "Devon Park"
-      : workspace.id === "people"
-        ? "Elena Rossi"
-        : "Maya Chen";
+  const contextStaffId = teamsStaffForWorkspace(
+    workspace.id,
+    new URLSearchParams(location.search).get("staff") || undefined,
+  );
+  const contextStaff = staff.find((person) => person.id === contextStaffId)!;
+  const actor = contextStaff.name;
   const href = (destination: string) => `${workspace.href}/${destination}`;
-  const folderName = (areaId: string) => {
-    const names: Record<string, Record<string, string>> = {
-      quality: { monitoring: "Quality reviews", reviews: "Review notes" },
-      legal: {
-        review: "Advice coordination",
-        compliance: "Compliance reviews",
-        policy: "Policy changes",
-        privacy: "Privacy assessments",
-        risk: "Assurance",
-        audit: "Audit coordination",
-        contracts: "Supplier contracts",
-      },
-      digital: {
-        architecture: "Decision records",
-        operations: "Service changes",
-      },
-      people: {
-        hiring: "Role & interview planning",
-        learning: "Learning programmes",
-      },
-      customer: {
-        care: "Care standards",
-        premium: "Care continuity",
-        quality: "Interaction quality",
-        meetings: "Meeting preparation",
-      },
-    };
-    return (
-      names[workspace.id]?.[areaId] ||
-      config.areas.find((a) => a.id === areaId)?.name ||
-      "Documents"
-    );
+  const libraryFiles = (library: FunctionalLibrary) =>
+    functionalLibraryDocuments(config, library);
+  const initialLibraryFolder =
+    area && library
+      ? config.files
+          .find(
+            (file) =>
+              file.documentLibrary === library.id && file.area === area.id,
+          )
+          ?.folder.split("/")[0]
+      : undefined;
+  const fileHref = (fileId: string) => {
+    const file = config.files.find((f) => f.id === fileId);
+    const target = libraryForFile(config, fileId);
+    if (!file || !target) return workspace.href;
+    return `${href(target.id)}?${new URLSearchParams({ library: target.name, folder: functionalFolder(file), file: file.id })}`;
   };
-  function documentFolder(f: WorkingFile) {
-    if (workspace.id === "people" && f.area === "communications")
-      return f.name.startsWith("Intranet")
-        ? "Intranet & Wiki/Publishing"
-        : "All-staff meetings/October 2026";
-    if (workspace.id === "digital") {
-      const digitalFolders: Record<string, string> = {
-        engineering: "API Design",
-        "web-crm": "Web & CRM",
-        "systems-engineering": "Business Systems",
-        "ai-automation": "AI & Automation",
-        m365: "M365 & SPFx",
-      };
-      const subfolder =
-        f.area === "web-crm"
-          ? /Release|Deployment/.test(f.name)
-            ? "Release planning"
-            : /Incident|Debt/.test(f.name)
-              ? "Reviews"
-              : "Platform design"
-          : f.area === "ai-automation"
-            ? /Evaluation|Benchmark|Test/.test(f.name)
-              ? "Evaluation"
-              : "Design"
-            : "Current work";
-      return `${digitalFolders[f.area] || folderName(f.area)}/${subfolder}`;
-    }
-    return `${folderName(f.area)}/2026`;
-  }
-  function libraryFiles(l: SiteLibrary): LibraryDocument[] {
-    return config.files
-      .filter((f) => l.areas.includes(f.area))
-      .map((f) => ({
-        id: f.id,
-        name: f.name,
-        folder: documentFolder(f),
-        modified: f.modified,
-        owner: f.owner,
-        status: f.status,
-        metadata: { Period: "2026" },
-      }));
-  }
   function openSearchFile(id: string) {
-    const f = config.files.find((x) => x.id === id);
-    const l = siteLibraries.find((x) => x.areas.includes(f?.area || ""));
-    if (l) location.assign(`${href(l.id)}?file=${encodeURIComponent(id)}`);
+    location.assign(fileHref(id));
   }
-  function relatedLinks(l?: SiteLibrary) {
+  const requestedFileId =
+    new URLSearchParams(location.search).get("file") || "";
+  const requestedFileLibrary = libraryForFile(config, requestedFileId);
+  const requestedLibraryTitle = new URLSearchParams(location.search).get(
+    "library",
+  );
+  const legacyFileDestination =
+    parts.length === 2 &&
+    library &&
+    requestedFileLibrary &&
+    (requestedFileLibrary.id !== library.id ||
+      (requestedLibraryTitle && requestedLibraryTitle !== library.name))
+      ? fileHref(requestedFileId)
+      : "";
+  useEffect(() => {
+    if (legacyFileDestination) location.replace(legacyFileDestination);
+  }, [legacyFileDestination]);
+  function relatedLinks(l?: FunctionalLibrary) {
     const relevantAreas = area
       ? [area]
       : l
@@ -281,9 +146,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
         )) ||
       (workspace.id === "customer" && l?.areas.includes("quality")) ||
       (workspace.id === "quality" && l?.areas.includes("process")) ||
-      (workspace.id === "services" && (!area || page === "purchasing")) ? (
+      (workspace.id === "services" && l?.areas.includes("purchasing")) ? (
       <details>
-        <summary>Related links</summary>
+        <summary>Systems & access</summary>
         <div className="functional-context-links">
           {toolIds.map((id) => {
             const t = config.tools.find((x) => x.id === id)!;
@@ -300,7 +165,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               </a>
             );
           })}
-          {workspace.id === "services" && (!area || page === "purchasing") && (
+          {workspace.id === "services" && l?.areas.includes("purchasing") && (
             <>
               <a href="/legal-compliance/contracts">Contract review ↗</a>
               <a href="/financial-operations/payments">Payments ↗</a>
@@ -502,18 +367,12 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
       <WorkspaceHeader
         title={workspace.title}
         userName={actor}
-        userRole={
-          workspace.id === "digital"
-            ? "Platform Engineer"
-            : workspace.id === "people"
-              ? "Learning Partner"
-              : "Workspace member"
-        }
+        userRole={contextStaff.role}
         searchFiles={config.files}
         onOpen={(f) => openSearchFile(f.id)}
         onTeams={() =>
           location.assign(
-            `/teams?staff=${workspace.id === "people" ? "elena" : workspace.id === "digital" ? "devon" : "jordan"}&workspace=${workspace.id}`,
+            `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`,
           )
         }
         onMessage={setNotice}
@@ -553,10 +412,12 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 ))}
             {workspace.id === "archives" && (
               <a
-                href={href("working-documents")}
-                aria-current={page === "working-documents" ? "page" : undefined}
+                href={href("archive-practice")}
+                aria-current={
+                  library?.id === "archive-practice" ? "page" : undefined
+                }
               >
-                Working documents
+                Archive Practice & Transfers
               </a>
             )}
             {workspace.id === "quality" && (
@@ -583,13 +444,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 Staff communities
               </a>
             )}
-            {workspace.id !== "archives" && config.protected.length > 0 && (
+            {protectedNavigation[workspace.id] && (
               <a
                 href={href("protected")}
                 aria-current={page === "protected" ? "page" : undefined}
               >
                 <LockClosed20Regular />
-                Restricted
+                {protectedNavigation[workspace.id]}
               </a>
             )}
           </nav>
@@ -651,7 +512,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               <p>Simulated external destination.</p>
               <a href={workspace.href}>Back to workspace</a>
             </section>
-          ) : workspace.id === "archives" && page !== "working-documents" ? (
+          ) : workspace.id === "archives" && !library ? (
             <>
               <h1>{page === "home" ? workspace.title : area?.name}</h1>
               <ArchivePane
@@ -661,47 +522,105 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 onItem={setSelected}
               />
             </>
-          ) : page === "home" ? (
+          ) : page === "home" && home ? (
             <>
               <h1>{workspace.title}</h1>
               <p className="functional-intro">{workspace.description}</p>
-              <DocumentLibrary
-                key={primaryLibrary.id}
-                title={primaryLibrary.name}
-                files={libraryFiles(primaryLibrary)}
-                folders={[
-                  ...new Set(
-                    libraryFiles(primaryLibrary).map(
-                      (f) => f.folder.split("/")[0],
-                    ),
-                  ),
-                ]}
-                embedded
-              />
-              <section>
-                <h2>Quick links</h2>
-                <div className="functional-context-links">
-                  {siteLibraries.map((l) => (
-                    <a key={l.id} href={href(l.id)}>
-                      {l.name}
-                    </a>
-                  ))}
-                  {workspace.id === "digital" && (
-                    <a href="/teams?staff=devon&workspace=digital&channel=Innovators">
-                      Engineering discussions in Teams ↗
-                    </a>
-                  )}
-                  {workspace.id === "people" && (
-                    <a href={href("communities")}>Staff communities</a>
-                  )}
-                  {config.protected.length > 0 && (
-                    <a href={href("protected")}>
-                      <LockClosed20Regular />
-                      Restricted
-                    </a>
-                  )}
+              <div className="functional-home-layout">
+                <div>
+                  <section
+                    className="functional-current-work"
+                    aria-labelledby="current-work-title"
+                  >
+                    <h2 id="current-work-title">{home.heading}</h2>
+                    <p>{home.context}</p>
+                    {home.areas
+                      .map((areaId) =>
+                        items.find((item) => item.area === areaId),
+                      )
+                      .filter((item): item is WorkingItem => !!item)
+                      .map((item) => (
+                        <button
+                          key={item.id}
+                          className="functional-work-row"
+                          onClick={() => setSelected(item)}
+                        >
+                          <strong>{item.name}</strong>
+                          <span>{item.nextAction}</span>
+                        </button>
+                      ))}
+                  </section>
+                  <section
+                    className="functional-recent"
+                    aria-labelledby="recent-documents-title"
+                  >
+                    <h2 id="recent-documents-title">{home.recentHeading}</h2>
+                    {config.files
+                      .filter((file) => home.areas.includes(file.area))
+                      .sort((a, b) => b.modified.localeCompare(a.modified))
+                      .slice(0, 4)
+                      .map((file) => (
+                        <a
+                          key={file.id}
+                          className="functional-recent-file"
+                          href={fileHref(file.id)}
+                        >
+                          <DocumentIcon name={file.name} />
+                          <span>
+                            {file.name}
+                            <small>
+                              {file.metadata?.Activity ||
+                                file.metadata?.Programme ||
+                                functionalFolder(file).split("/")[0]}{" "}
+                              ·{" "}
+                              {new Date(
+                                `${file.modified}T12:00:00`,
+                              ).toLocaleDateString("en-GB", {
+                                day: "numeric",
+                                month: "short",
+                              })}
+                            </small>
+                          </span>
+                        </a>
+                      ))}
+                  </section>
                 </div>
-              </section>
+                <aside className="functional-home-aside">
+                  <section>
+                    <h2>Frequent tasks</h2>
+                    <div className="functional-home-handoffs">
+                      {home.handoffs.map((link) => (
+                        <a key={link.href} href={link.href}>
+                          {link.label}
+                          <span aria-hidden="true"> →</span>
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+                  {home.teams && (
+                    <section className="functional-teams-links">
+                      <h2>
+                        <img
+                          src="/images/teams-logo.svg"
+                          alt="Microsoft Teams"
+                        />
+                        {home.teams.heading}
+                      </h2>
+                      <p>{home.teams.cue}</p>
+                      {home.teams.channels.map((channel) => (
+                        <a
+                          key={channel}
+                          href={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel })}`}
+                        >
+                          <img src="/images/teams-logo.svg" alt="" />
+                          {channel}
+                          <span aria-hidden="true"> →</span>
+                        </a>
+                      ))}
+                    </section>
+                  )}
+                </aside>
+              </div>
             </>
           ) : isList ? (
             <>
@@ -730,7 +649,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
             </>
           ) : page === "protected" ? (
             <>
-              <h1>Restricted</h1>
+              <h1>{protectedHeading[workspace.id] || "Controlled Access"}</h1>
               <div className="functional-protected-links">
                 {config.protected.map((s) => (
                   <a key={s.id} href={href(`${s.area}/${s.id}`)}>
@@ -746,19 +665,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 key={`${library.id}-${page}`}
                 title={library.name}
                 files={libraryFiles(library)}
+                definition={library}
                 folders={[
                   ...new Set(
                     libraryFiles(library).map((f) => f.folder.split("/")[0]),
                   ),
                 ]}
-                initialFolder={
-                  area
-                    ? documentFolder(
-                        config.files.find((f) => f.area === area.id) ||
-                          ({ area: area.id } as WorkingFile),
-                      ).split("/")[0]
-                    : undefined
-                }
+                initialFolder={initialLibraryFolder}
               />
               {relatedLinks(library)}
             </>

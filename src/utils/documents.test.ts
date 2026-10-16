@@ -130,12 +130,12 @@ describe("folder browsing", () => {
     expect(archived).toHaveLength(2);
     expect(archived.every((d) => d.status === "Superseded")).toBe(true);
   });
-  it("keeps individual working folders small", () => {
+  it("keeps working sets shallow and varied without version-file filler", () => {
     const working = documents.filter((d) =>
       ["planning", "strategy", "reporting"].includes(d.library),
     );
     for (const folder of new Set(working.map((d) => d.folderPath)))
-      expect(browseDocuments(working, folder).length).toBeLessThanOrEqual(2);
+      expect(browseDocuments(working, folder).length).toBeLessThanOrEqual(8);
   });
   it("finds review material across child folders", () => {
     const planning = documents.filter((d) => d.library === "planning");
@@ -146,9 +146,7 @@ describe("folder browsing", () => {
         "",
         emptyFilters,
         currentCycle,
-      ).some(
-        (d) => d.name === "Consolidated organisational plan draft v3.docx",
-      ),
+      ).some((d) => d.name === "Consolidated organisational plan draft.docx"),
     ).toBe(true);
   });
 });

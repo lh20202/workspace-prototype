@@ -509,24 +509,43 @@ export const fileSeeds: [string, string, string][] = [
   ["FIN-08", "Close Coordination Checklist.xlsx", "reconciliation"],
   ["FIN-09", "Financial Reporting Schedule.docx", "accounting"],
   ["FIN-10", "Cash Forecast Contribution Guide.docx", "treasury"],
+  ["FIN-11", "October Matching Review Checklist.xlsx", "reconciliation"],
+  ["FIN-12", "Reconciliation Handover Notes.docx", "reconciliation"],
+  ["FIN-13", "Payment Reference Standards.docx", "income"],
+  ["FIN-14", "Income Classification Examples.xlsx", "income"],
+  ["FIN-15", "Payment Run Readiness Checklist.xlsx", "payments"],
+  ["FIN-16", "Supplier Payment Process Notes.docx", "payments"],
+  ["FIN-17", "Budget Contribution Guidance.docx", "planning"],
+  ["FIN-18", "Budget Submission Review Checklist.xlsx", "planning"],
+  ["FIN-19", "Forecast Commentary Guide.docx", "planning"],
+  ["FIN-20", "Scenario Review Questions.docx", "planning"],
+  ["FIN-21", "Reporting Pack Preparation Checklist.xlsx", "accounting"],
+  ["FIN-22", "Close Review Meeting Agenda.docx", "accounting"],
+  ["FIN-23", "Cash Forecast Methods.docx", "treasury"],
+  ["FIN-24", "Forecast Submission Calendar.xlsx", "treasury"],
 ];
-export const files: OperationalFile[] = fileSeeds.map(([id, name, area]) => ({
-  id,
-  name,
-  library: "operations",
-  folder: area,
-  campaign: title,
-  operation: "Shared operations",
-  location: "Shared coordination",
-  type: name.endsWith("xlsx") ? "Excel" : "Word",
-  status: "Current",
-  owner: area === "planning" ? "Jamie Reed" : "Sam Patel",
-  validFrom: "2026-10-01",
-  validTo: "2026-10-31",
-  modified: "2026-10-16",
-  sensitivity: "Internal",
-  recordState: "Working information",
-}));
+export const files: OperationalFile[] = fileSeeds.map(
+  ([id, name, area], index) => ({
+    id,
+    name,
+    library: "operations",
+    folder: area,
+    campaign: title,
+    operation: "Shared operations",
+    location: "Shared coordination",
+    type: name.endsWith("xlsx") ? "Excel" : "Word",
+    status: "Current",
+    owner: area === "planning" ? "Jamie Reed" : "Sam Patel",
+    validFrom: "2026-10-01",
+    validTo: "2026-10-31",
+    modified:
+      id === "FIN-06"
+        ? "2026-10-16"
+        : `2026-10-${String(3 + ((index * 3) % 14)).padStart(2, "0")}`,
+    sensitivity: "Internal",
+    recordState: "Working information",
+  }),
+);
 export const fileContext: Record<string, string> = {
   "FIN-02":
     "Shared contribution guidance only. Draft management forecasts and financial models remain in the protected subject and Adaptive Planning.",

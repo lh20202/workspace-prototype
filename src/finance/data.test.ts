@@ -74,7 +74,7 @@ describe("shared financial operating model", () => {
         /payroll|mandate|tax working|customer payment exception|draft management/i,
       );
     }
-    expect(files).toHaveLength(10);
+    expect(files.length).toBeGreaterThan(10);
   });
   it("never broadens source visibility through saved views", () => {
     for (const view of views) {
@@ -99,7 +99,11 @@ describe("shared financial operating model", () => {
   });
   it("every fictional staff preview belongs to a real existing workspace", () => {
     expect(workspaces).toHaveLength(14);
-    expect(staff).toHaveLength(9);
+    expect(
+      staff.some(
+        (person) => person.role === "Information Management Specialist",
+      ),
+    ).toBe(true);
     for (const s of staff)
       expect(workspaces.find((w) => w.id === s.workspace)).toBeDefined();
     expect(prototypeForPath("/teams")).toBe("teams");

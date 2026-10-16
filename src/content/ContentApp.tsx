@@ -1,3 +1,4 @@
+import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useState, useEffect, type MouseEvent } from "react";
 import {
   Button,
@@ -20,9 +21,7 @@ import {
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentLibrary, {
-  type LibraryDocument,
-} from "../sharepoint/DocumentLibrary";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   title,
   description,
@@ -55,77 +54,7 @@ const date = (value: string) =>
     day: "numeric",
     month: "short",
   });
-const libraries = [
-  { id: "production", title: "Current Production" },
-  { id: "editorial", title: "Editorial & Messaging" },
-  { id: "creative", title: "Creative & Digital Content" },
-];
-const currentPackages = ["PKG-101", "PKG-103", "PKG-104", "PKG-105"];
-const libraryFor = (file: ContentFile) =>
-  currentPackages.includes(file.packageId)
-    ? "production"
-    : file.area === "editorial"
-      ? "editorial"
-      : "creative";
-const folderFor = (file: ContentFile) => {
-  if (libraryFor(file) === "production") {
-    const stage =
-      file.workType === "Brief"
-        ? "Brief"
-        : file.id === "video-storyboard"
-          ? "Storyboard"
-          : file.workType === "Release checklist"
-            ? "Final Delivery"
-            : file.workType === "Review" || file.review === "Needs review"
-              ? "Review"
-              : "Working Drafts";
-    return `${file.campaign}/${stage}`;
-  }
-  if (libraryFor(file) === "editorial") {
-    const group =
-      file.packageId === "PKG-106"
-        ? "Audience Updates"
-        : file.packageId === "PKG-107"
-          ? "Customer Stories"
-          : file.packageId === "PKG-109"
-            ? "Media Releases"
-            : file.packageId === "PKG-111"
-              ? "Audio"
-              : "Public Information";
-    return `${group}/${file.campaign}`;
-  }
-  const group =
-    file.area === "digital"
-      ? "Website & Digital"
-      : file.packageId === "PKG-110"
-        ? "Print"
-        : file.packageId === "PKG-106"
-          ? "Presentations"
-          : file.packageId === "PKG-107"
-            ? "Storytelling"
-            : file.packageId === "PKG-108"
-              ? "Public Information"
-              : "Campaign Formats";
-  return `${group}/${file.campaign}`;
-};
-const documentFor = (file: ContentFile): LibraryDocument => {
-  const item = initialPackages.find((item) => item.id === file.packageId)!;
-  return {
-    id: file.id,
-    name: file.name,
-    folder: folderFor(file),
-    modified: file.modified,
-    owner: file.owner,
-    status: file.review,
-    summary: `${item.purpose}. ${item.testing} ${item.condition}`,
-    metadata: {
-      Production: file.campaign,
-      "Work type": file.workType,
-      Rights: item.rights,
-      "Review due": date(item.reviewDue),
-    },
-  };
-};
+import { libraries, libraryFor, documentFor, definitions } from "./libraries";
 const fileLink = (file: ContentFile) =>
   `${base}/${libraryFor(file)}?file=${file.id}`;
 export default function ContentApp() {
@@ -299,7 +228,11 @@ export default function ContentApp() {
             memberCount={24}
             helpText={description}
             onOpen={(file) => navigate(fileLink(filesById.get(file.id)!))}
-            onTeams={() => navigate(`${base}/teams`)}
+            onTeams={() =>
+              location.assign(
+                `/teams?staff=${teamsStaffForWorkspace("content")}&workspace=content`,
+              )
+            }
             onMessage={setMessage}
           />
         </>
@@ -475,20 +408,32 @@ export default function ContentApp() {
                   <p>Develop, review and deliver public-facing content.</p>
                 </div>
               </div>
+              <section className="service-section">
+                <h3>Preparing the next releases</h3>
+                <p>
+                  Complete editorial and accessibility checks before the October
+                  publishing window.
+                </p>
+                <a href={`${base}/production-register?view=Needs+Review`}>
+                  Review production awaiting approval →
+                </a>
+              </section>
               <DocumentLibrary
-                title="Current Production"
+                title="Recent production files"
                 files={files
                   .filter((file) => libraryFor(file) === "production")
                   .map(documentFor)}
                 embedded
               />
               <section className="service-section">
-                <h3>Quick links</h3>
+                <h3>Publishing handoffs</h3>
                 <div className="content-simple-links">
                   <a href={`${base}/production-register?view=Needs+Review`}>
                     Production needing review
                   </a>
-                  <a href={`${base}/calendar`}>Production calendar</a>
+                  <a href={`${base}/tools/planable`}>
+                    Publishing approvals in Planable
+                  </a>
                   <a href="/audience-innovation/research">Audience research</a>
                 </div>
               </section>
@@ -620,6 +565,7 @@ export default function ContentApp() {
               <DocumentLibrary
                 key={activeLibrary.id + initialFolder}
                 title={activeLibrary.title}
+                definition={definitions[activeLibrary.id]}
                 files={files
                   .filter((file) => libraryFor(file) === activeLibrary.id)
                   .map(documentFor)}

@@ -99,7 +99,7 @@ const seeds: [string, string, ExecutiveRole, string][] = [
   ],
 ];
 export const files: ExecutiveFile[] = seeds.map(
-  ([id, name, audience, activity]) => ({
+  ([id, name, audience, activity], index) => ({
     id,
     name,
     audience,
@@ -118,7 +118,7 @@ export const files: ExecutiveFile[] = seeds.map(
     owner: roles.find((r) => r.id === audience)!.person,
     validFrom: "2026-10-01",
     validTo: "2026-10-31",
-    modified: "2026-10-16",
+    modified: `2026-10-${String(6 + ((index * 3) % 11)).padStart(2, "0")}`,
     sensitivity: "Internal",
     recordState:
       audience === "base" ? "Current standard" : "Working information",

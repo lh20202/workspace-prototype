@@ -1,3 +1,4 @@
+import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useState } from "react";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
@@ -18,27 +19,11 @@ import {
   initiativeStages,
   executiveCalendar,
   type ExecutiveRole,
-  type ExecutiveFile,
 } from "./data";
 import "../services/styles.css";
 import "../finance/styles.css";
 import "./styles.css";
-function folderFor(f: ExecutiveFile) {
-  const folders: Record<string, string> = {
-    "EX-01": "Governance submissions/October 2026",
-    "EX-02": "Approved actions/October 2026",
-    "EX-03": "Briefings/2027 priorities",
-    "EX-04": "Stage summaries/Digital Service Renewal",
-    "EX-11": "Meetings/21 October 2026",
-    "EX-12": "Decision papers/2027 priorities",
-    "EX-13": "Decision papers/Service transformation",
-    "EX-21": "Submissions/October 2026",
-    "EX-22": "Committee questions/October 2026",
-    "EX-31": "Digital Service Renewal/Stage review",
-    "EX-32": "Digital Service Renewal/Benefits review",
-  };
-  return folders[f.id] || "Shared coordination/October 2026";
-}
+import { executiveDocument, executiveDefinition } from "./libraries";
 export default function ExecutiveApp() {
   const page = location.pathname.split("/")[2] || "home";
   const requestedRole = new URLSearchParams(location.search).get("preview");
@@ -71,15 +56,7 @@ export default function ExecutiveApp() {
           ? f.audience === "base"
           : f.activity === activity,
       )
-      .map((f) => ({
-        id: f.id,
-        name: f.name,
-        folder: folderFor(f),
-        owner: f.owner,
-        modified: f.modified,
-        status: f.status,
-        metadata: { Period: "October 2026" },
-      }));
+      .map(executiveDocument);
   function decisionTable(list = decisionView(rows, view)) {
     return (
       <div className="finance-table-scroll">
@@ -169,7 +146,11 @@ export default function ExecutiveApp() {
             `${href(original.audience === "base" ? "coordination" : original.activity)}&file=${encodeURIComponent(f.id)}`,
           );
         }}
-        onTeams={() => location.assign("/teams?staff=robin")}
+        onTeams={() =>
+          location.assign(
+            `/teams?staff=${teamsStaffForWorkspace("executive")}&workspace=executive`,
+          )
+        }
         onMessage={setNotice}
         helpText="Executive coordination. Leadership, liaison and initiative access are separate."
       />
@@ -249,6 +230,7 @@ export default function ExecutiveApp() {
               <p className="finance-intro">{description}</p>
               <DocumentLibrary
                 title="Executive Coordination"
+                definition={executiveDefinition("coordination")}
                 files={documents("coordination")}
                 embedded
               />
@@ -264,11 +246,10 @@ export default function ExecutiveApp() {
                 )}
               </section>
               <section>
-                <h2>Quick links</h2>
+                <h2>Governance handoffs</h2>
                 <div className="functional-context-links">
                   {portal}
                   {emergency}
-                  <a href={href("calendar")}>Executive Calendar</a>
                 </div>
               </section>
             </>
@@ -276,6 +257,7 @@ export default function ExecutiveApp() {
             <>
               <DocumentLibrary
                 title="Executive Coordination"
+                definition={executiveDefinition("coordination")}
                 files={documents("coordination")}
               />
               <p>
@@ -287,6 +269,7 @@ export default function ExecutiveApp() {
             <>
               <DocumentLibrary
                 title="Leadership Team"
+                definition={executiveDefinition("leadership")}
                 files={documents("leadership")}
               />
               <section>
@@ -303,6 +286,7 @@ export default function ExecutiveApp() {
             <>
               <DocumentLibrary
                 title="Oversight Committee Liaison"
+                definition={executiveDefinition("oversight")}
                 files={documents("oversight")}
               />
               <p>{portal}</p>
@@ -322,6 +306,7 @@ export default function ExecutiveApp() {
             <>
               <DocumentLibrary
                 title="Strategic Initiatives"
+                definition={executiveDefinition("initiatives")}
                 files={documents("initiatives")}
               />
               <section>

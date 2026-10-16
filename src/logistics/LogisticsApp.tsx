@@ -42,6 +42,8 @@ import WorkspaceHeader from "./WorkspaceHeader";
 import FileTable, { FileStatus, shortDate } from "./FileTable";
 import LocationsList from "./LocationsList";
 import TeamsView from "./TeamsView";
+import { staff, selectedStaffId } from "../intranet/catalog";
+import { canSeeLogisticsChannel } from "../teams/visibility";
 import {
   files,
   filesById,
@@ -80,6 +82,22 @@ export function logisticsRoute() {
     },
   };
 }
+function documentFromLocation() {
+  const params = new URLSearchParams(location.search);
+  const file = filesById.get(params.get("document") || "");
+  if (!file || !location.pathname.endsWith("/teams")) return file || null;
+  const person =
+    staff.find((s) => s.id === (params.get("staff") || selectedStaffId())) ||
+    staff[1];
+  const channel = channels.find(
+    (c) => c.id === (params.get("channel") || "general"),
+  );
+  return channel &&
+    canSeeLogisticsChannel(person, channel) &&
+    channel.fileIds.includes(file.id)
+    ? file
+    : null;
+}
 export default function LogisticsApp() {
   const [route, setRoute] = useState(logisticsRoute);
   const [search, setSearch] = useState("");
@@ -88,10 +106,7 @@ export default function LogisticsApp() {
     Object.values(route.filters).some(Boolean),
   );
   const [selected, setSelected] = useState<OperationalFile | null>(
-    () =>
-      filesById.get(
-        new URLSearchParams(location.search).get("document") ?? "",
-      ) ?? null,
+    documentFromLocation,
   );
   const [toast, setToast] = useState("");
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -104,11 +119,7 @@ export default function LogisticsApp() {
       setFilters(next.filters);
       setFiltersOpen(Object.values(next.filters).some(Boolean));
       setSearch("");
-      setSelected(
-        filesById.get(
-          new URLSearchParams(location.search).get("document") ?? "",
-        ) ?? null,
-      );
+      setSelected(documentFromLocation());
       setHistoryOpen(false);
     };
     window.addEventListener("popstate", listener);
@@ -127,6 +138,11 @@ export default function LogisticsApp() {
     const query = new URLSearchParams(
       Object.entries(params).filter(([, v]) => !!v),
     );
+    if (page === "teams")
+      query.set(
+        "staff",
+        new URLSearchParams(location.search).get("staff") || selectedStaffId(),
+      );
     history.pushState(
       {},
       "",
@@ -139,7 +155,7 @@ export default function LogisticsApp() {
     setFilters(next.filters);
     setFiltersOpen(Object.values(next.filters).some(Boolean));
     setSearch("");
-    setSelected(filesById.get(query.get("document") ?? "") ?? null);
+    setSelected(documentFromLocation());
     setHistoryOpen(false);
   }
   function updateFilters(next: FileFilters) {

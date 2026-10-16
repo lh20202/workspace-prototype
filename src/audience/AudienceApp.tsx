@@ -1,3 +1,4 @@
+import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
 import {
   Button,
@@ -20,9 +21,7 @@ import {
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentLibrary, {
-  type LibraryDocument,
-} from "../sharepoint/DocumentLibrary";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   title,
   description,
@@ -35,8 +34,6 @@ import {
   updateStage,
   automationConcepts,
   calendarItems,
-  journey,
-  segments,
   type WorkingFile,
   type Initiative,
 } from "./data";
@@ -49,79 +46,13 @@ const displayDate = (value: string) =>
     day: "numeric",
     month: "short",
   });
-const libraries = [
-  { id: "research", title: "Research & Insight" },
-  { id: "experiments", title: "Experiments & Testing" },
-  { id: "analytics", title: "Analysis & Reporting" },
-];
-const libraryFor = (file: WorkingFile) =>
-  file.area === "experiments"
-    ? "experiments"
-    : ["analytics", "decisions"].includes(file.area)
-      ? "analytics"
-      : "research";
-const folderFor = (file: WorkingFile) => {
-  if (file.area === "research") {
-    const groups: Record<string, string> = {
-      "Audience Segmentation Refresh": "Audience Segmentation/Research",
-      "Customer Motivation Study": "Customer Journeys/Research",
-      "Competitor & Market Scan": "Competitor Research/Market Scan",
-      "Website Usability Study": "UX & Usability/Website Usability Study",
-      "Emerging Channel Research": "Website Behaviour/Emerging Channels",
-    };
-    return groups[file.folder] || file.folder;
-  }
-  if (file.area === "audiences")
-    return file.folder === "Customer Segmentation"
-      ? "Audience Segmentation/Working Models"
-      : `Customer Journeys/${file.folder}`;
-  if (file.area === "experiments")
-    return file.folder.includes("Channel") ||
-      file.folder.includes("Channel-mix")
-      ? `Channel Tests/${file.folder}`
-      : `A-B Tests/${file.folder}`;
-  if (file.area === "decisions") return `Recommendations/${file.folder}`;
-  const groups: Record<string, string> = {
-    "Measurement Frameworks": "Measurement/Frameworks",
-    "Journey Analysis": "Measurement/Journey Analysis",
-    "Website Behaviour & UX": "Website Analysis/Conversion Study",
-    "Channel Analysis": "Periodic Reports/Channel Analysis",
-    "Performance Analysis": "Periodic Reports/Retention",
-    "Experiment Results": "Measurement/Experiment Results",
-    "Predictive Analytics": "Predictive Analysis/Retention Pilot",
-    "Periodic Reporting": "Periodic Reports/2026",
-  };
-  return groups[file.folder] || file.folder;
-};
-const documentFor = (file: WorkingFile): LibraryDocument => ({
-  id: file.id,
-  name: file.name,
-  folder: folderFor(file),
-  modified: file.modified,
-  owner: file.owner,
-  status: file.review,
-  summary:
-    file.id === "journey-map"
-      ? journey
-          .map(
-            (step) =>
-              `${step.stage}: ${step.behaviour}. ${step.friction}. ${step.test}.`,
-          )
-          .join(" ")
-      : file.id === "seg-model"
-        ? segments
-            .map(
-              (segment) =>
-                `${segment.name}: ${segment.behaviour}; ${segment.motivation}.`,
-            )
-            .join(" ")
-        : `${file.campaign}. ${initiatives.find((item) => item.id === file.initiativeId)?.question || ""}`,
-  metadata: {
-    "Work type": file.workType,
-    Research: file.campaign,
-    Sensitivity: file.sensitivity,
-  },
-});
+import {
+  libraries,
+  libraryFor,
+  folderFor,
+  documentFor,
+  definitions,
+} from "./libraries";
 const fileLink = (file: WorkingFile) =>
   `${base}/${libraryFor(file)}?file=${file.id}`;
 
@@ -387,7 +318,7 @@ export default function AudienceApp() {
         helpText={description}
         onOpen={(file) => nav(fileLink(filesById.get(file.id)!))}
         onTeams={() => {
-          location.href = "/teams?staff=taylor&workspace=audience";
+          location.href = `/teams?staff=${teamsStaffForWorkspace("audience")}&workspace=audience`;
         }}
         onMessage={setMessage}
       />
@@ -527,6 +458,21 @@ export default function AudienceApp() {
                   <p>Research audiences, test ideas and share findings.</p>
                 </div>
               </div>
+              <section className="service-section">
+                <h3>Research ready for a decision</h3>
+                <p>
+                  Audience Segmentation Refresh · synthesis review on 23
+                  October.
+                </p>
+                <div className="audience-simple-links">
+                  <a href={`${base}/research?file=seg-synthesis`}>
+                    Review the findings
+                  </a>
+                  <a href={`${base}/register?view=Ready+for+Review`}>
+                    Experiments awaiting review
+                  </a>
+                </div>
+              </section>
               <DocumentLibrary
                 title="Current research files"
                 files={files
@@ -538,21 +484,14 @@ export default function AudienceApp() {
                       "model-limitations",
                     ].includes(file.id),
                   )
-                  .map((file) => ({ ...documentFor(file), folder: "" }))}
+                  .map(documentFor)}
                 embedded
               />
-              <section className="service-section">
-                <h3>Quick links</h3>
-                <div className="audience-simple-links">
-                  <a href={`${base}/register`}>
-                    Research & Experiment Register
-                  </a>
-                  <a href={`${base}/automation`}>
-                    Marketing automation concepts
-                  </a>
-                  <a href={`${base}/calendar`}>Research calendar</a>
-                </div>
-              </section>
+              <p>
+                <a href="/content-delivery/production">
+                  Hand approved audience recommendations to content production →
+                </a>
+              </p>
             </>
           ) : register ? (
             renderRegister()
@@ -607,6 +546,7 @@ export default function AudienceApp() {
               <DocumentLibrary
                 key={activeLibrary.id + initialFolder}
                 title={activeLibrary.title}
+                definition={definitions[activeLibrary.id]}
                 files={files
                   .filter((file) => libraryFor(file) === activeLibrary.id)
                   .map(documentFor)}

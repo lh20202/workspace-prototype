@@ -1,4 +1,5 @@
 import { workspaceById } from "./registry";
+import { enrichFunctionalFiles } from "./contentRealism";
 import type { FunctionalConfig, WorkingFile } from "./types";
 const seeds = {
   services: {
@@ -945,28 +946,31 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
             ? "Interaction quality"
             : "Working review",
     })),
-    files: s.files.map(
-      ([area, name], i) =>
-        ({
-          id: `${id}-F${i + 1}`,
-          area,
-          name,
-          folder: area,
-          workType: "Working review",
-          reference: "",
-          library: "operations",
-          campaign: workspaceById.get(id)!.title,
-          operation: "Shared operations",
-          location: workspaceById.get(id)!.title,
-          type: name.split(".").at(-1)!,
-          status: "Current",
-          owner: id === "people" ? "Elena Rossi" : "Jordan Lee",
-          validFrom: "2026-10-01",
-          validTo: "2026-12-31",
-          modified: "2026-10-16",
-          sensitivity: "Internal",
-          recordState: "Working information",
-        }) as WorkingFile,
+    files: enrichFunctionalFiles(
+      id,
+      s.files.map(
+        ([area, name], i) =>
+          ({
+            id: `${id}-F${i + 1}`,
+            area,
+            name,
+            folder: area,
+            workType: "Working review",
+            reference: "",
+            library: "operations",
+            campaign: workspaceById.get(id)!.title,
+            operation: "Shared operations",
+            location: workspaceById.get(id)!.title,
+            type: name.split(".").at(-1)!,
+            status: "Current",
+            owner: id === "people" ? "Elena Rossi" : "Jordan Lee",
+            validFrom: "2026-10-01",
+            validTo: "2026-12-31",
+            modified: "2026-10-16",
+            sensitivity: "Internal",
+            recordState: "Working information",
+          }) as WorkingFile,
+      ),
     ),
     protected: s.protected.map(([id, name, area, strict]) => ({
       id: String(id),
