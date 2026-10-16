@@ -16,7 +16,7 @@ describe("launcher and service desk routes", () => {
     );
   });
   it("sets distinct product and page titles", () => {
-    expect(pageTitle("/")).toBe("Workspace prototypes");
+    expect(pageTitle("/")).toBe("Digital Workspaces | Company intranet");
     expect(pageTitle("/logistics/teams")).toBe(
       "Acquisition & Activation Logistics | Teams",
     );

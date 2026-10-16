@@ -18,8 +18,16 @@ export function prototypeForPath(
   | "service-desk"
   | "services"
   | "audience"
-  | "content" {
+  | "content"
+  | "finance"
+  | "teams" {
   if (pathname === "/") return "launcher";
+  if (pathname === "/teams") return "teams";
+  if (
+    pathname === "/financial-operations" ||
+    pathname.startsWith("/financial-operations/")
+  )
+    return "finance";
   if (
     pathname === "/content-delivery" ||
     pathname.startsWith("/content-delivery/")
@@ -36,6 +44,9 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (pathname === "/teams") return "Digital workspaces | Teams";
+  if (pathname.startsWith("/financial-operations"))
+    return "Income & Financial Operations";
   if (
     pathname === "/content-delivery" ||
     pathname.startsWith("/content-delivery/")
@@ -57,7 +68,7 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/logistics"))
     return "Acquisition & Activation Logistics";
   return pathname === "/"
-    ? "Workspace prototypes"
+    ? "Digital Workspaces | Company intranet"
     : "Organisational Planning & Reporting";
 }
 export function accessRequestHref(folder = "") {

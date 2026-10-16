@@ -1,0 +1,502 @@
+.intranet-directory {
+  background: #f5f5f5;
+  min-height: 100dvh;
+  color: #242424;
+}
+.directory-brand {
+  height: 46px;
+  background: #e00;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 24px;
+}
+.directory-brand-end {
+  margin-left: auto;
+  font-size: 12px;
+}
+.directory-nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 28px;
+  flex-wrap: wrap;
+}
+.directory-nav strong {
+  margin-right: 12px;
+}
+.directory-nav button {
+  border: 0;
+  background: none;
+  padding: 8px 0;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+.directory-nav button[aria-current] {
+  border-color: #e00;
+  font-weight: 600;
+}
+.directory-main {
+  max-width: 1240px;
+  margin: auto;
+  padding: 24px 28px 125px;
+}
+.directory-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.directory-heading small {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #666;
+}
+.directory-heading h1 {
+  font-size: 30px;
+  margin: 8px 0;
+}
+.directory-heading p {
+  margin: 0;
+  color: #616161;
+}
+.directory-heading aside {
+  font-size: 11px;
+  color: #666;
+  max-width: 180px;
+}
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.directory-tile {
+  background: white;
+  border: 1px solid #e4e4e4;
+  border-radius: 5px;
+  padding: 19px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 10px 15px;
+  color: inherit;
+  box-shadow: 0 2px 5px #00000005;
+  text-decoration: none;
+  min-height: 147px;
+  box-sizing: border-box;
+}
+.directory-tile:hover {
+  border-color: #999;
+  box-shadow: 0 3px 12px #00000012;
+}
+.directory-tile-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: #edf4f7;
+  border-radius: 9px;
+  color: #236a7d;
+}
+.directory-tile-icon svg {
+  width: 31px;
+  height: 31px;
+}
+.directory-tile small {
+  font-size: 10px;
+  color: #666;
+}
+.directory-tile h2 {
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 5px 0;
+}
+.directory-open {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #006caa;
+}
+.directory-open img {
+  width: 16px;
+  height: 16px;
+}
+.directory-open svg {
+  margin-left: auto;
+}
+.directory-teams {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 28px;
+  background: #f0effa;
+  border-top: 1px solid #d6d4ec;
+  box-shadow: 0 -3px 12px #00000008;
+}
+.directory-teams > img {
+  width: 35px;
+  height: 35px;
+}
+.directory-teams-copy {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+.directory-teams-copy span {
+  font-size: 12px;
+  color: #555;
+}
+.directory-teams label {
+  font-size: 11px;
+  display: grid;
+  gap: 3px;
+}
+.directory-teams select {
+  max-width: 310px;
+  background: white;
+  border: 1px solid #aaa;
+  padding: 7px;
+  font: inherit;
+  font-size: 12px;
+}
+.directory-teams > a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #5b5fc7;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 13px;
+  text-decoration: none;
+}
+.directory-notice {
+  padding: 8px;
+  background: #fff;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.directory-notice button {
+  float: right;
+}
+.staff-teams {
+  min-height: 80vh;
+  background: #f5f5f9;
+}
+.staff-teams-header {
+  background: #464775;
+  color: #fff;
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.staff-teams-layout {
+  display: grid;
+  grid-template-columns: 245px 1fr;
+}
+.staff-teams-sidebar {
+  padding: 24px;
+  background: #eeedf4;
+}
+.staff-teams-sidebar a {
+  display: block;
+  margin: 16px 0;
+}
+.staff-teams-main {
+  padding: 24px;
+  max-width: 1000px;
+}
+.staff-teams-main nav {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 12px;
+}
+.staff-teams-post {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 20px;
+}
+.staff-teams-files a {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+.staff-teams-role {
+  font-size: 12px;
+  font-weight: 400;
+}
+.staff-teams-channel {
+  display: block;
+  margin: 12px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+.staff-teams-channel[aria-current] {
+  font-weight: 600;
+  color: #5b5fc7;
+}
+@media (max-width: 800px) {
+  .directory-heading {
+    margin-bottom: 12px;
+  }
+  .directory-heading aside {
+    display: none;
+  }
+  .directory-main {
+    padding: 16px 16px 155px;
+  }
+  .directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .directory-tile {
+    padding: 12px;
+    min-height: 128px;
+    grid-template-columns: 32px 1fr;
+    gap: 6px;
+  }
+  .directory-tile-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .directory-tile-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+  .directory-tile h2 {
+    font-size: 14px;
+  }
+  .directory-tile small {
+    font-size: 9px;
+  }
+  .directory-nav {
+    gap: 12px;
+    padding: 8px 16px;
+  }
+  .directory-nav strong {
+    width: 100%;
+    font-size: 14px;
+  }
+  .directory-nav button {
+    font-size: 11px;
+    padding: 4px 0;
+  }
+  .directory-teams {
+    padding: 10px 16px;
+    gap: 8px;
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+  }
+  .directory-teams > img {
+    width: 28px;
+    height: 28px;
+  }
+  .directory-teams-copy strong {
+    font-size: 13px;
+  }
+  .directory-teams-copy span {
+    display: none;
+  }
+  .directory-teams label {
+    grid-column: 1/3;
+  }
+  .directory-teams select {
+    width: 100%;
+    max-width: none;
+  }
+  .directory-teams > a {
+    grid-column: 3;
+    grid-row: 2;
+    padding: 9px;
+    font-size: 12px;
+  }
+  .directory-teams > a svg {
+    display: none;
+  }
+  .directory-heading h1 {
+    font-size: 24px;
+  }
+  .directory-heading p {
+    font-size: 13px;
+  }
+  .directory-open {
+    grid-column: 1/3;
+    font-size: 11px;
+  }
+  .staff-teams-layout {
+    grid-template-columns: 1fr;
+  }
+  .staff-teams-sidebar {
+    padding: 12px;
+  }
+  .staff-teams-main {
+    padding: 15px;
+  }
+}
+@media (max-width: 400px) {
+  .directory-tile {
+    min-height: 133px;
+  }
+  .directory-main {
+    padding-top: 12px;
+  }
+  .directory-heading h1 {
+    margin: 5px 0;
+  }
+  .directory-tile h2 {
+    font-size: 12px;
+  }
+  .directory-tile small {
+    font-size: 8px;
+  }
+  .directory-nav {
+    gap: 9px;
+  }
+  .directory-nav button {
+    font-size: 10px;
+  }
+  .directory-brand {
+    height: 36px;
+    padding: 0 16px;
+  }
+  .directory-heading small {
+    font-size: 9px;
+  }
+}
+.staff-teams-file {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  background: white;
+  color: #006caa;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.staff-teams-file small {
+  color: #777;
+  font-size: 11px;
+}
+.staff-teams-header > strong {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 500px) {
+  .directory-nav {
+    flex-wrap: nowrap;
+    overflow: auto;
+    gap: 16px;
+    min-height: 31px;
+    padding: 4px 12px;
+  }
+  .directory-nav strong {
+    display: none;
+  }
+  .directory-nav button {
+    white-space: nowrap;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .directory-main {
+    padding: 12px 12px 125px;
+  }
+  .directory-heading {
+    margin-bottom: 10px;
+  }
+  .directory-heading h1 {
+    font-size: 23px;
+  }
+  .directory-grid {
+    gap: 8px;
+  }
+  .directory-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 125px;
+    padding: 10px;
+    gap: 3px;
+  }
+  .directory-tile-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .directory-tile-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .directory-tile > div > small {
+    display: none;
+  }
+  .directory-tile h2 {
+    font-size: 11.5px;
+    line-height: 1.25;
+    margin: 2px 0;
+  }
+  .directory-open {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .directory-open img {
+    width: 13px;
+    height: 13px;
+  }
+  .directory-open svg {
+    width: 16px;
+  }
+  .directory-teams {
+    grid-template-columns: 25px minmax(0, 1fr) 105px;
+    padding: 9px 12px;
+    gap: 6px;
+  }
+  .directory-teams-copy {
+    grid-column: 2/4;
+  }
+  .directory-teams-copy strong {
+    font-size: 12px;
+  }
+  .directory-teams select {
+    min-width: 0;
+    font-size: 10px;
+    padding: 6px;
+  }
+  .directory-teams > a {
+    font-size: 10px;
+    justify-content: center;
+  }
+  .directory-teams label {
+    min-width: 0;
+  }
+  .directory-brand-end {
+    font-size: 10px;
+  }
+}
+@media (max-width: 500px) {
+  .directory-nav button[aria-current] {
+    order: -1;
+  }
+}

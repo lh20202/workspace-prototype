@@ -22,14 +22,17 @@ export default function AccessRequest() {
     workspace === "Audience Research & Marketing Insight" ||
     workspace === "Audience Insight & Innovation R&D";
   const content = workspace === "Content Creation & Delivery";
-  const freshservice = services || content;
-  const returnPath = content
-    ? "/content-delivery"
-    : audience
-      ? "/audience-innovation/research"
-      : services
-        ? "/services"
-        : "/planning/restricted";
+  const finance = workspace === "Income & Financial Operations";
+  const freshservice = services || content || finance;
+  const returnPath = finance
+    ? "/financial-operations"
+    : content
+      ? "/content-delivery"
+      : audience
+        ? "/audience-innovation/research"
+        : services
+          ? "/services"
+          : "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -68,13 +71,15 @@ export default function AccessRequest() {
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
           Back to{" "}
-          {content
-            ? "Content Creation & Delivery"
-            : audience
-              ? "Audience research"
-              : services
-                ? "Organisation Services"
-                : "Restricted Planning"}
+          {finance
+            ? "Income & Financial Operations"
+            : content
+              ? "Content Creation & Delivery"
+              : audience
+                ? "Audience research"
+                : services
+                  ? "Organisation Services"
+                  : "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}

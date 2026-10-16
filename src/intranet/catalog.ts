@@ -1,0 +1,82 @@
+export const workspaces = [
+  {
+    id: "planning",
+    title: "Organisational Planning & Reporting",
+    group: "Strategy & planning",
+    href: "/planning",
+    icon: "strategy",
+  },
+  {
+    id: "logistics",
+    title: "Acquisition & Activation Logistics",
+    group: "Campaign operations",
+    href: "/logistics",
+    icon: "people",
+  },
+  {
+    id: "services",
+    title: "Organisation Services",
+    group: "Infrastructure & services",
+    href: "/services",
+    icon: "services",
+  },
+  {
+    id: "audience",
+    title: "Audience Research & Marketing Insight",
+    group: "Outreach",
+    href: "/audience-innovation",
+    icon: "research",
+  },
+  {
+    id: "content",
+    title: "Content Creation & Delivery",
+    group: "Outreach",
+    href: "/content-delivery",
+    icon: "content",
+  },
+  {
+    id: "finance",
+    title: "Income & Financial Operations",
+    group: "Transactions & commercial services",
+    href: "/financial-operations",
+    icon: "finance",
+  },
+];
+export const staff = [
+  {
+    id: "maya",
+    name: "Maya Chen",
+    role: "Acquisition Operations Coordinator",
+    workspace: "logistics",
+  },
+  {
+    id: "casey",
+    name: "Casey Blake",
+    role: "Strategic Planning Adviser",
+    workspace: "planning",
+  },
+  {
+    id: "jordan",
+    name: "Jordan Lee",
+    role: "Internal Services Coordinator",
+    workspace: "services",
+  },
+  {
+    id: "taylor",
+    name: "Taylor Brooks",
+    role: "Audience Researcher",
+    workspace: "audience",
+  },
+  {
+    id: "alex",
+    name: "Alex Morgan",
+    role: "Digital Content Producer",
+    workspace: "content",
+  },
+  {
+    id: "sam",
+    name: "Sam Patel",
+    role: "Financial Operations Analyst",
+    workspace: "finance",
+  },
+];
