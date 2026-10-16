@@ -901,6 +901,7 @@ export const posts: Post[] = [
     author: "Maya Chen",
     time: "10:20",
     text: "important mews coming in live",
+    reply: "Alex Morgan: take me to your leader",
     fileIds: [],
     image: { src: "/images/daisy.jpg", alt: "Daisy the cat" },
   },
