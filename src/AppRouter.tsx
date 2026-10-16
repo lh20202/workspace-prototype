@@ -4,11 +4,7 @@ import PrototypeNavigator from "./components/PrototypeNavigator";
 const LogisticsApp = lazy(() => import("./logistics/LogisticsApp"));
 const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
 import { pageTitle, prototypeForPath } from "./utils/routes";
-import {
-  ArrowRight24Regular,
-  Folder24Regular,
-  PeopleTeam24Regular,
-} from "@fluentui/react-icons";
+import { ArrowRight24Regular } from "@fluentui/react-icons";
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   useEffect(() => {
@@ -24,21 +20,31 @@ export default function AppRouter() {
           <div className="launcher-options">
             <a href="/planning">
               <span className="launcher-icon">
-                <Folder24Regular />
+                <img
+                  src="/images/sharepoint-logo.svg"
+                  alt="SharePoint"
+                  width="34"
+                  height="34"
+                />
               </span>
               <span>
                 <small>PLANNING & REPORTING</small>View Organisational Planning
-                & Reporting
+                & Reporting workspace
               </span>
               <ArrowRight24Regular />
             </a>
             <a href="/logistics">
               <span className="launcher-icon">
-                <PeopleTeam24Regular />
+                <img
+                  src="/images/sharepoint-logo.svg"
+                  alt="SharePoint"
+                  width="34"
+                  height="34"
+                />
               </span>
               <span>
                 <small>CAMPAIGN OPERATIONS</small>View Acquisition & Activation
-                Logistics
+                Logistics workspace
               </span>
               <ArrowRight24Regular />
             </a>
