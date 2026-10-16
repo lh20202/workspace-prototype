@@ -1270,3 +1270,77 @@
     height: calc(100vh - 116px);
   }
 }
+
+.teams-thread-reply {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 24px;
+  margin: 0;
+  border-top: 1px solid #edebe9;
+  background: #faf9fc;
+}
+.thread-reply-body {
+  min-width: 0;
+}
+.thread-reply-body header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 7px;
+}
+.thread-reply-body header strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: #242424;
+}
+.thread-reply-body header > span {
+  font-size: 10px;
+  color: #707070;
+}
+.teams-post .thread-reply-body p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+  padding: 0;
+  color: #242424;
+}
+.thread-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.thread-reactions button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 39px;
+  padding: 3px 7px;
+  border: 1px solid #e1dfe8;
+  background: white;
+  border-radius: 14px;
+  font-size: 11px;
+  color: #605e5c;
+  cursor: pointer;
+}
+.thread-reactions button > span:first-child {
+  font-size: 14px;
+}
+.thread-reactions button:hover {
+  background: #efedf8;
+  border-color: #b7b1d8;
+}
+.thread-reactions button[aria-pressed="true"] {
+  color: #464775;
+  border-color: #6264a7;
+  background: #e8e7f5;
+}
+.thread-reactions button:focus-visible {
+  outline: 2px solid #6264a7;
+  outline-offset: 2px;
+}
+@media (max-width: 800px) {
+  .teams-thread-reply {
+    padding: 15px;
+  }
+}

@@ -511,18 +511,20 @@ export default function TeamsView({
                       </a>
                     )}
                     {p.reply && (
-                      <div className="post-reply">
-                        <Chat24Regular />
-                        <span>{p.reply}</span>
-                      </div>
+                      <ThreadReply
+                        author={p.reply.split(":")[0]}
+                        text={p.reply.slice(p.reply.indexOf(":") + 1).trim()}
+                        time="10:24"
+                        reactions={p.id === "post-daisy"}
+                      />
                     )}
                     {localReplies[p.id]?.map((text, i) => (
-                      <div className="post-reply" key={i}>
-                        <span className="post-avatar small">MC</span>
-                        <span>
-                          <strong>Maya Chen</strong> {text}
-                        </span>
-                      </div>
+                      <ThreadReply
+                        key={i}
+                        author="Maya Chen"
+                        text={text}
+                        time="Just now"
+                      />
                     ))}
                     <div className="post-actions">
                       <button
@@ -795,4 +797,63 @@ function librariesName(id: string) {
       records: "Completed Campaign Records",
     } as Record<string, string>
   )[id];
+}
+
+function ThreadReply({
+  author,
+  text,
+  time,
+  reactions = false,
+}: {
+  author: string;
+  text: string;
+  time: string;
+  reactions?: boolean;
+}) {
+  const [selected, setSelected] = useState<string[]>([]);
+  const choices = [
+    { emoji: "👍", name: "Like", count: reactions ? 3 : 0 },
+    { emoji: "😂", name: "Laugh", count: reactions ? 2 : 0 },
+    { emoji: "❤️", name: "Love", count: reactions ? 1 : 0 },
+    { emoji: "😮", name: "Surprised", count: 0 },
+  ];
+  return (
+    <article className="teams-thread-reply" aria-label={`Reply from ${author}`}>
+      <span className="post-avatar small" aria-hidden="true">
+        {author
+          .split(" ")
+          .map((n) => n[0])
+          .join("")}
+      </span>
+      <div className="thread-reply-body">
+        <header>
+          <strong>{author}</strong>
+          <span>{time}</span>
+        </header>
+        <p>{text}</p>
+        <div className="thread-reactions" aria-label="Comment reactions">
+          {choices.map((r) => (
+            <button
+              key={r.name}
+              title={r.name}
+              aria-label={`${r.name} reaction`}
+              aria-pressed={selected.includes(r.name)}
+              onClick={() =>
+                setSelected(
+                  selected.includes(r.name)
+                    ? selected.filter((n) => n !== r.name)
+                    : [...selected, r.name],
+                )
+              }
+            >
+              <span aria-hidden="true">{r.emoji}</span>
+              {r.count + (selected.includes(r.name) ? 1 : 0) || (
+                <span className="reaction-add">+</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
 }
