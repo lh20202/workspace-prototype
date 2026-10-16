@@ -20,9 +20,7 @@ export default function AppRouter() {
         <div>
           <span className="launcher-eyebrow">INTERACTIVE WORKSPACES</span>
           <h1>Workspace prototypes</h1>
-          <p>
-            interactive workspace examples
-          </p>
+          <p>interactive workspace examples</p>
           <div className="launcher-options">
             <a href="/planning">
               <span className="launcher-icon">
@@ -41,6 +39,21 @@ export default function AppRouter() {
               <span>
                 <small>CAMPAIGN OPERATIONS</small>View Acquisition & Activation
                 Logistics
+              </span>
+              <ArrowRight24Regular />
+            </a>
+            <a href="/logistics/teams?channel=general&tab=Posts">
+              <span className="launcher-icon launcher-teams-icon">
+                <img
+                  src="/images/teams-logo.svg"
+                  alt="Microsoft Teams"
+                  width="34"
+                  height="34"
+                />
+              </span>
+              <span>
+                <small>ACQUISITION &amp; ACTIVATION LOGISTICS</small>
+                Improved Teams experience
               </span>
               <ArrowRight24Regular />
             </a>

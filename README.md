@@ -1,6 +1,6 @@
 # Workspace prototypes
 
-A simple two-button landing page leading to two interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
+A simple landing page leading to two interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
 
 ## Development
 
@@ -8,7 +8,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 
 ## Routes
 
-- `/`: Workspace prototypes. Two large links to the planning and campaign logistics workspaces.
+- `/`: Workspace prototypes. Three large links to the planning workspace, acquisition and activation logistics workspace, and its Teams experience.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
 - `/logistics`: Acquisition & Activation Logistics Home.
