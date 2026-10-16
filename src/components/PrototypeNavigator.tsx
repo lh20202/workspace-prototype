@@ -7,7 +7,7 @@ export default function PrototypeNavigator() {
         aria-label="Demo controls"
       >
         <span>DEMO CONTROLS</span>
-        <a href="/">Back to all workspaces</a>
+        <a href="/architecture">Back to all workspaces</a>
         <aside className="demo-caveat" aria-label="Demonstration caveat">
           <Warning16Regular aria-hidden="true" />
           <div>

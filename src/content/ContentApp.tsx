@@ -6,16 +6,11 @@ import {
   DrawerHeader,
   DrawerHeaderTitle,
   DrawerBody,
-  Dialog,
-  DialogSurface,
-  DialogBody,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@fluentui/react-components";
 import {
   Home24Regular,
   Folder24Regular,
+  Calendar24Regular,
   ArrowRight20Regular,
   ArrowUpRight20Regular,
   Dismiss20Regular,
@@ -25,19 +20,18 @@ import {
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentIcon from "../components/DocumentIcon";
+import DocumentLibrary, {
+  type LibraryDocument,
+} from "../sharepoint/DocumentLibrary";
 import {
   title,
   description,
-  navigation,
   packages as initialPackages,
   files,
   filesById,
   tools,
   packageHref,
-  fileHref,
   toolHref,
-  pipelineViews,
   queryPackages,
   stages,
   rightsStatuses,
@@ -49,8 +43,6 @@ import {
   teamChannels,
   filesForChannel,
   calendarEntries,
-  digitalSteps,
-  recentIds,
   type Package,
   type ContentFile,
   type Rights,
@@ -58,16 +50,88 @@ import {
 import "../services/styles.css";
 import "./styles.css";
 const base = "/content-delivery";
-const date = (s: string) =>
-  new Date(s + "T12:00:00").toLocaleDateString("en-GB", {
+const date = (value: string) =>
+  new Date(value + "T12:00:00").toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
   });
+const libraries = [
+  { id: "production", title: "Current Production" },
+  { id: "editorial", title: "Editorial & Messaging" },
+  { id: "creative", title: "Creative & Digital Content" },
+];
+const currentPackages = ["PKG-101", "PKG-103", "PKG-104", "PKG-105"];
+const libraryFor = (file: ContentFile) =>
+  currentPackages.includes(file.packageId)
+    ? "production"
+    : file.area === "editorial"
+      ? "editorial"
+      : "creative";
+const folderFor = (file: ContentFile) => {
+  if (libraryFor(file) === "production") {
+    const stage =
+      file.workType === "Brief"
+        ? "Brief"
+        : file.id === "video-storyboard"
+          ? "Storyboard"
+          : file.workType === "Release checklist"
+            ? "Final Delivery"
+            : file.workType === "Review" || file.review === "Needs review"
+              ? "Review"
+              : "Working Drafts";
+    return `${file.campaign}/${stage}`;
+  }
+  if (libraryFor(file) === "editorial") {
+    const group =
+      file.packageId === "PKG-106"
+        ? "Audience Updates"
+        : file.packageId === "PKG-107"
+          ? "Customer Stories"
+          : file.packageId === "PKG-109"
+            ? "Media Releases"
+            : file.packageId === "PKG-111"
+              ? "Audio"
+              : "Public Information";
+    return `${group}/${file.campaign}`;
+  }
+  const group =
+    file.area === "digital"
+      ? "Website & Digital"
+      : file.packageId === "PKG-110"
+        ? "Print"
+        : file.packageId === "PKG-106"
+          ? "Presentations"
+          : file.packageId === "PKG-107"
+            ? "Storytelling"
+            : file.packageId === "PKG-108"
+              ? "Public Information"
+              : "Campaign Formats";
+  return `${group}/${file.campaign}`;
+};
+const documentFor = (file: ContentFile): LibraryDocument => {
+  const item = initialPackages.find((item) => item.id === file.packageId)!;
+  return {
+    id: file.id,
+    name: file.name,
+    folder: folderFor(file),
+    modified: file.modified,
+    owner: file.owner,
+    status: file.review,
+    summary: `${item.purpose}. ${item.testing} ${item.condition}`,
+    metadata: {
+      Production: file.campaign,
+      "Work type": file.workType,
+      Rights: item.rights,
+      "Review due": date(item.reviewDue),
+    },
+  };
+};
+const fileLink = (file: ContentFile) =>
+  `${base}/${libraryFor(file)}?file=${file.id}`;
 export default function ContentApp() {
   const [url, setUrl] = useState(location.pathname + location.search);
   const [packages, setPackages] = useState(initialPackages);
   const [message, setMessage] = useState("");
-  const [preview, setPreview] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Record<string, string[]>>({});
   const [month, setMonth] = useState(new Date(2026, 9, 1));
@@ -79,322 +143,146 @@ export default function ContentApp() {
   }, []);
   useEffect(() => {
     if (!message) return;
-    const t = setTimeout(() => setMessage(""), 5000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setMessage(""), 5000);
+    return () => clearTimeout(timer);
   }, [message]);
   const parsed = new URL(url, location.origin);
   const params = parsed.searchParams;
   const parts = parsed.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home";
-  const pkg = (id: string) => packages.find((p) => p.id === id)!;
+  const pkg = (id: string) => packages.find((item) => item.id === id)!;
   const routePackage =
-    parts[1] === "packages"
-      ? packages.find((p) => p.id === parts[2])
+    page === "packages"
+      ? packages.find((item) => item.id === parts[2])
       : undefined;
   const share =
     parts[3] === "shared"
-      ? partnerShares.find((s) => s.packageId === routePackage?.id)
+      ? partnerShares.find((item) => item.packageId === routePackage?.id)
       : undefined;
   const topic = protectedTopics.find(
-    (t) => protectedHref(t) === parsed.pathname,
+    (item) => protectedHref(item) === parsed.pathname,
   );
   const tool =
-    page === "tools" ? tools.find((t) => t.id === parts[2]) : undefined;
+    page === "tools" ? tools.find((item) => item.id === parts[2]) : undefined;
+  const candidateFile = filesById.get(params.get("file") || "");
+  const libraryId =
+    candidateFile && !share
+      ? libraryFor(candidateFile)
+      : page === "pipeline"
+        ? "production"
+        : page === "channels" || page === "partners"
+          ? "creative"
+          : page === "digital"
+            ? "production"
+            : page;
+  const activeLibrary = libraries.find((library) => library.id === libraryId);
+  const register =
+    page === "production-register" ||
+    (page === "pipeline" && !!params.get("view"));
   const valid =
     page === "home" ||
-    navigation.some((n) => n.id === page) ||
-    (page === "tools" && (!parts[2] || tool)) ||
-    page === "teams" ||
+    !!activeLibrary ||
     !!topic ||
-    !!share;
+    !!share ||
+    !!tool ||
+    ["tools", "teams", "calendar", "production-register"].includes(page);
   const navigate = (href: string, replace = false) => {
-    if (replace) history.replaceState({}, "", href);
-    else history.pushState({}, "", href);
+    history[replace ? "replaceState" : "pushState"]({}, "", href);
     setUrl(location.pathname + location.search);
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
-  const intercept = (e: MouseEvent<HTMLDivElement>) => {
-    const href = (e.target as HTMLElement).closest("a")?.getAttribute("href");
+  const intercept = (event: MouseEvent<HTMLDivElement>) => {
+    const href = (event.target as HTMLElement)
+      .closest("a")
+      ?.getAttribute("href");
     if (
       href?.startsWith(base) &&
-      !e.metaKey &&
-      !e.ctrlKey &&
-      !e.shiftKey &&
-      !e.altKey
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey
     ) {
-      e.preventDefault();
+      event.preventDefault();
       navigate(href);
     }
   };
   const setParams = (values: Record<string, string>, replace = false) => {
     const next = new URLSearchParams(params);
-    Object.entries(values).forEach(([k, v]) =>
-      v ? next.set(k, v) : next.delete(k),
+    Object.entries(values).forEach(([key, value]) =>
+      value ? next.set(key, value) : next.delete(key),
     );
     navigate(
       parsed.pathname + (next.size ? "?" + next.toString() : ""),
       replace,
     );
   };
-  const selected = packages.find((p) => p.id === params.get("package"));
-  const candidateFile = filesById.get(params.get("file") || "");
-  const selectedFile = share
-    ? sharedFiles(share.packageId).find((f) => f.id === candidateFile?.id)
-    : candidateFile;
+  const selected = packages.find((item) => item.id === params.get("package"));
   const search = params.get("search") || "";
-  const view = pipelineViews.includes(params.get("view") || "")
-    ? params.get("view")!
-    : "All Packages";
-  const channel = params.get("channel") || "";
-  const format = params.get("format") || "";
-  const rows = queryPackages(packages, view, search, channel, format);
+  const requestedView = params.get("view") || "All Packages";
+  const views = ["All Packages", "In Production", "Needs Review", "Completed"];
+  const view = views.includes(requestedView) ? requestedView : "All Packages";
+  const rows = queryPackages(
+    packages,
+    requestedView,
+    search,
+    params.get("channel") || "",
+    params.get("format") || "",
+  );
   const teamChannel =
-    teamChannels.find((c) => c.id === channel) || teamChannels[0];
+    teamChannels.find((item) => item.id === params.get("channel")) ||
+    teamChannels[0];
   const patch = (id: string, changes: Partial<Package>) =>
-    setPackages(packages.map((p) => (p.id === id ? { ...p, ...changes } : p)));
+    setPackages(
+      packages.map((item) => (item.id === id ? { ...item, ...changes } : item)),
+    );
   const openPackage = (id: string) => setParams({ package: id, file: "" });
-  const openFile = (f: ContentFile) => setParams({ file: f.id, package: "" });
-  const changeStage = (p: Package, value: string) => {
-    const next = updateStage(p, value);
+  const changeStage = (item: Package, value: string) => {
+    const next = updateStage(item, value);
     if (next.blockers.length)
       setMessage("Not ready: " + next.blockers.join("; "));
-    else {
-      setPackages(packages.map((x) => (x.id === p.id ? next.package : x)));
-      setMessage(
-        "Package updated locally; pipeline, reviews and calendar use the same record.",
+    else
+      setPackages(
+        packages.map((current) =>
+          current.id === item.id ? next.package : current,
+        ),
       );
-    }
   };
-  const copy = async (href: string) => {
-    try {
-      await navigator.clipboard.writeText(location.origin + href);
-      setMessage("Link copied.");
-    } catch {
-      setMessage("Use the browser address to copy this link.");
-    }
-  };
-  const refs = (p: Package) => (
+  const refs = (item: Package) => (
     <div className="content-reference-list">
-      {p.refs.map((r) => (
-        <a key={r.tool + r.id} href={toolHref(r.tool, p.id, r.id)}>
-          {tools.find((t) => t.id === r.tool)!.name} · {r.id}
+      {item.refs.map((reference) => (
+        <a
+          key={reference.tool + reference.id}
+          href={toolHref(reference.tool, item.id, reference.id)}
+        >
+          {tools.find((tool) => tool.id === reference.tool)!.name} ·{" "}
+          {reference.id}
           <ArrowUpRight20Regular />
         </a>
       ))}
     </div>
   );
-  const fileList = (data: ContentFile[], scoped = false) => (
-    <div className="content-file-list">
-      {data.map((f) => (
-        <button key={f.id} onClick={() => openFile(f)}>
-          <DocumentIcon name={f.name} />
-          <span>
-            {f.name}
-            <small>{scoped ? f.workType : `${f.campaign} · ${f.review}`}</small>
-          </span>
-          <ArrowRight20Regular />
-        </button>
+  const fileList = (source: ContentFile[]) => (
+    <div className="content-simple-links">
+      {source.map((file) => (
+        <a key={file.id} href={fileLink(file)}>
+          {file.name}
+        </a>
       ))}
     </div>
   );
-  const packageList = (data: Package[], reviews = false) => (
-    <div className="content-package-list">
-      {data.map((p) => (
-        <button key={p.id} onClick={() => openPackage(p.id)}>
-          <span>
-            <strong>{p.name}</strong>
-            <small>
-              {reviews
-                ? `${p.reviews
-                    .filter((r) => r.status === "Pending")
-                    .map((r) => r.type)
-                    .join(", ")} review · due ${date(p.reviewDue)}`
-                : `${p.lead} · ${p.formats.join(" + ")}`}
-            </small>
-          </span>
-          <span className="content-status">
-            {p.stage}
-            <small>{p.status}</small>
-          </span>
-          <ArrowRight20Regular />
-        </button>
-      ))}
-    </div>
+  const legacyFolder = packages.find(
+    (item) => item.id === params.get("folder"),
   );
-  const pipeline = () => (
-    <section className="service-section">
-      <h3>Content Pipeline</h3>
-      <div className="service-library-toolbar">
-        <label>
-          Saved view
-          <select
-            aria-label="Pipeline saved view"
-            value={view}
-            onChange={(e) => setParams({ view: e.target.value })}
-          >
-            {pipelineViews.map((v) => (
-              <option key={v}>{v}</option>
-            ))}
-          </select>
-        </label>
-        <Input
-          contentBefore={<Search20Regular />}
-          aria-label="Search content pipeline"
-          placeholder="Search packages or lead"
-          value={search}
-          onChange={(_, d) => setParams({ search: d.value }, true)}
-        />
-      </div>
-      <div className="table-scroll">
-        <table className="service-table content-pipeline">
-          <thead>
-            <tr>
-              {[
-                "Content package / purpose",
-                "Audience",
-                "Format / channel",
-                "Lead",
-                "Stage / status",
-                "Review due",
-                "Release",
-                "External partner",
-                "Rights / external reference",
-              ].map((c) => (
-                <th key={c}>{c}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((p) => (
-              <tr key={p.id}>
-                <td>
-                  <button onClick={() => openPackage(p.id)}>{p.name}</button>
-                  <small>{p.purpose}</small>
-                </td>
-                <td>{p.audience}</td>
-                <td>
-                  {p.formats.join(" + ")}
-                  <small>{p.channels.join(" · ")}</small>
-                </td>
-                <td>{p.lead}</td>
-                <td>
-                  <span className="content-status">{p.stage}</span>
-                  <small>{p.status}</small>
-                </td>
-                <td>{date(p.reviewDue)}</td>
-                <td>{date(p.releaseDate)}</td>
-                <td>{p.partner || "Internal production"}</td>
-                <td>
-                  {p.rights}
-                  <small>
-                    {p.refs.map((r) => (
-                      <a key={r.id} href={toolHref(r.tool, p.id, r.id)}>
-                        {r.id}{" "}
-                      </a>
-                    ))}
-                  </small>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {!rows.length && (
-          <p className="empty-state">No packages match this view.</p>
-        )}
-      </div>
-    </section>
-  );
-  const material = () => {
-    const source = files.filter(
-      (f) =>
-        f.area === page &&
-        (!params.get("folder") || f.packageId === params.get("folder")) &&
-        `${f.name} ${f.campaign} ${f.workType}`
-          .toLowerCase()
-          .includes(search.toLowerCase()),
-    );
-    return (
-      <section className="service-section">
-        <h3>Current working material</h3>
-        <div className="service-library-toolbar">
-          <label>
-            Content package
-            <select
-              aria-label="Working package filter"
-              value={params.get("folder") || ""}
-              onChange={(e) => setParams({ folder: e.target.value })}
-            >
-              <option value="">All packages</option>
-              {packages
-                .filter((p) =>
-                  files.some((f) => f.packageId === p.id && f.area === page),
-                )
-                .map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <Input
-            contentBefore={<Search20Regular />}
-            aria-label="Search working material"
-            placeholder="Search working material"
-            value={search}
-            onChange={(_, d) => setParams({ search: d.value }, true)}
-          />
-        </div>
-        <div className="table-scroll">
-          <table className="service-table">
-            <thead>
-              <tr>
-                {[
-                  "Name",
-                  "Content package",
-                  "Work type",
-                  "Review / co-authors",
-                  "Rights",
-                  "Modified",
-                ].map((c) => (
-                  <th key={c}>{c}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {source.map((f) => (
-                <tr key={f.id}>
-                  <td>
-                    <button onClick={() => openFile(f)}>
-                      <DocumentIcon name={f.name} />
-                      {f.name}
-                    </button>
-                  </td>
-                  <td>
-                    <button onClick={() => openPackage(f.packageId)}>
-                      {f.campaign}
-                    </button>
-                  </td>
-                  <td>{f.workType}</td>
-                  <td>
-                    {f.review}
-                    <small>
-                      {f.owner} ·{" "}
-                      {f.owner === "Maya Chen" ? "Alex Morgan" : "Maya Chen"}
-                    </small>
-                  </td>
-                  <td>{pkg(f.packageId).rights}</td>
-                  <td>16 Oct 2026</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {!source.length && (
-            <p className="empty-state">No working files match.</p>
-          )}
-        </div>
-      </section>
-    );
-  };
+  const initialFolder = params.get("library")
+    ? ""
+    : legacyFolder
+      ? legacyFolder.name
+      : page === "digital"
+        ? pkg("PKG-105").name
+        : "";
   const milestoneItems = calendarEntries(packages);
+  const packageContext =
+    selected || packages.find((item) => initialFolder === item.name);
   return (
     <div
       className={`app-shell services-app content-app ${share ? "content-partner-preview" : ""}`}
@@ -410,7 +298,7 @@ export default function ContentApp() {
             searchFiles={files}
             memberCount={24}
             helpText={description}
-            onOpen={(f) => navigate(fileHref(filesById.get(f.id)!))}
+            onOpen={(file) => navigate(fileLink(filesById.get(file.id)!))}
             onTeams={() => navigate(`${base}/teams`)}
             onMessage={setMessage}
           />
@@ -420,8 +308,8 @@ export default function ContentApp() {
           <img
             src="/images/sharepoint-logo.svg"
             alt="SharePoint"
-            width="34"
-            height="34"
+            width="32"
+            height="32"
           />
           <div>
             <strong>{routePackage!.name}</strong>
@@ -441,24 +329,34 @@ export default function ContentApp() {
                 <Home24Regular />
                 Home
               </a>
-              <span className="service-nav-label">CONTENT PRODUCTION</span>
-              {navigation.map((n) => (
+              {libraries.map((library) => (
                 <a
-                  href={`${base}/${n.id}`}
-                  key={n.id}
-                  aria-current={page === n.id ? "page" : undefined}
+                  key={library.id}
+                  href={`${base}/${library.id}`}
+                  aria-current={
+                    !register && activeLibrary?.id === library.id
+                      ? "page"
+                      : undefined
+                  }
                 >
                   <Folder24Regular />
-                  {n.name}
+                  {library.title}
                 </a>
               ))}
+              <a
+                href={`${base}/calendar`}
+                aria-current={page === "calendar" ? "page" : undefined}
+              >
+                <Calendar24Regular />
+                Production Calendar
+              </a>
             </nav>
           </aside>
         )}
         <main id="content-main" className="services-main">
           <div className="breadcrumb">
             {share ? (
-              <span>Package-scoped collaboration</span>
+              "Shared production area"
             ) : (
               <>
                 <a href={base}>Workspace</a>
@@ -466,12 +364,17 @@ export default function ContentApp() {
                   <>
                     {" "}
                     /{" "}
-                    {navigation.find((n) => n.id === page)?.name ||
-                      (page === "tools"
-                        ? "External tools"
-                        : page === "teams"
-                          ? "Team collaboration"
-                          : "Content package")}
+                    {register
+                      ? "Production Register"
+                      : activeLibrary?.title ||
+                        (topic
+                          ? "Protected component"
+                          : tool?.name ||
+                            (page === "calendar"
+                              ? "Production Calendar"
+                              : page === "teams"
+                                ? "Team collaboration"
+                                : "Production links"))}
                   </>
                 )}
               </>
@@ -480,23 +383,14 @@ export default function ContentApp() {
           {!valid ? (
             <>
               <h2>Page not found</h2>
-              <a href={base}>Return to Content Creation & Delivery</a>
+              <a href={base}>Return to workspace</a>
             </>
           ) : topic ? (
             <section className="service-restricted">
               <LockClosed20Regular />
-              <span className="library-label">Protected package component</span>
-              <h2>{topic.name}</h2>
+              <h2>Access denied</h2>
+              <h3>{topic.name}</h3>
               <p>{pkg(topic.packageId).name}</p>
-              <p>
-                This component has a narrower access group because it requires
-                restricted handling. Ordinary production files remain available
-                in the content package.
-              </p>
-              <p>
-                No participant, medical, security, distribution or commercial
-                records are shown here.
-              </p>
               <a
                 href={
                   "/service-desk/access-request?" +
@@ -507,456 +401,249 @@ export default function ContentApp() {
                   })
                 }
               >
-                Request access through Freshservice <ArrowRight20Regular />
+                Request access through Freshservice
               </a>
-              <a href={packageHref(topic.packageId)}>
-                Return to shared package
-              </a>
+              <p>
+                <a href={packageHref(topic.packageId)}>
+                  Back to shared production files
+                </a>
+              </p>
             </section>
           ) : share ? (
             <>
-              <span className="content-boundary-label">
-                NARROW EXTERNAL COLLABORATION
-              </span>
-              <h2>{share.name}</h2>
-              <p>{share.note}</p>
-              <p className="service-muted">
-                This preview contains only approved shared working material.
-                Internal notes, protected components and other packages are
-                outside this area.
+              <DocumentLibrary
+                title={share.name}
+                files={sharedFiles(share.packageId).map((file) => ({
+                  ...documentFor(file),
+                  folder: "",
+                }))}
+                readOnly
+              />
+              <p>
+                Review due {date(routePackage!.reviewDue)} · delivery{" "}
+                {date(routePackage!.releaseDate)} · {routePackage!.lead}
               </p>
-              {fileList(sharedFiles(share.packageId), true)}
-              <section className="service-section">
-                <h3>Delivery coordination</h3>
-                <p>
-                  Review due {date(routePackage!.reviewDue)} · planned delivery{" "}
-                  {date(routePackage!.releaseDate)} · owner {routePackage!.lead}
-                </p>
-                <p>
-                  Review comments: please address the agreed feedback before
-                  preparing the next delivery.
-                </p>
-              </section>
-              <a href={packageHref(share.packageId)}>
-                Leave preview and return to internal package
-              </a>
-              {candidateFile && !selectedFile && (
-                <p role="status">
-                  That file is not included in this shared area.
-                </p>
-              )}
+              <p>
+                <a href={packageHref(share.packageId)}>Leave partner preview</a>
+              </p>
+              {candidateFile &&
+                !sharedFiles(share.packageId).some(
+                  (file) => file.id === candidateFile.id,
+                ) && (
+                  <p role="status">
+                    That file is not included in this shared area.
+                  </p>
+                )}
             </>
           ) : tool ? (
             <section className="system-destination">
               <span className="external-system-label">
-                <ArrowUpRight20Regular /> EXTERNAL PRODUCTION SYSTEM · SIMULATED
-                DESTINATION
+                <ArrowUpRight20Regular />
+                Production system preview
               </span>
               <h2>{tool.name}</h2>
               <p>{tool.purpose}.</p>
-              {selected && <p>Content package: {selected.name}</p>}
+              {selected && <p>{selected.name}</p>}
               {params.get("reference") && (
-                <p>
-                  External reference: <strong>{params.get("reference")}</strong>
-                </p>
+                <p>Reference: {params.get("reference")}</p>
               )}
               <p className="service-muted">
-                This would open the specialist platform. No authoritative
-                records are copied here, no login is opened and no data is
+                This preview represents the specialist platform; no data is
                 transmitted.
               </p>
-              {selected && (
-                <a href={packageHref(selected.id)}>Back to content package</a>
-              )}
-              <a href={`${base}/pipeline`}>Back to content work</a>
-              {["piwik", "vwo", "semrush", "brandwatch"].includes(tool.id) && (
-                <a href="/audience-innovation/analytics">
-                  Go to Audience Research & Marketing Insight for deeper
-                  analysis
-                </a>
-              )}
+              <a
+                href={
+                  selected ? packageHref(selected.id) : `${base}/production`
+                }
+              >
+                Back to production
+              </a>
             </section>
           ) : page === "tools" ? (
-            <>
-              <h2>Production platform links</h2>
-              <p className="service-muted">
-                A fictional production ecosystem using real market products.
-                Each opens a lightweight simulated destination.
+            <section>
+              <h2>Production links</h2>
+              <p>
+                Use a production record to open its related specialist system.
               </p>
-              <Input
-                aria-label="Search tools"
-                placeholder="Find a production tool"
-                value={search}
-                onChange={(_, d) => setParams({ search: d.value }, true)}
-              />
-              <div className="content-all-tools">
-                {tools
-                  .filter((t) =>
-                    `${t.name} ${t.purpose}`
-                      .toLowerCase()
-                      .includes(search.toLowerCase()),
-                  )
-                  .map((t) => (
-                    <a key={t.id} href={toolHref(t.id)}>
-                      <strong>{t.name}</strong>
-                      <small>{t.purpose}</small>
-                      <ArrowUpRight20Regular />
-                    </a>
-                  ))}
-              </div>
-            </>
-          ) : (
+              <a href={`${base}/production-register`}>Production Register</a>
+            </section>
+          ) : page === "home" ? (
             <>
               <div className="library-heading">
                 <div>
-                  <h2>
-                    {page === "home"
-                      ? title
-                      : page === "teams"
-                        ? "Team collaboration"
-                        : navigation.find((n) => n.id === page)!.name}
-                  </h2>
-                  <p>
-                    {page === "home"
-                      ? description
-                      : page === "pipeline"
-                        ? "One working package across production, review, rights clearance and release."
-                        : page === "editorial"
-                          ? "Develop briefs, messages, narrative, headlines and channel-ready editorial drafts together."
-                          : page === "creative"
-                            ? "Graphics, photography, video, audio, illustration, print and presentation reviews tied to content purpose."
-                            : page === "channels"
-                              ? "Adapt packages across channels and evolve recurring content formats without splitting their working context."
-                              : page === "digital"
-                                ? "Content requirements, UX copy, acceptance and technical handoffs for digital delivery."
-                                : page === "partners"
-                                  ? "Package-specific collaboration with agencies, production partners and content review partners."
-                                  : page === "calendar"
-                                    ? "Collaborative milestones only. Detailed channel scheduling remains in Planable."
-                                    : "Durable production channels with the same shared working files as SharePoint."}
-                  </p>
+                  <h2>{title}</h2>
+                  <p>Develop, review and deliver public-facing content.</p>
                 </div>
               </div>
-              {page === "home" ? (
-                <div className="services-home-layout">
-                  <div>
-                    <section className="service-section">
-                      <div className="service-section-heading">
-                        <h3>In production</h3>
-                        <a href={`${base}/pipeline?view=In+Production`}>
-                          Full pipeline <ArrowRight20Regular />
-                        </a>
-                      </div>
-                      {packageList(
-                        packages
-                          .filter((p) => !["Live", "Closed"].includes(p.stage))
-                          .slice(0, 6),
-                      )}
-                    </section>
-                    <section className="service-section">
-                      <h3>Needs review</h3>
-                      {packageList(
-                        packages
-                          .filter((p) => p.status === "Needs review")
-                          .slice(0, 4),
-                        true,
-                      )}
-                    </section>
-                    <section className="service-section">
-                      <h3>Continue production</h3>
-                      <a href="/content-delivery/creative">
-                        Creative reviews →
-                      </a>
-                      <p>
-                        <a href="/content-delivery/digital">
-                          Digital content requirements & acceptance →
-                        </a>
-                      </p>
-                      <a href="/content-delivery/channels">
-                        Channel adaptation & publishing →
-                      </a>
-                    </section>
-                  </div>
-                  <aside className="services-home-aside">
-                    <section>
-                      <h3>Upcoming releases</h3>
-                      {packages
-                        .filter((p) => p.releaseDate >= "2026-10-16")
-                        .sort((a, b) =>
-                          a.releaseDate.localeCompare(b.releaseDate),
-                        )
-                        .slice(0, 4)
-                        .map((p) => (
-                          <a href={packageHref(p.id)} key={p.id}>
-                            <strong>
-                              {date(p.releaseDate)} · {p.name}
-                            </strong>
-                            <small>
-                              {p.formats.join(" + ")} · {p.stage} · {p.lead}
-                            </small>
-                          </a>
-                        ))}
-                    </section>
-                    <section>
-                      <h3>External handoffs</h3>
-                      {partnerShares.slice(0, 2).map((s) => (
-                        <a key={s.packageId} href={packageHref(s.packageId)}>
-                          {pkg(s.packageId).name}
-                          <small>
-                            {pkg(s.packageId).partner} · scoped collaboration
-                          </small>
-                        </a>
-                      ))}
-                    </section>
-                    <section>
-                      <h3>Recent working files</h3>
-                      {fileList(recentIds.map((id) => filesById.get(id)!))}
-                    </section>
-                    <section>
-                      <h3>Research informing production</h3>
-                      <a href="/audience-innovation/audiences?initiative=RD-102">
-                        New Customer Journey Study → Customer Welcome Series
-                      </a>
-                      <a href="/audience-innovation/analytics?initiative=RD-103">
-                        Website friction evidence → Mobile Sign-up Experience
-                      </a>
-                    </section>
-                  </aside>
-                </div>
-              ) : page === "pipeline" ? (
-                pipeline()
-              ) : page === "editorial" || page === "creative" ? (
-                <>
-                  {material()}
-                  <a href={`${base}/pipeline?view=Needs+Review`}>
-                    Review packages needing input and clearance{" "}
-                    <ArrowRight20Regular />
+              <DocumentLibrary
+                title="Current Production"
+                files={files
+                  .filter((file) => libraryFor(file) === "production")
+                  .map(documentFor)}
+                embedded
+              />
+              <section className="service-section">
+                <h3>Quick links</h3>
+                <div className="content-simple-links">
+                  <a href={`${base}/production-register?view=Needs+Review`}>
+                    Production needing review
                   </a>
-                </>
-              ) : page === "channels" ? (
-                <>
-                  <div className="service-library-toolbar">
-                    <label>
-                      Channel
-                      <select
-                        aria-label="Channel filter"
-                        value={channel}
-                        onChange={(e) => setParams({ channel: e.target.value })}
-                      >
-                        <option value="">All channels</option>
-                        {[...new Set(packages.flatMap((p) => p.channels))].map(
-                          (c) => (
-                            <option key={c}>{c}</option>
-                          ),
-                        )}
-                      </select>
-                    </label>
-                    <label>
-                      Format
-                      <select
-                        aria-label="Format filter"
-                        value={format}
-                        onChange={(e) => setParams({ format: e.target.value })}
-                      >
-                        <option value="">All formats</option>
-                        {[...new Set(packages.flatMap((p) => p.formats))].map(
-                          (c) => (
-                            <option key={c}>{c}</option>
-                          ),
-                        )}
-                      </select>
-                    </label>
-                  </div>
-                  {packageList(rows)}
-                  <section className="service-section">
-                    <h3>Evolving formats & content products</h3>
-                    <div className="table-scroll">
-                      <table className="service-table">
-                        <thead>
-                          <tr>
-                            <th>Format / product</th>
-                            <th>Audience need</th>
-                            <th>Production model</th>
-                            <th>Testing / review cycle</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {packages
-                            .filter(
-                              (p) =>
-                                ![
-                                  "PKG-107",
-                                  "PKG-108",
-                                  "PKG-109",
-                                  "PKG-110",
-                                  "PKG-111",
-                                ].includes(p.id),
-                            )
-                            .map((p) => (
-                              <tr key={p.id}>
-                                <td>
-                                  <button onClick={() => openPackage(p.id)}>
-                                    {p.product}
-                                  </button>
-                                </td>
-                                <td>{p.purpose}</td>
-                                <td>{p.productionModel}</td>
-                                <td>
-                                  {p.testing}
-                                  <small>
-                                    Review with each release; feed evaluation
-                                    into the next brief.
-                                  </small>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </section>
-                  {material()}
-                </>
-              ) : page === "digital" ? (
-                <>
-                  <section className="service-section">
-                    <h3>Mobile Sign-up Experience — content handoff</h3>
-                    <p>
-                      From audience evidence to content acceptance, release and
-                      measurement.
-                    </p>
-                    <ol className="content-digital-flow">
-                      {digitalSteps.map((s, index) => (
-                        <li key={s.name}>
-                          <strong>
-                            {index + 1}. {s.name}
-                          </strong>
-                          {s.file && (
-                            <a href={fileHref(filesById.get(s.file)!)}>
-                              {filesById.get(s.file)!.name}
-                            </a>
-                          )}
-                          {s.research && (
-                            <a href={s.research}>
-                              {s.research.startsWith("/digital-tech")
-                                ? "Open Digital & Technology"
-                                : "Open source audience evidence"}
-                            </a>
-                          )}
-                          {s.tool && (
-                            <a
-                              href={toolHref(
-                                s.tool,
-                                "PKG-105",
-                                pkg("PKG-105").refs.find(
-                                  (r) => r.tool === s.tool,
-                                )?.id || "",
-                              )}
-                            >
-                              Open {tools.find((t) => t.id === s.tool)!.name}
-                              <ArrowUpRight20Regular />
-                            </a>
-                          )}
-                        </li>
-                      ))}
-                    </ol>
-                    <p className="service-muted">
-                      Content requirements and acceptance stay here. Technical
-                      implementation and deployment are linked to Digital &
-                      Technology; analysis links to Audience Research.
-                    </p>
-                  </section>
-                  {material()}
-                </>
-              ) : page === "partners" ? (
-                <>
-                  <section className="service-section">
-                    <h3>External production engagements</h3>
-                    {packages
-                      .filter((p) => p.partner)
-                      .map((p) => (
-                        <section key={p.id} className="content-partner-row">
-                          <h4>
-                            <a href={packageHref(p.id)}>{p.name}</a>
-                          </h4>
-                          <p>
-                            {p.partner} · {p.partnerType}
-                          </p>
-                          <p>
-                            Lead: {p.lead} · review {date(p.reviewDue)} ·{" "}
-                            {p.status}
-                          </p>
-                          {partnerShares.some((s) => s.packageId === p.id) ? (
-                            <a href={`${base}/packages/${p.id}/shared`}>
-                              Open scoped partner collaboration{" "}
-                              <ArrowRight20Regular />
-                            </a>
-                          ) : (
-                            <p className="service-muted">
-                              Engagement is being prepared. No external material
-                              has been shared.
-                            </p>
-                          )}
-                        </section>
-                      ))}
-                  </section>
-                </>
-              ) : page === "teams" ? (
-                <>
-                  <div className="content-team-heading">
-                    <img
-                      src="/images/teams-logo.svg"
-                      alt="Microsoft Teams"
-                      width="36"
-                      height="36"
-                    />
-                    <strong>{title}</strong>
-                  </div>
-                  <div
-                    className="content-channel-tabs"
-                    role="group"
-                    aria-label="Team channels"
-                  >
-                    {teamChannels.map((c) => (
-                      <Button
-                        key={c.id}
-                        appearance={
-                          teamChannel.id === c.id ? "primary" : "secondary"
-                        }
-                        onClick={() =>
-                          setParams({ channel: c.id, file: "", package: "" })
-                        }
-                      >
-                        {c.name}
-                      </Button>
-                    ))}
-                  </div>
-                  <section className="service-section">
-                    <h3>{teamChannel.name} · Shared working files</h3>
-                    <p className="service-muted">
-                      Maya Chen · Please use the current package files and
-                      record review decisions in the package before handoff.
-                    </p>
-                    {fileList(filesForChannel(teamChannel.id))}
-                  </section>
-                  {teamChannel.id === "digital" && (
-                    <a href="/digital-tech/web-crm/partner-review">
-                      Technical partner review in Digital & Technology
-                    </a>
-                  )}
-                </>
-              ) : page === "calendar" ? (
-                <ProductionCalendar
-                  month={month}
-                  setMonth={setMonth}
-                  day={day}
-                  setDay={setDay}
-                  entries={milestoneItems}
-                  packages={packages}
-                  openPackage={openPackage}
-                />
-              ) : null}
+                  <a href={`${base}/calendar`}>Production calendar</a>
+                  <a href="/audience-innovation/research">Audience research</a>
+                </div>
+              </section>
             </>
-          )}
+          ) : register ? (
+            <section className="service-section">
+              <h2>Production Register</h2>
+              <div className="service-library-toolbar">
+                <label>
+                  View
+                  <select
+                    aria-label="Production register view"
+                    value={view}
+                    onChange={(event) =>
+                      setParams({ view: event.target.value })
+                    }
+                  >
+                    {views.map((view) => (
+                      <option key={view}>{view}</option>
+                    ))}
+                  </select>
+                </label>
+                <Input
+                  contentBefore={<Search20Regular />}
+                  aria-label="Search production register"
+                  placeholder="Search production"
+                  value={search}
+                  onChange={(_, data) =>
+                    setParams({ search: data.value }, true)
+                  }
+                />
+              </div>
+              <div className="table-scroll">
+                <table className="service-table">
+                  <thead>
+                    <tr>
+                      {[
+                        "Production",
+                        "Lead",
+                        "Stage",
+                        "Review due",
+                        "Release",
+                      ].map((label) => (
+                        <th key={label}>{label}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((item) => (
+                      <tr key={item.id}>
+                        <td>
+                          <button onClick={() => openPackage(item.id)}>
+                            {item.name}
+                          </button>
+                        </td>
+                        <td>{item.lead}</td>
+                        <td>{item.stage}</td>
+                        <td>{date(item.reviewDue)}</td>
+                        <td>{date(item.releaseDate)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {!rows.length && (
+                  <p className="empty-state">
+                    No production matches this view.
+                  </p>
+                )}
+              </div>
+            </section>
+          ) : page === "teams" ? (
+            <>
+              <div className="content-team-heading">
+                <img
+                  src="/images/teams-logo.svg"
+                  alt="Microsoft Teams"
+                  width="32"
+                  height="32"
+                />
+                <h2>{title}</h2>
+              </div>
+              <div
+                className="content-channel-tabs"
+                role="group"
+                aria-label="Team channels"
+              >
+                {teamChannels.map((channel) => (
+                  <Button
+                    key={channel.id}
+                    appearance={
+                      teamChannel.id === channel.id ? "primary" : "secondary"
+                    }
+                    onClick={() =>
+                      setParams({ channel: channel.id, file: "", package: "" })
+                    }
+                  >
+                    {channel.name}
+                  </Button>
+                ))}
+              </div>
+              <DocumentLibrary
+                key={teamChannel.id}
+                title={`${teamChannel.name} shared files`}
+                files={filesForChannel(teamChannel.id).map(documentFor)}
+              />
+              {teamChannel.id === "digital" && (
+                <p>
+                  <a href="/digital-tech/web-crm/partner-review">
+                    Technical partner review in Digital & Technology
+                  </a>
+                </p>
+              )}
+            </>
+          ) : page === "calendar" ? (
+            <>
+              <h2>Production Calendar</h2>
+              <ProductionCalendar
+                month={month}
+                setMonth={setMonth}
+                day={day}
+                setDay={setDay}
+                entries={milestoneItems}
+                packages={packages}
+                openPackage={openPackage}
+              />
+            </>
+          ) : activeLibrary ? (
+            <>
+              <DocumentLibrary
+                key={activeLibrary.id + initialFolder}
+                title={activeLibrary.title}
+                files={files
+                  .filter((file) => libraryFor(file) === activeLibrary.id)
+                  .map(documentFor)}
+                initialFolder={initialFolder}
+              />
+              <div className="content-simple-links">
+                <a href={`${base}/production-register`}>Production Register</a>
+                {page === "digital" && (
+                  <a href="/digital-tech/web-crm">Digital & Technology</a>
+                )}
+                {packageContext &&
+                  partnerShares
+                    .filter((share) => share.packageId === packageContext.id)
+                    .map((share) => (
+                      <a
+                        href={`${base}/packages/${share.packageId}/shared`}
+                        key={share.packageId}
+                      >
+                        Partner collaboration · {packageContext.partner}
+                      </a>
+                    ))}
+              </div>
+            </>
+          ) : null}
         </main>
       </div>
       <Drawer
@@ -985,9 +672,6 @@ export default function ContentApp() {
         <DrawerBody>
           {selected && (
             <>
-              <span className="library-label">
-                {selected.id} · {selected.status}
-              </span>
               <h3>{selected.name}</h3>
               <p>{selected.purpose}</p>
               <dl className="service-properties">
@@ -1084,15 +768,11 @@ export default function ContentApp() {
                   </select>
                 </label>
               ))}
-              <p className="service-muted">
-                Demonstration only. Local changes reset on reload; no content is
-                published.
-              </p>
               <h4>Working files</h4>
               {fileList(files.filter((f) => f.packageId === selected.id))}
-              <h4>Specialist systems</h4>
+              <h4>Related systems</h4>
               {refs(selected)}
-              <h4>Source research & evaluation</h4>
+              <h4>Audience research</h4>
               <a href={selected.research}>
                 Open related audience research <ArrowRight20Regular />
               </a>
@@ -1108,13 +788,6 @@ export default function ContentApp() {
                   reference EXP-118.
                 </p>
               )}
-              <h4>Format / product development</h4>
-              <p>
-                <strong>{selected.product}</strong>
-                <br />
-                {selected.productionModel}
-              </p>
-              <p>{selected.testing}</p>
               {partnerShares
                 .filter((s) => s.packageId === selected.id)
                 .map((s) => (
@@ -1180,88 +853,6 @@ export default function ContentApp() {
           )}
         </DrawerBody>
       </Drawer>
-      <Drawer
-        open={!!selectedFile}
-        position="end"
-        size="medium"
-        modalType="modal"
-        onOpenChange={(_, d) => {
-          if (!d.open) setParams({ file: "" });
-        }}
-      >
-        <DrawerHeader>
-          <DrawerHeaderTitle
-            action={
-              <Button
-                appearance="subtle"
-                icon={<Dismiss20Regular />}
-                aria-label="Close file details"
-                onClick={() => setParams({ file: "" })}
-              />
-            }
-          >
-            Working file details
-          </DrawerHeaderTitle>
-        </DrawerHeader>
-        <DrawerBody>
-          {selectedFile && (
-            <>
-              <DocumentIcon name={selectedFile.name} />
-              <h3>{selectedFile.name}</h3>
-              <p>{selectedFile.campaign}</p>
-              <p>
-                {selectedFile.workType} · {selectedFile.review}
-              </p>
-              <p className="service-muted">
-                Co-authors: {selectedFile.owner} ·{" "}
-                {selectedFile.owner === "Maya Chen"
-                  ? "Alex Morgan"
-                  : "Maya Chen"}
-                <br />
-                Modified 16 Oct 2026 · Working information
-              </p>
-              <Button appearance="primary" onClick={() => setPreview(true)}>
-                Open
-              </Button>{" "}
-              <Button
-                onClick={() =>
-                  copy(
-                    share
-                      ? parsed.pathname + "?file=" + selectedFile.id
-                      : fileHref(selectedFile),
-                  )
-                }
-              >
-                Copy link
-              </Button>
-              {!share && (
-                <>
-                  <p>Rights: {pkg(selectedFile.packageId).rights}</p>
-                  <a href={packageHref(selectedFile.packageId)}>
-                    Open connected content package <ArrowRight20Regular />
-                  </a>
-                </>
-              )}
-            </>
-          )}
-        </DrawerBody>
-      </Drawer>
-      <Dialog open={preview} onOpenChange={(_, d) => setPreview(d.open)}>
-        <DialogSurface>
-          <DialogBody>
-            <DialogTitle>{selectedFile?.name}</DialogTitle>
-            <DialogContent>
-              Fictional working document preview. No Office document, production
-              asset, video or personal record is stored here. Review the linked
-              package and specialist-system references for the production
-              context.
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setPreview(false)}>Close</Button>
-            </DialogActions>
-          </DialogBody>
-        </DialogSurface>
-      </Dialog>
       {message && (
         <div className="toast" role="status">
           {message}

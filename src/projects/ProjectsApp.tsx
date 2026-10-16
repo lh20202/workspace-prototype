@@ -4,7 +4,8 @@ import {
   PeopleTeam20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
-import DocumentIcon from "../components/DocumentIcon";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import type { LibraryDocument } from "../sharepoint/library";
 import { staff, rememberStaff } from "../intranet/catalog";
 import {
   allProjects,
@@ -31,8 +32,7 @@ const centralNav = [
 ];
 const projectNav = [
   ["home", "Home"],
-  ["plan", "Project Plan"],
-  ["documents", "Working Documents"],
+  ["documents", "Project Documents"],
   ["decisions", "Decisions & Actions"],
   ["risks", "Risks & Issues"],
   ["handover", "Delivery & Handover"],
@@ -49,12 +49,12 @@ export default function ProjectsApp() {
   const person = staff.find((s) => s.id === personId) || activePerson();
   const permitted = !project || canOpenProject(project, person.id);
   const [query, setQuery] = useState(""),
-    [preview, setPreview] = useState<ReturnType<typeof projectFiles>[number]>(),
     [states, setStates] = useState<Record<string, string>>({}),
     [channel, setChannel] = useState("General"),
     [tab, setTab] = useState("Posts"),
     [note, setNote] = useState(""),
-    [notes, setNotes] = useState<string[]>([]);
+    [notes, setNotes] = useState<string[]>([]),
+    [projectView, setProjectView] = useState("All projects");
   const teams = page === "teams";
   const title = project ? projectTitle(project) : "Projects";
   const root = project ? projectHref(project) : "/projects";
@@ -119,77 +119,147 @@ export default function ProjectsApp() {
     </div>
   );
   const link = (p: Project) => <a href={projectHref(p)}>{projectTitle(p)}</a>;
-  const projectList = (list: Project[], full = false) =>
-    table(
-      full
-        ? [
-            "Project",
-            "Sponsor / Lead",
-            "Stage",
-            "Status",
-            "Start",
-            "Target end",
-            "Next review",
-            "Business area",
-            "Delivery workspace",
-            "Access",
-          ]
-        : ["Project", "Stage", "Status", "Next review", "Access"],
-      list.map((p) => {
-        const safe = canOpenProject(p, person.id);
-        return full
-          ? [
-              link(p),
-              safe ? `${p.sponsor} / ${p.lead}` : "Restricted",
-              safe ? p.stage : "Restricted",
-              safe ? p.status : "Restricted",
-              safe ? "2026-09-01" : "—",
-              safe ? p.end : "—",
-              safe ? "2026-10-26" : "—",
-              safe ? p.area : "—",
-              safe ? <a href={p.delivery}>Open delivery owner ↗</a> : "—",
-              access(p),
-            ]
-          : [
-              link(p),
-              safe ? p.stage : "Restricted",
-              safe ? p.status : "Restricted",
-              safe ? "2026-10-26" : "—",
-              access(p),
-            ];
-      }),
-    );
-  const documents = project && permitted ? projectFiles(project) : [];
-  const filesView = () => (
+  const projectList = (list: Project[], full = false) => (
     <>
-      <h2>Working Documents</h2>
-      {documents.map((f) => (
-        <button
-          key={f.id}
-          className="project-file"
-          onClick={() => setPreview(f)}
+      {" "}
+      <div className="project-list-toolbar">
+        <select
+          aria-label="Project view"
+          value={projectView}
+          onChange={(e) => setProjectView(e.target.value)}
         >
-          <DocumentIcon name={f.name} />
-          {f.name}
-        </button>
-      ))}
-      {preview && (
-        <section
-          className="project-preview"
-          role="dialog"
-          aria-label="Project document preview"
-        >
-          <button onClick={() => setPreview(undefined)}>Close preview</button>
-          <h2>{preview.name}</h2>
-          <p>{preview.summary}</p>
-          <p>
-            {title} ·{" "}
-            {readOnly ? "Closed · Read-only" : "Working coordination material"}
-          </p>
-        </section>
+          {["All projects", "Needs attention", "Restricted"].map((v) => (
+            <option key={v}>{v}</option>
+          ))}
+        </select>
+      </div>
+      {table(
+        full
+          ? [
+              "Project",
+              "Sponsor / Lead",
+              "Stage",
+              "Status",
+              "Start",
+              "Target end",
+              "Next review",
+              "Business area",
+              "Delivery workspace",
+              "Access",
+            ]
+          : ["Project", "Stage", "Status", "Next review", "Access"],
+        list
+          .filter(
+            (p) =>
+              projectView === "All projects" ||
+              (projectView === "Restricted"
+                ? p.access === "Restricted"
+                : canOpenProject(p, person.id) &&
+                  ["Attention Needed", "At Risk"].includes(p.status)),
+          )
+          .map((p) => {
+            const safe = canOpenProject(p, person.id);
+            return full
+              ? [
+                  link(p),
+                  safe ? `${p.sponsor} / ${p.lead}` : "Restricted",
+                  safe ? p.stage : "Restricted",
+                  safe ? p.status : "Restricted",
+                  safe ? "2026-09-01" : "—",
+                  safe ? p.end : "—",
+                  safe ? "2026-10-26" : "—",
+                  safe ? p.area : "—",
+                  safe ? <a href={p.delivery}>Open delivery owner ↗</a> : "—",
+                  access(p),
+                ]
+              : [
+                  link(p),
+                  safe ? p.stage : "Restricted",
+                  safe ? p.status : "Restricted",
+                  safe ? "2026-10-26" : "—",
+                  access(p),
+                ];
+          }),
       )}
     </>
   );
+  const documents = project && permitted ? projectFiles(project) : [];
+  const libraryFiles: LibraryDocument[] = documents.map((f, i) => ({
+    ...f,
+    folder: [
+      "Initiation/Brief",
+      "Planning/Delivery",
+      "Delivery/Review",
+      "Planning/People",
+      "Closure/Handover",
+      "Closure/Final records",
+    ][i],
+    owner: project?.lead,
+    modified: "16 Oct 2026",
+    status: readOnly ? "Closed" : "In progress",
+  }));
+  const filesView = (embedded = false, initialFolder?: string) => (
+    <DocumentLibrary
+      title="Project Documents"
+      files={libraryFiles}
+      readOnly={readOnly}
+      embedded={embedded}
+      initialFolder={initialFolder}
+      headingLevel={page === "handover" || page === "teams" ? 2 : undefined}
+    />
+  );
+  const centralFiles = (kind: "control" | "support"): LibraryDocument[] =>
+    kind === "control"
+      ? [
+          {
+            id: "PRJ-CONTROL-1",
+            name: "Project Review Agenda.docx",
+            folder: "Portfolio Reviews/October 2026",
+            owner: "Casey Blake",
+            modified: "16 Oct 2026",
+            status: "In review",
+          },
+          {
+            id: "PRJ-CONTROL-2",
+            name: "Stage Decision Notes.docx",
+            folder: "Stage Reviews/October 2026",
+            owner: "Robin Avery",
+            modified: "16 Oct 2026",
+            status: "Current",
+          },
+          {
+            id: "PRJ-CONTROL-3",
+            name: "Closure Review Checklist.docx",
+            folder: "Closure/2026",
+            owner: "Casey Blake",
+            modified: "15 Oct 2026",
+            status: "Current",
+          },
+        ]
+      : [
+          currentProjects[1],
+          currentProjects[3],
+          currentProjects[4],
+          currentProjects[6],
+        ].map((p, i) => ({
+          id: `PRJ-SUPPORT-${p.code}`,
+          name: [
+            "Risk Workshop Agenda.docx",
+            "Delivery Plan Review.docx",
+            "Stage Review Notes.docx",
+            "Closure Approach.docx",
+          ][i],
+          folder: projectTitle(p) + "/Current support",
+          owner: "Casey Blake",
+          modified: "16 Oct 2026",
+          status: "In progress",
+          summary: [
+            "Facilitate the project risk workshop.",
+            "Review the delivery plan with the project lead.",
+            "Prepare the next stage review.",
+            "Agree the closure approach and final records.",
+          ][i],
+        }));
   const reviews = () =>
     table(
       [
@@ -263,37 +333,30 @@ export default function ProjectsApp() {
     if (page === "plan")
       return (
         <>
-          <h1>Project Plan</h1>
-          {table(
-            [
-              "Deliverable / milestone",
-              "Owner",
-              "Start",
-              "Due",
-              "Status",
-              "Dependency",
-              "Decision required",
-            ],
-            [
-              "Confirm scope and acceptance",
-              "Review delivery options",
-              "Complete acceptance review",
-              "Operational handover",
-            ].map((x, i) => [
-              x,
-              project.lead,
-              "2026-10-01",
-              ["2026-10-23", "2026-11-06", "2026-11-20", project.end][i],
-              status(
-                "Milestone " + i,
-                readOnly ? "Complete" : i === 0 ? "Complete" : "In progress",
-              ),
-              i ? "Previous milestone" : "Business requirements",
-              i === 1 ? "Stage decision" : "—",
-            ]),
-          )}
+          {filesView(false, "Planning")}
+          <details className="project-secondary-list">
+            <summary>Milestones</summary>
+            {table(
+              ["Milestone", "Owner", "Due", "Status"],
+              [
+                "Confirm scope and acceptance",
+                "Review delivery options",
+                "Complete acceptance review",
+                "Operational handover",
+              ].map((x, i) => [
+                x,
+                project.lead,
+                ["2026-10-23", "2026-11-06", "2026-11-20", project.end][i],
+                status(
+                  "Milestone " + i,
+                  readOnly ? "Complete" : i === 0 ? "Complete" : "In progress",
+                ),
+              ]),
+            )}
+          </details>
         </>
       );
+
     if (page === "decisions")
       return (
         <>
@@ -434,42 +497,41 @@ export default function ProjectsApp() {
       return (
         <>
           <h1>Delivery & Handover</h1>
-          {table(
-            ["Transition item", "Owner", "Status", "Next action"],
-            [
-              "Acceptance",
-              "Handover",
-              "Operational readiness",
-              "Outstanding actions",
-              "Benefits follow-up",
-              "Closure recommendation",
-              "Closure report",
-              "Archive transfer",
-            ].map((x) => [
-              x,
-              project.lead,
-              status(x, readOnly ? "Complete" : "Needs review"),
-              "Confirm final evidence and accountable owner",
-            ]),
-          )}
+          {filesView(false, "Closure")}
+          <details className="project-secondary-list">
+            <summary>Closure checklist</summary>
+            {table(
+              ["Item", "Owner", "Status"],
+              [
+                "Acceptance",
+                "Handover",
+                "Operational readiness",
+                "Outstanding actions",
+                "Benefits follow-up",
+                "Closure recommendation",
+                "Closure report",
+                "Archive transfer",
+              ].map((x) => [
+                x,
+                project.lead,
+                status(x, readOnly ? "Complete" : "Needs review"),
+              ]),
+            )}
+          </details>
           <p>
-            Records disposition:{" "}
-            {project.archived === "Transferred to Archive"
-              ? "Transferred to Company Archives"
-              : "Final records selection awaits appraisal"}
+            <a
+              href={
+                project.archived === "Transferred to Archive"
+                  ? "/archives/collections?collection=Project%20Memory&record=ARC-PRJ-2024-018"
+                  : "/archives/transfer"
+              }
+            >
+              {project.archived === "Transferred to Archive"
+                ? "View archive record"
+                : "Appraisal and transfer"}{" "}
+              ↗
+            </a>
           </p>
-          <a
-            href={
-              project.archived === "Transferred to Archive"
-                ? "/archives/collections?collection=Project%20Memory&record=ARC-PRJ-2024-018"
-                : "/archives/transfer"
-            }
-          >
-            {project.archived === "Transferred to Archive"
-              ? "View archive record"
-              : "Request appraisal and archival transfer"}{" "}
-            ↗
-          </a>
         </>
       );
     return (
@@ -500,51 +562,23 @@ export default function ProjectsApp() {
             records only.
           </p>
         )}
-        <div className="project-columns">
-          <section>
-            <h2>Next milestones</h2>
-            <p>
-              Acceptance review · 20 November
-              <br />
-              Operational handover · {project.end}
-            </p>
-            <a href={`${root}/plan`}>Open Project Plan →</a>
-            <h2>Decisions & attention</h2>
-            <p>
-              {readOnly
-                ? "Final delivery and transition decisions recorded."
-                : "Confirm delivery option and resolve handoff ownership before the next review."}
-            </p>
-            <a href={`${root}/decisions`}>Open Decisions & Actions →</a>
-            <p>
-              <a href={`${root}/risks`}>Review Risks & Issues →</a>
-            </p>
-          </section>
-          <section>
-            <h2>Current work</h2>
-            <div className="project-link-list">
-              <a href={`${root}/documents`}>Continue working documents →</a>
-              <a href={project.delivery}>
-                Substantive delivery work · {project.area} ↗
+        {filesView(true)}
+        <section>
+          <h2>Quick links</h2>
+          <div className="project-context-links">
+            <a href={project.delivery}>{project.area} ↗</a>
+            <a href={`${root}/decisions`}>Decisions & Actions</a>
+            <a href={`${root}/risks`}>Risks & Issues</a>
+            <a href={`${root}/handover`}>Delivery & Handover</a>
+            <a href="/executive/initiatives">Stage decision ↗</a>
+            <a href="/financial-operations/planning">Funding / forecast ↗</a>
+            {!readOnly && (
+              <a href={`${root}/security`}>
+                Production Security Review <LockClosed16Regular />
               </a>
-              <a href="/executive/initiatives">
-                Stage decision / escalation → Strategic Initiatives ↗
-              </a>
-              <a href="/financial-operations/planning">
-                Funding / forecast implication ↗
-              </a>
-              <a href="/quality-monitoring/reviews">
-                Evaluate improvement outcome ↗
-              </a>
-              <a href={`${root}/handover`}>Delivery & Handover →</a>
-              {!readOnly && (
-                <a href={`${root}/security`}>
-                  Production Security Review <LockClosed16Regular />
-                </a>
-              )}
-            </div>
-          </section>
-        </div>
+            )}
+          </div>
+        </section>
       </>
     );
   };
@@ -561,18 +595,9 @@ export default function ProjectsApp() {
           </p>
         ))}
       {[
-        [
-          "Project Control · Stage decisions, dependencies, escalations and closure",
-          "control",
-        ],
-        [
-          "Project Support · Facilitate risk workshop, review delivery plan, prepare stage review, support closure",
-          "support",
-        ],
-        [
-          "Project Reviews · Initiation, planning, delivery, stage and closure reviews",
-          "reviews",
-        ],
+        ["Project Control", "control"],
+        ["Project Support", "support"],
+        ["Project Reviews", "reviews"],
       ]
         .filter(([x]) => x.toLowerCase().includes(query.toLowerCase()))
         .map(([x, href]) => (
@@ -587,23 +612,14 @@ export default function ProjectsApp() {
     if (page === "control")
       return (
         <>
-          <h1>Project Control</h1>
-          {projectList(currentProjects, true)}
-          <h2>Stage decisions, dependencies & closure</h2>
+          <DocumentLibrary
+            title="Project Control"
+            files={centralFiles("control")}
+          />
           <p>
-            Review escalations against the original project plan; return
-            decisions to the project owner.
+            <a href="/projects/reviews">Project Reviews</a> ·{" "}
+            <a href="/projects/current">Current Projects</a>
           </p>
-          <div className="project-link-list">
-            {currentProjects
-              .filter((p) => canOpenProject(p, person.id))
-              .map((p) => (
-                <a key={p.code} href={projectHref(p) + "/decisions"}>
-                  {projectTitle(p)} · Review decisions / dependencies /
-                  ownership →
-                </a>
-              ))}
-          </div>
         </>
       );
     if (page === "reviews")
@@ -615,61 +631,23 @@ export default function ProjectsApp() {
       );
     if (page === "support")
       return (
+        <DocumentLibrary
+          title="Project Support"
+          files={centralFiles("support")}
+        />
+      );
+    if (page === "current")
+      return (
         <>
-          <h1>Project Support</h1>
-          {table(
-            [
-              "Project",
-              "Support activity",
-              "Owner",
-              "Due",
-              "Status",
-              "Contextual method",
-            ],
-            [
-              currentProjects[1],
-              currentProjects[3],
-              currentProjects[4],
-              currentProjects[6],
-            ].map((p, i) => [
-              link(p),
-              [
-                "Facilitate risk workshop",
-                "Review delivery plan",
-                "Prepare stage review",
-                "Support closure approach",
-              ][i],
-              "Casey Blake",
-              "2026-10-26",
-              status("Support " + p.code, "In progress"),
-              <a
-                href={
-                  projectHref(p) +
-                  ["/risks", "/plan", "/decisions", "/handover"][i]
-                }
-              >
-                {
-                  [
-                    "Risk Register Template",
-                    "Project Brief Template",
-                    "Decision Log Template",
-                    "Closure Checklist",
-                  ][i]
-                }{" "}
-                · Apply in project →
-              </a>,
-            ]),
-          )}
+          <h1>Current Projects</h1>
+          {projectList(currentProjects)}
         </>
       );
     if (page === "archive")
       return (
         <>
           <h1>Project Archives</h1>
-          <p>
-            Completed project workspaces and closure history. Formal retention
-            and preservation remain with Company Archives.
-          </p>
+          <p>Completed project workspaces and closure history.</p>
           {archivePeriods.map((period) => (
             <details key={period}>
               <summary>
@@ -692,38 +670,19 @@ export default function ProjectsApp() {
           Shared workspace for project control, delivery support and access to
           current and completed project workspaces.
         </p>
-        <h2>Current Projects</h2>
+        <h2>
+          <a href="/projects/current">Current Projects</a>
+        </h2>
         {projectList(currentProjects)}
-        <div className="project-columns">
-          <section>
-            <h2>Upcoming reviews & attention</h2>
-            {currentProjects
-              .filter(
-                (p) =>
-                  canOpenProject(p, person.id) &&
-                  p.status === "Attention Needed",
-              )
-              .map((p) => (
-                <p key={p.code}>
-                  {link(p)}
-                  <br />
-                  Confirm the stage decision and next handoff · 26 October
-                </p>
-              ))}
-            <a href="/projects/reviews">Project Reviews →</a>
-          </section>
-          <section>
-            <h2>Continue project work</h2>
-            <div className="project-link-list">
-              <a href="/projects/control">Project Control →</a>
-              <a href="/projects/support">Project Support →</a>
-              <a href="/projects/archive">Project Archives →</a>
-              <a href="/quality-monitoring/improvement">
-                Develop an improvement need before formal project initiation ↗
-              </a>
-            </div>
-          </section>
-        </div>
+        <section>
+          <h2>Quick links</h2>
+          <div className="project-context-links">
+            <a href="/projects/control">Project Control</a>
+            <a href="/projects/support">Project Support</a>
+            <a href="/projects/reviews">Project Reviews</a>
+            <a href="/projects/archive">Project Archives</a>
+          </div>
+        </section>
       </>
     );
   };
@@ -741,7 +700,6 @@ export default function ProjectsApp() {
               onChange={(e) => {
                 rememberStaff(e.target.value);
                 setPersonId(e.target.value);
-                setPreview(undefined);
               }}
             >
               {staff.map((s) => (
@@ -779,7 +737,6 @@ export default function ProjectsApp() {
               onChange={(e) => {
                 rememberStaff(e.target.value);
                 setPersonId(e.target.value);
-                setPreview(undefined);
               }}
             >
               {staff.map((s) => (
@@ -817,17 +774,24 @@ export default function ProjectsApp() {
           </nav>
         </aside>
         <main className="projects-main">
-          <small>
+          <nav className="breadcrumb" aria-label="Project location">
             <a href="/projects">Projects</a>
-            {project ? " / " + title : ""} / {page}
-          </small>
-          <input
-            className="project-search"
-            aria-label="Search Projects"
-            placeholder="Search project titles, control, reviews or support"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+            {project && (
+              <>
+                {" "}
+                / <a href={root}>{project.code}</a>
+              </>
+            )}
+          </nav>
+          {teams && (
+            <input
+              className="project-search"
+              aria-label="Search Projects"
+              placeholder="Search projects"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          )}
           {searchResults ||
             (teams && project ? (
               permitted ? (

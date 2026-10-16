@@ -24,6 +24,7 @@ import {
 } from "@fluentui/react-icons";
 import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
 import "./styles.css";
+import "./launcher.css";
 import { departments, departmentHref } from "../coordination/data";
 import "../coordination/styles.css";
 import "../executive/styles.css";
@@ -82,6 +83,11 @@ export default function Directory() {
         ))}
       </nav>
       <main className="directory-main">
+        <div className="architecture-preview-label">
+          <span>Full Architecture Prototype</span>
+          <span className="exploratory-badge">EXPLORATORY BETA</span>
+          <a href="/">Back to prototypes</a>
+        </div>
         <div className="directory-heading">
           <div>
             <small>OUR WORKPLACE / DIGITAL WORKSPACES</small>
@@ -111,8 +117,8 @@ export default function Directory() {
                     <h2>{w.title} workspace</h2>
                   </div>
                   <span className="directory-open">
-                    <img src="/images/sharepoint-logo.svg" alt="SharePoint" />
-                    Open workspace <ArrowRight20Regular />
+                    <img src="/images/sharepoint-logo.svg" alt="" />
+                    SharePoint <ArrowRight20Regular />
                   </span>
                 </a>
               );

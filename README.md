@@ -1,4 +1,4 @@
-# Digital Workspaces prototype
+# Microsoft 365 workspace prototypes
 
 A local React/TypeScript/Vite prototype of a SharePoint intranet, functional workspaces and connected Teams views. All people, work items, records and platform choices are fictional. No backend, real authentication, external messages or authoritative business transactions are implemented.
 
@@ -38,7 +38,7 @@ The existing local production preview can be run with `npx vite preview --host 1
 | Projects | `/projects` | Formal project control, active support, reviews and separate project delivery workspaces |
 | Company Archives | `/archives` | Historical discovery, retention, appraisal, transfer, description and preservation |
 
-Department Teams is a separate organisational layer. The six departments and 33 unit structures remain intact in the intranet rail and `/teams?staff=maya&department=mcg&tab=Posts`. Channels can be Organisation-wide or Department-only; unit folders can be Department-wide or Unit-only. Persona membership filters posts, files, search and availability views. Local administration stays here; contextual MODERATOR replies link misplaced business work to its canonical functional owner. The intranet keeps the compact tile treatment, fixed Teams CTA and staff selector. The external dark banner contains only Back to all workspaces and the existing caveat.
+Department Teams is a separate organisational layer. The six departments and 33 unit structures remain intact in the intranet rail and `/teams?staff=maya&department=mcg&tab=Posts`. Channels can be Organisation-wide or Department-only; unit folders can be Department-wide or Unit-only. Persona membership filters posts, files, search and availability views. Local administration stays here; contextual MODERATOR replies link misplaced business work to its canonical functional owner. The full architecture intranet at `/architecture` keeps workspace tiles, the fixed Teams CTA and staff selector. The external dark banner contains only Back to all workspaces and the existing caveat.
 
 ## Boundaries and handoffs
 
@@ -94,7 +94,7 @@ Do not create another service. `render.yaml` preserves this configuration. A pus
 
 ## Projects and department coordination
 
-`/projects` is the single landing-page Projects tile. Formal identifiers use `PRJ-YYYY-NNN` consistently. Home links eight current project workspaces; Current Projects navigation is collapsed by default. Central `/projects/control`, `/projects/support` and `/projects/reviews` own project oversight, active support and stage reviews, moved out of Quality. Quality develops process improvement needs and evaluates outcomes; formal project delivery is coordinated in Projects. Old Services project and Quality change routes redirect here.
+`/projects` is the single Projects tile in `/architecture`. Formal identifiers use `PRJ-YYYY-NNN` consistently. Home links eight current project workspaces; Current Projects navigation is collapsed by default. Central `/projects/control`, `/projects/support` and `/projects/reviews` own project oversight, active support and stage reviews, moved out of Quality. Quality develops process improvement needs and evaluates outcomes; formal project delivery is coordinated in Projects. Old Services project and Quality change routes redirect here.
 
 Each `/projects/PRJ-2026-014`-style route has a common plan, sparse canonical working documents, decision/action logs, risks/issues and delivery/handover. `/teams` under that route uses the same project documents. Engineering, workforce and other substantive work remain in their functional owners, linked from the project. Executive escalation and financial forecast handoffs use references.
 
@@ -105,3 +105,13 @@ Open Internal and Restricted project membership follows the selected fictional p
 The right rail is **Department Teams**: MCG Department, CPA Department, FCS Department, STT Department, PAC Department, EAO Department. All use the same team icon and open Teams directly. Units remain beneath departments. Department Assistants retain MODERATOR replies and contextual redirects to functional workspaces. Organisation-wide / Department-only and Department-wide / Unit-only access are preserved. New links use `department=mcg` etc.; old `division=` links still resolve. Functional workspaces keep their business names.
 
 The intranet’s illustrative navigation uses anchored popovers; tile category eyebrows are removed; fictional examples have a highlighted caveat. Finance Home no longer displays Handoffs & exceptions.
+
+## Design and interaction model
+
+`/` is a sparse three-choice launcher: Organisational Planning & Reporting, Acquisition & Activation Logistics, and **Full Architecture Prototype · EXPLORATORY BETA**. `/architecture` preserves the complete 14-workspace directory, Department Teams, staff previews and Teams CTA. Existing functional routes still work.
+
+Organisational Planning & Reporting is the SharePoint interaction reference. Ordinary document work uses a small number of libraries with real folders, subfolders and original files. Homes surface an embedded library view and a few useful links. Structured Lists remain for projects, research/production tracking, financial checklists, actions, risks and retention. Pages are retained for published information; archive discovery, operational calendars and incident response are deliberate exceptions. Git, CRM, HR and finance platforms remain authoritative.
+
+`src/sharepoint/DocumentLibrary.tsx` shares command bars, shallow browsing, breadcrumbs, search, four views, status filtering, sorting, selection, file preview, Details and Version history. Original file IDs are preserved across SharePoint and Teams. New, Upload and property changes are browser-local simulations; closed archives omit edit controls. Folder/file query links restore on refresh. Protected content is filtered or denied before entering a library.
+
+The visual pass follows [Fluent typography](https://fluent2.microsoft.design/typography), [spacing](https://fluent2.microsoft.design/layout), [elevation](https://fluent2.microsoft.design/elevation/), [motion](https://fluent2.microsoft.design/motion) and [accessibility](https://fluent2.microsoft.design/accessibility), alongside [modern SharePoint libraries](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/modern-experience-customizations-customize-lists-and-libraries) and [document-library web parts](https://support.microsoft.com/en-us/sharepoint/web-parts-and-apps-in-sharepoint/use-the-document-library-web-part). Segoe/system typography, a four-pixel spacing rhythm, restrained weights, neutral separators and short hover/focus transitions replace tiny density rules and repeated dashboard treatments. There is no page-wide CSS zoom or scale transform; reduced motion is supported.

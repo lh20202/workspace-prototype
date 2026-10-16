@@ -1,0 +1,130 @@
+.prototype-launcher {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: #faf9f8;
+  color: #242424;
+  padding: 48px 24px;
+}
+.launcher-content {
+  width: min(760px, 100%);
+}
+.launcher-eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  color: #616161;
+  margin-bottom: 16px;
+}
+.launcher-content > h1 {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 40px;
+}
+.launcher-choices {
+  border-top: 1px solid #deddda;
+}
+.launcher-choice {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 12px;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid #deddda;
+  transition: background-color 140ms ease;
+}
+.launcher-choice > svg {
+  color: #616161;
+}
+.launcher-choice > svg:last-child {
+  transition: color 140ms ease;
+}
+.launcher-choice:hover {
+  background: #f0efed;
+}
+.launcher-choice:hover > svg:last-child {
+  color: #0078d4;
+}
+.launcher-choice-title {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.launcher-choice h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.launcher-action {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  color: #616161;
+  margin-top: 8px;
+}
+.exploratory-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d7d5e5;
+  color: #535276;
+  background: #f3f2f8;
+  border-radius: 3px;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+}
+.architecture-preview-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #616161;
+  margin-bottom: 16px;
+}
+.architecture-preview-label a {
+  margin-left: auto;
+  color: #616161;
+  text-decoration: none;
+}
+.architecture-preview-label a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .prototype-launcher {
+    padding: 32px 20px;
+    place-items: center;
+  }
+  .launcher-content > h1 {
+    font-size: 28px;
+    line-height: 36px;
+    margin-bottom: 32px;
+  }
+  .launcher-choice {
+    gap: 16px;
+    padding: 24px 4px;
+    grid-template-columns: 24px minmax(0, 1fr) 20px;
+  }
+  .launcher-choice h2 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .architecture-preview-label {
+    flex-wrap: wrap;
+  }
+  .architecture-preview-label a {
+    margin-left: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .launcher-choice,
+  .launcher-choice > svg:last-child {
+    transition: none;
+  }
+}

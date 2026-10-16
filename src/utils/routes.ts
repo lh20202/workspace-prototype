@@ -15,6 +15,7 @@ export function prototypeForPath(
 ):
   | "projects"
   | "launcher"
+  | "architecture"
   | "planning"
   | "logistics"
   | "service-desk"
@@ -28,6 +29,8 @@ export function prototypeForPath(
   | "emergency"
   | "functional" {
   if (pathname === "/") return "launcher";
+  if (pathname === "/architecture" || pathname === "/architecture/")
+    return "architecture";
   if (pathname === "/projects" || pathname.startsWith("/projects/"))
     return "projects";
   if (
@@ -73,6 +76,9 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (pathname === "/") return "Workspace prototypes";
+  if (pathname.startsWith("/architecture"))
+    return "Full Architecture Prototype | Exploratory beta";
   if (pathname.startsWith("/logistics/teams"))
     return "Acquisition & Activation Logistics | Teams";
   const registered = workspaceRegistry.find(

@@ -6,10 +6,6 @@ export default function TechnicalConversation({
 }) {
   return (
     <>
-      <p className="technical-channel-note">
-        Working engineering discussion · Links open fictional Company Git
-        references.
-      </p>
       {technicalPosts
         .filter((p) => p.channel === channel)
         .map((p, i) => (

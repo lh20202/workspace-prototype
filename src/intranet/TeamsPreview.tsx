@@ -189,7 +189,7 @@ export default function TeamsPreview() {
             </button>
           ))}
           <a href={workspace.href}>Open SharePoint workspace ↗</a>
-          <a href="/">Back to all workspaces</a>
+          <a href="/architecture">Back to all workspaces</a>
           <details className="teams-functional-list">
             <summary>Other functional teams</summary>
             {workspaces
@@ -320,10 +320,6 @@ export default function TeamsPreview() {
                       ))}
                 </div>
               )}
-              <p className="finance-muted">
-                A role-relevant view of shared work. Changing the fictional
-                staff preview does not grant access to protected subjects.
-              </p>
             </>
           )}
         </main>
@@ -349,13 +345,8 @@ export default function TeamsPreview() {
         </DrawerHeader>
         <DrawerBody>
           <h2>{file?.name}</h2>
-          <p>Original file ID: {file?.id}</p>
           <p>
             {file?.owner} · {file?.recordState}
-          </p>
-          <p>
-            This is the same canonical working file shown in the SharePoint
-            workspace.
           </p>
           <a
             href={

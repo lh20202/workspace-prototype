@@ -9,6 +9,7 @@ const ServicesApp = lazy(() => import("./services/ServicesApp"));
 const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
 import { pageTitle, prototypeForPath } from "./utils/routes";
 import Directory from "./intranet/Directory";
+import Launcher from "./intranet/Launcher";
 import { resolveLegacy } from "./workspaces/registry";
 const FunctionalApp = lazy(() => import("./workspaces/FunctionalApp"));
 const FinanceApp = lazy(() => import("./finance/FinanceApp"));
@@ -31,7 +32,8 @@ export default function AppRouter() {
         Opening the owning workspace…
       </div>
     );
-  if (prototype === "launcher") return <Directory />;
+  if (prototype === "launcher") return <Launcher />;
+  if (prototype === "architecture") return <Directory />;
   return (
     <>
       <PrototypeNavigator />

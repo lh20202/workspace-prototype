@@ -5,9 +5,18 @@ import AppRouter from "./AppRouter";
 import "./styles.css";
 import "./logistics/styles.css";
 import "./prototype.css";
+import "./refinement.css";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <FluentProvider theme={webLightTheme}>
+    <FluentProvider
+      theme={{
+        ...webLightTheme,
+        fontFamilyBase:
+          '"Segoe UI", "Segoe UI Variable", system-ui, sans-serif',
+        fontFamilyNumeric:
+          '"Segoe UI", "Segoe UI Variable", system-ui, sans-serif',
+      }}
+    >
       <AppRouter />
     </FluentProvider>
   </React.StrictMode>,

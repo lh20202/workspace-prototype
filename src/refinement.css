@@ -1,0 +1,523 @@
+/* Shared Microsoft 365 typography and interaction polish. No page scaling. */
+:root {
+  --workspace-font: "Segoe UI", "Segoe UI Variable", system-ui, sans-serif;
+  --workspace-text: #242424;
+  --workspace-secondary: #616161;
+  --workspace-rule: #e5e5e5;
+  --workspace-hover: #f5f5f5;
+  --workspace-focus: #0078d4;
+  --workspace-fast: 140ms;
+  --workspace-shadow: 0 2px 8px #00000014;
+}
+body,
+.fui-FluentProvider {
+  font-family: var(--workspace-font);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--workspace-text);
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+strong,
+b {
+  font-weight: 600;
+}
+:root
+  :is(
+    .functional-main,
+    .finance-main,
+    .executive-main,
+    .projects-main,
+    .content-main,
+    .audience-main,
+    .services-main
+  )
+  h1 {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+  margin: 0 0 12px;
+}
+:root
+  :is(
+    .functional-main,
+    .finance-main,
+    .executive-main,
+    .projects-main,
+    .content-main,
+    .audience-main,
+    .services-main
+  )
+  h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+:root
+  :is(
+    .functional-main,
+    .finance-main,
+    .executive-main,
+    .projects-main,
+    .content-main,
+    .audience-main,
+    .services-main
+  )
+  p {
+  font-size: 14px;
+  line-height: 20px;
+}
+:root
+  :is(
+    .functional-main,
+    .finance-main,
+    .executive-main,
+    .projects-main,
+    .content-main,
+    .audience-main,
+    .services-main
+  ) {
+  padding: 32px;
+  min-width: 0;
+}
+:root :is(.functional-layout, .finance-layout, .projects-layout) {
+  grid-template-columns: 212px minmax(0, 1fr);
+}
+:root :is(.services-sidebar, .finance-sidebar, .projects-nav) :is(a, summary) {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 12px 16px;
+}
+:root
+  :is(.functional-main, .finance-main, .projects-main, .executive-main)
+  small {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .workspace-search {
+  position: relative;
+  left: auto;
+  transform: none;
+  flex: 1;
+  width: auto;
+  max-width: 520px;
+  margin-inline: auto;
+  min-width: 100px;
+}
+:root .site-header h1 {
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.25px;
+}
+:root .site-mark {
+  box-shadow: none;
+}
+:root :where(button:not([class])) {
+  min-height: 32px;
+  padding: 4px 12px;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  background: white;
+  font-weight: 400;
+}
+:root :where(button:not([class])):hover {
+  background: var(--workspace-hover);
+  border-color: #b3b3b3;
+}
+:root :where(button:not([class])):active {
+  background: #ebebeb;
+}
+:root button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+:root :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--workspace-focus);
+  outline-offset: 2px;
+}
+:root :is(button, a, summary) {
+  -webkit-tap-highlight-color: transparent;
+}
+:root :is(button, a, summary, tr) {
+  transition:
+    background-color var(--workspace-fast) ease,
+    border-color var(--workspace-fast) ease,
+    box-shadow var(--workspace-fast) ease,
+    color var(--workspace-fast) ease;
+}
+:root table {
+  border-collapse: collapse;
+}
+:root :is(.project-table, .finance-table, .functional-register) :is(th, td) {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 12px 16px;
+  border-color: var(--workspace-rule);
+}
+:root :is(.project-table, .finance-table, .functional-register) th {
+  font-weight: 600;
+  background: #fafafa;
+}
+:root :is(.project-table, .finance-table, .functional-register) tbody tr:hover {
+  background: var(--workspace-hover);
+}
+:root .project-table a {
+  font-weight: 400;
+}
+:root .project-access {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .project-metadata {
+  gap: 24px;
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .project-metadata strong {
+  font-size: 14px;
+  line-height: 20px;
+}
+:root
+  :is(.services-sidebar, .finance-sidebar, .projects-nav, .sidebar)
+  a:hover {
+  background: #eaeaea;
+}
+:root .directory-main:has(.directory-content) {
+  max-width: 1480px;
+  padding: 24px 32px 136px;
+}
+:root .directory-content {
+  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 264px;
+}
+:root .directory-content .directory-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+:root .directory-content .directory-tile {
+  min-height: 128px;
+  padding: 16px;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  box-shadow: none;
+  border-color: var(--workspace-rule);
+  border-radius: 4px;
+}
+:root .directory-content .directory-tile h2 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+:root .directory-content .directory-tile-icon {
+  height: 24px;
+  width: 24px;
+  background: none;
+  border-radius: 0;
+}
+:root .directory-content .directory-tile-icon svg {
+  width: 24px;
+  height: 24px;
+}
+:root .directory-content .directory-open {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .directory-tile:hover {
+  box-shadow: var(--workspace-shadow);
+  border-color: #bdbdbd;
+  background: #fdfdfd;
+}
+:root .directory-heading {
+  gap: 24px;
+  margin-bottom: 24px;
+}
+:root .directory-heading h1 {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  margin: 8px 0;
+}
+:root .directory-heading small {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+:root .directory-heading .directory-caveat {
+  box-shadow: 0 2px 5px #0000000d;
+  background: #fff8df;
+  border-color: #e6d8a2;
+  padding: 12px;
+  max-width: 272px;
+}
+:root .directory-nav {
+  padding: 12px 32px;
+  gap: 24px;
+}
+:root .directory-nav button {
+  font-size: 14px;
+  line-height: 20px;
+}
+:root .department-quick-link {
+  padding: 16px 0;
+  gap: 12px;
+}
+:root .department-quick-link > span {
+  font-size: 14px;
+  line-height: 20px;
+}
+:root .department-quick-link small {
+  font-size: 12px;
+  line-height: 16px;
+  color: #616161;
+}
+:root .directory-teams {
+  box-shadow: none;
+  padding: 16px 32px;
+  gap: 16px;
+}
+:root .directory-teams select {
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 36px;
+  padding: 6px 8px;
+}
+:root .directory-teams > a {
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 36px;
+}
+:root .directory-coordination h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+:root .directory-coordination > p {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .staff-teams-sidebar a {
+  font-size: 14px;
+  line-height: 20px;
+}
+:root .staff-teams-channel {
+  padding: 6px 8px;
+  margin: 4px 0;
+  border-radius: 3px;
+}
+:root .staff-teams-channel:hover {
+  background: #e5e4ed;
+}
+:root .staff-teams-post {
+  border-color: var(--workspace-rule);
+  border-radius: 4px;
+  box-shadow: none;
+  padding: 20px;
+}
+:root .staff-teams-files small {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .coord-post small,
+:root .coord-channel-heading > small {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .archive-page {
+  background: white;
+}
+:root .archive-preview {
+  box-shadow: 0 8px 24px #00000029;
+}
+:root .archive-results {
+  gap: 0;
+}
+:root .archive-results button {
+  box-shadow: none;
+  border-radius: 0;
+}
+:root .demo-control-frame {
+  padding: 8px 12px;
+}
+:root .demo-controls {
+  box-shadow: 0 2px 5px #00000026;
+  border-radius: 4px;
+}
+:root .demo-controls > a {
+  font-size: 12px;
+  line-height: 16px;
+}
+@media (min-width: 1250px) {
+  :root .directory-content .directory-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1100px) {
+  :root .directory-content .directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  :root .directory-content {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 24px;
+  }
+}
+@media (max-width: 800px) {
+  :root
+    :is(
+      .functional-main,
+      .finance-main,
+      .executive-main,
+      .projects-main,
+      .content-main,
+      .audience-main,
+      .services-main
+    ) {
+    padding: 24px 16px;
+  }
+  :root :is(.functional-layout, .finance-layout, .projects-layout) {
+    display: block;
+  }
+  :root .directory-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :root .directory-coordination {
+    border-left: 0;
+    border-top: 1px solid var(--workspace-rule);
+    padding: 24px 0;
+  }
+  :root .directory-heading .directory-caveat {
+    display: flex;
+  }
+  :root .directory-main:has(.directory-content) {
+    padding: 24px 20px 160px;
+  }
+  :root .directory-teams {
+    padding: 12px 20px;
+  }
+  :root .directory-nav {
+    padding: 8px 20px;
+    gap: 16px;
+  }
+  :root .directory-nav button {
+    font-size: 14px;
+  }
+}
+@media (max-width: 480px) {
+  :root .directory-content .directory-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :root .directory-content .directory-tile {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    min-height: 112px;
+    gap: 12px;
+  }
+  :root .directory-open {
+    grid-column: 2;
+  }
+  :root .directory-teams select {
+    font-size: 12px;
+  }
+  :root .directory-teams > a {
+    font-size: 12px;
+  }
+  :root .directory-heading {
+    align-items: flex-start;
+  }
+  :root .directory-teams-copy strong {
+    font-size: 14px;
+  }
+  :root .site-header h1 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root .archives-app,
+:root .archives-app .functional-main {
+  background: white;
+}
+:root .archive-search {
+  background: white;
+  border: 0;
+  border-bottom: 1px solid var(--workspace-rule);
+  padding: 0 0 20px;
+}
+:root .archive-filters label {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .archive-results {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+:root .archive-results > button {
+  border: 0;
+  border-bottom: 1px solid var(--workspace-rule);
+  padding: 16px 0;
+  background: white;
+  border-radius: 0;
+}
+:root .archive-results > button:hover {
+  background: #f5f5f5;
+}
+:root .archive-results strong {
+  font-size: 16px;
+  line-height: 24px;
+  color: #242424;
+}
+:root .archive-results small {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .archive-legacy-link {
+  background: #f5f5f5;
+  border-color: #8a8886;
+}
+:root .archive-preview {
+  background: white;
+}
+:root .legacy-drive nav {
+  background: #f5f5f5;
+}
+:root .archive-view-only {
+  background: #f0f0f0;
+  color: #424242;
+  font-size: 12px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+:root .archive-legacy-file {
+  border: 0;
+  border-bottom: 1px solid var(--workspace-rule);
+  color: #242424;
+}
+:root .sp-document-library .sp-library-heading h2 {
+  font-size: 24px;
+  line-height: 32px;
+}
+:root .sp-document-library.sp-library-embedded .sp-library-heading h2 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+html {
+  scrollbar-gutter: stable;
+}

@@ -201,3 +201,38 @@
     min-width: 650px;
   }
 }
+
+.project-context-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 12px 0 24px;
+}
+.project-list-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px 0 8px;
+}
+.project-list-toolbar select {
+  min-height: 32px;
+  border: 1px solid #d1d1d1;
+  padding: 4px 8px;
+  background: white;
+  border-radius: 4px;
+}
+.project-secondary-list {
+  margin: 24px 0;
+}
+.project-secondary-list > summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: 600;
+}
+.projects-nav details > summary::after {
+  content: "›";
+  float: right;
+  transition: transform 140ms ease;
+}
+.projects-nav details[open] > summary::after {
+  transform: rotate(90deg);
+}
