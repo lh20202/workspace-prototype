@@ -76,8 +76,8 @@ export default function AppRouter() {
                 />
               </span>
               <span>
-                <small>OUTREACH · INTERACTIVE DEMO</small>View Audience Insight
-                &amp; Innovation R&amp;D workspace
+                <small>OUTREACH · INTERACTIVE DEMO</small>View Audience Research
+                &amp; Marketing Insight workspace
               </span>
               <ArrowRight24Regular />
             </a>

@@ -572,7 +572,8 @@ export default function ContentApp() {
               <a href={`${base}/tools`}>All tools</a>
               {["piwik", "vwo", "semrush", "brandwatch"].includes(tool.id) && (
                 <a href="/audience-innovation/analytics">
-                  Go to Audience Insight & Innovation R&D for deeper analysis
+                  Go to Audience Research & Marketing Insight for deeper
+                  analysis
                 </a>
               )}
             </section>
@@ -1101,8 +1102,8 @@ export default function ContentApp() {
               </a>
               <p>
                 <a href="/audience-innovation/analytics">
-                  Return performance evidence to Audience Insight & Innovation
-                  R&D
+                  Return performance evidence to Audience Research & Marketing
+                  Insight
                 </a>
               </p>
               {selected.id === "PKG-102" && (

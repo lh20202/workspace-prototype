@@ -30,7 +30,7 @@ describe("Audience R&D connected working data", () => {
     ])
       expect(prototypeForPath(p)).toBe("audience");
     expect(pageTitle("/audience-innovation")).toBe(
-      "Audience Insight & Innovation R&D",
+      "Audience Research & Marketing Insight",
     );
     expect(prototypeForPath("/services")).toBe("services");
     expect(prototypeForPath("/logistics/teams")).toBe("logistics");

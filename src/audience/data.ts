@@ -1,5 +1,5 @@
 import type { OperationalFile } from "../logistics/data";
-export const title = "Audience Insight & Innovation R&D";
+export const title = "Audience Research & Marketing Insight";
 export const description =
   "Shared workspace for researching audiences, developing and testing new approaches, analysing performance and turning evidence into future outreach decisions.";
 export const navigation = [

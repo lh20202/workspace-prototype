@@ -18,7 +18,9 @@ export default function AccessRequest() {
     params.get("area") ||
     (isSupport ? "Technology Services" : "Restricted Planning");
   const services = workspace === "Organisation Services";
-  const audience = workspace === "Audience Insight & Innovation R&D";
+  const audience =
+    workspace === "Audience Research & Marketing Insight" ||
+    workspace === "Audience Insight & Innovation R&D";
   const content = workspace === "Content Creation & Delivery";
   const freshservice = services || content;
   const returnPath = content

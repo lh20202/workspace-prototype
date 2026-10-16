@@ -57,7 +57,7 @@ export default function PrototypeNavigator({
           href="/audience-innovation"
           aria-current={active === "audience" ? "page" : undefined}
         >
-          Audience Insight &amp; Innovation R&amp;D
+          Audience Research &amp; Marketing Insight
         </a>
         <a
           href="/content-delivery"

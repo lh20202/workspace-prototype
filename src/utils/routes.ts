@@ -45,7 +45,7 @@ export function pageTitle(pathname: string) {
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")
   )
-    return "Audience Insight & Innovation R&D";
+    return "Audience Research & Marketing Insight";
   if (pathname === "/services" || pathname.startsWith("/services/"))
     return "Organisation Services";
   if (pathname === "/service-desk/it-support")

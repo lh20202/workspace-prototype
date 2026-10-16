@@ -8,7 +8,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 
 ## Routes
 
-- `/`: Workspace prototypes. Six large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, Audience Insight & Innovation R&D, Content Creation & Delivery, and the Teams experience.
+- `/`: Workspace prototypes. Six large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, Audience Research & Marketing Insight, Content Creation & Delivery, and the Teams experience.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
 - `/logistics`: Acquisition & Activation Logistics Home.
@@ -61,7 +61,7 @@ Narrow protected matter routes sit inside technology, legal, purchasing, workpla
 
 System launch tiles use clean product text rather than invented logos. Freshservice links to `/service-desk/it-support`, extending the same existing simulated portal for first-level triage and specialist support. Oracle NetSuite, M-Files, Greenhouse Recruiting and Microsoft 365 open clearly marked simulated external destinations under `/services/systems/…`. No authoritative transactions, candidate queues or controlled records are duplicated; external IDs are references only. No request is sent, no external login is opened, and no data leaves the browser.
 
-## Audience Insight & Innovation R&D
+## Audience Research & Marketing Insight
 
 The current landing page gains an **Outreach · Interactive Demo** link to `/audience-innovation`; the existing layout, colours, logos, typography and other entries are preserved. The dark external demo controls gain the same workspace. Child routes: `/research`, `/audiences`, `/experiments`, `/analytics`, `/decisions`, `/calendar` beneath `/audience-innovation`.
 
@@ -80,7 +80,7 @@ Study-level protection is demonstrated at `/audience-innovation/research/website
 
 `src/content/data.ts` contains 12 canonical fictional packages, sparse working files and specialist-system references. Home production/review/release views, saved pipeline views, channel/format filters, package details, partner handoffs and calendar milestones all use those same package objects. Standard channel files resolve to the same canonical SharePoint file objects. Package stages, review comments, rights and approvals are local demonstration edits and reset on reload. Release-stage changes enforce pending reviews, permitted channels, rights status and embargo conditions; they never publish anything.
 
-Content purpose stays together across editorial, creative and digital outputs. Mobile Sign-up Experience links the research need to the brief, UX copy, design, external developer handoff, Contentful implementation, acceptance, experimentation, release and measurement. Research and evaluation link back to Audience Insight & Innovation R&D; analytical files are not copied into production.
+Content purpose stays together across editorial, creative and digital outputs. Mobile Sign-up Experience links the research need to the brief, UX copy, design, external developer handoff, Contentful implementation, acceptance, experimentation, release and measurement. Research and evaluation link back to Audience Research & Marketing Insight; analytical files are not copied into production.
 
 The scoped partner previews at `/content-delivery/packages/PKG-103/shared` and `/content-delivery/packages/PKG-105/shared` show only the approved production/development file IDs for that engagement. They omit workspace search, other package content and protected components. Invalid out-of-scope file parameters do not open a file. These are explicit collaboration previews, not real authentication or external sharing.
 
