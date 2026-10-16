@@ -227,7 +227,7 @@ export default function FinanceApp() {
     payments:
       "Invoices · Approvals · Supplier settlement · Expenses · Payroll handoff · Tax payments · Failed and returned payments · Corrections · Intercompany obligations",
     planning:
-      "Annual budgets · Rolling forecasts · Multi-year outlook · Scenarios · Cost, income, resource and investment analysis · Management reporting · Approved baselines",
+      "Annual budgets · Rolling forecasts · Multi-year outlook · Scenarios · Cost, income, capacity and investment analysis · Management reporting · Approved baselines",
     accounting:
       "General ledger · Journal review · Monthly and annual close · Financial statements · Tax and audit coordination · Statutory reporting · Corrections · Formal records",
     treasury:
@@ -372,19 +372,6 @@ export default function FinanceApp() {
                         </p>
                       ))}
                       <a href={`${base}/calendar`}>Financial calendar →</a>
-                    </section>
-                    <section>
-                      <h2>Financial systems</h2>
-                      <div className="finance-system-links">
-                        {systems
-                          .filter((s) => s.id !== "stripe")
-                          .map((s) => (
-                            <a key={s.id} href={`${base}/systems/${s.id}`}>
-                              <strong>{s.name}</strong>
-                              <small>{s.purpose}</small>
-                            </a>
-                          ))}
-                      </div>
                     </section>
                   </div>
                   <section>
@@ -532,7 +519,7 @@ export default function FinanceApp() {
                         approval, settles in NetSuite and confirms
                         reconciliation.
                       </p>
-                      <a href="/services/procurement">
+                      <a href="/services/purchasing">
                         Open Organisation Services · Purchasing & Suppliers →
                       </a>
                       <p>
@@ -727,11 +714,6 @@ export default function FinanceApp() {
                   )}
                 </>
               )}
-              <p className="finance-muted">
-                Fictional coordination example. Changes are local to this
-                browser session and reset on reload. Specialist platforms retain
-                authoritative records.
-              </p>
             </>
           )}
         </main>
@@ -804,7 +786,7 @@ export default function FinanceApp() {
                 </a>
               </p>
               {selected.id === "PAY-01" && (
-                <a href="/services/procurement">
+                <a href="/services/purchasing">
                   Original purchasing & supplier evidence →
                 </a>
               )}

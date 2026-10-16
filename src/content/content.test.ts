@@ -17,11 +17,7 @@ import {
   releaseBlockers,
 } from "./data";
 import { prototypeForPath, pageTitle } from "../utils/routes";
-import {
-  systems as serviceSystems,
-  directory,
-  handoffs,
-} from "../services/data";
+import { systems as serviceSystems } from "../services/data";
 describe("Connected content production", () => {
   it("adds routes without replacing the existing prototypes", () => {
     for (const suffix of [
@@ -118,32 +114,27 @@ describe("Connected content production", () => {
     expect(ready.stage).toBe("Ready for delivery");
   });
   it("connects tools and references without copying source-system data", () => {
-    expect(quickToolIds).toHaveLength(8);
-    expect(tools).toHaveLength(18);
+    expect(quickToolIds).toHaveLength(3);
+    expect(tools).toHaveLength(10);
     for (const p of packages)
       for (const r of p.refs)
         expect(tools.some((t) => t.id === r.tool)).toBe(true);
     for (const f of files) expect(packagesById.has(f.packageId)).toBe(true);
   });
 });
-describe("Organisation Services alternative stack", () => {
-  it("uses six current tool labels and valid references", () => {
-    expect(serviceSystems.map((s) => s.name).sort()).toEqual(
-      [
-        "Asana",
-        "Freshservice",
-        "Oracle NetSuite",
-        "M-Files",
-        "Greenhouse Recruiting",
-        "Microsoft 365",
-      ].sort(),
-    );
-    for (const d of directory)
-      expect(serviceSystems.some((s) => s.id === d.system)).toBe(true);
-    for (const h of handoffs)
-      for (const ref of h.refs) {
-        expect(serviceSystems.some((s) => s.id === ref.system)).toBe(true);
-        expect(ref.id).not.toMatch(/^(JSM|PO|DW|REC)-/);
-      }
+describe("Services and Content boundaries", () => {
+  it("keeps technology and hiring tools with their new owners", () => {
+    expect(serviceSystems.map((s) => s.name)).toEqual([
+      "MaintainX",
+      "Coupa",
+      "TravelPerk",
+      "Envoy",
+    ]);
+    expect(
+      tools.some((t) =>
+        ["github", "datadog", "staffbase", "openproject"].includes(t.id),
+      ),
+    ).toBe(false);
+    expect(partnerShares.some((s) => s.packageId === "PKG-105")).toBe(false);
   });
 });

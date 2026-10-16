@@ -27,7 +27,7 @@ describe("division coordination architecture", () => {
       "Executive Office Division",
     ]);
     expect(divisions.reduce((n, d) => n + d.units.length, 0)).toBe(33);
-    expect(workspaces).toHaveLength(7);
+    expect(workspaces).toHaveLength(13);
     expect(planningDivisions).toEqual(divisions.map((d) => d.fullName));
     expect(
       documents.every(
@@ -119,7 +119,7 @@ describe("division coordination architecture", () => {
       );
     }
   });
-  it("uses only implemented functional destinations and omits a missing People workspace redirect", () => {
+  it("uses only implemented functional destinations including People learning", () => {
     expect(
       divisions.flatMap((d) =>
         d.posts.flatMap((p) => (p.upload ? [p.upload.destination] : [])),
@@ -128,10 +128,15 @@ describe("division coordination architecture", () => {
       "/audience-innovation/analytics",
       "/content-delivery/creative",
       "/financial-operations/planning",
-      "/services/procurement",
+      "/services/purchasing",
+      "/people-culture/learning",
       "/executive/initiatives",
     ]);
-    expect(divisions[4].posts.some((p) => p.upload)).toBe(false);
+    expect(
+      divisions[4].posts.some(
+        (p) => p.upload?.destination === "/people-culture/learning",
+      ),
+    ).toBe(true);
     const route = new URL(
       divisionHref("maya", "marketing-growth"),
       "https://example.test",

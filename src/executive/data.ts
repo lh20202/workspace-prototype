@@ -121,7 +121,7 @@ export const files: ExecutiveFile[] = seeds.map(
     modified: "2026-10-16",
     sensitivity: "Internal",
     recordState:
-      audience === "base" ? "Current resource" : "Working information",
+      audience === "base" ? "Current standard" : "Working information",
   }),
 );
 export function visibleFiles(role: ExecutiveRole) {
@@ -175,7 +175,7 @@ export const decisions: Decision[] = [
     sponsor: "Cameron Bell",
     status: "For decision",
     area: "leadership",
-    source: "/services/projects",
+    source: "/quality-monitoring/change",
     owner: "Cameron Bell",
     followup: "2026-10-30",
     audience: "base",
@@ -338,7 +338,7 @@ export const initiatives = [
     status: "Awaiting decision",
     decision: "Approve revised investment envelope",
     review: "2026-10-26",
-    delivery: "/services/workplace",
+    delivery: "/services/office",
   },
   {
     id: "SI-03",
@@ -366,7 +366,7 @@ export const initiatives = [
     status: "Review",
     decision: "Further assessment required",
     review: "2026-10-28",
-    delivery: "/services/projects",
+    delivery: "/quality-monitoring/change",
   },
   {
     id: "SI-05",
@@ -380,7 +380,7 @@ export const initiatives = [
     status: "Paused",
     decision: "Pause pending capacity review",
     review: "2026-10-29",
-    delivery: "/services/projects",
+    delivery: "/quality-monitoring/change",
   },
 ];
 export function visibleInitiatives(role: ExecutiveRole) {

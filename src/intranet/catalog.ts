@@ -1,54 +1,5 @@
-export const workspaces = [
-  {
-    id: "planning",
-    title: "Organisational Planning & Reporting",
-    group: "Strategy & planning",
-    href: "/planning",
-    icon: "strategy",
-  },
-  {
-    id: "logistics",
-    title: "Acquisition & Activation Logistics",
-    group: "Campaign operations",
-    href: "/logistics",
-    icon: "people",
-  },
-  {
-    id: "services",
-    title: "Organisation Services",
-    group: "Infrastructure & services",
-    href: "/services",
-    icon: "services",
-  },
-  {
-    id: "audience",
-    title: "Audience Research & Marketing Insight",
-    group: "Outreach",
-    href: "/audience-innovation",
-    icon: "research",
-  },
-  {
-    id: "content",
-    title: "Content Creation & Delivery",
-    group: "Outreach",
-    href: "/content-delivery",
-    icon: "content",
-  },
-  {
-    id: "finance",
-    title: "Income & Financial Operations",
-    group: "Transactions & commercial services",
-    href: "/financial-operations",
-    icon: "finance",
-  },
-  {
-    id: "executive",
-    title: "CEO & Executive Committee",
-    group: "Leadership & governance",
-    href: "/executive",
-    icon: "executive",
-  },
-];
+import { workspaceRegistry } from "../workspaces/registry";
+export const workspaces = workspaceRegistry;
 const baseStaff = [
   {
     id: "robin",
@@ -114,15 +65,22 @@ const memberships: Record<string, { divisionId: string; unitId: string }> = {
     unitId: "strategy-and-performance",
   },
   robin: { divisionId: "executive-office", unitId: "ceo-office" },
+  devon: { divisionId: "strategy-technology", unitId: "it-services" },
   elena: { divisionId: "people-culture", unitId: "learning-and-capability" },
 };
 export const staff = [
   ...baseStaff,
   {
+    id: "devon",
+    name: "Devon Park",
+    role: "Platform Engineer",
+    workspace: "digital",
+  },
+  {
     id: "elena",
     name: "Elena Rossi",
     role: "Learning Partner",
-    workspace: "services",
+    workspace: "people",
   },
 ].map((s) => ({ ...s, ...memberships[s.id] }));
 export function selectedStaffId() {

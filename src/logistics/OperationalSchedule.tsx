@@ -36,7 +36,8 @@ export function RotaView({
         <div>
           <h2>{type === "street" ? "In-person rota" : "Calling rota"}</h2>
           <p>
-            Weekly {type === "street" ? "in-person deployments" : "calling shifts"}{" "}
+            Weekly{" "}
+            {type === "street" ? "in-person deployments" : "calling shifts"}{" "}
             coordinated through Campaign Operations.
           </p>
         </div>
@@ -383,7 +384,7 @@ export function CalendarView({
                   <Button appearance="subtle" onClick={() => openSource(e)}>
                     {" "}
                     {e.file
-                      ? "Open plan / resource"
+                      ? "Open plan / guide"
                       : e.taskId
                         ? "Open Planner"
                         : "Open Locations & Permits"}

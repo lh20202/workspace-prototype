@@ -367,25 +367,13 @@ export default function ExecutiveApp() {
                         Open controlled initiative oversight →
                       </a>
                       <p>
-                        <a href="/services/projects">
-                          Projects & Improvement · Delivery source ↗
+                        <a href="/quality-monitoring/change">
+                          Project & Change Support · Working source ↗
                         </a>
                       </p>
                     </section>
                   </div>
-                  <div className="finance-home-grid">
-                    <section>
-                      <h2>Quick access</h2>
-                      <div className="executive-quick">
-                        <a href="/planning">
-                          Organisational Planning & Reporting
-                        </a>
-                        <a href={href("leadership")}>Leadership Decisions 🔒</a>
-                        <a href={href("calendar")}>Executive Calendar</a>
-                        <a href="/governance">Governance & Members Portal ↗</a>
-                      </div>
-                    </section>
-                  </div>
+
                   <section>
                     <h2>Recent approved / shared work</h2>
                     {fileList(
@@ -690,11 +678,6 @@ export default function ExecutiveApp() {
               ) : (
                 <p>This executive location is unavailable.</p>
               )}
-              <p className="finance-muted">
-                Fictional access and collaboration simulation. Local edits reset
-                on reload. Preview roles are separate; they do not create
-                governance or incident membership.
-              </p>
             </>
           )}
         </main>

@@ -26,8 +26,8 @@ export default function LocationsList({
         <div>
           <h2>Locations & Permits</h2>
           <p>
-            Shared location confirmations and permit status for upcoming in-person
-            operations.
+            Shared location confirmations and permit status for upcoming
+            in-person operations.
           </p>
         </div>
         <span className="list-label">Microsoft Lists</span>

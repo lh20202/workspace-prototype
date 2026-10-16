@@ -8,11 +8,11 @@ export const navigation = [
   { id: "editorial", name: "Messaging & Editorial" },
   { id: "creative", name: "Creative Production" },
   { id: "channels", name: "Channels & Formats" },
-  { id: "digital", name: "Digital Delivery" },
+  { id: "digital", name: "Digital Content & Experience" },
   { id: "partners", name: "External Partners" },
   { id: "calendar", name: "Production Calendar" },
 ];
-export const tools = [
+const allTools = [
   {
     id: "planable",
     name: "Planable",
@@ -45,24 +45,6 @@ export const tools = [
     url: "https://www.cvent.com/",
   },
   {
-    id: "piwik",
-    name: "Piwik PRO",
-    purpose: "Detailed website analytics and post-release measurement",
-    url: "https://piwik.pro/",
-  },
-  {
-    id: "vwo",
-    name: "VWO / Wingify",
-    purpose: "Website experimentation and optimisation",
-    url: "https://wingify.com/",
-  },
-  {
-    id: "brandwatch",
-    name: "Brandwatch",
-    purpose: "Media/social monitoring and audience listening",
-    url: "https://www.brandwatch.com/",
-  },
-  {
     id: "asana",
     name: "Asana",
     purpose: "Production tasks and delivery coordination",
@@ -81,24 +63,6 @@ export const tools = [
     url: "https://www.webex.com/",
   },
   {
-    id: "github",
-    name: "GitHub",
-    purpose: "External digital-development collaboration and technical handoff",
-    url: "https://github.com/features",
-  },
-  {
-    id: "datadog",
-    name: "Datadog",
-    purpose: "Digital-product operational monitoring",
-    url: "https://www.datadoghq.com/",
-  },
-  {
-    id: "semrush",
-    name: "Semrush",
-    purpose: "SEO and search visibility",
-    url: "https://www.semrush.com/",
-  },
-  {
     id: "salesforce",
     name: "Salesforce",
     purpose: "Authoritative customer/contact and permission references",
@@ -110,29 +74,21 @@ export const tools = [
     purpose: "Supplier and commercial transaction references",
     url: "https://www.netsuite.com/",
   },
-  {
-    id: "staffbase",
-    name: "Staffbase",
-    purpose: "Employee-facing distribution where an internal channel is needed",
-    url: "https://staffbase.com/",
-  },
-  {
-    id: "openproject",
-    name: "OpenProject",
-    purpose: "Structured coordination for formal projects",
-    url: "https://www.openproject.org/",
-  },
 ];
-export const quickToolIds = [
-  "planable",
-  "contentful",
-  "affinity",
-  "wistia",
-  "cvent",
-  "piwik",
-  "vwo",
-  "brandwatch",
-];
+export const tools = allTools.filter(
+  (t) =>
+    ![
+      "github",
+      "datadog",
+      "staffbase",
+      "openproject",
+      "piwik",
+      "vwo",
+      "brandwatch",
+      "semrush",
+    ].includes(t.id),
+);
+export const quickToolIds = ["planable", "contentful", "wistia"];
 export type Rights =
   | "Cleared"
   | "Pending confirmation"
@@ -296,7 +252,7 @@ export const packages: Package[] = [
     stage: "Review",
     status: "Needs input",
     partner: "Juniper Digital Studio",
-    partnerType: "Digital studio / external developer",
+    partnerType: "UX content review studio",
     reviewDue: "2026-10-20",
     releaseDate: "2026-10-29",
     reviews: [
@@ -617,7 +573,7 @@ export const files: ContentFile[] = [
     "PKG-105",
     "digital",
     "Content requirements.docx",
-    "Digital specification",
+    "Content requirements",
   ),
   f(
     "mobile-wireframe",
@@ -630,8 +586,8 @@ export const files: ContentFile[] = [
     "mobile-fields",
     "PKG-105",
     "digital",
-    "Form field specification.xlsx",
-    "Digital specification",
+    "Form Labels & Validation Copy.xlsx",
+    "Content requirements",
   ),
   f(
     "mobile-acceptance",
@@ -714,6 +670,20 @@ export const files: ContentFile[] = [
     "Decision",
   ),
 ];
+for (const pkg of packages)
+  pkg.refs = pkg.refs.filter(
+    (r) =>
+      ![
+        "github",
+        "datadog",
+        "staffbase",
+        "openproject",
+        "piwik",
+        "vwo",
+        "brandwatch",
+        "semrush",
+      ].includes(r.tool),
+  );
 export const filesById = new Map(files.map((f) => [f.id, f]));
 export const partnerShares = [
   {
@@ -726,17 +696,6 @@ export const partnerShares = [
       "video-delivery",
     ],
     note: "Production brief, storyboard, review comments and delivery milestones only.",
-  },
-  {
-    packageId: "PKG-105",
-    name: "External development collaboration",
-    fileIds: [
-      "mobile-requirements",
-      "mobile-wireframe",
-      "mobile-fields",
-      "mobile-acceptance",
-    ],
-    note: "Approved delivery specification, wireframe feedback, acceptance criteria and release coordination only.",
   },
   {
     packageId: "PKG-104",
@@ -769,11 +728,6 @@ export const protectedTopics = [
     packageId: "PKG-103",
     id: "commercial-proposal",
     name: "Commercial proposal",
-  },
-  {
-    packageId: "PKG-105",
-    id: "security-note",
-    name: "Security-sensitive implementation note",
   },
 ];
 export const protectedHref = (p: (typeof protectedTopics)[number]) =>
@@ -890,7 +844,7 @@ export const teamChannels = [
   },
   { id: "editorial", name: "Editorial & Messaging", areas: ["editorial"] },
   { id: "creative", name: "Creative Production", areas: ["creative"] },
-  { id: "digital", name: "Digital Delivery", areas: ["digital"] },
+  { id: "digital", name: "Digital Content & Experience", areas: ["digital"] },
   { id: "coordination", name: "Production Coordination", areas: ["channels"] },
 ];
 export const filesForChannel = (id: string) =>
@@ -910,7 +864,7 @@ export function calendarEntries(items: Package[]) {
         id: p.id + "-release",
         date: p.releaseDate,
         name: p.channels.includes("Website")
-          ? "Technical release / go-live"
+          ? "Content acceptance / publication"
           : "Go-live",
         packageId: p.id,
       },
@@ -958,12 +912,24 @@ export const digitalSteps = [
   { name: "Content / product brief", file: "mobile-product" },
   { name: "Messaging and UX copy", file: "mobile-requirements" },
   { name: "Creative / design review", file: "mobile-wireframe" },
-  { name: "External developer handoff", file: "mobile-fields", tool: "github" },
-  { name: "Contentful implementation", file: "", tool: "contentful" },
+  {
+    name: "Content requirements handoff",
+    file: "mobile-fields",
+    research: "/digital-tech/web-crm",
+  },
+  { name: "CMS content review", file: "", tool: "contentful" },
   { name: "QA / content acceptance", file: "mobile-acceptance" },
-  { name: "Experiment where relevant", file: "", tool: "vwo" },
+  {
+    name: "Experiment where relevant",
+    file: "",
+    research: "/audience-innovation/experiments",
+  },
   { name: "Release coordination", file: "", tool: "asana" },
-  { name: "Post-release measurement", file: "", tool: "piwik" },
+  {
+    name: "Post-release measurement",
+    file: "",
+    research: "/audience-innovation/analytics",
+  },
 ];
 export const recentIds = [
   "welcome-message",

@@ -1,3 +1,6 @@
+import { functionalConfigs, configById } from "../workspaces/config";
+import { technicalChannels } from "../workspaces/technicalTeams";
+import TechnicalConversation from "../workspaces/TechnicalConversation";
 import { useState, useEffect } from "react";
 import {
   Button,
@@ -34,13 +37,19 @@ const channelMap: Record<string, string[]> = {
     "Calling Campaigns",
     "Pet photos",
   ],
-  services: ["General", "Service coordination", "Purchasing & Suppliers"],
+  services: [
+    "General",
+    "Office & Equipment",
+    "Purchasing & Suppliers",
+    "Travel",
+    "Reception",
+  ],
   audience: ["General", "Research coordination", "Audience learning"],
   content: [
     "General",
     "Editorial & Messaging",
     "Creative Production",
-    "Digital Delivery",
+    "Digital Content & Experience",
     "Production Coordination",
   ],
   finance: financeChannels,
@@ -54,6 +63,16 @@ export const sharedFiles: Record<string, OperationalFile[]> = {
   finance: financialFiles,
   executive: executiveFiles("base"),
 };
+for (const cfg of functionalConfigs) {
+  channelMap[cfg.id] =
+    cfg.id === "digital"
+      ? technicalChannels
+      : [
+          "General",
+          ...cfg.areas.filter((a) => a.id !== "protected").map((a) => a.name),
+        ];
+  sharedFiles[cfg.id] = cfg.files;
+}
 export default function TeamsPreview() {
   const person =
     staff.find(
@@ -65,16 +84,39 @@ export default function TeamsPreview() {
   const division = divisions.find(
     (d) => d.id === new URLSearchParams(location.search).get("division"),
   );
-  const workspace = workspaces.find((w) => w.id === person.workspace)!;
+  const workspace =
+    workspaces.find(
+      (w) => w.id === new URLSearchParams(location.search).get("workspace"),
+    ) || workspaces.find((w) => w.id === person.workspace)!;
   const [channel, setChannel] = useState(
       new URLSearchParams(location.search).get("channel") || "General",
     ),
     [tab, setTab] = useState("Posts"),
     [file, setFile] = useState<OperationalFile>();
   const normalFiles =
-    person.workspace === "finance"
+    workspace.id === "finance"
       ? channelFiles(channel)
-      : sharedFiles[person.workspace] || [];
+      : (sharedFiles[workspace.id] || []).filter((f) => {
+          if (channel === "General" || !configById.has(workspace.id))
+            return true;
+          const channelArea =
+            workspace.id === "digital"
+              ? (
+                  {
+                    Engineering: "engineering",
+                    Innovators: "engineering",
+                    "AI Lab": "ai-automation",
+                    "Web & CRM DevOps": "web-crm",
+                    "M365 & SPFx": "m365",
+                    "Architecture & Governance": "architecture",
+                    "Platform Operations": "operations",
+                  } as Record<string, string>
+                )[channel]
+              : configById
+                  .get(workspace.id)
+                  ?.areas.find((a) => a.name === channel)?.id;
+          return (f as { area?: string }).area === channelArea;
+        });
   return (
     <div className="staff-teams">
       <header className="staff-teams-header">
@@ -123,7 +165,7 @@ export default function TeamsPreview() {
         <aside className="staff-teams-sidebar">
           <strong>Teams and channels</strong>
           <h3>{workspace.title}</h3>
-          {channelMap[person.workspace].map((c) => (
+          {channelMap[workspace.id].map((c) => (
             <button
               key={c}
               className="staff-teams-channel"
@@ -131,7 +173,7 @@ export default function TeamsPreview() {
               onClick={() => {
                 if (division)
                   location.assign(
-                    `/teams?staff=${person.id}&channel=${encodeURIComponent(c)}`,
+                    `/teams?staff=${person.id}&workspace=${workspace.id}&channel=${encodeURIComponent(c)}`,
                   );
                 else setChannel(c);
               }}
@@ -141,6 +183,19 @@ export default function TeamsPreview() {
           ))}
           <a href={workspace.href}>Open SharePoint workspace ↗</a>
           <a href="/">Back to all workspaces</a>
+          <details className="teams-functional-list">
+            <summary>Other functional teams</summary>
+            {workspaces
+              .filter((w) => w.id !== workspace.id)
+              .map((w) => (
+                <a
+                  key={w.id}
+                  href={`/teams?staff=${person.id}&workspace=${w.id}`}
+                >
+                  {w.title}
+                </a>
+              ))}
+          </details>
           <div className="coord-sidebar-team">
             <h3>Division Coordination</h3>
             {divisions.map((d) => (
@@ -178,19 +233,32 @@ export default function TeamsPreview() {
                   </button>
                 ))}
               </nav>
-              {tab === "Posts" ? (
+              {workspace.id === "digital" &&
+              channel === "Security Engineering" ? (
+                <section className="functional-denied strict">
+                  <h2>Access denied</h2>
+                  <p>
+                    Security Engineering needs specific technical authorisation.
+                    No security or production material is included.
+                  </p>
+                </section>
+              ) : tab === "Posts" ? (
                 <>
-                  <article className="staff-teams-post">
-                    <strong>{person.name}</strong>
-                    <p>Today’s coordination · {workspace.title}</p>
-                    <p>
-                      {person.workspace === "finance"
-                        ? "Income matching, close dependencies and planning contributions are connected here. Use Shared for the same working files as SharePoint. Sensitive subjects require separate authorisation."
-                        : "Keep working updates and handovers together here. The Shared tab opens the same working files as the SharePoint workspace."}
-                    </p>
-                    <a href={workspace.href}>Continue in the workspace →</a>
-                  </article>
-                  {person.workspace === "logistics" && (
+                  {workspace.id === "digital" ? (
+                    <TechnicalConversation channel={channel} />
+                  ) : (
+                    <article className="staff-teams-post">
+                      <strong>{person.name}</strong>
+                      <p>Today’s coordination · {workspace.title}</p>
+                      <p>
+                        {workspace.id === "finance"
+                          ? "Income matching, close dependencies and planning contributions are connected here. Use Shared for the same working files as SharePoint. Sensitive subjects require separate authorisation."
+                          : "Keep working updates and handovers together here. The Shared tab opens the same working files as the SharePoint workspace."}
+                      </p>
+                      <a href={workspace.href}>Continue in the workspace →</a>
+                    </article>
+                  )}
+                  {workspace.id === "logistics" && (
                     <article className="staff-teams-post">
                       <h2>Explore the full Teams experience</h2>
                       <p>
@@ -208,7 +276,7 @@ export default function TeamsPreview() {
               ) : (
                 <div className="staff-teams-files">
                   <p>Shared files · Original SharePoint objects</p>
-                  {person.workspace === "planning"
+                  {workspace.id === "planning"
                     ? planningFiles
                         .filter((f) => f.library !== "restricted")
                         .slice(0, 6)
@@ -271,7 +339,7 @@ export default function TeamsPreview() {
           </p>
           <a
             href={
-              person.workspace === "finance"
+              workspace.id === "finance"
                 ? `${workspace.href}/${file?.folder}`
                 : workspace.href
             }

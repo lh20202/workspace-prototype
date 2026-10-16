@@ -648,7 +648,7 @@ export default function TeamsView({
                   <span>{channelFiles.length} files</span>
                 </div>
                 <p className="shared-description">
-                  Files and current resources used in {channel.name}.
+                  Files and current guides used in {channel.name}.
                 </p>
                 <div className="shared-command-bar">
                   <Button
@@ -795,7 +795,7 @@ function librariesName(id: string) {
   return (
     {
       operations: "Campaign Operations",
-      resources: "Operational Resources",
+      resources: "Shared Operations",
       training: "Training & Onboarding",
       records: "Completed Campaign Records",
     } as Record<string, string>

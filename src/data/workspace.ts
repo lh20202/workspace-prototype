@@ -89,9 +89,9 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Ready for review",
     ],
     [
-      "Human Resources submission 2027.docx",
+      "People & Culture submission 2027.docx",
       "Submission",
-      "Human Resources",
+      "People & Culture",
       "In progress",
     ],
     [
@@ -203,7 +203,7 @@ const seeds: Record<LibraryId, Seed[]> = {
       "Approved",
     ],
     ["Operations progress input.xlsx", "Submission", "Operations"],
-    ["Human Resources progress input.docx", "Submission", "Human Resources"],
+    ["People & Culture progress input.docx", "Submission", "People & Culture"],
     [
       "Digital & Technology progress input.xlsx",
       "Submission",
@@ -258,7 +258,7 @@ const seeds: Record<LibraryId, Seed[]> = {
   ],
   restricted: [
     ["Operating model scenario A.docx", "Analysis", "Organisation-wide"],
-    ["Workforce scenario options.xlsx", "Analysis", "Human Resources"],
+    ["Workforce scenario options.xlsx", "Analysis", "People & Culture"],
     ["Financial sensitivity assumptions.xlsx", "Supporting data", "Finance"],
     [
       "Organisational change impact assessment.docx",
@@ -318,7 +318,7 @@ const allDocuments: Document[] = Object.entries(seeds).flatMap(([lib, rows]) =>
       name: name
         .replace(/^Operations /, "Executive Office ")
         .replace(/^Manufacturing /, "Communications & Public Affairs ")
-        .replace(/^Human Resources /, "People & Culture ")
+        .replace(/^People & Culture /, "People & Culture ")
         .replace(
           /^Digital & Technology /,
           "Strategy, Technology & Transformation ",
@@ -333,7 +333,7 @@ const allDocuments: Document[] = Object.entries(seeds).flatMap(([lib, rows]) =>
             Manufacturing: organisationDivisions[1].fullName,
             Finance: organisationDivisions[2].fullName,
             "Digital & Technology": organisationDivisions[3].fullName,
-            "Human Resources": organisationDivisions[4].fullName,
+            "People & Culture": organisationDivisions[4].fullName,
             Operations: organisationDivisions[5].fullName,
           } as Record<string, string>
         )[area] || area,

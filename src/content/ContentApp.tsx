@@ -34,7 +34,6 @@ import {
   files,
   filesById,
   tools,
-  quickToolIds,
   packageHref,
   fileHref,
   toolHref,
@@ -569,7 +568,7 @@ export default function ContentApp() {
               {selected && (
                 <a href={packageHref(selected.id)}>Back to content package</a>
               )}
-              <a href={`${base}/tools`}>All tools</a>
+              <a href={`${base}/pipeline`}>Back to content work</a>
               {["piwik", "vwo", "semrush", "brandwatch"].includes(tool.id) && (
                 <a href="/audience-innovation/analytics">
                   Go to Audience Research & Marketing Insight for deeper
@@ -579,7 +578,7 @@ export default function ContentApp() {
             </section>
           ) : page === "tools" ? (
             <>
-              <h2>All tools</h2>
+              <h2>Production platform links</h2>
               <p className="service-muted">
                 A fictional production ecosystem using real market products.
                 Each opens a lightweight simulated destination.
@@ -631,7 +630,7 @@ export default function ContentApp() {
                               : page === "digital"
                                 ? "Content requirements, UX copy, acceptance and technical handoffs for digital delivery."
                                 : page === "partners"
-                                  ? "Package-specific collaboration with agencies, production partners and external developers."
+                                  ? "Package-specific collaboration with agencies, production partners and content review partners."
                                   : page === "calendar"
                                     ? "Collaborative milestones only. Detailed channel scheduling remains in Planable."
                                     : "Durable production channels with the same shared working files as SharePoint."}
@@ -664,22 +663,18 @@ export default function ContentApp() {
                       )}
                     </section>
                     <section className="service-section">
-                      <div className="service-section-heading">
-                        <h3>Quick access</h3>
-                        <a href={`${base}/tools`}>All tools</a>
-                      </div>
-                      <div className="content-tool-links">
-                        {quickToolIds.map((id) => {
-                          const t = tools.find((t) => t.id === id)!;
-                          return (
-                            <a href={toolHref(id)} key={id}>
-                              <strong>{t.name}</strong>
-                              <small>{t.purpose}</small>
-                              <ArrowUpRight20Regular />
-                            </a>
-                          );
-                        })}
-                      </div>
+                      <h3>Continue production</h3>
+                      <a href="/content-delivery/creative">
+                        Creative reviews →
+                      </a>
+                      <p>
+                        <a href="/content-delivery/digital">
+                          Digital content requirements & acceptance →
+                        </a>
+                      </p>
+                      <a href="/content-delivery/channels">
+                        Channel adaptation & publishing →
+                      </a>
                     </section>
                   </div>
                   <aside className="services-home-aside">
@@ -824,7 +819,7 @@ export default function ContentApp() {
               ) : page === "digital" ? (
                 <>
                   <section className="service-section">
-                    <h3>Mobile Sign-up Experience — delivery handoff</h3>
+                    <h3>Mobile Sign-up Experience — content handoff</h3>
                     <p>
                       From audience evidence to content acceptance, release and
                       measurement.
@@ -842,7 +837,9 @@ export default function ContentApp() {
                           )}
                           {s.research && (
                             <a href={s.research}>
-                              Open source audience evidence
+                              {s.research.startsWith("/digital-tech")
+                                ? "Open Digital & Technology"
+                                : "Open source audience evidence"}
                             </a>
                           )}
                           {s.tool && (
@@ -863,9 +860,9 @@ export default function ContentApp() {
                       ))}
                     </ol>
                     <p className="service-muted">
-                      Source code and implementation records stay in GitHub. CMS
-                      content remains in Contentful; experiment detail in VWO;
-                      measurement in Piwik PRO.
+                      Content requirements and acceptance stay here. Technical
+                      implementation and deployment are linked to Digital &
+                      Technology; analysis links to Audience Research.
                     </p>
                   </section>
                   {material()}
@@ -942,9 +939,8 @@ export default function ContentApp() {
                     {fileList(filesForChannel(teamChannel.id))}
                   </section>
                   {teamChannel.id === "digital" && (
-                    <a href={`${base}/packages/PKG-105/shared`}>
-                      Mobile Sign-up Experience — scoped external development
-                      collaboration
+                    <a href="/digital-tech/web-crm/partner-review">
+                      Technical partner review in Digital & Technology
                     </a>
                   )}
                 </>

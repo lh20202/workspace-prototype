@@ -10,12 +10,17 @@ import {
   GridDots24Regular,
   BuildingGovernment24Regular,
   ChevronRight16Regular,
+  Code24Regular,
+  Library24Regular,
+  Scales24Regular,
+  Headset24Regular,
 } from "@fluentui/react-icons";
 import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
 import "./styles.css";
 import { divisions, divisionHref } from "../coordination/data";
 import "../coordination/styles.css";
 import "../executive/styles.css";
+import "../workspaces/styles.css";
 const icons = [
   ChartMultiple24Regular,
   PeopleTeam24Regular,
@@ -24,8 +29,22 @@ const icons = [
   DesignIdeas24Regular,
   Money24Regular,
   BuildingGovernment24Regular,
-  ChevronRight16Regular,
 ];
+const workspaceIcons: Record<string, typeof Code24Regular> = {
+  planning: ChartMultiple24Regular,
+  logistics: PeopleTeam24Regular,
+  services: Settings24Regular,
+  audience: Search24Regular,
+  content: DesignIdeas24Regular,
+  finance: Money24Regular,
+  executive: BuildingGovernment24Regular,
+  quality: ChartMultiple24Regular,
+  digital: Code24Regular,
+  legal: Scales24Regular,
+  people: PeopleTeam24Regular,
+  archives: Library24Regular,
+  customer: Headset24Regular,
+};
 export default function Directory() {
   const [person, setPerson] = useState(selectedStaffId);
   const [notice, setNotice] = useState("");
@@ -42,7 +61,7 @@ export default function Directory() {
           "Home",
           "News",
           "Our organisation",
-          "Resources & tools",
+          "Tools & support",
           "Digital Workspaces",
         ].map((x) => (
           <button
@@ -79,8 +98,8 @@ export default function Directory() {
         )}
         <div className="directory-content">
           <div className="directory-grid">
-            {workspaces.map((w, i) => {
-              const Icon = icons[i];
+            {workspaces.map((w) => {
+              const Icon = workspaceIcons[w.id];
               return (
                 <a className="directory-tile" key={w.id} href={w.href}>
                   <span className="directory-tile-icon">

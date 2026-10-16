@@ -290,7 +290,7 @@ const seed: [string, string, string, string, string, string, string, string][] =
       "In progress",
       "adaptive",
       "Multi-year outlook",
-      "Resource and income assumptions → review",
+      "Capacity and income assumptions → review",
     ],
     [
       "PLAN-04",
@@ -309,7 +309,7 @@ const seed: [string, string, string, string, string, string, string, string][] =
       "Jamie Reed",
       "Restricted model review",
       "adaptive",
-      "Resource analysis",
+      "Capacity analysis",
       "Summary milestones only; detailed model protected",
     ],
     [

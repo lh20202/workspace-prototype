@@ -8,6 +8,8 @@ const ServicesApp = lazy(() => import("./services/ServicesApp"));
 const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
 import { pageTitle, prototypeForPath } from "./utils/routes";
 import Directory from "./intranet/Directory";
+import { resolveLegacy } from "./workspaces/registry";
+const FunctionalApp = lazy(() => import("./workspaces/FunctionalApp"));
 const FinanceApp = lazy(() => import("./finance/FinanceApp"));
 const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
 const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
@@ -15,9 +17,19 @@ const GovernanceApp = lazy(() => import("./executive/GovernanceApp"));
 const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
+  const redirect = resolveLegacy(location.pathname);
+  useEffect(() => {
+    if (redirect) location.replace(redirect + location.search);
+  }, [redirect]);
   useEffect(() => {
     document.title = pageTitle(location.pathname);
   }, [prototype]);
+  if (redirect)
+    return (
+      <div className="workspace-loading" role="status">
+        Opening the owning workspace…
+      </div>
+    );
   if (prototype === "launcher") return <Directory />;
   return (
     <>
@@ -29,7 +41,9 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "executive" ? (
+        {prototype === "functional" ? (
+          <FunctionalApp />
+        ) : prototype === "executive" ? (
           <ExecutiveApp />
         ) : prototype === "governance" ? (
           <GovernanceApp />

@@ -267,11 +267,24 @@ const misfiled: Record<
       id: "UP-STT-01",
       name: "Supplier Onboarding Checklist.docx",
       kind: "Misplaced business upload",
-      destination: "/services/procurement",
+      destination: "/services/purchasing",
       destinationName: "Organisation Services → Purchasing & Suppliers",
     },
     reply:
       "Thanks, Casey — this is the shared supplier onboarding checklist, rather than our local project meeting admin. Could you move the working file to Purchasing & Suppliers and link it here? Colleagues handling suppliers can then use the same copy. Let me know if you want a hand.",
+  },
+  "people-culture": {
+    author: "Elena Rossi",
+    text: "Pilot feedback from the manager capability sessions is attached.",
+    upload: {
+      id: "UP-PC-01",
+      name: "Manager Capability Programme — Pilot Feedback.xlsx",
+      kind: "Misplaced business upload",
+      destination: "/people-culture/learning",
+      destinationName: "People & Culture → Capability & Learning",
+    },
+    reply:
+      "Thanks, Elena — this is the programme evaluation the learning colleagues are working on. Could you move the working file to Capability & Learning and link it here? We can keep the division discussion in this thread. Happy to help with the move.",
   },
   "executive-office": {
     author: "Robin Avery",

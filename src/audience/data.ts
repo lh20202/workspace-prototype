@@ -3,6 +3,7 @@ export const title = "Audience Research & Marketing Insight";
 export const description =
   "Shared workspace for researching audiences, developing and testing new approaches, analysing performance and turning evidence into future outreach decisions.";
 export const navigation = [
+  { id: "automation", name: "Marketing Automation Concepts" },
   { id: "research", name: "Research & Discovery" },
   { id: "audiences", name: "Audience & Journeys" },
   { id: "experiments", name: "Experimentation" },
@@ -1094,3 +1095,30 @@ export function pipelineStage(i: Initiative) {
             ? "Decide"
             : "Research";
 }
+
+export const automationConcepts = [
+  {
+    name: "Journey automation concept",
+    question: "Which journey point needs a timely message?",
+    owner: "Maya Chen",
+    status: "Inputs requested",
+  },
+  {
+    name: "Segment routing & scoring hypothesis",
+    question: "Which behavioural signals should shape the proposed route?",
+    owner: "Taylor Brooks",
+    status: "Under review",
+  },
+  {
+    name: "Retention & reactivation concept",
+    question: "Which hypothesis and testing plan should be evaluated?",
+    owner: "Maya Chen",
+    status: "Preparing",
+  },
+  {
+    name: "Personalisation & next-best-action analysis",
+    question: "Which message option should the experiment compare?",
+    owner: "Taylor Brooks",
+    status: "Under review",
+  },
+];

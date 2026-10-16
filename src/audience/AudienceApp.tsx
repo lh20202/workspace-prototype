@@ -1,3 +1,4 @@
+import { automationConcepts } from "./data";
 import { useEffect, useState, type MouseEvent } from "react";
 import {
   Button,
@@ -890,6 +891,37 @@ export default function AudienceApp() {
                 <>
                   {renderRegister(true)}
                   {Library()}
+                </>
+              ) : page === "automation" ? (
+                <>
+                  <h2>Marketing automation concepts</h2>
+                  <p>
+                    Segments, journeys, trigger strategy, scoring hypotheses,
+                    retention concepts and measurement requirements.
+                  </p>
+                  {automationConcepts.map((c) => (
+                    <section className="service-section" key={c.name}>
+                      <h3>{c.name}</h3>
+                      <p>{c.question}</p>
+                      <p>
+                        {c.owner} · {c.status}
+                      </p>
+                    </section>
+                  ))}
+                  <section className="service-section">
+                    <h3>Concept to evaluation</h3>
+                    <a href="/content-delivery/digital">
+                      Content and message requirements →
+                    </a>
+                    <p>
+                      <a href="/digital-tech/ai-automation">
+                        Technical implementation handoff →
+                      </a>
+                    </p>
+                    <a href="/audience-innovation/analytics">
+                      Evaluate behaviour, conversion and retention →
+                    </a>
+                  </section>
                 </>
               ) : page === "analytics" ? (
                 <>

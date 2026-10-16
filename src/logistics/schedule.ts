@@ -16,7 +16,8 @@ export interface Duty {
   start: string;
   finish: string;
   shift: string;
-  kind: "In-person deployment" | "Calling shift" | "Training" | "Coach coverage";
+  kind:
+    "In-person deployment" | "Calling shift" | "Training" | "Coach coverage";
   status?: string;
 }
 // These are shift details attached to existing operational file/permit records, not a second document store.

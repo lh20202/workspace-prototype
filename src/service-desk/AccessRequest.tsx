@@ -9,14 +9,13 @@ import { currentUser } from "../data/workspace";
 export default function AccessRequest() {
   const params = new URLSearchParams(location.search);
   const isSupport = location.pathname === "/service-desk/it-support";
-  const workspace =
-    params.get("workspace") ||
-    (isSupport
-      ? "Organisation Services"
-      : "Organisational Planning & Reporting");
-  const area =
-    params.get("area") ||
-    (isSupport ? "Technology Services" : "Restricted Planning");
+  const workspace = isSupport
+    ? "Digital & Technology"
+    : params.get("workspace") || "Organisational Planning & Reporting";
+  const area = isSupport
+    ? "Service & Platform Operations"
+    : params.get("area") || "Restricted Planning";
+  const digital = workspace === "Digital & Technology";
   const services = workspace === "Organisation Services";
   const audience =
     workspace === "Audience Research & Marketing Insight" ||
@@ -24,18 +23,20 @@ export default function AccessRequest() {
   const content = workspace === "Content Creation & Delivery";
   const finance = workspace === "Income & Financial Operations";
   const executive = workspace === "CEO & Executive Committee";
-  const freshservice = services || content || finance || executive;
-  const returnPath = executive
-    ? "/executive"
-    : finance
-      ? "/financial-operations"
-      : content
-        ? "/content-delivery"
-        : audience
-          ? "/audience-innovation/research"
-          : services
-            ? "/services"
-            : "/planning/restricted";
+  const freshservice = true;
+  const returnPath = digital
+    ? "/digital-tech/operations"
+    : executive
+      ? "/executive"
+      : finance
+        ? "/financial-operations"
+        : content
+          ? "/content-delivery"
+          : audience
+            ? "/audience-innovation/research"
+            : services
+              ? "/services"
+              : "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -74,17 +75,19 @@ export default function AccessRequest() {
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
           Back to{" "}
-          {executive
-            ? "CEO & Executive Committee"
-            : finance
-              ? "Income & Financial Operations"
-              : content
-                ? "Content Creation & Delivery"
-                : audience
-                  ? "Audience research"
-                  : services
-                    ? "Organisation Services"
-                    : "Restricted Planning"}
+          {digital
+            ? "Digital & Technology"
+            : executive
+              ? "CEO & Executive Committee"
+              : finance
+                ? "Income & Financial Operations"
+                : content
+                  ? "Content Creation & Delivery"
+                  : audience
+                    ? "Audience research"
+                    : services
+                      ? "Organisation Services"
+                      : "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}

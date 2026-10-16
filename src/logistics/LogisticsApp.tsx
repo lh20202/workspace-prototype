@@ -218,7 +218,7 @@ export default function LogisticsApp() {
                   <Home24Regular />
                   Home
                 </button>
-                <div className="nav-section">OPERATIONS & RESOURCES</div>
+                <div className="nav-section">OPERATIONS & SUPPORT</div>
                 {libraries.slice(0, 1).map((l) => (
                   <button
                     key={l.id}
@@ -440,7 +440,7 @@ export default function LogisticsApp() {
                       <h3>Operational reference</h3>
                       <button onClick={() => navigate("resources")}>
                         <Library24Regular />
-                        Shared operational resources
+                        Shared operations guides
                       </button>
                       <button onClick={() => navigate("records")}>
                         <CheckmarkCircle24Regular />
@@ -508,7 +508,7 @@ export default function LogisticsApp() {
                           {route.page === "records"
                             ? "Final records"
                             : route.page === "resources"
-                              ? "Current resources"
+                              ? "Current standards"
                               : "Working information"}
                         </span>
                       </div>
@@ -529,8 +529,7 @@ export default function LogisticsApp() {
                       {route.page === "resources" && (
                         <div className="resource-notice">
                           <Link20Regular />
-                          Current shared resources are linked from Teams
-                          channels.
+                          Current shared guides are linked from Teams channels.
                         </div>
                       )}
                       <div className="command-bar">

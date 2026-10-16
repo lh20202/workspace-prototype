@@ -1,3 +1,4 @@
+import { workspaceRegistry } from "../workspaces/registry";
 export function planningPath(page: string) {
   return page === "home"
     ? "/planning"
@@ -23,8 +24,21 @@ export function prototypeForPath(
   | "teams"
   | "executive"
   | "governance"
-  | "emergency" {
+  | "emergency"
+  | "functional" {
   if (pathname === "/") return "launcher";
+  if (
+    [
+      "/quality-monitoring",
+      "/digital-tech",
+      "/archives",
+      "/legal-compliance",
+      "/people-culture",
+      "/customer-relations",
+      "/employee-council",
+    ].some((base) => pathname === base || pathname.startsWith(base + "/"))
+  )
+    return "functional";
   if (pathname === "/executive" || pathname.startsWith("/executive/"))
     return "executive";
   if (pathname === "/governance" || pathname.startsWith("/governance/"))
@@ -56,6 +70,14 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (pathname.startsWith("/logistics/teams"))
+    return "Acquisition & Activation Logistics | Teams";
+  const registered = workspaceRegistry.find(
+    (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
+  );
+  if (registered) return registered.title;
+  if (pathname.startsWith("/employee-council"))
+    return "Employee Representative Council";
   if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
   if (pathname.startsWith("/governance")) return "Governance & Members Portal";
   if (pathname.startsWith("/emergency-response"))

@@ -18,7 +18,7 @@ export interface OperationalFile {
   validTo: string;
   modified: string;
   sensitivity: "Internal";
-  recordState: "Working information" | "Current resource" | "Final record";
+  recordState: "Working information" | "Current standard" | "Final record";
 }
 export const workspaceTitle = "Acquisition & Activation Logistics";
 export const workspacePurpose =
@@ -36,9 +36,9 @@ export const libraries: { id: LibraryId; name: string; description: string }[] =
     },
     {
       id: "resources",
-      name: "Operational Resources",
+      name: "Shared Operations",
       description:
-        "Current guides and templates used across campaigns. One shared copy of each resource.",
+        "Current guides and templates used across campaigns. One shared copy of each guide.",
     },
     {
       id: "training",
@@ -488,7 +488,7 @@ export const files: OperationalFile[] = seeds.map(
       library === "records"
         ? "Final record"
         : library === "resources"
-          ? "Current resource"
+          ? "Current standard"
           : "Working information",
   }),
 );
@@ -596,7 +596,8 @@ export const channels: Channel[] = [
   {
     id: "street",
     name: "In-person Operations",
-    purpose: "Common in-person coordination, equipment and operational changes.",
+    purpose:
+      "Common in-person coordination, equipment and operational changes.",
     fileIds: ["street-guide", "setup-checklist", "issues", "packing-list"],
     notes: [
       "Use the shared setup checklist before every deployment.",
@@ -687,7 +688,7 @@ export const channels: Channel[] = [
     id: "onboarding",
     name: "Training & Onboarding",
     purpose:
-      "Starter sessions, training coordination and shared resource questions.",
+      "Starter sessions, training coordination and shared guide questions.",
     fileIds: [
       "starter-checklist",
       "street-onboarding",
@@ -785,7 +786,7 @@ export const posts: Post[] = [
     channel: "general",
     author: "Alex Morgan",
     time: "Yesterday",
-    text: "Keep reusable guidance in Operational Resources. Link to the current guide from your channel so everyone uses the same material.",
+    text: "Keep reusable guidance in Shared Operations. Link to the current guide from your channel so everyone uses the same material.",
     fileIds: ["escalation-guide"],
   },
   {

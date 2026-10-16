@@ -50,7 +50,8 @@ export function queryFiles(
         (view !== "In-person Operations" ||
           ["Local in-person", "Travelling in-person"].includes(f.operation)) &&
         (view !== "Calling Operations" || f.operation === "Calling") &&
-        (view !== "Travel Campaign" || f.operation === "Travelling in-person") &&
+        (view !== "Travel Campaign" ||
+          f.operation === "Travelling in-person") &&
         (view !== "Current This Week" ||
           (f.validFrom <= weekEnd &&
             f.validTo >= weekStart &&
