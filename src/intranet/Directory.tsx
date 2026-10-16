@@ -42,7 +42,7 @@ export default function Directory() {
           "Home",
           "News",
           "Our organisation",
-          "People & support",
+          "Resources & tools",
           "Digital Workspaces",
         ].map((x) => (
           <button
