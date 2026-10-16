@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Drawer,
@@ -7,7 +7,7 @@ import {
   DrawerHeaderTitle,
 } from "@fluentui/react-components";
 import { Dismiss20Regular } from "@fluentui/react-icons";
-import { workspaces, staff } from "./catalog";
+import { workspaces, staff, rememberStaff, selectedStaffId } from "./catalog";
 import {
   files as logisticsFiles,
   type OperationalFile,
@@ -23,6 +23,9 @@ import {
 import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
 import "./styles.css";
+import DivisionChannel from "../coordination/DivisionChannel";
+import { divisions, divisionHref } from "../coordination/data";
+import "../coordination/styles.css";
 const channelMap: Record<string, string[]> = {
   planning: ["General", "Planning coordination", "Reporting"],
   logistics: [
@@ -55,9 +58,17 @@ export default function TeamsPreview() {
   const person =
     staff.find(
       (s) => s.id === new URLSearchParams(location.search).get("staff"),
-    ) || staff[0];
+    ) ||
+    staff.find((s) => s.id === selectedStaffId()) ||
+    staff[0];
+  useEffect(() => rememberStaff(person.id), [person.id]);
+  const division = divisions.find(
+    (d) => d.id === new URLSearchParams(location.search).get("division"),
+  );
   const workspace = workspaces.find((w) => w.id === person.workspace)!;
-  const [channel, setChannel] = useState("General"),
+  const [channel, setChannel] = useState(
+      new URLSearchParams(location.search).get("channel") || "General",
+    ),
     [tab, setTab] = useState("Posts"),
     [file, setFile] = useState<OperationalFile>();
   const normalFiles =
@@ -76,10 +87,35 @@ export default function TeamsPreview() {
           />{" "}
           Microsoft Teams
         </strong>
-        <div>
+        <div className="staff-teams-persona">
+          <label>
+            Preview as
+            <select
+              aria-label="Teams staff preview"
+              value={person.id}
+              onChange={(e) => {
+                rememberStaff(e.target.value);
+                const p = new URLSearchParams(location.search);
+                p.set("staff", e.target.value);
+                location.assign(`/teams?${p}`);
+              }}
+            >
+              {staff.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} · {s.role}
+                </option>
+              ))}
+            </select>
+          </label>
           {person.name}
           <div className="staff-teams-role">
-            {person.role} · Fictional staff preview
+            {divisions.find((d) => d.id === person.divisionId)?.name} ·{" "}
+            {
+              divisions
+                .find((d) => d.id === person.divisionId)
+                ?.units.find((u) => u.id === person.unitId)?.name
+            }{" "}
+            · Fictional staff preview
           </div>
         </div>
       </header>
@@ -92,86 +128,116 @@ export default function TeamsPreview() {
               key={c}
               className="staff-teams-channel"
               aria-current={channel === c ? "page" : undefined}
-              onClick={() => setChannel(c)}
+              onClick={() => {
+                if (division)
+                  location.assign(
+                    `/teams?staff=${person.id}&channel=${encodeURIComponent(c)}`,
+                  );
+                else setChannel(c);
+              }}
             >
               {c}
             </button>
           ))}
           <a href={workspace.href}>Open SharePoint workspace ↗</a>
-          <a href="/">Change staff preview</a>
+          <a href="/">Back to all workspaces</a>
+          <div className="coord-sidebar-team">
+            <h3>Division Coordination</h3>
+            {divisions.map((d) => (
+              <a
+                key={d.id}
+                className="coord-sidebar-link"
+                aria-current={division?.id === d.id ? "page" : undefined}
+                href={divisionHref(person.id, d.id)}
+              >
+                {d.name}
+                <small>{d.channelAccess}</small>
+              </a>
+            ))}
+          </div>
         </aside>
         <main className="staff-teams-main">
-          <h1>{channel}</h1>
-          <nav>
-            {["Posts", "Shared"].map((t) => (
-              <button
-                key={t}
-                className="finance-text-link"
-                aria-pressed={tab === t}
-                onClick={() => setTab(t)}
-              >
-                {t}
-              </button>
-            ))}
-          </nav>
-          {tab === "Posts" ? (
-            <>
-              <article className="staff-teams-post">
-                <strong>{person.name}</strong>
-                <p>Today’s coordination · {workspace.title}</p>
-                <p>
-                  {person.workspace === "finance"
-                    ? "Income matching, close dependencies and planning contributions are connected here. Use Shared for the same working files as SharePoint. Sensitive subjects require separate authorisation."
-                    : "Keep working updates and handovers together here. The Shared tab opens the same working files as the SharePoint workspace."}
-                </p>
-                <a href={workspace.href}>Continue in the workspace →</a>
-              </article>
-              {person.workspace === "logistics" && (
-                <article className="staff-teams-post">
-                  <h2>Explore the full Teams experience</h2>
-                  <p>
-                    Channels, conversations, shared files, planning and Pet
-                    photos.
-                  </p>
-                  <a
-                    href={`/logistics/teams?channel=${channel === "Pet photos" ? "pets" : "general"}&tab=Posts`}
-                  >
-                    Open interactive logistics Teams →
-                  </a>
-                </article>
-              )}
-            </>
+          {division ? (
+            <DivisionChannel
+              key={`${division.id}-${person.id}`}
+              division={division}
+              person={person}
+            />
           ) : (
-            <div className="staff-teams-files">
-              <p>Shared files · Original SharePoint objects</p>
-              {person.workspace === "planning"
-                ? planningFiles
-                    .filter((f) => f.library !== "restricted")
-                    .slice(0, 6)
-                    .map((f) => (
-                      <a key={f.id} href="/planning">
-                        {f.name}
-                        <small>Open source workspace ↗</small>
+            <>
+              <h1>{channel}</h1>
+              <nav>
+                {["Posts", "Shared"].map((t) => (
+                  <button
+                    key={t}
+                    className="finance-text-link"
+                    aria-pressed={tab === t}
+                    onClick={() => setTab(t)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </nav>
+              {tab === "Posts" ? (
+                <>
+                  <article className="staff-teams-post">
+                    <strong>{person.name}</strong>
+                    <p>Today’s coordination · {workspace.title}</p>
+                    <p>
+                      {person.workspace === "finance"
+                        ? "Income matching, close dependencies and planning contributions are connected here. Use Shared for the same working files as SharePoint. Sensitive subjects require separate authorisation."
+                        : "Keep working updates and handovers together here. The Shared tab opens the same working files as the SharePoint workspace."}
+                    </p>
+                    <a href={workspace.href}>Continue in the workspace →</a>
+                  </article>
+                  {person.workspace === "logistics" && (
+                    <article className="staff-teams-post">
+                      <h2>Explore the full Teams experience</h2>
+                      <p>
+                        Channels, conversations, shared files, planning and Pet
+                        photos.
+                      </p>
+                      <a
+                        href={`/logistics/teams?channel=${channel === "Pet photos" ? "pets" : "general"}&tab=Posts`}
+                      >
+                        Open interactive logistics Teams →
                       </a>
-                    ))
-                : normalFiles.slice(0, 8).map((f) => (
-                    <button
-                      key={f.id}
-                      className="staff-teams-file"
-                      onClick={() => setFile(f)}
-                    >
-                      {f.name}
-                      <small>
-                        {f.owner} · {f.recordState}
-                      </small>
-                    </button>
-                  ))}
-            </div>
+                    </article>
+                  )}
+                </>
+              ) : (
+                <div className="staff-teams-files">
+                  <p>Shared files · Original SharePoint objects</p>
+                  {person.workspace === "planning"
+                    ? planningFiles
+                        .filter((f) => f.library !== "restricted")
+                        .slice(0, 6)
+                        .map((f) => (
+                          <a key={f.id} href="/planning">
+                            {f.name}
+                            <small>Open source workspace ↗</small>
+                          </a>
+                        ))
+                    : normalFiles.slice(0, 8).map((f) => (
+                        <button
+                          key={f.id}
+                          className="staff-teams-file"
+                          onClick={() => setFile(f)}
+                        >
+                          {f.name}
+                          <small>
+                            {f.owner} · {f.recordState}
+                          </small>
+                        </button>
+                      ))}
+                </div>
+              )}
+              <p className="finance-muted">
+                A role-relevant view of shared work. Changing the fictional
+                staff preview does not grant access to protected subjects.
+              </p>
+            </>
           )}
-          <p className="finance-muted">
-            A role-relevant view of shared work. Changing the fictional staff
-            preview does not grant access to protected subjects.
-          </p>
         </main>
       </div>
       <Drawer

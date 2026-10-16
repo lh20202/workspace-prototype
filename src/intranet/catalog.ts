@@ -49,7 +49,7 @@ export const workspaces = [
     icon: "executive",
   },
 ];
-export const staff = [
+const baseStaff = [
   {
     id: "robin",
     name: "Robin Avery",
@@ -93,3 +93,43 @@ export const staff = [
     workspace: "finance",
   },
 ];
+
+const memberships: Record<string, { divisionId: string; unitId: string }> = {
+  maya: {
+    divisionId: "marketing-growth",
+    unitId: "acquisition-and-direct-engagement",
+  },
+  taylor: {
+    divisionId: "marketing-growth",
+    unitId: "marketing-insight-and-performance",
+  },
+  alex: { divisionId: "communications", unitId: "editorial-and-content" },
+  sam: { divisionId: "finance-services", unitId: "planning-and-analysis" },
+  jordan: {
+    divisionId: "finance-services",
+    unitId: "procurement-and-supplier-services",
+  },
+  casey: {
+    divisionId: "strategy-technology",
+    unitId: "strategy-and-performance",
+  },
+  robin: { divisionId: "executive-office", unitId: "ceo-office" },
+  elena: { divisionId: "people-culture", unitId: "learning-and-capability" },
+};
+export const staff = [
+  ...baseStaff,
+  {
+    id: "elena",
+    name: "Elena Rossi",
+    role: "Learning Partner",
+    workspace: "services",
+  },
+].map((s) => ({ ...s, ...memberships[s.id] }));
+export function selectedStaffId() {
+  const id = sessionStorage.getItem("workspace-preview-staff");
+  return staff.some((s) => s.id === id) ? id! : "maya";
+}
+export function rememberStaff(id: string) {
+  if (staff.some((s) => s.id === id))
+    sessionStorage.setItem("workspace-preview-staff", id);
+}

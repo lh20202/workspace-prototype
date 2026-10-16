@@ -24,11 +24,15 @@ describe("document discovery", () => {
       documents,
       "All Documents",
       "SUBMISSION",
-      { ...emptyFilters, area: "Operations", status: "Ready for review" },
+      {
+        ...emptyFilters,
+        area: "Executive Office Division",
+        status: "Ready for review",
+      },
       currentCycle,
     );
     expect(result.map((d) => d.name)).toEqual([
-      "Operations submission 2027.xlsx",
+      "Executive Office submission 2027.xlsx",
     ]);
   });
   it("filters approved and orders grouped areas", () => {
@@ -37,12 +41,7 @@ describe("document discovery", () => {
         (d) => d.status === "Approved",
       ),
     ).toBe(true);
-    const result = queryDocuments(
-      documents,
-      "By Planning Area",
-      "",
-      emptyFilters,
-    );
+    const result = queryDocuments(documents, "By Division", "", emptyFilters);
     expect(result.map((d) => d.area)).toEqual(
       result.map((d) => d.area).sort((a, b) => a.localeCompare(b)),
     );
@@ -54,10 +53,10 @@ describe("document discovery", () => {
   });
 });
 
-import { departments, quickLinks, currentUser } from "../data/workspace";
+import { divisions, quickLinks, currentUser } from "../data/workspace";
 import { filtersFromParams } from "./documents";
 describe("home shortcuts", () => {
-  it.each(departments)("finds current-cycle submissions for %s", (area) => {
+  it.each(divisions)("finds current-cycle submissions for %s", (area) => {
     const params = new URLSearchParams({ area, type: "Submission" });
     const result = queryDocuments(
       documents.filter((d) => d.library === "planning"),
@@ -86,10 +85,10 @@ describe("home shortcuts", () => {
     expect(currentUser.name).toBe("Maya Chen");
     expect(canAccessRestricted(currentUser.role)).toBe(false);
   });
-  it("uses only the coherent department metadata", () => {
+  it("uses only the coherent division metadata", () => {
     expect(
       documents.every((d) =>
-        ["Organisation-wide", ...departments].includes(d.area),
+        ["Organisation-wide", ...divisions].includes(d.area),
       ),
     ).toBe(true);
   });
@@ -119,7 +118,7 @@ describe("folder browsing", () => {
       "Organisational strategy",
       "Annual strategy",
       "Multi-year strategy",
-      "Department roadmaps",
+      "Division roadmaps",
     ]);
     const archived = queryDocuments(
       strategy,

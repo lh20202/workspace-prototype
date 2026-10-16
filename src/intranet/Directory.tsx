@@ -9,9 +9,12 @@ import {
   ArrowRight20Regular,
   GridDots24Regular,
   BuildingGovernment24Regular,
+  ChevronRight16Regular,
 } from "@fluentui/react-icons";
-import { workspaces, staff } from "./catalog";
+import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
 import "./styles.css";
+import { divisions, divisionHref } from "../coordination/data";
+import "../coordination/styles.css";
 import "../executive/styles.css";
 const icons = [
   ChartMultiple24Regular,
@@ -21,9 +24,10 @@ const icons = [
   DesignIdeas24Regular,
   Money24Regular,
   BuildingGovernment24Regular,
+  ChevronRight16Regular,
 ];
 export default function Directory() {
-  const [person, setPerson] = useState("maya");
+  const [person, setPerson] = useState(selectedStaffId);
   const [notice, setNotice] = useState("");
   return (
     <div className="intranet-directory">
@@ -73,38 +77,71 @@ export default function Directory() {
             </button>
           </div>
         )}
-        <div className="directory-grid">
-          {workspaces.map((w, i) => {
-            const Icon = icons[i];
-            return (
-              <a className="directory-tile" key={w.id} href={w.href}>
-                <span className="directory-tile-icon">
+        <div className="directory-content">
+          <div className="directory-grid">
+            {workspaces.map((w, i) => {
+              const Icon = icons[i];
+              return (
+                <a className="directory-tile" key={w.id} href={w.href}>
+                  <span className="directory-tile-icon">
+                    <Icon />
+                  </span>
+                  <div>
+                    <small>{w.group}</small>
+                    <h2>{w.title} workspace</h2>
+                  </div>
+                  <span className="directory-open">
+                    <img src="/images/sharepoint-logo.svg" alt="SharePoint" />
+                    Open workspace <ArrowRight20Regular />
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+          <aside
+            className="directory-coordination"
+            aria-label="Division and team coordination"
+          >
+            <h2>Division &amp; team coordination</h2>
+            <p>For meetings, local planning, workload and team admin.</p>
+            {divisions.map((d, i) => {
+              const Icon = icons[i];
+              return (
+                <a
+                  className="division-quick-link"
+                  key={d.id}
+                  href={divisionHref(person, d.id)}
+                >
                   <Icon />
-                </span>
-                <div>
-                  <small>{w.group}</small>
-                  <h2>{w.title} workspace</h2>
-                </div>
-                <span className="directory-open">
-                  <img src="/images/sharepoint-logo.svg" alt="SharePoint" />
-                  Open workspace <ArrowRight20Regular />
-                </span>
-              </a>
-            );
-          })}
+                  <span>
+                    {d.name}
+                    <small>
+                      <img src="/images/teams-logo.svg" alt="Teams" />
+                      Open in Teams
+                    </small>
+                  </span>
+                  <ChevronRight16Regular />
+                </a>
+              );
+            })}
+          </aside>
         </div>
       </main>
       <footer className="directory-teams">
         <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
         <div className="directory-teams-copy">
           <strong>Your work, connected in Teams</strong>
-          <span>
-            Explore the same workspaces through a colleague’s Teams view.
-          </span>
+          <span>See your channels and shared files.</span>
         </div>
         <label>
           Preview as
-          <select value={person} onChange={(e) => setPerson(e.target.value)}>
+          <select
+            value={person}
+            onChange={(e) => {
+              setPerson(e.target.value);
+              rememberStaff(e.target.value);
+            }}
+          >
             {staff.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name} · {s.role}

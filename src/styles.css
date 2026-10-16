@@ -509,22 +509,22 @@ button svg {
 .home-aside {
   padding-top: 7px;
 }
-.department-jumps {
+.division-jumps {
   border-left: 1px solid #edebe9;
   padding-left: 25px;
 }
-.department-jumps h3 {
+.division-jumps h3 {
   font-size: 17px;
   font-weight: 600;
   line-height: 1.5;
   margin-bottom: 8px;
 }
-.department-jumps p {
+.division-jumps p {
   color: #797775;
   font-size: 12px;
   margin-bottom: 17px;
 }
-.department-jumps button {
+.division-jumps button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -538,11 +538,11 @@ button svg {
   color: #0078d4;
   text-align: left;
 }
-.department-jumps button:hover {
+.division-jumps button:hover {
   color: #005a9e;
   background: #faf9f8;
 }
-.department-jumps svg {
+.division-jumps svg {
   width: 16px;
   height: 16px;
   color: #797775;
@@ -1099,7 +1099,7 @@ tbody tr:hover {
     grid-template-columns: 1fr 1fr;
     gap: 28px;
   }
-  .department-jumps {
+  .division-jumps {
     padding: 0;
     border: 0;
   }

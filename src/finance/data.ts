@@ -267,7 +267,7 @@ const seed: [string, string, string, string, string, string, string, string][] =
       "2027 Annual Budget",
       "planning",
       "Jamie Reed",
-      "Department inputs due",
+      "Division inputs due",
       "adaptive",
       "Annual budget",
       "Business inputs → review → approved baseline",

@@ -1,3 +1,4 @@
+import { divisions as organisationDivisions } from "../coordination/data";
 export type Role =
   "Workspace Member" | "Planning Coordinator" | "Executive Reviewer";
 export type LibraryId =
@@ -7,7 +8,7 @@ export type View =
   | "In Review"
   | "Approved"
   | "All Documents"
-  | "By Planning Area";
+  | "By Division";
 export interface Document {
   id: string;
   library: LibraryId;
@@ -314,10 +315,28 @@ const allDocuments: Document[] = Object.entries(seeds).flatMap(([lib, rows]) =>
     return {
       id: `${library}-${i}`,
       library,
-      name,
+      name: name
+        .replace(/^Operations /, "Executive Office ")
+        .replace(/^Manufacturing /, "Communications & Public Affairs ")
+        .replace(/^Human Resources /, "People & Culture ")
+        .replace(
+          /^Digital & Technology /,
+          "Strategy, Technology & Transformation ",
+        )
+        .replace(/^Marketing /, "Marketing & Customer Growth "),
       folderPath: "",
       type,
-      area,
+      area:
+        (
+          {
+            Marketing: organisationDivisions[0].fullName,
+            Manufacturing: organisationDivisions[1].fullName,
+            Finance: organisationDivisions[2].fullName,
+            "Digital & Technology": organisationDivisions[3].fullName,
+            "Human Resources": organisationDivisions[4].fullName,
+            Operations: organisationDivisions[5].fullName,
+          } as Record<string, string>
+        )[area] || area,
       status: status ?? "In progress",
       cycle,
       owner: owners[i % owners.length],
@@ -351,14 +370,7 @@ export const currentUser: { name: string; role: Role } = {
   name: "Maya Chen",
   role: "Workspace Member",
 };
-export const departments = [
-  "Marketing",
-  "Manufacturing",
-  "Finance",
-  "Human Resources",
-  "Digital & Technology",
-  "Operations",
-];
+export const divisions = organisationDivisions.map((d) => d.fullName);
 export const quickLinks = [
   { label: "Logframe", name: "Organisation-wide Logframe 2027.xlsx" },
   {
@@ -377,8 +389,8 @@ const strategyPaths = [
   "Current strategy · 2025–2030/Organisational strategy",
   "Current strategy · 2025–2030/Annual strategy",
   "Current strategy · 2025–2030/Multi-year strategy",
-  "Current strategy · 2025–2030/Department roadmaps",
-  "Current strategy · 2025–2030/Department roadmaps",
+  "Current strategy · 2025–2030/Division roadmaps",
+  "Current strategy · 2025–2030/Division roadmaps",
   "Archive/2020–2024",
   "Archive/2015–2019",
 ];
@@ -405,7 +417,7 @@ export const documents: Document[] = allDocuments
         d.cycle !== currentCycle
           ? d.cycle
           : d.type === "Submission"
-            ? `${currentCycle}/Department submissions/${d.area}`
+            ? `${currentCycle}/Division submissions/${d.area}`
             : ["Guidance", "Decision log"].includes(d.type)
               ? `${currentCycle}/Guidance & decisions`
               : `${currentCycle}/Organisational plan`;

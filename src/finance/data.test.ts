@@ -99,7 +99,7 @@ describe("shared financial operating model", () => {
   });
   it("every fictional staff preview belongs to a real existing workspace", () => {
     expect(workspaces).toHaveLength(7);
-    expect(staff).toHaveLength(7);
+    expect(staff).toHaveLength(8);
     for (const s of staff)
       expect(workspaces.find((w) => w.id === s.workspace)).toBeDefined();
     expect(prototypeForPath("/teams")).toBe("teams");
