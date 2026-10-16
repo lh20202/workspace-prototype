@@ -18,7 +18,12 @@ export default function AccessRequest() {
     params.get("area") ||
     (isSupport ? "Technology Services" : "Restricted Planning");
   const services = workspace === "Organisation Services";
-  const returnPath = services ? "/services" : "/planning/restricted";
+  const audience = workspace === "Audience Insight & Innovation R&D";
+  const returnPath = audience
+    ? "/audience-innovation/research"
+    : services
+      ? "/services"
+      : "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -45,7 +50,12 @@ export default function AccessRequest() {
       <main className="service-desk-main">
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
-          Back to {services ? "Organisation Services" : "Restricted Planning"}
+          Back to{" "}
+          {audience
+            ? "Audience research"
+            : services
+              ? "Organisation Services"
+              : "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}

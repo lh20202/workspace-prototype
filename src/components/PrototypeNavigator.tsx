@@ -4,7 +4,13 @@ export default function PrototypeNavigator({
   active,
   teams = false,
 }: {
-  active: "launcher" | "planning" | "logistics" | "service-desk" | "services";
+  active:
+    | "launcher"
+    | "planning"
+    | "logistics"
+    | "service-desk"
+    | "services"
+    | "audience";
   teams?: boolean;
 }) {
   const [isTeams, setIsTeams] = useState(teams);
@@ -45,6 +51,12 @@ export default function PrototypeNavigator({
           aria-current={active === "services" ? "page" : undefined}
         >
           Organisation Services
+        </a>
+        <a
+          href="/audience-innovation"
+          aria-current={active === "audience" ? "page" : undefined}
+        >
+          Audience Insight &amp; Innovation R&amp;D
         </a>
         {isTeams && <a href="/logistics">← Back to logistics workspace</a>}
         <aside className="demo-caveat" aria-label="Demonstration caveat">

@@ -11,14 +11,30 @@ export function planningPage(pathname: string) {
 }
 export function prototypeForPath(
   pathname: string,
-): "launcher" | "planning" | "logistics" | "service-desk" | "services" {
+):
+  | "launcher"
+  | "planning"
+  | "logistics"
+  | "service-desk"
+  | "services"
+  | "audience" {
   if (pathname === "/") return "launcher";
+  if (
+    pathname === "/audience-innovation" ||
+    pathname.startsWith("/audience-innovation/")
+  )
+    return "audience";
   if (pathname === "/services" || pathname.startsWith("/services/"))
     return "services";
   if (pathname.startsWith("/service-desk/")) return "service-desk";
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (
+    pathname === "/audience-innovation" ||
+    pathname.startsWith("/audience-innovation/")
+  )
+    return "Audience Insight & Innovation R&D";
   if (pathname === "/services" || pathname.startsWith("/services/"))
     return "Organisation Services";
   if (pathname === "/service-desk/it-support")

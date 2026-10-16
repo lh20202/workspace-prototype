@@ -1,6 +1,6 @@
 # Workspace prototypes
 
-A simple landing page leading to three interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
+A simple landing page leading to four interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
 
 ## Development
 
@@ -8,7 +8,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 
 ## Routes
 
-- `/`: Workspace prototypes. Four large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, and the Teams experience.
+- `/`: Workspace prototypes. Five large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, Audience Insight & Innovation R&D, and the Teams experience.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
 - `/logistics`: Acquisition & Activation Logistics Home.
@@ -60,3 +60,15 @@ Routes: `/services/coordination`, `/services/projects`, `/services/technology`, 
 Narrow protected matter routes sit inside technology, legal, purchasing, workplace and hiring topics, e.g. `/services/legal/matters/INV-008`, `/services/procurement/tenders/TND-014`, `/services/hiring/recruitment/REC-221`. Only minimal labels are modelled; no protected files or case payloads exist in the client. The normal fictional member receives a restricted state and the existing local Jira-style access request, prefilled with Organisation Services, service area and matter. This is an information-architecture demonstration, not production access enforcement.
 
 System launch tiles use clean product text rather than invented logos. Jira links to `/service-desk/it-support`, extending the same existing simulated portal for first-level triage and specialist support. Business Central, DocuWare, Recruitment Portal and Microsoft 365 open clearly marked simulated external destinations under `/services/systems/…`. No authoritative transactions, candidate queues or controlled records are duplicated; external IDs are references only. No request is sent, no external login is opened, and no data leaves the browser.
+
+## Audience Insight & Innovation R&D
+
+The current landing page gains an **Outreach · Interactive Demo** link to `/audience-innovation`; the existing layout, colours, logos, typography and other entries are preserved. The dark external demo controls gain the same workspace. Child routes: `/research`, `/audiences`, `/experiments`, `/analytics`, `/decisions`, `/calendar` beneath `/audience-innovation`.
+
+`src/audience/data.ts` is the single fictional dataset. The research/experiment register, Home initiatives, Innovation Pipeline, saved views, experiment backlog, related working files, calendar and decisions refer to common initiative/file IDs. Register stage changes update status coherently and are reflected in the other views. Approval or an additional-evidence decision updates the linked initiative. Changes and review comments are local to the current workspace session and reset on reload; URL filters, canonical file links and direct child routes support refresh.
+
+Audience & Journeys contains five aggregate synthetic segments and a seven-stage interactive journey with behaviours, touchpoints, gaps and linked evidence. Measurement & Analytics contains website friction analysis, a measurement framework and an exploratory retention model with validation/bias/limitations material. The linked Website Analytics and Performance dashboard destinations (`/audience-innovation/systems/website-analytics` and `/audience-innovation/systems/performance`) show a few synthetic aggregate indicators and interpretation links, not a cloned analytics platform or actual tracking service.
+
+The month-style Research Calendar uses existing calendar styling and eight fictional October 2026 sessions/milestones linked to the register. The Teams indicator opens a restrained connection panel with four enduring channels and links to the same SharePoint working files; it does not create a duplicate Teams file structure or a separate Teams simulation. Existing logistics Teams remains unchanged.
+
+Study-level protection is demonstrated at `/audience-innovation/research/website-usability/participant-administration`. Only an appropriate boundary label exists; no participant records are present in the client or ordinary search/views. It reuses the existing access-request portal with workspace, study path and user prefilled, and returns to audience research. All research, models, examples and metrics are fictional and non-identifiable. There are no analytics trackers, backend requests or production predictive models.
