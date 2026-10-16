@@ -273,10 +273,14 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
     );
     return toolIds.length > 0 ||
       protectedLinks.length > 0 ||
-      workspace.id === "people" ||
-      workspace.id === "digital" ||
-      workspace.id === "customer" ||
-      workspace.id === "quality" ||
+      (workspace.id === "people" &&
+        l?.areas.some((id) => ["communications", "employment"].includes(id))) ||
+      (workspace.id === "digital" &&
+        l?.areas.some((id) =>
+          ["web-crm", "information-architecture"].includes(id),
+        )) ||
+      (workspace.id === "customer" && l?.areas.includes("quality")) ||
+      (workspace.id === "quality" && l?.areas.includes("process")) ||
       (workspace.id === "services" && (!area || page === "purchasing")) ? (
       <details>
         <summary>Related links</summary>
