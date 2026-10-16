@@ -20,6 +20,7 @@ import {
   channels as financeChannels,
   channelFiles,
 } from "../finance/data";
+import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
 import "./styles.css";
 const channelMap: Record<string, string[]> = {
@@ -40,6 +41,7 @@ const channelMap: Record<string, string[]> = {
     "Production Coordination",
   ],
   finance: financeChannels,
+  executive: ["General", "Executive Coordination", "Approved Actions"],
 };
 export const sharedFiles: Record<string, OperationalFile[]> = {
   logistics: logisticsFiles,
@@ -47,6 +49,7 @@ export const sharedFiles: Record<string, OperationalFile[]> = {
   audience: audienceFiles,
   content: contentFiles,
   finance: financialFiles,
+  executive: executiveFiles("base"),
 };
 export default function TeamsPreview() {
   const person =

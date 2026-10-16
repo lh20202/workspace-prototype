@@ -13,7 +13,10 @@ export default function PrototypeNavigator({
     | "audience"
     | "content"
     | "finance"
-    | "teams";
+    | "teams"
+    | "executive"
+    | "governance"
+    | "emergency";
   teams?: boolean;
 }) {
   const [isTeams, setIsTeams] = useState(teams);
@@ -72,6 +75,18 @@ export default function PrototypeNavigator({
           aria-current={active === "finance" ? "page" : undefined}
         >
           Income &amp; Financial Operations
+        </a>
+        <a
+          href="/executive"
+          aria-current={
+            active === "executive" ||
+            active === "governance" ||
+            active === "emergency"
+              ? "page"
+              : undefined
+          }
+        >
+          CEO &amp; Executive Committee
         </a>
         {isTeams && <a href="/logistics">← Back to logistics workspace</a>}
         <aside className="demo-caveat" aria-label="Demonstration caveat">

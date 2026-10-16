@@ -8,9 +8,11 @@ import {
   Money24Regular,
   ArrowRight20Regular,
   GridDots24Regular,
+  BuildingGovernment24Regular,
 } from "@fluentui/react-icons";
 import { workspaces, staff } from "./catalog";
 import "./styles.css";
+import "../executive/styles.css";
 const icons = [
   ChartMultiple24Regular,
   PeopleTeam24Regular,
@@ -18,6 +20,7 @@ const icons = [
   Search24Regular,
   DesignIdeas24Regular,
   Money24Regular,
+  BuildingGovernment24Regular,
 ];
 export default function Directory() {
   const [person, setPerson] = useState("maya");

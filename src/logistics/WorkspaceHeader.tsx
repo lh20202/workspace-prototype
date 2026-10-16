@@ -14,6 +14,8 @@ import DocumentIcon from "../components/DocumentIcon";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 export default function WorkspaceHeader({
   onOpen,
+  userName = "Maya Chen",
+  userRole = "Workspace member and contributor",
   onTeams,
   onMessage,
   title = workspaceTitle,
@@ -25,6 +27,8 @@ export default function WorkspaceHeader({
   onTeams: () => void;
   onMessage: (m: string) => void;
   title?: string;
+  userName?: string;
+  userRole?: string;
   searchFiles?: OperationalFile[];
   memberCount?: number;
   helpText?: string;
@@ -117,12 +121,22 @@ export default function WorkspaceHeader({
           </button>
           <button
             className="profile-button"
-            aria-label="Signed in as Maya Chen"
-            onClick={() =>
-              onMessage("Maya Chen · Workspace member and contributor")
-            }
+            aria-label={`Signed in as ${userName}`}
+            onClick={() => onMessage(`${userName} · ${userRole}`)}
           >
-            <img src="/maya-avatar.svg" alt="Illustrated avatar of Maya Chen" />
+            {userName === "Maya Chen" ? (
+              <img
+                src="/maya-avatar.svg"
+                alt="Illustrated avatar of Maya Chen"
+              />
+            ) : (
+              <span className="executive-avatar">
+                {userName
+                  .split(" ")
+                  .map((x) => x[0])
+                  .join("")}
+              </span>
+            )}
           </button>
         </div>
       </header>

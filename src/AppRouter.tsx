@@ -10,6 +10,9 @@ import { pageTitle, prototypeForPath } from "./utils/routes";
 import Directory from "./intranet/Directory";
 const FinanceApp = lazy(() => import("./finance/FinanceApp"));
 const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
+const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
+const GovernanceApp = lazy(() => import("./executive/GovernanceApp"));
+const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   useEffect(() => {
@@ -29,7 +32,13 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "finance" ? (
+        {prototype === "executive" ? (
+          <ExecutiveApp />
+        ) : prototype === "governance" ? (
+          <GovernanceApp />
+        ) : prototype === "emergency" ? (
+          <EmergencyApp />
+        ) : prototype === "finance" ? (
           <FinanceApp />
         ) : prototype === "teams" ? (
           <TeamsPreview />

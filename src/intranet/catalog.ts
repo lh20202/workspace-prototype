@@ -41,8 +41,21 @@ export const workspaces = [
     href: "/financial-operations",
     icon: "finance",
   },
+  {
+    id: "executive",
+    title: "CEO & Executive Committee",
+    group: "Leadership & governance",
+    href: "/executive",
+    icon: "executive",
+  },
 ];
 export const staff = [
+  {
+    id: "robin",
+    name: "Robin Avery",
+    role: "Executive Coordinator",
+    workspace: "executive",
+  },
   {
     id: "maya",
     name: "Maya Chen",

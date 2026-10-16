@@ -20,8 +20,20 @@ export function prototypeForPath(
   | "audience"
   | "content"
   | "finance"
-  | "teams" {
+  | "teams"
+  | "executive"
+  | "governance"
+  | "emergency" {
   if (pathname === "/") return "launcher";
+  if (pathname === "/executive" || pathname.startsWith("/executive/"))
+    return "executive";
+  if (pathname === "/governance" || pathname.startsWith("/governance/"))
+    return "governance";
+  if (
+    pathname === "/emergency-response" ||
+    pathname.startsWith("/emergency-response/")
+  )
+    return "emergency";
   if (pathname === "/teams") return "teams";
   if (
     pathname === "/financial-operations" ||
@@ -44,6 +56,10 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
+  if (pathname.startsWith("/governance")) return "Governance & Members Portal";
+  if (pathname.startsWith("/emergency-response"))
+    return "Emergency Response | Demo preview";
   if (pathname === "/teams") return "Digital workspaces | Teams";
   if (pathname.startsWith("/financial-operations"))
     return "Income & Financial Operations";
