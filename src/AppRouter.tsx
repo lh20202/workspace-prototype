@@ -21,10 +21,7 @@ export default function AppRouter() {
   if (prototype === "launcher") return <Directory />;
   return (
     <>
-      <PrototypeNavigator
-        active={prototype}
-        teams={location.pathname.startsWith("/logistics/teams")}
-      />
+      <PrototypeNavigator />
       <Suspense
         fallback={
           <div className="workspace-loading" role="status">
