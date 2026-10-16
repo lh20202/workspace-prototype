@@ -38,7 +38,7 @@ export default function PrototypeNavigator({
       >
         <span>DEMO CONTROLS</span>
         <a href="/" aria-current={active === "launcher" ? "page" : undefined}>
-          Workspace prototypes
+          Back to all workspaces
         </a>
         <a
           href="/planning"
