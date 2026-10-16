@@ -50,7 +50,7 @@ import {
   libraries,
   currentUser,
   accessContact,
-  divisions,
+  departments,
   quickLinks,
   currentCycle,
   milestones,
@@ -79,7 +79,7 @@ const views: View[] = [
   "Current Planning Cycle",
   "In Review",
   "Approved",
-  "By Division",
+  "By Department",
 ];
 const documentCount = (count: number) =>
   `${count} document${count === 1 ? "" : "s"}`;
@@ -324,7 +324,7 @@ export default function App() {
                 key={d.id}
                 doc={d}
                 previous={items[i - 1]}
-                grouped={!recent && view === "By Division"}
+                grouped={!recent && view === "By Department"}
                 recent={recent}
                 onSelect={() => setSelected(d)}
               />
@@ -618,21 +618,21 @@ export default function App() {
                 </section>
               </div>
               <aside className="home-aside" aria-label="Planning shortcuts">
-                <section className="division-jumps">
-                  <h3>Jump to division submissions</h3>
+                <section className="department-jumps">
+                  <h3>Jump to department submissions</h3>
                   <p>2027 Annual Planning</p>
-                  {divisions.map((division) => (
+                  {departments.map((department) => (
                     <button
-                      key={division}
+                      key={department}
                       onClick={() =>
                         navigate("planning", currentCycle, "All Documents", {
                           ...emptyFilters,
-                          area: division,
+                          area: department,
                           type: "Submission",
                         })
                       }
                     >
-                      <span>{division}</span>
+                      <span>{department}</span>
                       <ArrowRight20Regular />
                     </button>
                   ))}
@@ -862,7 +862,7 @@ export default function App() {
                                 {
                                   cycle: "Planning cycle",
                                   type: "Document type",
-                                  area: "Division / scope",
+                                  area: "Department / scope",
                                   status: "Status",
                                 }[key]
                               }
@@ -871,7 +871,7 @@ export default function App() {
                                   {
                                     cycle: "Planning cycle",
                                     type: "Document type",
-                                    area: "Division / scope",
+                                    area: "Department / scope",
                                     status: "Status",
                                   }[key]
                                 }
@@ -1017,7 +1017,7 @@ export default function App() {
                   ["Modified", formatDate(selected.modified)],
                   ["Modified by", selected.modifiedBy],
                   ["Planning cycle", selected.cycle],
-                  ["Division / scope", selected.area],
+                  ["Department / scope", selected.area],
                   ["Document type", selected.type],
                   ["Status", selected.status],
                   ["Sensitivity", selected.sensitivity],

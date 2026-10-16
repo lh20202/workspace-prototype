@@ -36,7 +36,7 @@ describe("Organisation Services has four operational purposes", () => {
   it("moves legacy ordinary and protected routes to their owners", () => {
     expect(resolveLegacy("/services/technology")).toBe("/digital-tech");
     expect(resolveLegacy("/services/projects")).toBe(
-      "/quality-monitoring/improvement",
+      "/projects",
     );
     expect(resolveLegacy("/services/hiring")).toBe("/people-culture/hiring");
     expect(resolveLegacy("/services/legal/matters/INV-008")).toBe(

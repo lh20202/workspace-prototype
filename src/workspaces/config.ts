@@ -125,11 +125,6 @@ const seeds = {
         "Cross-functional improvement intake, prioritisation and follow-through.",
       ],
       [
-        "change",
-        "Project & Change Support",
-        "Project methods, change coordination, closure and handover.",
-      ],
-      [
         "eco",
         "Eco Practice",
         "Lower-impact travel, office energy, waste reduction and responsible purchasing.",
@@ -169,8 +164,8 @@ const seeds = {
       ],
       [
         "process",
-        "Project Closure Process Review",
-        "Agree evidence and archive transfer checkpoints",
+        "Service Handoff Process Review",
+        "Agree process ownership and review checkpoints",
       ],
       [
         "process",
@@ -191,11 +186,6 @@ const seeds = {
         "improvement",
         "Supplier Onboarding Redesign",
         "Test revised cross-functional handoff",
-      ],
-      [
-        "change",
-        "Workspace Consolidation Programme",
-        "Review business ownership and migration readiness",
       ],
       [
         "eco",
@@ -233,7 +223,6 @@ const seeds = {
       ["process", "Purchase-to-Pay — Process Map.pptx"],
       ["process", "New Starter — Handoff Review.docx"],
       ["improvement", "Improvement Intake & Priorities.xlsx"],
-      ["change", "Project Closure — Handover Checklist.docx"],
       ["eco", "Low-Impact Travel Pilot — Review.xlsx"],
       ["eco", "Supplier Eco Criteria — Working Review.docx"],
       ["reviews", "Corrective Actions Log.xlsx"],
@@ -558,7 +547,7 @@ const seeds = {
       [
         "workforce",
         "Workforce planning coordination",
-        "Review role needs with division contributors",
+        "Review role needs with department contributors",
       ],
       [
         "culture",

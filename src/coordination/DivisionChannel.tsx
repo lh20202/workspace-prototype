@@ -19,27 +19,28 @@ import {
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import {
-  divisionFolders,
+  departmentFolders,
+  departmentCodes,
   unitFolders,
-  canOpenDivision,
+  canOpenDepartment,
   canOpenUnit,
   accessibleFiles,
   searchCoordination,
-  type Division,
+  type Department,
   type CoordinationPerson,
   type AdminFile,
 } from "./data";
 import "./styles.css";
-export default function DivisionChannel({
-  division,
+export default function DepartmentChannel({
+  department,
   person,
 }: {
-  division: Division;
+  department: Department;
   person: CoordinationPerson;
 }) {
   const params = new URLSearchParams(location.search),
-    initialUnit = division.units.find((u) => u.id === params.get("unit"));
-  const entitled = canOpenDivision(division, person);
+    initialUnit = department.units.find((u) => u.id === params.get("unit"));
+  const entitled = canOpenDepartment(department, person);
   const [tab, setTab] = useState(
       params.get("tab") === "Files" ? "Files" : "Posts",
     ),
@@ -47,7 +48,7 @@ export default function DivisionChannel({
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
   const [denied, setDenied] = useState(
-      initialUnit && !canOpenUnit(division, initialUnit, person)
+      initialUnit && !canOpenUnit(department, initialUnit, person)
         ? "This unit has limited its coordination files to unit members."
         : "",
     ),
@@ -62,9 +63,9 @@ export default function DivisionChannel({
   const [replyTo, setReplyTo] = useState(""),
     [replyDraft, setReplyDraft] = useState(""),
     [replies, setReplies] = useState<Record<string, string[]>>({});
-  const permittedFiles = accessibleFiles(division, person),
-    seededResults = searchCoordination(division, person, query),
-    unitAllowed = !!unit && canOpenUnit(division, unit, person);
+  const permittedFiles = accessibleFiles(department, person),
+    seededResults = searchCoordination(department, person, query),
+    unitAllowed = !!unit && canOpenUnit(department, unit, person);
   const results = {
     ...seededResults,
     posts: [
@@ -78,7 +79,7 @@ export default function DivisionChannel({
         : []),
     ],
   };
-  const selectedUpload = division.posts.find(
+  const selectedUpload = department.posts.find(
     (p) => p.upload?.id === uploadId,
   )?.upload;
   function navigate(
@@ -87,11 +88,11 @@ export default function DivisionChannel({
     nextSection = "",
     nextTab = "Files",
   ) {
-    if (nextUnit && !canOpenUnit(division, nextUnit, person)) {
+    if (nextUnit && !canOpenUnit(department, nextUnit, person)) {
       setDenied(
         nextUnit.access === "Unit-only"
           ? "This unit has limited its coordination files to unit members."
-          : "This unit’s coordination files are available to members of its division.",
+          : "This unit’s coordination files are available to members of its department.",
       );
       return;
     }
@@ -104,7 +105,7 @@ export default function DivisionChannel({
     setUploadId("");
     const search = new URLSearchParams({
       staff: person.id,
-      division: division.id,
+      department: departmentCodes[department.id],
       tab: nextTab,
     });
     if (nextFolder) search.set("folder", nextFolder);
@@ -134,7 +135,7 @@ export default function DivisionChannel({
               {f.name}
               <small>
                 {f.unitId
-                  ? `${division.units.find((u) => u.id === f.unitId)?.name} / `
+                  ? `${department.units.find((u) => u.id === f.unitId)?.name} / `
                   : ""}
                 {f.folder} · {f.owner} · Local administration
               </small>
@@ -144,29 +145,29 @@ export default function DivisionChannel({
       </div>
     );
   }
-  const allPosts = [...division.posts, ...extraPosts];
+  const allPosts = [...department.posts, ...extraPosts];
   return (
     <>
       <header className="coord-channel-heading">
         <div>
-          <h1>{division.name}</h1>
+          <h1>{department.name}</h1>
           <p>
-            Division coordination ·{" "}
-            <span className="coord-access">{division.channelAccess}</span>
+            Department coordination ·{" "}
+            <span className="coord-access">{department.channelAccess}</span>
           </p>
         </div>
         <small>
-          Coordinator: {division.coordinator.name} · {division.units.length}{" "}
+          Department Assistant: {department.coordinator.name} · {department.units.length}{" "}
           units
         </small>
       </header>
       {!entitled ? (
         <section className="coord-channel-denied">
           <LockClosed16Regular />
-          <h2>You don’t have access to this division channel.</h2>
+          <h2>You don’t have access to this department channel.</h2>
           <p>
-            This channel is limited to division members. Choose a staff preview
-            who belongs to {division.name} to explore it.
+            This channel is limited to department members. Choose a staff preview
+            who belongs to {department.name} to explore it.
           </p>
           <p>
             Local team access · No access request to confidential business
@@ -176,7 +177,7 @@ export default function DivisionChannel({
       ) : (
         <>
           <div className="coord-toolbar">
-            <nav aria-label="Division channel tabs">
+            <nav aria-label="Department channel tabs">
               {["Posts", "Files"].map((t) => (
                 <button
                   key={t}
@@ -188,15 +189,15 @@ export default function DivisionChannel({
               ))}
             </nav>
             <input
-              aria-label="Search Division Coordination"
-              placeholder="Search this division"
+              aria-label="Search Department Coordination"
+              placeholder="Search this department"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
           {query.trim() ? (
             <section className="coord-search">
-              <h2>Search this division</h2>
+              <h2>Search this department</h2>
               <p>Accessible local administration files and channel posts.</p>
               {fileRows(results.files)}
               {results.posts.map((p) => (
@@ -223,9 +224,9 @@ export default function DivisionChannel({
           ) : tab === "Posts" ? (
             <div className="coord-posts">
               {allPosts.map((p) => {
-                const original = division.posts.find((x) => x.id === p.id),
+                const original = department.posts.find((x) => x.id === p.id),
                   attachment = original?.attachmentId
-                    ? division.library.find(
+                    ? department.library.find(
                         (f) => f.id === original.attachmentId,
                       )
                     : undefined;
@@ -234,13 +235,13 @@ export default function DivisionChannel({
                     <div className="coord-post-top">
                       {avatar(
                         p.author,
-                        p.author === division.coordinator.name
-                          ? division.coordinator.colour
+                        p.author === department.coordinator.name
+                          ? department.coordinator.colour
                           : undefined,
                       )}
                       <div>
                         <strong>{p.author}</strong>
-                        <small>{p.time} · Division Coordination</small>
+                        <small>{p.time} · Department Coordination</small>
                       </div>
                     </div>
                     <p>{p.text}</p>
@@ -271,20 +272,20 @@ export default function DivisionChannel({
                     {original?.moderatorReply && (
                       <article
                         className="teams-thread-reply coord-moderator"
-                        aria-label={`Moderator reply from ${division.coordinator.name}`}
+                        aria-label={`Moderator reply from ${department.coordinator.name}`}
                       >
                         {avatar(
-                          division.coordinator.name,
-                          division.coordinator.colour,
+                          department.coordinator.name,
+                          department.coordinator.colour,
                         )}
                         <div className="thread-reply-body">
                           <header>
-                            <strong>{division.coordinator.name}</strong>
+                            <strong>{department.coordinator.name}</strong>
                             <span className="coord-moderator-badge">
                               MODERATOR
                             </span>
                           </header>
-                          <small>{division.coordinator.role}</small>
+                          <small>{department.coordinator.role}</small>
                           <p>{original.moderatorReply}</p>
                           <a href={original.upload!.destination}>
                             Open destination: {original.upload!.destinationName}{" "}
@@ -379,7 +380,7 @@ export default function DivisionChannel({
                 }}
               >
                 <label>
-                  New division coordination post
+                  New department coordination post
                   <textarea
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
@@ -394,11 +395,11 @@ export default function DivisionChannel({
           ) : (
             <section className="coord-files">
               <p className="coord-info-strip">
-                Division files are for meetings, local planning and team
+                Department files are for meetings, local planning and team
                 administration. Use Digital Workspaces for shared business work.
               </p>
               <nav
-                aria-label="Division file location"
+                aria-label="Department file location"
                 className="coord-breadcrumb"
               >
                 <button onClick={() => navigate()}>Files</button>
@@ -425,7 +426,7 @@ export default function DivisionChannel({
               </nav>
               {!folder ? (
                 <div className="coord-folders">
-                  {divisionFolders.map((f) => (
+                  {departmentFolders.map((f) => (
                     <button key={f} onClick={() => navigate(f)}>
                       <Folder20Regular />
                       {f}
@@ -436,7 +437,7 @@ export default function DivisionChannel({
               ) : folder === "Unit Coordination" ? (
                 !unit ? (
                   <div className="coord-folders">
-                    {division.units.map((u) => (
+                    {department.units.map((u) => (
                       <button
                         key={u.id}
                         onClick={() => navigate("Unit Coordination", u)}
@@ -512,7 +513,7 @@ export default function DivisionChannel({
                 <>
                   <h2>{folder}</h2>
                   {fileRows(
-                    division.library.filter((f) => f.folder === folder),
+                    department.library.filter((f) => f.folder === folder),
                   )}
                 </>
               )}
@@ -577,7 +578,7 @@ export default function DivisionChannel({
             <>
               <h2>{file.name}</h2>
               <p>
-                {file.id} · {division.name}
+                {file.id} · {department.name}
               </p>
               <p>
                 {file.folder} · {file.owner}
@@ -599,7 +600,7 @@ export default function DivisionChannel({
                 <p>{selectedUpload.id} · Uploaded example in this thread</p>
                 <p>
                   This is substantive business work. The example has not been
-                  added to the division administration library. Use the
+                  added to the department administration library. Use the
                   functional working location below; do not upload a second copy
                   here.
                 </p>

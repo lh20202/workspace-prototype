@@ -6,8 +6,19 @@ import {
   TicketDiagonal24Regular,
 } from "@fluentui/react-icons";
 import { currentUser } from "../data/workspace";
+import { allProjects, projectTitle } from "../projects/data";
+import { staff, selectedStaffId } from "../intranet/catalog";
 export default function AccessRequest() {
   const params = new URLSearchParams(location.search);
+  const project = allProjects.find((p) => p.code === params.get("project"));
+  const projectRequest =
+    params.get("workspace") === "Projects" ||
+    params.get("workspace") === "projects";
+  const requester = projectRequest
+    ? staff.find((s) => s.id === params.get("person")) ||
+      staff.find((s) => s.id === selectedStaffId()) ||
+      currentUser
+    : currentUser;
   const isSupport = location.pathname === "/service-desk/it-support";
   const workspace = isSupport
     ? "Digital & Technology"
@@ -23,20 +34,22 @@ export default function AccessRequest() {
   const content = workspace === "Content Creation & Delivery";
   const finance = workspace === "Income & Financial Operations";
   const executive = workspace === "CEO & Executive Committee";
-  const freshservice = true;
-  const returnPath = digital
-    ? "/digital-tech/operations"
-    : executive
-      ? "/executive"
-      : finance
-        ? "/financial-operations"
-        : content
-          ? "/content-delivery"
-          : audience
-            ? "/audience-innovation/research"
-            : services
-              ? "/services"
-              : "/planning/restricted";
+  const freshservice = !projectRequest;
+  const returnPath = projectRequest
+    ? "/projects"
+    : digital
+      ? "/digital-tech/operations"
+      : executive
+        ? "/executive"
+        : finance
+          ? "/financial-operations"
+          : content
+            ? "/content-delivery"
+            : audience
+              ? "/audience-innovation/research"
+              : services
+                ? "/services"
+                : "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -67,27 +80,32 @@ export default function AccessRequest() {
           </div>
         </div>
         <span className="service-desk-user">
-          <img src="/maya-avatar.svg" alt="Maya Chen" />
-          Maya Chen
+          <img
+            src="/maya-avatar.svg"
+            alt={`Illustrated avatar of ${requester.name}`}
+          />
+          {requester.name}
         </span>
       </header>
       <main className="service-desk-main">
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
           Back to{" "}
-          {digital
-            ? "Digital & Technology"
-            : executive
-              ? "CEO & Executive Committee"
-              : finance
-                ? "Income & Financial Operations"
-                : content
-                  ? "Content Creation & Delivery"
-                  : audience
-                    ? "Audience research"
-                    : services
-                      ? "Organisation Services"
-                      : "Restricted Planning"}
+          {projectRequest
+            ? "Projects"
+            : digital
+              ? "Digital & Technology"
+              : executive
+                ? "CEO & Executive Committee"
+                : finance
+                  ? "Income & Financial Operations"
+                  : content
+                    ? "Content Creation & Delivery"
+                    : audience
+                      ? "Audience research"
+                      : services
+                        ? "Organisation Services"
+                        : "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}
@@ -99,10 +117,16 @@ export default function AccessRequest() {
             <h1>{requestType} DEMO-1042 submitted.</h1>
             <p>Your request is ready for review.</p>
             <div>
+              {project && (
+                <>
+                  <strong>Project</strong>
+                  <span>{projectTitle(project)}</span>
+                </>
+              )}
               <strong>Requested location</strong>
               <span>{requestedLocation}</span>
               <strong>Requested by</strong>
-              <span>{currentUser.name}</span>
+              <span>{requester.name}</span>
               <strong>Reason</strong>
               <span className="submitted-reason">{reason}</span>
             </div>
@@ -146,14 +170,17 @@ export default function AccessRequest() {
               {[
                 [
                   "Request type",
-                  isSupport
-                    ? "IT request / incident"
-                    : "Access to restricted information",
+                  projectRequest
+                    ? "Project workspace access"
+                    : isSupport
+                      ? "IT request / incident"
+                      : "Access to restricted information",
                 ],
                 ["Workspace", workspace],
+                ...(project ? [["Project", projectTitle(project)]] : []),
                 ["Area", area],
                 ["Requested location", requestedLocation],
-                ["Requested by", currentUser.name],
+                ["Requested by", requester.name],
               ].map(([label, value]) => (
                 <label key={label}>
                   {label}

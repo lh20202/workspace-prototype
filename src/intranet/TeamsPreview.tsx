@@ -26,10 +26,16 @@ import {
 import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
 import "./styles.css";
-import DivisionChannel from "../coordination/DivisionChannel";
-import { divisions, divisionHref } from "../coordination/data";
+import DepartmentChannel from "../coordination/DivisionChannel";
+import {
+  departments,
+  departmentHref,
+  resolveDepartment,
+} from "../coordination/data";
 import "../coordination/styles.css";
+import { currentProjects, projectHref, projectTitle } from "../projects/data";
 const channelMap: Record<string, string[]> = {
+  projects: ["General"],
   planning: ["General", "Planning coordination", "Reporting"],
   logistics: [
     "General",
@@ -81,8 +87,9 @@ export default function TeamsPreview() {
     staff.find((s) => s.id === selectedStaffId()) ||
     staff[0];
   useEffect(() => rememberStaff(person.id), [person.id]);
-  const division = divisions.find(
-    (d) => d.id === new URLSearchParams(location.search).get("division"),
+  const department = resolveDepartment(
+    new URLSearchParams(location.search).get("department") ||
+      new URLSearchParams(location.search).get("division"),
   );
   const workspace =
     workspaces.find(
@@ -151,10 +158,10 @@ export default function TeamsPreview() {
           </label>
           {person.name}
           <div className="staff-teams-role">
-            {divisions.find((d) => d.id === person.divisionId)?.name} ·{" "}
+            {departments.find((d) => d.id === person.departmentId)?.name} ·{" "}
             {
-              divisions
-                .find((d) => d.id === person.divisionId)
+              departments
+                .find((d) => d.id === person.departmentId)
                 ?.units.find((u) => u.id === person.unitId)?.name
             }{" "}
             · Fictional staff preview
@@ -171,7 +178,7 @@ export default function TeamsPreview() {
               className="staff-teams-channel"
               aria-current={channel === c ? "page" : undefined}
               onClick={() => {
-                if (division)
+                if (department)
                   location.assign(
                     `/teams?staff=${person.id}&workspace=${workspace.id}&channel=${encodeURIComponent(c)}`,
                   );
@@ -197,13 +204,13 @@ export default function TeamsPreview() {
               ))}
           </details>
           <div className="coord-sidebar-team">
-            <h3>Division Coordination</h3>
-            {divisions.map((d) => (
+            <h3>Department Teams</h3>
+            {departments.map((d) => (
               <a
                 key={d.id}
                 className="coord-sidebar-link"
-                aria-current={division?.id === d.id ? "page" : undefined}
-                href={divisionHref(person.id, d.id)}
+                aria-current={department?.id === d.id ? "page" : undefined}
+                href={departmentHref(person.id, d.id)}
               >
                 {d.name}
                 <small>{d.channelAccess}</small>
@@ -212,14 +219,27 @@ export default function TeamsPreview() {
           </div>
         </aside>
         <main className="staff-teams-main">
-          {division ? (
-            <DivisionChannel
-              key={`${division.id}-${person.id}`}
-              division={division}
+          {department ? (
+            <DepartmentChannel
+              key={`${department.id}-${person.id}`}
+              department={department}
               person={person}
             />
           ) : (
             <>
+              {workspace.id === "projects" && (
+                <section>
+                  <h1>Projects</h1>
+                  <p>Open the project’s Teams-connected delivery workspace.</p>
+                  {currentProjects.map((p) => (
+                    <p key={p.code}>
+                      <a href={projectHref(p) + "/teams"}>
+                        {projectTitle(p)} · {p.access}
+                      </a>
+                    </p>
+                  ))}
+                </section>
+              )}
               <h1>{channel}</h1>
               <nav>
                 {["Posts", "Shared"].map((t) => (

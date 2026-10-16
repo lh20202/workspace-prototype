@@ -45,28 +45,28 @@ const baseStaff = [
   },
 ];
 
-const memberships: Record<string, { divisionId: string; unitId: string }> = {
+const memberships: Record<string, { departmentId: string; unitId: string }> = {
   maya: {
-    divisionId: "marketing-growth",
+    departmentId: "marketing-growth",
     unitId: "acquisition-and-direct-engagement",
   },
   taylor: {
-    divisionId: "marketing-growth",
+    departmentId: "marketing-growth",
     unitId: "marketing-insight-and-performance",
   },
-  alex: { divisionId: "communications", unitId: "editorial-and-content" },
-  sam: { divisionId: "finance-services", unitId: "planning-and-analysis" },
+  alex: { departmentId: "communications", unitId: "editorial-and-content" },
+  sam: { departmentId: "finance-services", unitId: "planning-and-analysis" },
   jordan: {
-    divisionId: "finance-services",
+    departmentId: "finance-services",
     unitId: "procurement-and-supplier-services",
   },
   casey: {
-    divisionId: "strategy-technology",
+    departmentId: "strategy-technology",
     unitId: "strategy-and-performance",
   },
-  robin: { divisionId: "executive-office", unitId: "ceo-office" },
-  devon: { divisionId: "strategy-technology", unitId: "it-services" },
-  elena: { divisionId: "people-culture", unitId: "learning-and-capability" },
+  robin: { departmentId: "executive-office", unitId: "ceo-office" },
+  devon: { departmentId: "strategy-technology", unitId: "it-services" },
+  elena: { departmentId: "people-culture", unitId: "learning-and-capability" },
 };
 export const staff = [
   ...baseStaff,

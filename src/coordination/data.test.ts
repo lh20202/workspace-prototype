@@ -1,63 +1,67 @@
 import { describe, it, expect } from "vitest";
 import {
-  divisions,
-  divisionFolders,
+  departments,
+  departmentFolders,
   unitFolders,
-  canOpenDivision,
+  canOpenDepartment,
   canOpenUnit,
   accessibleFiles,
   searchCoordination,
-  divisionHref,
+  departmentHref,
 } from "./data";
 import { staff, workspaces } from "../intranet/catalog";
-import { documents, divisions as planningDivisions } from "../data/workspace";
+import {
+  documents,
+  departments as planningDepartments,
+} from "../data/workspace";
 const maya = staff.find((p) => p.id === "maya")!,
   sam = staff.find((p) => p.id === "sam")!,
   robin = staff.find((p) => p.id === "robin")!;
-const marketing = divisions[0],
-  finance = divisions[2];
-describe("division coordination architecture", () => {
-  it("has exactly six divisions, 33 units and no additional business workspaces", () => {
-    expect(divisions.map((d) => d.fullName)).toEqual([
-      "Marketing & Customer Growth Division",
-      "Communications & Public Affairs Division",
-      "Finance & Corporate Services Division",
-      "Strategy, Technology & Transformation Division",
-      "People & Culture Division",
-      "Executive Office Division",
+const marketing = departments[0],
+  finance = departments[2];
+describe("department coordination architecture", () => {
+  it("has exactly six departments, 33 units and no additional business workspaces", () => {
+    expect(departments.map((d) => d.fullName)).toEqual([
+      "MCG Department",
+      "CPA Department",
+      "FCS Department",
+      "STT Department",
+      "PAC Department",
+      "EAO Department",
     ]);
-    expect(divisions.reduce((n, d) => n + d.units.length, 0)).toBe(33);
-    expect(workspaces).toHaveLength(13);
-    expect(planningDivisions).toEqual(divisions.map((d) => d.fullName));
+    expect(departments.reduce((n, d) => n + d.units.length, 0)).toBe(33);
+    expect(workspaces).toHaveLength(14);
+    expect(planningDepartments).toEqual(departments.map((d) => d.fullName));
     expect(
       documents.every(
         (d) =>
-          d.area === "Organisation-wide" || planningDivisions.includes(d.area),
+          d.area === "Organisation-wide" ||
+          planningDepartments.includes(d.area),
       ),
     ).toBe(true);
-    expect(JSON.stringify(documents)).not.toMatch(/department/i);
+    expect(JSON.stringify(documents)).not.toMatch(/division/i);
   });
-  it("maps every retained staff persona to an actual division and unit", () => {
+  it("maps every retained staff persona to an actual department and unit", () => {
     for (const p of staff) {
-      const d = divisions.find((d) => d.id === p.divisionId)!;
+      const d = departments.find((d) => d.id === p.departmentId)!;
       expect(d).toBeDefined();
       expect(d.units.some((u) => u.id === p.unitId)).toBe(true);
     }
   });
-  it("distinguishes organisation-wide and division-only channel access", () => {
-    expect(canOpenDivision(marketing, sam)).toBe(true);
-    expect(canOpenDivision(finance, maya)).toBe(false);
-    expect(canOpenDivision(finance, sam)).toBe(true);
-    expect(canOpenDivision(divisions[5], robin)).toBe(true);
-    expect(canOpenDivision(divisions[4], maya)).toBe(false);
+  it("distinguishes organisation-wide and department-only channel access", () => {
+    expect(canOpenDepartment(marketing, sam)).toBe(true);
+    expect(canOpenDepartment(finance, maya)).toBe(false);
+    expect(canOpenDepartment(finance, sam)).toBe(true);
+    expect(canOpenDepartment(departments[5], robin)).toBe(true);
+    expect(canOpenDepartment(departments[4], maya)).toBe(false);
   });
   it("uses the same local administration folder structure everywhere", () => {
-    expect(divisionFolders).toHaveLength(9);
+    expect(departmentFolders).toHaveLength(9);
     expect(unitFolders).toHaveLength(6);
-    for (const d of divisions)
+    for (const d of departments)
       for (const u of d.units)
         expect(u.calendarItems.every((c) => c.person !== c.cover)).toBe(true);
-    for (const d of divisions) {
+    for (const d of departments) {
       expect(new Set(d.library.map((f) => f.folder)).size).toBe(8);
       for (const u of d.units) {
         expect(
@@ -65,7 +69,7 @@ describe("division coordination architecture", () => {
             (f) =>
               unitFolders.includes(f.folder) &&
               f.unitId === u.id &&
-              f.divisionId === d.id,
+              f.departmentId === d.id,
           ),
         ).toBe(true);
         expect(
@@ -90,7 +94,9 @@ describe("division coordination architecture", () => {
       accessibleFiles(marketing, maya).some((f) => f.unitId === income.id),
     ).toBe(false);
     expect(accessibleFiles(finance, maya)).toEqual([]);
-    expect(canOpenUnit(divisions[5], divisions[5].units[0], robin)).toBe(true);
+    expect(canOpenUnit(departments[5], departments[5].units[0], robin)).toBe(
+      true,
+    );
   });
   it("searches only accessible coordination files and posts", () => {
     expect(searchCoordination(finance, maya, "")).toEqual({
@@ -105,7 +111,7 @@ describe("division coordination architecture", () => {
     );
   });
   it("resolves post attachments to original admin objects and keeps misplaced uploads out of Files", () => {
-    for (const d of divisions) {
+    for (const d of departments) {
       for (const p of d.posts) {
         if (p.attachmentId)
           expect(d.library.find((f) => f.id === p.attachmentId)).toBeDefined();
@@ -121,7 +127,7 @@ describe("division coordination architecture", () => {
   });
   it("uses only implemented functional destinations including People learning", () => {
     expect(
-      divisions.flatMap((d) =>
+      departments.flatMap((d) =>
         d.posts.flatMap((p) => (p.upload ? [p.upload.destination] : [])),
       ),
     ).toEqual([
@@ -130,15 +136,15 @@ describe("division coordination architecture", () => {
       "/financial-operations/planning",
       "/services/purchasing",
       "/people-culture/learning",
-      "/executive/initiatives",
+      "/projects/PRJ-2026-014/decisions",
     ]);
     expect(
-      divisions[4].posts.some(
+      departments[4].posts.some(
         (p) => p.upload?.destination === "/people-culture/learning",
       ),
     ).toBe(true);
     const route = new URL(
-      divisionHref("maya", "marketing-growth"),
+      departmentHref("maya", "marketing-growth"),
       "https://example.test",
     );
     expect(route.searchParams.get("staff")).toBe("maya");

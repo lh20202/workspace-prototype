@@ -19,7 +19,7 @@
   color: #666;
   margin: 0 0 12px;
 }
-.division-quick-link {
+.department-quick-link {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -28,19 +28,19 @@
   text-decoration: none;
   color: #333;
 }
-.division-quick-link > svg:first-child {
+.department-quick-link > svg:first-child {
   color: #5c6877;
   flex-shrink: 0;
   width: 19px;
   height: 19px;
 }
-.division-quick-link > span {
+.department-quick-link > span {
   flex: 1;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.35;
 }
-.division-quick-link small {
+.department-quick-link small {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -49,11 +49,11 @@
   color: #777;
   margin-top: 4px;
 }
-.division-quick-link small img {
+.department-quick-link small img {
   width: 12px;
   height: 12px;
 }
-.division-quick-link > svg:last-child {
+.department-quick-link > svg:last-child {
   width: 15px;
   height: 15px;
   color: #777;
@@ -528,7 +528,7 @@
     border-top: 1px solid #ddd;
     padding: 20px 0;
   }
-  .division-quick-link {
+  .department-quick-link {
     padding: 12px 0;
   }
   .directory-content .directory-tile:last-child:nth-child(odd) {

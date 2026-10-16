@@ -1,3 +1,8 @@
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+} from "@fluentui/react-components";
 import { useState } from "react";
 import {
   ChartMultiple24Regular,
@@ -14,23 +19,17 @@ import {
   Library24Regular,
   Scales24Regular,
   Headset24Regular,
+  Briefcase24Regular,
+  Warning24Regular,
 } from "@fluentui/react-icons";
 import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
 import "./styles.css";
-import { divisions, divisionHref } from "../coordination/data";
+import { departments, departmentHref } from "../coordination/data";
 import "../coordination/styles.css";
 import "../executive/styles.css";
 import "../workspaces/styles.css";
-const icons = [
-  ChartMultiple24Regular,
-  PeopleTeam24Regular,
-  Settings24Regular,
-  Search24Regular,
-  DesignIdeas24Regular,
-  Money24Regular,
-  BuildingGovernment24Regular,
-];
 const workspaceIcons: Record<string, typeof Code24Regular> = {
+  projects: Briefcase24Regular,
   planning: ChartMultiple24Regular,
   logistics: PeopleTeam24Regular,
   services: Settings24Regular,
@@ -47,7 +46,6 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
 };
 export default function Directory() {
   const [person, setPerson] = useState(selectedStaffId);
-  const [notice, setNotice] = useState("");
   return (
     <div className="intranet-directory">
       <header className="directory-brand">
@@ -64,19 +62,23 @@ export default function Directory() {
           "Tools & support",
           "Digital Workspaces",
         ].map((x) => (
-          <button
-            key={x}
-            aria-current={x === "Digital Workspaces" ? "page" : undefined}
-            onClick={() =>
-              setNotice(
-                x === "Digital Workspaces"
+          <Popover key={x} positioning="below-start" withArrow trapFocus>
+            <PopoverTrigger disableButtonEnhancement>
+              <button
+                aria-current={x === "Digital Workspaces" ? "page" : undefined}
+              >
+                {x}
+              </button>
+            </PopoverTrigger>
+            <PopoverSurface className="directory-nav-popover">
+              <strong>{x}</strong>
+              <p>
+                {x === "Digital Workspaces"
                   ? "You are on Digital Workspaces."
-                  : `${x} is illustrative intranet navigation.`,
-              )
-            }
-          >
-            {x}
-          </button>
+                  : "Illustrative intranet navigation. This destination is not included in the prototype."}
+              </p>
+            </PopoverSurface>
+          </Popover>
         ))}
       </nav>
       <main className="directory-main">
@@ -86,16 +88,16 @@ export default function Directory() {
             <h1>Digital workspaces</h1>
             <p>Find the shared space for your work.</p>
           </div>
-          <aside>Interactive examples · Fictional workspace names</aside>
+          <aside className="directory-caveat">
+            <Warning24Regular aria-hidden="true" />
+            <div>
+              <strong>Fictional examples</strong>
+              <span>
+                Workspace titles are illustrative, not real site names.
+              </span>
+            </div>
+          </aside>
         </div>
-        {notice && (
-          <div role="status" className="directory-notice">
-            {notice}
-            <button aria-label="Dismiss notice" onClick={() => setNotice("")}>
-              ×
-            </button>
-          </div>
-        )}
         <div className="directory-content">
           <div className="directory-grid">
             {workspaces.map((w) => {
@@ -106,7 +108,6 @@ export default function Directory() {
                     <Icon />
                   </span>
                   <div>
-                    <small>{w.group}</small>
                     <h2>{w.title} workspace</h2>
                   </div>
                   <span className="directory-open">
@@ -119,17 +120,17 @@ export default function Directory() {
           </div>
           <aside
             className="directory-coordination"
-            aria-label="Division and team coordination"
+            aria-label="Department Teams"
           >
-            <h2>Division &amp; team coordination</h2>
-            <p>For meetings, local planning, workload and team admin.</p>
-            {divisions.map((d, i) => {
-              const Icon = icons[i];
+            <h2>Department Teams</h2>
+            <p>Local meetings, planning and team coordination.</p>
+            {departments.map((d) => {
+              const Icon = PeopleTeam24Regular;
               return (
                 <a
-                  className="division-quick-link"
+                  className="department-quick-link"
                   key={d.id}
-                  href={divisionHref(person, d.id)}
+                  href={departmentHref(person, d.id)}
                 >
                   <Icon />
                   <span>

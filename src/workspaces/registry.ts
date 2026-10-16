@@ -8,9 +8,17 @@ export interface WorkspaceDefinition {
   icon: string;
   teams: boolean;
   accessModel: string;
-  divisionRelationships: string[];
+  departmentRelationships: string[];
 }
 const seed: [string, string, string, string, string, string][] = [
+  [
+    "projects",
+    "Projects",
+    "/projects",
+    "Coordinate project governance and support, and access current and completed project workspaces.",
+    "Project delivery",
+    "projects",
+  ],
   [
     "planning",
     "Organisational Planning & Reporting",
@@ -71,7 +79,7 @@ const seed: [string, string, string, string, string, string][] = [
     "quality",
     "Quality, Monitoring & Improvement",
     "/quality-monitoring",
-    "Shared workspace for monitoring quality, improving processes, coordinating improvement work and developing more effective and environmentally responsible ways of working.",
+    "Shared workspace for monitoring quality, improving processes, coordinating process improvement work and developing more effective and environmentally responsible ways of working.",
     "Improvement",
     "quality",
   ],
@@ -128,13 +136,14 @@ export const workspaceRegistry: WorkspaceDefinition[] = seed.map(
     teams: true,
     accessModel:
       "Shared functional work; sensitive subjects require specific participation",
-    divisionRelationships: [],
+    departmentRelationships: [],
   }),
 );
 export const workspaceById = new Map(workspaceRegistry.map((w) => [w.id, w]));
 export const legacyRedirects: Record<string, string> = {
+  "/quality-monitoring/change": "/projects/support",
   "/services/technology": "/digital-tech",
-  "/services/projects": "/quality-monitoring/improvement",
+  "/services/projects": "/projects",
   "/services/legal": "/legal-compliance",
   "/services/hiring": "/people-culture/hiring",
   "/services/resources": "/services",
@@ -146,7 +155,7 @@ export const legacyRedirects: Record<string, string> = {
   "/services/systems/m365": "/digital-tech/m365",
   "/services/systems/greenhouse": "/people-culture/systems/greenhouse",
   "/services/systems/recruitment": "/people-culture/systems/greenhouse",
-  "/services/systems/asana": "/quality-monitoring/change",
+  "/services/systems/asana": "/projects/support",
   "/services/systems/m-files": "/archives",
   "/services/systems/docuware": "/archives",
   "/services/systems/netsuite": "/financial-operations/systems/netsuite",

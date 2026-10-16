@@ -44,7 +44,7 @@ export function queryDocuments(
         ),
     )
     .sort((a, b) => {
-      const key = view === "By Division" ? "area" : sort;
+      const key = view === "By Department" ? "area" : sort;
       return (
         String(a[key] ?? "").localeCompare(String(b[key] ?? "")) *
         (descending ? -1 : 1)

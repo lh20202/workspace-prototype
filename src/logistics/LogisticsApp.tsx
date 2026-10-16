@@ -419,7 +419,7 @@ export default function LogisticsApp() {
                         See your Teams channels <ArrowRight20Regular />
                       </Button>
                     </section>
-                    <section className="division-jumps channel-jumps">
+                    <section className="department-jumps channel-jumps">
                       <h3>Teams channels</h3>
                       {channels
                         .filter(

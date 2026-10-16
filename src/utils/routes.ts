@@ -13,6 +13,7 @@ export function planningPage(pathname: string) {
 export function prototypeForPath(
   pathname: string,
 ):
+  | "projects"
   | "launcher"
   | "planning"
   | "logistics"
@@ -27,6 +28,8 @@ export function prototypeForPath(
   | "emergency"
   | "functional" {
   if (pathname === "/") return "launcher";
+  if (pathname === "/projects" || pathname.startsWith("/projects/"))
+    return "projects";
   if (
     [
       "/quality-monitoring",

@@ -2,11 +2,11 @@ export interface CoordinationPerson {
   id: string;
   name: string;
   role: string;
-  divisionId: string;
+  departmentId: string;
   unitId: string;
 }
-export const divisionFolders = [
-  "Division Meetings",
+export const departmentFolders = [
+  "Department Meetings",
   "Leadership & Unit Directors",
   "Planning Cycle Coordination",
   "Budget Administration",
@@ -26,7 +26,7 @@ export const unitFolders = [
 ];
 export interface AdminFile {
   id: string;
-  divisionId: string;
+  departmentId: string;
   unitId?: string;
   folder: string;
   name: string;
@@ -36,7 +36,7 @@ export interface AdminFile {
 export interface Unit {
   id: string;
   name: string;
-  access: "Division-wide" | "Unit-only";
+  access: "Department-wide" | "Unit-only";
   files: AdminFile[];
   calendarItems: {
     person: string;
@@ -61,11 +61,11 @@ export interface CoordinationPost {
   upload?: ThreadUpload;
   moderatorReply?: string;
 }
-export interface Division {
+export interface Department {
   id: string;
   name: string;
   fullName: string;
-  channelAccess: "Organisation-wide" | "Division-only";
+  channelAccess: "Organisation-wide" | "Department-only";
   icon: string;
   coordinator: { name: string; role: string; colour: string };
   units: Unit[];
@@ -75,7 +75,7 @@ export interface Division {
 const definitions: [
   string,
   string,
-  Division["channelAccess"],
+  Department["channelAccess"],
   string,
   string,
   string,
@@ -83,10 +83,10 @@ const definitions: [
 ][] = [
   [
     "marketing-growth",
-    "Marketing & Customer Growth",
+    "MCG Department",
     "Organisation-wide",
     "Priya Shah",
-    "Marketing Division Coordinator",
+    "Marketing Department Assistant",
     "#e5eafa",
     [
       "Acquisition & Direct Engagement",
@@ -100,10 +100,10 @@ const definitions: [
   ],
   [
     "communications",
-    "Communications & Public Affairs",
+    "CPA Department",
     "Organisation-wide",
     "Morgan Lee",
-    "Communications Division Coordinator",
+    "Communications Department Assistant",
     "#e1eee8",
     [
       "Editorial & Content",
@@ -115,10 +115,10 @@ const definitions: [
   ],
   [
     "finance-services",
-    "Finance & Corporate Services",
-    "Division-only",
+    "FCS Department",
+    "Department-only",
     "Hannah Weber",
-    "Finance Division Coordinator",
+    "Finance Department Assistant",
     "#eee5f2",
     [
       "Accounting & Control",
@@ -131,10 +131,10 @@ const definitions: [
   ],
   [
     "strategy-technology",
-    "Strategy, Technology & Transformation",
+    "STT Department",
     "Organisation-wide",
     "Theo Walker",
-    "Strategy & Technology Division Coordinator",
+    "Strategy & Technology Department Assistant",
     "#e2edf2",
     [
       "Strategy & Performance",
@@ -147,10 +147,10 @@ const definitions: [
   ],
   [
     "people-culture",
-    "People & Culture",
-    "Division-only",
+    "PAC Department",
+    "Department-only",
     "Clara Jensen",
-    "People & Culture Division Coordinator",
+    "PAC Department Assistant",
     "#f4e8dd",
     [
       "People Operations",
@@ -163,8 +163,8 @@ const definitions: [
   ],
   [
     "executive-office",
-    "Executive Office",
-    "Division-only",
+    "EAO Department",
+    "Department-only",
     "Jamie Reed",
     "Executive Office Coordinator",
     "#e8e8e8",
@@ -189,7 +189,7 @@ const unitOnly = new Set([
   "People Systems & Analytics",
 ]);
 const folderFiles: Record<string, string[]> = {
-  "Division Meetings": ["Division Meeting — 20 October.docx"],
+  "Department Meetings": ["Department Meeting — 20 October.docx"],
   "Leadership & Unit Directors": ["Unit Directors — Agenda.docx"],
   "Planning Cycle Coordination": [
     "Planning Cycle Submission Tracker.xlsx",
@@ -211,7 +211,7 @@ const folderFiles: Record<string, string[]> = {
     "Cover Plan — October.docx",
   ],
   "Retreats & Away Days": [
-    "Division Retreat 2027 — Agenda.docx",
+    "Department Retreat 2027 — Agenda.docx",
     "Venue Comparison.xlsx",
   ],
   "Social & Team Activities": ["Summer Picnic — Activity Ideas.docx"],
@@ -258,7 +258,7 @@ const misfiled: Record<
       destinationName: "Income & Financial Operations → Planning & Analysis",
     },
     reply:
-      "Thanks, Sam. As these are the actual Q4 forecast working assumptions, could you move the file to Planning & Analysis rather than division admin? Keep a link in this thread so the conversation stays connected to the working version. Happy to help with the move.",
+      "Thanks, Sam. As these are the actual Q4 forecast working assumptions, could you move the file to Planning & Analysis rather than department admin? Keep a link in this thread so the conversation stays connected to the working version. Happy to help with the move.",
   },
   "strategy-technology": {
     author: "Casey Blake",
@@ -284,37 +284,29 @@ const misfiled: Record<
       destinationName: "People & Culture → Capability & Learning",
     },
     reply:
-      "Thanks, Elena — this is the programme evaluation the learning colleagues are working on. Could you move the working file to Capability & Learning and link it here? We can keep the division discussion in this thread. Happy to help with the move.",
+      "Thanks, Elena — this is the programme evaluation the learning colleagues are working on. Could you move the working file to Capability & Learning and link it here? We can keep the department discussion in this thread. Happy to help with the move.",
   },
   "executive-office": {
     author: "Robin Avery",
     text: "Stage review paper from today’s initiative discussion attached.",
     upload: {
       id: "UP-EX-01",
-      name: "Digital Service Renewal — Stage Review.pptx",
+      name: "PRJ-2026-014 · Customer Platform Renewal — Stage Review.pptx",
       kind: "Misplaced business upload",
-      destination: "/executive/initiatives",
-      destinationName: "CEO & Executive Committee → Strategic Initiatives",
+      destination: "/projects/PRJ-2026-014/decisions",
+      destinationName: "Projects → PRJ-2026-014 · Customer Platform Renewal",
     },
     reply:
-      "Thanks, Robin — this is an executive stage-review paper. Could you keep the working version in Strategic Initiatives, with its existing participation permissions, and link it here? Our meeting coordination can stay in this thread. Happy to help route it to the initiative owner.",
+      "Thanks, Robin — this is the project stage-review paper. Could you keep the working version in PRJ-2026-014 · Customer Platform Renewal and link its decision reference to Strategic Initiatives? Our meeting coordination can stay in this thread. Happy to help route it to the initiative owner.",
   },
 };
-export const divisions: Division[] = definitions.map(
-  ([
-    id,
-    name,
-    channelAccess,
-    coordinatorName,
-    coordinatorRole,
-    colour,
-    unitNames,
-  ]) => {
+export const departments: Department[] = definitions.map(
+  ([id, name, channelAccess, coordinatorName, , colour, unitNames]) => {
     const library: AdminFile[] = Object.entries(folderFiles).flatMap(
       ([folder, names], folderIndex) =>
         names.map((name, i) => ({
           id: `${id}-D${folderIndex}-${i}`,
-          divisionId: id,
+          departmentId: id,
           folder,
           name,
           owner: coordinatorName,
@@ -344,7 +336,7 @@ export const divisions: Division[] = definitions.map(
       ].map((f, i) => ({
         ...f,
         id: `${id}-${uid}-U${i}`,
-        divisionId: id,
+        departmentId: id,
         unitId: uid,
         owner: coordinatorName,
         kind: "Local administration",
@@ -352,7 +344,7 @@ export const divisions: Division[] = definitions.map(
       return {
         id: uid,
         name,
-        access: unitOnly.has(name) ? "Unit-only" : "Division-wide",
+        access: unitOnly.has(name) ? "Unit-only" : "Department-wide",
         files,
         calendarItems: [
           {
@@ -401,7 +393,7 @@ export const divisions: Division[] = definitions.map(
         text:
           id === "communications"
             ? "Friday lunch is booked for 13:00. Anyone else joining?"
-            : "Anyone joining the division lunch on Thursday? I’ve booked a table for 12:30.",
+            : "Anyone joining the department lunch on Thursday? I’ve booked a table for 12:30.",
         time: "09:30",
       },
       {
@@ -460,70 +452,70 @@ export const divisions: Division[] = definitions.map(
     return {
       id,
       name,
-      fullName: `${name} Division`,
+      fullName: name,
       channelAccess,
       icon: id,
-      coordinator: { name: coordinatorName, role: coordinatorRole, colour },
+      coordinator: { name: coordinatorName, role: `${name} Assistant`, colour },
       units,
       library,
       posts,
     };
   },
 );
-export function canOpenDivision(
-  division: Division,
+export function canOpenDepartment(
+  department: Department,
   person: CoordinationPerson,
 ) {
   return (
-    division.channelAccess === "Organisation-wide" ||
-    person.divisionId === division.id
+    department.channelAccess === "Organisation-wide" ||
+    person.departmentId === department.id
   );
 }
 export function canOpenUnit(
-  division: Division,
+  department: Department,
   unit: Unit,
   person: CoordinationPerson,
 ) {
   return (
-    canOpenDivision(division, person) &&
-    person.divisionId === division.id &&
-    (unit.access === "Division-wide" || person.unitId === unit.id)
+    canOpenDepartment(department, person) &&
+    person.departmentId === department.id &&
+    (unit.access === "Department-wide" || person.unitId === unit.id)
   );
 }
 export function accessibleFiles(
-  division: Division,
+  department: Department,
   person: CoordinationPerson,
 ) {
-  if (!canOpenDivision(division, person)) return [];
+  if (!canOpenDepartment(department, person)) return [];
   return [
-    ...division.library,
-    ...division.units
-      .filter((u) => canOpenUnit(division, u, person))
+    ...department.library,
+    ...department.units
+      .filter((u) => canOpenUnit(department, u, person))
       .flatMap((u) => u.files),
   ];
 }
 export function searchCoordination(
-  division: Division,
+  department: Department,
   person: CoordinationPerson,
   query: string,
 ) {
-  if (!canOpenDivision(division, person)) return { files: [], posts: [] };
+  if (!canOpenDepartment(department, person)) return { files: [], posts: [] };
   const q = query.trim().toLowerCase();
   return {
-    files: accessibleFiles(division, person).filter((f) =>
+    files: accessibleFiles(department, person).filter((f) =>
       f.name.toLowerCase().includes(q),
     ),
-    posts: division.posts.filter((p) =>
+    posts: department.posts.filter((p) =>
       `${p.text} ${p.author}`.toLowerCase().includes(q),
     ),
   };
 }
-export function divisionHref(
+export function departmentHref(
   staffId: string,
-  divisionId: string,
+  departmentId: string,
   tab = "Posts",
 ) {
-  return `/teams?${new URLSearchParams({ staff: staffId, division: divisionId, tab })}`;
+  return `/teams?${new URLSearchParams({ staff: staffId, department: departmentCodes[departmentId] || departmentId, tab })}`;
 }
 
 const availabilityNames: Record<string, string> = {
@@ -536,8 +528,8 @@ const availabilityNames: Record<string, string> = {
   "ceo-office": "Robin",
   "learning-and-capability": "Elena",
 };
-for (const division of divisions)
-  for (const unit of division.units)
+for (const department of departments)
+  for (const unit of department.units)
     unit.calendarItems = unit.calendarItems.map((c) => ({
       ...c,
       person: availabilityNames[unit.id] || "Unit colleague",
@@ -546,3 +538,17 @@ for (const division of divisions)
           ? "Maya"
           : c.cover,
     }));
+
+export const departmentCodes: Record<string, string> = {
+  "marketing-growth": "mcg",
+  communications: "cpa",
+  "finance-services": "fcs",
+  "strategy-technology": "stt",
+  "people-culture": "pac",
+  "executive-office": "eao",
+};
+export function resolveDepartment(value: string | null) {
+  return departments.find(
+    (d) => d.id === value || departmentCodes[d.id] === value,
+  );
+}

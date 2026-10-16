@@ -367,8 +367,8 @@ export default function ExecutiveApp() {
                         Open controlled initiative oversight →
                       </a>
                       <p>
-                        <a href="/quality-monitoring/change">
-                          Project & Change Support · Working source ↗
+                        <a href="/projects/PRJ-2026-014">
+                          PRJ-2026-014 · Customer Platform Renewal · Delivery source ↗
                         </a>
                       </p>
                     </section>

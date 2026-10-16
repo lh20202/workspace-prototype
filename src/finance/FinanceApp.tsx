@@ -20,7 +20,6 @@ import {
   fileContext,
   protectedSubjects,
   cycles,
-  handoffs,
   views,
   selectItems,
   checklist,
@@ -349,19 +348,7 @@ export default function FinanceApp() {
                         );
                       })}
                     </section>
-                    <section>
-                      <h2>Handoffs & exceptions</h2>
-                      {handoffs.map((id) => {
-                        const x = records.find((x) => x.id === id)!;
-                        return (
-                          <div className="finance-handoff" key={id}>
-                            {rowLink(id)}
-                            <small>{x.handoff}</small>
-                            <span>{x.status}</span>
-                          </div>
-                        );
-                      })}
-                    </section>
+
                   </div>
                   <div className="finance-home-grid">
                     <section>

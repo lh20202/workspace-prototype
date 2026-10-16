@@ -13,6 +13,7 @@ import {
 import DocumentIcon from "../components/DocumentIcon";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 export default function WorkspaceHeader({
+  onSearchChange,
   onOpen,
   userName = "Maya Chen",
   userRole = "Workspace member and contributor",
@@ -23,6 +24,7 @@ export default function WorkspaceHeader({
   memberCount = 42,
   helpText = "Use campaign folders for operational files, the shared location list for permits, and Teams channels for coordination.",
 }: {
+  onSearchChange?: (query: string) => void;
   onOpen: (f: OperationalFile) => void;
   onTeams: () => void;
   onMessage: (m: string) => void;
@@ -59,12 +61,18 @@ export default function WorkspaceHeader({
             placeholder="Search this workspace"
             aria-label="Search this workspace"
             value={query}
-            onChange={(_, d) => setQuery(d.value)}
+            onChange={(_, d) => {
+              setQuery(d.value);
+              onSearchChange?.(d.value);
+            }}
             onKeyDown={(e) => {
-              if (e.key === "Escape") setQuery("");
+              if (e.key === "Escape") {
+                setQuery("");
+                onSearchChange?.("");
+              }
             }}
           />
-          {query.trim() && (
+          {query.trim() && !onSearchChange && (
             <div
               className="workspace-results"
               aria-label="Workspace search results"

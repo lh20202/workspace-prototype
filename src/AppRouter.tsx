@@ -1,4 +1,5 @@
 import { useEffect, lazy, Suspense } from "react";
+const ProjectsApp = lazy(() => import("./projects/ProjectsApp"));
 const App = lazy(() => import("./App"));
 import PrototypeNavigator from "./components/PrototypeNavigator";
 const LogisticsApp = lazy(() => import("./logistics/LogisticsApp"));
@@ -41,7 +42,9 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "functional" ? (
+        {prototype === "projects" ? (
+          <ProjectsApp />
+        ) : prototype === "functional" ? (
           <FunctionalApp />
         ) : prototype === "executive" ? (
           <ExecutiveApp />

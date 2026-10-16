@@ -30,14 +30,15 @@ The existing local production preview can be run with `npx vite preview --host 1
 | Customer Care & Relations | `/customer-relations` | Care, relationships, accounts, partnerships and interaction quality |
 | Income & Financial Operations | `/financial-operations` | Income, reconciliation, settlement, accounting, FP&A and treasury |
 | Organisation Services | `/services` | Office Maintenance & Equipment, Purchasing & Suppliers, Travel Services, Reception only |
-| Quality, Monitoring & Improvement | `/quality-monitoring` | Cross-company monitoring, process redesign, change support and Eco Practice |
+| Quality, Monitoring & Improvement | `/quality-monitoring` | Cross-company monitoring, process redesign, improvement and Eco Practice |
 | Digital & Technology | `/digital-tech` | Engineering, Web & CRM, business systems, AI, M365, information architecture and operations |
 | Legal, Privacy & Compliance | `/legal-compliance` | Advice, privacy, compliance, assurance and controlled legal matters |
 | People & Culture | `/people-culture` | Hiring, workforce, capability, employment, internal communications and staff communities |
 | CEO & Executive Committee | `/executive` | Executive coordination, restricted decisions, liaison and strategic initiatives |
+| Projects | `/projects` | Formal project control, active support, reviews and separate project delivery workspaces |
 | Company Archives | `/archives` | Historical discovery, retention, appraisal, transfer, description and preservation |
 
-Division & team coordination is a separate organisational layer. The six divisions and 33 unit structures remain intact in the intranet rail and `/teams?staff=maya&division=marketing-growth&tab=Posts`. Channels can be Organisation-wide or Division-only; unit folders can be Division-wide or Unit-only. Persona membership filters posts, files, search and availability views. Local administration stays here; contextual MODERATOR replies link misplaced business work to its canonical functional owner. The intranet keeps the compact tile treatment, fixed Teams CTA and staff selector. The external dark banner contains only Back to all workspaces and the existing caveat.
+Department Teams is a separate organisational layer. The six departments and 33 unit structures remain intact in the intranet rail and `/teams?staff=maya&department=mcg&tab=Posts`. Channels can be Organisation-wide or Department-only; unit folders can be Department-wide or Unit-only. Persona membership filters posts, files, search and availability views. Local administration stays here; contextual MODERATOR replies link misplaced business work to its canonical functional owner. The intranet keeps the compact tile treatment, fixed Teams CTA and staff selector. The external dark banner contains only Back to all workspaces and the existing caveat.
 
 ## Boundaries and handoffs
 
@@ -65,7 +66,7 @@ Old routes remain useful redirects where practical:
 | Old route | Owning destination |
 | --- | --- |
 | `/services/technology` | `/digital-tech` |
-| `/services/projects` | `/quality-monitoring/improvement` |
+| `/services/projects` | `/projects` |
 | `/services/legal` | `/legal-compliance` |
 | `/services/hiring` | `/people-culture/hiring` |
 | `/services/resources` | `/services` |
@@ -90,3 +91,17 @@ Existing Render static service: `workspace-prototype` (`srv-db7sdaom7kps73cml6sg
 - Live: https://workspace-prototype.onrender.com/
 
 Do not create another service. `render.yaml` preserves this configuration. A push triggers deployment; validate the actual published application, direct refreshes and browser console. Render may briefly cache older HTML.
+
+## Projects and department coordination
+
+`/projects` is the single landing-page Projects tile. Formal identifiers use `PRJ-YYYY-NNN` consistently. Home links eight current project workspaces; Current Projects navigation is collapsed by default. Central `/projects/control`, `/projects/support` and `/projects/reviews` own project oversight, active support and stage reviews, moved out of Quality. Quality develops process improvement needs and evaluates outcomes; formal project delivery is coordinated in Projects. Old Services project and Quality change routes redirect here.
+
+Each `/projects/PRJ-2026-014`-style route has a common plan, sparse canonical working documents, decision/action logs, risks/issues and delivery/handover. `/teams` under that route uses the same project documents. Engineering, workforce and other substantive work remain in their functional owners, linked from the project. Executive escalation and financial forecast handoffs use references.
+
+Open Internal and Restricted project membership follows the selected fictional persona. Maya can open the chatbot pilot; Sam can open financial close; archive migration is narrower. Denied projects expose only safe titles and an existing Service Desk request with project/person context. Requests use the existing Jira-like simulation and stay browser-local; submitting does not grant access. Open projects can have separately protected technical subjects. Central control/reviews are limited to Robin and Casey; support also includes selected project contributors.
+
+`/projects/archive` groups completed projects into 2024–2026, 2022–2025, 2020–2023 and Earlier Projects. `/projects/archive/PRJ-2024-018` is read-only and can link selected final records to Company Archives, which retains formal appraisal, retention and preservation ownership.
+
+The right rail is **Department Teams**: MCG Department, CPA Department, FCS Department, STT Department, PAC Department, EAO Department. All use the same team icon and open Teams directly. Units remain beneath departments. Department Assistants retain MODERATOR replies and contextual redirects to functional workspaces. Organisation-wide / Department-only and Department-wide / Unit-only access are preserved. New links use `department=mcg` etc.; old `division=` links still resolve. Functional workspaces keep their business names.
+
+The intranet’s illustrative navigation uses anchored popovers; tile category eyebrows are removed; fictional examples have a highlighted caveat. Finance Home no longer displays Handoffs & exceptions.

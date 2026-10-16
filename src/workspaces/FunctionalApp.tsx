@@ -495,6 +495,30 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                       {toolsLink(area.tool)}
                     </p>
                   )}
+                  {config.id === "quality" && page === "improvement" && (
+                    <p>
+                      <a href="/projects">
+                        Formal project initiation, control and support →
+                        Projects
+                      </a>
+                    </p>
+                  )}
+                  {config.id === "digital" && page === "web-crm" && (
+                    <p>
+                      <a href="/projects/PRJ-2026-014">
+                        PRJ-2026-014 · Customer Platform Renewal → Delivery
+                        coordination
+                      </a>
+                    </p>
+                  )}
+                  {config.id === "people" && page === "hiring" && (
+                    <p>
+                      <a href="/projects/PRJ-2026-034">
+                        PRJ-2026-034 · New Starter Experience Redesign → Project
+                        coordination
+                      </a>
+                    </p>
+                  )}
                   {page !== "protected" && register()}
                   {workspace.id === "digital" && (
                     <section className="functional-context-links">
