@@ -188,7 +188,10 @@ export default function LogisticsApp() {
   };
   return (
     <div className="app-shell logistics-shell">
-      <a className="skip-link" href="#logistics-main">
+      <a
+        className="skip-link"
+        href={route.page === "teams" ? "#teams-main" : "#logistics-main"}
+      >
         Skip to content
       </a>
       {route.page === "teams" ? (
@@ -404,7 +407,11 @@ export default function LogisticsApp() {
                   <aside className="home-aside">
                     <section className="teams-entry">
                       <div className="teams-entry-icon">
-                        <PeopleTeam24Regular />
+                        <img
+                          src="/images/teams-logo.svg"
+                          alt="Microsoft Teams"
+                        />
+                        <span>Microsoft Teams</span>
                       </div>
                       <h3>Your day-to-day coordination</h3>
                       <p>
@@ -416,7 +423,7 @@ export default function LogisticsApp() {
                           navigate("teams", { channel: "general" })
                         }
                       >
-                        See your Teams channels <ArrowRight20Regular />
+                        Open Teams <ArrowRight20Regular />
                       </Button>
                     </section>
                     <section className="department-jumps channel-jumps">
@@ -431,7 +438,12 @@ export default function LogisticsApp() {
                             key={c.id}
                             onClick={() => navigate("teams", { channel: c.id })}
                           >
-                            {c.name}
+                            <img
+                              className="channel-teams-mark"
+                              src="/images/teams-logo.svg"
+                              alt=""
+                            />
+                            <span>{c.name}</span>
                             <ArrowRight20Regular />
                           </button>
                         ))}

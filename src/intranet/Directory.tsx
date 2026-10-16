@@ -86,7 +86,7 @@ export default function Directory() {
         <div className="architecture-preview-label">
           <span>Full Architecture Prototype</span>
           <span className="exploratory-badge">EXPLORATORY BETA</span>
-          <a href="/">Back to prototypes</a>
+          <a href="/">Home</a>
         </div>
         <div className="directory-heading">
           <div>

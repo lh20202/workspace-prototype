@@ -8,10 +8,10 @@ import {
   Settings24Regular,
   People24Regular,
   Star20Filled,
-  PeopleTeam24Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import { files, workspaceTitle, type OperationalFile } from "./data";
+import "../sharepoint/fidelity.css";
 export default function WorkspaceHeader({
   onSearchChange,
   onOpen,
@@ -58,7 +58,7 @@ export default function WorkspaceHeader({
         <div className="workspace-search">
           <Input
             contentBefore={<Search20Regular />}
-            placeholder="Search this workspace"
+            placeholder="Search this site"
             aria-label="Search this workspace"
             value={query}
             onChange={(_, d) => {
@@ -162,8 +162,7 @@ export default function WorkspaceHeader({
             title="Microsoft Teams"
             onClick={onTeams}
           >
-            <PeopleTeam24Regular />
-            <b>T</b>
+            <img src="/images/teams-logo.svg" alt="" />
           </button>
         </div>
         <div className="site-context">
@@ -178,7 +177,7 @@ export default function WorkspaceHeader({
           <button
             onClick={() =>
               onMessage(
-                `${memberCount} fictional members coordinate shared workspace activity.`,
+                `${memberCount} members coordinate shared workspace activity.`,
               )
             }
           >

@@ -1,4 +1,40 @@
 /* An inset, monospaced control strip belongs to the demonstration, not M365. */
+.demo-persona {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.demo-persona select {
+  max-width: 300px;
+  padding: 4px 8px;
+  min-height: 32px;
+  background: #353535;
+  color: white;
+  border: 1px solid #737373;
+  border-radius: 3px;
+  font:
+    12px/20px "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+.demo-controls > a small {
+  font-size: 9px;
+  margin-left: 6px;
+  color: #d6d5e8;
+}
+.demo-response-note {
+  font-size: 11px;
+  color: #e8e2cb;
+}
+@media (max-width: 900px) {
+  .demo-persona {
+    margin-left: 0;
+  }
+  .demo-persona select {
+    max-width: 260px;
+  }
+}
 .demo-control-frame {
   position: sticky;
   top: 0;

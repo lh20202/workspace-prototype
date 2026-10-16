@@ -18,6 +18,8 @@ import {
   Dismiss20Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import { TeamsComposer } from "../teams/TeamsShell";
+import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   departmentFolders,
   departmentCodes,
@@ -34,17 +36,20 @@ import "./styles.css";
 export default function DepartmentChannel({
   department,
   person,
+  tab,
+  onTabChange,
+  searchQuery,
 }: {
   department: Department;
   person: CoordinationPerson;
+  tab: string;
+  onTabChange: (tab: string) => void;
+  searchQuery?: string;
 }) {
   const params = new URLSearchParams(location.search),
     initialUnit = department.units.find((u) => u.id === params.get("unit"));
   const entitled = canOpenDepartment(department, person);
-  const [tab, setTab] = useState(
-      params.get("tab") === "Files" ? "Files" : "Posts",
-    ),
-    [folder, setFolder] = useState(params.get("folder") || ""),
+  const [folder, setFolder] = useState(params.get("folder") || ""),
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
   const [denied, setDenied] = useState(
@@ -52,7 +57,7 @@ export default function DepartmentChannel({
         ? "This unit has limited its coordination files to unit members."
         : "",
     ),
-    [query, setQuery] = useState(""),
+    [localQuery, setQuery] = useState(""),
     [file, setFile] = useState<AdminFile>(),
     [uploadId, setUploadId] = useState("");
   const [draft, setDraft] = useState(""),
@@ -63,6 +68,8 @@ export default function DepartmentChannel({
   const [replyTo, setReplyTo] = useState(""),
     [replyDraft, setReplyDraft] = useState(""),
     [replies, setReplies] = useState<Record<string, string[]>>({});
+  const [sharePointOpen, setSharePointOpen] = useState(false);
+  const query = searchQuery ?? localQuery;
   const permittedFiles = accessibleFiles(department, person),
     seededResults = searchCoordination(department, person, query),
     unitAllowed = !!unit && canOpenUnit(department, unit, person);
@@ -86,7 +93,7 @@ export default function DepartmentChannel({
     nextFolder = "",
     nextUnit: typeof unit = undefined,
     nextSection = "",
-    nextTab = "Files",
+    nextTab = "Shared",
   ) {
     if (nextUnit && !canOpenUnit(department, nextUnit, person)) {
       setDenied(
@@ -99,14 +106,14 @@ export default function DepartmentChannel({
     setFolder(nextFolder);
     setUnit(nextUnit);
     setSection(nextSection);
-    setTab(nextTab);
+    onTabChange(nextTab === "Files" ? "Shared" : nextTab);
     setQuery("");
     setFile(undefined);
     setUploadId("");
     const search = new URLSearchParams({
       staff: person.id,
       department: departmentCodes[department.id],
-      tab: nextTab,
+      tab: nextTab === "Files" ? "Shared" : nextTab,
     });
     if (nextFolder) search.set("folder", nextFolder);
     if (nextUnit) search.set("unit", nextUnit.id);
@@ -114,7 +121,10 @@ export default function DepartmentChannel({
     history.replaceState({}, "", `/teams?${search}`);
   }
   const avatar = (name: string, colour?: string) => (
-    <span className="coord-avatar" style={{ background: colour || "#e9e6f2" }}>
+    <span
+      className="m365-teams-avatar coord-avatar"
+      style={{ background: colour || "#e9e6f2" }}
+    >
       {name
         .split(" ")
         .map((n) => n[0])
@@ -127,78 +137,53 @@ export default function DepartmentChannel({
   }
   function fileRows(list: AdminFile[]) {
     return (
-      <div className="coord-file-list">
-        {list.map((f) => (
-          <button key={f.id} onClick={() => openFile(f)}>
-            <DocumentIcon name={f.name} />
-            <span>
-              {f.name}
-              <small>
-                {f.unitId
-                  ? `${department.units.find((u) => u.id === f.unitId)?.name} / `
-                  : ""}
-                {f.folder} · {f.owner} · Local administration
-              </small>
-            </span>
-          </button>
-        ))}
-      </div>
+      <table className="coord-shared-table" aria-label="Shared documents">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Modified by</th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((f) => (
+            <tr key={f.id}>
+              <td>
+                <button onClick={() => openFile(f)}>
+                  <DocumentIcon name={f.name} />
+                  {f.name}
+                </button>
+              </td>
+              <td>{f.owner}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
   }
   const allPosts = [...department.posts, ...extraPosts];
   return (
-    <>
-      <header className="coord-channel-heading">
-        <div>
-          <h1>{department.name}</h1>
-          <p>
-            Department coordination ·{" "}
-            <span className="coord-access">{department.channelAccess}</span>
-          </p>
-        </div>
-        <small>
-          Department Assistant: {department.coordinator.name} · {department.units.length}{" "}
-          units
-        </small>
-      </header>
+    <div className="department-channel-body">
       {!entitled ? (
         <section className="coord-channel-denied">
           <LockClosed16Regular />
-          <h2>You don’t have access to this department channel.</h2>
-          <p>
-            This channel is limited to department members. Choose a staff preview
-            who belongs to {department.name} to explore it.
-          </p>
-          <p>
-            Local team access · No access request to confidential business
-            records is needed here.
-          </p>
+          <h2>Access denied</h2>
+          <p>This channel is available to department members.</p>
         </section>
       ) : (
         <>
-          <div className="coord-toolbar">
-            <nav aria-label="Department channel tabs">
-              {["Posts", "Files"].map((t) => (
-                <button
-                  key={t}
-                  aria-current={tab === t ? "page" : undefined}
-                  onClick={() => navigate("", undefined, "", t)}
-                >
-                  {t}
-                </button>
-              ))}
-            </nav>
-            <input
-              aria-label="Search Department Coordination"
-              placeholder="Search this department"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
+          {searchQuery === undefined && (
+            <div className="coord-toolbar">
+              <input
+                aria-label="Search Department Coordination"
+                placeholder="Search this department"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+          )}
           {query.trim() ? (
             <section className="coord-search">
-              <h2>Search this department</h2>
-              <p>Accessible local administration files and channel posts.</p>
+              <h2>Search results</h2>
               {fileRows(results.files)}
               {results.posts.map((p) => (
                 <button
@@ -222,7 +207,7 @@ export default function DepartmentChannel({
               )}
             </section>
           ) : tab === "Posts" ? (
-            <div className="coord-posts">
+            <div className="m365-teams-feed coord-posts">
               {allPosts.map((p) => {
                 const original = department.posts.find((x) => x.id === p.id),
                   attachment = original?.attachmentId
@@ -231,8 +216,12 @@ export default function DepartmentChannel({
                       )
                     : undefined;
                 return (
-                  <article className="coord-post" key={p.id} id={p.id}>
-                    <div className="coord-post-top">
+                  <article
+                    className="m365-teams-post coord-post"
+                    key={p.id}
+                    id={p.id}
+                  >
+                    <div className="m365-teams-post-header coord-post-top">
                       {avatar(
                         p.author,
                         p.author === department.coordinator.name
@@ -241,7 +230,7 @@ export default function DepartmentChannel({
                       )}
                       <div>
                         <strong>{p.author}</strong>
-                        <small>{p.time} · Department Coordination</small>
+                        <small>{p.time}</small>
                       </div>
                     </div>
                     <p>{p.text}</p>
@@ -260,18 +249,12 @@ export default function DepartmentChannel({
                         onClick={() => setUploadId(original.upload!.id)}
                       >
                         <DocumentIcon name={original.upload.name} />
-                        <span>
-                          {original.upload.name}
-                          <small>
-                            Uploaded in this thread · Working location needs
-                            updating
-                          </small>
-                        </span>
+                        <span>{original.upload.name}</span>
                       </button>
                     )}
                     {original?.moderatorReply && (
                       <article
-                        className="teams-thread-reply coord-moderator"
+                        className="m365-teams-reply coord-moderator"
                         aria-label={`Moderator reply from ${department.coordinator.name}`}
                       >
                         {avatar(
@@ -285,7 +268,6 @@ export default function DepartmentChannel({
                               MODERATOR
                             </span>
                           </header>
-                          <small>{department.coordinator.role}</small>
                           <p>{original.moderatorReply}</p>
                           <a href={original.upload!.destination}>
                             Open destination: {original.upload!.destinationName}{" "}
@@ -296,7 +278,7 @@ export default function DepartmentChannel({
                     )}
                     {(replies[p.id] || []).map((reply, i) => (
                       <article
-                        className="teams-thread-reply coord-local-reply"
+                        className="m365-teams-reply coord-local-reply"
                         key={i}
                       >
                         {avatar(person.name)}
@@ -306,7 +288,7 @@ export default function DepartmentChannel({
                         </div>
                       </article>
                     ))}
-                    <div className="coord-reactions">
+                    <div className="m365-teams-reactions coord-reactions">
                       <button
                         aria-pressed={likes.includes(p.id)}
                         onClick={() =>
@@ -329,10 +311,12 @@ export default function DepartmentChannel({
                       </button>
                     </div>
                     {replyTo === p.id && (
-                      <form
-                        className="coord-reply-form"
-                        onSubmit={(e) => {
-                          e.preventDefault();
+                      <TeamsComposer
+                        compact
+                        value={replyDraft}
+                        onChange={setReplyDraft}
+                        placeholder={`Reply to ${p.author}`}
+                        onSend={() => {
                           if (replyDraft.trim()) {
                             setReplies({
                               ...replies,
@@ -345,26 +329,16 @@ export default function DepartmentChannel({
                             setReplyTo("");
                           }
                         }}
-                      >
-                        <label>
-                          Reply to {p.author}
-                          <input
-                            value={replyDraft}
-                            onChange={(e) => setReplyDraft(e.target.value)}
-                          />
-                        </label>
-                        <Button type="submit" disabled={!replyDraft.trim()}>
-                          Post reply
-                        </Button>
-                      </form>
+                      />
                     )}
                   </article>
                 );
               })}
-              <form
-                className="coord-composer"
-                onSubmit={(e) => {
-                  e.preventDefault();
+              <TeamsComposer
+                value={draft}
+                onChange={setDraft}
+                placeholder="Start a post"
+                onSend={() => {
                   if (draft.trim()) {
                     setExtraPosts([
                       ...extraPosts,
@@ -378,31 +352,24 @@ export default function DepartmentChannel({
                     setDraft("");
                   }
                 }}
-              >
-                <label>
-                  New department coordination post
-                  <textarea
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    placeholder="A fictional local update, meeting or cover arrangement…"
-                  />
-                </label>
-                <Button type="submit" disabled={!draft.trim()}>
-                  Post update
-                </Button>
-              </form>
+              />
             </div>
           ) : (
             <section className="coord-files">
-              <p className="coord-info-strip">
-                Department files are for meetings, local planning and team
-                administration. Use Digital Workspaces for shared business work.
-              </p>
+              <div className="m365-teams-files-toolbar">
+                <Button
+                  appearance="subtle"
+                  onClick={() => setSharePointOpen(true)}
+                >
+                  Open in SharePoint ↗
+                </Button>
+              </div>
+
               <nav
                 aria-label="Department file location"
                 className="coord-breadcrumb"
               >
-                <button onClick={() => navigate()}>Files</button>
+                <button onClick={() => navigate()}>Documents</button>
                 {folder && (
                   <>
                     <span>/</span>
@@ -500,7 +467,6 @@ export default function DepartmentChannel({
                   </>
                 ) : (
                   <>
-                    <h2>{section}</h2>
                     {fileRows(unit.files.filter((f) => f.folder === section))}
                     {!unit.files.some((f) => f.folder === section) && (
                       <p>
@@ -511,7 +477,6 @@ export default function DepartmentChannel({
                 )
               ) : (
                 <>
-                  <h2>{folder}</h2>
                   {fileRows(
                     department.library.filter((f) => f.folder === folder),
                   )}
@@ -519,12 +484,44 @@ export default function DepartmentChannel({
               )}
             </section>
           )}
-          <p className="coord-footnote">
-            Local coordination is a normal part of the work. Changes are
-            simulated in this browser and reset on reload.
-          </p>
         </>
       )}
+      <Dialog
+        open={sharePointOpen}
+        onOpenChange={(_, data) => setSharePointOpen(data.open)}
+      >
+        <DialogSurface className="department-sharepoint-library">
+          <DialogBody>
+            <DialogTitle
+              action={
+                <Button
+                  appearance="subtle"
+                  icon={<Dismiss20Regular />}
+                  aria-label="Close SharePoint documents"
+                  onClick={() => setSharePointOpen(false)}
+                />
+              }
+            >
+              {department.name} · SharePoint
+            </DialogTitle>
+            <DialogContent>
+              <DocumentLibrary
+                title="Documents"
+                headingLevel={2}
+                files={permittedFiles.map((f) => ({
+                  id: f.id,
+                  name: f.name,
+                  folder: f.unitId
+                    ? `Unit Coordination/${department.units.find((u) => u.id === f.unitId)?.name}/${f.folder}`
+                    : f.folder,
+                  owner: f.owner,
+                  status: "Current",
+                }))}
+              />
+            </DialogContent>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
       <Dialog
         open={!!denied}
         onOpenChange={(_, d) => {
@@ -570,40 +567,26 @@ export default function DepartmentChannel({
               />
             }
           >
-            {file ? "Local administration file" : "Thread upload"}
+            {file ? "Details" : "Attachment"}
           </DrawerHeaderTitle>
         </DrawerHeader>
         <DrawerBody>
           {file ? (
             <>
               <h2>{file.name}</h2>
-              <p>
-                {file.id} · {department.name}
-              </p>
-              <p>
-                {file.folder} · {file.owner}
-              </p>
-              <p>
-                This is the same local-administration object used by the thread
-                attachment and Files tab. It contains meeting, planning-process
-                or team coordination context.
-              </p>
-              <p>
-                No authoritative business model, customer record or sensitive
-                personnel information is included.
-              </p>
+              <dl>
+                <dt>Team</dt>
+                <dd>{department.name}</dd>
+                <dt>Folder</dt>
+                <dd>{file.folder}</dd>
+                <dt>Modified by</dt>
+                <dd>{file.owner}</dd>
+              </dl>
             </>
           ) : (
             selectedUpload && (
               <>
                 <h2>{selectedUpload.name}</h2>
-                <p>{selectedUpload.id} · Uploaded example in this thread</p>
-                <p>
-                  This is substantive business work. The example has not been
-                  added to the department administration library. Use the
-                  functional working location below; do not upload a second copy
-                  here.
-                </p>
                 <a href={selectedUpload.destination}>
                   Open destination: {selectedUpload.destinationName} →
                 </a>
@@ -612,6 +595,6 @@ export default function DepartmentChannel({
           )}
         </DrawerBody>
       </Drawer>
-    </>
+    </div>
   );
 }

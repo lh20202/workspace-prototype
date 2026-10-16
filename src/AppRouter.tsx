@@ -35,7 +35,7 @@ export default function AppRouter() {
   if (prototype === "launcher") return <Launcher />;
   if (prototype === "architecture") return <Directory />;
   return (
-    <>
+    <div className="prototype-frame">
       <PrototypeNavigator />
       <Suspense
         fallback={
@@ -72,6 +72,6 @@ export default function AppRouter() {
           <LogisticsApp />
         )}
       </Suspense>
-    </>
+    </div>
   );
 }

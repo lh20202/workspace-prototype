@@ -1,0 +1,76 @@
+.emergency-channel-surface {
+  min-width: 0;
+}
+.emergency-channel-surface > .emergency-channel-content {
+  padding: 0;
+}
+.emergency-channel-surface > .emergency-channel-content > section {
+  padding: 20px 24px;
+}
+.emergency-incident-context {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #616161;
+  background: white;
+  font-size: 12px;
+  line-height: 16px;
+}
+.emergency-incident-context .incident-status {
+  margin-left: auto;
+}
+.emergency-channel-surface .incident-overview {
+  margin: 12px 24px;
+  padding: 12px 0;
+  max-width: calc(100% - 48px);
+  width: calc(100% - 48px);
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+  background: transparent;
+  text-align: left;
+}
+.emergency-channel-surface h1 {
+  font-size: 20px;
+  line-height: 28px;
+  margin: 20px 24px;
+}
+.emergency-channel-surface h2 {
+  font-size: 20px;
+  line-height: 28px;
+}
+.emergency-channel-surface form:not(.m365-teams-composer) {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 680px;
+}
+.emergency-channel-surface form:not(.m365-teams-composer) label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.emergency-channel-surface form:not(.m365-teams-composer) input,
+.emergency-channel-surface form:not(.m365-teams-composer) textarea,
+.emergency-channel-surface select {
+  padding: 6px 10px;
+  min-height: 32px;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  font: inherit;
+  color: #242424;
+  background: #fff;
+}
+.emergency-channel-surface .incident-closure {
+  background: #f5f5f5;
+  border: 0;
+  padding: 16px 24px;
+  margin: 0;
+}
+.emergency-channel-surface .incident-closure p {
+  font-size: 14px;
+  line-height: 20px;
+}

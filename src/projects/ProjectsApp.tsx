@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LockClosed16Regular,
   PeopleTeam20Regular,
+  Chat20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
+import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
+import DocumentIcon from "../components/DocumentIcon";
+import "../teams/integrations.css";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import type { LibraryDocument } from "../sharepoint/library";
 import { staff, rememberStaff } from "../intranet/catalog";
@@ -50,12 +54,40 @@ export default function ProjectsApp() {
   const permitted = !project || canOpenProject(project, person.id);
   const [query, setQuery] = useState(""),
     [states, setStates] = useState<Record<string, string>>({}),
-    [channel, setChannel] = useState("General"),
-    [tab, setTab] = useState("Posts"),
+    [channel, setChannel] = useState(
+      () => new URLSearchParams(location.search).get("channel") || "General",
+    ),
+    [tab, setTab] = useState(() =>
+      new URLSearchParams(location.search).get("tab") === "Shared"
+        ? "Shared"
+        : "Posts",
+    ),
+    [projectDraft, setProjectDraft] = useState(""),
+    [projectReply, setProjectReply] = useState(""),
+    [replyOpen, setReplyOpen] = useState(false),
+    [projectReplies, setProjectReplies] = useState<
+      { channel: string; text: string }[]
+    >([]),
+    [likedChannels, setLikedChannels] = useState<string[]>([]),
+    [projectPosts, setProjectPosts] = useState<
+      { channel: string; text: string }[]
+    >([]),
     [note, setNote] = useState(""),
     [notes, setNotes] = useState<string[]>([]),
     [projectView, setProjectView] = useState("All projects");
   const teams = page === "teams";
+  useEffect(() => {
+    const restoreTeamsLocation = () => {
+      const params = new URLSearchParams(location.search);
+      setChannel(params.get("channel") || "General");
+      setTab(params.get("tab") === "Shared" ? "Shared" : "Posts");
+      setProjectDraft("");
+      setProjectReply("");
+      setReplyOpen(false);
+    };
+    window.addEventListener("popstate", restoreTeamsLocation);
+    return () => window.removeEventListener("popstate", restoreTeamsLocation);
+  }, []);
   const title = project ? projectTitle(project) : "Projects";
   const root = project ? projectHref(project) : "/projects";
   const readOnly = !!project?.archived;
@@ -686,47 +718,258 @@ export default function ProjectsApp() {
       </>
     );
   };
+  if (teams && project) {
+    const projectChannels = [
+      "General",
+      "Project Delivery",
+      "Decisions & Actions",
+    ];
+    const selectedChannel = projectChannels.includes(channel)
+      ? channel
+      : "General";
+    const changeTeamsLocation = (nextChannel: string, nextTab: string) => {
+      setChannel(nextChannel);
+      setTab(nextTab);
+      setProjectDraft("");
+      setProjectReply("");
+      setReplyOpen(false);
+      const params = new URLSearchParams({
+        staff: person.id,
+        channel: nextChannel,
+        tab: nextTab,
+      });
+      history.pushState({}, "", `${root}/teams?${params}`);
+    };
+    return (
+      <TeamsShell
+        userName={person.name}
+        teamName={title}
+        channelName={selectedChannel}
+        privateChannel={project.access === "Restricted"}
+        groups={[
+          {
+            id: project.code,
+            label: title,
+            initials: "PR",
+            channels: projectChannels.map((name) => ({
+              id: name,
+              label: name,
+              private: project.access === "Restricted",
+              onSelect: () => changeTeamsLocation(name, "Posts"),
+            })),
+          },
+          ...currentProjects
+            .filter(
+              (p) => p.code !== project.code && canOpenProject(p, person.id),
+            )
+            .map((p) => ({
+              id: p.code,
+              label: projectTitle(p),
+              initials: "PR",
+              channels: [
+                {
+                  id: p.code + "-general",
+                  label: "General",
+                  private: p.access === "Restricted",
+                  onSelect: () =>
+                    location.assign(
+                      `${projectHref(p)}/teams?staff=${person.id}`,
+                    ),
+                },
+              ],
+            })),
+        ]}
+        selectedChannelId={selectedChannel}
+        activeTab={tab}
+        onTabChange={(next) => changeTeamsLocation(selectedChannel, next)}
+        onOpenSharePoint={() => {
+          if (tab !== "Shared") {
+            location.assign(root);
+            return;
+          }
+          const params = new URLSearchParams(location.search);
+          params.delete("channel");
+          params.delete("tab");
+          location.assign(`${root}/documents?${params}`);
+        }}
+        searchValue={query}
+        onSearchChange={setQuery}
+        searchResults={searchResults}
+      >
+        <div
+          className={`teams-project-content ${tab === "Posts" ? "teams-conversation" : ""}`}
+        >
+          {!permitted ? (
+            denied()
+          ) : tab === "Shared" ? (
+            filesView()
+          ) : (
+            <>
+              {readOnly && (
+                <p className="teams-readonly">
+                  This project is archived. Conversations and files are read
+                  only.
+                </p>
+              )}
+              <article className="teams-post">
+                <div className="post-top">
+                  <span className="post-avatar" aria-hidden="true">
+                    {project.lead
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                  <div>
+                    <strong>{project.lead}</strong>
+                    <span>Today, 10:15</span>
+                  </div>
+                </div>
+                <p>
+                  {selectedChannel === "Decisions & Actions"
+                    ? "Please record the stage decision and follow-up in the project decision log before the next review."
+                    : selectedChannel === "Project Delivery"
+                      ? "The handover review is ready. Please review the delivery plan before our next milestone."
+                      : "Please review the current actions ahead of our next project check-in."}
+                </p>
+                <a
+                  className="teams-project-attachment"
+                  href={
+                    selectedChannel === "Decisions & Actions"
+                      ? `${root}/decisions`
+                      : `${root}/documents?${new URLSearchParams({ library: "Project Documents", folder: "Planning/Delivery", file: `${project.code}-F1` })}`
+                  }
+                >
+                  <DocumentIcon
+                    name={
+                      selectedChannel === "Decisions & Actions"
+                        ? "Decision Log.xlsx"
+                        : "Delivery Plan.xlsx"
+                    }
+                  />
+                  {selectedChannel === "Decisions & Actions"
+                    ? "Decisions & Actions"
+                    : "Delivery Plan.xlsx"}
+                </a>
+                {projectReplies
+                  .filter((p) => p.channel === selectedChannel)
+                  .map((p, i) => (
+                    <article
+                      className="teams-thread-reply"
+                      key={i}
+                      aria-label={`Reply from ${person.name}`}
+                    >
+                      <span className="post-avatar small" aria-hidden="true">
+                        {person.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </span>
+                      <div className="thread-reply-body">
+                        <header>
+                          <strong>{person.name}</strong>
+                          <span>Just now</span>
+                        </header>
+                        <p>{p.text}</p>
+                      </div>
+                    </article>
+                  ))}
+                {!readOnly && (
+                  <div className="post-actions">
+                    <button
+                      aria-pressed={likedChannels.includes(selectedChannel)}
+                      onClick={() =>
+                        setLikedChannels(
+                          likedChannels.includes(selectedChannel)
+                            ? likedChannels.filter((c) => c !== selectedChannel)
+                            : [...likedChannels, selectedChannel],
+                        )
+                      }
+                    >
+                      👍{" "}
+                      {likedChannels.includes(selectedChannel)
+                        ? "Liked"
+                        : "Like"}
+                    </button>
+                    <button onClick={() => setReplyOpen(!replyOpen)}>
+                      <Chat20Regular />
+                      Reply
+                    </button>
+                  </div>
+                )}
+                {!readOnly && replyOpen && (
+                  <TeamsComposer
+                    compact
+                    value={projectReply}
+                    onChange={setProjectReply}
+                    placeholder="Reply in thread"
+                    onSend={() => {
+                      if (!projectReply.trim()) return;
+                      setProjectReplies([
+                        ...projectReplies,
+                        { channel: selectedChannel, text: projectReply.trim() },
+                      ]);
+                      setProjectReply("");
+                      setReplyOpen(false);
+                    }}
+                  />
+                )}
+              </article>
+              {projectPosts
+                .filter((p) => p.channel === selectedChannel)
+                .map((p, i) => (
+                  <article className="teams-post" key={i}>
+                    <div className="post-top">
+                      <span className="post-avatar" aria-hidden="true">
+                        {person.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </span>
+                      <div>
+                        <strong>{person.name}</strong>
+                        <span>Just now</span>
+                      </div>
+                    </div>
+                    <p>{p.text}</p>
+                  </article>
+                ))}
+              {!readOnly && (
+                <TeamsComposer
+                  value={projectDraft}
+                  onChange={setProjectDraft}
+                  onSend={() => {
+                    if (!projectDraft.trim()) return;
+                    setProjectPosts([
+                      ...projectPosts,
+                      { channel: selectedChannel, text: projectDraft.trim() },
+                    ]);
+                    setProjectDraft("");
+                  }}
+                />
+              )}
+            </>
+          )}
+        </div>
+      </TeamsShell>
+    );
+  }
   return (
     <div className="projects-app">
-      {teams ? (
-        <header className="project-teams-header">
-          <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
-          <strong>{title}</strong>
-          <label>
-            Preview as{" "}
-            <select
-              aria-label="Teams project staff preview"
-              value={person.id}
-              onChange={(e) => {
-                rememberStaff(e.target.value);
-                setPersonId(e.target.value);
-              }}
-            >
-              {staff.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </header>
-      ) : (
-        <WorkspaceHeader
-          title={title}
-          userName={person.name}
-          searchFiles={[]}
-          onSearchChange={setQuery}
-          onOpen={() => {}}
-          onTeams={() =>
-            location.assign(
-              project
-                ? `${root}/teams`
-                : "/teams?workspace=projects&staff=" + person.id,
-            )
-          }
-          onMessage={(m) => window.alert(m)}
-        />
-      )}
+      <WorkspaceHeader
+        title={title}
+        userName={person.name}
+        searchFiles={[]}
+        onSearchChange={setQuery}
+        onOpen={() => {}}
+        onTeams={() =>
+          location.assign(
+            project
+              ? `${root}/teams`
+              : "/teams?workspace=projects&staff=" + person.id,
+          )
+        }
+        onMessage={(m) => window.alert(m)}
+      />
       <div className="projects-layout">
         <aside className="projects-nav">
           <label>
@@ -783,75 +1026,7 @@ export default function ProjectsApp() {
               </>
             )}
           </nav>
-          {teams && (
-            <input
-              className="project-search"
-              aria-label="Search Projects"
-              placeholder="Search projects"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          )}
-          {searchResults ||
-            (teams && project ? (
-              permitted ? (
-                <>
-                  <h1>{title}</h1>
-                  <div className="project-channel-nav">
-                    {["General", "Project Delivery", "Decisions & Actions"].map(
-                      (c) => (
-                        <button
-                          key={c}
-                          aria-pressed={channel === c}
-                          onClick={() => setChannel(c)}
-                        >
-                          {c}
-                        </button>
-                      ),
-                    )}
-                  </div>
-                  <div className="project-channel-nav">
-                    {["Posts", "Shared"].map((t) => (
-                      <button
-                        key={t}
-                        aria-pressed={tab === t}
-                        onClick={() => setTab(t)}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                  {tab === "Shared" ? (
-                    filesView()
-                  ) : (
-                    <>
-                      <h2>{channel}</h2>
-                      <p>
-                        <strong>{project.lead}</strong> · 10:15
-                      </p>
-                      <p>
-                        {channel === "Decisions & Actions"
-                          ? "Please record the stage decision and follow-up in the same project decision log."
-                          : channel === "Project Delivery"
-                            ? "The handoff review is ready. Please review the delivery plan before our next milestone."
-                            : "Project coordination stays here; substantive delivery work stays with the functional owner."}
-                      </p>
-                      <a
-                        href={`${root}/${channel === "Decisions & Actions" ? "decisions" : "plan"}`}
-                      >
-                        Open current project work →
-                      </a>
-                    </>
-                  )}
-                </>
-              ) : (
-                denied()
-              )
-            ) : project ? (
-              projectBody()
-            ) : (
-              centralBody()
-            ))}
+          {searchResults || (project ? projectBody() : centralBody())}
         </main>
       </div>
     </div>

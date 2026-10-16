@@ -24,13 +24,16 @@ import {
   ArrowLeft20Regular,
   ArrowUpload20Regular,
   ChevronRight16Regular,
+  ChevronDown16Regular,
   Dismiss20Regular,
   Document20Regular,
   Folder24Filled,
   History20Regular,
   Info20Regular,
   MoreHorizontal20Regular,
+  Filter20Regular,
   Search20Regular,
+  TextBulletList20Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import {
@@ -249,7 +252,7 @@ export default function DocumentLibrary({
         return;
       }
       setCreatedFolders((current) => [...current, path]);
-      setNotice(`Folder “${name}” created for this preview.`);
+      setNotice(`Folder “${name}” created.`);
     } else {
       const filename =
         surface === "upload" || /\.[a-z0-9]{1,6}$/i.test(name)
@@ -272,12 +275,10 @@ export default function DocumentLibrary({
           modified: new Date().toISOString().slice(0, 10),
           owner: "You",
           status: "Draft",
-          summary: "A new working document added in this prototype session.",
+          summary: "New working document.",
         },
       ]);
-      setNotice(
-        `“${filename}” ${surface === "upload" ? "added" : "created"} for this preview.`,
-      );
+      setNotice(`“${filename}” ${surface === "upload" ? "added" : "created"}.`);
     }
     setSearch("");
     setStatus("");
@@ -308,7 +309,7 @@ export default function DocumentLibrary({
         status: editStatus,
       },
     }));
-    setNotice("Properties updated for this preview.");
+    setNotice("Properties updated.");
     setSurface("details");
     setFormError("");
   }
@@ -460,6 +461,7 @@ export default function DocumentLibrary({
             </div>
             <label className="sp-library-view">
               <span className="sr-only">Library view</span>
+              <TextBulletList20Regular aria-hidden="true" />
               <select
                 value={view}
                 onChange={(event) => {
@@ -476,6 +478,7 @@ export default function DocumentLibrary({
                   <option key={name}>{name}</option>
                 ))}
               </select>
+              <ChevronDown16Regular aria-hidden="true" />
             </label>
           </div>
           <div className="sp-library-filters">
@@ -489,8 +492,9 @@ export default function DocumentLibrary({
                 setSelected(new Set());
               }}
             />
-            <label>
+            <label className="sp-library-status-filter">
               <span className="sr-only">Filter by status</span>
+              <Filter20Regular aria-hidden="true" />
               <select
                 value={status}
                 onChange={(event) => {
@@ -503,6 +507,7 @@ export default function DocumentLibrary({
                   <option key={name}>{name}</option>
                 ))}
               </select>
+              <ChevronDown16Regular aria-hidden="true" />
             </label>
             {(search || status || view !== "All Documents") && (
               <Button
@@ -618,10 +623,11 @@ export default function DocumentLibrary({
                     >
                       {path.split("/").pop()}
                     </button>
+                    <span className="sp-library-folder-count">
+                      {count} document{count === 1 ? "" : "s"}
+                    </span>
                   </td>
-                  <td colSpan={3} className="sp-library-folder-count">
-                    {count} document{count === 1 ? "" : "s"}
-                  </td>
+                  <td colSpan={3} />
                   <td />
                 </tr>
               );
@@ -703,41 +709,250 @@ export default function DocumentLibrary({
           )}
         </div>
       )}
-      {surface === "details" && active && (
-        <Drawer
-          type="overlay"
-          position="end"
-          size="medium"
-          open={surface === "details" && !!active}
-          onOpenChange={(_, data) => {
-            if (!data.open) closeSurface();
-          }}
+      {/* Keep the Fluent overlay owners mounted so their closed-state lifecycle
+          restores focus and accessibility before their surfaces leave the DOM. */}
+      <Drawer
+        className="sp-details-pane"
+        type="overlay"
+        modalType="non-modal"
+        position="end"
+        size="medium"
+        open={surface === "details" && !!active}
+        onOpenChange={(_, data) => {
+          if (!data.open) closeSurface();
+        }}
+      >
+        <DrawerHeader>
+          <DrawerHeaderTitle
+            action={
+              <Button
+                appearance="subtle"
+                icon={<Dismiss20Regular />}
+                aria-label="Close details"
+                onClick={closeSurface}
+              />
+            }
+          >
+            Details
+          </DrawerHeaderTitle>
+        </DrawerHeader>
+        <DrawerBody>
+          {active && (
+            <div className="sp-library-details">
+              <div className="sp-library-detail-title">
+                <DocumentIcon name={active.name} />
+                <h3>{active.name}</h3>
+              </div>
+              {active.summary && <p>{active.summary}</p>}
+              <div className="sp-library-detail-actions">
+                <Button appearance="primary" onClick={() => openFile(active)}>
+                  Open document
+                </Button>
+                <Button
+                  icon={<History20Regular />}
+                  onClick={() => showFile(active, "versions")}
+                >
+                  Version history
+                </Button>
+              </div>
+              <div className="sp-library-properties-heading">
+                <h4>Properties</h4>
+                {!readOnly && (
+                  <Button
+                    appearance="subtle"
+                    size="small"
+                    onClick={() => beginEdit(active)}
+                  >
+                    Edit all
+                  </Button>
+                )}
+              </div>
+              <dl>
+                {documentProperties(active).map(([key, value]) => (
+                  <div key={key}>
+                    <dt>{key}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              {readOnly && (
+                <p className="sp-library-muted">Read-only library</p>
+              )}
+            </div>
+          )}
+        </DrawerBody>
+      </Drawer>
+      <Dialog
+        open={surface !== null && surface !== "details"}
+        onOpenChange={(_, data) => {
+          if (!data.open) closeSurface();
+        }}
+      >
+        <DialogSurface
+          className={
+            surface === "preview" ? "sp-library-preview-surface" : undefined
+          }
         >
-          <DrawerHeader>
-            <DrawerHeaderTitle
+          <DialogBody>
+            <DialogTitle
               action={
                 <Button
                   appearance="subtle"
                   icon={<Dismiss20Regular />}
-                  aria-label="Close details"
+                  aria-label={
+                    surface === "preview"
+                      ? "Close document preview"
+                      : "Close library dialog"
+                  }
                   onClick={closeSurface}
                 />
               }
             >
-              Details
-            </DrawerHeaderTitle>
-          </DrawerHeader>
-          <DrawerBody>
-            {active && (
-              <div className="sp-library-details">
-                <div className="sp-library-detail-title">
-                  <DocumentIcon name={active.name} />
-                  <h3>{active.name}</h3>
+              {surface === "versions"
+                ? "Version history"
+                : surface === "new"
+                  ? "New item"
+                  : surface === "upload"
+                    ? "Upload file"
+                    : surface === "edit"
+                      ? "Edit properties"
+                      : "Document preview"}
+            </DialogTitle>
+            <DialogContent>
+              {surface === "preview" && active && (
+                <div className="sp-library-preview">
+                  <p className="sp-library-preview-label">
+                    {title} / {active.folder || "Documents"}
+                  </p>
+                  <article className="sp-library-paper">
+                    <DocumentIcon name={active.name} />
+                    <h2>{active.name}</h2>
+                    <p>
+                      {active.summary ??
+                        `Working information for ${active.folder || title}.`}
+                    </p>
+                    <dl>
+                      {documentProperties(active).map(([key, value]) => (
+                        <div key={key}>
+                          <dt>{key}</dt>
+                          <dd>{value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </article>
                 </div>
-                {active.summary && <p>{active.summary}</p>}
-                <div className="sp-library-detail-actions">
-                  <Button appearance="primary" onClick={() => openFile(active)}>
-                    Open document
+              )}
+              {surface === "versions" && active && (
+                <>
+                  <p className="sp-library-dialog-filename">{active.name}</p>
+                  <ol className="sp-library-versions">
+                    {documentVersions(active).map((version) => (
+                      <li key={version.version}>
+                        <strong>{version.version}</strong>
+                        <div>
+                          <span>
+                            {version.note}
+                            {version.current ? " · Current version" : ""}
+                          </span>
+                          <small>
+                            {version.date} · {version.author}
+                          </small>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </>
+              )}
+              {(surface === "new" || surface === "upload") && (
+                <div className="sp-library-form">
+                  <p className="sp-library-muted">
+                    {title}
+                    {folder ? ` / ${folder}` : ""}
+                  </p>
+                  {surface === "new" ? (
+                    <>
+                      <label>
+                        Item type
+                        <select
+                          value={newKind}
+                          onChange={(event) => setNewKind(event.target.value)}
+                        >
+                          <option>Document</option>
+                          <option>Folder</option>
+                        </select>
+                      </label>
+                      <label>
+                        {newKind === "Folder" ? "Folder name" : "Document name"}
+                        <Input
+                          value={newName}
+                          onChange={(_, data) => setNewName(data.value)}
+                          placeholder={
+                            newKind === "Folder"
+                              ? "New folder"
+                              : "Document name.docx"
+                          }
+                        />
+                      </label>
+                    </>
+                  ) : (
+                    <label>
+                      Choose a file
+                      <input
+                        type="file"
+                        aria-label="Choose file to upload"
+                        onChange={(event) =>
+                          setUploadName(event.target.files?.[0]?.name ?? "")
+                        }
+                      />
+                    </label>
+                  )}
+                  {formError && (
+                    <p className="sp-library-form-error" role="alert">
+                      {formError}
+                    </p>
+                  )}
+                </div>
+              )}
+              {surface === "edit" && active && (
+                <div className="sp-library-form">
+                  <label>
+                    File name
+                    <Input
+                      value={editName}
+                      onChange={(_, data) => setEditName(data.value)}
+                    />
+                  </label>
+                  <label>
+                    Owner
+                    <Input
+                      value={editOwner}
+                      onChange={(_, data) => setEditOwner(data.value)}
+                    />
+                  </label>
+                  <label>
+                    Status
+                    <select
+                      value={editStatus}
+                      onChange={(event) => setEditStatus(event.target.value)}
+                    >
+                      {statuses.map((item) => (
+                        <option key={item}>{item}</option>
+                      ))}
+                    </select>
+                  </label>
+                  {formError && (
+                    <p className="sp-library-form-error" role="alert">
+                      {formError}
+                    </p>
+                  )}
+                </div>
+              )}
+            </DialogContent>
+            <DialogActions>
+              {surface === "preview" && active && (
+                <>
+                  <Button onClick={() => showFile(active, "details")}>
+                    Details
                   </Button>
                   <Button
                     icon={<History20Regular />}
@@ -745,244 +960,27 @@ export default function DocumentLibrary({
                   >
                     Version history
                   </Button>
-                </div>
-                <h4>Properties</h4>
-                <dl>
-                  {documentProperties(active).map(([key, value]) => (
-                    <div key={key}>
-                      <dt>{key}</dt>
-                      <dd>{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                {!readOnly && (
-                  <Button appearance="subtle" onClick={() => beginEdit(active)}>
-                    Edit properties
-                  </Button>
-                )}
-                {readOnly && (
-                  <p className="sp-library-muted">Read-only library</p>
-                )}
-              </div>
-            )}
-          </DrawerBody>
-        </Drawer>
-      )}
-      {surface && surface !== "details" && (
-        <Dialog
-          open
-          onOpenChange={(_, data) => {
-            if (!data.open) closeSurface();
-          }}
-        >
-          <DialogSurface
-            className={
-              surface === "preview" ? "sp-library-preview-surface" : undefined
-            }
-          >
-            <DialogBody>
-              <DialogTitle
-                action={
-                  <Button
-                    appearance="subtle"
-                    icon={<Dismiss20Regular />}
-                    aria-label={
-                      surface === "preview"
-                        ? "Close document preview"
-                        : "Close library dialog"
-                    }
-                    onClick={closeSurface}
-                  />
-                }
-              >
-                {surface === "versions"
-                  ? "Version history"
-                  : surface === "new"
-                    ? "New item"
-                    : surface === "upload"
-                      ? "Upload file"
-                      : surface === "edit"
-                        ? "Edit properties"
-                        : "Document preview"}
-              </DialogTitle>
-              <DialogContent>
-                {surface === "preview" && active && (
-                  <div className="sp-library-preview">
-                    <p className="sp-library-preview-label">
-                      {title} / {active.folder || "Documents"}
-                    </p>
-                    <article className="sp-library-paper">
-                      <DocumentIcon name={active.name} />
-                      <h2>{active.name}</h2>
-                      <p>
-                        {active.summary ??
-                          `Working information for ${active.folder || title}.`}
-                      </p>
-                      <dl>
-                        {documentProperties(active).map(([key, value]) => (
-                          <div key={key}>
-                            <dt>{key}</dt>
-                            <dd>{value}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </article>
-                  </div>
-                )}
-                {surface === "versions" && active && (
-                  <>
-                    <p className="sp-library-dialog-filename">{active.name}</p>
-                    <p className="sp-library-muted">
-                      Illustrative version history
-                    </p>
-                    <ol className="sp-library-versions">
-                      {documentVersions(active).map((version) => (
-                        <li key={version.version}>
-                          <strong>{version.version}</strong>
-                          <div>
-                            <span>
-                              {version.note}
-                              {version.current ? " · Current version" : ""}
-                            </span>
-                            <small>
-                              {version.date} · {version.author}
-                            </small>
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  </>
-                )}
-                {(surface === "new" || surface === "upload") && (
-                  <div className="sp-library-form">
-                    <p className="sp-library-muted">
-                      {title}
-                      {folder ? ` / ${folder}` : ""}
-                    </p>
-                    {surface === "new" ? (
-                      <>
-                        <label>
-                          Item type
-                          <select
-                            value={newKind}
-                            onChange={(event) => setNewKind(event.target.value)}
-                          >
-                            <option>Document</option>
-                            <option>Folder</option>
-                          </select>
-                        </label>
-                        <label>
-                          {newKind === "Folder"
-                            ? "Folder name"
-                            : "Document name"}
-                          <Input
-                            value={newName}
-                            onChange={(_, data) => setNewName(data.value)}
-                            placeholder={
-                              newKind === "Folder"
-                                ? "New folder"
-                                : "Document name.docx"
-                            }
-                          />
-                        </label>
-                      </>
-                    ) : (
-                      <label>
-                        Choose a file
-                        <input
-                          type="file"
-                          aria-label="Choose file to upload"
-                          onChange={(event) =>
-                            setUploadName(event.target.files?.[0]?.name ?? "")
-                          }
-                        />
-                      </label>
-                    )}
-                    <p className="sp-library-muted">
-                      Changes stay in this preview session. File contents are
-                      not uploaded.
-                    </p>
-                    {formError && (
-                      <p className="sp-library-form-error" role="alert">
-                        {formError}
-                      </p>
-                    )}
-                  </div>
-                )}
-                {surface === "edit" && active && (
-                  <div className="sp-library-form">
-                    <label>
-                      File name
-                      <Input
-                        value={editName}
-                        onChange={(_, data) => setEditName(data.value)}
-                      />
-                    </label>
-                    <label>
-                      Owner
-                      <Input
-                        value={editOwner}
-                        onChange={(_, data) => setEditOwner(data.value)}
-                      />
-                    </label>
-                    <label>
-                      Status
-                      <select
-                        value={editStatus}
-                        onChange={(event) => setEditStatus(event.target.value)}
-                      >
-                        {statuses.map((item) => (
-                          <option key={item}>{item}</option>
-                        ))}
-                      </select>
-                    </label>
-                    <p className="sp-library-muted">
-                      Changes stay in this preview session.
-                    </p>
-                    {formError && (
-                      <p className="sp-library-form-error" role="alert">
-                        {formError}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </DialogContent>
-              <DialogActions>
-                {surface === "preview" && active && (
-                  <>
-                    <Button onClick={() => showFile(active, "details")}>
-                      Details
-                    </Button>
-                    <Button
-                      icon={<History20Regular />}
-                      onClick={() => showFile(active, "versions")}
-                    >
-                      Version history
-                    </Button>
-                  </>
-                )}
-                {(surface === "new" || surface === "upload") && (
-                  <Button appearance="primary" onClick={addItem}>
-                    {surface === "upload" ? "Add file" : "Create"}
-                  </Button>
-                )}
-                {surface === "edit" && (
-                  <Button appearance="primary" onClick={saveEdit}>
-                    Save
-                  </Button>
-                )}
-                <Button onClick={closeSurface}>
-                  {surface === "new" ||
-                  surface === "upload" ||
-                  surface === "edit"
-                    ? "Cancel"
-                    : "Close"}
+                </>
+              )}
+              {(surface === "new" || surface === "upload") && (
+                <Button appearance="primary" onClick={addItem}>
+                  {surface === "upload" ? "Add file" : "Create"}
                 </Button>
-              </DialogActions>
-            </DialogBody>
-          </DialogSurface>
-        </Dialog>
-      )}
+              )}
+              {surface === "edit" && (
+                <Button appearance="primary" onClick={saveEdit}>
+                  Save
+                </Button>
+              )}
+              <Button onClick={closeSurface}>
+                {surface === "new" || surface === "upload" || surface === "edit"
+                  ? "Cancel"
+                  : "Close"}
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </section>
   );
 }

@@ -18,6 +18,7 @@ import {
 import {
   Home24Regular,
   Folder24Regular,
+  Folder24Filled,
   Document24Regular,
   LockClosed24Regular,
   CheckmarkCircle24Regular,
@@ -40,7 +41,6 @@ import {
   People24Regular,
   Star20Filled,
   Calendar20Regular,
-  PeopleTeam24Regular,
   DocumentTable20Regular,
   Money20Regular,
   ClipboardTask20Regular,
@@ -67,6 +67,7 @@ import {
   childFolders,
   browseDocuments,
 } from "./utils/documents";
+import "./sharepoint/fidelity.css";
 const icons = {
   planning: Folder24Regular,
   strategy: TargetArrow24Regular,
@@ -355,7 +356,7 @@ export default function App() {
         <div className="workspace-search">
           <Input
             contentBefore={<Search20Regular />}
-            placeholder="Search this workspace"
+            placeholder="Search this site"
             aria-label="Search this workspace"
             value={workspaceSearch}
             onChange={(_, data) => setWorkspaceSearch(data.value)}
@@ -455,8 +456,7 @@ export default function App() {
               setToast("This workspace's Teams connection is illustrative.")
             }
           >
-            <PeopleTeam24Regular />
-            <b>T</b>
+            <img src="/images/teams-logo.svg" alt="" />
           </button>
         </div>
         <div className="site-context">
@@ -905,12 +905,16 @@ export default function App() {
                     )}
                     {folderMode && folders.length > 0 && (
                       <div className="folder-list">
+                        <div className="folder-list-heading" aria-hidden="true">
+                          <span>Name</span>
+                          <span>Items</span>
+                        </div>
                         {folders.map((f) => (
                           <button
                             key={f.path}
                             onClick={() => navigate(page, f.path)}
                           >
-                            <Folder24Regular />
+                            <Folder24Filled />
                             <strong>{f.name}</strong>
                             <span>
                               {childFolders(scoped, f.path).length
@@ -919,7 +923,6 @@ export default function App() {
                                     browseDocuments(scoped, f.path).length,
                                   )}
                             </span>
-                            <ArrowRight20Regular />
                           </button>
                         ))}
                       </div>
@@ -952,7 +955,9 @@ export default function App() {
         </main>
       </div>
       <Drawer
+        className="sp-details-pane"
         type="overlay"
+        modalType="non-modal"
         position="end"
         size="medium"
         open={!!selected && !modal}
@@ -990,9 +995,7 @@ export default function App() {
                 <Button
                   appearance="primary"
                   onClick={() =>
-                    setToast(
-                      "Demo preview: this fictional document has no stored file.",
-                    )
+                    setToast("Document preview is unavailable for this file.")
                   }
                 >
                   Open

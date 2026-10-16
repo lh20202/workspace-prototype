@@ -21,22 +21,22 @@ The existing local production preview can be run with `npx vite preview --host 1
 
 `src/workspaces/registry.ts` is the canonical registry: names, routes, purposes, Teams availability, access models, legacy redirects, cross-workspace handoffs and 16 explicit primary-destination examples. Existing specialised applications retain their working behaviour; the new areas share the established Fluent UI/SharePoint shell through `FunctionalApp`.
 
-| Workspace | Route | Primary work |
-| --- | --- | --- |
-| Organisational Planning & Reporting | `/planning` | Organisation-wide strategy, plans and approved reporting |
-| Acquisition & Activation Logistics | `/logistics` | Deployment, staffing, rotas, locations and operational logistics |
-| Audience Research & Marketing Insight | `/audience-innovation` | Research, journeys, analytics, experiments and automation ideation |
-| Content Creation & Delivery | `/content-delivery` | Editorial, creative, content packages, requirements and acceptance |
-| Customer Care & Relations | `/customer-relations` | Care, relationships, accounts, partnerships and interaction quality |
-| Income & Financial Operations | `/financial-operations` | Income, reconciliation, settlement, accounting, FP&A and treasury |
-| Organisation Services | `/services` | Office Maintenance & Equipment, Purchasing & Suppliers, Travel Services, Reception only |
-| Quality, Monitoring & Improvement | `/quality-monitoring` | Cross-company monitoring, process redesign, improvement and Eco Practice |
-| Digital & Technology | `/digital-tech` | Engineering, Web & CRM, business systems, AI, M365, information architecture and operations |
-| Legal, Privacy & Compliance | `/legal-compliance` | Advice, privacy, compliance, assurance and controlled legal matters |
-| People & Culture | `/people-culture` | Hiring, workforce, capability, employment, internal communications and staff communities |
-| CEO & Executive Committee | `/executive` | Executive coordination, restricted decisions, liaison and strategic initiatives |
-| Projects | `/projects` | Formal project control, active support, reviews and separate project delivery workspaces |
-| Company Archives | `/archives` | Historical discovery, retention, appraisal, transfer, description and preservation |
+| Workspace                             | Route                   | Primary work                                                                                |
+| ------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------- |
+| Organisational Planning & Reporting   | `/planning`             | Organisation-wide strategy, plans and approved reporting                                    |
+| Acquisition & Activation Logistics    | `/logistics`            | Deployment, staffing, rotas, locations and operational logistics                            |
+| Audience Research & Marketing Insight | `/audience-innovation`  | Research, journeys, analytics, experiments and automation ideation                          |
+| Content Creation & Delivery           | `/content-delivery`     | Editorial, creative, content packages, requirements and acceptance                          |
+| Customer Care & Relations             | `/customer-relations`   | Care, relationships, accounts, partnerships and interaction quality                         |
+| Income & Financial Operations         | `/financial-operations` | Income, reconciliation, settlement, accounting, FP&A and treasury                           |
+| Organisation Services                 | `/services`             | Office Maintenance & Equipment, Purchasing & Suppliers, Travel Services, Reception only     |
+| Quality, Monitoring & Improvement     | `/quality-monitoring`   | Cross-company monitoring, process redesign, improvement and Eco Practice                    |
+| Digital & Technology                  | `/digital-tech`         | Engineering, Web & CRM, business systems, AI, M365, information architecture and operations |
+| Legal, Privacy & Compliance           | `/legal-compliance`     | Advice, privacy, compliance, assurance and controlled legal matters                         |
+| People & Culture                      | `/people-culture`       | Hiring, workforce, capability, employment, internal communications and staff communities    |
+| CEO & Executive Committee             | `/executive`            | Executive coordination, restricted decisions, liaison and strategic initiatives             |
+| Projects                              | `/projects`             | Formal project control, active support, reviews and separate project delivery workspaces    |
+| Company Archives                      | `/archives`             | Historical discovery, retention, appraisal, transfer, description and preservation          |
 
 Department Teams is a separate organisational layer. The six departments and 33 unit structures remain intact in the intranet rail and `/teams?staff=maya&department=mcg&tab=Posts`. Channels can be Organisation-wide or Department-only; unit folders can be Department-wide or Unit-only. Persona membership filters posts, files, search and availability views. Local administration stays here; contextual MODERATOR replies link misplaced business work to its canonical functional owner. The full architecture intranet at `/architecture` keeps workspace tiles, the fixed Teams CTA and staff selector. The external dark banner contains only Back to all workspaces and the existing caveat.
 
@@ -63,18 +63,18 @@ All edits, review notes, status changes and simulation approvals are browser-loc
 
 Old routes remain useful redirects where practical:
 
-| Old route | Owning destination |
-| --- | --- |
-| `/services/technology` | `/digital-tech` |
-| `/services/projects` | `/projects` |
-| `/services/legal` | `/legal-compliance` |
-| `/services/hiring` | `/people-culture/hiring` |
-| `/services/resources` | `/services` |
-| `/services/workplace` | `/services/office` |
-| `/services/procurement` | `/services/purchasing` |
+| Old route                                               | Owning destination                        |
+| ------------------------------------------------------- | ----------------------------------------- |
+| `/services/technology`                                  | `/digital-tech`                           |
+| `/services/projects`                                    | `/projects`                               |
+| `/services/legal`                                       | `/legal-compliance`                       |
+| `/services/hiring`                                      | `/people-culture/hiring`                  |
+| `/services/resources`                                   | `/services`                               |
+| `/services/workplace`                                   | `/services/office`                        |
+| `/services/procurement`                                 | `/services/purchasing`                    |
 | Services Freshservice / M365 / recruitment system links | Digital operations / M365 / People hiring |
-| `/content-delivery/tools/github` and `/datadog` | Digital-owned system previews |
-| `/content-delivery/packages/PKG-105/shared` | Scoped Digital technical collaboration |
+| `/content-delivery/tools/github` and `/datadog`         | Digital-owned system previews             |
+| `/content-delivery/packages/PKG-105/shared`             | Scoped Digital technical collaboration    |
 
 Legacy legal, hiring, technology, purchasing and visitor matters stay behind an appropriate protected boundary when redirected. The earlier planning, audience and content route prefixes remain stable. Internal source identifiers such as the logistics library id `resources` remain for compatibility; those are not displayed as information-architecture labels.
 
@@ -115,3 +115,11 @@ Organisational Planning & Reporting is the SharePoint interaction reference. Ord
 `src/sharepoint/DocumentLibrary.tsx` shares command bars, shallow browsing, breadcrumbs, search, four views, status filtering, sorting, selection, file preview, Details and Version history. Original file IDs are preserved across SharePoint and Teams. New, Upload and property changes are browser-local simulations; closed archives omit edit controls. Folder/file query links restore on refresh. Protected content is filtered or denied before entering a library.
 
 The visual pass follows [Fluent typography](https://fluent2.microsoft.design/typography), [spacing](https://fluent2.microsoft.design/layout), [elevation](https://fluent2.microsoft.design/elevation/), [motion](https://fluent2.microsoft.design/motion) and [accessibility](https://fluent2.microsoft.design/accessibility), alongside [modern SharePoint libraries](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/modern-experience-customizations-customize-lists-and-libraries) and [document-library web parts](https://support.microsoft.com/en-us/sharepoint/web-parts-and-apps-in-sharepoint/use-the-document-library-web-part). Segoe/system typography, a four-pixel spacing rhythm, restrained weights, neutral separators and short hover/focus transitions replace tiny density rules and repeated dashboard treatments. There is no page-wide CSS zoom or scale transform; reduced motion is supported.
+
+## Product fidelity
+
+The shared `src/teams/TeamsShell.tsx` provides compact desktop chrome, search, account, app rail, chat/channel navigation, selected/unread states and channel tabs. Department, technical, Acquisition, project and private incident conversations use this shell while retaining their own access and working-file logic. Posts, replies, reactions and composers remain local simulations. Shared uses the existing SharePoint-backed file identities; Department documents retain their guarded unit structure. Most other functional teams use General, with additional channels only for durable coordination. Legacy channel URLs still resolve to a meaningful conversation.
+
+DEMO CONTROLS sits outside product surfaces: **Home** returns to `/`; **Full architecture · EXPLORATORY BETA** opens `/architecture`; Teams persona selection is external. The laptop architecture layout remains readable at 14px and fits all 14 tiles at 1280×640. SharePoint uses the same red brand, compact site header, restrained command bars, 44px document rows and a nonmodal Details pane. This pass changes product presentation, not workspace boundaries or document populations.
+
+Visual references were current Microsoft screenshots and examples in [the new Teams chat/channel experience](https://support.microsoft.com/en-au/teams/teams-channels/explore-the-new-chat-and-channels-experience-in-microsoft-teams), [accessible navigation](https://support.microsoft.com/en-us/accessibility/teams/use-a-screen-reader-to-navigate-and-explore-the-new-chats-and-channels-experience-in-microsoft-teams), [channel tabs](https://support.microsoft.com/en-us/teams/teams-channels/use-a-tab-in-a-channel-or-chat-in-microsoft-teams), [file collaboration](https://support.microsoft.com/en-us/teams/files/collaborate-on-files-in-microsoft-teams), [channel activity](https://support.microsoft.com/en-us/teams/teams-channels/catch-up-on-channel-messages-in-microsoft-teams), and SharePoint team-site/library/Details examples. The deliberate visual direction and rendered iteration borrow the design method described in [Anthropic’s frontend-design guidance](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md), while retaining Microsoft product typography and density.

@@ -1,0 +1,148 @@
+/* Channel content shared by the logistics and project Teams integrations. */
+.teams-logistics-content,
+.teams-project-content {
+  padding: 0 0 24px;
+  min-width: 0;
+}
+.teams-conversation {
+  max-width: 920px;
+  margin-inline: auto;
+}
+.teams-conversation .teams-post {
+  max-width: none;
+  border: 0;
+  border-bottom: 1px solid #e7e7ed;
+  border-radius: 0;
+  padding: 16px 20px;
+  margin: 0 0 12px;
+  background: #fff;
+  box-shadow: none;
+}
+.teams-conversation .post-top {
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.teams-conversation .post-top strong,
+.teams-conversation .thread-reply-body header strong {
+  font-size: 14px;
+  line-height: 20px;
+}
+.teams-conversation .post-top > div > span,
+.teams-conversation .thread-reply-body header > span {
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 0;
+}
+.teams-conversation .teams-post > h3 {
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 0 8px 42px;
+}
+.teams-conversation .teams-post > p {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 12px 42px;
+}
+.teams-conversation .post-file-links,
+.teams-conversation .post-tracker-link,
+.teams-conversation .post-photo,
+.teams-conversation .pet-thumbnail {
+  margin-left: 42px;
+}
+.teams-conversation .post-photo {
+  max-width: calc(100% - 42px);
+}
+.teams-conversation .post-file-links button {
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  background: #fff;
+  border-color: #dedee6;
+}
+.teams-conversation .post-file-links small {
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 0;
+}
+.teams-conversation .post-actions {
+  margin: 0 0 0 42px;
+  border-top: 0;
+  padding: 4px 0;
+}
+.teams-conversation .post-actions button {
+  font-size: 12px;
+  line-height: 20px;
+  min-height: 24px;
+  cursor: pointer;
+}
+.teams-conversation .teams-thread-reply {
+  margin-left: 42px;
+  padding: 10px 0;
+  gap: 10px;
+  border-top: 1px solid #edecf2;
+  background: transparent;
+}
+.teams-conversation .thread-reply-body header {
+  margin-bottom: 4px;
+}
+.teams-conversation .teams-post .thread-reply-body p {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 8px;
+}
+.teams-conversation .teams-post.daisy-thread {
+  max-width: 720px;
+  padding-top: 8px;
+}
+.teams-conversation .daisy-thread .post-photo {
+  max-height: clamp(90px, 16vh, 140px);
+  margin-bottom: 6px;
+}
+.teams-conversation .daisy-thread .teams-thread-reply {
+  padding-block: 8px;
+}
+.teams-logistics-content .teams-shared {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.teams-logistics-content .teams-shared .sp-library-heading h2,
+.teams-project-content .sp-library-heading h2 {
+  font-size: 18px;
+  line-height: 24px;
+  margin-block: 0 12px;
+}
+.teams-project-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 42px;
+  padding: 8px 12px;
+  border: 1px solid #dedee6;
+  border-radius: 4px;
+  background: #fff;
+  color: #3f428a;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+}
+.teams-project-attachment:hover {
+  background: #f4f3f9;
+  border-color: #c2c0d3;
+}
+.teams-project-attachment > svg {
+  width: 24px;
+  height: 24px;
+}
+.teams-readonly {
+  padding-block: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #616161;
+}
+@media (max-width: 760px) {
+  .teams-logistics-content,
+  .teams-project-content {
+    padding: 16px;
+  }
+}
