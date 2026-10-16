@@ -736,3 +736,63 @@
     margin-left: 0;
   }
 }
+
+/* Keep Daisy and her conversation visible together on laptop displays. */
+.teams-post.daisy-thread {
+  max-width: 640px;
+  padding: 14px 18px 0;
+}
+.daisy-thread .post-top {
+  margin-bottom: 8px;
+}
+.teams-post.daisy-thread > p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.daisy-thread .post-photo {
+  width: auto;
+  max-width: 100%;
+  max-height: clamp(100px, 18vh, 160px);
+  object-fit: contain;
+  margin: 0 0 10px;
+}
+.daisy-thread .teams-thread-reply {
+  padding: 10px 0;
+  gap: 10px;
+}
+.daisy-thread .thread-reply-body header {
+  margin-bottom: 4px;
+}
+.daisy-thread .thread-reply-body p {
+  margin-bottom: 7px;
+}
+.daisy-thread .post-actions {
+  margin: 0 -18px;
+  padding: 8px 18px;
+}
+
+.pets-canvas {
+  padding-top: 12px;
+}
+.pets-canvas .channel-purpose {
+  margin-bottom: 8px;
+}
+.pets-canvas .channel-purpose p {
+  margin: 0;
+}
+.teams-post.daisy-thread > p {
+  margin: 0 0 6px;
+}
+.daisy-thread .post-top {
+  margin-bottom: 6px;
+}
+.daisy-thread .post-photo {
+  max-height: clamp(90px, 16vh, 140px);
+}
+.daisy-thread .teams-thread-reply {
+  padding: 8px 0;
+}
+.daisy-thread .post-actions {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}

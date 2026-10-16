@@ -431,7 +431,7 @@ export default function TeamsView({
           <div
             role="tabpanel"
             aria-label={`${channel.name} ${tab}`}
-            className={`channel-content ${tab === "Posts" ? "posts-canvas" : ""}`}
+            className={`channel-content ${tab === "Posts" ? "posts-canvas" : ""} ${channel.id === "pets" && tab === "Posts" ? "pets-canvas" : ""}`}
           >
             {tab === "Posts" ? (
               <>
@@ -440,7 +440,10 @@ export default function TeamsView({
                   <p>{channel.purpose}</p>
                 </div>
                 {visiblePosts.map((p) => (
-                  <article className="teams-post" key={p.id}>
+                  <article
+                    className={`teams-post ${p.id === "post-daisy" ? "daisy-thread" : ""}`}
+                    key={p.id}
+                  >
                     <div className="post-top">
                       <span className="post-avatar">
                         {p.author
@@ -816,6 +819,8 @@ function ThreadReply({
     { emoji: "😂", name: "Laugh", count: reactions ? 2 : 0 },
     { emoji: "❤️", name: "Love", count: reactions ? 1 : 0 },
     { emoji: "😮", name: "Surprised", count: 0 },
+    { emoji: "🐱", name: "Cat", count: reactions ? 2 : 0 },
+    { emoji: "👽", name: "Alien", count: reactions ? 1 : 0 },
   ];
   return (
     <article className="teams-thread-reply" aria-label={`Reply from ${author}`}>
