@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from "react";
 const App = lazy(() => import("./App"));
 import PrototypeNavigator from "./components/PrototypeNavigator";
 const LogisticsApp = lazy(() => import("./logistics/LogisticsApp"));
+const ContentApp = lazy(() => import("./content/ContentApp"));
 const AudienceApp = lazy(() => import("./audience/AudienceApp"));
 const ServicesApp = lazy(() => import("./services/ServicesApp"));
 const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
@@ -80,6 +81,21 @@ export default function AppRouter() {
               </span>
               <ArrowRight24Regular />
             </a>
+            <a href="/content-delivery">
+              <span className="launcher-icon">
+                <img
+                  src="/images/sharepoint-logo.svg"
+                  alt="SharePoint"
+                  width="34"
+                  height="34"
+                />
+              </span>
+              <span>
+                <small>OUTREACH · INTERACTIVE DEMO</small>View Content Creation
+                &amp; Delivery workspace
+              </span>
+              <ArrowRight24Regular />
+            </a>
             <a href="/logistics/teams?channel=general&tab=Posts">
               <span className="launcher-icon launcher-teams-icon">
                 <img
@@ -112,7 +128,9 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "audience" ? (
+        {prototype === "content" ? (
+          <ContentApp />
+        ) : prototype === "audience" ? (
           <AudienceApp />
         ) : prototype === "services" ? (
           <ServicesApp />

@@ -1,6 +1,6 @@
 # Workspace prototypes
 
-A simple landing page leading to four interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
+A simple landing page leading to five interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
 
 ## Development
 
@@ -8,7 +8,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 
 ## Routes
 
-- `/`: Workspace prototypes. Five large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, Audience Insight & Innovation R&D, and the Teams experience.
+- `/`: Workspace prototypes. Six large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, Audience Insight & Innovation R&D, Content Creation & Delivery, and the Teams experience.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
 - `/logistics`: Acquisition & Activation Logistics Home.
@@ -57,9 +57,9 @@ Routes: `/services/coordination`, `/services/projects`, `/services/technology`, 
 
 `src/services/data.ts` contains only fictional provider material. Shared templates are single canonical objects referenced across service areas and scenarios. Service Coordination includes a directory of request routes and five lightweight handoff examples. The software implementation and approved recruitment-to-setup scenarios link existing source guidance rather than making copies or exposing candidate records. Recent documents and ordinary search never contain protected matter content.
 
-Narrow protected matter routes sit inside technology, legal, purchasing, workplace and hiring topics, e.g. `/services/legal/matters/INV-008`, `/services/procurement/tenders/TND-014`, `/services/hiring/recruitment/REC-221`. Only minimal labels are modelled; no protected files or case payloads exist in the client. The normal fictional member receives a restricted state and the existing local Jira-style access request, prefilled with Organisation Services, service area and matter. This is an information-architecture demonstration, not production access enforcement.
+Narrow protected matter routes sit inside technology, legal, purchasing, workplace and hiring topics, e.g. `/services/legal/matters/INV-008`, `/services/procurement/tenders/TND-014`, `/services/hiring/recruitment/REC-221`. Only minimal labels are modelled; no protected files or case payloads exist in the client. The normal fictional member receives a restricted state and the existing local Freshservice-style access request, prefilled with Organisation Services, service area and matter. This is an information-architecture demonstration, not production access enforcement.
 
-System launch tiles use clean product text rather than invented logos. Jira links to `/service-desk/it-support`, extending the same existing simulated portal for first-level triage and specialist support. Business Central, DocuWare, Recruitment Portal and Microsoft 365 open clearly marked simulated external destinations under `/services/systems/…`. No authoritative transactions, candidate queues or controlled records are duplicated; external IDs are references only. No request is sent, no external login is opened, and no data leaves the browser.
+System launch tiles use clean product text rather than invented logos. Freshservice links to `/service-desk/it-support`, extending the same existing simulated portal for first-level triage and specialist support. Oracle NetSuite, M-Files, Greenhouse Recruiting and Microsoft 365 open clearly marked simulated external destinations under `/services/systems/…`. No authoritative transactions, candidate queues or controlled records are duplicated; external IDs are references only. No request is sent, no external login is opened, and no data leaves the browser.
 
 ## Audience Insight & Innovation R&D
 
@@ -72,3 +72,22 @@ Audience & Journeys contains five aggregate synthetic segments and a seven-stage
 The month-style Research Calendar uses existing calendar styling and eight fictional October 2026 sessions/milestones linked to the register. The Teams indicator opens a restrained connection panel with four enduring channels and links to the same SharePoint working files; it does not create a duplicate Teams file structure or a separate Teams simulation. Existing logistics Teams remains unchanged.
 
 Study-level protection is demonstrated at `/audience-innovation/research/website-usability/participant-administration`. Only an appropriate boundary label exists; no participant records are present in the client or ordinary search/views. It reuses the existing access-request portal with workspace, study path and user prefilled, and returns to audience research. All research, models, examples and metrics are fictional and non-identifiable. There are no analytics trackers, backend requests or production predictive models.
+
+
+## Content Creation & Delivery
+
+`/content-delivery` adds a fifth SharePoint workspace with the existing Outreach landing treatment, shared red/white shell, typography, file icons and dark demo controls. Child routes: `/pipeline`, `/editorial`, `/creative`, `/channels`, `/digital`, `/partners`, `/calendar`, `/teams`, `/tools` beneath `/content-delivery`. The existing prototypes remain in place.
+
+`src/content/data.ts` contains 12 canonical fictional packages, sparse working files and specialist-system references. Home production/review/release views, saved pipeline views, channel/format filters, package details, partner handoffs and calendar milestones all use those same package objects. Standard channel files resolve to the same canonical SharePoint file objects. Package stages, review comments, rights and approvals are local demonstration edits and reset on reload. Release-stage changes enforce pending reviews, permitted channels, rights status and embargo conditions; they never publish anything.
+
+Content purpose stays together across editorial, creative and digital outputs. Mobile Sign-up Experience links the research need to the brief, UX copy, design, external developer handoff, Contentful implementation, acceptance, experimentation, release and measurement. Research and evaluation link back to Audience Insight & Innovation R&D; analytical files are not copied into production.
+
+The scoped partner previews at `/content-delivery/packages/PKG-103/shared` and `/content-delivery/packages/PKG-105/shared` show only the approved production/development file IDs for that engagement. They omit workspace search, other package content and protected components. Invalid out-of-scope file parameters do not open a file. These are explicit collaboration previews, not real authentication or external sharing.
+
+Protected components follow their package: story participant administration, pre-release operational briefing, embargoed distribution, commercial proposal and security-sensitive implementation notes. No participant, medical, contact, security or commercial payloads are seeded. The normal production context shows minimal rights/conditions and external references, and the existing local access-request portal is prefilled with the package and component.
+
+Eight compact Quick Access links and an All Tools list cover the requested fictional ecosystem of 18 real platforms. Product text with Fluent icons is used rather than invented brand logos or hotlinked assets. Each tool opens a clearly marked simulated external destination, optionally carrying its package and fictional reference. No authoritative CMS, ticket, customer/contact, financial, registration, source-code or analytics dataset is reproduced. The collaboration calendar shows milestones; detailed channel timing stays in Planable.
+
+Organisation Services keeps its existing areas, handoffs and protected matters, with tools updated to Freshservice, Oracle NetSuite, M-Files, Greenhouse Recruiting, Microsoft 365 and Asana. External references now use FS-/NS-/MF-/GH-/AS- prefixes. Existing `/services/systems/business-central`, `/docuware`, and `/recruitment` URLs remain aliases; protected recruitment matter IDs and routes remain stable. The shared portal displays Freshservice for Organisation Services and Content Creation & Delivery while preserving other existing flows.
+
+Vendor roles checked against primary sources on 16 October 2026: [Planable](https://planable.io/), [Contentful](https://www.contentful.com/solutions/composable-content-platform/), [Affinity](https://www.affinity.studio/), [Wistia](https://wistia.com/), [Cvent](https://www.cvent.com/), [Piwik PRO](https://piwik.pro/), [Brandwatch](https://www.brandwatch.com/), [Freshservice](https://www.freshworks.com/freshservice/), [NetSuite](https://www.netsuite.com/portal/home.shtml), [M-Files](https://www.m-files.com/), [Greenhouse](https://www.greenhouse.com/) and [Asana](https://asana.com/). VWO currently redirects to [Wingify](https://wingify.com/why-wingify/); the UI retains the requested VWO reference with the current Wingify name. Official URLs for the remaining tools are stored in the tool registry as research references; no vendor assets are fetched at runtime.

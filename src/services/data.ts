@@ -31,7 +31,7 @@ export const areas = [
     id: "technology",
     name: "Technology Services",
     summary:
-      "First- and second-level support, service procedures and technical governance. Requests and incidents are managed in Jira Service Management.",
+      "First- and second-level support, service procedures and technical governance. Requests and incidents are managed in Freshservice.",
     folders: [
       "IT service management",
       "User support",
@@ -62,7 +62,7 @@ export const areas = [
     id: "procurement",
     name: "Purchasing & Suppliers",
     summary:
-      "Common purchasing methods, supplier assurance and renewal planning. Transactions remain in Business Central.",
+      "Common purchasing methods, supplier assurance and renewal planning. Transactions remain in Oracle NetSuite.",
     folders: [
       "Procurement intake",
       "Sourcing methods",
@@ -95,7 +95,7 @@ export const areas = [
     id: "hiring",
     name: "Hiring Services",
     summary:
-      "Support vacancy setup, attraction, selection and offer handover. Continuing employee administration belongs elsewhere; applications remain in the Recruitment Portal.",
+      "Support vacancy setup, attraction, selection and offer handover. Continuing employee administration belongs elsewhere; applications remain in the Greenhouse Recruiting.",
     folders: [
       "Vacancy setup",
       "Role and selection criteria",
@@ -206,7 +206,7 @@ export const documents: ServiceFile[] = [
     "Major incident checklist.docx",
     "Service procedure",
     "Sam Patel",
-    "JSM-2481",
+    "FS-2481",
   ),
   make(
     "support-handover",
@@ -267,7 +267,7 @@ export const documents: ServiceFile[] = [
     "Contract review checklist.docx",
     "Checklist",
     "Jordan Lee",
-    "DW-883",
+    "MF-883",
   ),
   make(
     "privacy-review",
@@ -297,7 +297,7 @@ export const documents: ServiceFile[] = [
     "Purchase request guide.docx",
     "Guidance",
     "Jamie Brooks",
-    "PO-1047",
+    "NS-1047",
   ),
   make(
     "quotation",
@@ -416,7 +416,7 @@ export const documents: ServiceFile[] = [
     "Hiring request checklist.docx",
     "Checklist",
     "Jordan Lee",
-    "REC-221",
+    "GH-221",
   ),
   make(
     "job-profile",
@@ -652,31 +652,31 @@ export const matterHref = (m: (typeof matters)[number]) =>
   `/services/${m.area}/${m.segment}/${m.id}`;
 export const systems = [
   {
-    id: "jira",
-    name: "Jira Service Management",
+    id: "freshservice",
+    name: "Freshservice",
     purpose: "IT requests, incidents and technical support",
-    initials: "JSM",
+    initials: "FS",
     color: "#0c66e4",
   },
   {
-    id: "business-central",
-    name: "Microsoft Dynamics 365 Business Central",
+    id: "netsuite",
+    name: "Oracle NetSuite",
     purpose: "Purchasing, budget and transaction references",
-    initials: "BC",
+    initials: "NS",
     color: "#007e87",
   },
   {
-    id: "docuware",
-    name: "DocuWare",
+    id: "m-files",
+    name: "M-Files",
     purpose: "Document workflows and controlled records",
-    initials: "DW",
+    initials: "MF",
     color: "#1767a2",
   },
   {
-    id: "recruitment",
-    name: "Recruitment Portal",
+    id: "greenhouse",
+    name: "Greenhouse Recruiting",
     purpose: "Vacancies, applications and candidate workflow",
-    initials: "REC",
+    initials: "GH",
     color: "#6750a4",
   },
   {
@@ -686,16 +686,25 @@ export const systems = [
     initials: "M365",
     color: "#d83b01",
   },
+  {
+    id: "asana",
+    name: "Asana",
+    purpose: "Project tasks and service delivery coordination",
+    initials: "AS",
+    color: "#bd4661",
+  },
 ];
 export const systemHref = (id: string) =>
-  id === "jira" ? "/service-desk/it-support" : `/services/systems/${id}`;
+  id === "freshservice"
+    ? "/service-desk/it-support"
+    : `/services/systems/${id}`;
 export const directory = [
   {
     service: "Laptop or software support",
     supports: "Device setup, approved software and support",
     area: "technology",
     route: "IT request",
-    system: "jira",
+    system: "freshservice",
     owner: "Sam Patel",
     handoff: "First-level triage → second-level application support",
   },
@@ -704,7 +713,7 @@ export const directory = [
     supports: "Supplier assurance and purchasing readiness",
     area: "procurement",
     route: "Supplier onboarding",
-    system: "business-central",
+    system: "netsuite",
     owner: "Jamie Brooks",
     handoff: "Purchasing → Legal review where required",
   },
@@ -713,7 +722,7 @@ export const directory = [
     supports: "Terms, privacy and obligations",
     area: "legal",
     route: "Review coordination",
-    system: "docuware",
+    system: "m-files",
     owner: "Jordan Lee",
     handoff: "Service owner → Legal → controlled record",
   },
@@ -731,7 +740,7 @@ export const directory = [
     supports: "Intake, business cases and delivery methods",
     area: "projects",
     route: "Project intake",
-    system: "m365",
+    system: "asana",
     owner: "Alex Morgan",
     handoff: "Projects → Technology → Purchasing as needed",
   },
@@ -740,7 +749,7 @@ export const directory = [
     supports: "Vacancy and selection workflow",
     area: "hiring",
     route: "Recruitment intake",
-    system: "recruitment",
+    system: "greenhouse",
     owner: "Jordan Lee",
     handoff: "Hiring → approved setup handover to Technology & Workplace",
   },
@@ -778,9 +787,9 @@ export const handoffs = [
       { area: "resources", text: "Final service handover", file: "handover" },
     ],
     refs: [
-      { system: "jira", id: "JSM-2481" },
-      { system: "business-central", id: "PO-1047" },
-      { system: "docuware", id: "DW-883" },
+      { system: "freshservice", id: "FS-2481" },
+      { system: "netsuite", id: "NS-1047" },
+      { system: "m-files", id: "MF-883" },
     ],
   },
   {
@@ -790,7 +799,7 @@ export const handoffs = [
     status: "Setup pending",
     next: "Technology Services",
     summary:
-      "After the selection decision, only the approved role, start date and setup requirements move to the receiving service teams. Candidate assessments and references remain in the protected hiring matter and Recruitment Portal.",
+      "After the selection decision, only the approved role, start date and setup requirements move to the receiving service teams. Candidate assessments and references remain in the protected hiring matter and Greenhouse Recruiting.",
     steps: [
       {
         area: "hiring",
@@ -809,8 +818,9 @@ export const handoffs = [
       },
     ],
     refs: [
-      { system: "recruitment", id: "REC-221" },
-      { system: "jira", id: "JSM-2490" },
+      { system: "greenhouse", id: "GH-221" },
+      { system: "freshservice", id: "FS-2490" },
+      { system: "asana", id: "AS-118" },
     ],
   },
   {
@@ -830,7 +840,7 @@ export const handoffs = [
       },
       { area: "procurement", text: "Purchase route", file: "purchase-guide" },
     ],
-    refs: [{ system: "business-central", id: "PO-1051" }],
+    refs: [{ system: "netsuite", id: "NS-1051" }],
   },
   {
     id: "SERV-129",
@@ -875,7 +885,7 @@ export const handoffs = [
         file: "account-access",
       },
     ],
-    refs: [{ system: "docuware", id: "DW-891" }],
+    refs: [{ system: "m-files", id: "MF-891" }],
   },
 ];
 export const priorities = [

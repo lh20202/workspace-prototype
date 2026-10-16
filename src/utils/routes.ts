@@ -17,8 +17,14 @@ export function prototypeForPath(
   | "logistics"
   | "service-desk"
   | "services"
-  | "audience" {
+  | "audience"
+  | "content" {
   if (pathname === "/") return "launcher";
+  if (
+    pathname === "/content-delivery" ||
+    pathname.startsWith("/content-delivery/")
+  )
+    return "content";
   if (
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")
@@ -30,6 +36,11 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (
+    pathname === "/content-delivery" ||
+    pathname.startsWith("/content-delivery/")
+  )
+    return "Content Creation & Delivery";
   if (
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")

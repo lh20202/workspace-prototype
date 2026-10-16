@@ -19,11 +19,15 @@ export default function AccessRequest() {
     (isSupport ? "Technology Services" : "Restricted Planning");
   const services = workspace === "Organisation Services";
   const audience = workspace === "Audience Insight & Innovation R&D";
-  const returnPath = audience
-    ? "/audience-innovation/research"
-    : services
-      ? "/services"
-      : "/planning/restricted";
+  const content = workspace === "Content Creation & Delivery";
+  const freshservice = services || content;
+  const returnPath = content
+    ? "/content-delivery"
+    : audience
+      ? "/audience-innovation/research"
+      : services
+        ? "/services"
+        : "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -32,14 +36,25 @@ export default function AccessRequest() {
     <div className="service-desk-app">
       <header className="service-desk-header">
         <div className="service-desk-brand">
-          <span className="jira-mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
+          <span
+            className={freshservice ? "freshservice-mark" : "jira-mark"}
+            aria-hidden="true"
+          >
+            {freshservice ? (
+              <TicketDiagonal24Regular />
+            ) : (
+              <>
+                <i />
+                <i />
+                <i />
+              </>
+            )}
           </span>
           <div>
             <strong>Service Desk</strong>
-            <span>Jira Service Management</span>
+            <span>
+              {freshservice ? "Freshservice" : "Jira Service Management"}
+            </span>
           </div>
         </div>
         <span className="service-desk-user">
@@ -51,11 +66,13 @@ export default function AccessRequest() {
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
           Back to{" "}
-          {audience
-            ? "Audience research"
-            : services
-              ? "Organisation Services"
-              : "Restricted Planning"}
+          {content
+            ? "Content Creation & Delivery"
+            : audience
+              ? "Audience research"
+              : services
+                ? "Organisation Services"
+                : "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}

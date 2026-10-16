@@ -56,8 +56,15 @@ export default function ServicesApp() {
   const parts = location.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home";
   const area = areas.find((a) => a.id === page);
+  const legacySystems: Record<string, string> = {
+    jira: "freshservice",
+    "business-central": "netsuite",
+    docuware: "m-files",
+    recruitment: "greenhouse",
+  };
+  const systemId = legacySystems[parts[2]] || parts[2];
   const system =
-    page === "systems" ? systems.find((s) => s.id === parts[2]) : undefined;
+    page === "systems" ? systems.find((s) => s.id === systemId) : undefined;
   const matter =
     parts.length === 4
       ? matters.find((m) => matterHref(m) === location.pathname)
@@ -175,13 +182,15 @@ export default function ServicesApp() {
               <h2>{system.name}</h2>
               <p>
                 This would open the organisation’s{" "}
-                {system.id === "business-central"
+                {system.id === "netsuite"
                   ? "finance and purchasing system"
-                  : system.id === "docuware"
+                  : system.id === "m-files"
                     ? "controlled document and workflow system"
-                    : system.id === "recruitment"
+                    : system.id === "greenhouse"
                       ? "recruitment and candidate workflow system"
-                      : "Microsoft 365 collaboration tools"}
+                      : system.id === "asana"
+                        ? "project and task coordination system"
+                        : "Microsoft 365 collaboration tools"}
                 .
               </p>
               <p>{system.purpose}.</p>
@@ -411,13 +420,13 @@ export default function ServicesApp() {
                 <a href="/services/resources">Shared Resources</a>
                 <a href="/services/coordination">Cross-service handoffs</a>
                 {(page === "technology"
-                  ? ["jira"]
+                  ? ["freshservice"]
                   : page === "procurement"
-                    ? ["business-central", "docuware"]
+                    ? ["netsuite", "m-files"]
                     : page === "hiring"
-                      ? ["recruitment"]
+                      ? ["greenhouse"]
                       : page === "legal"
-                        ? ["docuware"]
+                        ? ["m-files"]
                         : []
                 ).map((id) => (
                   <a key={id} href={systemHref(id)}>
