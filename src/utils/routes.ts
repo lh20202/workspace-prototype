@@ -11,12 +11,18 @@ export function planningPage(pathname: string) {
 }
 export function prototypeForPath(
   pathname: string,
-): "launcher" | "planning" | "logistics" | "service-desk" {
+): "launcher" | "planning" | "logistics" | "service-desk" | "services" {
   if (pathname === "/") return "launcher";
+  if (pathname === "/services" || pathname.startsWith("/services/"))
+    return "services";
   if (pathname.startsWith("/service-desk/")) return "service-desk";
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  if (pathname === "/services" || pathname.startsWith("/services/"))
+    return "Organisation Services";
+  if (pathname === "/service-desk/it-support")
+    return "IT requests | Service Desk";
   if (pathname.startsWith("/service-desk/"))
     return "Access request | Service Desk";
   if (pathname.startsWith("/logistics/teams"))

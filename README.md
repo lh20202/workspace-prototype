@@ -1,6 +1,6 @@
 # Workspace prototypes
 
-A simple landing page leading to two interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
+A simple landing page leading to three interactive Microsoft 365 workspaces. Built with React, TypeScript, Vite and Fluent UI React v9. No backend, authentication, actual tickets, messages or personnel records.
 
 ## Development
 
@@ -8,7 +8,7 @@ Use Node 24. Run `npm ci`, then `npm run dev`. Validate with `npm run lint`, `np
 
 ## Routes
 
-- `/`: Workspace prototypes. Three large links to the planning workspace, acquisition and activation logistics workspace, and its Teams experience.
+- `/`: Workspace prototypes. Four large links to the planning workspace, acquisition and activation logistics workspace, Organisation Services, and the Teams experience.
 - `/planning`: Organisational Planning & Reporting Home.
 - `/planning/cycles`, `/planning/strategy`, `/planning/reporting`, `/planning/approved`, `/planning/restricted`: planning libraries and the protected area.
 - `/logistics`: Acquisition & Activation Logistics Home.
@@ -48,3 +48,15 @@ Use the existing static service connected to `lh20202/workspace-prototype`, bran
 - https://learn.microsoft.com/en-us/sharepoint/information-architecture-principles
 
 Calendar reference: Microsoft Support, “Create a calendar view from a list” (https://support.microsoft.com/en-us/sharepoint/lists/create-a-calendar-view-from-a-list). The prototype follows the modern list calendar pattern and day details pane. Today returns to the fixed fictional example date, 14 October 2026.
+
+## Organisation Services
+
+`/services` adds a third SharePoint workspace for internal service providers. The existing simple landing page is retained (the earlier intranet was intentionally removed); its new SharePoint link is labelled Infrastructure & Services. The dark external demo controls include Organisation Services. Existing planning, logistics, Teams and service-desk routes remain in place.
+
+Routes: `/services/coordination`, `/services/projects`, `/services/technology`, `/services/legal`, `/services/procurement`, `/services/workplace`, `/services/hiring`, `/services/resources`. Every route supports direct loading via the existing Render SPA rewrite. Libraries use folder-first navigation, document search, saved views, work-type filters, details, simulated previews and canonical document links.
+
+`src/services/data.ts` contains only fictional provider material. Shared templates are single canonical objects referenced across service areas and scenarios. Service Coordination includes a directory of request routes and five lightweight handoff examples. The software implementation and approved recruitment-to-setup scenarios link existing source guidance rather than making copies or exposing candidate records. Recent documents and ordinary search never contain protected matter content.
+
+Narrow protected matter routes sit inside technology, legal, purchasing, workplace and hiring topics, e.g. `/services/legal/matters/INV-008`, `/services/procurement/tenders/TND-014`, `/services/hiring/recruitment/REC-221`. Only minimal labels are modelled; no protected files or case payloads exist in the client. The normal fictional member receives a restricted state and the existing local Jira-style access request, prefilled with Organisation Services, service area and matter. This is an information-architecture demonstration, not production access enforcement.
+
+System launch tiles use clean product text rather than invented logos. Jira links to `/service-desk/it-support`, extending the same existing simulated portal for first-level triage and specialist support. Business Central, DocuWare, Recruitment Portal and Microsoft 365 open clearly marked simulated external destinations under `/services/systems/…`. No authoritative transactions, candidate queues or controlled records are duplicated; external IDs are references only. No request is sent, no external login is opened, and no data leaves the browser.

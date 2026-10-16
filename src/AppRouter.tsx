@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from "react";
 const App = lazy(() => import("./App"));
 import PrototypeNavigator from "./components/PrototypeNavigator";
 const LogisticsApp = lazy(() => import("./logistics/LogisticsApp"));
+const ServicesApp = lazy(() => import("./services/ServicesApp"));
 const AccessRequest = lazy(() => import("./service-desk/AccessRequest"));
 import { pageTitle, prototypeForPath } from "./utils/routes";
 import { ArrowRight24Regular } from "@fluentui/react-icons";
@@ -48,6 +49,21 @@ export default function AppRouter() {
               </span>
               <ArrowRight24Regular />
             </a>
+            <a href="/services">
+              <span className="launcher-icon">
+                <img
+                  src="/images/sharepoint-logo.svg"
+                  alt="SharePoint"
+                  width="34"
+                  height="34"
+                />
+              </span>
+              <span>
+                <small>INFRASTRUCTURE &amp; SERVICES · INTERACTIVE DEMO</small>
+                View Organisation Services workspace
+              </span>
+              <ArrowRight24Regular />
+            </a>
             <a href="/logistics/teams?channel=general&tab=Posts">
               <span className="launcher-icon launcher-teams-icon">
                 <img
@@ -80,7 +96,9 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "service-desk" ? (
+        {prototype === "services" ? (
+          <ServicesApp />
+        ) : prototype === "service-desk" ? (
           <AccessRequest />
         ) : prototype === "planning" ? (
           <App />

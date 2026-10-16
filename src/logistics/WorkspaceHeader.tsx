@@ -16,14 +16,22 @@ export default function WorkspaceHeader({
   onOpen,
   onTeams,
   onMessage,
+  title = workspaceTitle,
+  searchFiles = files,
+  memberCount = 42,
+  helpText = "Use campaign folders for operational files, the shared location list for permits, and Teams channels for coordination.",
 }: {
   onOpen: (f: OperationalFile) => void;
   onTeams: () => void;
   onMessage: (m: string) => void;
+  title?: string;
+  searchFiles?: OperationalFile[];
+  memberCount?: number;
+  helpText?: string;
 }) {
   const [query, setQuery] = useState("");
   const [favorite, setFavorite] = useState(true);
-  const results = files.filter((f) =>
+  const results = searchFiles.filter((f) =>
     f.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
   return (
@@ -92,11 +100,7 @@ export default function WorkspaceHeader({
           <button
             className="global-icon"
             aria-label="Help"
-            onClick={() =>
-              onMessage(
-                "Use campaign folders for operational files, the shared location list for permits, and Teams channels for coordination.",
-              )
-            }
+            onClick={() => onMessage(helpText)}
           >
             <QuestionCircle24Regular />
           </button>
@@ -129,7 +133,7 @@ export default function WorkspaceHeader({
           <span />
         </div>
         <div className="site-title">
-          <h1>{workspaceTitle}</h1>
+          <h1>{title}</h1>
           <button
             className="teams-button"
             aria-label="Open Microsoft Teams channels"
@@ -152,12 +156,12 @@ export default function WorkspaceHeader({
           <button
             onClick={() =>
               onMessage(
-                "42 members coordinate in-person, travelling and calling operations.",
+                `${memberCount} fictional members coordinate shared workspace activity.`,
               )
             }
           >
             <People24Regular />
-            42 members
+            {memberCount} members
           </button>
         </div>
       </div>
