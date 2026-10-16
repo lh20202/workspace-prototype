@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { archiveRecords } from "../workspaces/archiveData";
 import {
   currentProjects,
   archivedProjects,
@@ -72,6 +73,9 @@ describe("Projects ownership and access", () => {
       expect(projectFiles(p)).toEqual(projectFiles(p));
       expect(projectFiles(p).every((f) => f.projectCode === p.code)).toBe(true);
     }
+    expect(
+      archiveRecords.find((r) => r.id === "ARC-PRJ-2024-018")?.name,
+    ).toContain(archivedProjects[0].code);
     expect(archivePeriods).toHaveLength(4);
     expect(
       archivedProjects.every((p) => p.archived && p.stage === "Closed"),

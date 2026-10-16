@@ -14,6 +14,20 @@ export interface ArchiveRecord {
 }
 export const archiveRecords: ArchiveRecord[] = [
   {
+    id: "ARC-PRJ-2024-018",
+    name: "PRJ-2024-018 · Digital Workplace Programme — Final Closure Report",
+    collection: "Project Memory",
+    series: "Closed projects",
+    year: "2026",
+    creator: "Project Control",
+    area: "Strategy & Transformation",
+    description:
+      "Selected approved final closure report transferred after appraisal. Project working drafts remain in the closed project workspace.",
+    format: "PDF",
+    access: "Open internally",
+    preservation: "Preservation copy verified",
+  },
+  {
     id: "ARC-001",
     name: "Annual Report 1998",
     collection: "Company History",

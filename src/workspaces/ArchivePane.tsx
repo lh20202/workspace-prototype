@@ -24,7 +24,11 @@ export default function ArchivePane({
     [filters, setFilters] = useState<Record<string, string>>({
       collection: new URLSearchParams(location.search).get("collection") || "",
     }),
-    [selected, setSelected] = useState<ArchiveRecord>(),
+    [selected, setSelected] = useState<ArchiveRecord | undefined>(() =>
+      archiveRecords.find(
+        (r) => r.id === new URLSearchParams(location.search).get("record"),
+      ),
+    ),
     [folder, setFolder] = useState(""),
     [stages, setStages] = useState<Record<string, string>>({}),
     [scheduleStates, setScheduleStates] = useState<Record<string, string>>({});

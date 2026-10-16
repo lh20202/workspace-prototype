@@ -460,12 +460,12 @@ export default function ProjectsApp() {
           </p>
           <a
             href={
-              project.archived
-                ? "/archives/collections?collection=Project%20Memory"
+              project.archived === "Transferred to Archive"
+                ? "/archives/collections?collection=Project%20Memory&record=ARC-PRJ-2024-018"
                 : "/archives/transfer"
             }
           >
-            {project.archived
+            {project.archived === "Transferred to Archive"
               ? "View archive record"
               : "Request appraisal and archival transfer"}{" "}
             ↗
