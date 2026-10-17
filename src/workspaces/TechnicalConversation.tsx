@@ -5,6 +5,7 @@ import { configById } from "./config";
 import { functionalFileHref } from "./siteArchitecture";
 import { TeamsComposer } from "../teams/TeamsShell";
 import { matchesDisplayText } from "../i18n/search";
+import { useTranslation } from "../i18n/Language";
 import {
   technicalPosts,
   gitHref,
@@ -31,6 +32,7 @@ export default function TechnicalConversation({
   searchQuery?: string;
   messages?: ConversationMessage[];
 }) {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState("");
   const [posts, setPosts] = useState<
     (ConversationPost & { channel: string })[]
@@ -115,7 +117,9 @@ export default function TechnicalConversation({
               >
                 <Code20Regular />
                 <span>
-                  <span data-no-translate>{p.repo}</span>
+                  <span data-no-translate>
+                    {p.repo === "m365-extensions" ? t(p.repo) : p.repo}
+                  </span>
                   {p.ref ? ` #${p.ref}` : ""}
                   <small>
                     {p.kind === "pr"

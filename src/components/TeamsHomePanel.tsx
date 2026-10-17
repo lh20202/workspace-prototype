@@ -10,11 +10,11 @@ export interface TeamsHomeChannel {
 
 /** The same product layout, with each workspace's own conversations. */
 export default function TeamsHomePanel({
-  heading = "Team coordination",
+  heading = "Channel coordination",
   description,
   channels,
   openHref,
-  openLabel = "Open in Teams",
+  openLabel = "Open channel",
 }: {
   heading?: string;
   description: string;

@@ -73,7 +73,7 @@ export default function Directory() {
       <div className="intranet-directory">
         <header className="directory-brand">
           <GridDots24Regular aria-hidden="true" />
-          <strong>SharePoint</strong>
+          <strong>Site</strong>
           <span className="directory-brand-end">Company intranet</span>
           <LanguageToggle />
         </header>
@@ -243,9 +243,9 @@ export default function Directory() {
             </div>
             <aside
               className="directory-coordination"
-              aria-label="Department Teams"
+              aria-label="Department channels"
             >
-              <h2>Department Teams</h2>
+              <h2>Department channels</h2>
               <p>Local meetings, planning and team coordination.</p>
               {departments.map((department) => (
                 <StaffLink
@@ -257,7 +257,7 @@ export default function Directory() {
                     {department.name}
                     <small>
                       <span className="department-open-label">
-                        <TeamsMark size={12} /> Open in Teams
+                        <TeamsMark size={12} /> Open channel
                       </span>
                     </small>
                   </span>

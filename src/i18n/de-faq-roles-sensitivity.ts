@@ -2,8 +2,8 @@
 export const germanFAQRolesSensitivity: Record<string, string> = {
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
     "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
-  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
-    "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet. Die Demo ist weder mit Microsoft 365 noch mit anderen produktiven Geschäftssystemen verbunden.",
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.":
+    "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet, und es besteht keine Verbindung zu produktiven digitalen Arbeitsplatzplattformen oder Geschäftssystemen.",
   "Workspace FAQ": "Häufige Fragen zu Arbeitsbereichen",
   "Where do personal drives fit in?":
     "Welche Rolle spielen persönliche Speicherbereiche?",
@@ -14,11 +14,13 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
   "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.":
     "Das kommt vor. Die Ansprechpersonen der Arbeitsbereiche sind darin geschult, solche Links zu erkennen, beim Verschieben der Arbeitsfassung in den richtigen Arbeitsbereich zu helfen und den geteilten Link zu aktualisieren.",
   "See an example": "Beispiel ansehen",
-  "Teams exchange": "Unterhaltung in Teams",
-  "Loading Teams exchange…": "Unterhaltung in Teams wird geladen…",
-  "Go to full Teams demo": "Vollständige Teams-Demo öffnen",
-  "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.":
-    "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche.",
+  "Channel exchange": "Unterhaltung im Kanal",
+  "Loading channel exchange…": "Unterhaltung im Kanal wird geladen…",
+  "Go to full channel demo": "Vollständige Kanaldemo öffnen",
+  "Channel coordination": "Abstimmung in Kanälen",
+  "Open channel": "Kanal öffnen",
+  "Access follows the role. Switch roles and the demo updates the workspaces, channels and restricted areas that role can use.":
+    "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Kanäle und geschützten Bereiche.",
   "Back to all workspaces": "Zurück zu allen Arbeitsbereichen",
   "Try another preview role": "Andere Vorschaurolle ausprobieren",
   "Some preview roles can access this area.":

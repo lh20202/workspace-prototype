@@ -4,7 +4,7 @@ This remains an exploratory Digital Workspace proof of concept. The current work
 
 ## FAQ
 
-The same popup opens from Welcome and Demo Controls. A fixed title and Close action surround the scrolling content. All 21 accessible Fluent accordion questions start collapsed; several may remain open. No tabs or question cards were added. The later short personal-drive wording and “See an example” label remain; the previously removed automation explanation was not restored.
+The same popup opens from Welcome and Demo Controls. A fixed title and Close action surround the scrolling content. All 22 accessible Fluent accordion questions start collapsed; several may remain open. No tabs or question cards were added. The later short personal-drive wording and “See an example” label remain; the previously removed automation explanation was not restored.
 
 ### Files & access
 
@@ -25,18 +25,23 @@ The same popup opens from Welcome and Demo Controls. A fixed title and Close act
 
 - Can I work with colleagues in other countries?
 - Can I work with people outside the company?
-- What's the difference between a channel and a workspace?
+- What's the difference between channels and a workspace?
 - I work with lots of different tools and platforms — how do they fit in?
 - I already work in lots of sites and channels. Will this add even more?
 
 ### Getting started & support
 
+- Who are focal points?
 - What if I don't know which workspace something belongs in?
 - How do I create a new workspace if I need one?
 - Will my team and I get training?
 - Do I need to learn the technical settings?
 
 The sensitivity question explains the four canonical labels. The protected-information question explains where personal data or Strictly confidential information belongs. There is no duplicate general confidential-document question.
+
+**Who are focal points?**
+
+Focal points are colleagues who help people use their workspaces and channels day to day. They're the first people to ask about access or common setup questions. During the upcoming rollout, they'll receive additional training in relevant settings and good working practices, and can escalate anything that needs specialist help.
 
 ### Final migration and training wording
 

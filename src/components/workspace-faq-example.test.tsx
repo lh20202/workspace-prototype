@@ -8,6 +8,8 @@ import { technicalPosts } from "../workspaces/technicalTeams";
 import { configById } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { formatPublicTerminology } from "../i18n/publicTerminology";
+import { formatDisplayPunctuation } from "../i18n/displayPunctuation";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -35,11 +37,24 @@ describe("inline FAQ Teams example", () => {
     for (const message of [post, ...post.replies!]) {
       expect(html).toContain(message.author);
       expect(html).toContain(
-        renderToStaticMarkup(createElement("p", null, message.text)),
+        renderToStaticMarkup(
+          createElement(
+            "p",
+            null,
+            formatDisplayPunctuation(
+              formatPublicTerminology(message.text, "en"),
+              "en",
+            ),
+          ),
+        ),
       );
     }
     expect(html).toContain("Tech &amp; Digital");
-    expect(html).toContain("M365 &amp; SPFx");
+    expect(html).toContain("Workplace platforms &amp; SPFx");
+    expect(html).toContain('aria-label="Channel exchange"');
+    expect(html.replace(/<[^>]*>/g, "")).not.toMatch(
+      /\b(?:Teams|SharePoint|Microsoft|M365)\b/i,
+    );
     expect(html.match(/class="workspace-faq-thread-reply"/g)).toHaveLength(3);
     expect(html.match(/>MODERATOR</g)).toHaveLength(2);
     expect(html).toContain("Edited");

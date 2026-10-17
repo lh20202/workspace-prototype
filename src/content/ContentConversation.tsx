@@ -86,7 +86,7 @@ export default function ContentConversation({
                 <span>
                   {attachment.name}
                   <SensitivityBadge value={attachment.sensitivity} />
-                  <small>SharePoint · {attachment.type.toUpperCase()}</small>
+                  <small>Workspace · {attachment.type.toUpperCase()}</small>
                 </span>
               </button>
             )}

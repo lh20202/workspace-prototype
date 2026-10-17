@@ -137,7 +137,7 @@ export default function LogisticsApp() {
   }, []);
   useEffect(() => {
     document.title =
-      route.page === "teams" ? `${workspaceTitle} | Teams` : workspaceTitle;
+      route.page === "teams" ? `${workspaceTitle} | Channels` : workspaceTitle;
   }, [route.page]);
   useEffect(() => {
     if (!toast) return;
@@ -303,7 +303,7 @@ export default function LogisticsApp() {
                     }
                   >
                     <NavigationIcon kind="teams" />
-                    Open Teams channels
+                    Open channels
                   </button>
                 </div>
               )}
@@ -533,7 +533,7 @@ export default function LogisticsApp() {
                       {route.page === "resources" && (
                         <div className="resource-notice">
                           <Link20Regular />
-                          Current shared guides are linked from Teams channels.
+                          Current shared guides are linked from channels.
                         </div>
                       )}
                       <div className="command-bar">
@@ -799,7 +799,7 @@ export default function LogisticsApp() {
                   className="details-sp-link"
                   href={fileHref(selected)}
                 >
-                  Open in SharePoint <ArrowRight20Regular />
+                  Open workspace <ArrowRight20Regular />
                 </StaffLink>
               )}
               <h4>Properties</h4>

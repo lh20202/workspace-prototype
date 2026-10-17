@@ -241,7 +241,7 @@ export default function DepartmentChannel({
           headingLevel={2}
           compact
           returnHref={`/teams?staff=${person.id}`}
-          returnLabel="Open your Teams view"
+          returnLabel="Open your channel view"
         />
       ) : (
         <>
@@ -487,7 +487,7 @@ export default function DepartmentChannel({
                   appearance="subtle"
                   onClick={() => setSharePointOpen(true)}
                 >
-                  Open in SharePoint ↗
+                  Open workspace ↗
                 </Button>
               </div>
 
@@ -625,12 +625,12 @@ export default function DepartmentChannel({
                 <Button
                   appearance="subtle"
                   icon={<Dismiss20Regular />}
-                  aria-label="Close SharePoint documents"
+                  aria-label="Close workspace documents"
                   onClick={() => setSharePointOpen(false)}
                 />
               }
             >
-              {department.name} · SharePoint
+              {department.name} · Workspace
             </DialogTitle>
             <DialogContent>
               <DocumentLibrary
@@ -670,7 +670,7 @@ export default function DepartmentChannel({
                 headingLevel={2}
                 compact
                 returnHref={`/teams?staff=${person.id}`}
-                returnLabel="Open your Teams view"
+                returnLabel="Open your channel view"
               />
             </DialogContent>
             <DialogActions>

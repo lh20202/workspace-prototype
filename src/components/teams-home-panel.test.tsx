@@ -38,7 +38,12 @@ describe("shared Teams Home panel", () => {
     for (const channel of channels) {
       expect(markup).toContain(`<span>${channel.name}</span>`);
     }
-    expect(markup).toContain("Open in Teams");
+    expect(markup).toContain("Open channel");
+    expect(markup).toContain("Channel coordination");
+    expect(markup).toContain('alt="Channels"');
+    expect(markup).not.toMatch(
+      /(?:alt|aria-label|title)="[^"]*(?:Teams|SharePoint|Microsoft|M365)/,
+    );
     expect(markup).not.toContain("poc-annotation");
   });
   it("uses a real PNG organisation asset while keeping product logos separate", () => {

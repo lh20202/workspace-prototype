@@ -28,7 +28,7 @@ export default function WorkspaceHeader({
   title = workspaceTitle,
   searchFiles = files,
   memberCount = 42,
-  helpText = "Use campaign folders for operational files, the shared location list for permits, and Teams channels for coordination.",
+  helpText = "Use campaign folders for operational files, the shared location list for permits, and channels for coordination.",
 }: {
   onSearchChange?: (query: string) => void;
   onOpen: (f: OperationalFile) => void;
@@ -66,16 +66,16 @@ export default function WorkspaceHeader({
       <header className="m365-header">
         <button
           className="global-icon"
-          aria-label="Microsoft 365 apps"
+          aria-label="Digital workplace apps"
           onClick={() =>
             onMessage(
-              "Microsoft 365 app launcher is illustrative in this proof of concept.",
+              "The digital workplace app launcher is illustrative in this proof of concept.",
             )
           }
         >
           <GridDots24Regular />
         </button>
-        <span className="product">SharePoint</span>
+        <span className="product">Site</span>
         <div className="workspace-search">
           <Input
             contentBefore={<Search20Regular />}
@@ -169,8 +169,8 @@ export default function WorkspaceHeader({
           {onTeams && (
             <button
               className="teams-button"
-              aria-label="Open Microsoft Teams channels"
-              title="Microsoft Teams"
+              aria-label="Open channels"
+              title="Channels"
               onClick={onTeams}
             >
               <TeamsMark />

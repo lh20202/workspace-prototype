@@ -1,5 +1,31 @@
 /** Professional German UI copy. Keys remain canonical English; routes, IDs and data are unchanged. */
 export const germanMessages: Record<string, string> = {
+  Site: "Site",
+  "Digital workplace apps": "Apps für den digitalen Arbeitsplatz",
+  "The digital workplace app launcher is not connected in this proof of concept.":
+    "Die Appübersicht für den digitalen Arbeitsplatz ist in diesem Machbarkeitsnachweis nicht angebunden.",
+  "The digital workplace app launcher is illustrative in this proof of concept.":
+    "Die Appübersicht für den digitalen Arbeitsplatz dient in diesem Machbarkeitsnachweis nur zur Veranschaulichung.",
+  "Use campaign folders for operational files, the shared location list for permits, and channels for coordination.":
+    "Nutzen Sie die Kampagnenordner für operative Dateien, die gemeinsame Standortliste für Genehmigungen und die Kanäle für die Koordination.",
+  "Open channels": "Kanäle öffnen",
+  "Open workspace": "Arbeitsbereich öffnen",
+  "Open workspace ↗": "Arbeitsbereich öffnen ↗",
+  "Open your channel view": "Ihre Kanalansicht öffnen",
+  "Department channels": "Abteilungskanäle",
+  "Search channels": "Kanäle durchsuchen",
+  "Clear channel search": "Kanalsuche zurücksetzen",
+  "Hide channels": "Kanäle ausblenden",
+  "Show channels": "Kanäle anzeigen",
+  "Collapse groups": "Gruppen zuklappen",
+  "Expand groups": "Gruppen aufklappen",
+  "This feature is available in the full digital workplace application.":
+    "Diese Funktion ist in der vollständigen Anwendung für den digitalen Arbeitsplatz verfügbar.",
+  "Opening channels…": "Kanäle werden geöffnet …",
+  "Current shared guides are linked from channels.":
+    "Aktuelle gemeinsame Leitfäden sind in den Kanälen verlinkt.",
+  "Close workspace documents": "Dokumente des Arbeitsbereichs schließen",
+  "Shared list": "Gemeinsame Liste",
   "Knowledge & frontline": "Wissen & Vertriebsalltag",
   "Article navigation": "Artikelnavigation",
   "Hub navigation": "Hub-Navigation",

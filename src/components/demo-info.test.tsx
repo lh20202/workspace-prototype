@@ -50,7 +50,10 @@ describe("small demo information controls", () => {
       /prototype|product-development/i,
     );
     expect(proofOfConceptInfoText).not.toMatch(/real data|company data/);
-    expect(roleAccessInfoText).toContain("Teams channels");
+    expect(roleAccessInfoText).toContain("workspaces, channels");
+    expect(roleAccessInfoText).not.toMatch(
+      /\b(?:Teams|SharePoint|Microsoft|M365)\b/,
+    );
     expect(betaInfoText).not.toContain("proof of concept");
   });
 });

@@ -45,4 +45,23 @@ describe("the expanded FAQ's final German wording", () => {
       "personenbezogene Daten oder streng vertrauliche Informationen",
     );
   });
+  it("explains everyday colleague support and rollout training without introducing product terminology", () => {
+    const focalPoint = workspaceFAQQuestions.find(
+      (entry) => entry.id === "focal-points",
+    )!;
+    expect(translateText(focalPoint.question, "de")).toBe(
+      "Wer sind die Ansprechpersonen?",
+    );
+    const answer = translateText(focalPoint.answer, "de");
+    expect(answer).toContain("Kolleginnen und Kollegen");
+    expect(answer).toContain("erste Anlaufstelle");
+    expect(answer).toContain("bevorstehenden Einführung");
+    expect(answer).toContain("zusätzliche Schulungen");
+    expect(answer).toContain("Fachleute hinzuziehen");
+    for (const entry of workspaceFAQQuestions)
+      for (const source of [entry.question, entry.answer])
+        expect(translateText(source, "de")).not.toMatch(
+          /\b(?:Teams|SharePoint|Microsoft|M365)\b/i,
+        );
+  });
 });

@@ -1,5 +1,4 @@
-import { translateText } from "./translate";
-import { formatDisplayPunctuation } from "./displayPunctuation";
+import { displayText } from "./displayText";
 
 const normalize = (value: string) =>
   value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
@@ -13,9 +12,7 @@ export function matchesDisplayText(source: string, query: string): boolean {
   const fields = source.split(/[\r\n\t]+/);
   for (const language of ["en", "de"] as const) {
     const displayed = fields
-      .map((field) =>
-        formatDisplayPunctuation(translateText(field, language), language),
-      )
+      .map((field) => displayText(field, language))
       .join(" ");
     if (normalize(displayed).includes(needle)) return true;
   }
@@ -25,9 +22,7 @@ export function matchesDisplayText(source: string, query: string): boolean {
       .split(/\s*[|/→]\s*|\s+[·—]\s+/)
       .some((part) =>
         (["en", "de"] as const).some((language) =>
-          normalize(
-            formatDisplayPunctuation(translateText(part, language), language),
-          ).includes(needle),
+          normalize(displayText(part, language)).includes(needle),
         ),
       ),
   );

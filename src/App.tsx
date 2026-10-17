@@ -393,16 +393,16 @@ export default function App() {
       <header className="m365-header">
         <button
           className="global-icon"
-          aria-label="Microsoft 365 apps"
+          aria-label="Digital workplace apps"
           onClick={() =>
             setToast(
-              "Microsoft 365 app launcher is not connected in this proof of concept.",
+              "The digital workplace app launcher is not connected in this proof of concept.",
             )
           }
         >
           <GridDots24Regular />
         </button>
-        <span className="product">SharePoint</span>
+        <span className="product">Site</span>
         <div className="workspace-search">
           <Input
             contentBefore={<Search20Regular />}
@@ -512,8 +512,8 @@ export default function App() {
           {planningChannels.length > 0 && (
             <button
               className="teams-button"
-              aria-label="Microsoft Teams connection"
-              title="Microsoft Teams"
+              aria-label="Open channels"
+              title="Channels"
               onClick={() =>
                 location.assign(
                   planningChannels.includes(planningReportingChannel)

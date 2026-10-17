@@ -28,8 +28,8 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Jede Datei trägt eine Vertraulichkeitskennzeichnung: Öffentlich, Intern, Vertraulich oder Streng vertraulich. Sie zeigt, wie mit den Informationen umzugehen ist; besonders sensible Unterlagen liegen zusätzlich in geschützten Bereichen mit eingeschränktem Zugriff.",
   "Where do I save personal data or Strictly confidential information?":
     "Wo speichere ich personenbezogene Daten oder streng vertrauliche Informationen?",
-  "Only use the approved protected workspace area or specialist system intended for that information. Don't place it in an ordinary shared folder or general Teams conversation if the people there don't need access.":
-    "Nutzen Sie ausschließlich den dafür vorgesehenen, freigegebenen geschützten Bereich oder das entsprechende Fachsystem. Speichern Sie solche Informationen nicht in einem gewöhnlichen gemeinsamen Ordner und teilen Sie sie nicht in einer allgemeinen Teams-Unterhaltung, wenn die dort Beteiligten keinen Zugriff benötigen.",
+  "Only use the approved protected workspace area or specialist system intended for that information. Don't place it in an ordinary shared folder or general channel conversation if the people there don't need access.":
+    "Nutzen Sie ausschließlich den dafür vorgesehenen, freigegebenen geschützten Bereich oder das entsprechende Fachsystem. Speichern Sie solche Informationen nicht in einem gewöhnlichen gemeinsamen Ordner und teilen Sie sie nicht in einer allgemeinen Kanalunterhaltung, wenn die dort Beteiligten keinen Zugriff benötigen.",
   "Do I need to make a copy before sharing a document with another team?":
     "Muss ich ein Dokument kopieren, bevor ich es mit einem anderen Team teile?",
   "Usually not. Keep the working document in its workspace and share the link, so everyone works from the same version.":
@@ -58,18 +58,21 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Kann ich mit Personen außerhalb des Unternehmens zusammenarbeiten?",
   "Yes, where external collaboration is needed. Access is limited to the specific shared area or material they need rather than opening up the wider workspace.":
     "Ja, wenn die Zusammenarbeit mit externen Personen erforderlich ist. Diese erhalten nur Zugriff auf den dafür vorgesehenen gemeinsamen Bereich oder die benötigten Unterlagen, nicht auf den gesamten Arbeitsbereich.",
-  "What's the difference between a channel and a workspace?":
-    "Was ist der Unterschied zwischen einem Kanal und einem Arbeitsbereich?",
-  "A channel is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.":
-    "Ein Kanal dient vor allem dem Austausch und der täglichen Abstimmung. Im Arbeitsbereich liegen die gemeinsam genutzten Dateien und strukturierten Arbeitsinformationen.",
+  "What's the difference between channels and a workspace?":
+    "Was ist der Unterschied zwischen Kanälen und einem Arbeitsbereich?",
+  "Channels are mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.":
+    "Kanäle dienen vor allem dem Austausch und der täglichen Abstimmung. Im Arbeitsbereich liegen die gemeinsam genutzten Dateien und strukturierten Arbeitsinformationen.",
   "I work with lots of different tools and platforms — how do they fit in?":
     "Ich nutze viele verschiedene Tools und Plattformen — wie passen sie dazu?",
   "Workspaces bring the shared documents and collaboration around the work together. Specialist systems still do the jobs they're designed for, and the workspace links you to them instead of trying to duplicate everything.":
     "Arbeitsbereiche bündeln die gemeinsamen Dokumente und die Zusammenarbeit rund um eine Aufgabe. Fachsysteme erfüllen weiterhin ihre jeweiligen Aufgaben; der Arbeitsbereich verlinkt dorthin, statt ihre Funktionen nachzubauen.",
   "I already work in lots of sites and channels — will this add even more?":
     "Ich arbeite schon auf vielen Websites und in vielen Kanälen — werden es dadurch noch mehr?",
-  "The aim is the opposite: fewer, clearer places to work. Not every workspace needs its own Team, and your normal Teams view should only show the conversations that are useful for your role.":
-    "Das Ziel ist das Gegenteil: weniger und klarer zugeordnete Arbeitsorte. Nicht jeder Arbeitsbereich braucht ein eigenes Team, und Ihre übliche Teams-Ansicht sollte nur die für Ihre Rolle hilfreichen Unterhaltungen zeigen.",
+  "The aim is the opposite: fewer, clearer places to work. Not every workspace needs channels, and your normal channel view should only show the conversations that are useful for your role.":
+    "Das Ziel ist das Gegenteil: weniger und klarer zugeordnete Arbeitsorte. Nicht jeder Arbeitsbereich braucht Kanäle, und Ihre übliche Kanalansicht sollte nur die für Ihre Rolle hilfreichen Unterhaltungen zeigen.",
+  "Who are focal points?": "Wer sind die Ansprechpersonen?",
+  "Focal points are colleagues who help people use their workspaces and channels day to day. They're the first people to ask about access or common setup questions. During the upcoming rollout, they'll receive additional training in relevant settings and good working practices, and can escalate anything that needs specialist help.":
+    "Ansprechpersonen sind Kolleginnen und Kollegen, die bei der täglichen Arbeit mit Arbeitsbereichen und Kanälen helfen. Bei Fragen zum Zugriff oder zur Einrichtung sind sie die erste Anlaufstelle. Im Zuge der bevorstehenden Einführung erhalten sie zusätzliche Schulungen zu den relevanten Einstellungen und bewährten Arbeitsweisen und können bei Bedarf Fachleute hinzuziehen.",
   "What if I don't know which workspace something belongs in?":
     "Was mache ich, wenn ich nicht weiß, in welchen Arbeitsbereich etwas gehört?",
   "Ask your workspace or department focal point. They can help you find the right place without you needing to understand the whole setup.":

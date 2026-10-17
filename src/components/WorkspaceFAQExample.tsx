@@ -22,11 +22,11 @@ export default function WorkspaceFAQExample({ href }: { href: string }) {
       <div id={exampleId} hidden={!expanded}>
         {expanded && (
           <>
-            <Suspense fallback={<p role="status">Loading Teams exchange…</p>}>
+            <Suspense fallback={<p role="status">Loading channel exchange…</p>}>
               <WorkspaceFAQThread />
             </Suspense>
             <StaffLink className="workspace-faq-full-demo" href={href}>
-              Go to full Teams demo <span aria-hidden="true">→</span>
+              Go to full channel demo <span aria-hidden="true">→</span>
             </StaffLink>
           </>
         )}

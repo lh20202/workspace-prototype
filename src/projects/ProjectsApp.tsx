@@ -727,7 +727,7 @@ export default function ProjectsApp() {
               headingLevel={2}
               compact
               returnHref={`/teams?staff=${person.id}`}
-              returnLabel="Open your Teams view"
+              returnLabel="Open your channel view"
             />
           ) : !permitted ? (
             denied()

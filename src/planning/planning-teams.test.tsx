@@ -74,7 +74,7 @@ describe("Planning & Reporting uses the existing Planning Team and working files
       expect(!!panel).toBe(["robin", "sam"].includes(person.id));
       if (panel) {
         expect(panel).toContain("Planning &amp; Reporting");
-        expect(panel).toContain("Open in Teams");
+        expect(panel).toContain("Open channel");
         expect(panel).toContain("teams-logo.svg");
         expect(panel).toContain(
           planningTeamsHref(person.id).replaceAll("&", "&amp;"),

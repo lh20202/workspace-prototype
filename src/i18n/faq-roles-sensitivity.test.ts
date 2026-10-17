@@ -27,7 +27,7 @@ describe("final staff-facing German interpretation", () => {
     );
     expect(german(creationExplanation)).toContain("keine Unternehmensdaten");
     expect(german(creationExplanation)).toContain(
-      "weder mit Microsoft 365 noch mit anderen produktiven Geschäftssystemen verbunden",
+      "keine Verbindung zu produktiven digitalen Arbeitsplatzplattformen oder Geschäftssystemen",
     );
   });
 

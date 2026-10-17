@@ -244,7 +244,7 @@ export default function EmergencyApp() {
                 compact
                 strict
                 returnHref={`/teams?staff=${requestedPerson.id}`}
-                returnLabel="Open your Teams view"
+                returnLabel="Open your channel view"
               />
             ) : !incident ? (
               <>

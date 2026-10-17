@@ -160,7 +160,7 @@ function TeamsShellSession({
           <Search20Regular aria-hidden="true" />
           <input
             ref={searchInput}
-            aria-label="Search Teams"
+            aria-label="Search channels"
             placeholder="Search (⌘ E)"
             value={search}
             onChange={(e) => updateSearch(e.target.value)}
@@ -170,7 +170,7 @@ function TeamsShellSession({
           />
           {search && (
             <button
-              aria-label="Clear Teams search"
+              aria-label="Clear channel search"
               onClick={() => updateSearch("")}
             >
               <Dismiss20Regular />
@@ -220,7 +220,7 @@ function TeamsShellSession({
         </div>
       </header>
       <div className="m365-teams-layout">
-        <nav className="m365-teams-rail" aria-label="Teams apps">
+        <nav className="m365-teams-rail" aria-label="Digital workplace apps">
           {[
             ["Activity", Alert24Regular],
             ["Chat", Chat24Regular],
@@ -252,7 +252,7 @@ function TeamsShellSession({
             <h2>Chat</h2>
             <button
               className="m365-teams-mobile-navigation"
-              aria-label="Hide teams and channels"
+              aria-label="Hide channels"
               onClick={() => setNavigationOpen(false)}
             >
               <Dismiss20Regular />
@@ -280,7 +280,7 @@ function TeamsShellSession({
                     setListOptions(false);
                   }}
                 >
-                  Collapse teams
+                  Collapse groups
                 </button>
                 <button
                   onClick={() => {
@@ -288,7 +288,7 @@ function TeamsShellSession({
                     setListOptions(false);
                   }}
                 >
-                  Expand teams
+                  Expand groups
                 </button>
               </div>
             )}
@@ -305,7 +305,7 @@ function TeamsShellSession({
             ))}
           </div>
           <div className="m365-teams-nav-scroll">
-            <div className="m365-teams-section-label">Teams and channels</div>
+            <div className="m365-teams-section-label">Channels</div>
             {visibleGroups.map((group) => {
               const active = group.channels.some(
                 (c) => c.id === selectedChannelId,
@@ -399,7 +399,7 @@ function TeamsShellSession({
           <header className="m365-teams-channel-header">
             <button
               className="m365-teams-mobile-navigation"
-              aria-label="Show teams and channels"
+              aria-label="Show channels"
               aria-expanded={navigationOpen}
               onClick={() => setNavigationOpen(!navigationOpen)}
             >
@@ -432,11 +432,11 @@ function TeamsShellSession({
               {onOpenSharePoint && (
                 <button
                   onClick={onOpenSharePoint}
-                  title="Open in SharePoint"
-                  aria-label="Open in SharePoint"
+                  title="Open workspace"
+                  aria-label="Open workspace"
                 >
                   <img src="/images/sharepoint-logo.svg" alt="" />
-                  <span>Open in SharePoint</span>
+                  <span>Open workspace</span>
                   <ArrowUpRight20Regular />
                 </button>
               )}
@@ -521,14 +521,14 @@ function TeamsShellSession({
                       <People20Regular />{" "}
                       {privateChannel
                         ? "Private channel · Members only"
-                        : "Team channel"}
+                        : "Channel"}
                     </p>
                   </>
                 ) : (
                   <p>
                     {panel === "Activity"
                       ? "You’re all caught up. Channel updates appear in your chats and channels."
-                      : `Your ${panel.toLowerCase()} are available in the full Teams application.`}
+                      : "This feature is available in the full digital workplace application."}
                   </p>
                 )}
               </section>

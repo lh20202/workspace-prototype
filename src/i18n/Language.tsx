@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { translateText, type Language } from "./translate";
-import { formatDisplayPunctuation } from "./displayPunctuation";
+import { displayText } from "./displayText";
 import "./language.css";
 
 const LanguageContext = createContext<{
@@ -18,8 +18,7 @@ export function useTranslation() {
   const { language } = useContext(LanguageContext);
   return {
     language,
-    t: (source: string) =>
-      formatDisplayPunctuation(translateText(source, language), language),
+    t: (source: string) => displayText(source, language),
   };
 }
 function storedLanguage(): Language {
@@ -64,10 +63,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       let original = textSources.get(node);
       if (!original || current !== original.rendered)
         original = { source: current, rendered: current };
-      const rendered = formatDisplayPunctuation(
-        translateText(original.source, language),
-        language,
-      );
+      const rendered = displayText(original.source, language);
       original.rendered = rendered;
       textSources.set(node, original);
       if (current !== rendered) node.data = rendered;
@@ -92,10 +88,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         let original = originals.get(attribute);
         if (!original || current !== original.rendered)
           original = { source: current, rendered: current };
-        const rendered = formatDisplayPunctuation(
-          translateText(original.source, language),
-          language,
-        );
+        const rendered = displayText(original.source, language);
         original.rendered = rendered;
         originals.set(attribute, original);
         if (current !== rendered) element.setAttribute(attribute, rendered);

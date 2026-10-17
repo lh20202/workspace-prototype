@@ -141,13 +141,13 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
     );
   });
-  it("renders four distinct hub panels, one workspace mark and a separate Department Teams rail", () => {
+  it("renders four distinct hub panels, one workspace mark and a separate Department channels rail", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
     for (const hub of hubDefinitions)
       expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
     expect(html).toContain('aria-labelledby="hub-finance"');
-    expect(html).toContain('aria-label="Department Teams"');
+    expect(html).toContain('aria-label="Department channels"');
     expect(html).not.toContain('class="directory-teams"');
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");

@@ -44,7 +44,7 @@ export default function Launcher() {
         <img
           className="launcher-sharepoint-cue"
           src="/images/sharepoint-logo.svg"
-          alt="SharePoint"
+          alt="Workspace"
           width="24"
           height="24"
         />
@@ -82,7 +82,9 @@ export default function Launcher() {
           </Dialog>
           <WorkspaceFAQ />
         </div>
-        <h2 className="launcher-demos-heading">Explore these workspace demos</h2>
+        <h2 className="launcher-demos-heading">
+          Explore these workspace demos
+        </h2>
         <div className="launcher-choices">
           {choices.map(({ title, href, action }) => (
             <a

@@ -30,7 +30,7 @@ export default function LocationsList({
             in-person operations.
           </p>
         </div>
-        <span className="list-label">Microsoft Lists</span>
+        <span className="list-label">Shared list</span>
       </div>
       <div className="command-bar">
         <Button

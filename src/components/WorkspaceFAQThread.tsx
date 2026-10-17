@@ -4,6 +4,7 @@ import { technicalPosts } from "../workspaces/technicalTeams";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
 import StaffLink from "./StaffLink";
 import TeamsMark from "./TeamsMark";
+import { useTranslation } from "../i18n/Language";
 
 const initials = (name: string) =>
   name
@@ -14,6 +15,7 @@ const initials = (name: string) =>
 
 /** A read-only view of the same conversation shown in the full Teams demo. */
 export default function WorkspaceFAQThread() {
+  const { t } = useTranslation();
   const workspace = configById.get("digital");
   const post = technicalPosts.find(
     (message) => message.id === "digital-onedrive-review",
@@ -23,12 +25,12 @@ export default function WorkspaceFAQThread() {
     (file) => file.id === post.fileLink?.fileId,
   );
   return (
-    <section className="workspace-faq-thread" aria-label="Teams exchange">
+    <section className="workspace-faq-thread" aria-label="Channel exchange">
       <header className="workspace-faq-thread-channel">
         <TeamsMark size={20} />
         <div>
           <strong>{workspaceById.get(workspace.id)?.title}</strong>
-          <span>{post.channel}</span>
+          <span>{t(post.channel)}</span>
         </div>
       </header>
       <article className="workspace-faq-thread-post">
@@ -40,11 +42,11 @@ export default function WorkspaceFAQThread() {
           <time>{post.time}</time>
           {post.fileLink?.correctedFrom && <span> · Edited</span>}
         </header>
-        <p>{post.text}</p>
+        <p>{t(post.text)}</p>
         {linkedFile && (
           <p>
             <StaffLink href={functionalFileHref(workspace, linkedFile.id)}>
-              {linkedFile.name}
+              {t(linkedFile.name)}
             </StaffLink>
           </p>
         )}
@@ -64,10 +66,10 @@ export default function WorkspaceFAQThread() {
                   )}
                   {reply.time && <time>{reply.time}</time>}
                 </header>
-                <p>{reply.text}</p>
+                <p>{t(reply.text)}</p>
                 {reply.link && (
                   <StaffLink href={reply.link.href}>
-                    {reply.link.label}
+                    {t(reply.link.label)}
                   </StaffLink>
                 )}
               </div>

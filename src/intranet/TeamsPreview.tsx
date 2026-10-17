@@ -383,10 +383,10 @@ export default function TeamsPreview() {
       ),
     );
   }
-  if (companyFallback) return <div role="status">Opening Teams…</div>;
-  if (workspaceUnavailable) return <div role="status">Opening SharePoint…</div>;
+  if (companyFallback) return <div role="status">Opening channels…</div>;
+  if (workspaceUnavailable) return <div role="status">Opening workspace…</div>;
   if (!department && workspace.id === "logistics")
-    return <div role="status">Opening Teams…</div>;
+    return <div role="status">Opening channels…</div>;
   return (
     <TeamsShell
       userName={person.name}
@@ -440,7 +440,7 @@ export default function TeamsPreview() {
           area={department ? `${department.name} / General` : channel}
           location={`${department?.name || workspace.title} / ${department ? "General" : channel}`}
           returnHref={`/teams?staff=${person.id}`}
-          returnLabel="Open your Teams view"
+          returnLabel="Open your channel view"
           headingLevel={2}
           compact
         />

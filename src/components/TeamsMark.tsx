@@ -10,7 +10,7 @@ export default function TeamsMark({
     <img
       className="teams-mark"
       src="/images/teams-logo.svg"
-      alt={labelled ? "Microsoft Teams" : ""}
+      alt={labelled ? "Channels" : ""}
       width={size}
       height={size}
       style={{ flexShrink: 0, verticalAlign: "middle" }}

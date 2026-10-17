@@ -103,7 +103,7 @@ export default function FileTable({
               {sharePointLinks && (
                 <td>
                   <a className="text-link" href={fileHref(file)}>
-                    Open in SharePoint
+                    Open workspace
                   </a>
                 </td>
               )}

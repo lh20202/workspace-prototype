@@ -52,7 +52,7 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(html).not.toContain("<details");
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
     expect(creationExplanation).toBe(
-      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.",
+      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.",
     );
   });
   it("groups all requested questions into a repeatable, initially collapsed accordion", () => {
@@ -63,7 +63,7 @@ describe("shared staff-facing Workspace FAQ", () => {
       "GETTING STARTED & SUPPORT",
     ]);
     expect(workspaceFAQGroups.map((group) => group.questions.length)).toEqual([
-      12, 5, 4,
+      12, 5, 5,
     ]);
     expect(workspaceFAQQuestions.map((entry) => entry.id)).toEqual([
       "file-access",
@@ -83,16 +83,17 @@ describe("shared staff-facing Workspace FAQ", () => {
       "teams-workspace-difference",
       "specialist-tools",
       "fewer-places",
+      "focal-points",
       "finding-the-right-place",
       "new-workspace",
       "training",
       "technical-settings",
     ]);
     expect(new Set(workspaceFAQQuestions.map((entry) => entry.id)).size).toBe(
-      21,
+      22,
     );
-    expect(html.match(/data-faq-id=/g)).toHaveLength(21);
-    expect(html.match(/aria-expanded="false"/g)).toHaveLength(21);
+    expect(html.match(/data-faq-id=/g)).toHaveLength(22);
+    expect(html.match(/aria-expanded="false"/g)).toHaveLength(22);
     expect(html).not.toContain('aria-expanded="true"');
     expect(html).not.toContain("What if a document is confidential?");
     expect(
@@ -119,6 +120,41 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(answer("technical-settings")).toContain(
       "relevant to their responsibilities",
     );
+  });
+  it("describes focal points as helpful colleagues with rollout training and a specialist escalation path", () => {
+    const question = workspaceFAQQuestions.find(
+      (entry) => entry.id === "focal-points",
+    )!;
+    expect(question.question).toBe("Who are focal points?");
+    expect(question.answer).toContain("colleagues");
+    expect(question.answer).toContain("workspaces and channels day to day");
+    expect(question.answer).toContain(
+      "first people to ask about access or common setup questions",
+    );
+    expect(question.answer).toContain("additional training");
+    expect(question.answer).toContain("upcoming rollout");
+    expect(question.answer).toContain("settings and good working practices");
+    expect(question.answer).toContain("specialist help");
+    expect(question.answer).not.toMatch(
+      /assigned to you|appointed|administrator|gatekeeper|security approver/i,
+    );
+    expect(
+      workspaceFAQGroups.find((group) => group.id === "getting-started")!
+        .questions,
+    ).toContain(question);
+    const copy = [
+      creationExplanation,
+      ...workspaceFAQQuestions.flatMap((entry) => [
+        entry.question,
+        entry.answer,
+      ]),
+    ].join(" ");
+    expect(copy).not.toMatch(/\b(?:Teams|SharePoint|Microsoft|M365)\b/i);
+    expect(
+      workspaceFAQQuestions.find(
+        (entry) => entry.id === "teams-workspace-difference",
+      )!.question,
+    ).toBe("What's the difference between channels and a workspace?");
   });
   it("links to a real authorised human correction thread instead of a separate demo", () => {
     const url = new URL(workspaceFAQExampleHref, "https://example.test");

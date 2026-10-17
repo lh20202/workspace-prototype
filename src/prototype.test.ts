@@ -42,7 +42,8 @@ describe("launcher and service desk routes", () => {
     expect(launcher).not.toMatch(/Switch roles|role switching|change.*role/i);
     expect(launcher.match(/Explore workspace/g)).toHaveLength(2);
     expect(launcher.match(/class="workspace-icon"/g)).toHaveLength(2);
-    expect(launcher).toContain('alt="SharePoint"');
+    expect(launcher).toContain('alt="Workspace"');
+    expect(launcher).toContain('src="/images/sharepoint-logo.svg"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
     expect(launcher).toContain("Browse all company workspaces and wikis.");
     expect(launcher).toContain("BETA TEST");

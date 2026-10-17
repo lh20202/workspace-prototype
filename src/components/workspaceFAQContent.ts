@@ -1,6 +1,6 @@
 /** Staff-facing explanations remain separate from the simulated product. */
 export const creationExplanation =
-  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.";
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.";
 
 export interface WorkspaceFAQQuestion {
   id: string;
@@ -59,7 +59,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         question:
           "Where do I save personal data or Strictly confidential information?",
         answer:
-          "Only use the approved protected workspace area or specialist system intended for that information. Don't place it in an ordinary shared folder or general Teams conversation if the people there don't need access.",
+          "Only use the approved protected workspace area or specialist system intended for that information. Don't place it in an ordinary shared folder or general channel conversation if the people there don't need access.",
       },
       {
         id: "sharing-copies",
@@ -115,9 +115,9 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
       },
       {
         id: "teams-workspace-difference",
-        question: "What's the difference between a channel and a workspace?",
+        question: "What's the difference between channels and a workspace?",
         answer:
-          "A channel is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.",
+          "Channels are mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.",
       },
       {
         id: "specialist-tools",
@@ -131,7 +131,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         question:
           "I already work in lots of sites and channels — will this add even more?",
         answer:
-          "The aim is the opposite: fewer, clearer places to work. Not every workspace needs its own Team, and your normal Teams view should only show the conversations that are useful for your role.",
+          "The aim is the opposite: fewer, clearer places to work. Not every workspace needs channels, and your normal channel view should only show the conversations that are useful for your role.",
       },
     ],
   },
@@ -139,6 +139,12 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
     id: "getting-started",
     title: "GETTING STARTED & SUPPORT",
     questions: [
+      {
+        id: "focal-points",
+        question: "Who are focal points?",
+        answer:
+          "Focal points are colleagues who help people use their workspaces and channels day to day. They're the first people to ask about access or common setup questions. During the upcoming rollout, they'll receive additional training in relevant settings and good working practices, and can escalate anything that needs specialist help.",
+      },
       {
         id: "finding-the-right-place",
         question: "What if I don't know which workspace something belongs in?",
