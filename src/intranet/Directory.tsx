@@ -50,10 +50,10 @@ export function WorkspaceLink({
   );
 }
 
-function WorkspaceGroup({ label, ids }: { label: string; ids: string[] }) {
+function WorkspaceGroup({ label, ids }: { label?: string; ids: string[] }) {
   return (
     <div className="directory-workspace-group">
-      <h3 className="directory-subheading">{label}</h3>
+      {label && <h3 className="directory-subheading">{label}</h3>}
       <div className="directory-hub-grid">
         {ids.map((id) => (
           <WorkspaceLink
@@ -165,7 +165,11 @@ export default function Directory() {
                             {orgCentralGroups.map((group) => (
                               <WorkspaceGroup
                                 key={group.label}
-                                label={group.label}
+                                label={
+                                  group.label === "Direction & assurance"
+                                    ? undefined
+                                    : group.label
+                                }
                                 ids={group.ids}
                               />
                             ))}
