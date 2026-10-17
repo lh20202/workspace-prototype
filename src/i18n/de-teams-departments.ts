@@ -1,4 +1,18 @@
 export const germanTeamsDepartments: Record<string, string> = {
+  "Ooh, thanks for the reminder! I've reuploaded it there — here's the new link.":
+    "Oh, danke fürs Erinnern! Ich habe die Datei dort noch mal hochgeladen – hier ist der neue Link.",
+  "No worries! Can you also edit your original post to use the new link, just so we don't end up with two versions floating around? I'll remove the attachment from this channel's files. Thanks so much.":
+    "Kein Problem! Kannst du in deinem ursprünglichen Beitrag auch den neuen Link einsetzen, damit nicht zwei Versionen im Umlauf sind? Ich entferne den Anhang aus den Dateien dieses Kanals. Vielen Dank!",
+  "Thanks, Morgan — I've moved it to Creative & Multimedia. Here's the working copy.":
+    "Danke, Morgan – ich habe die Datei unter Kreation und Multimedia abgelegt. Hier ist die Arbeitsversion.",
+  "Perfect, thanks. I've removed the old upload here — let's keep reviewing through that link.":
+    "Perfekt, danke. Ich habe den alten Upload hier entfernt. Lasst uns die Datei ab jetzt über diesen Link prüfen.",
+  "Done — the feedback is in Capability & Learning now. I've updated the link in my post too.":
+    "Erledigt – die Rückmeldungen liegen jetzt unter Kompetenzentwicklung und Lernen. Den Link in meinem Beitrag habe ich auch aktualisiert.",
+  "Thanks, Elena. I've removed the old upload from our channel files.":
+    "Danke, Elena. Ich habe den alten Upload aus unseren Kanaldateien entfernt.",
+  "Attachment removed": "Anhang entfernt",
+  "Liked by": "Mit „Gefällt mir“ reagiert:",
   "I've attached October's conversion analysis. There's a bigger drop-off at step three than I expected — has anyone else seen this?":
     "Die Conversion-Analyse für Oktober hängt an. Beim dritten Schritt brechen mehr Leute ab als erwartet. Ist das sonst noch jemandem aufgefallen?",
   "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.":

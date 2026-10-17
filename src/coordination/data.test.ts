@@ -11,6 +11,10 @@ import {
 } from "./data";
 import { staff, peopleDirectory, workspaces } from "../intranet/catalog";
 import { germanTeamsDepartments } from "../i18n/de-teams-departments";
+import { configById, functionalConfigs } from "../workspaces/config";
+import { functionalFileHref } from "../workspaces/siteArchitecture";
+import { files as contentFiles, filesById } from "../content/data";
+import { libraryFor } from "../content/libraries";
 import {
   documents,
   departments as planningDepartments,
@@ -187,5 +191,115 @@ describe("department coordination architecture", () => {
     );
     expect(route.searchParams.get("staff")).toBe("maya");
     expect(route.searchParams.get("tab")).toBe("Posts");
+  });
+
+  it("completes the supplier correction in the original thread without changing its opening", () => {
+    const department = departments.find((d) => d.id === "strategy-technology")!;
+    const post = department.posts.find(
+      (p) => p.id === "strategy-technology-misfiled",
+    )!;
+    expect(post.author).toBe("Casey Blake");
+    expect(post.text).toBe(
+      "I've updated the supplier checklist after the project call. Have I missed anything before we send it back?",
+    );
+    expect(post.moderatorReply).toBe(
+      "Can we keep this in Purchasing & Suppliers and link it back? They'll need the latest copy too. Give me a shout if you want a hand moving it.",
+    );
+    expect(post.upload).toMatchObject({
+      id: "UP-STT-01",
+      name: "Supplier Onboarding Checklist.docx",
+      destination: "/services/purchasing",
+      removed: true,
+    });
+    expect(post.replies).toEqual([
+      {
+        author: "Casey Blake",
+        text: "Ooh, thanks for the reminder! I've reuploaded it there — here's the new link.",
+        time: "10:49",
+        link: {
+          href: functionalFileHref(configById.get("services")!, "services-F3"),
+          label: "Supplier Onboarding Checklist.docx",
+        },
+      },
+      {
+        author: "Theo Walker",
+        text: "No worries! Can you also edit your original post to use the new link, just so we don't end up with two versions floating around? I'll remove the attachment from this channel's files. Thanks so much.",
+        time: "10:53",
+        moderator: true,
+      },
+    ]);
+  });
+
+  it.each([
+    ["strategy-technology", "services", "services-F3"],
+    ["people-culture", "people", "people-F5"],
+  ])(
+    "links the completed %s correction to one existing functional file",
+    (departmentId, workspaceId, fileId) => {
+      const department = departments.find((d) => d.id === departmentId)!;
+      const post = department.posts.find(
+        (p) => p.id === `${departmentId}-misfiled`,
+      )!;
+      const config = configById.get(workspaceId)!;
+      const canonical = config.files.find((file) => file.id === fileId)!;
+      expect(canonical.name).toBe(post.upload!.name);
+      expect(post.replies![0].link).toEqual({
+        href: functionalFileHref(config, canonical.id),
+        label: canonical.name,
+      });
+      expect(
+        functionalConfigs
+          .flatMap((workspace) => workspace.files)
+          .filter((file) => file.name === canonical.name),
+      ).toEqual([canonical]);
+      expect(
+        department.library.some((file) => file.name === canonical.name),
+      ).toBe(false);
+      expect(post.upload!.removed).toBe(true);
+      expect(post.replies![1].moderator).toBe(true);
+    },
+  );
+
+  it("uses the existing production storyboard and retains the removed upload as history", () => {
+    const department = departments.find((d) => d.id === "communications")!;
+    const post = department.posts.find(
+      (p) => p.id === "communications-misfiled",
+    )!;
+    const canonical = filesById.get("video-storyboard")!;
+    expect(contentFiles.filter((file) => file.name === canonical.name)).toEqual(
+      [canonical],
+    );
+    expect(post.replies![0].link).toEqual({
+      href: `/content-delivery/${libraryFor(canonical)}?file=${canonical.id}`,
+      label: canonical.name,
+    });
+    expect(post.upload).toMatchObject({ name: canonical.name, removed: true });
+    expect(
+      department.library.some((file) => file.name === canonical.name),
+    ).toBe(false);
+    expect(post.replies![1]).toMatchObject({
+      author: "Morgan Lee",
+      moderator: true,
+    });
+  });
+
+  it("uses named thumbs-up acknowledgements without adding another reply thread", () => {
+    const examples = departments.flatMap((department) =>
+      department.posts
+        .filter((post) => post.moderatorLikedBy?.length)
+        .map((post) => ({ department, post })),
+    );
+    expect(examples.length).toBeGreaterThan(1);
+    for (const { department, post } of examples) {
+      expect(post.replies?.length || 0).toBe(0);
+      expect(post.moderatorLikedBy).toEqual([post.author]);
+      for (const name of post.moderatorLikedBy!)
+        expect(
+          [...peopleDirectory, ...staff].some(
+            (person) =>
+              person.name === name && person.departmentId === department.id,
+          ),
+        ).toBe(true);
+    }
   });
 });

@@ -14,6 +14,7 @@ import {
   DrawerHeader,
   DrawerHeaderTitle,
   DrawerBody,
+  Tooltip,
 } from "@fluentui/react-components";
 import {
   Folder20Regular,
@@ -21,6 +22,7 @@ import {
   Dismiss20Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import { useTranslation } from "../i18n/Language";
 import { TeamsComposer } from "../teams/TeamsShell";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
@@ -36,6 +38,43 @@ import {
   type AdminFile,
 } from "./data";
 import "./styles.css";
+
+export function NamedAcknowledgement({
+  names,
+  person,
+}: {
+  names: string[];
+  person: string;
+}) {
+  const { t } = useTranslation();
+  const [liked, setLiked] = useState(names.includes(person));
+  const reactors = [
+    ...names.filter((name) => name !== person),
+    ...(liked ? [person] : []),
+  ];
+  return (
+    <Tooltip
+      content={reactors.join(", ") || t("Like")}
+      relationship="description"
+    >
+      <button
+        type="button"
+        className="coord-acknowledgement"
+        aria-label={
+          reactors.length
+            ? `${t("Liked by")} ${reactors.join(", ")}`
+            : t("Like")
+        }
+        aria-pressed={liked}
+        title={reactors.join(", ") || t("Like")}
+        onClick={() => setLiked(!liked)}
+      >
+        👍 {reactors.length || t("Like")}
+      </button>
+    </Tooltip>
+  );
+}
+
 export default function DepartmentChannel({
   department,
   person,
@@ -94,7 +133,7 @@ export default function DepartmentChannel({
     ],
   };
   const selectedUpload = department.posts.find(
-    (p) => p.upload?.id === uploadId,
+    (p) => p.upload?.id === uploadId && !p.upload.removed,
   )?.upload;
   function navigate(
     nextFolder = "",
@@ -255,15 +294,24 @@ export default function DepartmentChannel({
                         {attachment.name}
                       </button>
                     )}
-                    {original?.upload && (
-                      <button
-                        className="coord-attachment"
-                        onClick={() => setUploadId(original.upload!.id)}
-                      >
-                        <DocumentIcon name={original.upload.name} />
-                        <span>{original.upload.name}</span>
-                      </button>
-                    )}
+                    {original?.upload &&
+                      (original.upload.removed ? (
+                        <div className="coord-attachment coord-attachment-removed">
+                          <DocumentIcon name={original.upload.name} />
+                          <span>
+                            <s>{original.upload.name}</s>
+                            <small>Attachment removed</small>
+                          </span>
+                        </div>
+                      ) : (
+                        <button
+                          className="coord-attachment"
+                          onClick={() => setUploadId(original.upload!.id)}
+                        >
+                          <DocumentIcon name={original.upload.name} />
+                          <span>{original.upload.name}</span>
+                        </button>
+                      ))}
                     {original?.moderatorReply && (
                       <article
                         className="m365-teams-reply coord-moderator"
@@ -285,21 +333,42 @@ export default function DepartmentChannel({
                             Open destination: {original.upload!.destinationName}{" "}
                             →
                           </StaffLink>
+                          {original.moderatorLikedBy && (
+                            <NamedAcknowledgement
+                              names={original.moderatorLikedBy}
+                              person={person.name}
+                            />
+                          )}
                         </div>
                       </article>
                     )}
                     {original?.replies?.map((reply, i) => (
                       <article
-                        className="m365-teams-reply coord-local-reply"
+                        className={`m365-teams-reply coord-local-reply${reply.moderator ? " coord-moderator" : ""}`}
+                        aria-label={
+                          reply.moderator
+                            ? `Moderator reply from ${reply.author}`
+                            : `Reply from ${reply.author}`
+                        }
                         key={`seed-${i}`}
                       >
                         {avatar(reply.author)}
                         <div className="thread-reply-body">
                           <header>
                             <strong>{reply.author}</strong>
+                            {reply.moderator && (
+                              <span className="coord-moderator-badge">
+                                MODERATOR
+                              </span>
+                            )}
                             <span>{reply.time}</span>
                           </header>
                           <p>{reply.text}</p>
+                          {reply.link && (
+                            <StaffLink href={reply.link.href}>
+                              {reply.link.label}
+                            </StaffLink>
+                          )}
                         </div>
                       </article>
                     ))}

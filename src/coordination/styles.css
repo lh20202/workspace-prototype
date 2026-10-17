@@ -645,6 +645,32 @@
 .department-channel-body .coord-attachment:hover {
   background: #f5f5f5;
 }
+.department-channel-body .coord-attachment-removed {
+  cursor: default;
+  color: #616161;
+}
+.department-channel-body .coord-attachment-removed:hover {
+  background: #fff;
+}
+.department-channel-body .coord-acknowledgement {
+  display: block;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  color: #424242;
+  font: inherit;
+  font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.department-channel-body .coord-acknowledgement:hover,
+.department-channel-body .coord-acknowledgement[aria-pressed="true"] {
+  background: #f0effa;
+  border-color: #b4b6df;
+}
 .department-channel-body .coord-moderator,
 .department-channel-body .coord-local-reply {
   margin: 12px 0 0 44px;

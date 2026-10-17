@@ -1,5 +1,7 @@
 import { matchesDisplayText } from "../i18n/search";
 import { canAccessDepartment, canAccessUnit } from "../access/policy";
+import { configById } from "../workspaces/config";
+import { functionalFileHref } from "../workspaces/siteArchitecture";
 
 export interface CoordinationPerson {
   id: string;
@@ -54,6 +56,14 @@ export interface ThreadUpload {
   kind: "Misplaced business upload";
   destination: string;
   destinationName: string;
+  removed?: boolean;
+}
+export interface CoordinationReply {
+  author: string;
+  text: string;
+  time: string;
+  moderator?: boolean;
+  link?: { href: string; label: string };
 }
 export interface CoordinationPost {
   id: string;
@@ -63,7 +73,8 @@ export interface CoordinationPost {
   attachmentId?: string;
   upload?: ThreadUpload;
   moderatorReply?: string;
-  replies?: { author: string; text: string; time: string }[];
+  replies?: CoordinationReply[];
+  moderatorLikedBy?: string[];
 }
 export interface Department {
   id: string;
@@ -247,6 +258,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       destination: "/content-delivery/creative",
       destinationName: "Creative & Editorial Studio → Creative & Multimedia",
+      removed: true,
     },
     reply:
       "Looks like this is the live storyboard. Can you keep it in Creative & Multimedia and drop the link here? Saves us reviewing two versions.",
@@ -273,6 +285,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       destination: "/services/purchasing",
       destinationName: "Staff Service Operations → Purchasing & Suppliers",
+      removed: true,
     },
     reply:
       "Can we keep this in Purchasing & Suppliers and link it back? They'll need the latest copy too. Give me a shout if you want a hand moving it.",
@@ -286,6 +299,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       destination: "/people-culture/learning",
       destinationName: "People & Culture → Capability & Learning",
+      removed: true,
     },
     reply:
       "Could you keep the feedback in Capability & Learning and post the link here? Then the learning team can add to the same copy.",
@@ -398,6 +412,23 @@ const departmentReplies: Record<
     ],
   },
   communications: {
+    misfiled: [
+      {
+        author: "Alex Morgan",
+        text: "Thanks, Morgan — I've moved it to Creative & Multimedia. Here's the working copy.",
+        time: "10:52",
+        link: {
+          href: "/content-delivery/production?file=video-storyboard",
+          label: "Service Explainer — Storyboard.pptx",
+        },
+      },
+      {
+        author: "Morgan Lee",
+        text: "Perfect, thanks. I've removed the old upload here — let's keep reviewing through that link.",
+        time: "10:56",
+        moderator: true,
+      },
+    ],
     P4: [
       {
         author: "Morgan Lee",
@@ -433,6 +464,23 @@ const departmentReplies: Record<
     ],
   },
   "strategy-technology": {
+    misfiled: [
+      {
+        author: "Casey Blake",
+        text: "Ooh, thanks for the reminder! I've reuploaded it there — here's the new link.",
+        time: "10:49",
+        link: {
+          href: functionalFileHref(configById.get("services")!, "services-F3"),
+          label: "Supplier Onboarding Checklist.docx",
+        },
+      },
+      {
+        author: "Theo Walker",
+        text: "No worries! Can you also edit your original post to use the new link, just so we don't end up with two versions floating around? I'll remove the attachment from this channel's files. Thanks so much.",
+        time: "10:53",
+        moderator: true,
+      },
+    ],
     P3: [
       {
         author: "Devon Park",
@@ -442,6 +490,23 @@ const departmentReplies: Record<
     ],
   },
   "people-culture": {
+    misfiled: [
+      {
+        author: "Elena Rossi",
+        text: "Done — the feedback is in Capability & Learning now. I've updated the link in my post too.",
+        time: "10:51",
+        link: {
+          href: functionalFileHref(configById.get("people")!, "people-F5"),
+          label: "Manager Capability Programme — Pilot Feedback.xlsx",
+        },
+      },
+      {
+        author: "Clara Jensen",
+        text: "Thanks, Elena. I've removed the old upload from our channel files.",
+        time: "10:58",
+        moderator: true,
+      },
+    ],
     P4: [
       {
         author: "Jamie Ellis",
@@ -647,6 +712,12 @@ export const departments: Department[] = definitions.map(
     for (const post of posts) {
       const key = post.id.slice(id.length + 1);
       post.replies = departmentReplies[id]?.[key];
+      if (
+        post.moderatorReply &&
+        !post.replies?.length &&
+        post.author !== coordinatorName
+      )
+        post.moderatorLikedBy = [post.author];
     }
     return {
       id,
