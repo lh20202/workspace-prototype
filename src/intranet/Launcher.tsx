@@ -82,6 +82,7 @@ export default function Launcher() {
           </Dialog>
           <WorkspaceFAQ />
         </div>
+        <h2 className="launcher-demos-heading">Explore these workspace demos</h2>
         <div className="launcher-choices">
           {choices.map(({ title, href, action }) => (
             <a
@@ -93,7 +94,7 @@ export default function Launcher() {
               <WorkspaceIcon />
               <div>
                 <div className="launcher-choice-title">
-                  <h2>{title}</h2>
+                  <h3>{title}</h3>
                 </div>
                 <span className="launcher-action">{action}</span>
               </div>
@@ -104,7 +105,7 @@ export default function Launcher() {
             <Organization24Regular aria-hidden="true" />
             <div>
               <div className="launcher-choice-title">
-                <h2>
+                <h3>
                   <a
                     href={withExplicitStaff("/architecture")}
                     className="launcher-complete-link"
@@ -112,7 +113,7 @@ export default function Launcher() {
                   >
                     Explore all workspaces &amp; wikis
                   </a>
-                </h2>
+                </h3>
                 <BetaBadge />
               </div>
               <span className="launcher-action">

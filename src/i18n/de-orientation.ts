@@ -8,6 +8,7 @@ export const germanOrientation: Record<string, string> = {
   "This demo was built with AI-assisted coding. The AI was given generic descriptions of typical work and asked to create fictional files, conversations and workflows that feel realistic. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
     "Diese Demo wurde mit KI-gestützter Programmierung erstellt. Die KI erhielt allgemeine Beschreibungen typischer Aufgaben und entwickelte dazu frei erfundene Dateien, Gespräche und Abläufe, die realistisch wirken. Es wurden keine Unternehmensdaten verwendet. Die Demo ist weder mit produktivem Microsoft 365 noch mit anderen Unternehmenssystemen verbunden.",
   "Explore workspace": "Arbeitsbereich erkunden",
+  "Explore these workspace demos": "Arbeitsbereiche zum Ausprobieren",
   "Browse all company workspaces and wikis.":
     "Entdecken Sie alle Arbeitsbereiche und Wikis des Unternehmens.",
   "Still being tested. You may spot rough edges or things that change.":

@@ -70,9 +70,14 @@
 :root .launcher-created-dialog p:last-child {
   margin-bottom: 0;
 }
+:root .prototype-launcher .launcher-demos-heading {
+  margin: 28px 0 12px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
 :root .prototype-launcher .launcher-choices {
   border-top: 1px solid #deddda;
-  margin-top: 28px;
 }
 :root .prototype-launcher .launcher-choice {
   display: grid;
@@ -130,7 +135,7 @@
   align-items: center;
   flex-wrap: wrap;
 }
-:root .prototype-launcher .launcher-choice h2 {
+:root .prototype-launcher .launcher-choice h3 {
   font-size: 20px;
   line-height: 28px;
   font-weight: 600;
@@ -156,7 +161,7 @@
     padding: 24px 4px;
     grid-template-columns: 24px minmax(0, 1fr) 20px;
   }
-  :root .prototype-launcher .launcher-choice h2 {
+  :root .prototype-launcher .launcher-choice h3 {
     font-size: 18px;
     line-height: 24px;
   }
