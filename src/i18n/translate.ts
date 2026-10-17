@@ -106,6 +106,24 @@ export function translateText(source: string, language: Language): string {
     return `${leading}${fileType[1].toUpperCase()}-Datei${trailing}`;
   const week = text.match(/^Week (\d+)$/);
   if (week) return `${leading}Woche ${week[1]}${trailing}`;
+  const searchLabel = text.match(/^Search (.+)$/);
+  if (searchLabel)
+    return `${leading}${translateText(searchLabel[1], language)} durchsuchen${trailing}`;
+  const documentTable = text.match(/^(.+) documents$/);
+  if (documentTable && !/^\d+$/.test(documentTable[1]))
+    return `${leading}Dokumente – ${translateText(documentTable[1], language)}${trailing}`;
+  const selectLabel = text.match(/^Select (.+)$/);
+  if (selectLabel)
+    return `${leading}${translateText(selectLabel[1], language)} auswählen${trailing}`;
+  const replyLabel = text.match(/^(Moderator reply from|Reply from) (.+)$/);
+  if (replyLabel)
+    return `${leading}${replyLabel[1].startsWith("Moderator") ? "Moderation: " : ""}Antwort von ${replyLabel[2]}${trailing}`;
+  const statusLabel = text.match(/^Status for (.+)$/);
+  if (statusLabel)
+    return `${leading}Status für ${translateText(statusLabel[1], language)}${trailing}`;
+  const moreActions = text.match(/^More actions for (.+)$/);
+  if (moreActions)
+    return `${leading}Weitere Aktionen für ${translateText(moreActions[1], language)}${trailing}`;
   const counted = text.match(
     /^(\d+) (documents?|files?|folders?|members?|replies|reply|channels?|items?|results?|open items?)$/i,
   );
@@ -127,6 +145,24 @@ export function translateText(source: string, language: Language): string {
     if (noun[key]) return `${leading}${counted[1]} ${noun[key]}${trailing}`;
   }
   // Compound bylines and locations keep names and canonical identifiers intact.
+  if (text.includes("/") && !text.startsWith("/") && !/^https?:/i.test(text))
+    return (
+      leading +
+      text
+        .split("/")
+        .map((part) => translateText(part, language))
+        .join("/") +
+      trailing
+    );
+  if (text.includes(", ") && !/[.!?]/.test(text))
+    return (
+      leading +
+      text
+        .split(", ")
+        .map((part) => translateText(part, language))
+        .join(", ") +
+      trailing
+    );
   if (/\s[·|/→]\s/.test(text)) {
     const parts = text.split(/(\s[·|/→]\s)/);
     return (

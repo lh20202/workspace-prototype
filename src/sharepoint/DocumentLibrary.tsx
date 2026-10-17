@@ -771,7 +771,7 @@ export default function DocumentLibrary({
                       {path.split("/").pop()}
                     </button>
                     <span className="sp-library-folder-count">
-                      {count} document{count === 1 ? "" : "s"}
+                      {`${count} document${count === 1 ? "" : "s"}`}
                     </span>
                   </td>
                   {columns.length > 1 && <td colSpan={columns.length - 1} />}

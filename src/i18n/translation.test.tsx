@@ -42,6 +42,10 @@ describe("English and German display language", () => {
     expect(translateText("14 Oct 2026", "de")).toBe("14. Okt. 2026");
     expect(translateText("2 files", "de")).toBe("2 Dateien");
     expect(translateText("1 reply", "de")).toBe("1 Antwort");
+    expect(translateText("4 documents", "de")).toBe("4 Dokumente");
+    expect(translateText("Search Current Production", "de")).toBe(
+      "Aktuelle Produktion durchsuchen",
+    );
     expect(translateText("I need access to General.", "de")).toBe(
       "Ich benötige Zugriff auf den Bereich „Allgemein“.",
     );
