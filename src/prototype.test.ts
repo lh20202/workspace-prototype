@@ -21,9 +21,9 @@ describe("launcher and service desk routes", () => {
     );
   });
   it("sets distinct product and page titles", () => {
-    expect(pageTitle("/")).toBe("Digital workspace proof of concept");
+    expect(pageTitle("/")).toBe("Welcome | Digital Workspace demo site");
     expect(pageTitle("/architecture")).toBe(
-      "Full Architecture Proof of Concept | Exploratory",
+      "All workspaces | Digital Workspace demo site",
     );
     expect(prototypeForPath("/architecture")).toBe("architecture");
     expect(pageTitle("/logistics/teams")).toBe(
@@ -33,19 +33,37 @@ describe("launcher and service desk routes", () => {
       "Access request | Service Desk",
     );
   });
-  it("distinguishes two reference proofs of concept from the exploratory architecture", () => {
+  it("welcomes people with two examples and a clearly labelled complete demo", () => {
     const launcher = renderToStaticMarkup(createElement(Launcher));
-    expect(launcher.match(/Reference proof of concept/g)).toHaveLength(2);
-    expect(launcher).toContain("Full Architecture Proof of Concept");
-    expect(launcher).toContain("Digital workspace proof of concept");
+    expect(launcher).toContain(
+      "<h1>Welcome to the Digital Workspace demo site!</h1>",
+    );
+    expect(launcher).toContain(
+      "Explore what your new Digital Workspaces could look and feel like. Try the examples below, switch roles and see how access changes.",
+    );
+    expect(launcher.match(/Explore this workspace/g)).toHaveLength(2);
+    expect(launcher).toContain("Explore all workspaces &amp; wikis");
+    expect(launcher).toContain(
+      "Browse the complete demo, including workspaces, Wikis, portals and role-based access.",
+    );
     expect(launcher).toContain("BETA TEST");
-    expect(launcher).toContain('class="launcher-build-label"');
+    expect(launcher).toContain('aria-label="About beta test"');
+    expect(launcher).toContain('aria-label="Proof of concept"');
+    expect(launcher).toContain("How was this created?");
+    expect(launcher).toContain(
+      "No company data was used to create this demo site.",
+    );
+    expect(launcher).not.toContain("Full Architecture Proof of Concept");
+    expect(launcher).not.toContain("Reference proof of concept");
     expect(launcher).not.toContain("Reference prototype");
     expect(launcher.replace(/<[^>]*>/g, "")).not.toContain("POC");
-    expect(launcher).toContain("Work in progress · expect rough edges");
+    expect(launcher).not.toContain("Work in progress · expect rough edges");
     expect(launcher).toContain('href="/planning"');
     expect(launcher).toContain('href="/logistics"');
     expect(launcher).toContain('href="/architecture"');
+    for (const anchor of launcher.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)) {
+      expect(anchor[0]).not.toContain("<button");
+    }
   });
   it("separates preview navigation from disabled intranet context", () => {
     vi.stubGlobal("location", { pathname: "/architecture", search: "" });
@@ -60,9 +78,16 @@ describe("launcher and service desk routes", () => {
         directory.match(
           /<nav[^>]*aria-label="Intranet navigation"[\s\S]*?<\/nav>/,
         )?.[0] || "";
-      expect(controls).toContain("← All workspaces");
-      expect(controls).toContain("Architecture");
-      expect(controls).toContain("Fictional names and content");
+      expect(controls).toContain("← Welcome");
+      expect(controls).toContain("All workspaces");
+      expect(controls).not.toContain("Fictional names &amp; content");
+      expect(directory).toContain("Fictional names &amp; content");
+      expect(directory).toContain("No company data used");
+      expect(controls).not.toContain("Architecture");
+      expect(controls).toMatch(
+        /<a[^>]*href="\/architecture"[^>]*aria-current="page"/,
+      );
+      expect(controls).toContain("BETA");
       expect(controls).not.toContain("Preview controls");
       expect(controls).toContain('class="prototype-utilities"');
       expect(intranet.match(/<button[^>]*disabled=""/g)).toHaveLength(4);

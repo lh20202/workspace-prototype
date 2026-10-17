@@ -1,14 +1,50 @@
 :root .poc-controls .preview-role-control {
   display: grid;
+  flex: 0 1 430px;
+  gap: 3px;
+  width: clamp(340px, 32vw, 430px);
+  min-width: 340px;
+  max-width: 100%;
+}
+:root .poc-controls .preview-role-heading {
+  display: flex;
+  align-items: center;
   gap: 6px;
   min-width: 0;
+  min-height: 20px;
+  font-size: 12px;
+  line-height: 18px;
 }
-:root .poc-controls .preview-role-control .demo-persona {
-  gap: 7px;
+:root .poc-controls .preview-role-heading label {
+  flex: none;
+  color: #fff;
+  font-weight: 500;
+}
+:root .poc-controls .preview-role-cue {
+  margin-left: auto;
+  color: #c6c6c6;
 }
 :root .poc-controls .preview-role-control select {
-  width: clamp(190px, 19vw, 280px);
-  text-overflow: ellipsis;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 34px;
+  padding: 5px 30px 5px 10px;
+  border: 1px solid #737373;
+  border-radius: 3px;
+  background: #353535;
+  color: #fff;
+  font:
+    13px/20px "Inter Variable",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+:root .poc-controls .preview-role-control select:hover {
+  border-color: #aaa;
+  background-color: #3d3d3d;
 }
 :root .poc-controls .preview-role-control select:focus-visible {
   outline: 2px solid #fff;
@@ -23,33 +59,48 @@
 }
 @media (max-width: 1100px) {
   :root .poc-controls .preview-role-control {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    justify-self: center;
-    max-width: 100%;
+    width: 390px;
   }
-  :root .poc-controls .preview-role-control .demo-persona {
-    display: flex;
+  :root .poc-controls .preview-role-cue {
+    display: none;
   }
-  :root .poc-controls .preview-role-control select {
-    width: min(420px, 60vw);
+  :root .poc-controls .preview-role-heading .demo-info {
+    margin-left: auto;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
+  :root .poc-controls .preview-role-control {
+    width: min(430px, 100%);
+    min-width: 0;
+  }
+}
+@media (max-width: 480px) {
   :root .poc-controls .preview-role-control {
     width: 100%;
-  }
-  :root .poc-controls .preview-role-control .demo-persona {
-    display: grid;
-    gap: 4px;
-    width: 100%;
-  }
-  :root .poc-controls .preview-role-control select {
-    width: 100%;
-    max-width: 100%;
+    flex-basis: 100%;
   }
 }
-
+/* Keep the outer controls compact on short laptop displays. */
+@media (min-width: 1101px) and (max-height: 760px) {
+  :root .prototype-navigator.poc-controls {
+    min-height: 44px;
+    padding-block: 4px;
+  }
+  :root .poc-controls .preview-role-control {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    min-width: 0;
+  }
+  :root .poc-controls .preview-role-control select {
+    width: 390px;
+  }
+  :root .poc-controls .preview-role-cue {
+    display: none;
+  }
+}
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   :root .poc-controls .preview-role-control select {
     transition:

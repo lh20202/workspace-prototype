@@ -1,11 +1,15 @@
+import { Info16Regular } from "@fluentui/react-icons";
 import PocAnnotation from "./PocAnnotation";
-import { LanguageToggle } from "../i18n/Language";
+import BetaBadge from "./BetaBadge";
+import DemoInfo, { roleAccessInfoText } from "./DemoInfo";
+import { LanguageToggle, useTranslation } from "../i18n/Language";
 import { staff, resolveStaffPerson, rememberStaff } from "../intranet/catalog";
 import { teamsPreviewHrefForStaff } from "../teams/navigation";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
 export default function PrototypeNavigator() {
+  const { t } = useTranslation();
   const emergency = location.pathname.startsWith("/emergency-response");
   const teams =
     location.pathname === "/teams" ||
@@ -22,67 +26,71 @@ export default function PrototypeNavigator() {
         aria-label="Proof of concept navigation"
       >
         <div className="prototype-links">
-          <a href={withExplicitStaff("/")}>← All workspaces</a>
-          <a
-            href={withExplicitStaff("/architecture")}
-            aria-current={
-              location.pathname === "/architecture" ? "page" : undefined
-            }
-          >
-            Architecture
-          </a>
+          <a href={withExplicitStaff("/")}>← Welcome</a>
+          <span className="prototype-workspaces-link">
+            <a
+              href={withExplicitStaff("/architecture")}
+              aria-current={
+                location.pathname.replace(/\/+$/, "") === "/architecture"
+                  ? "page"
+                  : undefined
+              }
+            >
+              All workspaces
+            </a>
+            <BetaBadge compact />
+          </span>
         </div>
-        <PocAnnotation
-          title="Fictional names and content"
-          className="poc-control-caveat"
-          label="Proof of concept: fictional names and data"
-        />
         <div className="prototype-utilities">
           <div className="preview-role-control">
-            <label className="demo-persona" htmlFor="preview-role">
-              Preview role
-              <select
-                id="preview-role"
-                ref={preview?.roleSelectorRef}
-                className={
-                  preview?.roleSelectorHighlighted
-                    ? "preview-role-highlighted"
-                    : undefined
+            <div className="preview-role-heading">
+              <label htmlFor="preview-role">Explore as</label>
+              <span className="preview-role-cue">
+                Switch roles to explore access
+              </span>
+              <DemoInfo label="About role access">
+                {roleAccessInfoText}
+              </DemoInfo>
+            </div>
+            <select
+              id="preview-role"
+              ref={preview?.roleSelectorRef}
+              className={
+                preview?.roleSelectorHighlighted
+                  ? "preview-role-highlighted"
+                  : undefined
+              }
+              aria-label="Preview role"
+              title={`${t(person.role)} — ${person.name}`}
+              value={person.id}
+              onChange={(e) => {
+                rememberStaff(e.target.value);
+                const nextPerson = staff.find(
+                  (member) => member.id === e.target.value,
+                )!;
+                if (teams) {
+                  location.assign(
+                    teamsPreviewHrefForStaff(
+                      nextPerson,
+                      location.pathname,
+                      location.search,
+                    ),
+                  );
+                } else {
+                  const next = new URL(location.href);
+                  next.searchParams.set("staff", nextPerson.id);
+                  // Historical per-product role previews cannot override the selected role.
+                  next.searchParams.delete("preview");
+                  location.assign(`${next.pathname}${next.search}${next.hash}`);
                 }
-                aria-label="Preview role"
-                title={`${person.role} — ${person.name}`}
-                value={person.id}
-                onChange={(e) => {
-                  rememberStaff(e.target.value);
-                  const nextPerson = staff.find(
-                    (member) => member.id === e.target.value,
-                  )!;
-                  if (teams) {
-                    location.assign(
-                      teamsPreviewHrefForStaff(
-                        nextPerson,
-                        location.pathname,
-                        location.search,
-                      ),
-                    );
-                  } else {
-                    const next = new URL(location.href);
-                    next.searchParams.set("staff", nextPerson.id);
-                    // Historical per-product role previews cannot override the selected role.
-                    next.searchParams.delete("preview");
-                    location.assign(
-                      `${next.pathname}${next.search}${next.hash}`,
-                    );
-                  }
-                }}
-              >
-                {staff.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.role} — {s.name}
-                  </option>
-                ))}
-              </select>
-            </label>
+              }}
+            >
+              {staff.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {t(s.role)}
+                </option>
+              ))}
+            </select>
           </div>
           {emergency && (
             <div className="response-preview">
@@ -95,6 +103,11 @@ export default function PrototypeNavigator() {
           <LanguageToggle />
         </div>
       </nav>
+      <div className="demo-fictional-status" role="note">
+        <Info16Regular aria-hidden="true" />
+        <span>Fictional names &amp; content</span>
+        <span className="demo-fictional-support">No company data used</span>
+      </div>
     </div>
   );
 }

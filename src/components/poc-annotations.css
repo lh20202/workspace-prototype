@@ -39,19 +39,18 @@
   padding: 8px 12px;
   background: #f3f2f1;
 }
-/* Equal outer columns keep the fictional-content note centered. */
+/* Demo-site navigation and controls stay distinct from product navigation. */
 :root .prototype-navigator.poc-controls {
   position: relative;
   top: auto;
   z-index: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  gap: 8px 12px;
+  gap: 16px 28px;
   min-height: 48px;
   padding: 8px 14px;
   border: 1px solid #333;
-  border-radius: 3px;
+  border-radius: 3px 3px 0 0;
   background: #242424;
   color: #fff;
   box-shadow: none;
@@ -66,11 +65,18 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px 8px;
+  gap: 4px 12px;
   min-width: 0;
 }
-:root .poc-controls .prototype-links > a,
+:root .poc-controls .prototype-workspaces-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+:root .poc-controls .prototype-links a,
 :root .poc-controls .response-preview > a {
+  display: inline-flex;
+  align-items: center;
   min-height: 32px;
   padding: 5px 8px;
   border: 1px solid transparent;
@@ -85,42 +91,26 @@
   text-decoration: none;
   white-space: nowrap;
 }
-:root .poc-controls .prototype-links > a:hover,
-:root .poc-controls .prototype-links > a[aria-current="page"],
+:root .poc-controls .prototype-links a:hover,
+:root .poc-controls .prototype-links a[aria-current="page"],
 :root .poc-controls .response-preview > a:hover {
   border-color: #747474;
   background: #3d3d3d;
 }
-:root .poc-controls .prototype-links > a:focus-visible,
+:root .poc-controls .prototype-links a:focus-visible,
 :root .poc-controls .response-preview > a:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
-}
-:root .poc-controls .poc-control-caveat {
-  justify-self: center;
-  width: max-content;
-  margin: 0;
-  padding: 4px 8px;
-  border: 1px solid #616161;
-  border-radius: 2px;
-  color: #eee;
-  background: #333;
-  font:
-    400 12px/18px "Inter Variable",
-    Inter,
-    "Segoe UI",
-    system-ui,
-    sans-serif;
-  letter-spacing: 0;
-  white-space: normal;
 }
 :root .poc-controls .prototype-utilities {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 8px 12px;
+  flex: 1;
+  gap: 8px 20px;
   min-width: 0;
+  margin-left: auto;
 }
 :root .poc-controls .prototype-utilities > .language-toggle {
   flex: none;
@@ -130,18 +120,32 @@
   background: #3d3d3d;
   color: #fff;
 }
-:root .poc-controls .demo-persona {
-  min-width: 0;
-  margin: 0;
-  font-size: 12px;
-  white-space: nowrap;
+:root .demo-control-frame > .demo-fictional-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  min-height: 26px;
+  padding: 3px 14px;
+  border: 1px solid #bdd4df;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
+  background: #eaf3f8;
+  color: #31566a;
+  font:
+    12px/18px "Inter Variable",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
 }
-:root .poc-controls .demo-persona select {
-  width: min(280px, 22vw);
-  min-width: 0;
-  max-width: 100%;
-  border-radius: 2px;
-  font-family: "Inter Variable", Inter, "Segoe UI", system-ui, sans-serif;
+:root .demo-fictional-status > svg {
+  flex: none;
+}
+:root .demo-fictional-status .demo-fictional-support {
+  padding-left: 8px;
+  border-left: 1px solid #bdd4df;
 }
 :root .poc-controls .response-preview {
   display: flex;
@@ -441,39 +445,53 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 800px) {
   :root .prototype-navigator.poc-controls {
-    grid-template-columns: minmax(0, 1fr) auto;
+    flex-wrap: wrap;
+    gap: 8px 16px;
   }
   :root .poc-controls .prototype-links {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  :root .poc-controls .poc-control-caveat {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    flex: 1 1 auto;
   }
   :root .poc-controls .prototype-utilities {
-    display: contents;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    flex: 1 1 100%;
+    gap: 8px 16px;
   }
   :root .poc-controls .prototype-utilities > .language-toggle {
-    grid-column: 2;
-    grid-row: 1;
     justify-self: end;
-    align-self: start;
-  }
-  :root .poc-controls .demo-persona {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    justify-self: center;
-    max-width: 100%;
-  }
-  :root .poc-controls .demo-persona select {
-    width: min(480px, 68vw);
+    align-self: end;
+    margin-bottom: 5px;
   }
   :root .poc-controls .response-preview {
     grid-column: 1 / -1;
-    justify-self: center;
+    grid-row: 2;
+  }
+}
+@media (max-width: 480px) {
+  :root .prototype-navigator.poc-controls {
+    padding-inline: 10px;
+  }
+  :root .poc-controls .prototype-utilities {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  :root .poc-controls .prototype-utilities > .language-toggle {
+    grid-row: 1;
+    justify-self: end;
+    margin-bottom: 0;
+  }
+  :root .poc-controls .preview-role-control {
+    grid-row: 2;
+  }
+  :root .poc-controls .response-preview {
+    grid-row: 3;
+  }
+  :root .demo-control-frame > .demo-fictional-status {
+    justify-content: flex-start;
+    padding-inline: 10px;
   }
 }
 @media (max-width: 600px) {

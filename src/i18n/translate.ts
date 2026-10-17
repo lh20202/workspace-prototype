@@ -10,6 +10,7 @@ import { germanTeamsLogistics } from "./de-teams-logistics";
 import { germanTeamsStudio } from "./de-teams-studio";
 import { germanTeamsTechnical } from "./de-teams-technical";
 import { germanTeamsDepartments } from "./de-teams-departments";
+import { germanOrientation } from "./de-orientation";
 
 export type Language = "en" | "de";
 const messages = {
@@ -25,6 +26,7 @@ const messages = {
   ...germanTeamsStudio,
   ...germanTeamsTechnical,
   ...germanTeamsDepartments,
+  ...germanOrientation,
 };
 const englishMonths = [
   "January",

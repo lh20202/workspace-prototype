@@ -91,9 +91,9 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
-  if (pathname === "/") return "Digital workspace proof of concept";
+  if (pathname === "/") return "Welcome | Digital Workspace demo site";
   if (pathname.startsWith("/architecture"))
-    return "Full Architecture Proof of Concept | Exploratory";
+    return "All workspaces | Digital Workspace demo site";
   if (pathname.startsWith("/logistics/teams"))
     return "Acquisition & Activation Logistics | Teams";
   const registered = environmentRegistry.find(

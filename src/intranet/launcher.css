@@ -1,4 +1,4 @@
-.prototype-launcher {
+:root .prototype-launcher {
   position: relative;
   min-height: 100dvh;
   display: grid;
@@ -14,105 +14,147 @@
   width: auto;
   max-width: none;
 }
-.launcher-content {
+:root .prototype-launcher > .launcher-content {
   width: min(760px, 100%);
+  max-width: 760px;
 }
-.launcher-eyebrow {
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 1px;
-  color: #616161;
-  margin-bottom: 16px;
-}
-.launcher-content > h1 {
+:root .prototype-launcher .launcher-content > h1 {
   font-size: 28px;
   line-height: 36px;
   font-weight: 600;
   letter-spacing: -0.5px;
-  margin-bottom: 40px;
+  margin: 0 0 12px;
 }
-.launcher-choices {
+:root .prototype-launcher .launcher-intro {
+  font-size: 16px;
+  line-height: 24px;
+  color: #424242;
+  margin: 0;
+}
+:root .prototype-launcher .launcher-explanation {
+  margin-top: 12px;
+}
+:root .prototype-launcher .launcher-data-note {
+  font-size: 13px;
+  line-height: 20px;
+  color: #616161;
+  margin: 12px 0 2px;
+}
+:root .prototype-launcher .launcher-created-link {
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
+  color: #31566a;
+  font-size: 13px;
+  line-height: 20px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+:root .prototype-launcher .launcher-created-link:hover {
+  color: #17445c;
+}
+:root .launcher-created-dialog p {
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+:root .launcher-created-dialog p:last-child {
+  margin-bottom: 0;
+}
+:root .prototype-launcher .launcher-choices {
   border-top: 1px solid #deddda;
+  margin-top: 28px;
 }
-.launcher-choice {
+:root .prototype-launcher .launcher-choice {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr) 24px;
   align-items: center;
   gap: 24px;
-  padding: 28px 12px;
+  padding: 24px 12px;
   color: inherit;
   text-decoration: none;
   border-bottom: 1px solid #deddda;
   transition: background-color 140ms ease;
 }
-.launcher-choice > svg {
+:root .prototype-launcher .launcher-choice > svg {
   color: #616161;
 }
-.launcher-choice > svg:last-child {
+:root .prototype-launcher .launcher-choice > svg:last-child {
   transition: color 140ms ease;
 }
-.launcher-choice:hover {
+:root .prototype-launcher .launcher-choice:hover {
   background: #f0efed;
 }
-.launcher-choice:hover > svg:last-child {
+:root .prototype-launcher .launcher-choice:focus-visible,
+:root
+  .prototype-launcher
+  .launcher-complete-choice:has(.launcher-complete-link:focus-visible) {
+  outline: 2px solid #0078d4;
+  outline-offset: -2px;
+  background: #f0efed;
+}
+:root .prototype-launcher .launcher-complete-choice {
+  position: relative;
+}
+:root .prototype-launcher .launcher-complete-link {
+  color: inherit;
+  text-decoration: none;
+}
+:root .prototype-launcher .launcher-complete-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+:root .prototype-launcher .launcher-complete-link:focus-visible {
+  outline: none;
+}
+:root .prototype-launcher .launcher-complete-choice .beta-badge {
+  position: relative;
+  z-index: 1;
+}
+:root .prototype-launcher .launcher-choice:hover > svg:last-child {
   color: #0078d4;
 }
-.launcher-choice-title {
+:root .prototype-launcher .launcher-choice-title {
   display: flex;
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
 }
-.launcher-choice h2 {
+:root .prototype-launcher .launcher-choice h2 {
   font-size: 20px;
   line-height: 28px;
   font-weight: 600;
 }
-.launcher-action {
+:root .prototype-launcher .launcher-action {
   display: block;
   font-size: 14px;
   line-height: 20px;
   color: #616161;
   margin-top: 8px;
 }
-.launcher-build-label {
-  display: inline-flex;
-  align-items: center;
-  color: #616161;
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 600;
-}
-.launcher-caveat {
-  display: block;
-  font-size: 12px;
-  line-height: 16px;
-  color: #616161;
-  margin-top: 4px;
-}
 @media (max-width: 600px) {
-  .prototype-launcher {
-    padding: 32px 20px;
-    place-items: center;
+  :root .prototype-launcher {
+    padding: 76px 20px 32px;
   }
-  .launcher-content > h1 {
+  :root .prototype-launcher .launcher-content > h1 {
     font-size: 28px;
     line-height: 36px;
-    margin-bottom: 32px;
+    margin-bottom: 12px;
   }
-  .launcher-choice {
+  :root .prototype-launcher .launcher-choice {
     gap: 16px;
     padding: 24px 4px;
     grid-template-columns: 24px minmax(0, 1fr) 20px;
   }
-  .launcher-choice h2 {
+  :root .prototype-launcher .launcher-choice h2 {
     font-size: 18px;
     line-height: 24px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .launcher-choice,
-  .launcher-choice > svg:last-child {
+  :root .prototype-launcher .launcher-choice,
+  :root .prototype-launcher .launcher-choice > svg:last-child {
     transition: none;
   }
 }
