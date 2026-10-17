@@ -16,7 +16,7 @@ export default function WorkspaceFAQExample({ href }: { href: string }) {
         aria-controls={exampleId}
         onClick={() => setExpanded(!expanded)}
       >
-        See an example in Teams
+        See an example
         <ChevronDown16Regular aria-hidden="true" />
       </button>
       <div id={exampleId} hidden={!expanded}>

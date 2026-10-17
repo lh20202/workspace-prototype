@@ -17,7 +17,7 @@ describe("inline FAQ Teams example", () => {
     expect(html).toContain('type="button"');
     expect(html).toContain('aria-expanded="false"');
     expect(html).toContain("aria-controls=");
-    expect(html).toContain("See an example in Teams");
+    expect(html).toContain("See an example");
     expect(html).toContain("hidden=");
     expect(html).not.toContain("href=");
     expect(html).not.toContain("Taylor Brooks");

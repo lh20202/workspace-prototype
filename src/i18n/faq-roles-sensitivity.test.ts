@@ -51,7 +51,7 @@ describe("final staff-facing German interpretation", () => {
     expect(german(workspaceFAQQuestions[1].answer)).toContain(
       "beim Verschieben der Arbeitsfassung",
     );
-    expect(german("See an example in Teams")).toBe("Beispiel in Teams ansehen");
+    expect(german("See an example")).toBe("Beispiel ansehen");
     expect(
       new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
         "post",

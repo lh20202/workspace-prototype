@@ -13,7 +13,7 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
     "Was passiert, wenn doch jemand eine Datei aus einem persönlichen Speicherbereich teilt?",
   "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.":
     "Das kommt vor. Die Ansprechpersonen der Arbeitsbereiche sind darin geschult, solche Links zu erkennen, beim Verschieben der Arbeitsfassung in den richtigen Arbeitsbereich zu helfen und den geteilten Link zu aktualisieren.",
-  "See an example in Teams": "Beispiel in Teams ansehen",
+  "See an example": "Beispiel ansehen",
   "Teams exchange": "Unterhaltung in Teams",
   "Loading Teams exchange…": "Unterhaltung in Teams wird geladen…",
   "Go to full Teams demo": "Vollständige Teams-Demo öffnen",
