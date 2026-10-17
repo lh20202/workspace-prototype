@@ -275,7 +275,11 @@ const file = (
     validFrom: "2026-10-01",
     validTo: "2026-12-31",
     modified: `2026-10-${String(3 + ([...id].reduce((sum, letter) => sum + letter.charCodeAt(0), 0) % 14)).padStart(2, "0")}`,
-    sensitivity: "Internal",
+    sensitivity:
+      /analysis|findings|model|segment.*assessment/i.test(name) &&
+      !/template|guide/i.test(name)
+        ? "Confidential"
+        : "Internal",
     recordState: "Working information",
   };
 };

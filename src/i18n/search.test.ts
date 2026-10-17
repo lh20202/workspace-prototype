@@ -72,6 +72,7 @@ describe("search matches the same canonical records in English and German", () =
   it("searches each permitted library field before concatenation without changing IDs, status filters or folders", () => {
     const permitted: LibraryDocument[] = [
       {
+        sensitivity: "Internal",
         id: "working",
         name: "Customer Welcome — Creative Brief.docx",
         folder: "Planning & Analysis/2026",
@@ -79,6 +80,7 @@ describe("search matches the same canonical records in English and German", () =
         metadata: { Workspace: "Organisational Planning & Reporting" },
       },
       {
+        sensitivity: "Internal",
         id: "approved",
         name: "Release checklist.xlsx",
         folder: "Planning & Analysis/2026",

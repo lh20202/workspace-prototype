@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { useState, useEffect } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import {
@@ -24,9 +25,10 @@ import {
   type TaskState,
 } from "./data";
 import { fileHref, filesForChannel } from "./query";
-import { resolveStaffPerson, rememberStaff } from "../intranet/catalog";
+import { rememberStaff } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
+import { teamsPersonForSearch } from "../teams/departmentPreview";
 import { teamsGroups } from "../teams/navigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
 import "../teams/integrations.css";
@@ -48,9 +50,7 @@ export default function TeamsView({
   onWorkspace: () => void;
   onMessage: (m: string) => void;
 }) {
-  const person = resolveStaffPerson(
-    new URLSearchParams(location.search).get("staff"),
-  );
+  const person = teamsPersonForSearch(location.search);
   useEffect(() => rememberStaff(person.id), [person.id]);
   const requestedChannel = channels.find((c) => c.id === channelId);
   const channel = requestedChannel ?? channels.find((c) => c.id === "general")!;
@@ -173,6 +173,7 @@ export default function TeamsView({
                 <DocumentIcon name={f.name} />
                 <span>
                   {f.name}
+                  <SensitivityBadge value={f.sensitivity} />
                   <small>{f.campaign}</small>
                 </span>
               </button>
@@ -294,6 +295,7 @@ export default function TeamsView({
                           <DocumentIcon name={f.name} />
                           <span>
                             {f.name}
+                            <SensitivityBadge value={f.sensitivity} />
                             <small>
                               {librariesName(f.library)} · {f.status}
                             </small>
@@ -411,6 +413,7 @@ export default function TeamsView({
               headingLevel={2}
               files={channelFiles.map((f) => ({
                 id: f.id,
+                sensitivity: f.sensitivity,
                 name: f.name,
                 folder: f.folder,
                 modified: f.modified,
@@ -424,7 +427,6 @@ export default function TeamsView({
                   "Document type": f.type,
                   "Valid from": f.validFrom,
                   "Valid to": f.validTo,
-                  Sensitivity: f.sensitivity,
                   "Record state": f.recordState,
                 },
               }))}

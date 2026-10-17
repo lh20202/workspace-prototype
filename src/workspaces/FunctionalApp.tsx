@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import ExternalBrandMark from "../components/ExternalBrandMark";
 import AccessLock from "../components/AccessLock";
 import {
@@ -517,6 +518,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               )
               .map((f) => ({
                 id: f.id,
+                sensitivity: f.sensitivity,
                 name: f.name,
                 folder: "Implementation review/Approved material",
                 modified: f.modified,
@@ -758,6 +760,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                   .slice(0, 2)
                   .map((file) => ({
                     id: file.id,
+                    sensitivity: file.sensitivity,
                     name: file.name,
                     folder: "Working methods",
                     modified: file.modified,
@@ -842,6 +845,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                           href={fileHref(file.id)}
                         >
                           <DocumentIcon name={file.name} />
+                          <SensitivityBadge value={file.sensitivity} />
                           <span>
                             {file.name}
                             <small>

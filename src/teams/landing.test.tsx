@@ -21,7 +21,7 @@ describe("role-specific Teams landing and shell", () => {
       );
       vi.stubGlobal("sessionStorage", { getItem: () => id });
       const html = renderToStaticMarkup(<TeamsPreview />);
-      expect(html).toContain(`<span>${team}</span><h1>${channel}</h1>`);
+      expect(html).toContain(`${team}</span><h1>${channel}</h1>`);
       expect(html).not.toContain("Access required");
       expect(html).not.toContain("Acquisition &amp; Activation Logistics");
     }

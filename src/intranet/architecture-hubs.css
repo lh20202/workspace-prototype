@@ -1,16 +1,16 @@
-/* Functional hub bands deliberately keep a calm vertical reading order. */
+/* Four functional hub bands retain their vertical reading order. */
 :root
   .architecture-poc-page
   .intranet-directory
   .directory-main:has(.directory-content .directory-groups) {
   max-width: 1480px;
-  padding: 28px 32px 56px;
+  padding: 24px 32px 44px;
 }
 :root .architecture-poc-page .intranet-directory .directory-content {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 264px;
+  grid-template-columns: minmax(0, 1fr) 244px;
   align-items: start;
-  gap: 36px;
+  gap: 28px;
 }
 :root
   .architecture-poc-page
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 32px;
+  gap: 24px;
   min-width: 0;
 }
 :root .architecture-poc-page .directory-groups .directory-hub {
@@ -28,7 +28,7 @@
   --hub-border: #c7dde1;
   --hub-surface: #eaf4f5;
   min-width: 0;
-  padding: 24px;
+  padding: 18px 20px;
   border: 1px solid var(--hub-border);
   border-radius: 6px;
   background: var(--hub-surface);
@@ -51,9 +51,9 @@
 :root .architecture-poc-page .directory-hub-heading {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 36px;
-  margin: 0 0 20px;
+  gap: 10px;
+  min-height: 32px;
+  margin: 0 0 14px;
   color: var(--hub-accent);
 }
 :root .architecture-poc-page .directory-hub-heading h2 {
@@ -74,13 +74,26 @@
   height: 26px;
 }
 :root .architecture-poc-page .directory-subheading {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: var(--hub-accent);
   font-size: 11px;
   line-height: 16px;
   font-weight: 650;
   letter-spacing: 0.9px;
   text-transform: uppercase;
+}
+:root .architecture-poc-page .directory-hub-body {
+  display: grid;
+  grid-template-columns: minmax(0, 318px) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+:root .architecture-poc-page .directory-hub-infrastructure .directory-hub-body {
+  grid-template-columns: minmax(0, 652px) minmax(170px, 1fr);
+}
+:root .architecture-poc-page .directory-hub-workspaces,
+:root .architecture-poc-page .directory-hub-support {
+  min-width: 0;
 }
 :root .architecture-poc-page .directory-hub-grid {
   display: grid;
@@ -89,7 +102,9 @@
 }
 :root .architecture-poc-page .directory-org-groups {
   display: grid;
-  gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
 }
 :root
   .architecture-poc-page
@@ -97,20 +112,27 @@
   .directory-content
   .directory-groups
   :is(.directory-tile, .directory-tile:last-child:nth-child(odd)) {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-column: auto;
-  grid-template-columns: 28px minmax(0, 1fr) 18px;
-  align-items: center;
-  min-height: 62px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 108px;
   width: auto;
-  padding: 12px 14px;
-  gap: 12px;
+  padding: 12px;
+  gap: 10px;
   color: #2d3941;
   background: #fff;
   border: 1px solid #d9e0e3;
   border-radius: 4px;
   box-shadow: none;
   text-decoration: none;
+  transform: none;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease;
 }
 :root
   .architecture-poc-page
@@ -120,19 +142,10 @@
   h3 {
   margin: 0;
   font-size: 15px;
-  line-height: 22px;
+  line-height: 21px;
   font-weight: 550;
   letter-spacing: 0;
   overflow-wrap: anywhere;
-}
-:root .architecture-poc-page .directory-tile .workspace-icon {
-  grid-column: 1;
-  grid-row: 1;
-}
-:root .architecture-poc-page .directory-row-arrow {
-  color: #788990;
-  width: 18px;
-  height: 18px;
 }
 :root
   .architecture-poc-page
@@ -141,8 +154,13 @@
   .directory-groups
   .directory-tile:hover {
   border-color: var(--hub-accent);
-  background: #fff;
-  box-shadow: 0 1px 4px #25394312;
+  background: #fcfdfe;
+  box-shadow: 0 1px 4px #25394316;
+  transform: none;
+}
+:root .architecture-poc-page .directory-workspace-card:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 3px;
 }
 :root .architecture-poc-page .directory-confidential {
   display: inline-flex;
@@ -155,19 +173,20 @@
   width: 15px;
   height: 15px;
 }
+:root .architecture-poc-page .directory-hub-support {
+  padding-left: 20px;
+  border-left: 1px solid var(--hub-border);
+}
 :root .architecture-poc-page .directory-knowledge {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 22px;
-  padding-top: 20px;
-  border-top: 1px solid var(--hub-border);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
 }
 :root .architecture-poc-page .directory-knowledge a {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 42px;
+  min-height: 36px;
   color: #2d5362;
   font-size: 14px;
   font-weight: 550;
@@ -191,12 +210,22 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+:root .architecture-poc-page .directory-hub-support .directory-admin-logins {
+  margin-top: 14px;
+  padding-top: 12px;
+}
+:root .architecture-poc-page .directory-hub-support .directory-admin-list {
+  gap: 6px 18px;
+}
+:root .architecture-poc-page .directory-hub-support .directory-admin-list a {
+  min-height: 36px;
+}
 :root .architecture-poc-page .directory-controlled-links {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px 24px;
-  margin-top: 20px;
+  gap: 6px 18px;
+  margin-top: 12px;
 }
 :root .architecture-poc-page .directory-controlled-links a {
   display: inline-flex;
@@ -224,7 +253,7 @@
 }
 :root .architecture-poc-page .directory-finance-title {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   color: var(--hub-accent);
   text-decoration: none;
@@ -243,7 +272,7 @@
 :root .architecture-poc-page .directory-finance-jumps > div {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: 8px 24px;
 }
 :root .architecture-poc-page .directory-finance-jumps a {
   display: inline-flex;
@@ -262,14 +291,18 @@
   width: 13px;
   height: 13px;
 }
+:root .architecture-poc-page .directory-hub-finance .directory-admin-logins {
+  margin-top: 14px;
+  padding-top: 12px;
+}
 :root
   .architecture-poc-page
   .intranet-directory
   .directory-content
   .directory-coordination {
   position: sticky;
-  top: 28px;
-  padding: 0 0 0 24px;
+  top: 24px;
+  padding: 0 0 0 20px;
   border-left: 1px solid #dddfe7;
 }
 :root
@@ -283,7 +316,7 @@
   gap: 9px;
   font-size: 18px;
   line-height: 26px;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 :root
   .architecture-poc-page
@@ -291,7 +324,7 @@
   .directory-content
   .directory-coordination
   > p {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-size: 13px;
   line-height: 20px;
 }
@@ -300,8 +333,8 @@
   .intranet-directory
   .directory-content
   .department-quick-link {
-  padding: 14px 0;
-  gap: 12px;
+  padding: 10px 0;
+  gap: 10px;
 }
 :root
   .architecture-poc-page
@@ -320,32 +353,9 @@
   .department-quick-link
   small {
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
   font-size: 12px;
   line-height: 18px;
-}
-:root .architecture-poc-page .directory-my-teams {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 12px;
-  margin-top: 20px;
-  border: 1px solid #d4d3e8;
-  border-radius: 4px;
-  background: #f4f3fb;
-  color: #4e4b9d;
-  font-size: 13px;
-  line-height: 20px;
-  text-decoration: none;
-}
-:root .architecture-poc-page .directory-my-teams > svg {
-  margin-left: auto;
-  width: 17px;
-  height: 17px;
-}
-:root .architecture-poc-page .directory-my-teams:hover {
-  border-color: #8c88c4;
-  background: #eeedf8;
 }
 :root
   .architecture-poc-page
@@ -353,31 +363,80 @@
     .directory-knowledge a,
     .directory-controlled-links a,
     .directory-finance-title,
-    .directory-finance-jumps a,
-    .directory-my-teams
+    .directory-finance-jumps a
   ):focus-visible {
   outline: 2px solid #0078d4;
   outline-offset: 4px;
   border-radius: 2px;
 }
-@media (max-width: 1000px) {
-  :root .architecture-poc-page .intranet-directory .directory-content {
-    grid-template-columns: minmax(0, 1fr) 228px;
-    gap: 24px;
-  }
-  :root .architecture-poc-page .directory-groups .directory-hub {
-    padding: 20px;
-  }
-  :root .architecture-poc-page .directory-hub-grid,
-  :root .architecture-poc-page .directory-knowledge {
+@media (max-width: 1260px) {
+  :root
+    .architecture-poc-page
+    .directory-hub-infrastructure
+    .directory-hub-body {
     grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
   :root
     .architecture-poc-page
-    .intranet-directory
-    .directory-content
-    .directory-coordination {
-    padding-left: 20px;
+    .directory-hub-infrastructure
+    .directory-hub-support {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    padding: 12px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--hub-border);
+  }
+  :root
+    .architecture-poc-page
+    .directory-hub-infrastructure
+    .directory-admin-logins {
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+}
+@media (max-width: 1050px) {
+  :root .architecture-poc-page .intranet-directory .directory-content {
+    grid-template-columns: minmax(0, 1fr) 210px;
+    gap: 20px;
+  }
+  :root .architecture-poc-page .directory-groups .directory-hub {
+    padding: 16px;
+  }
+  :root .architecture-poc-page .directory-hub-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  :root .architecture-poc-page .directory-hub-workspaces {
+    max-width: 318px;
+  }
+  :root
+    .architecture-poc-page
+    .directory-hub-infrastructure
+    .directory-hub-workspaces {
+    max-width: none;
+  }
+  :root .architecture-poc-page .directory-hub-support {
+    padding: 12px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--hub-border);
+  }
+  :root .architecture-poc-page .directory-knowledge {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 850px) {
+  :root .architecture-poc-page .directory-org-groups {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 318px;
+  }
+  :root
+    .architecture-poc-page
+    .directory-hub-infrastructure
+    .directory-hub-support {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 @media (max-width: 700px) {
@@ -385,25 +444,19 @@
     .architecture-poc-page
     .intranet-directory
     .directory-main:has(.directory-content .directory-groups) {
-    padding: 24px 16px 40px;
+    padding: 24px 16px 36px;
   }
   :root .architecture-poc-page .intranet-directory .directory-content {
     grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
-  }
-  :root
-    .architecture-poc-page
-    .intranet-directory
-    .directory-content
-    .directory-groups {
-    gap: 28px;
-  }
-  :root .architecture-poc-page .directory-groups .directory-hub {
-    padding: 18px;
+    gap: 32px;
   }
   :root .architecture-poc-page .directory-hub-heading h2 {
     font-size: 21px;
     line-height: 28px;
+  }
+  :root .architecture-poc-page .directory-hub-workspaces,
+  :root .architecture-poc-page .directory-org-groups {
+    max-width: 318px;
   }
   :root
     .architecture-poc-page
@@ -412,7 +465,34 @@
     .directory-coordination {
     position: static;
     border-left: 0;
-    padding: 24px 0 0;
+    padding: 20px 0 0;
     border-top: 1px solid #dddfe7;
   }
+}
+@media (max-width: 390px) {
+  :root .architecture-poc-page .directory-hub-grid,
+  :root .architecture-poc-page .directory-knowledge {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-content
+    .directory-groups
+    .directory-tile {
+    transition: none;
+  }
+}
+/* German compound nouns need real hyphenation rather than arbitrary breaks. */
+:root:lang(de)
+  .architecture-poc-page
+  .directory-content
+  .directory-groups
+  .directory-tile
+  h3 {
+  max-width: 100%;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }

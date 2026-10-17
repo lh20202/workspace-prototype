@@ -1,4 +1,5 @@
-import type { LibraryDefinition } from "../sharepoint/library";
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
+import type { LibraryDefinition, LibraryDocument } from "../sharepoint/library";
 import { resolveStaffPerson } from "../intranet/catalog";
 import {
   canAccessProject,
@@ -193,6 +194,9 @@ export const projectFiles = (p: Project) =>
     id: `${p.code}-F${i}`,
     name,
     projectCode: p.code,
+    sensitivity: (p.access === "Restricted"
+      ? "Confidential"
+      : "Internal") as SensitivityLabel,
     folder:
       i === 2
         ? "Delivery/Review"
@@ -271,3 +275,66 @@ export const projectLibraryDefinition: LibraryDefinition = {
     { id: "stage", name: "By Stage", sortBy: "Stage", recursive: true },
   ],
 };
+
+export const projectPortfolioFiles = (
+  kind: "control" | "support",
+  personId?: string,
+): LibraryDocument[] =>
+  kind === "control"
+    ? [
+        {
+          sensitivity: "Internal",
+          id: "PRJ-CONTROL-1",
+          name: "Project Review Agenda.docx",
+          folder: "Portfolio Reviews/October 2026",
+          owner: "Casey Blake",
+          modified: "16 Oct 2026",
+          status: "In review",
+        },
+        {
+          sensitivity: "Internal",
+          id: "PRJ-CONTROL-2",
+          name: "Stage Decision Notes.docx",
+          folder: "Stage Reviews/October 2026",
+          owner: "Robin Avery",
+          modified: "16 Oct 2026",
+          status: "Current",
+        },
+        {
+          sensitivity: "Internal",
+          id: "PRJ-CONTROL-3",
+          name: "Closure Review Checklist.docx",
+          folder: "Closure/2026",
+          owner: "Casey Blake",
+          modified: "15 Oct 2026",
+          status: "Current",
+        },
+      ]
+    : [
+        currentProjects[1],
+        currentProjects[3],
+        currentProjects[4],
+        currentProjects[6],
+      ]
+        .map((p, i) => ({ project: p, index: i }))
+        .filter(({ project }) => !personId || canOpenProject(project, personId))
+        .map(({ project: p, index: i }) => ({
+          sensitivity: "Internal",
+          id: `PRJ-SUPPORT-${p.code}`,
+          name: [
+            "Risk Workshop Agenda.docx",
+            "Delivery Plan Review.docx",
+            "Stage Review Notes.docx",
+            "Closure Approach.docx",
+          ][i],
+          folder: projectTitle(p) + "/Current support",
+          owner: "Casey Blake",
+          modified: "16 Oct 2026",
+          status: "In progress",
+          summary: [
+            "Facilitate the project risk workshop.",
+            "Review the delivery plan with the project lead.",
+            "Prepare the next stage review.",
+            "Agree the closure approach and final records.",
+          ][i],
+        }));

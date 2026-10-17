@@ -359,12 +359,12 @@ export default function EmergencyApp() {
                       readOnly={archived}
                       files={incident.files.map((f) => ({
                         id: f.id,
+                        sensitivity: f.sensitivity,
                         name: f.name,
                         folder: "",
                         owner: incident.lead,
                         modified: incident.started.slice(0, 10),
                         status: archived ? "Archived" : "Working",
-                        metadata: { Sensitivity: "Strictly confidential" },
                       }))}
                     />
                   </section>

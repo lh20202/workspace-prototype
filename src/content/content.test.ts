@@ -1,3 +1,4 @@
+import { isSensitivityLabel } from "../sharepoint/sensitivity";
 import { describe, it, expect } from "vitest";
 import {
   packages,
@@ -79,7 +80,7 @@ describe("Connected content production", () => {
       expect(files.some((f) => f.id === p.id)).toBe(false);
       expect(packagesById.has(p.packageId)).toBe(true);
     }
-    expect(files.every((f) => f.sensitivity === "Internal")).toBe(true);
+    expect(files.every((f) => isSensitivityLabel(f.sensitivity))).toBe(true);
     expect(
       files.some((f) => f.name.toLowerCase().includes("participant")),
     ).toBe(false);

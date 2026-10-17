@@ -290,19 +290,7 @@
   font-size: 13px;
   line-height: 18px;
 }
-.m365-teams-team-icon {
-  display: grid;
-  place-items: center;
-  background: #e1e6ea;
-  color: #40576a;
-  border-radius: 4px;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  font-size: 10px;
-  line-height: 16px;
-  font-weight: 600;
-}
+
 :root .m365-teams-channel {
   display: flex;
   align-items: center;
@@ -752,4 +740,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.m365-teams-parent-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.m365-teams-post[tabindex="-1"]:focus {
+  outline: 2px solid #7471b8;
+  outline-offset: 3px;
 }

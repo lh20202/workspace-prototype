@@ -1,3 +1,4 @@
+import SensitivityBadge from "./SensitivityBadge";
 import { useEffect, useId, useState } from "react";
 import {
   Button,
@@ -168,6 +169,7 @@ export default function DocumentLibrary({
           "owner",
           "status",
           "contentType",
+          "sensitivity",
           "folder",
         ].includes(field.key) &&
         (!typeFields || typeFields.includes(field.key)),
@@ -324,6 +326,7 @@ export default function DocumentLibrary({
         ...current,
         {
           id: `preview-${crypto.randomUUID()}`,
+          sensitivity: definition?.defaultSensitivity ?? "Internal",
           name: filename,
           folder,
           modified: new Date().toISOString().slice(0, 10),
@@ -475,6 +478,12 @@ export default function DocumentLibrary({
       </div>
       {!embedded && definition?.purpose && (
         <p className="sp-library-purpose">{definition.purpose}</p>
+      )}
+      {!embedded && definition?.defaultSensitivity && (
+        <p className="sp-library-default-label">
+          Default sensitivity for new files:{" "}
+          <SensitivityBadge value={definition.defaultSensitivity} />
+        </p>
       )}
       {!embedded && (
         <>
@@ -731,7 +740,7 @@ export default function DocumentLibrary({
               {columns.map(({ key, label }) => (
                 <th
                   key={key}
-                  className={`sp-library-column-${["name", "modified", "owner", "status"].includes(key) ? key : "metadata"}`}
+                  className={`sp-library-column-${["name", "modified", "owner", "status", "sensitivity"].includes(key) ? key : "metadata"}`}
                   aria-sort={
                     sort === key
                       ? descending
@@ -808,7 +817,7 @@ export default function DocumentLibrary({
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className={`sp-library-column-${["name", "modified", "owner", "status"].includes(column.key) ? column.key : "metadata"}`}
+                    className={`sp-library-column-${["name", "modified", "owner", "status", "sensitivity"].includes(column.key) ? column.key : "metadata"}`}
                   >
                     {column.key === "name" ? (
                       <>
@@ -825,6 +834,8 @@ export default function DocumentLibrary({
                             </small>
                           )}
                       </>
+                    ) : column.key === "sensitivity" ? (
+                      <SensitivityBadge value={file.sensitivity} />
                     ) : column.key === "status" ? (
                       <span className="sp-library-status">
                         {file.status ?? "Draft"}
@@ -926,7 +937,13 @@ export default function DocumentLibrary({
                 {documentProperties(active, definition).map(([key, value]) => (
                   <div key={key}>
                     <dt>{key}</dt>
-                    <dd>{value}</dd>
+                    <dd>
+                      {key === "Sensitivity" ? (
+                        <SensitivityBadge value={active.sensitivity} />
+                      ) : (
+                        value
+                      )}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -991,7 +1008,13 @@ export default function DocumentLibrary({
                         ([key, value]) => (
                           <div key={key}>
                             <dt>{key}</dt>
-                            <dd>{value}</dd>
+                            <dd>
+                              {key === "Sensitivity" ? (
+                                <SensitivityBadge value={active.sensitivity} />
+                              ) : (
+                                value
+                              )}
+                            </dd>
                           </div>
                         ),
                       )}

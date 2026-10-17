@@ -149,7 +149,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).toContain('aria-labelledby="hub-finance"');
     expect(html).toContain('aria-label="Department Teams"');
     expect(html).not.toContain('class="directory-teams"');
-    expect(html).toContain("Open my Teams");
+    expect(html).not.toContain("Open my Teams");
     expect(html).toContain("Direction &amp; assurance");
     expect(html).toContain("Shared services");
     expect(html.match(/class="workspace-icon"/g)).toHaveLength(16);
@@ -228,7 +228,9 @@ describe("confidential membership remains separate from hub association", () => 
     expect(html).toContain('<option value="devon" selected=""');
     expect(html).toContain('href="/digital-tech?staff=devon"');
     expect(html).toContain('href="/sales-marketing/wiki?staff=devon"');
-    expect(html).toContain('href="/teams?staff=devon"');
+    expect(html).toContain(
+      'href="/teams?staff=taylor&amp;department=stt&amp;departmentPreview=strategy-technology&amp;tab=Posts"',
+    );
   });
   it("denies ordinary CEO entry without exposing executive working files", () => {
     at("/executive?staff=maya");

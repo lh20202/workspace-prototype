@@ -34,7 +34,7 @@ import {
 const person = (id: string) => staff.find((s) => s.id === id)!;
 afterEach(() => vi.unstubAllGlobals());
 
-describe("all Teams surfaces follow the central six-role policy", () => {
+describe("all Teams surfaces follow the central nine-role policy", () => {
   it("falls stale personas back to the ordinary default instead of retaining stored privilege", () => {
     expect(staff.map((member) => member.id)).toEqual([
       "taylor",
@@ -43,16 +43,12 @@ describe("all Teams surfaces follow the central six-role policy", () => {
       "jamie",
       "devon",
       "leonie",
+      "nadia",
+      "sam",
+      "elliot",
     ]);
     vi.stubGlobal("sessionStorage", { getItem: () => "devon" });
-    for (const stale of [
-      "morgan",
-      "unknown",
-      "alex",
-      "sam",
-      "riley",
-      "skyler",
-    ]) {
+    for (const stale of ["morgan", "unknown", "alex", "riley", "skyler"]) {
       expect(resolveStaffPerson(stale).id).toBe("taylor");
       expect(teamsStaffForWorkspace("digital", stale)).toBe("taylor");
       expect(visibleContentChannels(stale)).toEqual([]);
@@ -65,7 +61,7 @@ describe("all Teams surfaces follow the central six-role policy", () => {
       ).toBe(false);
       expect(canSeeProject({ id: stale }, "PRJ-2026-014")).toBe(false);
     }
-    vi.stubGlobal("sessionStorage", { getItem: () => "alex" });
+    vi.stubGlobal("sessionStorage", { getItem: () => "unknown" });
     expect(selectedStaffId()).toBe("taylor");
     expect(resolveStaffPerson().id).toBe("taylor");
     expect(teamsStaffForWorkspace("content", "maya")).toBe("maya");
@@ -112,7 +108,7 @@ describe("all Teams surfaces follow the central six-role policy", () => {
           .map((c) => c.id),
       ).toEqual([]);
   });
-  it("keeps the six-role Team matrix explicit and independent of SharePoint visibility", () => {
+  it("keeps the nine-role Team matrix explicit and independent of SharePoint visibility", () => {
     const expected = {
       taylor: ["company", "marketing-growth"],
       maya: ["company", "logistics", "marketing-growth", "PRJ-2026-014"],
@@ -133,6 +129,9 @@ describe("all Teams surfaces follow the central six-role policy", () => {
         "emergency",
       ],
       leonie: ["company", "digital", "strategy-technology"],
+      nadia: ["company", "content", "marketing-growth"],
+      sam: ["company", "finance-services"],
+      elliot: ["company", "digital", "strategy-technology"],
     };
     for (const member of staff) {
       expect(teamsGroups(member).map((group) => group.id)).toEqual(
@@ -146,14 +145,14 @@ describe("all Teams surfaces follow the central six-role policy", () => {
       ]);
       expect(canAccessWorkspace(member, "logistics")).toBe(true);
       expect(canSeeWorkspace(member, "logistics")).toBe(member.id === "maya");
-      expect(canSeeWorkspace(member, "content")).toBe(false);
+      expect(canSeeWorkspace(member, "content")).toBe(member.id === "nadia");
       expect(visibleWorkspaceChannels(member, "planning")).toEqual(
         member.id === "robin" ? ["General", "Planning coordination"] : [],
       );
       expect(visibleWorkspaceChannels(member, "digital")).toEqual(
         member.id === "devon"
           ? technicalChannels
-          : member.id === "leonie"
+          : ["leonie", "elliot"].includes(member.id)
             ? [
                 "M365 & SPFx",
                 "Architecture & Governance",

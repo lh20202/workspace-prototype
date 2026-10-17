@@ -10,7 +10,6 @@ import {
   ChevronRight16Regular,
   Organization24Regular,
 } from "@fluentui/react-icons";
-import { resolveStaffPerson } from "./catalog";
 import { architectureSections, hubById } from "../workspaces/registry";
 import {
   architectureDestinationById,
@@ -23,20 +22,21 @@ import {
 import AdminLogins from "./AdminLogins";
 import "./styles.css";
 import "./launcher.css";
-import { departments, departmentHref } from "../coordination/data";
+import { departments } from "../coordination/data";
+import { departmentPreviewHref } from "../teams/departmentPreview";
 import "../coordination/styles.css";
 import "../executive/styles.css";
 import "../workspaces/styles.css";
 import "./architecture-hubs.css";
 
-function DestinationTile({
+export function WorkspaceCard({
   destination,
 }: {
   destination: ArchitectureDestination;
 }) {
   return (
     <StaffLink
-      className="directory-tile"
+      className="directory-tile directory-workspace-card"
       href={destination.href}
       data-environment="workspace"
     >
@@ -47,7 +47,6 @@ function DestinationTile({
           <AccessLock className="directory-confidential" />
         )}
       </h3>
-      <ArrowRight20Regular className="directory-row-arrow" aria-hidden="true" />
     </StaffLink>
   );
 }
@@ -58,7 +57,7 @@ function WorkspaceGroup({ label, ids }: { label: string; ids: string[] }) {
       <h3 className="directory-subheading">{label}</h3>
       <div className="directory-hub-grid">
         {ids.map((id) => (
-          <DestinationTile
+          <WorkspaceCard
             key={id}
             destination={architectureDestinationById.get(id)!}
           />
@@ -69,9 +68,6 @@ function WorkspaceGroup({ label, ids }: { label: string; ids: string[] }) {
 }
 
 export default function Directory() {
-  const person = resolveStaffPerson(
-    new URLSearchParams(location.search).get("staff"),
-  );
   return (
     <div className="architecture-poc-page">
       <PrototypeNavigator />
@@ -164,79 +160,88 @@ export default function Directory() {
                       </span>
                       <h2 id={`hub-${hub.id}`}>{hub.name}</h2>
                     </header>
-                    {hub.id === "infrastructure" ? (
-                      <div className="directory-org-groups">
-                        {orgCentralGroups.map((group) => (
-                          <WorkspaceGroup
-                            key={group.label}
-                            label={group.label}
-                            ids={group.ids}
-                          />
-                        ))}
-                      </div>
-                    ) : hub.id === "personnel" ? (
-                      <>
-                        <div className="directory-hub-grid">
-                          {personnelDestinations.normal.map((destination) => (
-                            <DestinationTile
-                              destination={destination}
-                              key={destination.id}
-                            />
-                          ))}
-                        </div>
-                        <div className="directory-controlled-links">
-                          {personnelDestinations.controlled.map(
-                            (destination) => (
-                              <StaffLink
-                                href={destination.href}
-                                key={destination.id}
-                              >
-                                <AccessLock className="directory-confidential" />
-                                <span>{destination.label}</span>
-                                <ChevronRight16Regular aria-hidden="true" />
-                              </StaffLink>
-                            ),
-                          )}
-                        </div>
-                      </>
-                    ) : (
-                      <WorkspaceGroup
-                        label="Workspaces"
-                        ids={environments
-                          .filter(
-                            (destination) => destination.type === "workspace",
-                          )
-                          .map(({ id }) => id)}
-                      />
-                    )}
-                    {environments.some((environment) =>
-                      ["wiki", "portal"].includes(environment.type),
-                    ) && (
-                      <div
-                        className="directory-knowledge"
-                        aria-label="Knowledge & external environments"
-                      >
-                        {environments
-                          .filter((environment) =>
-                            ["wiki", "portal"].includes(environment.type),
-                          )
-                          .map((environment) => (
-                            <StaffLink
-                              key={environment.id}
-                              href={environment.href}
-                              data-environment={environment.type}
-                            >
-                              <EnvironmentIcon
-                                type={environment.type as "wiki" | "portal"}
-                                size={26}
+                    <div className="directory-hub-body">
+                      <div className="directory-hub-workspaces">
+                        {hub.id === "infrastructure" ? (
+                          <div className="directory-org-groups">
+                            {orgCentralGroups.map((group) => (
+                              <WorkspaceGroup
+                                key={group.label}
+                                label={group.label}
+                                ids={group.ids}
                               />
-                              <span>{environment.label}</span>
-                              <ArrowRight20Regular aria-hidden="true" />
-                            </StaffLink>
-                          ))}
+                            ))}
+                          </div>
+                        ) : hub.id === "personnel" ? (
+                          <>
+                            <div className="directory-hub-grid">
+                              {personnelDestinations.normal.map(
+                                (destination) => (
+                                  <WorkspaceCard
+                                    destination={destination}
+                                    key={destination.id}
+                                  />
+                                ),
+                              )}
+                            </div>
+                            <div className="directory-controlled-links">
+                              {personnelDestinations.controlled.map(
+                                (destination) => (
+                                  <StaffLink
+                                    href={destination.href}
+                                    key={destination.id}
+                                  >
+                                    <AccessLock className="directory-confidential" />
+                                    <span>{destination.label}</span>
+                                    <ChevronRight16Regular aria-hidden="true" />
+                                  </StaffLink>
+                                ),
+                              )}
+                            </div>
+                          </>
+                        ) : (
+                          <WorkspaceGroup
+                            label="Workspaces"
+                            ids={environments
+                              .filter(
+                                (destination) =>
+                                  destination.type === "workspace",
+                              )
+                              .map(({ id }) => id)}
+                          />
+                        )}
                       </div>
-                    )}
-                    <AdminLogins hubId={hub.id} />
+                      <div className="directory-hub-support">
+                        {environments.some((environment) =>
+                          ["wiki", "portal"].includes(environment.type),
+                        ) && (
+                          <div
+                            className="directory-knowledge"
+                            aria-label="Knowledge & external environments"
+                          >
+                            {environments
+                              .filter((environment) =>
+                                ["wiki", "portal"].includes(environment.type),
+                              )
+                              .map((environment) => (
+                                <StaffLink
+                                  key={environment.id}
+                                  href={environment.href}
+                                  data-environment={environment.type}
+                                >
+                                  <EnvironmentIcon
+                                    type={environment.type as "wiki" | "portal"}
+                                    size={26}
+                                  />
+                                  <span>{environment.label}</span>
+                                  <ArrowRight20Regular aria-hidden="true" />
+                                </StaffLink>
+                              ))}
+                          </div>
+                        )}
+                        <AdminLogins hubId={hub.id} />
+                      </div>
+                    </div>
                   </section>
                 );
               })}
@@ -254,7 +259,7 @@ export default function Directory() {
                 <StaffLink
                   className="department-quick-link"
                   key={department.id}
-                  href={departmentHref(person.id, department.id)}
+                  href={departmentPreviewHref(department.id)}
                 >
                   <span>
                     {department.name}
@@ -267,14 +272,6 @@ export default function Directory() {
                   <ChevronRight16Regular aria-hidden="true" />
                 </StaffLink>
               ))}
-              <StaffLink
-                className="directory-my-teams"
-                href={`/teams?staff=${person.id}`}
-              >
-                <TeamsMark size={19} />
-                Open my Teams
-                <ArrowRight20Regular aria-hidden="true" />
-              </StaffLink>
             </aside>
           </div>
         </main>

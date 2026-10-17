@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import ExternalBrandMark from "../components/ExternalBrandMark";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import AccessLock from "../components/AccessLock";
@@ -244,6 +245,7 @@ export default function ContentApp() {
       {source.map((file) => (
         <StaffLink key={file.id} href={fileLink(file)}>
           {file.name}
+          <SensitivityBadge value={file.sensitivity} />
         </StaffLink>
       ))}
     </div>

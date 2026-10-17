@@ -1,5 +1,9 @@
 import { files, type ContentFile } from "./data";
-import { canAccessChannel, previewRoles } from "../access/policy";
+import {
+  canAccessChannel,
+  previewRoles,
+  previewRoleFor,
+} from "../access/policy";
 
 export interface ContentChannel {
   id: string;
@@ -191,8 +195,10 @@ export function resolveContentChannel(value: string) {
   );
 }
 export const visibleContentChannels = (personId: string) =>
-  contentChannels.filter((channel) =>
-    canAccessChannel(personId, "content", channel.id),
+  contentChannels.filter(
+    (channel) =>
+      !!previewRoleFor(personId)?.teamChannels.content?.includes(channel.id) &&
+      canAccessChannel(personId, "content", channel.id),
   );
 export const canSeeContentChannel = (personId: string, value: string) => {
   const channel = resolveContentChannel(value);

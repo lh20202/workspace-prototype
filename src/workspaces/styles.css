@@ -355,7 +355,7 @@
   font-size: 16px;
   color: #665a3c;
 }
-.archive-results span {
+.archive-results span:not(.sensitivity-label) {
   font-size: 12px;
   color: #666;
   line-height: 1.6;

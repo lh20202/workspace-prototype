@@ -20,13 +20,16 @@ describe("occasional personal OneDrive examples", () => {
     expect(departmentExamples[0].upload?.removed).toBe(true);
     expect(technicalExamples[0].attachment?.removed).toBe(true);
   });
-  it("renders a quiet provenance note without turning it into a moderator post", () => {
+  it("shows only ordinary provider attribution, with no automatic access warning", () => {
     const html = renderToStaticMarkup(createElement(OneDriveSourceNote));
-    expect(html).toContain('class="teams-source-note"');
-    expect(html).toContain("OneDrive source · access may be limited");
+    expect(html).toContain('class="teams-file-provider"');
+    expect(html).toContain("OneDrive");
+    expect(html).not.toMatch(
+      /access may be limited|check access|policy error|automatic warning|fui-Warning/,
+    );
     expect(html).not.toMatch(/role="alert"|MODERATOR|<article/);
   });
-  it("translates the new system note and human replies while preserving English", () => {
+  it("translates the human replies while preserving English", () => {
     for (const [english, german] of Object.entries(germanOneDrive)) {
       expect(translateText(english, "en")).toBe(english);
       expect(translateText(english, "de")).toBe(german);

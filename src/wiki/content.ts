@@ -1465,6 +1465,7 @@ export const wikiFiles: LibraryDocument[] = wikiArticles.map((item, index) => {
   wikiTranslations[name] = `${wikiTranslations[item.title]}.pdf`;
   return {
     id: item.sourceId,
+    sensitivity: "Internal",
     name,
     folder,
     modified: index % 3 === 0 ? "2026-10-14" : "2026-10-12",
@@ -1500,6 +1501,7 @@ export function wikiSourceHref(article: Pick<WikiArticle, "sourceId">) {
 }
 export const wikiLibrary: LibraryDefinition = {
   id: "sales-marketing-reference",
+  defaultSensitivity: "Internal",
   name: wikiLibraryTitle,
   purpose: "Managed sources behind the Wiki articles.",
   columns: [

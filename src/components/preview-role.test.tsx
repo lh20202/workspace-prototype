@@ -1,3 +1,4 @@
+import { germanFAQRolesSensitivity } from "../i18n/de-faq-roles-sensitivity";
 import { germanExternalEnvironments } from "../i18n/de-external-environments";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
@@ -40,7 +41,7 @@ describe("external role-preview controls", () => {
     "/frontline-sales",
     "/architecture",
     "/emergency-response/incidents/INC-104",
-  ])("offers the same six role-first choices on %s", (pathname) => {
+  ])("offers the same nine role-first choices on %s", (pathname) => {
     vi.stubGlobal("location", new URL(pathname, "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderToStaticMarkup(
@@ -52,19 +53,24 @@ describe("external role-preview controls", () => {
     );
     expect(html).toContain('aria-label="Proof of concept navigation"');
     expect(html).toContain('aria-label="Preview role"');
-    expect(html.match(/<option\b/g)).toHaveLength(6);
+    expect(html.match(/<option\b/g)).toHaveLength(9);
     expect(html).toContain('title="General Staff Member — Taylor Brooks"');
     const options = [...html.matchAll(/<option\b[^>]*>(.*?)<\/option>/g)].map(
       (match) => match[1],
     );
     expect(options).toEqual([
       "General Staff Member",
+      "Sales &amp; Marketing Specialist",
       "Frontline Sales Adviser",
+      "Finance Operations Specialist",
       "Executive Director",
       "Personnel Administrator",
       "Technology &amp; Engineering Administrator",
       "Information Advisory Specialist",
+      "Site Administrator",
     ]);
+    expect(html).toContain('label="GENERAL / BUSINESS"');
+    expect(html).toContain('label="SPECIALIST / ADMIN"');
     expect(html).toContain("Preview role");
     expect(html).toContain("Switch roles to explore access");
     expect(html).toContain('aria-label="About role access"');
@@ -204,7 +210,9 @@ describe("external role-preview controls", () => {
     ]) {
       expect(germanAccessUpdate[source]).toBeTruthy();
       expect(translateText(source, "de")).toBe(
-        germanExternalEnvironments[source] || germanAccessUpdate[source],
+        germanFAQRolesSensitivity[source] ||
+          germanExternalEnvironments[source] ||
+          germanAccessUpdate[source],
       );
       expect(translateText(source, "en")).toBe(source);
     }

@@ -16,6 +16,7 @@ import {
   canAccessChannel,
   canAccessEmergency,
   previewRoleFor,
+  departmentPreviewFor,
 } from "../access/policy";
 import { resolveContentChannel, contentDefaultTab } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
@@ -39,6 +40,9 @@ export interface DefaultTeamsContext {
 /** Teams landings follow explicit participation, independently of SharePoint access. */
 export function defaultTeamsContext(person: StaffPerson): DefaultTeamsContext {
   const role = previewRoleFor(person);
+  const departmentPreview = departmentPreviewFor(person);
+  if (departmentPreview)
+    return { workspaceId: undefined, departmentId: departmentPreview };
   const primary = role?.teamsLanding;
   if (
     primary?.kind === "workspace" &&
@@ -86,18 +90,21 @@ export function defaultTeamsContext(person: StaffPerson): DefaultTeamsContext {
 }
 
 export function teamsGroups(person: StaffPerson): TeamsGroup[] {
+  const departmentPreview = departmentPreviewFor(person);
   const logisticsGroups: TeamsGroup[] = ["company", "logistics"].flatMap(
     (team) => {
       const joinedChannels = channels.filter(
         (channel) =>
-          channel.team === team && canSeeLogisticsChannel(person, channel),
+          channel.team === team &&
+          (!departmentPreview || team === "company") &&
+          canSeeLogisticsChannel(person, channel),
       );
       if (!joinedChannels.length) return [];
       return [
         {
           id: team,
+          kind: team === "company" ? "company" : "workspace",
           label: team === "company" ? "Company Updates" : workspaceTitle,
-          initials: team === "company" ? "CU" : "AA",
           channels: joinedChannels.map((c) => ({
             id: `${team}:${c.id}`,
             label: c.name,
@@ -106,7 +113,7 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
             ),
             onSelect: () =>
               location.assign(
-                `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: c.id, tab: "Posts" })}`,
+                `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: c.id, tab: "Posts", ...(departmentPreview ? { departmentPreview } : {}) })}`,
               ),
           })),
         },
@@ -116,11 +123,16 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
   return [
     ...logisticsGroups,
     ...workspaces
-      .filter((w) => w.id !== "logistics" && canSeeWorkspace(person, w.id))
+      .filter(
+        (w) =>
+          !departmentPreview &&
+          w.id !== "logistics" &&
+          canSeeWorkspace(person, w.id),
+      )
       .map((w) => ({
         id: w.id,
+        kind: "workspace" as const,
         label: w.title,
-        initials: w.id === "content" ? "CE" : undefined,
         channels: visibleWorkspaceChannels(person, w.id).map((name) => ({
           id: `${w.id}:${name}`,
           label: name,
@@ -130,8 +142,8 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
             w.id === "content" &&
             resolveContentChannel(name)?.kind === "temporary"
               ? resolveContentChannel(name)?.lifecycle === "Archived"
-                ? "Archived"
-                : "Temporary"
+                ? ("Archived" as const)
+                : ("Temporary" as const)
               : undefined,
           onSelect: () =>
             location.assign(
@@ -143,22 +155,28 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
       .filter((d) => canSeeDepartment(person, d.id))
       .map((d) => ({
         id: d.id,
+        kind: "department" as const,
         label: d.name,
         channels: [
           {
             id: `${d.id}:General`,
             label: "General",
             private: d.channelAccess === "Department-only",
-            onSelect: () => location.assign(departmentHref(person.id, d.id)),
+            onSelect: () =>
+              location.assign(
+                departmentPreview
+                  ? `/teams?${new URLSearchParams({ staff: person.id, department: d.id, departmentPreview: d.id, tab: "Posts" })}`
+                  : departmentHref(person.id, d.id),
+              ),
           },
         ],
       })),
     ...currentProjects
-      .filter((p) => canSeeProject(person, p.code))
+      .filter((p) => !departmentPreview && canSeeProject(person, p.code))
       .map((p) => ({
         id: p.code,
+        kind: "project" as const,
         label: projectTitle(p),
-        initials: "PR",
         channels: projectChannels.map((name) => ({
           id: `${p.code}:${name}`,
           label: name,
@@ -169,14 +187,13 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
             ),
         })),
       })),
-    ...(initialIncidents.some((incident) =>
-      canAccessEmergency(person, incident.id),
-    )
+    ...(!departmentPreview &&
+    initialIncidents.some((incident) => canAccessEmergency(person, incident.id))
       ? [
           {
             id: "emergency",
+            kind: "emergency" as const,
             label: "Emergency Response",
-            initials: "ER",
             channels: initialIncidents
               .filter((incident) => canAccessEmergency(person, incident.id))
               .map((incident) => ({
@@ -212,6 +229,9 @@ export function teamsPreviewHrefForStaff(
   const previousStaffId = params.get("staff");
   params.set("staff", person.id);
   const ownTeams = `/teams?${new URLSearchParams({ staff: person.id })}`;
+  if (params.has("departmentPreview")) return ownTeams;
+  // A post focus is only meaningful within the original channel and identity.
+  if (previousStaffId !== person.id) params.delete("post");
   if (
     pathname === "/logistics/teams" ||
     pathname.startsWith("/logistics/teams/")

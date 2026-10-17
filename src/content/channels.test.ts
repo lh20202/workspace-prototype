@@ -1,3 +1,4 @@
+import { isSensitivityLabel } from "../sharepoint/sensitivity";
 import { describe, expect, it } from "vitest";
 import {
   contentChannels,
@@ -58,7 +59,7 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
       contentChannelReadOnly("Special Coverage · City Innovation Summit"),
     ).toBe(false);
   });
-  it("does not bend the five preview roles into Studio desk or temporary memberships", () => {
+  it("gives only the Sales specialist a selected Studio desk membership", () => {
     expect(visibleContentChannels("maya").map((channel) => channel.id)).toEqual(
       [],
     );
@@ -71,7 +72,11 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     );
     expect(visibleContentChannels("morgan")).toEqual([]);
     for (const person of staff) {
-      expect(visibleContentChannels(person.id)).toEqual([]);
+      expect(
+        visibleContentChannels(person.id).map((channel) => channel.id),
+      ).toEqual(
+        person.id === "nadia" ? ["editorial", "social", "coordination"] : [],
+      );
       for (const channel of contentChannels)
         expect(canSeeContentChannel(person.id, channel.name)).toBe(
           channel.members.includes(person.id),
@@ -87,7 +92,7 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     ]);
     for (const person of staff)
       expect(teamsGroups(person).some((group) => group.id === "content")).toBe(
-        false,
+        person.id === "nadia",
       );
     expect(
       resolveContentChannel("Special Coverage · City Innovation Summit")?.kind,
@@ -183,7 +188,9 @@ describe("Creative & Editorial Studio canonical lifecycle files", () => {
             (file) => file.id === topic.id,
           ),
         ).toBe(false);
-    expect(files.every((file) => file.sensitivity === "Internal")).toBe(true);
+    expect(files.every((file) => isSensitivityLabel(file.sensitivity))).toBe(
+      true,
+    );
   });
 });
 

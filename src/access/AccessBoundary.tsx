@@ -158,8 +158,9 @@ export default function AccessBoundary({
                 aria-controls="preview-role"
                 onClick={preview!.focusRoleSelector}
               >
-                {t("Change your role to change your access permissions")}
+                {t("Try another preview role")}
               </button>
+              <span>{t("Some preview roles can access this area.")}</span>
             </p>
           )}
         </div>

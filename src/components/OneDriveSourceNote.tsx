@@ -1,12 +1,6 @@
-import { Warning16Regular } from "@fluentui/react-icons";
 import "./onedrive-source-note.css";
 
-/** Attachment provenance, separate from the human conversation beneath it. */
+/** Ordinary provider attribution. Detection and remediation are human conversation. */
 export default function OneDriveSourceNote() {
-  return (
-    <small className="teams-source-note">
-      <Warning16Regular aria-hidden="true" />
-      <span>OneDrive source · access may be limited</span>
-    </small>
-  );
+  return <small className="teams-file-provider">OneDrive</small>;
 }

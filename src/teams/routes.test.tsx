@@ -276,7 +276,9 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
         const links = panelLinks(
           renderToStaticMarkup(createElement(FunctionalApp)),
         );
-        expect(links.length > 0).toBe(["devon", "leonie"].includes(person.id));
+        expect(links.length > 0).toBe(
+          ["devon", "leonie", "elliot"].includes(person.id),
+        );
         for (const link of links) {
           expect(link.searchParams.get("staff")).toBe(person.id);
           expect(

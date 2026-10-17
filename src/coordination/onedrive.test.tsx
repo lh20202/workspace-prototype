@@ -79,11 +79,14 @@ describe("occasional Department OneDrive correction", () => {
       }),
     );
     expect(html).toContain('class="coord-attachment coord-attachment-removed"');
-    expect(html).toContain('class="teams-source-note"');
-    expect(html.indexOf('class="teams-source-note"')).toBeLessThan(
+    expect(html).toContain('class="teams-file-provider"');
+    expect(html.indexOf('class="teams-file-provider"')).toBeLessThan(
       html.indexOf('aria-label="Moderator reply from Priya Shah"'),
     );
-    expect(html).toContain("OneDrive source · access may be limited");
+    expect(html).toContain("OneDrive");
+    expect(html).not.toMatch(
+      /access may be limited|check access|policy error|automatic warning|fui-Warning/,
+    );
     expect(html).toContain(
       'href="/audience-innovation/research?file=seg-model&amp;staff=taylor"',
     );

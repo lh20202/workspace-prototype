@@ -13,7 +13,7 @@ export const germanOrientation: Record<string, string> = {
   "Still being tested. You may spot rough edges or things that change.":
     "Wird noch getestet. Manche Stellen sind noch nicht ganz ausgereift oder können sich ändern.",
   "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.":
-    "Die Rolle bestimmt den Zugriff. Wenn Sie die Rolle wechseln, zeigt die Demo die Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche an, auf die diese Rolle zugreifen darf.",
+    "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche.",
   "Welcome to the Digital Workspace demo site!":
     "Willkommen auf der Demoseite für digitale Arbeitsbereiche!",
   "Explore what your new Digital Workspaces could look and feel like. Try the examples below, switch roles and see how access changes.":

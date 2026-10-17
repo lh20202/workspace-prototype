@@ -119,7 +119,12 @@ export const files: ExecutiveFile[] = seeds.map(
     validFrom: "2026-10-01",
     validTo: "2026-10-31",
     modified: `2026-10-${String(6 + ((index * 3) % 11)).padStart(2, "0")}`,
-    sensitivity: "Internal",
+    sensitivity:
+      audience === "leadership"
+        ? "Strictly confidential"
+        : audience === "base"
+          ? "Internal"
+          : "Confidential",
     recordState:
       audience === "base" ? "Current standard" : "Working information",
   }),

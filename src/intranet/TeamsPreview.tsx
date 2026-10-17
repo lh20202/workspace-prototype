@@ -8,7 +8,7 @@ import {
   libraryForFile,
 } from "../workspaces/siteArchitecture";
 import TechnicalConversation from "../workspaces/TechnicalConversation";
-import { workspaces, rememberStaff, resolveStaffPerson } from "./catalog";
+import { workspaces, rememberStaff } from "./catalog";
 import {
   channels as logisticsChannels,
   files as logisticsFiles,
@@ -44,6 +44,10 @@ import {
 } from "../teams/visibility";
 import AccessBoundary from "../access/AccessBoundary";
 import { hasWorkspaceTeams } from "../workspaces/registry";
+import {
+  teamsPersonForSearch,
+  readDepartmentPreview,
+} from "../teams/departmentPreview";
 import { sharepointDestination } from "../teams/sharepointDestination";
 
 export const sharedFiles: Record<string, OperationalFile[]> = {
@@ -71,7 +75,8 @@ const digitalArea: Record<string, string> = {
 };
 export default function TeamsPreview() {
   const params = new URLSearchParams(location.search);
-  const person = resolveStaffPerson(params.get("staff"));
+  const person = teamsPersonForSearch(location.search);
+  const departmentPreview = readDepartmentPreview(location.search);
   const requestedWorkspace = params.get("workspace");
   const defaultContext = defaultTeamsContext(person);
   const workspace =
@@ -80,6 +85,7 @@ export default function TeamsPreview() {
       (item) => item.id === (defaultContext.workspaceId || "planning"),
     )!;
   const department =
+    departmentPreview ||
     resolveDepartment(params.get("department") || params.get("division")) ||
     (!requestedWorkspace
       ? resolveDepartment(defaultContext.departmentId || null)
@@ -272,6 +278,7 @@ export default function TeamsPreview() {
             .filter((file) => file.library !== "restricted")
             .map((file) => ({
               id: file.id,
+              sensitivity: file.sensitivity,
               name: file.name,
               folder: file.folderPath,
               modified: file.modified,
@@ -402,7 +409,7 @@ export default function TeamsPreview() {
           department={department?.id}
           resource={
             department
-              ? undefined
+              ? { kind: "department", departmentId: department.id }
               : {
                   kind: "channel",
                   workspaceId: workspace.id,

@@ -50,7 +50,7 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     }
   });
 
-  it("keeps the system source warning separate from ordinary moderator replies and real links", () => {
+  it("keeps ordinary provider attribution with human moderator replies and real links", () => {
     vi.stubGlobal(
       "location",
       new URL(
@@ -67,14 +67,14 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     expect(html).toContain(
       'class="m365-teams-attachment teams-attachment-removed"',
     );
-    expect(html).toContain('class="teams-source-note"');
+    expect(html).toContain('class="teams-file-provider"');
     expect(html).toContain("Attachment removed");
-    expect(html).toContain("OneDrive source");
+    expect(html).toContain("OneDrive");
     expect(html.match(/class="teams-moderator-badge"/g)).toHaveLength(2);
     expect(html.match(/class="m365-teams-reply"/g)).toHaveLength(3);
     expect(html).toContain("file=digital-F17&amp;staff=devon");
     expect(html).not.toContain('href="https://onedrive');
-    expect(html.indexOf('class="teams-source-note"')).toBeLessThan(
+    expect(html.indexOf('class="teams-file-provider"')).toBeLessThan(
       html.indexOf('class="m365-teams-reply"'),
     );
   });

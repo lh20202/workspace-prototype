@@ -1,3 +1,4 @@
+import { workingFileSensitivity } from "../sharepoint/sensitivity";
 import type { WorkingFile } from "./types";
 import { functionalLibraries } from "./siteArchitecture";
 
@@ -566,6 +567,7 @@ export function enrichFunctionalFiles(
           : "Draft";
     const result: WorkingFile = {
       ...file,
+      sensitivity: workingFileSensitivity(id, file.area, file.name),
       documentLibrary: target.id,
       folderPath,
       folder: folderPath,

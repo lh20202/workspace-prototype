@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import AccessLock from "../components/AccessLock";
 import { canAccessWorkspace } from "../access/policy";
 import WorkspaceDenied from "../access/WorkspaceDenied";
@@ -672,6 +673,7 @@ export default function AudienceApp() {
                   .map((file) => (
                     <StaffLink href={fileLink(file)} key={file.id}>
                       {file.name}
+                      <SensitivityBadge value={file.sensitivity} />
                     </StaffLink>
                   ))}
               </div>

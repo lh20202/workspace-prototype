@@ -1,6 +1,8 @@
+import type { SensitivityLabel } from "./sensitivity";
 import { matchesDisplayText } from "../i18n/search";
 
 export interface LibraryDocument {
+  sensitivity: SensitivityLabel;
   id: string;
   name: string;
   /** Slash-separated path, relative to this library. Empty means library root. */
@@ -45,6 +47,7 @@ export interface LibraryViewDefinition {
   recursive?: boolean;
 }
 export interface LibraryDefinition {
+  defaultSensitivity?: SensitivityLabel;
   id: string;
   name: string;
   purpose?: string;
@@ -64,6 +67,7 @@ export type LibraryView = string;
 export type LibrarySort = string;
 export const defaultLibraryColumns: LibraryColumn[] = [
   { key: "name", label: "Name" },
+  { key: "sensitivity", label: "Sensitivity" },
   { key: "modified", label: "Modified", type: "date" },
   { key: "owner", label: "Modified by" },
   { key: "status", label: "Status" },
@@ -79,6 +83,7 @@ export function libraryFields(definition?: LibraryDefinition) {
   const fields = [
     ...(definition?.columns ?? defaultLibraryColumns),
     ...(definition?.fields ?? []),
+    { key: "sensitivity", label: "Sensitivity" },
   ];
   return fields.filter(
     (field, i) => fields.findIndex((other) => other.key === field.key) === i,
@@ -100,6 +105,8 @@ export function libraryValue(
   definition?: LibraryDefinition,
 ): string {
   switch (key) {
+    case "sensitivity":
+      return file.sensitivity;
     case "name":
       return file.name;
     case "modified":
@@ -139,9 +146,20 @@ export function libraryColumns(definition?: LibraryDefinition, view?: string) {
         .map((key) => all.find((column) => column.key === key))
         .filter((column): column is LibraryColumn => !!column)
     : (definition?.columns ?? defaultLibraryColumns);
-  return columns.some((column) => column.key === "name")
-    ? columns
-    : [{ key: "name", label: "Name" }, ...columns];
+  const withSensitivity = columns.filter(
+    (column) => column.key !== "sensitivity",
+  );
+  const modifiedIndex = withSensitivity.findIndex(
+    (column) => column.key === "modified",
+  );
+  withSensitivity.splice(
+    modifiedIndex < 0 ? withSensitivity.length : modifiedIndex,
+    0,
+    { key: "sensitivity", label: "Sensitivity" },
+  );
+  return withSensitivity.some((column) => column.key === "name")
+    ? withSensitivity
+    : [{ key: "name", label: "Name" }, ...withSensitivity];
 }
 
 export function contentTypeDefaults(type?: LibraryContentType) {
@@ -274,6 +292,7 @@ export function queryLibrary(
             file.owner,
             status,
             file.summary,
+            file.sensitivity,
             file.contentType,
             libraryContentType(file, options.definition)?.name,
             ...Object.values(file.metadata ?? {}),
@@ -401,6 +420,7 @@ export function documentProperties(
     owner: "Modified by",
     modified: "Modified",
     status: "Status",
+    sensitivity: "Sensitivity",
   };
   const fields: [string, string][] = [...new Set(keys)].flatMap((key) => {
     const field = libraryFields(definition).find((item) => item.key === key);

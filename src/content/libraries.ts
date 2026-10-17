@@ -65,6 +65,7 @@ export const documentFor = (file: ContentFile): LibraryDocument => {
   const item = initialPackages.find((item) => item.id === file.packageId)!;
   return {
     id: file.id,
+    sensitivity: file.sensitivity,
     name: file.name,
     folder: folderFor(file),
     modified: file.modified,
@@ -239,6 +240,7 @@ export const searchableContentFiles = files.map((file) => {
   return {
     ...file,
     metadata: document.metadata,
+    sensitivity: document.sensitivity,
     contentType: document.contentType,
     folderPath: document.folder,
   };

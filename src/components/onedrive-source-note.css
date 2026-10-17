@@ -1,18 +1,13 @@
-.teams-source-note {
+.teams-file-provider {
   display: flex;
   align-items: center;
   gap: 5px;
   width: fit-content;
   max-width: calc(100% - 44px);
   margin: 5px 0 8px 44px;
-  color: #735815;
+  color: #616161;
   font-size: 12px;
   line-height: 18px;
-}
-.teams-source-note > svg {
-  flex: none;
-  width: 14px;
-  height: 14px;
 }
 .technical-conversation .teams-moderator-badge {
   display: inline-block;

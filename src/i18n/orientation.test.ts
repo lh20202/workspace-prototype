@@ -22,7 +22,7 @@ describe("Welcome and outer demo guidance translations", () => {
       "Rolle wechseln und Zugriffsrechte erkunden",
     );
     expect(translateText("Technology & Engineering Administrator", "de")).toBe(
-      "Administrator für Technologie und Engineering",
+      "Administrator für IT und Entwicklung",
     );
   });
 

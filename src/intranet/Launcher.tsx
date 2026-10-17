@@ -19,6 +19,8 @@ import { BetaBadge } from "../components/BetaBadge";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
+import WorkspaceFAQ from "../components/WorkspaceFAQ";
+import { creationExplanation } from "../components/workspaceFAQContent";
 const choices = [
   {
     title: "Organisational Planning & Reporting",
@@ -57,32 +59,29 @@ export default function Launcher() {
         <p className="launcher-data-note">
           No company data was used to create this demo site.
         </p>
-        <Dialog>
-          <DialogTrigger disableButtonEnhancement>
-            <button className="launcher-created-link" type="button">
-              How was this created?
-            </button>
-          </DialogTrigger>
-          <DialogSurface className="launcher-created-dialog">
-            <DialogBody>
-              <DialogTitle>How was this created?</DialogTitle>
-              <DialogContent>
-                <p>
-                  This demo was built with AI-assisted coding. The AI was given
-                  generic descriptions of typical work and asked to create
-                  fictional files, conversations and workflows that feel
-                  realistic. No company data was used, and nothing is connected
-                  to live Microsoft 365 or business systems.
-                </p>
-              </DialogContent>
-              <DialogActions>
-                <DialogTrigger disableButtonEnhancement>
-                  <Button appearance="primary">Close</Button>
-                </DialogTrigger>
-              </DialogActions>
-            </DialogBody>
-          </DialogSurface>
-        </Dialog>
+        <div className="launcher-secondary-links">
+          <Dialog>
+            <DialogTrigger disableButtonEnhancement>
+              <button className="launcher-created-link" type="button">
+                How was this created?
+              </button>
+            </DialogTrigger>
+            <DialogSurface className="launcher-created-dialog">
+              <DialogBody>
+                <DialogTitle>How was this created?</DialogTitle>
+                <DialogContent>
+                  <p>{creationExplanation}</p>
+                </DialogContent>
+                <DialogActions>
+                  <DialogTrigger disableButtonEnhancement>
+                    <Button appearance="primary">Close</Button>
+                  </DialogTrigger>
+                </DialogActions>
+              </DialogBody>
+            </DialogSurface>
+          </Dialog>
+          <WorkspaceFAQ />
+        </div>
         <div className="launcher-choices">
           {choices.map(({ title, href, action }) => (
             <a

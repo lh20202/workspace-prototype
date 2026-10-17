@@ -1,3 +1,5 @@
+import SiteSettingsButton from "./components/SiteSettingsButton";
+import SensitivityBadge from "./sharepoint/SensitivityBadge";
 import AccessLock from "./components/AccessLock";
 import { canAccessArea } from "./access/policy";
 import { documentVersions } from "./sharepoint/library";
@@ -45,7 +47,6 @@ import {
   ChevronDown16Regular,
   Alert24Regular,
   QuestionCircle24Regular,
-  Settings24Regular,
   People24Regular,
   Star20Filled,
   Calendar20Regular,
@@ -323,6 +324,11 @@ export default function App() {
               <th>
                 <button onClick={() => sortBy("owner")}>Owner</button>
               </th>
+              <th className="sp-library-column-sensitivity">
+                <button onClick={() => sortBy("sensitivity")}>
+                  Sensitivity
+                </button>
+              </th>
               <th>
                 <button onClick={() => sortBy("modified")}>
                   Modified {sort === "modified" ? (descending ? "↓" : "↑") : ""}
@@ -403,6 +409,7 @@ export default function App() {
                     <FileIcon name={d.name} />
                     <span>
                       {d.name}
+                      <SensitivityBadge value={d.sensitivity} />
                       <small>
                         {libraries.find((l) => l.id === d.library)?.name}
                       </small>
@@ -438,17 +445,10 @@ export default function App() {
           >
             <QuestionCircle24Regular />
           </button>
-          <button
-            className="global-icon"
-            aria-label="Settings"
-            onClick={() =>
-              setToast(
-                "Workspace preferences use the default reading and document view.",
-              )
-            }
-          >
-            <Settings24Regular />
-          </button>
+          <SiteSettingsButton
+            onMessage={setToast}
+            ordinaryMessage="Workspace preferences use the default reading and document view."
+          />
           <button
             className="profile-button"
             aria-label={`Signed in as ${person.name}`}
@@ -649,6 +649,7 @@ export default function App() {
                           <FileIcon name={d.name} />
                           <span className="recent-name">
                             {d.name}
+                            <SensitivityBadge value={d.sensitivity} />
                             <small>
                               {libraries.find((l) => l.id === d.library)?.name}{" "}
                               · {d.cycle}
@@ -1046,9 +1047,7 @@ export default function App() {
                   ["Department / scope", selected.area],
                   ["Document type", selected.type],
                   ["Status", selected.status],
-                  ...(selected.sensitivity === "Restricted"
-                    ? [["Sensitivity", selected.sensitivity]]
-                    : []),
+                  ["Sensitivity", selected.sensitivity],
                   ["Record state", selected.recordState],
                   ...(selected.approvedDate
                     ? [
@@ -1060,7 +1059,13 @@ export default function App() {
                 ].map(([key, val]) => (
                   <div key={key}>
                     <dt>{key}</dt>
-                    <dd>{val}</dd>
+                    <dd>
+                      {key === "Sensitivity" ? (
+                        <SensitivityBadge value={selected.sensitivity} />
+                      ) : (
+                        val
+                      )}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -1122,6 +1127,7 @@ export default function App() {
                     {selected &&
                       documentVersions({
                         id: selected.id,
+                        sensitivity: selected.sensitivity,
                         name: selected.name,
                         folder: selected.folderPath,
                         owner: selected.modifiedBy,
@@ -1185,7 +1191,7 @@ function FragmentRow({
     <>
       {grouped && previous?.area !== d.area && (
         <tr className="group-row">
-          <td colSpan={7}>{d.area}</td>
+          <td colSpan={8}>{d.area}</td>
         </tr>
       )}
       <tr>
@@ -1219,6 +1225,9 @@ function FragmentRow({
               .join("")}
           </span>
           {d.owner}
+        </td>
+        <td className="sp-library-column-sensitivity">
+          <SensitivityBadge value={d.sensitivity} />
         </td>
         <td>{formatDate(d.modified)}</td>
       </tr>

@@ -199,3 +199,14 @@
     transition: color 130ms ease-out;
   }
 }
+
+.access-preview-role {
+  display: grid;
+  justify-items: start;
+  gap: 5px;
+}
+.access-preview-role span {
+  color: #616161;
+  font-size: 12px;
+  line-height: 18px;
+}

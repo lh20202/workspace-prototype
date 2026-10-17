@@ -13,6 +13,7 @@ import {
   canAccessEmergency,
   allowedPreviewRoles,
   hasAlternativePreviewAccess,
+  canAdministerSites,
 } from "./policy";
 import {
   peopleDirectory,
@@ -23,7 +24,7 @@ import { functionalConfigs } from "../workspaces/config";
 import { protectedTopics } from "../content/data";
 import { protectedSubjects } from "../finance/data";
 
-describe("the six role access matrix", () => {
+describe("the nine role access matrix", () => {
   it("gives the information adviser normal readership and a small relevant Team scope", () => {
     for (const workspace of [
       "digital",
@@ -61,7 +62,7 @@ describe("the six role access matrix", () => {
     ).toEqual([]);
   });
 
-  it("has exactly six distinct access archetypes and retains authors without hidden preview identities", () => {
+  it("has exactly nine distinct access archetypes and retains authors without hidden preview identities", () => {
     expect(staff.map((role) => role.id)).toEqual([
       "taylor",
       "maya",
@@ -69,17 +70,26 @@ describe("the six role access matrix", () => {
       "jamie",
       "devon",
       "leonie",
+      "nadia",
+      "sam",
+      "elliot",
     ]);
     expect(defaultPreviewRoleId).toBe("taylor");
     expect(
       new Set(
         previewRoles.map((role) =>
-          JSON.stringify([role.workspaceMemberships, role.restrictedAreas]),
+          JSON.stringify([
+            role.workspaceMemberships,
+            role.restrictedAreas,
+            role.teamChannels,
+            canAdministerSites(role),
+          ]),
         ),
       ).size,
-    ).toBe(6);
+    ).toBe(9);
     expect(peopleDirectory.some((person) => person.id === "alex")).toBe(true);
     expect(staff.some((person) => person.id === "alex")).toBe(false);
+    expect(staff.some((person) => person.id === "nadia")).toBe(true);
     expect(resolveStaffPerson("alex").id).toBe("taylor");
     expect(canAccessWorkspace("alex", "content")).toBe(false);
   });
@@ -164,7 +174,9 @@ describe("the six role access matrix", () => {
         );
       for (const channel of ["north-city", "travel", "coaches", "unknown"])
         expect(canAccessChannel(role, "logistics", channel)).toBe(false);
-      expect(canAccessChannel(role, "content", "editorial")).toBe(false);
+      expect(canAccessChannel(role, "content", "editorial")).toBe(
+        role.id === "nadia",
+      );
       expect(canAccessChannel(role, "digital", "Engineering")).toBe(
         role.id === "devon",
       );
@@ -173,7 +185,7 @@ describe("the six role access matrix", () => {
       );
       expect(
         canAccessChannel(role, "digital", "Workspace & Wiki Moderators"),
-      ).toBe(["devon", "leonie"].includes(role.id));
+      ).toBe(["devon", "leonie", "elliot"].includes(role.id));
       expect(canAccessChannel(role, "planning", "Planning coordination")).toBe(
         role.id === "robin",
       );
@@ -326,11 +338,13 @@ describe("truthful access demonstration signposts", () => {
     expect(allowedPreviewRoles(research).map((role) => role.id)).toEqual([
       "taylor",
       "leonie",
+      "nadia",
+      "elliot",
     ]);
     expect(canAccessWorkspace("maya", "audience")).toBe(false);
     expect(canAccessPortal("maya")).toBe(true);
   });
-  it("offers no false role signpost for independent representation or ordinary team membership", () => {
+  it("offers no false role signpost for independent representation or unrepresented departments", () => {
     const representation = {
       kind: "area" as const,
       workspaceId: "welfare",
@@ -344,7 +358,7 @@ describe("truthful access demonstration signposts", () => {
       expect(hasAlternativePreviewAccess(representation, role.id)).toBe(false);
       expect(
         hasAlternativePreviewAccess(
-          { kind: "department", departmentId: "people-culture" },
+          { kind: "department", departmentId: "communications" },
           role.id,
         ),
       ).toBe(false);

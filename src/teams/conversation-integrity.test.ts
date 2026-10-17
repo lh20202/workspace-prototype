@@ -14,7 +14,7 @@ const previewByName = new Map(staff.map((person) => [person.name, person]));
 
 describe("Teams editorial fixture integrity", () => {
   it("retains ordinary colleagues without expanding selectable identities", () => {
-    expect(staff).toHaveLength(6);
+    expect(staff).toHaveLength(9);
     const authors = [
       ...posts.flatMap((post) => [
         post.author,

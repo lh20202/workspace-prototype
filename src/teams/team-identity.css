@@ -1,0 +1,31 @@
+.team-identity {
+  display: inline-flex;
+  flex: 0 0 var(--team-identity-size, 26px);
+  width: var(--team-identity-size, 26px);
+  height: var(--team-identity-size, 26px);
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+.team-identity > img,
+.team-identity > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.team-identity .workspace-icon {
+  color: var(--team-workspace-accent);
+}
+.team-identity-department {
+  padding: 3px;
+  border-radius: 4px;
+  color: #5e667c;
+  background: #e9ebf1;
+}
+.team-identity-emergency {
+  padding: 3px;
+  border-radius: 4px;
+  color: #893b4a;
+  background: #f4e8eb;
+}

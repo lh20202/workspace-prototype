@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { useState } from "react";
 import { Document20Regular } from "@fluentui/react-icons";
 import { TeamsComposer, initials } from "../teams/TeamsShell";
@@ -77,6 +78,7 @@ export default function ContentConversation({
                 <Document20Regular />
                 <span>
                   {attachment.name}
+                  <SensitivityBadge value={attachment.sensitivity} />
                   <small>SharePoint · {attachment.type.toUpperCase()}</small>
                 </span>
               </button>

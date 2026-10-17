@@ -8,7 +8,7 @@ import { PreviewRoleProvider } from "../components/PreviewRoleContext";
 import type { AccessResource } from "./policy";
 
 afterEach(() => vi.unstubAllGlobals());
-const prompt = "Change your role to change your access permissions";
+const prompt = "Try another preview role";
 
 /** Whole-site membership must not advertise access to a narrower closed subject. */
 describe("the role signpost uses the actual denied destination", () => {
@@ -100,7 +100,7 @@ describe("the role signpost uses the actual denied destination", () => {
       workspaceId: "digital",
       areaId: "nonexistent-private-area",
     },
-    { kind: "department", departmentId: "people-culture" },
+    { kind: "department", departmentId: "communications" },
   ])(
     "does not suggest role access when no role can open the destination",
     (resource) => {
@@ -129,10 +129,7 @@ describe("the role signpost uses the actual denied destination", () => {
       },
       true,
     ],
-    [
-      { kind: "channel", workspaceId: "content", channelId: "editorial" },
-      false,
-    ],
+    [{ kind: "channel", workspaceId: "content", channelId: "editorial" }, true],
     [
       { kind: "channel", workspaceId: "logistics", channelId: "north-city" },
       false,

@@ -44,11 +44,13 @@ describe("Studio conversation fixtures", () => {
     }
   });
 
-  it("retains a specialist colleague without making her a selectable preview", () => {
+  it("retains the Sales specialist’s existing research identity and authored collaboration", () => {
     const colleague = peopleDirectory.find((person) => person.id === "nadia");
     expect(colleague?.role).toBe("Audience Researcher");
     expect(colleague?.departmentId).toBe("marketing-growth");
-    expect(previewRoles.some((role) => role.id === colleague?.id)).toBe(false);
+    expect(previewRoles.find((role) => role.id === colleague?.id)?.role).toBe(
+      "Sales & Marketing Specialist",
+    );
     const names = new Set(peopleDirectory.map((person) => person.name));
     for (const posts of Object.values(studioPosts))
       for (const post of posts) {

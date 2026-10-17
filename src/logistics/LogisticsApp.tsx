@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { RotaView, CalendarView } from "./OperationalSchedule";
 import { useEffect, useState } from "react";
 import {
@@ -147,7 +148,14 @@ export default function LogisticsApp() {
     const query = new URLSearchParams(
       Object.entries(params).filter(([, v]) => !!v),
     );
-    if (page === "teams") query.set("staff", teamsPerson.id);
+    if (page === "teams") {
+      query.set("staff", teamsPerson.id);
+      const departmentPreview = new URLSearchParams(location.search).get(
+        "departmentPreview",
+      );
+      if (teamsPerson.id === "taylor" && departmentPreview)
+        query.set("departmentPreview", departmentPreview);
+    }
     history.pushState(
       {},
       "",
@@ -818,7 +826,13 @@ export default function LogisticsApp() {
                 ].map(([key, val]) => (
                   <div key={key}>
                     <dt>{key}</dt>
-                    <dd>{val}</dd>
+                    <dd>
+                      {key === "Sensitivity" ? (
+                        <SensitivityBadge value={selected.sensitivity} />
+                      ) : (
+                        val
+                      )}
+                    </dd>
                   </div>
                 ))}
               </dl>

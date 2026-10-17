@@ -20,6 +20,7 @@ export function folderFor(f: ExecutiveFile) {
 export function executiveDocument(f: ExecutiveFile): LibraryDocument {
   return {
     id: f.id,
+    sensitivity: f.sensitivity,
     name: f.name,
     folder: folderFor(f),
     owner: f.owner,

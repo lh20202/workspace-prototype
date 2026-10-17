@@ -68,6 +68,7 @@ export function ordinaryLibraryAuditSources(): LibraryAuditSource[] {
           .filter((file) => file.library === library.id)
           .map((file) => ({
             id: file.id,
+            sensitivity: file.sensitivity,
             name: file.name,
             folder: file.folderPath,
             modified: file.modified,

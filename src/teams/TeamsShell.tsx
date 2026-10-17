@@ -1,4 +1,5 @@
 import TeamsMark from "../components/TeamsMark";
+import TeamIdentity, { type TeamKind } from "./TeamIdentity";
 import AccessLock from "../components/AccessLock";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
@@ -7,7 +8,6 @@ import {
   Chat24Regular,
   Calendar24Regular,
   Call24Regular,
-  Cloud24Regular,
   Apps24Regular,
   Search20Regular,
   MoreHorizontal20Regular,
@@ -28,7 +28,7 @@ import "./styles.css";
 export interface TeamsGroup {
   id: string;
   label: string;
-  initials?: string;
+  kind?: TeamKind;
   channels: {
     id: string;
     label: string;
@@ -90,6 +90,9 @@ function TeamsShellSession({
   children,
 }: TeamsShellProps) {
   const visibleGroups = groups.filter((group) => group.channels.length > 0);
+  const activeGroup = visibleGroups.find((group) =>
+    group.channels.some((channel) => channel.id === selectedChannelId),
+  );
   const [closed, setClosed] = useState<string[]>([]);
   const [filter, setFilter] = useState("Channels");
   const [query, setQuery] = useState("");
@@ -101,6 +104,16 @@ function TeamsShellSession({
   useEffect(() => {
     selectedChannel.current?.scrollIntoView({ block: "center" });
   }, [selectedChannelId]);
+  useEffect(() => {
+    const postId = new URLSearchParams(location.search).get("post");
+    if (!postId || activeTab !== "Posts") return;
+    const post =
+      document.getElementById(`post-${postId}`) ||
+      document.getElementById(postId);
+    if (!post || !post.matches("article")) return;
+    post.scrollIntoView({ block: "center", behavior: "auto" });
+    post.focus({ preventScroll: true });
+  }, [selectedChannelId, activeTab]);
   useEffect(() => {
     const shortcut = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -209,7 +222,6 @@ function TeamsShellSession({
             ["Chat", Chat24Regular],
             ["Calendar", Calendar24Regular],
             ["Calls", Call24Regular],
-            ["OneDrive", Cloud24Regular],
             ["Apps", Apps24Regular],
           ].map(([name, Icon]) => {
             const Glyph = Icon as typeof Alert24Regular;
@@ -328,9 +340,10 @@ function TeamsShellSession({
                     ) : (
                       <ChevronRight16Regular />
                     )}
-                    <span className="m365-teams-team-icon">
-                      {group.initials || initials(group.label)}
-                    </span>
+                    <TeamIdentity
+                      kind={group.kind || "department"}
+                      id={group.id}
+                    />
                     <span>{group.label}</span>
                   </button>
                   {expanded &&
@@ -397,7 +410,16 @@ function TeamsShellSession({
                 )}
               </span>
               <div>
-                <span>{teamName}</span>
+                <span className="m365-teams-parent-label">
+                  {activeGroup && (
+                    <TeamIdentity
+                      kind={activeGroup.kind || "department"}
+                      id={activeGroup.id}
+                      size={18}
+                    />
+                  )}
+                  {teamName}
+                </span>
                 <h1>{channelName}</h1>
               </div>
             </div>

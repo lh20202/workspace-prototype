@@ -8,6 +8,7 @@ import {
   canAccessChannel,
   canAccessDepartment,
   canAccessProjectTeam,
+  previewRoleFor,
 } from "../access/policy";
 
 /** Compatibility exports are projections, never a second membership table. */
@@ -72,9 +73,15 @@ export function visibleWorkspaceChannels(
   workspaceId: string,
 ) {
   if (!hasWorkspaceTeams(workspaceId)) return [];
-  return (workspaceChannels[workspaceId] || []).filter((channel) =>
-    canSeeWorkspaceChannel(person, workspaceId, channel),
-  );
+  const curated = previewRoleFor(person)?.teamChannels[workspaceId] || [];
+  return (workspaceChannels[workspaceId] || []).filter((channel) => {
+    const key = channelKey(workspaceId, channel);
+    return (
+      !!key &&
+      curated.includes(key) &&
+      canSeeWorkspaceChannel(person, workspaceId, channel)
+    );
+  });
 }
 export function canSeeWorkspaceChannel(
   person: Pick<StaffPerson, "id">,

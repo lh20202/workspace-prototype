@@ -40,6 +40,7 @@ export function financialDocument(f: OperationalFile): LibraryDocument {
       : "October 2026";
   return {
     id: f.id,
+    sensitivity: f.sensitivity,
     name: f.name,
     folder: folderFor(f.id, f.folder),
     owner: f.owner,

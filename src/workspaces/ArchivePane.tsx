@@ -1,7 +1,9 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { useState } from "react";
 import PocAnnotation from "../components/PocAnnotation";
 import {
   archiveRecords,
+  legacyArchiveRecords,
   regions,
   retentionSchedule,
   searchArchive,
@@ -26,13 +28,16 @@ export default function ArchivePane({
       collection: new URLSearchParams(location.search).get("collection") || "",
     }),
     [selected, setSelected] = useState<ArchiveRecord | undefined>(() =>
-      archiveRecords.find(
+      [...archiveRecords, ...legacyArchiveRecords].find(
         (r) => r.id === new URLSearchParams(location.search).get("record"),
       ),
     ),
     [folder, setFolder] = useState(""),
     [stages, setStages] = useState<Record<string, string>>({}),
     [scheduleStates, setScheduleStates] = useState<Record<string, string>>({});
+  const legacyRecord = legacyArchiveRecords.find(
+    (record) => record.area === folder,
+  );
   const allRecords = searchArchive(query, filters).filter(
     (r) => !region || r.region === region,
   );
@@ -90,6 +95,7 @@ export default function ArchivePane({
               {r.year} · {r.series}
             </small>
             <strong>{r.name}</strong>
+            <SensitivityBadge value={r.sensitivity} />
             <span>{r.description}</span>
             <small>
               {r.collection} · {r.format} · {r.preservation}
@@ -195,26 +201,13 @@ export default function ArchivePane({
             </nav>
             <section>
               <h3>{folder ? `P:\\${folder}` : "Select a legacy folder"}</h3>
-              {folder && (
+              {legacyRecord && (
                 <button
                   className="archive-legacy-file"
-                  onClick={() =>
-                    setSelected({
-                      ...archiveRecords[0],
-                      id: `LEGACY-${folder.toUpperCase()}`,
-                      year: "2012",
-                      collection: "Legacy P: drive",
-                      series: "Historical reference",
-                      creator: `${folder} legacy filing`,
-                      area: folder,
-                      preservation: "Appraisal pending",
-                      name: `${folder} — Approved Historical Summary.pdf`,
-                      description:
-                        "View-only synthetic historical summary. No current personnel, customer or transaction records are included.",
-                    })
-                  }
+                  onClick={() => setSelected(legacyRecord)}
                 >
-                  {folder} — Approved Historical Summary.pdf
+                  {legacyRecord.name}
+                  <SensitivityBadge value={legacyRecord.sensitivity} />
                   <small>2012 · Historical reference · VIEW ONLY</small>
                 </button>
               )}
@@ -377,6 +370,7 @@ export default function ArchivePane({
                 ["Description", selected.description],
                 ["Format", selected.format],
                 ["Access", selected.access],
+                ["Sensitivity", selected.sensitivity],
                 ["Preservation", selected.preservation],
                 ["Region", selected.region],
               ] as const
@@ -385,7 +379,13 @@ export default function ArchivePane({
               .map(([label, value]) => (
                 <div key={label}>
                   <dt>{label}</dt>
-                  <dd>{value}</dd>
+                  <dd>
+                    {label === "Sensitivity" ? (
+                      <SensitivityBadge value={selected.sensitivity} />
+                    ) : (
+                      value
+                    )}
+                  </dd>
                 </div>
               ))}
           </dl>

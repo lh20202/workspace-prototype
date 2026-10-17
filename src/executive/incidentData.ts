@@ -1,8 +1,10 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 export interface Participant {
   name: string;
   role: string;
 }
 export interface IncidentFile {
+  sensitivity: SensitivityLabel;
   id: string;
   incidentId: string;
   name: string;
@@ -75,7 +77,12 @@ export function createIncident(
       "Decision Log.docx",
       "Impact Assessment.docx",
       "Closure Review.docx",
-    ].map((name, i) => ({ id: `${id}-F${i + 1}`, incidentId: id, name })),
+    ].map((name, i) => ({
+      id: `${id}-F${i + 1}`,
+      incidentId: id,
+      name,
+      sensitivity: "Strictly confidential",
+    })),
     posts: [
       {
         author: lead,

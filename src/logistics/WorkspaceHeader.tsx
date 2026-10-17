@@ -1,3 +1,5 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
+import SiteSettingsButton from "../components/SiteSettingsButton";
 import TeamsMark from "../components/TeamsMark";
 import { useState } from "react";
 import { Input } from "@fluentui/react-components";
@@ -6,7 +8,6 @@ import {
   Search20Regular,
   Alert24Regular,
   QuestionCircle24Regular,
-  Settings24Regular,
   People24Regular,
   Star20Filled,
 } from "@fluentui/react-icons";
@@ -108,6 +109,7 @@ export default function WorkspaceHeader({
                   <DocumentIcon name={f.name} />
                   <span>
                     {f.name}
+                    <SensitivityBadge value={f.sensitivity} />
                     <small>{f.campaign}</small>
                   </span>
                 </button>
@@ -135,17 +137,7 @@ export default function WorkspaceHeader({
           >
             <QuestionCircle24Regular />
           </button>
-          <button
-            className="global-icon"
-            aria-label="Settings"
-            onClick={() =>
-              onMessage(
-                "Workspace preferences use the default document and reading views.",
-              )
-            }
-          >
-            <Settings24Regular />
-          </button>
+          <SiteSettingsButton onMessage={onMessage} />
           <button
             className="profile-button"
             aria-label={`Signed in as ${userName}`}

@@ -1,0 +1,58 @@
+.sensitivity-label {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: normal;
+  vertical-align: middle;
+  color: #435463;
+  background: #edf1f4;
+  cursor: inherit;
+}
+.sensitivity-public {
+  color: #205e58;
+  background: #e5f2ed;
+}
+.sensitivity-confidential {
+  color: #75501d;
+  background: #faf0dc;
+}
+.sensitivity-strictly-confidential {
+  color: #7e2948;
+  background: #f7e8ee;
+}
+.sp-library-column-sensitivity {
+  min-width: 105px;
+}
+.sensitivity-file-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.sensitivity-label + small {
+  margin-left: 6px;
+}
+@media (max-width: 650px) {
+  .sp-library-column-sensitivity {
+    display: none;
+  }
+  .sp-library-name .sensitivity-label {
+    font-size: 11px;
+  }
+}
+
+.sp-library-default-label {
+  margin: -6px 0 16px;
+  color: #616161;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.archive-results > button > .sensitivity-label {
+  justify-self: start;
+}

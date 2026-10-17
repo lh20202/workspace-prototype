@@ -17,12 +17,17 @@ export interface PreviewRole {
   unitId: string;
   workspaceMemberships: string[];
   restrictedAreas: Record<string, string[]>;
+  /** Daily channels shown in the curated Teams navigation. */
   teamChannels: Record<string, string[]>;
+  /** Occasional collaboration membership, available by direct link but not pinned. */
+  additionalChannelAccess?: Record<string, string[]>;
   teamsLanding: TeamsLanding;
   projectMemberships: string[];
   projectTeamMemberships: string[];
   temporaryTeamMemberships: string[];
   emergencyMemberships: string[];
+  /** Temporary, route-scoped Department preview; never a stored membership. */
+  departmentPreviewId?: string;
 }
 
 const ordinaryWorkspaces = [
@@ -215,9 +220,89 @@ export const previewRoles: PreviewRole[] = [
     temporaryTeamMemberships: [],
     emergencyMemberships: [],
   },
+  {
+    id: "nadia",
+    name: "Nadia Stein",
+    role: "Sales & Marketing Specialist",
+    workspace: "content",
+    departmentId: "marketing-growth",
+    unitId: "marketing-insight-and-performance",
+    workspaceMemberships: [...ordinaryWorkspaces, "audience", "content"],
+    restrictedAreas: {},
+    teamChannels: { content: ["coordination", "editorial", "social"] },
+    additionalChannelAccess: {
+      content: ["cities-mobility", "education-skills", "clean-water-week"],
+    },
+    teamsLanding: {
+      kind: "workspace",
+      workspaceId: "content",
+      channelId: "coordination",
+    },
+    projectMemberships: [],
+    projectTeamMemberships: [],
+    temporaryTeamMemberships: [],
+    emergencyMemberships: [],
+  },
+  {
+    id: "sam",
+    name: "Sam Patel",
+    role: "Finance Operations Specialist",
+    workspace: "finance",
+    departmentId: "finance-services",
+    unitId: "accounting-and-control",
+    workspaceMemberships: [...ordinaryWorkspaces],
+    restrictedAreas: { finance: ["payment-exceptions", "refund-chargeback"] },
+    teamChannels: {},
+    teamsLanding: { kind: "department", departmentId: "finance-services" },
+    projectMemberships: [],
+    projectTeamMemberships: [],
+    temporaryTeamMemberships: [],
+    emergencyMemberships: [],
+  },
+  {
+    id: "elliot",
+    name: "Elliot Stone",
+    role: "Site Administrator",
+    workspace: "digital",
+    departmentId: "strategy-technology",
+    unitId: "it-services",
+    workspaceMemberships: [
+      ...ordinaryWorkspaces,
+      "audience",
+      "content",
+      "digital",
+    ],
+    restrictedAreas: {},
+    teamChannels: {
+      digital: [
+        "M365 & SPFx",
+        "Architecture & Governance",
+        "Workspace & Wiki Moderators",
+      ],
+    },
+    teamsLanding: {
+      kind: "workspace",
+      workspaceId: "digital",
+      channelId: "M365 & SPFx",
+    },
+    projectMemberships: [],
+    projectTeamMemberships: [],
+    temporaryTeamMemberships: [],
+    emergencyMemberships: [],
+  },
 ];
 
-export type PolicyPerson = string | { id: string };
+export const previewRoleGroups = [
+  {
+    label: "GENERAL / BUSINESS",
+    roleIds: ["taylor", "nadia", "maya", "sam", "robin", "jamie"],
+  },
+  { label: "SPECIALIST / ADMIN", roleIds: ["devon", "leonie", "elliot"] },
+] as const;
+export const canAdministerSites = (person: PolicyPerson) =>
+  previewRoleFor(person)?.id === "elliot";
+export type PolicyPerson =
+  string | { id: string; departmentPreviewId?: string };
 export function previewRoleFor(person: PolicyPerson) {
   const id = typeof person === "string" ? person : person.id;
   return previewRoles.find((role) => role.id === id);
@@ -476,10 +561,31 @@ export const canAccessProject = (person: PolicyPerson, projectId: string) =>
   !!previewRoleFor(person)?.projectMemberships.includes(projectId);
 export const canAccessProjectTeam = (person: PolicyPerson, projectId: string) =>
   !!previewRoleFor(person)?.projectTeamMemberships.includes(projectId);
+const knownDepartments = [
+  "marketing-growth",
+  "communications",
+  "finance-services",
+  "strategy-technology",
+  "people-culture",
+  "executive-office",
+];
+/** A validated General Staff preview is confined to the chosen Department. */
+export const departmentPreviewFor = (person: PolicyPerson) =>
+  typeof person !== "string" &&
+  person.id === defaultPreviewRoleId &&
+  person.departmentPreviewId &&
+  knownDepartments.includes(person.departmentPreviewId)
+    ? person.departmentPreviewId
+    : undefined;
 export const canAccessDepartment = (
   person: PolicyPerson,
   departmentId: string,
-) => previewRoleFor(person)?.departmentId === departmentId;
+) => {
+  const preview = departmentPreviewFor(person);
+  return preview
+    ? preview === departmentId
+    : previewRoleFor(person)?.departmentId === departmentId;
+};
 export function canAccessUnit(
   person: PolicyPerson,
   departmentId: string,
@@ -489,8 +595,8 @@ export function canAccessUnit(
   const role = previewRoleFor(person);
   return (
     !!role &&
-    canAccessDepartment(role, departmentId) &&
-    (!unitOnly || role.unitId === unitId)
+    canAccessDepartment(person, departmentId) &&
+    (!unitOnly || (!departmentPreviewFor(person) && role.unitId === unitId))
   );
 }
 export function canAccessChannel(
@@ -513,7 +619,10 @@ export function canAccessChannel(
     workspaceId === "logistics" && channelId === "General"
       ? "general"
       : channelId;
-  return !!role.teamChannels[workspaceId]?.includes(canonicalChannel);
+  return !!(
+    role.teamChannels[workspaceId]?.includes(canonicalChannel) ||
+    role.additionalChannelAccess?.[workspaceId]?.includes(canonicalChannel)
+  );
 }
 export const canAccessEmergency = (person: PolicyPerson, incidentId: string) =>
   !!previewRoleFor(person)?.emergencyMemberships.includes(incidentId);
@@ -527,6 +636,7 @@ export type AccessResource =
   | { kind: "project-team"; projectId: string }
   | { kind: "channel"; workspaceId: string; channelId: string }
   | { kind: "department"; departmentId: string }
+  | { kind: "unit"; departmentId: string; unitId: string; unitOnly?: boolean }
   | { kind: "emergency"; incidentId: string };
 
 export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
@@ -547,6 +657,13 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
       return canAccessChannel(person, resource.workspaceId, resource.channelId);
     case "department":
       return canAccessDepartment(person, resource.departmentId);
+    case "unit":
+      return canAccessUnit(
+        person,
+        resource.departmentId,
+        resource.unitId,
+        resource.unitOnly,
+      );
     case "emergency":
       return canAccessEmergency(person, resource.incidentId);
   }
@@ -559,7 +676,6 @@ export function hasAlternativePreviewAccess(
   currentId: string,
 ) {
   return (
-    resource.kind !== "department" &&
     !resourceAccess(currentId, resource) &&
     allowedPreviewRoles(resource).some((role) => role.id !== currentId)
   );

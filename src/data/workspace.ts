@@ -1,3 +1,4 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 import type { LibraryVersion } from "../sharepoint/library";
 import { departments as organisationDepartments } from "../coordination/data";
 export type Role =
@@ -20,7 +21,7 @@ export interface Document {
   area: string;
   status: string;
   owner: string;
-  sensitivity: string;
+  sensitivity: SensitivityLabel;
   recordState: string;
   modified: string;
   modifiedBy: string;
@@ -345,7 +346,12 @@ const allDocuments: Document[] = Object.entries(seeds).flatMap(([lib, rows]) =>
       owner: owners[i % owners.length],
       modifiedBy: owners[(i + 1) % owners.length],
       modified: `2026-10-${String(14 - (i % 9)).padStart(2, "0")}`,
-      sensitivity: library === "restricted" ? "Restricted" : "Internal",
+      sensitivity:
+        library === "restricted"
+          ? "Confidential"
+          : /Financial.*assumptions|Budget.*scenario/i.test(name)
+            ? "Confidential"
+            : "Internal",
       recordState:
         library === "approved"
           ? "Final record"

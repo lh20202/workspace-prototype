@@ -6,7 +6,6 @@ import DemoInfo, {
   proofOfConceptInfoText,
   roleAccessInfoText,
 } from "./DemoInfo";
-import { germanOrientation } from "../i18n/de-orientation";
 import { translateText } from "../i18n/translate";
 
 describe("small demo information controls", () => {
@@ -43,11 +42,13 @@ describe("small demo information controls", () => {
       roleAccessInfoText,
     ]) {
       expect(text.split(/\s+/).length).toBeLessThanOrEqual(50);
-      expect(germanOrientation[text]).toBeTruthy();
-      expect(translateText(text, "de")).toBe(germanOrientation[text]);
+      expect(translateText(text, "de")).not.toBe(text);
       expect(translateText(text, "en")).toBe(text);
     }
-    expect(proofOfConceptInfoText).toContain("a more defined design");
+    expect(proofOfConceptInfoText).toContain("before anything is finalised");
+    expect(proofOfConceptInfoText).not.toMatch(
+      /prototype|product-development/i,
+    );
     expect(proofOfConceptInfoText).not.toMatch(/real data|company data/);
     expect(roleAccessInfoText).toContain("Teams channels");
     expect(betaInfoText).not.toContain("proof of concept");

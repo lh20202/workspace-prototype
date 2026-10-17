@@ -1,3 +1,4 @@
+import { projectPortfolioFiles } from "./data";
 import AccessLock from "../components/AccessLock";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
@@ -237,61 +238,8 @@ export default function ProjectsApp() {
       headingLevel={page === "handover" || page === "teams" ? 2 : undefined}
     />
   );
-  const centralFiles = (kind: "control" | "support"): LibraryDocument[] =>
-    kind === "control"
-      ? [
-          {
-            id: "PRJ-CONTROL-1",
-            name: "Project Review Agenda.docx",
-            folder: "Portfolio Reviews/October 2026",
-            owner: "Casey Blake",
-            modified: "16 Oct 2026",
-            status: "In review",
-          },
-          {
-            id: "PRJ-CONTROL-2",
-            name: "Stage Decision Notes.docx",
-            folder: "Stage Reviews/October 2026",
-            owner: "Robin Avery",
-            modified: "16 Oct 2026",
-            status: "Current",
-          },
-          {
-            id: "PRJ-CONTROL-3",
-            name: "Closure Review Checklist.docx",
-            folder: "Closure/2026",
-            owner: "Casey Blake",
-            modified: "15 Oct 2026",
-            status: "Current",
-          },
-        ]
-      : [
-          currentProjects[1],
-          currentProjects[3],
-          currentProjects[4],
-          currentProjects[6],
-        ]
-          .map((p, i) => ({ project: p, index: i }))
-          .filter(({ project }) => canOpenProject(project, person.id))
-          .map(({ project: p, index: i }) => ({
-            id: `PRJ-SUPPORT-${p.code}`,
-            name: [
-              "Risk Workshop Agenda.docx",
-              "Delivery Plan Review.docx",
-              "Stage Review Notes.docx",
-              "Closure Approach.docx",
-            ][i],
-            folder: projectTitle(p) + "/Current support",
-            owner: "Casey Blake",
-            modified: "16 Oct 2026",
-            status: "In progress",
-            summary: [
-              "Facilitate the project risk workshop.",
-              "Review the delivery plan with the project lead.",
-              "Prepare the next stage review.",
-              "Agree the closure approach and final records.",
-            ][i],
-          }));
+  const centralFiles = (kind: "control" | "support") =>
+    projectPortfolioFiles(kind, person.id);
   const reviews = () =>
     table(
       [

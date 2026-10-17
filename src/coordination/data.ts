@@ -1,11 +1,17 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 import { matchesDisplayText } from "../i18n/search";
-import { canAccessDepartment, canAccessUnit } from "../access/policy";
+import {
+  canAccessDepartment,
+  canAccessUnit,
+  departmentPreviewFor,
+} from "../access/policy";
 import { configById } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
 import { filesById as audienceFilesById } from "../audience/data";
 import { libraryFor as audienceLibraryFor } from "../audience/libraries";
 
 export interface CoordinationPerson {
+  departmentPreviewId?: string;
   id: string;
   name: string;
   role: string;
@@ -32,6 +38,7 @@ export const unitFolders = [
   "Absence & Cover Calendar",
 ];
 export interface AdminFile {
+  sensitivity: SensitivityLabel;
   id: string;
   departmentId: string;
   unitId?: string;
@@ -53,6 +60,7 @@ export interface Unit {
   }[];
 }
 export interface ThreadUpload {
+  sensitivity: SensitivityLabel;
   id: string;
   name: string;
   kind: "Misplaced business upload";
@@ -245,6 +253,7 @@ const misfiled: Record<
       id: "UP-MKT-01",
       name: "Website Conversion Analysis — October.pptx",
       kind: "Misplaced business upload",
+      sensitivity: "Confidential",
       destination: "/audience-innovation/analytics",
       destinationName: "Research & Insight → Measurement & Analytics",
     },
@@ -258,6 +267,7 @@ const misfiled: Record<
       id: "UP-COM-01",
       name: "Service Explainer — Storyboard.pptx",
       kind: "Misplaced business upload",
+      sensitivity: "Internal",
       destination: "/content-delivery/creative",
       destinationName: "Creative Studio → Creative & Multimedia",
       removed: true,
@@ -272,6 +282,7 @@ const misfiled: Record<
       id: "UP-FIN-01",
       name: "Q4 Forecast Assumptions.xlsx",
       kind: "Misplaced business upload",
+      sensitivity: "Internal",
       destination: "/financial-operations/planning",
       destinationName: "Income & Financial Operations → Planning & Analysis",
     },
@@ -285,6 +296,7 @@ const misfiled: Record<
       id: "UP-STT-01",
       name: "Supplier Onboarding Checklist.docx",
       kind: "Misplaced business upload",
+      sensitivity: "Internal",
       destination: "/services/purchasing",
       destinationName: "Purchasing & Office → Purchasing & Suppliers",
       removed: true,
@@ -299,6 +311,7 @@ const misfiled: Record<
       id: "UP-PC-01",
       name: "Manager Capability Programme — Pilot Feedback.xlsx",
       kind: "Misplaced business upload",
+      sensitivity: "Internal",
       destination: "/people-culture/learning",
       destinationName: "People & Culture → Capability & Learning",
       removed: true,
@@ -313,6 +326,7 @@ const misfiled: Record<
       id: "UP-EX-01",
       name: "PRJ-2026-014 · Customer Platform Renewal — Stage Review.pptx",
       kind: "Misplaced business upload",
+      sensitivity: "Internal",
       destination: "/projects/PRJ-2026-014/decisions",
       destinationName: "Projects → PRJ-2026-014 · Customer Platform Renewal",
     },
@@ -560,6 +574,10 @@ export const departments: Department[] = definitions.map(
           name,
           owner: coordinatorName,
           kind: "Local administration" as const,
+          sensitivity:
+            folder === "Leadership & Unit Directors"
+              ? ("Confidential" as const)
+              : ("Internal" as const),
         })),
     );
     const units: Unit[] = unitNames.map((name) => {
@@ -589,6 +607,7 @@ export const departments: Department[] = definitions.map(
         unitId: uid,
         owner: coordinatorName,
         kind: "Local administration",
+        sensitivity: "Internal",
       }));
       return {
         id: uid,
@@ -698,6 +717,7 @@ export const departments: Department[] = definitions.map(
           id: "UP-PC-02",
           name: "Recruitment Workflow — Administration Handoff.docx",
           kind: "Misplaced business upload",
+          sensitivity: "Internal",
           destination: "/employment-admin/recruitment-administration",
           destinationName:
             "Employment & Hiring Administration → Recruitment Administration",
@@ -715,6 +735,7 @@ export const departments: Department[] = definitions.map(
           id: "UP-STT-02",
           name: "HR Platform Interface — Technical Review.docx",
           kind: "Misplaced business upload",
+          sensitivity: "Internal",
           destination: "/digital-tech/systems-engineering",
           destinationName: "Tech & Digital → Engineering Delivery",
         },
@@ -739,6 +760,7 @@ export const departments: Department[] = definitions.map(
           id: "UP-MKT-OD-01",
           name: canonical.name,
           kind: "Misplaced business upload",
+          sensitivity: canonical.sensitivity,
           destination: `/audience-innovation/${audienceLibraryFor(canonical)}?file=${canonical.id}`,
           destinationName: "Research & Insight → Audience Segmentation",
           source: "onedrive",
@@ -809,6 +831,7 @@ export function accessibleFiles(
   person: CoordinationPerson,
 ) {
   if (!canOpenDepartment(department, person)) return [];
+  if (departmentPreviewFor(person)) return [...department.library];
   return [
     ...department.library,
     ...department.units

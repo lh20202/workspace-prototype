@@ -1,6 +1,8 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 import { matchesDisplayText } from "../i18n/search";
 
 export interface ArchiveRecord {
+  sensitivity: SensitivityLabel;
   id: string;
   name: string;
   collection: string;
@@ -16,6 +18,7 @@ export interface ArchiveRecord {
 }
 export const archiveRecords: ArchiveRecord[] = [
   {
+    sensitivity: "Internal",
     id: "ARC-PRJ-2024-018",
     name: "PRJ-2024-018 · Digital Workplace Programme — Final Closure Report",
     collection: "Project Memory",
@@ -30,6 +33,7 @@ export const archiveRecords: ArchiveRecord[] = [
     preservation: "Preservation copy verified",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-001",
     name: "Annual Report 1998",
     collection: "Company History",
@@ -44,6 +48,7 @@ export const archiveRecords: ArchiveRecord[] = [
     preservation: "Preservation copy verified",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-002",
     name: "Company Milestones 2005",
     collection: "Company History",
@@ -57,6 +62,7 @@ export const archiveRecords: ArchiveRecord[] = [
     preservation: "Described",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-003",
     name: "Campaign Posters 2010",
     collection: "Campaign Heritage",
@@ -70,6 +76,7 @@ export const archiveRecords: ArchiveRecord[] = [
     preservation: "Format review due",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-004",
     name: "Completed Programme Review 2018",
     collection: "Project Memory",
@@ -83,6 +90,7 @@ export const archiveRecords: ArchiveRecord[] = [
     preservation: "Preserved",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-MX-01",
     name: "Mexico City — Published Annual Review",
     collection: "Mexico City Archive",
@@ -97,6 +105,7 @@ export const archiveRecords: ArchiveRecord[] = [
     region: "mexico-city",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-JP-01",
     name: "Tokyo — Historical Event Programme",
     collection: "Tokyo Archive",
@@ -111,6 +120,7 @@ export const archiveRecords: ArchiveRecord[] = [
     region: "tokyo",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-US-01",
     name: "Washington — Approved Public Briefing",
     collection: "Washington Archive",
@@ -125,6 +135,7 @@ export const archiveRecords: ArchiveRecord[] = [
     region: "washington",
   },
   {
+    sensitivity: "Internal",
     id: "ARC-ZA-01",
     name: "Cape Town — Historical Exhibition Guide",
     collection: "Cape Town Archive",
@@ -206,7 +217,7 @@ export function searchArchive(query: string, filters: Record<string, string>) {
   return archiveRecords.filter(
     (r) =>
       matchesDisplayText(
-        [r.name, r.description, r.creator, r.id].join("\n"),
+        [r.name, r.description, r.creator, r.id, r.sensitivity].join("\n"),
         query,
       ) &&
       Object.entries(filters).every(
@@ -224,3 +235,21 @@ export const legacyFolders = [
   "Historical",
   "Shared",
 ];
+
+/** View-only legacy documents keep stable metadata and the same classification in every preview. */
+export const legacyArchiveRecords: ArchiveRecord[] = legacyFolders.map(
+  (folder) => ({
+    ...archiveRecords[0],
+    sensitivity: "Internal",
+    id: `LEGACY-${folder.toUpperCase()}`,
+    year: "2012",
+    collection: "Legacy P: drive",
+    series: "Historical reference",
+    creator: `${folder} legacy filing`,
+    area: folder,
+    preservation: "Appraisal pending",
+    name: `${folder} — Approved Historical Summary.pdf`,
+    description:
+      "View-only synthetic historical summary. No current personnel, customer or transaction records are included.",
+  }),
+);

@@ -46,6 +46,7 @@ export const folderFor = (file: WorkingFile) => {
 };
 export const documentFor = (file: WorkingFile): LibraryDocument => ({
   id: file.id,
+  sensitivity: file.sensitivity,
   name: file.name,
   folder: folderFor(file),
   modified: file.modified,

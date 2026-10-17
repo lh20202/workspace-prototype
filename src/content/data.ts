@@ -485,13 +485,25 @@ const f = (
     operation: "Shared operations",
     location: "Content production",
     type: name.split(".").at(-1)!,
-    status: review === "Needs review" ? "In review" : "Draft",
+    status:
+      review === "Published" || review === "Closed"
+        ? "Completed"
+        : review === "Needs review"
+          ? "In review"
+          : "Draft",
     owner: pkg.lead,
     validFrom: "2026-10-01",
     validTo: "2026-12-31",
     modified: `2026-10-${String(3 + ([...id].reduce((sum, letter) => sum + letter.charCodeAt(0), 0) % 14)).padStart(2, "0")}`,
-    sensitivity: "Internal",
-    recordState: "Working information",
+    sensitivity:
+      id === "community-final"
+        ? "Public"
+        : ["press-copy", "media-draft", "launch-brief"].includes(id) ||
+            pkg.embargo
+          ? "Confidential"
+          : "Internal",
+    recordState:
+      review === "Published" ? "Final record" : "Working information",
   };
 };
 export const files: ContentFile[] = [

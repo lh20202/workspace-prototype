@@ -1,3 +1,5 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
+import { departmentPreviewFor, type AccessResource } from "../access/policy";
 import AccessLock from "../components/AccessLock";
 import StaffLink from "../components/StaffLink";
 import { useState } from "react";
@@ -91,6 +93,19 @@ export default function DepartmentChannel({
   const entitled =
     canSeeDepartment(person, department.id) &&
     canOpenDepartment(department, person);
+  const genericPreview = !!departmentPreviewFor(person);
+  const [deniedResource, setDeniedResource] = useState<
+    AccessResource | undefined
+  >(
+    initialUnit
+      ? {
+          kind: "unit",
+          departmentId: department.id,
+          unitId: initialUnit.id,
+          unitOnly: initialUnit.access === "Unit-only",
+        }
+      : undefined,
+  );
   const [folder, setFolder] = useState(params.get("folder") || ""),
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
@@ -139,7 +154,16 @@ export default function DepartmentChannel({
     nextSection = "",
     nextTab = "Shared",
   ) {
-    if (nextUnit && !canOpenUnit(department, nextUnit, person)) {
+    if (
+      nextUnit &&
+      (genericPreview || !canOpenUnit(department, nextUnit, person))
+    ) {
+      setDeniedResource({
+        kind: "unit",
+        departmentId: department.id,
+        unitId: nextUnit.id,
+        unitOnly: nextUnit.access === "Unit-only",
+      });
       setDenied(
         nextUnit.access === "Unit-only"
           ? "This unit has limited its coordination files to unit members."
@@ -159,6 +183,7 @@ export default function DepartmentChannel({
       department: departmentCodes[department.id],
       tab: nextTab === "Files" ? "Shared" : nextTab,
     });
+    if (genericPreview) search.set("departmentPreview", department.id);
     if (nextFolder) search.set("folder", nextFolder);
     if (nextUnit) search.set("unit", nextUnit.id);
     if (nextSection) search.set("section", nextSection);
@@ -195,6 +220,7 @@ export default function DepartmentChannel({
                 <button onClick={() => openFile(f)}>
                   <DocumentIcon name={f.name} />
                   {f.name}
+                  <SensitivityBadge value={f.sensitivity} />
                 </button>
               </td>
               <td>{f.owner}</td>
@@ -211,6 +237,7 @@ export default function DepartmentChannel({
         <AccessBoundary
           workspaceId="department"
           department={department.id}
+          resource={{ kind: "department", departmentId: department.id }}
           area="Department channel"
           personId={person.id}
           headingLevel={2}
@@ -290,6 +317,7 @@ export default function DepartmentChannel({
                       >
                         <DocumentIcon name={attachment.name} />
                         {attachment.name}
+                        <SensitivityBadge value={attachment.sensitivity} />
                       </button>
                     )}
                     {original?.upload &&
@@ -298,6 +326,9 @@ export default function DepartmentChannel({
                           <DocumentIcon name={original.upload.name} />
                           <span>
                             <s>{original.upload.name}</s>
+                            <SensitivityBadge
+                              value={original.upload.sensitivity}
+                            />
                             <small>Attachment removed</small>
                           </span>
                         </div>
@@ -308,6 +339,9 @@ export default function DepartmentChannel({
                         >
                           <DocumentIcon name={original.upload.name} />
                           <span>{original.upload.name}</span>
+                          <SensitivityBadge
+                            value={original.upload.sensitivity}
+                          />
                         </button>
                       ))}
                     {original?.upload?.source === "onedrive" && (
@@ -490,13 +524,15 @@ export default function DepartmentChannel({
               </nav>
               {!folder ? (
                 <div className="coord-folders">
-                  {departmentFolders.map((f) => (
-                    <button key={f} onClick={() => navigate(f)}>
-                      <Folder20Regular />
-                      {f}
-                      <span>›</span>
-                    </button>
-                  ))}
+                  {departmentFolders
+                    .filter((f) => !genericPreview || f !== "Unit Coordination")
+                    .map((f) => (
+                      <button key={f} onClick={() => navigate(f)}>
+                        <Folder20Regular />
+                        {f}
+                        <span>›</span>
+                      </button>
+                    ))}
                 </div>
               ) : folder === "Unit Coordination" ? (
                 !unit ? (
@@ -607,6 +643,7 @@ export default function DepartmentChannel({
                 headingLevel={2}
                 files={permittedFiles.map((f) => ({
                   id: f.id,
+                  sensitivity: f.sensitivity,
                   name: f.name,
                   folder: f.unitId
                     ? `Unit Coordination/${department.units.find((u) => u.id === f.unitId)?.name}/${f.folder}`
@@ -632,6 +669,7 @@ export default function DepartmentChannel({
               <AccessBoundary
                 workspaceId="department"
                 department={department.id}
+                resource={deniedResource}
                 area={denied || "Restricted department coordination"}
                 personId={person.id}
                 headingLevel={2}
@@ -683,6 +721,10 @@ export default function DepartmentChannel({
             <>
               <h2>{file.name}</h2>
               <dl>
+                <dt>Sensitivity</dt>
+                <dd>
+                  <SensitivityBadge value={file.sensitivity} />
+                </dd>
                 <dt>Team</dt>
                 <dd>{department.name}</dd>
                 <dt>Folder</dt>
@@ -695,6 +737,10 @@ export default function DepartmentChannel({
             selectedUpload && (
               <>
                 <h2>{selectedUpload.name}</h2>
+                <p>
+                  Sensitivity:{" "}
+                  <SensitivityBadge value={selectedUpload.sensitivity} />
+                </p>
                 <StaffLink href={selectedUpload.destination}>
                   Open destination: {selectedUpload.destinationName} →
                 </StaffLink>

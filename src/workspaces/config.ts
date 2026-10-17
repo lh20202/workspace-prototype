@@ -1,3 +1,4 @@
+import { workingFileSensitivity } from "../sharepoint/sensitivity";
 import { externalEnvironmentForTool } from "../environments/catalog";
 import { workspaceById } from "./registry";
 import { enrichFunctionalFiles } from "./contentRealism";
@@ -1055,7 +1056,7 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
             validFrom: "2026-10-01",
             validTo: "2026-12-31",
             modified: "2026-10-16",
-            sensitivity: "Internal",
+            sensitivity: workingFileSensitivity(id, area, name),
             recordState: "Working information",
           }) as WorkingFile,
       ),

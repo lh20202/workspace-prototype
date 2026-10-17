@@ -1,3 +1,4 @@
+import { isSensitivityLabel } from "../sharepoint/sensitivity";
 import { describe, it, expect } from "vitest";
 import {
   initiatives,
@@ -29,9 +30,7 @@ describe("Audience R&D connected working data", () => {
       "/audience-innovation/calendar",
     ])
       expect(prototypeForPath(p)).toBe("audience");
-    expect(pageTitle("/audience-innovation")).toBe(
-      "Research & Insight",
-    );
+    expect(pageTitle("/audience-innovation")).toBe("Research & Insight");
     expect(prototypeForPath("/services")).toBe("services");
     expect(prototypeForPath("/logistics/teams")).toBe("logistics");
     expect(prototypeForPath("/planning")).toBe("planning");
@@ -117,7 +116,7 @@ describe("Audience R&D connected working data", () => {
     expect(
       files.every(
         (f) =>
-          f.sensitivity === "Internal" &&
+          isSensitivityLabel(f.sensitivity) &&
           f.recordState === "Working information",
       ),
     ).toBe(true);

@@ -1,3 +1,4 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 import { externalEnvironmentForTool } from "../environments/catalog";
 import type { OperationalFile } from "../logistics/data";
 export const title = "Income & Financial Operations";
@@ -81,7 +82,7 @@ export interface FinancialItem {
   contributors: string;
   baseline: string;
   period: string;
-  sensitivity: "Internal";
+  sensitivity: SensitivityLabel;
   recordState: string;
 }
 const seed: [string, string, string, string, string, string, string, string][] =

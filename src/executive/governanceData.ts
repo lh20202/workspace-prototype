@@ -23,7 +23,7 @@ export const governanceRecords = [
     state: "Approved meeting record",
     date: "2026-11-12",
   },
-];
+].map((record) => ({ ...record, sensitivity: "Confidential" as const }));
 export function governanceVisible(role: string) {
   return governanceRecords.filter((r) => r.audience === role);
 }

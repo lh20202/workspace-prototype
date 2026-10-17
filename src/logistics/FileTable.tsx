@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import DocumentIcon from "../components/DocumentIcon";
 import { type OperationalFile } from "./data";
 import { fileHref } from "./query";
@@ -46,11 +47,17 @@ export default function FileTable({
                 ["type", "Document type"],
                 ["status", "Status"],
                 ["owner", "Owner"],
+                ["sensitivity", "Sensitivity"],
                 ["modified", "Modified"],
               ] as const
             ).map(([key, label]) => (
               <th
                 key={key}
+                className={
+                  key === "sensitivity"
+                    ? "sp-library-column-sensitivity"
+                    : undefined
+                }
                 aria-sort={
                   sort === key
                     ? descending
@@ -89,6 +96,9 @@ export default function FileTable({
                 <FileStatus status={file.status} />
               </td>
               <td>{file.owner}</td>
+              <td className="sp-library-column-sensitivity">
+                <SensitivityBadge value={file.sensitivity} />
+              </td>
               <td>{shortDate(file.modified)}</td>
               {sharePointLinks && (
                 <td>

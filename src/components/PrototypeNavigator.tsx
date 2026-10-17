@@ -9,6 +9,8 @@ import BetaBadge from "./BetaBadge";
 import DemoInfo, { roleAccessInfoText } from "./DemoInfo";
 import { LanguageToggle, useTranslation } from "../i18n/Language";
 import { staff, resolveStaffPerson } from "../intranet/catalog";
+import WorkspaceFAQ from "./WorkspaceFAQ";
+import { previewRoleGroups } from "../access/policy";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
@@ -166,6 +168,7 @@ export default function PrototypeNavigator({
               </a>
               <BetaBadge compact />
             </span>
+            <WorkspaceFAQ />
           </div>
           <div className="prototype-utilities">
             <div className="preview-role-control">
@@ -191,10 +194,19 @@ export default function PrototypeNavigator({
                 value={person.id}
                 onChange={(e) => changePreviewRole(e.target.value)}
               >
-                {staff.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {t(s.role)}
-                  </option>
+                {previewRoleGroups.map((group) => (
+                  <optgroup key={group.label} label={t(group.label)}>
+                    {group.roleIds.map((id) => {
+                      const member = staff.find(
+                        (candidate) => candidate.id === id,
+                      )!;
+                      return (
+                        <option key={member.id} value={member.id}>
+                          {t(member.role)}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
                 ))}
               </select>
             </div>

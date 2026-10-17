@@ -1,0 +1,99 @@
+.workspace-faq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: #31566a;
+  font: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.workspace-faq-link svg {
+  flex-shrink: 0;
+}
+.workspace-faq-link:hover {
+  color: #17445c;
+}
+.workspace-faq-link:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 3px;
+}
+:root .poc-controls .prototype-links .workspace-faq-link {
+  min-height: 32px;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #fff;
+  font:
+    500 12px/20px "Inter Variable",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+:root .poc-controls .prototype-links .workspace-faq-link:hover {
+  border-color: #747474;
+  background: #3d3d3d;
+}
+:root .poc-controls .prototype-links .workspace-faq-link:focus-visible {
+  outline-color: #fff;
+  outline-offset: 2px;
+}
+.workspace-faq-dialog {
+  width: min(640px, calc(100vw - 40px));
+  max-height: calc(100svh - 48px);
+  overflow-y: auto;
+}
+.workspace-faq-question {
+  margin-top: 22px;
+}
+.workspace-faq-question h3 {
+  margin: 0 0 9px;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.workspace-faq-question p {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.workspace-faq-example {
+  display: inline-flex;
+  gap: 6px;
+  color: #0067a8;
+  font-size: 14px;
+  text-underline-offset: 3px;
+}
+.workspace-faq-example:focus-visible,
+.workspace-faq-automation summary:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 3px;
+}
+.workspace-faq-automation {
+  margin-top: 20px;
+  color: #5b6168;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.workspace-faq-automation summary {
+  width: fit-content;
+  cursor: pointer;
+}
+.workspace-faq-automation p {
+  margin-top: 10px;
+  font-size: 12px;
+}
+:root .prototype-launcher .launcher-secondary-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+}

@@ -18,6 +18,7 @@ import {
 
 const files: LibraryDocument[] = [
   {
+    sensitivity: "Internal",
     id: "DOC-101",
     name: "Event Brief.docx",
     folder: "Campaigns/Current",
@@ -27,6 +28,7 @@ const files: LibraryDocument[] = [
     summary: "A briefing for the autumn acquisition activity.",
   },
   {
+    sensitivity: "Internal",
     id: "DOC-102",
     name: "Event Schedule.xlsx",
     folder: "Campaigns/Current",
@@ -35,6 +37,7 @@ const files: LibraryDocument[] = [
     owner: "Maya Chen",
   },
   {
+    sensitivity: "Internal",
     id: "DOC-103",
     name: "Lessons Learned.docx",
     folder: "Campaigns/Previous",
@@ -43,6 +46,7 @@ const files: LibraryDocument[] = [
     owner: "Alex Morgan",
   },
   {
+    sensitivity: "Internal",
     id: "DOC-104",
     name: "Read Me.docx",
     folder: "",
@@ -308,7 +312,7 @@ describe("Library-specific metadata and content types", () => {
       libraryColumns(supplierDefinition, "evaluations").map(
         (column) => column.key,
       ),
-    ).toEqual(["name", "Supplier", "Stage"]);
+    ).toEqual(["name", "Supplier", "Stage", "sensitivity"]);
   });
 
   it("keeps Details tied to the library schema and uses content type defaults for new documents", () => {

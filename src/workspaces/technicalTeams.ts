@@ -10,6 +10,7 @@ export interface ConversationReply {
   link?: { href: string; label: string };
 }
 export interface ConversationMessage {
+  id?: string;
   channel: string;
   author: string;
   text: string;
@@ -46,6 +47,7 @@ const provisioningFolderHref = (() => {
 
 export const technicalPosts: ConversationMessage[] = [
   {
+    id: "digital-onedrive-review",
     channel: "M365 & SPFx",
     author: "Ari Morgan",
     time: "10:18",

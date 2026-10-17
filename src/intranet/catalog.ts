@@ -60,7 +60,7 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
     unitId: "marketing-insight-and-performance",
   },
   alex: { departmentId: "communications", unitId: "editorial-and-content" },
-  sam: { departmentId: "finance-services", unitId: "planning-and-analysis" },
+  sam: { departmentId: "finance-services", unitId: "accounting-and-control" },
   jordan: {
     departmentId: "finance-services",
     unitId: "procurement-and-supplier-services",
@@ -79,6 +79,14 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
 };
 export const peopleDirectory = [
+  {
+    id: "elliot",
+    name: "Elliot Stone",
+    role: "Site Administrator",
+    workspace: "digital",
+    departmentId: "strategy-technology",
+    unitId: "it-services",
+  },
   {
     id: "leonie",
     name: "Leonie Fischer",

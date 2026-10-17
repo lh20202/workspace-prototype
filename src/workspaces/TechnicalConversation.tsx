@@ -1,3 +1,4 @@
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { useState } from "react";
 import { Code20Regular } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
@@ -44,7 +45,7 @@ export default function TechnicalConversation({
       .filter((p) => p.channel === channel)
       .map((p, i) => ({
         ...p,
-        id: `${channel}-${i}`,
+        id: p.id || `${channel}-${i}`,
         time: p.time || "Earlier",
       })),
     ...posts.filter((p) => p.channel === channel),
@@ -74,7 +75,12 @@ export default function TechnicalConversation({
           : undefined;
         const likeCount = (p.likes || 0) + Number(likes.includes(p.id));
         return (
-          <article className="m365-teams-post" key={p.id}>
+          <article
+            className="m365-teams-post"
+            key={p.id}
+            id={`post-${p.id}`}
+            tabIndex={-1}
+          >
             <header className="m365-teams-post-header">
               <span className="m365-teams-avatar">{initials(p.author)}</span>
               <div>
@@ -91,6 +97,7 @@ export default function TechnicalConversation({
                   <DocumentIcon name={attachment.name} />
                   <span>
                     <s>{attachment.name}</s>
+                    <SensitivityBadge value={attachment.sensitivity} />
                     <small>Attachment removed</small>
                   </span>
                 </div>

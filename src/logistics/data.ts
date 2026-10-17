@@ -1,3 +1,4 @@
+import type { SensitivityLabel } from "../sharepoint/sensitivity";
 export type LibraryId = "operations" | "resources" | "training" | "records";
 export type OperationType =
   "Local in-person" | "Travelling in-person" | "Calling" | "Shared operations";
@@ -17,7 +18,7 @@ export interface OperationalFile {
   validFrom: string;
   validTo: string;
   modified: string;
-  sensitivity: "Internal" | "Strictly confidential";
+  sensitivity: SensitivityLabel;
   recordState: "Working information" | "Current standard" | "Final record";
 }
 export const workspaceTitle = "Acquisition Logistics";
@@ -794,7 +795,7 @@ export const posts: Post[] = [
   {
     id: "post-street",
     channel: "street",
-    author: "Sam Patel",
+    author: "Noor Bennett",
     time: "08:30",
     title: "Equipment checks before deployment",
     text: "Can everyone check their kit against the packing list before heading out? Log anything missing so we can sort the spares.",
@@ -833,7 +834,7 @@ export const posts: Post[] = [
   {
     id: "post-travel",
     channel: "travel",
-    author: "Sam Patel",
+    author: "Noor Bennett",
     time: "09:05",
     text: "Week 3 itinerary is up. Still waiting on Lakeside Centre, so keep the alternative stop available for now.",
     fileIds: ["travel-itinerary", "packing-list"],
@@ -862,7 +863,7 @@ export const posts: Post[] = [
   {
     id: "post-coach",
     channel: "coaches",
-    author: "Sam Patel",
+    author: "Noor Bennett",
     time: "08:20",
     text: "This week’s coaching cover is in the schedule. @Jamie, can you check the afternoon slots? Handover checklist is attached too.",
     fileIds: ["coach-schedule", "team-lead-checklist"],

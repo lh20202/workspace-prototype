@@ -1,3 +1,4 @@
+import { isSensitivityLabel } from "../sharepoint/sensitivity";
 import { describe, it, expect } from "vitest";
 import {
   workspaceRegistry,
@@ -65,9 +66,9 @@ describe("canonical functional ownership", () => {
       else expect(filesForWorkspace(cfg.id)).toBe(cfg.files);
       for (const f of cfg.files) {
         expect(cfg.areas.some((a) => a.id === f.area)).toBe(true);
-        expect(f.sensitivity).toBe(
-          cfg.id === "welfare" ? "Strictly confidential" : "Internal",
-        );
+        expect(isSensitivityLabel(f.sensitivity)).toBe(true);
+        if (cfg.id === "welfare")
+          expect(f.sensitivity).toBe("Strictly confidential");
       }
       expect(new Set(cfg.files.map((f) => f.id)).size).toBe(cfg.files.length);
     }

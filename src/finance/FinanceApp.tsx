@@ -8,6 +8,7 @@ import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState } from "react";
 import SimulationMessage from "../components/SimulationMessage";
+import { canAccessArea } from "../access/policy";
 import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation from "../components/PocAnnotation";
 import {
@@ -266,7 +267,11 @@ export default function FinanceApp() {
         >
           <div className="finance-breadcrumb">
             <StaffLink href={base}>Workspace</StaffLink> /{" "}
-            {protectedName ? "Access required" : activeName}
+            {protectedName
+              ? canAccessArea(person, "finance", subject)
+                ? protectedName
+                : "Access required"
+              : activeName}
           </div>
           {notice && (
             <div role="status" className="finance-notice">
@@ -274,7 +279,8 @@ export default function FinanceApp() {
               <button onClick={() => setNotice("")}>Dismiss</button>
             </div>
           )}
-          {protectedName || unknown ? (
+          {(protectedName && !canAccessArea(person, "finance", subject)) ||
+          unknown ? (
             <AccessBoundary
               workspaceId="finance"
               resource={
@@ -290,6 +296,21 @@ export default function FinanceApp() {
               returnHref={withExplicitStaff(base)}
               strict
             />
+          ) : protectedName ? (
+            <section>
+              <h1>{protectedName}</h1>
+              <p>
+                Review exceptions, confirm the supporting evidence and record
+                the authorised resolution in the financial system.
+              </p>
+              <p>
+                Individual payment details and live financial records are not
+                held in this demonstration.
+              </p>
+              <StaffLink href={`${base}/${library?.id || page}`}>
+                Return to working documents
+              </StaffLink>
+            </section>
           ) : system ? (
             <section>
               <h1>{system.name}</h1>
