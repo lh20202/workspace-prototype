@@ -37,12 +37,6 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
           "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.",
       },
       {
-        id: "access-management",
-        question: "Who manages access and permissions?",
-        answer:
-          "Workspace focal points help decide and confirm who needs business access. Site administrators or technical support apply the access, while urgent requests can be escalated when the focal point is unavailable.",
-      },
-      {
         id: "role-changes",
         question: "What happens when someone joins, leaves or changes roles?",
         answer:

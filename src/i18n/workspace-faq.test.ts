@@ -23,14 +23,6 @@ describe("the expanded FAQ's final German wording", () => {
       expect(translateText(source, "en")).toBe(source);
     }
   });
-  it("keeps business authorisation separate from technical implementation", () => {
-    const source = workspaceFAQQuestions.find(
-      (entry) => entry.id === "access-management",
-    )!.answer;
-    const german = translateText(source, "de");
-    expect(german).toContain("klären und bestätigen");
-    expect(german).toContain("richten die Berechtigungen ein");
-  });
   it("uses the established classification and product terms without conflating personal data and strict confidentiality", () => {
     const sensitivity = workspaceFAQQuestions.find(
       (entry) => entry.id === "sensitivity",

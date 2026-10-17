@@ -14,10 +14,6 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Was passiert, wenn doch jemand eine Datei aus einem persönlichen Speicherbereich teilt?",
   "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.":
     "Das kommt vor. Die Ansprechpersonen der Arbeitsbereiche sind darin geschult, solche Links zu erkennen, beim Verschieben der Arbeitsfassung in den richtigen Arbeitsbereich zu helfen und den geteilten Link zu aktualisieren.",
-  "Who manages access and permissions?":
-    "Wer kümmert sich um Zugriff und Berechtigungen?",
-  "Workspace focal points help decide and confirm who needs business access. Site administrators or technical support apply the access, while urgent requests can be escalated when the focal point is unavailable.":
-    "Die Ansprechpersonen der Arbeitsbereiche klären und bestätigen, wer für seine Aufgaben Zugriff benötigt. Websiteadministratoren oder der technische Support richten die Berechtigungen ein; ist die zuständige Ansprechperson nicht erreichbar, können dringende Anfragen eskaliert werden.",
   "What happens when someone joins, leaves or changes roles?":
     "Was passiert beim Eintritt, Austritt oder Rollenwechsel?",
   "Their access is reviewed against the work they now need to do. Relevant access is added and access they no longer need is removed, rather than everything simply following them forever.":
