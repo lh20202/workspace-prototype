@@ -76,6 +76,7 @@
   scroll-padding-block: 8px;
 }
 .workspace-faq-footer {
+  align-self: flex-end;
   padding-top: 16px;
 }
 .workspace-faq-group + .workspace-faq-group {
