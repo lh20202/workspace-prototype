@@ -6,10 +6,6 @@ export const germanWorkspaceFAQ: Record<string, string> = {
   "Who can see my files?": "Wer kann auf meine Dateien zugreifen?",
   "Access to files is linked to your role and the work you're involved in. Most shared work is available to the people who need it, while confidential areas are limited to specific participants.":
     "Der Zugriff auf Dateien richtet sich nach Ihrer Rolle und den Aufgaben, an denen Sie mitarbeiten. Gemeinsam genutzte Arbeitsunterlagen stehen in der Regel den Personen zur Verfügung, die sie benötigen; vertrauliche Bereiche sind einem festgelegten Personenkreis vorbehalten.",
-  "Do I save documents in Teams channels or workspaces?":
-    "Speichere ich Dokumente in Teams-Kanälen oder in Arbeitsbereichen?",
-  "Save the working file in its workspace. Where a Teams channel is connected to that work, its Shared/Files view gives you access to the workspace files — share the link rather than creating another copy.":
-    "Speichern Sie die Arbeitsfassung im zugehörigen Arbeitsbereich. Ist ein Teams-Kanal mit dieser Arbeit verbunden, können Sie über dessen Ansicht „Freigegeben/Dateien“ auf die Dateien des Arbeitsbereichs zugreifen — teilen Sie den Link, statt eine weitere Kopie anzulegen.",
   "Where do personal drives fit in?":
     "Welche Rolle spielen persönliche Speicherbereiche?",
   "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.":

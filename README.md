@@ -226,4 +226,4 @@ This mirrors SharePoint’s [Sensitivity column for integrated sensitivity label
 
 ### FAQ and Planning & Reporting enrichment
 
-The shared Workspace FAQ now has 22 initially collapsed questions in three lightweight groups, with a fixed title/Close action and scrolling content. Planning Cycle has one new Planning & Reporting channel for Robin and Sam, using canonical Department submissions, Logframe and reporting files. A same-document guided Logframe and a separate response-free registration preview support the conversation links. [Question inventory, final migration/training copy and implementation limits](docs/faq-planning-enrichment.md).
+The shared Workspace FAQ now has 21 initially collapsed questions in three lightweight groups, with a fixed title/Close action and scrolling content. Planning Cycle has one new Planning & Reporting channel for Robin and Sam, using canonical Department submissions, Logframe and reporting files. A same-document guided Logframe and a separate response-free registration preview support the conversation links. [Question inventory, final migration/training copy and implementation limits](docs/faq-planning-enrichment.md).

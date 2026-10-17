@@ -25,12 +25,6 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
           "Access to files is linked to your role and the work you're involved in. Most shared work is available to the people who need it, while confidential areas are limited to specific participants.",
       },
       {
-        id: "teams-or-workspaces",
-        question: "Do I save documents in Teams channels or workspaces?",
-        answer:
-          "Save the working file in its workspace. Where a Teams channel is connected to that work, its Shared/Files view gives you access to the workspace files — share the link rather than creating another copy.",
-      },
-      {
         id: "personal-drives",
         question: "Where do personal drives fit in?",
         answer:

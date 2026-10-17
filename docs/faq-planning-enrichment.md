@@ -4,12 +4,11 @@ This remains an exploratory Digital Workspace proof of concept. The current work
 
 ## FAQ
 
-The same popup opens from Welcome and Demo Controls. A fixed title and Close action surround the scrolling content. All 22 accessible Fluent accordion questions start collapsed; several may remain open. No tabs or question cards were added. The later short personal-drive wording and “See an example” label remain; the previously removed automation explanation was not restored.
+The same popup opens from Welcome and Demo Controls. A fixed title and Close action surround the scrolling content. All 21 accessible Fluent accordion questions start collapsed; several may remain open. No tabs or question cards were added. The later short personal-drive wording and “See an example” label remain; the previously removed automation explanation was not restored.
 
 ### Files & access
 
 - Who can see my files?
-- Do I save documents in Teams channels or workspaces?
 - Where do personal drives fit in?
 - What if someone shares a personal drive file anyway?
 - Who manages access and permissions?

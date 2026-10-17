@@ -44,10 +44,5 @@ describe("the expanded FAQ's final German wording", () => {
     expect(translateText(protectedInformation.question, "de")).toContain(
       "personenbezogene Daten oder streng vertrauliche Informationen",
     );
-    const saving = workspaceFAQQuestions.find(
-      (entry) => entry.id === "teams-or-workspaces",
-    )!.answer;
-    expect(translateText(saving, "de")).toContain("Teams-Kanal");
-    expect(translateText(saving, "de")).toContain("Freigegeben/Dateien");
   });
 });

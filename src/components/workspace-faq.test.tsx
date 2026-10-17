@@ -63,11 +63,10 @@ describe("shared staff-facing Workspace FAQ", () => {
       "GETTING STARTED & SUPPORT",
     ]);
     expect(workspaceFAQGroups.map((group) => group.questions.length)).toEqual([
-      13, 5, 4,
+      12, 5, 4,
     ]);
     expect(workspaceFAQQuestions.map((entry) => entry.id)).toEqual([
       "file-access",
-      "teams-or-workspaces",
       "personal-drives",
       "personal-drive-shared",
       "access-management",
@@ -90,10 +89,10 @@ describe("shared staff-facing Workspace FAQ", () => {
       "technical-settings",
     ]);
     expect(new Set(workspaceFAQQuestions.map((entry) => entry.id)).size).toBe(
-      22,
+      21,
     );
-    expect(html.match(/data-faq-id=/g)).toHaveLength(22);
-    expect(html.match(/aria-expanded="false"/g)).toHaveLength(22);
+    expect(html.match(/data-faq-id=/g)).toHaveLength(21);
+    expect(html.match(/aria-expanded="false"/g)).toHaveLength(21);
     expect(html).not.toContain('aria-expanded="true"');
     expect(html).not.toContain("What if a document is confidential?");
     expect(
