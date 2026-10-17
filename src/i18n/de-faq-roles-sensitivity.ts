@@ -9,9 +9,9 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
     "Welche Rolle spielen persönliche Speicherbereiche wie OneDrive?",
   "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.":
     "Persönliche Speicherbereiche gehören nicht zu dem hier gezeigten Modell für die gemeinsame Arbeit. Gemeinsam genutzte Geschäftsdokumente liegen in Arbeitsbereichen, damit die zuständigen Personen dieselbe Fassung finden, darauf zugreifen und sie gemeinsam pflegen können.",
-  "What if someone shares a personal-drive file anyway?":
+  "What if someone shares a personal drive file anyway?":
     "Was passiert, wenn doch jemand eine Datei aus einem persönlichen Speicherbereich teilt?",
-  "It happens. Workspace focal points are trained to spot personal-drive links, help move the working file into the right workspace and update the shared link.":
+  "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.":
     "Das kommt vor. Die Ansprechpersonen der Arbeitsbereiche sind darin geschult, solche Links zu erkennen, beim Verschieben der Arbeitsfassung in den richtigen Arbeitsbereich zu helfen und den geteilten Link zu aktualisieren.",
   "See an example in Teams": "Beispiel in Teams ansehen",
   "Could this be automated?": "Lässt sich das automatisieren?",

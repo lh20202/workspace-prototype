@@ -9,9 +9,9 @@ export const workspaceFAQQuestions = [
       "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.",
   },
   {
-    question: "What if someone shares a personal-drive file anyway?",
+    question: "What if someone shares a personal drive file anyway?",
     answer:
-      "It happens. Workspace focal points are trained to spot personal-drive links, help move the working file into the right workspace and update the shared link.",
+      "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.",
   },
 ] as const;
 
