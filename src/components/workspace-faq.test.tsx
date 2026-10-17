@@ -7,8 +7,8 @@ import {
   workspaceFAQQuestions,
   workspaceFAQExampleHref,
 } from "./workspaceFAQContent";
-import { technicalPosts } from "../workspaces/technicalTeams";
-import { canAccessChannel } from "../access/policy";
+import { resolveDepartment } from "../coordination/data";
+import { canAccessDepartment } from "../access/policy";
 import Launcher from "../intranet/Launcher";
 import PrototypeNavigator from "./PrototypeNavigator";
 import { proofOfConceptInfoText } from "./DemoInfo";
@@ -52,27 +52,24 @@ describe("shared staff-facing Workspace FAQ", () => {
   it("links to a real authorised human correction thread instead of a separate demo", () => {
     const url = new URL(workspaceFAQExampleHref, "https://example.test");
     expect(url.pathname).toBe("/teams");
-    expect(url.searchParams.get("workspace")).toBe("digital");
+    const department = resolveDepartment(url.searchParams.get("department"))!;
+    expect(department.id).toBe("marketing-growth");
     expect(
-      canAccessChannel(
-        url.searchParams.get("staff")!,
-        "digital",
-        url.searchParams.get("channel")!,
-      ),
+      canAccessDepartment(url.searchParams.get("staff")!, department.id),
     ).toBe(true);
-    const post = technicalPosts.find(
+    const post = department.posts.find(
       (entry) => entry.id === url.searchParams.get("post"),
     );
-    expect(post?.attachment?.source).toBe("onedrive");
-    expect(post?.text).toContain("needed to give Leonie access");
+    expect(post?.upload?.source).toBe("onedrive");
+    expect(post?.moderatorReply).toContain("move the working copy");
     expect(
-      post?.replies?.some(
-        (reply) => reply.moderator && reply.text.includes("already has access"),
+      post?.replies?.some((reply) =>
+        reply.text.includes("didn't realise I'd shared the OneDrive copy"),
       ),
     ).toBe(true);
     expect(
       post?.replies?.some((reply) =>
-        reply.link?.href.includes("file=digital-F17"),
+        reply.link?.href.includes("file=seg-model"),
       ),
     ).toBe(true);
   });

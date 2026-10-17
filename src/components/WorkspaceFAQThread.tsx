@@ -1,5 +1,4 @@
-import { technicalPosts } from "../workspaces/technicalTeams";
-import { configById } from "../workspaces/config";
+import { resolveDepartment } from "../coordination/data";
 import DocumentIcon from "./DocumentIcon";
 import OneDriveSourceNote from "./OneDriveSourceNote";
 import SensitivityBadge from "../sharepoint/SensitivityBadge";
@@ -15,20 +14,36 @@ const initials = (name: string) =>
 
 /** A read-only view of the same conversation shown in the full Teams demo. */
 export default function WorkspaceFAQThread() {
-  const post = technicalPosts.find(
-    (message) => message.id === "digital-onedrive-review",
+  const department = resolveDepartment("marketing-growth");
+  const post = department?.posts.find(
+    (message) => message.id === "marketing-growth-onedrive",
   );
-  if (!post) return null;
-  const attachment = configById
-    .get("digital")
-    ?.files.find((file) => file.id === post.attachment?.fileId);
+  if (!department || !post) return null;
+  const attachment = post.upload;
+  const replies = [
+    ...(post.moderatorReply && attachment
+      ? [
+          {
+            author: department.coordinator.name,
+            text: post.moderatorReply,
+            moderator: true,
+            time: undefined,
+            link: {
+              href: attachment.destination,
+              label: `Open destination: ${attachment.destinationName} →`,
+            },
+          },
+        ]
+      : []),
+    ...(post.replies || []),
+  ];
   return (
     <section className="workspace-faq-thread" aria-label="Teams exchange">
       <header className="workspace-faq-thread-channel">
         <TeamsMark size={20} />
         <div>
-          <strong>Tech &amp; Digital</strong>
-          <span>{post.channel}</span>
+          <strong>{department.name}</strong>
+          <span>General</span>
         </div>
       </header>
       <article className="workspace-faq-thread-post">
@@ -54,7 +69,7 @@ export default function WorkspaceFAQThread() {
           </div>
         )}
         <div className="workspace-faq-thread-replies">
-          {post.replies?.map((reply, index) => (
+          {replies.map((reply, index) => (
             <article className="workspace-faq-thread-reply" key={index}>
               <span className="workspace-faq-thread-avatar" aria-hidden="true">
                 {initials(reply.author)}
@@ -67,7 +82,7 @@ export default function WorkspaceFAQThread() {
                       MODERATOR
                     </span>
                   )}
-                  <time>{reply.time}</time>
+                  {reply.time && <time>{reply.time}</time>}
                 </header>
                 <p>{reply.text}</p>
                 {reply.link && (

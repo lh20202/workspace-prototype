@@ -17,4 +17,4 @@ export const workspaceFAQQuestions = [
 
 /** Ordinary explicit Preview Role routing opens an existing authorised conversation. */
 export const workspaceFAQExampleHref =
-  "/teams?staff=devon&workspace=digital&channel=M365%20%26%20SPFx&tab=Posts&post=digital-onedrive-review";
+  "/teams?staff=taylor&department=mcg&tab=Posts&post=marketing-growth-onedrive";

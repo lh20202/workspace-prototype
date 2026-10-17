@@ -56,7 +56,7 @@ describe("final staff-facing German interpretation", () => {
       new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
         "post",
       ),
-    ).toBe("digital-onedrive-review");
+    ).toBe("marketing-growth-onedrive");
   });
 
   it("uses clear role names and never translates SharePoint site administration as a physical location", () => {
