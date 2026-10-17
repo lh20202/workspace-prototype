@@ -103,7 +103,7 @@ describe("task-oriented architecture destinations", () => {
         label: "Payments & Close",
         href: "/financial-operations/reconciliation",
       },
-      { label: "Planning & Reporting", href: "/financial-operations/planning" },
+      { label: "Cost benefit analysis", href: "/financial-operations/planning" },
       { label: "Treasury", href: "/financial-operations/treasury" },
     ]);
     expect(workspaceRegistry.filter(({ id }) => id === "finance")).toHaveLength(

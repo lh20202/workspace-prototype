@@ -7,6 +7,7 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Income & Booking": "Einnahmen & Buchung",
   "Payments & Close": "Zahlungen & Abschluss",
   "Planning & Reporting": "Planung & Berichterstattung",
+  "Cost benefit analysis": "Analyse von Kosten und Nutzen",
   Treasury: "Liquiditätsmanagement",
   "Open my Teams": "Meine Teams öffnen",
   Tools: "Tools",

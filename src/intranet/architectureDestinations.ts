@@ -112,7 +112,7 @@ export const orgCentralGroups = [
 export const financeJumpLinks = [
   { label: "Income & Booking", href: "/financial-operations/income" },
   { label: "Payments & Close", href: "/financial-operations/reconciliation" },
-  { label: "Planning & Reporting", href: "/financial-operations/planning" },
+  { label: "Cost benefit analysis", href: "/financial-operations/planning" },
   { label: "Treasury", href: "/financial-operations/treasury" },
 ];
 
