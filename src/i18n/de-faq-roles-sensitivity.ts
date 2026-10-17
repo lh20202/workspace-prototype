@@ -1,7 +1,7 @@
 /** Final semantic review after the English FAQ, roles and classifications settled. */
 export const germanFAQRolesSensitivity: Record<string, string> = {
-  "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice.":
-    "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
+  "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
+    "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
   "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
     "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet. Die Demo ist weder mit Microsoft 365 noch mit anderen produktiven Geschäftssystemen verbunden.",
   "Workspace FAQ": "Häufige Fragen zu Arbeitsbereichen",

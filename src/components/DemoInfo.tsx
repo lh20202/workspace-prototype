@@ -8,7 +8,7 @@ import { Info16Regular } from "@fluentui/react-icons";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
-  "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice.";
+  "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.";
 export const roleAccessInfoText =
   "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.";
 
