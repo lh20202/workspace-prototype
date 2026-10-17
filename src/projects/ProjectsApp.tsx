@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import { PocPreviewControls } from "../components/PocAnnotation";
 import {
   LockClosed16Regular,
   PeopleTeam20Regular,
@@ -8,12 +10,11 @@ import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
 import { canSeeProject, projectChannels } from "../teams/visibility";
-import TeamsAdministration from "../teams/Administration";
 import DocumentIcon from "../components/DocumentIcon";
 import "../teams/integrations.css";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import type { LibraryDocument } from "../sharepoint/library";
-import { staff, rememberStaff } from "../intranet/catalog";
+import { staff, rememberStaff, resolveStaffPerson } from "../intranet/catalog";
 import {
   allProjects,
   currentProjects,
@@ -27,7 +28,6 @@ import {
   supportRoles,
   projectFiles,
   projectLibraryDefinition,
-  projectAccessHref,
   reviewRows,
   type Project,
 } from "./data";
@@ -54,7 +54,7 @@ export default function ProjectsApp() {
     () =>
       new URLSearchParams(location.search).get("staff") || activePerson().id,
   );
-  const person = staff.find((s) => s.id === personId) || activePerson();
+  const person = resolveStaffPerson(personId);
   const permitted = !project || canOpenProject(project, person.id);
   const [query, setQuery] = useState(""),
     [states, setStates] = useState<Record<string, string>>({}),
@@ -313,45 +313,31 @@ export default function ProjectsApp() {
         ]),
     );
   const denied = () => (
-    <section className="project-restricted">
-      <LockClosed16Regular />
-      <h1>Access required</h1>
-      <p>
-        {project
-          ? "This project workspace has restricted membership."
-          : "This working area requires a project-control or project-support role."}
-      </p>
-      {project && (
-        <p>
-          Project: <strong>{title}</strong>
-        </p>
-      )}
-      <a
-        className="project-primary"
-        href={
-          project
-            ? projectAccessHref(project, person.id)
-            : `/service-desk/access-request?workspace=Projects&area=${encodeURIComponent(title + " / " + page)}&person=${person.id}`
-        }
-      >
-        Request access
-      </a>
-      <a href="/projects">Back to Projects</a>
-    </section>
+    <AccessBoundary
+      workspaceId="projects"
+      area={project ? title : "Project control & support"}
+      location={`Projects / ${title} / ${page}`}
+      project={project?.code}
+      personId={person.id}
+      returnHref="/projects"
+      returnLabel="Back to Projects"
+      strict={project?.access === "Restricted"}
+    />
   );
   const projectBody = () => {
     if (!project) return null;
     if (!permitted) return denied();
     if (page === "security")
       return (
-        <section className="project-restricted">
-          <h1>Access required</h1>
-          <p>
-            Production Security Review requires separate technical
-            authorisation. No review contents are included.
-          </p>
-          <a href={projectAccessHref(project, person.id)}>Request access</a>
-        </section>
+        <AccessBoundary
+          workspaceId="digital"
+          area="Production Security Review"
+          project={project.code}
+          location={`Projects / ${title} / Production Security Review`}
+          personId={person.id}
+          returnHref={root}
+          strict
+        />
       );
     if (page === "documents") return filesView();
     if (page === "plan")
@@ -732,9 +718,6 @@ export default function ProjectsApp() {
               }
             : group,
         )}
-        navigationFooter={
-          <TeamsAdministration person={person} groups={teamsGroups(person)} />
-        }
         selectedChannelId={`${project.code}:${selectedChannel}`}
         activeTab={tab}
         onTabChange={(next) => changeTeamsLocation(selectedChannel, next)}
@@ -764,15 +747,16 @@ export default function ProjectsApp() {
           className={`teams-project-content ${tab === "Posts" ? "teams-conversation" : ""}`}
         >
           {!canSeeProject(person, project.code) ? (
-            <section className="m365-teams-empty">
-              <h2>Access denied</h2>
-              <p>This project team is limited to its assigned members.</p>
-              <button
-                onClick={() => location.assign(`/teams?staff=${person.id}`)}
-              >
-                Open your Teams view
-              </button>
-            </section>
+            <AccessBoundary
+              workspaceId="projects"
+              area="Project team"
+              project={project.code}
+              personId={person.id}
+              headingLevel={2}
+              compact
+              returnHref={`/teams?staff=${person.id}`}
+              returnLabel="Open your Teams view"
+            />
           ) : !permitted ? (
             denied()
           ) : tab === "Shared" ? (
@@ -843,7 +827,7 @@ export default function ProjectsApp() {
                           <strong>{person.name}</strong>
                           <span>Just now</span>
                         </header>
-                        <p>{p.text}</p>
+                        <p data-no-translate>{p.text}</p>
                       </div>
                     </article>
                   ))}
@@ -904,7 +888,7 @@ export default function ProjectsApp() {
                         <span>Just now</span>
                       </div>
                     </div>
-                    <p>{p.text}</p>
+                    <p data-no-translate>{p.text}</p>
                   </article>
                 ))}
               {!readOnly && (
@@ -947,8 +931,10 @@ export default function ProjectsApp() {
       />
       <div className="projects-layout">
         <aside className="projects-nav">
-          <label>
-            Preview as
+          <PocPreviewControls
+            title="Preview as"
+            className="project-persona-preview"
+          >
             <select
               aria-label="Project staff preview"
               value={person.id}
@@ -963,7 +949,7 @@ export default function ProjectsApp() {
                 </option>
               ))}
             </select>
-          </label>
+          </PocPreviewControls>
           <nav aria-label="Projects navigation">
             {project && <a href="/projects">← Back to Projects</a>}
             {mode.map(([id, label]) => (

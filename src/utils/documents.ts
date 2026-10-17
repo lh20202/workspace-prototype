@@ -4,6 +4,7 @@ import {
   type Role,
   type View,
 } from "../data/workspace";
+import { matchesDisplayText } from "../i18n/search";
 export interface Filters {
   cycle: string;
   type: string;
@@ -38,10 +39,18 @@ export function queryDocuments(
         (view !== "In Review" ||
           ["In review", "Ready for review"].includes(d.status)) &&
         (view !== "Approved" || d.status === "Approved") &&
-        [d.name, d.folderPath, d.type, d.cycle, d.area, d.owner, d.status]
-          .join(" ")
-          .toLowerCase()
-          .includes(search.trim().toLowerCase()) &&
+        matchesDisplayText(
+          [
+            d.name,
+            d.folderPath,
+            d.type,
+            d.cycle,
+            d.area,
+            d.owner,
+            d.status,
+          ].join("\n"),
+          search,
+        ) &&
         Object.entries(filters).every(
           ([key, value]) => !value || d[key as keyof Filters] === value,
         ),

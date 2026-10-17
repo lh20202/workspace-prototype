@@ -1,4 +1,6 @@
 import { useState } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
 import {
   LockClosed20Regular,
   ShieldCheckmark24Regular,
@@ -35,8 +37,10 @@ export default function GovernanceApp() {
         </div>
         <a href="/executive">Return to executive workspace ↗</a>
       </header>
-      <div className="governance-preview">
-        <strong>GOVERNANCE ACCESS PREVIEW</strong>
+      <PocPreviewControls
+        title="Governance access preview"
+        className="governance-preview"
+      >
         <label>
           Preview role
           <select
@@ -53,11 +57,7 @@ export default function GovernanceApp() {
             <option value="members">Skyler Lane · Member Representative</option>
           </select>
         </label>
-        <p>
-          Executive workspace membership does not grant access. Each governance
-          body has its own audience.
-        </p>
-      </div>
+      </PocPreviewControls>
       <div className="governance-layout">
         <nav aria-label="Governance navigation">
           <a href={`/governance?preview=${role}`}>Portal home</a>
@@ -81,31 +81,30 @@ export default function GovernanceApp() {
             {links.find((l) => l.id === page)?.name ||
               "Governance & Members Portal"}
           </h1>
+          <p className="governance-access-context">
+            Executive workspace membership does not grant access. Each
+            governance body has its own audience.
+          </p>
           {!permitted ? (
-            <section className="governance-boundary">
-              <LockClosed20Regular />
-              <h2>Governance participation required</h2>
-              <p>
-                Committee papers are restricted to authorised committee
-                participants. Members Assembly materials have a separate
-                audience. Choose an explicitly labelled fictional governance
-                preview above to inspect the structure.
-              </p>
-              <p>
-                No member personal records, appointments data or committee
-                deliberations are available in this state.
-              </p>
-            </section>
+            <AccessBoundary
+              workspaceId="governance"
+              area={
+                links.find((link) => link.id === page)?.name ||
+                "Governance participation"
+              }
+              headingLevel={2}
+              returnHref="/executive"
+              returnLabel="Return to executive workspace"
+              strict
+            />
           ) : (
             <>
-              <p>
-                Signed-in preview:{" "}
+              <PocAnnotation title="Fictional participation" variant="inline">
                 {role === "committee"
                   ? "Rowan Blake · Committee Member"
                   : "Skyler Lane · Member Representative"}
-                . All examples are fictional and contain no personal member
-                records.
-              </p>
+                . No personal member records.
+              </PocAnnotation>
               {page === "calendar" ? (
                 <section>
                   <h2>Governance cycle · October / November 2026</h2>
@@ -148,10 +147,10 @@ export default function GovernanceApp() {
                     <div className="governance-record-detail" role="status">
                       <h3>{visible.find((r) => r.id === record)?.name}</h3>
                       <p>Record held in the Governance & Members Portal.</p>
-                      <p>
+                      <PocAnnotation title="Fictional record" variant="inline">
                         Fictional low-detail governance example. No confidential
                         paper text or member deliberation is reproduced.
-                      </p>
+                      </PocAnnotation>
                       <button onClick={() => setRecord("")}>
                         Close record
                       </button>

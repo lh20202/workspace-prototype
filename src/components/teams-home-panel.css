@@ -1,0 +1,108 @@
+:root {
+  --workspace-content-width: 1204px;
+  --workspace-rail-width: 260px;
+  --workspace-section-gap: 32px;
+}
+:root
+  .app-shell
+  :is(.functional-home-layout, .content-room-home-grid, .home-layout) {
+  max-width: var(--workspace-content-width);
+  grid-template-columns: minmax(0, 1fr) var(--workspace-rail-width);
+  gap: var(--workspace-section-gap);
+  align-items: start;
+}
+:root .app-shell :is(.home-aside, .functional-home-aside) {
+  padding-top: 0;
+}
+:root .app-shell .teams-home-panel {
+  margin: 0 0 28px;
+  padding: 0;
+  min-width: 0;
+}
+:root .app-shell .teams-home-panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.teams-home-panel img {
+  flex-shrink: 0;
+}
+:root .app-shell .teams-home-panel > p {
+  margin: 12px 0 16px;
+  color: #616161;
+  font-size: 14px;
+  line-height: 20px;
+}
+.teams-home-channels > a {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 2px;
+  border-bottom: 1px solid #edebe9;
+  color: #005a9e;
+  text-decoration: none;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+.teams-home-channels > a:hover {
+  background: #f5f5fa;
+  color: #464775;
+}
+.teams-home-channels > a:active {
+  background: #eeedf6;
+}
+.teams-home-channels small {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #616161;
+}
+.teams-home-channels > a > svg {
+  color: #7a7a7a;
+}
+.teams-home-open {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+  min-height: 32px;
+  color: #5053a0;
+  font-weight: 500;
+  text-decoration: none;
+}
+.teams-home-open:hover {
+  text-decoration: underline;
+}
+:root .functional-home-layout > div > h1 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.35px;
+}
+:root .functional-home-layout > div > .functional-intro {
+  margin: 8px 0 0;
+}
+@media (max-width: 1000px) {
+  :root
+    .app-shell
+    :is(.functional-home-layout, .content-room-home-grid, .home-layout) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  :root .app-shell .functional-home-aside {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teams-home-channels > a {
+    transition: none;
+  }
+}

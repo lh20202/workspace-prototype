@@ -38,11 +38,14 @@ import {
   People24Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import TeamsHomePanel from "../components/TeamsHomePanel";
+import SimulationMessage from "../components/SimulationMessage";
+import PocAnnotation from "../components/PocAnnotation";
 import WorkspaceHeader from "./WorkspaceHeader";
 import FileTable, { FileStatus, shortDate } from "./FileTable";
 import LocationsList from "./LocationsList";
 import TeamsView from "./TeamsView";
-import { staff, selectedStaffId } from "../intranet/catalog";
+import { resolveStaffPerson } from "../intranet/catalog";
 import { canSeeLogisticsChannel } from "../teams/visibility";
 import {
   files,
@@ -72,7 +75,7 @@ export function logisticsRoute() {
     view: savedViews.includes(params.get("view") as SavedView)
       ? (params.get("view") as SavedView)
       : ("All Documents" as SavedView),
-    channel: params.get("channel") ?? "central-city",
+    channel: params.get("channel") ?? "general",
     tab: params.get("tab") ?? "Posts",
     filters: {
       campaign: params.get("campaign") ?? "",
@@ -86,9 +89,7 @@ function documentFromLocation() {
   const params = new URLSearchParams(location.search);
   const file = filesById.get(params.get("document") || "");
   if (!file || !location.pathname.endsWith("/teams")) return file || null;
-  const person =
-    staff.find((s) => s.id === (params.get("staff") || selectedStaffId())) ||
-    staff[1];
+  const person = resolveStaffPerson(params.get("staff"));
   const channel = channels.find(
     (c) => c.id === (params.get("channel") || "general"),
   );
@@ -99,6 +100,9 @@ function documentFromLocation() {
     : null;
 }
 export default function LogisticsApp() {
+  const teamsPerson = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
   const [route, setRoute] = useState(logisticsRoute);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FileFilters>(route.filters);
@@ -138,11 +142,7 @@ export default function LogisticsApp() {
     const query = new URLSearchParams(
       Object.entries(params).filter(([, v]) => !!v),
     );
-    if (page === "teams")
-      query.set(
-        "staff",
-        new URLSearchParams(location.search).get("staff") || selectedStaffId(),
-      );
+    if (page === "teams") query.set("staff", teamsPerson.id);
     history.pushState(
       {},
       "",
@@ -415,49 +415,22 @@ export default function LogisticsApp() {
                     </section>
                   </div>
                   <aside className="home-aside">
-                    <section className="teams-entry">
-                      <div className="teams-entry-icon">
-                        <img
-                          src="/images/teams-logo.svg"
-                          alt="Microsoft Teams"
-                        />
-                        <span>Microsoft Teams</span>
-                      </div>
-                      <h3>Your day-to-day coordination</h3>
-                      <p>
-                        Share updates, discuss handovers and work with the team.
-                      </p>
-                      <Button
-                        appearance="primary"
-                        onClick={() =>
-                          navigate("teams", { channel: "general" })
-                        }
-                      >
-                        Open Teams <ArrowRight20Regular />
-                      </Button>
-                    </section>
-                    <section className="department-jumps channel-jumps">
-                      <h3>Teams channels</h3>
-                      {channels
+                    <TeamsHomePanel
+                      heading="Your day-to-day coordination"
+                      description="Share updates, discuss handovers and work with the team."
+                      channels={channels
                         .filter(
-                          (c) => c.team === "logistics" && c.id !== "general",
+                          (channel) =>
+                            channel.team === "logistics" &&
+                            canSeeLogisticsChannel(teamsPerson, channel),
                         )
                         .slice(0, 6)
-                        .map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => navigate("teams", { channel: c.id })}
-                          >
-                            <img
-                              className="channel-teams-mark"
-                              src="/images/teams-logo.svg"
-                              alt=""
-                            />
-                            <span>{c.name}</span>
-                            <ArrowRight20Regular />
-                          </button>
-                        ))}
-                    </section>
+                        .map((channel) => ({
+                          name: channel.name,
+                          href: `/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: channel.id, tab: "Posts" })}`,
+                        }))}
+                      openHref={`/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: "general", tab: "Posts" })}`}
+                    />
                   </aside>
                 </div>
               ) : (
@@ -850,7 +823,9 @@ export default function LogisticsApp() {
             <DialogTitle>Version history</DialogTitle>
             <DialogContent>
               <p>{selected?.name}</p>
-              <p className="muted">Illustrative history · no stored versions</p>
+              <PocAnnotation title="LOCAL SIMULATION" variant="inline">
+                Illustrative history · no stored versions
+              </PocAnnotation>
               <div className="version-list">
                 {[
                   ["1.0", "Current published version"],
@@ -881,7 +856,9 @@ export default function LogisticsApp() {
       {toast && (
         <div className="toast" role="status">
           <Info20Regular />
-          <span>{toast}</span>
+          <span>
+            <SimulationMessage message={toast} />
+          </span>
           <button
             aria-label="Dismiss notification"
             onClick={() => setToast("")}

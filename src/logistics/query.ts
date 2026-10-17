@@ -6,6 +6,7 @@ import {
   type Channel,
   type Permit,
 } from "./data";
+import { matchesDisplayText } from "../i18n/search";
 export const savedViews = [
   "All Documents",
   "Current Campaigns",
@@ -41,7 +42,7 @@ export function queryFiles(
     .filter(
       (f) =>
         (!folder || f.folder === folder) &&
-        f.name.toLowerCase().includes(search.trim().toLowerCase()) &&
+        matchesDisplayText(f.name, search) &&
         Object.entries(filters).every(
           ([k, v]) => !v || f[k as keyof FileFilters] === v,
         ) &&
@@ -83,9 +84,10 @@ export function queryPermits(
       (r) =>
         (!campaign || r.campaign === campaign) &&
         (!permit || r.permit === permit) &&
-        `${r.location} ${r.region} ${r.notes}`
-          .toLowerCase()
-          .includes(search.trim().toLowerCase()) &&
+        matchesDisplayText(
+          [r.location, r.region, r.notes].join("\n"),
+          search,
+        ) &&
         (view !== "This Week" || (r.date >= weekStart && r.date <= weekEnd)) &&
         (view !== "Awaiting Permits" || r.permit === "Pending") &&
         (view !== "Confirmed" || r.status === "Confirmed"),

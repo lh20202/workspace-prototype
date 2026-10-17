@@ -8,9 +8,14 @@ import {
 } from "@fluentui/react-components";
 import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import DocumentIcon from "../components/DocumentIcon";
+import TeamsHomePanel from "../components/TeamsHomePanel";
+import SimulationMessage from "../components/SimulationMessage";
 import { teamsStaffForWorkspace } from "../teams/navigation";
+import { canSeeWorkspaceChannel } from "../teams/visibility";
 import { staff } from "../intranet/catalog";
 import { workspaceRegistry, workspaceById } from "./registry";
 import { configById, functionalConfigs } from "./config";
@@ -304,14 +309,14 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
       <div className="council-boundary">
         <header>Employee Representative Council</header>
         <main>
-          <LockClosed20Regular />
-          <h1>Access denied</h1>
-          <p>
-            Council participation is independent of People & Culture membership.
-          </p>
-          <a href="/people-culture/workforce-documents">
-            Return to People & Culture →
-          </a>
+          <AccessBoundary
+            workspaceId="council"
+            area="Council participation"
+            strict
+            returnHref="/people-culture/workforce-documents"
+            returnLabel="Return to People & Culture"
+            personId={contextStaffId}
+          />
         </main>
       </div>
     );
@@ -322,7 +327,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
   )
     return (
       <div className="technical-partner-preview">
-        <header>Digital & Technology · Partner preview</header>
+        <PocPreviewControls title="Partner preview">
+          <span>Digital &amp; Technology</span>
+        </PocPreviewControls>
         <main>
           <h1>Web platform implementation review</h1>
           <DocumentLibrary
@@ -500,34 +507,18 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
           </div>
           {notice && (
             <p role="status" className="functional-notice">
-              {notice}
+              <SimulationMessage message={notice} />
               <button onClick={() => setNotice("")}>Dismiss</button>
             </p>
           )}
           {subject || !known ? (
-            <section
-              className={`functional-denied ${subject?.strict ? "strict" : ""}`}
-            >
-              <LockClosed20Regular />
-              {subject?.strict && (
-                <span className="strict-label">
-                  {workspace.id === "employment" || workspace.id === "people"
-                    ? "Strictly confidential"
-                    : "Restricted"}
-                </span>
-              )}
-              <h1>Access denied</h1>
-              <h2>{subject?.name || "This location is unavailable"}</h2>
-              <p>Specific authorisation is required.</p>
-              <a
-                href={`/service-desk/access-request?${new URLSearchParams({ workspace: workspace.title, area: subject?.name || "Restricted", location: `${workspace.title} / ${subject?.name || "Restricted"}`, person: contextStaffId })}`}
-              >
-                Request access →
-              </a>
-              <p>
-                <a href={workspace.href}>Return to workspace</a>
-              </p>
-            </section>
+            <AccessBoundary
+              workspaceId={workspace.id}
+              area={subject?.name || "Unavailable location"}
+              strict={subject?.strict}
+              personId={contextStaffId}
+              returnHref={workspace.href}
+            />
           ) : tool ? (
             <section className="functional-system">
               <h1>{tool.name}</h1>
@@ -545,7 +536,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                   </p>
                 </>
               )}
-              <p>Simulated external destination.</p>
+              <PocAnnotation title="System preview" variant="inline">
+                Simulated external destination
+              </PocAnnotation>
               <a href={workspace.href}>Back to workspace</a>
             </section>
           ) : workspace.id === "archives" && !library ? (
@@ -560,10 +553,10 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
             </>
           ) : page === "home" && home ? (
             <>
-              <h1>{workspace.title}</h1>
-              <p className="functional-intro">{workspace.description}</p>
               <div className="functional-home-layout">
                 <div>
+                  <h1>{workspace.title}</h1>
+                  <p className="functional-intro">{workspace.description}</p>
                   <section
                     className="functional-current-work"
                     aria-labelledby="current-work-title"
@@ -622,6 +615,25 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                   </section>
                 </div>
                 <aside className="functional-home-aside">
+                  {home.teams && workspace.teams && (
+                    <TeamsHomePanel
+                      heading={home.teams.heading}
+                      description={home.teams.cue}
+                      channels={home.teams.channels
+                        .filter((channel) =>
+                          canSeeWorkspaceChannel(
+                            contextStaff,
+                            workspace.id,
+                            channel,
+                          ),
+                        )
+                        .map((channel) => ({
+                          name: channel,
+                          href: `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel })}`,
+                        }))}
+                      openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`}
+                    />
+                  )}
                   <section>
                     <h2>{home.handoffsHeading || "Frequent tasks"}</h2>
                     <div className="functional-home-handoffs">
@@ -633,28 +645,6 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                       ))}
                     </div>
                   </section>
-                  {home.teams && workspace.teams && (
-                    <section className="functional-teams-links">
-                      <h2>
-                        <img
-                          src="/images/teams-logo.svg"
-                          alt="Microsoft Teams"
-                        />
-                        {home.teams.heading}
-                      </h2>
-                      <p>{home.teams.cue}</p>
-                      {home.teams.channels.map((channel) => (
-                        <a
-                          key={channel}
-                          href={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel })}`}
-                        >
-                          <img src="/images/teams-logo.svg" alt="" />
-                          {channel}
-                          <span aria-hidden="true"> →</span>
-                        </a>
-                      ))}
-                    </section>
-                  )}
                 </aside>
               </div>
             </>

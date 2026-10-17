@@ -1,3 +1,5 @@
+import { matchesDisplayText } from "../i18n/search";
+
 export interface CoordinationPerson {
   id: string;
   name: string;
@@ -242,7 +244,7 @@ const misfiled: Record<
       name: "Service Explainer — Storyboard.pptx",
       kind: "Misplaced business upload",
       destination: "/content-delivery/creative",
-      destinationName: "Content Room → Creative & Multimedia",
+      destinationName: "Creative & Editorial Studio → Creative & Multimedia",
     },
     reply:
       "Nice one, Alex — this is the storyboard production colleagues are actively reviewing. Could you keep the working version in Creative Production and link it back here? We can carry on discussing it here. Happy to help move it.",
@@ -533,13 +535,12 @@ export function searchCoordination(
   query: string,
 ) {
   if (!canOpenDepartment(department, person)) return { files: [], posts: [] };
-  const q = query.trim().toLowerCase();
   return {
     files: accessibleFiles(department, person).filter((f) =>
-      f.name.toLowerCase().includes(q),
+      matchesDisplayText(f.name, query),
     ),
     posts: department.posts.filter((p) =>
-      `${p.text} ${p.author}`.toLowerCase().includes(q),
+      matchesDisplayText([p.text, p.author].join("\n"), query),
     ),
   };
 }

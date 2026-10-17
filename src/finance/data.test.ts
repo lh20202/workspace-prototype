@@ -106,7 +106,7 @@ describe("shared financial operating model", () => {
       staff.some(
         (person) => person.role === "Information Management Specialist",
       ),
-    ).toBe(true);
+    ).toBe(false);
     for (const s of staff)
       expect(workspaces.find((w) => w.id === s.workspace)).toBeDefined();
     expect(prototypeForPath("/teams")).toBe("teams");

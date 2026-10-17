@@ -1,4 +1,6 @@
 import { useEffect, useState, type MouseEvent } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   Button,
   Input,
@@ -14,7 +16,6 @@ import {
   Dismiss20Regular,
   Search20Regular,
   LockClosed20Regular,
-  ArrowUpRight20Regular,
   ArrowRight20Regular,
   ChevronLeft20Regular,
   ChevronRight20Regular,
@@ -372,38 +373,20 @@ export default function AudienceApp() {
               <a href={base}>Return to workspace</a>
             </>
           ) : protectedStudy ? (
-            <section className="service-restricted">
-              <LockClosed20Regular />
-              <h2>Access denied</h2>
-              <h3>Website Usability Study — Participant administration</h3>
-              <p>
-                Contact fictional study owner Alex Morgan if you need access.
-              </p>
-              <a
-                href={
-                  "/service-desk/access-request?" +
-                  new URLSearchParams({
-                    workspace: title,
-                    area: "Participant administration",
-                    location: `${title} / Website Usability Study / Participant administration`,
-                  })
-                }
-              >
-                Request access through Freshservice
-              </a>
-              <p>
-                <a
-                  href={`${base}/research?library=Research+%26+Insight&folder=UX+%26+Usability%2FWebsite+Usability+Study`}
-                >
-                  Back to shared study files
-                </a>
-              </p>
-            </section>
+            <AccessBoundary
+              workspaceId="audience"
+              area="Website Usability Study — Participant administration"
+              location={`${title} / Website Usability Study / Participant administration`}
+              headingLevel={2}
+              returnHref={`${base}/research?library=Research+%26+Insight&folder=UX+%26+Usability%2FWebsite+Usability+Study`}
+              returnLabel="Back to shared study files"
+              strict
+            />
           ) : system ? (
             <section className="system-destination">
-              <span className="external-system-label">
-                <ArrowUpRight20Regular /> Analytical system preview
-              </span>
+              <PocAnnotation title="System preview" variant="inline">
+                Fictional analytics destination
+              </PocAnnotation>
               <h2>
                 {parts[2] === "performance"
                   ? "Performance analytics"
@@ -436,10 +419,10 @@ export default function AudienceApp() {
                   </tr>
                 </tbody>
               </table>
-              <p className="service-muted">
+              <PocAnnotation title="Test data" variant="inline">
                 Illustrative aggregate results. Detailed tracking remains in the
                 analytics platform.
-              </p>
+              </PocAnnotation>
               <a
                 href={`${base}/analytics?library=Analysis+%26+Reporting&folder=Website+Analysis`}
               >
@@ -870,10 +853,10 @@ function ResearchCalendar({
           )}
         </section>
       )}
-      <p className="service-muted">
+      <PocAnnotation title="Calendar preview" variant="inline">
         Fictional scheduling example · October 2026. Session links open the same
         initiative used in the register.
-      </p>
+      </PocAnnotation>
     </>
   );
 }

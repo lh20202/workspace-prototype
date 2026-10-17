@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AccessBoundary from "../access/AccessBoundary";
 import {
   Menu,
   MenuTrigger,
@@ -23,12 +24,11 @@ import {
   type TaskState,
 } from "./data";
 import { fileHref, filesForChannel } from "./query";
-import { staff, selectedStaffId, rememberStaff } from "../intranet/catalog";
+import { resolveStaffPerson, rememberStaff } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
-import TeamsAdministration from "../teams/Administration";
 import "../teams/integrations.css";
 import DocumentIcon from "../components/DocumentIcon";
 export default function TeamsView({
@@ -46,15 +46,13 @@ export default function TeamsView({
   onWorkspace: () => void;
   onMessage: (m: string) => void;
 }) {
-  const person =
-    staff.find(
-      (s) =>
-        s.id ===
-        (new URLSearchParams(location.search).get("staff") ||
-          selectedStaffId()),
-    ) || staff[1];
+  const person = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
   useEffect(() => rememberStaff(person.id), [person.id]);
-  const channel = channels.find((c) => c.id === channelId) ?? channels[2];
+  const channel =
+    channels.find((c) => c.id === channelId) ??
+    channels.find((c) => c.id === "general")!;
   const tab =
     channel.team === "company"
       ? "Posts"
@@ -112,9 +110,6 @@ export default function TeamsView({
             : item.onSelect,
         })),
       }))}
-      navigationFooter={
-        <TeamsAdministration person={person} groups={teamsGroups(person)} />
-      }
       selectedChannelId={`${channel.team}:${channel.id}`}
       activeTab={tab}
       tabs={
@@ -150,7 +145,7 @@ export default function TeamsView({
             }
           : undefined
       }
-      onChannelInfo={() => onMessage(channel.purpose)}
+      onChannelInfo={allowed ? () => onMessage(channel.purpose) : undefined}
       searchValue={search}
       onSearchChange={setSearch}
       searchResults={
@@ -190,13 +185,15 @@ export default function TeamsView({
         className={`teams-logistics-content ${tab === "Posts" ? "teams-conversation" : ""} ${channel.id === "pets" && tab === "Posts" ? "pets-canvas" : ""}`}
       >
         {!allowed ? (
-          <section className="m365-teams-empty">
-            <h2>Access denied</h2>
-            <p>This operational channel is limited to its team members.</p>
-            <button onClick={() => selectChannel("important")}>
-              Open company updates
-            </button>
-          </section>
+          <AccessBoundary
+            workspaceId="logistics"
+            area="Operational team channel"
+            personId={person.id}
+            headingLevel={2}
+            compact
+            returnHref={`/logistics/teams?staff=${person.id}&channel=important`}
+            returnLabel="Open company updates"
+          />
         ) : tab === "Posts" ? (
           <>
             {visiblePosts.map((p) => (
@@ -321,6 +318,7 @@ export default function TeamsView({
                     author={person.name}
                     text={text}
                     time="Just now"
+                    authored
                   />
                 ))}
                 <div className="post-actions">
@@ -381,7 +379,7 @@ export default function TeamsView({
                       <span>Just now</span>
                     </div>
                   </div>
-                  <p>{p.text}</p>
+                  <p data-no-translate>{p.text}</p>
                 </article>
               ))}
             <TeamsComposer
@@ -542,11 +540,13 @@ function ThreadReply({
   text,
   time,
   reactions = false,
+  authored = false,
 }: {
   author: string;
   text: string;
   time: string;
   reactions?: boolean;
+  authored?: boolean;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
   const choices = [
@@ -570,7 +570,7 @@ function ThreadReply({
           <strong>{author}</strong>
           <span>{time}</span>
         </header>
-        <p>{text}</p>
+        <p data-no-translate={authored || undefined}>{text}</p>
         <div className="thread-reactions" aria-label="Comment reactions">
           {choices.map((r) => (
             <button

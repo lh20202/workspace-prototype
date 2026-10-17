@@ -1,25 +1,32 @@
 import { hasWorkspaceTeams } from "../workspaces/registry";
 import type { StaffPerson } from "../intranet/catalog";
 import {
+  contentChannels,
   visibleContentChannels,
   canSeeContentChannel,
 } from "../content/channels";
 import { technicalChannels } from "../workspaces/technicalTeams";
+import { channels as logisticsChannels } from "../logistics/data";
 
-// Membership is deliberately narrower than SharePoint's open internal access.
-// Company Updates and the logistics General channel are shared with everyone.
+// Business site access does not imply membership of every collaboration channel.
+// Company Updates and logistics General remain shared with everyone.
 export const workspaceMemberships: Record<string, string[]> = {
-  maya: ["logistics", "customer"],
+  maya: ["logistics", "content"],
   casey: ["planning", "quality"],
-  jordan: ["services"],
+  jordan: ["services", "logistics"],
   taylor: ["audience", "content"],
   alex: ["content"],
   sam: ["finance"],
-  robin: ["executive", "planning"],
+  robin: ["executive", "content"],
   devon: ["digital", "services", "planning", "archives"],
-  elena: ["people"],
+  elena: ["people", "content"],
   harper: ["legal"],
   jamie: ["employment"],
+};
+export const logisticsChannelMemberships: Record<string, string[]> = {
+  maya: ["street", "central-city", "telephone"],
+  jordan: ["travel"],
+  elena: ["onboarding"],
 };
 export const projectMemberships: Record<string, string[]> = {
   devon: ["PRJ-2026-014"],
@@ -30,29 +37,44 @@ export const projectChannels = [
   "Project Delivery",
   "Decisions & Actions",
 ];
+/** Known channel names are route validation, never an access grant. */
 export const workspaceChannels: Record<string, string[]> = {
+  logistics: logisticsChannels
+    .filter((channel) => channel.team === "logistics")
+    .map((channel) => channel.name),
   planning: ["General", "Planning coordination"],
-  content: visibleContentChannels("morgan").map((channel) => channel.name),
+  content: contentChannels.map((channel) => channel.name),
   digital: technicalChannels,
 };
-export const isInformationManager = (person: Pick<StaffPerson, "id">) =>
-  person.id === "morgan";
+const channelMemberships: Record<string, Record<string, string[]>> = {
+  planning: {
+    casey: ["General", "Planning coordination"],
+    devon: ["General"],
+  },
+  digital: {
+    devon: [
+      "General",
+      "Engineering",
+      "Innovators",
+      "AI Lab",
+      "Platform Operations",
+    ],
+  },
+};
 export const isWorkspaceMember = (
   person: Pick<StaffPerson, "id">,
   workspaceId: string,
 ) =>
-  isInformationManager(person) ||
-  (workspaceMemberships[person.id] || []).includes(workspaceId);
+  workspaceId === "content"
+    ? visibleContentChannels(person.id).length > 0
+    : (workspaceMemberships[person.id] || []).includes(workspaceId);
 export function canSeeWorkspace(
   person: Pick<StaffPerson, "id">,
   workspaceId: string,
 ) {
-  if (!hasWorkspaceTeams(workspaceId)) return false;
   return (
-    workspaceId === "logistics" ||
-    (workspaceId === "content" &&
-      visibleContentChannels(person.id).length > 0) ||
-    (workspaceId !== "projects" && isWorkspaceMember(person, workspaceId))
+    hasWorkspaceTeams(workspaceId) &&
+    (workspaceId === "logistics" || isWorkspaceMember(person, workspaceId))
   );
 }
 export function visibleWorkspaceChannels(
@@ -62,9 +84,15 @@ export function visibleWorkspaceChannels(
   if (!canSeeWorkspace(person, workspaceId)) return [];
   if (workspaceId === "content")
     return visibleContentChannels(person.id).map((channel) => channel.name);
-  return (workspaceChannels[workspaceId] || ["General"]).filter(
-    (name) => name !== "Security Engineering" || isInformationManager(person),
-  );
+  if (workspaceId === "logistics")
+    return logisticsChannels
+      .filter(
+        (channel) =>
+          channel.team === "logistics" &&
+          canSeeLogisticsChannel(person, channel),
+      )
+      .map((channel) => channel.name);
+  return channelMemberships[workspaceId]?.[person.id] || [];
 }
 export function canSeeWorkspaceChannel(
   person: Pick<StaffPerson, "id">,
@@ -78,20 +106,19 @@ export function canSeeWorkspaceChannel(
 export const canSeeDepartment = (
   person: Pick<StaffPerson, "id" | "departmentId">,
   departmentId: string,
-) => isInformationManager(person) || person.departmentId === departmentId;
+) => person.departmentId === departmentId;
 export const canSeeProject = (
   person: Pick<StaffPerson, "id">,
   projectCode: string,
-) =>
-  isInformationManager(person) ||
-  (projectMemberships[person.id] || []).includes(projectCode);
+) => (projectMemberships[person.id] || []).includes(projectCode);
 export function canSeeLogisticsChannel(
   person: Pick<StaffPerson, "id">,
   channel: { id: string; team: string },
 ) {
   return (
     channel.team === "company" ||
-    channel.id === "general" ||
-    isWorkspaceMember(person, "logistics")
+    (channel.team === "logistics" &&
+      (channel.id === "general" ||
+        (logisticsChannelMemberships[person.id] || []).includes(channel.id)))
   );
 }

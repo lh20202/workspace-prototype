@@ -4,6 +4,7 @@ import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import "@fontsource-variable/inter/standard.css";
 import "@fontsource-variable/inter/standard-italic.css";
 import AppRouter from "./AppRouter";
+import { LanguageProvider } from "./i18n/Language";
 import "./styles.css";
 import "./logistics/styles.css";
 import "./prototype.css";
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           '"Inter Variable", Inter, "Segoe UI", system-ui, sans-serif',
       }}
     >
-      <AppRouter />
+      <LanguageProvider>
+        <AppRouter />
+      </LanguageProvider>
     </FluentProvider>
   </React.StrictMode>,
 );

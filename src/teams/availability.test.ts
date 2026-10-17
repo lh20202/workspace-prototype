@@ -30,16 +30,15 @@ describe("Teams is available only where the work needs live coordination", () =>
     expect(hasWorkspaceTeams("unknown")).toBe(false);
     expect(hasWorkspaceTeams("projects")).toBe(false);
   });
-  it("does not manufacture generic Teams for administrative and reference sites, even for an administrator", () => {
+  it("does not manufacture generic Teams for administrative and reference sites for any staff member", () => {
     for (const workspace of workspaceRegistry.filter((item) => !item.teams)) {
-      expect(canSeeWorkspace(person("morgan"), workspace.id)).toBe(false);
-      expect(visibleWorkspaceChannels(person("morgan"), workspace.id)).toEqual(
-        [],
-      );
-      for (const member of staff)
+      for (const member of staff) {
+        expect(canSeeWorkspace(member, workspace.id)).toBe(false);
+        expect(visibleWorkspaceChannels(member, workspace.id)).toEqual([]);
         expect(
           teamsGroups(member).some((group) => group.id === workspace.id),
         ).toBe(false);
+      }
     }
   });
   it("opens a colleague's department when their functional SharePoint site has no Team", () => {
@@ -62,14 +61,15 @@ describe("Teams is available only where the work needs live coordination", () =>
         (group) => group.id === "PRJ-2026-021",
       ),
     ).toBe(true);
-    const specialist = teamsGroups(person("morgan"));
-    expect(specialist.some((group) => group.id === "emergency")).toBe(true);
+    const participant = teamsGroups(person("harper"));
     expect(
-      specialist.filter(
-        (group) =>
-          group.id.endsWith("-office") || group.id === "people-culture",
-      ).length,
-    ).toBeGreaterThan(0);
+      participant
+        .find((group) => group.id === "emergency")!
+        .channels.map((channel) => channel.id),
+    ).toEqual(["emergency:INC-104"]);
+    expect(
+      participant.some((group) => group.id === person("harper").departmentId),
+    ).toBe(true);
   });
 });
 
@@ -129,7 +129,7 @@ describe("Legacy Teams document links keep their real SharePoint location", () =
       "/people-culture",
     );
   });
-  it("preserves Content Room file identity and never carries protected IDs into a normal document route", () => {
+  it("preserves Creative & Editorial Studio file identity and never carries protected IDs into a normal document route", () => {
     const file = contentFiles.find((item) => item.id === "welcome-message")!;
     const target = new URL(
       sharepointDestination("content", file.id),

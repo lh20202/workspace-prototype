@@ -77,7 +77,7 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
-  if (pathname === "/") return "Digital workspace design";
+  if (pathname === "/") return "Digital workspace proof of concept";
   if (pathname.startsWith("/architecture"))
     return "Full Architecture Proof of Concept | Exploratory";
   if (pathname.startsWith("/logistics/teams"))
@@ -99,7 +99,7 @@ export function pageTitle(pathname: string) {
     pathname === "/content-delivery" ||
     pathname.startsWith("/content-delivery/")
   )
-    return "Content Room";
+    return "Creative & Editorial Studio";
   if (
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")

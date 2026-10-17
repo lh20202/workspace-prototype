@@ -1,3 +1,5 @@
+import { matchesDisplayText } from "../i18n/search";
+
 export interface ArchiveRecord {
   id: string;
   name: string;
@@ -203,9 +205,10 @@ export const transferStages = [
 export function searchArchive(query: string, filters: Record<string, string>) {
   return archiveRecords.filter(
     (r) =>
-      `${r.name} ${r.description} ${r.creator} ${r.id}`
-        .toLowerCase()
-        .includes(query.toLowerCase()) &&
+      matchesDisplayText(
+        [r.name, r.description, r.creator, r.id].join("\n"),
+        query,
+      ) &&
       Object.entries(filters).every(
         ([k, v]) => !v || r[k as keyof ArchiveRecord] === v,
       ),

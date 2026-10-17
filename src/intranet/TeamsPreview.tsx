@@ -6,8 +6,9 @@ import {
   libraryForFile,
 } from "../workspaces/siteArchitecture";
 import TechnicalConversation from "../workspaces/TechnicalConversation";
-import { workspaces, staff, rememberStaff, selectedStaffId } from "./catalog";
+import { workspaces, rememberStaff, resolveStaffPerson } from "./catalog";
 import {
+  channels as logisticsChannels,
   files as logisticsFiles,
   type OperationalFile,
 } from "../logistics/data";
@@ -23,6 +24,7 @@ import {
   visibleContentChannels,
   contentFilesForChannel,
   contentChannelReadOnly,
+  contentDefaultTab,
 } from "../content/channels";
 import { documents as planningFiles } from "../data/workspace";
 import DepartmentChannel from "../coordination/DivisionChannel";
@@ -38,8 +40,9 @@ import {
   canSeeWorkspace,
   canSeeWorkspaceChannel,
   workspaceChannels,
+  visibleWorkspaceChannels,
 } from "../teams/visibility";
-import TeamsAdministration from "../teams/Administration";
+import AccessBoundary from "../access/AccessBoundary";
 import { hasWorkspaceTeams } from "../workspaces/registry";
 import { sharepointDestination } from "../teams/sharepointDestination";
 
@@ -67,10 +70,7 @@ const digitalArea: Record<string, string> = {
 };
 export default function TeamsPreview() {
   const params = new URLSearchParams(location.search);
-  const person =
-    staff.find((s) => s.id === params.get("staff")) ||
-    staff.find((s) => s.id === selectedStaffId()) ||
-    staff[0];
+  const person = resolveStaffPerson(params.get("staff"));
   const requestedWorkspace = params.get("workspace");
   const workspace =
     workspaces.find((item) => item.id === requestedWorkspace) ||
@@ -96,16 +96,24 @@ export default function TeamsPreview() {
     return resolved?.name || value;
   };
   const initialChannel =
-    workspace.id === "content"
-      ? contentChannelName(requested)
-      : (workspaceChannels[workspace.id] || ["General"]).includes(requested)
-        ? requested
-        : "General";
+    workspace.id === "logistics"
+      ? logisticsChannels.find(
+          (channel) => channel.id === requested || channel.name === requested,
+        )?.name || requested
+      : workspace.id === "content"
+        ? contentChannelName(requested)
+        : (workspaceChannels[workspace.id] || ["General"]).includes(requested)
+          ? requested
+          : "General";
   const [channel, setChannel] = useState(initialChannel);
   const [tab, setTab] = useState(
     params.get("tab") === "Shared" || params.get("tab") === "Files"
       ? "Shared"
-      : "Posts",
+      : params.get("tab") === "Posts"
+        ? "Posts"
+        : workspace.id === "content"
+          ? contentDefaultTab(initialChannel)
+          : "Posts",
   );
   const [search, setSearch] = useState("");
   const [sharedLibraryId, setSharedLibraryId] = useState(
@@ -123,8 +131,15 @@ export default function TeamsPreview() {
       return;
     }
     if (!department && workspace.id === "logistics") {
+      const targetChannel =
+        logisticsChannels.find(
+          (channel) =>
+            channel.name === initialChannel || channel.id === initialChannel,
+        )?.id ||
+        logisticsChannel[initialChannel] ||
+        "general";
       location.replace(
-        `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: logisticsChannel[initialChannel] || "general", tab })}`,
+        `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: targetChannel, tab })}`,
       );
     }
   }, [
@@ -140,13 +155,14 @@ export default function TeamsPreview() {
       staff: person.id,
       workspace: workspaceId,
       channel: name,
-      tab: "Posts",
+      tab: workspaceId === "content" ? contentDefaultTab(name) : "Posts",
     });
     if (department || workspaceId !== workspace.id)
       location.assign(`/teams?${query}`);
     else {
       setChannel(name);
-      setTab("Posts");
+      setSharedLibraryId("");
+      setTab(workspaceId === "content" ? contentDefaultTab(name) : "Posts");
       setSearch("");
       history.pushState({}, "", `/teams?${query}`);
     }
@@ -179,8 +195,13 @@ export default function TeamsPreview() {
       setTab(
         ["Files", "Shared"].includes(query.get("tab") || "")
           ? "Shared"
-          : "Posts",
+          : query.get("tab") === "Posts"
+            ? "Posts"
+            : workspace.id === "content"
+              ? contentDefaultTab(name)
+              : "Posts",
       );
+      setSharedLibraryId(query.get("documentLibrary") || "");
       setSearch("");
     };
     window.addEventListener("popstate", back);
@@ -209,11 +230,14 @@ export default function TeamsPreview() {
       return contentFilesForChannel(channel).some(
         (item) => item.id === file.id,
       );
-    if (workspace.id === "digital" && channel !== "General")
-      return (
-        (file as OperationalFile & { area: string }).area ===
-        digitalArea[channel]
-      );
+    if (workspace.id === "digital") {
+      const area = (file as OperationalFile & { area: string }).area;
+      return channel === "General"
+        ? visibleWorkspaceChannels(person, "digital").some(
+            (name) => digitalArea[name] === area,
+          )
+        : area === digitalArea[channel];
+    }
     return true;
   });
   const config = functionalConfigs.find(
@@ -258,9 +282,11 @@ export default function TeamsPreview() {
       ? contentDefinitions[
           selectedContent
             ? contentLibrary(selectedContent)
-            : files[0]
-              ? contentLibrary(files[0] as (typeof contentFiles)[number])
-              : "production"
+            : resolveContentChannel(channel)?.preferredLibrary
+              ? resolveContentChannel(channel)!.preferredLibrary!
+              : files[0]
+                ? contentLibrary(files[0] as (typeof contentFiles)[number])
+                : "production"
         ]
       : config
         ? libraryForFile(config, selectedFileId || "") ||
@@ -331,7 +357,6 @@ export default function TeamsPreview() {
           ? undefined
           : openSharePoint
       }
-      navigationFooter={<TeamsAdministration person={person} groups={groups} />}
       headerActions={
         workspace.id === "content" &&
         resolveContentChannel(channel)?.kind === "temporary" ? (
@@ -346,13 +371,17 @@ export default function TeamsPreview() {
       onSearchChange={setSearch}
     >
       {workspaceDenied || channelDenied ? (
-        <section className="m365-teams-empty">
-          <h2>Access denied</h2>
-          <p>This team or channel is not included in your membership.</p>
-          <button onClick={() => location.assign(`/teams?staff=${person.id}`)}>
-            Open your Teams view
-          </button>
-        </section>
+        <AccessBoundary
+          workspaceId={workspace.id}
+          department={department?.id}
+          personId={person.id}
+          area={department ? `${department.name} / General` : channel}
+          location={`${department?.name || workspace.title} / ${department ? "General" : channel}`}
+          returnHref={`/teams?staff=${person.id}`}
+          returnLabel="Open your Teams view"
+          headingLevel={2}
+          compact
+        />
       ) : department ? (
         <DepartmentChannel
           key={`${department.id}-${person.id}`}
@@ -363,10 +392,16 @@ export default function TeamsPreview() {
           searchQuery={search}
         />
       ) : securityDenied ? (
-        <section className="m365-teams-empty">
-          <h2>Access denied</h2>
-          <p>Security Engineering requires specific technical authorisation.</p>
-        </section>
+        <AccessBoundary
+          workspaceId="digital"
+          area="Security Engineering"
+          personId={person.id}
+          location="Digital & Technology / Security Engineering"
+          strict
+          returnHref="/digital-tech"
+          headingLevel={2}
+          compact
+        />
       ) : tab === "Shared" ? (
         <div className="m365-teams-files">
           {availableLibraries.length > 1 && (
@@ -410,6 +445,7 @@ export default function TeamsPreview() {
           key={channel}
           channel={channel}
           userName={person.name}
+          personId={person.id}
           query={search}
           onOpenFile={(id) => {
             const source = contentFiles.find((file) => file.id === id);
@@ -484,7 +520,7 @@ function CoordinationFeed({
               <div>
                 <strong>{userName}</strong>
                 <small> · Now</small>
-                <p>{text}</p>
+                <p data-no-translate>{text}</p>
               </div>
             </div>
           ))}

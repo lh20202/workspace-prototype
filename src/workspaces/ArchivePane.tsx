@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   archiveRecords,
   regions,
@@ -223,7 +224,9 @@ export default function ArchivePane({
       ) : page === "retention" ? (
         <>
           <h2>Retention Schedule</h2>
-          <p>Fictional schedule for records-specialist review.</p>
+          <PocAnnotation title="Test data" variant="inline">
+            Fictional schedule for records-specialist review
+          </PocAnnotation>
           <div className="functional-table">
             <table>
               <thead>

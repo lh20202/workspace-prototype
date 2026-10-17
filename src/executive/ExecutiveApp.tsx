@@ -1,4 +1,6 @@
 import { useState } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import { PocPreviewControls } from "../components/PocAnnotation";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import DocumentLibrary, {
@@ -148,8 +150,10 @@ export default function ExecutiveApp() {
         onMessage={setNotice}
         helpText="Executive coordination. Leadership, liaison and initiative access are separate."
       />
-      <div className="executive-preview">
-        <span>Participation preview</span>
+      <PocPreviewControls
+        title="Participation preview"
+        className="executive-preview"
+      >
         <label>
           <select
             aria-label="Preview executive participation"
@@ -165,7 +169,7 @@ export default function ExecutiveApp() {
             ))}
           </select>
         </label>
-      </div>
+      </PocPreviewControls>
       <div className="finance-layout">
         <aside className="sidebar services-sidebar">
           <nav aria-label="Executive workspace navigation">
@@ -203,21 +207,12 @@ export default function ExecutiveApp() {
             </p>
           )}
           {!allowed ? (
-            <section className="finance-protected">
-              <LockClosed20Regular />
-              <h1>Access denied</h1>
-              <h2>{area?.name}</h2>
-              <p>
-                Specific participation is required. Use the participation
-                preview to inspect an authorised fictional role.
-              </p>
-              <a
-                href={`/service-desk/access-request?${new URLSearchParams({ workspace: title, area: area?.name || "Executive work", location: `${title} / ${area?.name}` })}`}
-              >
-                Request access →
-              </a>
-              {page === "oversight" && <p>{portal}</p>}
-            </section>
+            <AccessBoundary
+              workspaceId="executive"
+              area={area?.name || "Executive work"}
+              returnHref={href("home")}
+              strict
+            />
           ) : page === "home" ? (
             <>
               <h1>{title}</h1>

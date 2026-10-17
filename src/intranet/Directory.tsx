@@ -1,9 +1,6 @@
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverSurface,
-} from "@fluentui/react-components";
 import { useState } from "react";
+import PrototypeNavigator from "../components/PrototypeNavigator";
+import { PocPreviewControls } from "../components/PocAnnotation";
 import {
   ChartMultiple24Regular,
   PeopleTeam24Regular,
@@ -20,7 +17,6 @@ import {
   Scales24Regular,
   Headset24Regular,
   Briefcase24Regular,
-  Warning24Regular,
   PersonBriefcase24Regular,
 } from "@fluentui/react-icons";
 import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
@@ -50,117 +46,96 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
 export default function Directory() {
   const [person, setPerson] = useState(selectedStaffId);
   return (
-    <div className="intranet-directory">
-      <header className="directory-brand">
-        <GridDots24Regular aria-hidden="true" />
-        <strong>SharePoint</strong>
-        <span className="directory-brand-end">Company intranet</span>
-      </header>
-      <nav className="directory-nav" aria-label="Intranet navigation">
-        <strong>Our workplace</strong>
-        {[
-          "Home",
-          "News",
-          "Our organisation",
-          "Tools & support",
-          "Digital Workspaces",
-        ].map((x) => (
-          <Popover key={x} positioning="below-start" withArrow trapFocus>
-            <PopoverTrigger disableButtonEnhancement>
-              <button
-                aria-current={x === "Digital Workspaces" ? "page" : undefined}
-              >
-                {x}
-              </button>
-            </PopoverTrigger>
-            <PopoverSurface className="directory-nav-popover">
-              <strong>{x}</strong>
-              <p>
-                {x === "Digital Workspaces"
-                  ? "You are on Digital Workspaces."
-                  : "Illustrative intranet navigation. This destination is not included in the proof of concept."}
-              </p>
-            </PopoverSurface>
-          </Popover>
-        ))}
-      </nav>
-      <main className="directory-main">
-        <div className="architecture-preview-label">
-          <span>Full Architecture Proof of Concept</span>
-          <span className="exploratory-badge">EXPLORATORY</span>
-          <a href="/">Home</a>
-        </div>
-        <div className="directory-heading">
-          <div>
-            <h1>Digital workspaces</h1>
-            <p>Find the shared space for your work.</p>
-          </div>
-          <aside className="directory-caveat">
-            <Warning24Regular aria-hidden="true" />
+    <div className="architecture-poc-page">
+      <PrototypeNavigator />
+      <div className="intranet-directory">
+        <header className="directory-brand">
+          <GridDots24Regular aria-hidden="true" />
+          <strong>SharePoint</strong>
+          <span className="directory-brand-end">Company intranet</span>
+        </header>
+        <nav
+          className="directory-nav"
+          aria-label="Intranet navigation"
+          aria-description="Other intranet sections are shown only to establish context and are unavailable in this proof of concept."
+        >
+          <img
+            className="directory-company-mark"
+            src="/images/company-mark.png"
+            alt=""
+            width="40"
+            height="32"
+          />
+          <strong>Our workplace</strong>
+          {["Home", "News", "Our organisation", "Tools & support"].map((x) => (
+            <button type="button" key={x} disabled>
+              {x}
+            </button>
+          ))}
+          <a href="/architecture" aria-current="page">
+            Digital Workspaces
+          </a>
+        </nav>
+        <main className="directory-main">
+          <div className="directory-heading">
             <div>
-              <strong>Fictional examples</strong>
-              <span>
-                Interactive proof of concept. Workspace names and data are
-                fictional.
-              </span>
+              <h1>Digital workspaces</h1>
+              <p>Find the shared space for your work.</p>
             </div>
-          </aside>
-        </div>
-        <div className="directory-content">
-          <div className="directory-grid">
-            {workspaces.map((w) => {
-              const Icon = workspaceIcons[w.id];
-              return (
-                <a className="directory-tile" key={w.id} href={w.href}>
-                  <span className="directory-tile-icon">
-                    <Icon />
-                  </span>
-                  <div>
-                    <h2>{w.title}</h2>
-                  </div>
-                  <span className="directory-open" aria-hidden="true">
-                    <ArrowRight20Regular />
-                  </span>
-                </a>
-              );
-            })}
           </div>
-          <aside
-            className="directory-coordination"
-            aria-label="Department Teams"
-          >
-            <h2>Department Teams</h2>
-            <p>Local meetings, planning and team coordination.</p>
-            {departments.map((d) => {
-              const Icon = PeopleTeam24Regular;
-              return (
-                <a
-                  className="department-quick-link"
-                  key={d.id}
-                  href={departmentHref(person, d.id)}
-                >
-                  <Icon />
-                  <span>
-                    {d.name}
-                    <small>
-                      <img src="/images/teams-logo.svg" alt="Teams" />
-                      <span className="department-open-label">
-                        Open in Teams
-                      </span>
-                    </small>
-                  </span>
-                  <ChevronRight16Regular />
-                </a>
-              );
-            })}
-          </aside>
-        </div>
-      </main>
-      <footer className="directory-teams">
+          <div className="directory-content">
+            <div className="directory-grid">
+              {workspaces.map((w) => {
+                const Icon = workspaceIcons[w.id];
+                return (
+                  <a className="directory-tile" key={w.id} href={w.href}>
+                    <span className="directory-tile-icon">
+                      <Icon />
+                    </span>
+                    <div>
+                      <h2>{w.title}</h2>
+                    </div>
+                    <span className="directory-open" aria-hidden="true">
+                      <ArrowRight20Regular />
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+            <aside
+              className="directory-coordination"
+              aria-label="Department Teams"
+            >
+              <h2>Department Teams</h2>
+              <p>Local meetings, planning and team coordination.</p>
+              {departments.map((d) => {
+                const Icon = PeopleTeam24Regular;
+                return (
+                  <a
+                    className="department-quick-link"
+                    key={d.id}
+                    href={departmentHref(person, d.id)}
+                  >
+                    <Icon />
+                    <span>
+                      {d.name}
+                      <small>
+                        <img src="/images/teams-logo.svg" alt="Teams" />
+                        <span className="department-open-label">
+                          Open in Teams
+                        </span>
+                      </small>
+                    </span>
+                    <ChevronRight16Regular />
+                  </a>
+                );
+              })}
+            </aside>
+          </div>
+        </main>
+      </div>
+      <PocPreviewControls title="Teams preview" className="directory-teams">
         <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
-        <div className="directory-teams-copy">
-          <strong>Preview your work in Teams</strong>
-        </div>
         <label>
           Preview as
           <select
@@ -180,7 +155,7 @@ export default function Directory() {
         <a href={`/teams?staff=${person}`}>
           Open Teams view <ArrowRight20Regular />
         </a>
-      </footer>
+      </PocPreviewControls>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { matchesDisplayText } from "../i18n/search";
+
 export interface LibraryDocument {
   id: string;
   name: string;
@@ -265,19 +267,19 @@ export function queryLibrary(
         }
       }) &&
       (!query ||
-        [
-          file.name,
-          path,
-          file.owner,
-          status,
-          file.summary,
-          file.contentType,
-          libraryContentType(file, options.definition)?.name,
-          ...Object.values(file.metadata ?? {}),
-        ]
-          .join(" ")
-          .toLocaleLowerCase()
-          .includes(query))
+        matchesDisplayText(
+          [
+            file.name,
+            path,
+            file.owner,
+            status,
+            file.summary,
+            file.contentType,
+            libraryContentType(file, options.definition)?.name,
+            ...Object.values(file.metadata ?? {}),
+          ].join("\n"),
+          query,
+        ))
     );
   });
   const sort =

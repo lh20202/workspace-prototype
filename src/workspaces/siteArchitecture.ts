@@ -685,10 +685,6 @@ export const functionalHomes: Record<string, FunctionalHome> = {
         label: "Supplier sourcing context",
         href: "/services/purchasing-suppliers",
       },
-      {
-        label: "Send an authorised access request",
-        href: "/service-desk/access-request?workspace=Legal%2C%20Privacy%20%26%20Compliance",
-      },
     ],
   },
   people: {

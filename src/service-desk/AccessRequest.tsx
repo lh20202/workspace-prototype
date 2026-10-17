@@ -1,4 +1,3 @@
-import { workspaceRegistry } from "../workspaces/registry";
 import { useState } from "react";
 import { Button } from "@fluentui/react-components";
 import {
@@ -6,146 +5,137 @@ import {
   ArrowLeft20Regular,
   TicketDiagonal24Regular,
 } from "@fluentui/react-icons";
-import { currentUser } from "../data/workspace";
 import { allProjects, projectTitle } from "../projects/data";
-import { staff, selectedStaffId } from "../intranet/catalog";
+import { resolveStaffPerson } from "../intranet/catalog";
+import AccessBoundary from "../access/AccessBoundary";
+import { useTranslation } from "../i18n/Language";
+import {
+  accessWorkspaceId,
+  accessWorkspace,
+  accessFocalPoint,
+  safeAccessReturn,
+} from "../access/model";
+
 export default function AccessRequest() {
+  const { t } = useTranslation();
   const params = new URLSearchParams(location.search);
-  const project = allProjects.find((p) => p.code === params.get("project"));
-  const projectRequest =
-    params.get("workspace") === "Projects" ||
-    params.get("workspace") === "projects";
-  const requester =
-    staff.find(
-      (person) => person.id === (params.get("person") || params.get("staff")),
-    ) ||
-    staff.find((person) => person.id === selectedStaffId()) ||
-    currentUser;
   const isSupport = location.pathname === "/service-desk/it-support";
-  const workspace = isSupport
-    ? "Digital & Technology"
-    : params.get("workspace") || "Organisational Planning & Reporting";
+  const urgent = !isSupport && params.get("urgency") === "urgent";
+  const project = allProjects.find(
+    (item) => item.code === params.get("project"),
+  );
+  const requester = resolveStaffPerson(
+    params.get("person") || params.get("staff"),
+  );
+  const workspaceId = isSupport
+    ? "digital"
+    : accessWorkspaceId(params.get("workspace"), params.get("workspaceId"));
   const area = isSupport
     ? "Service & Platform Operations"
     : params.get("area") || "Restricted Planning";
-  const digital = workspace === "Digital & Technology";
-  const services = workspace === "Organisation Services";
-  const audience =
-    workspace === "Audience Research & Marketing Insight" ||
-    workspace === "Audience Insight & Innovation R&D";
-  const content =
-    workspace === "Content Creation & Delivery" || workspace === "Content Room";
-  const registeredWorkspace = workspaceRegistry.find(
-    (entry) => entry.title === workspace || entry.id === workspace,
+  const context = {
+    workspaceId,
+    area,
+    department: params.get("department") || undefined,
+    personId: requester.id,
+    project: project?.code,
+  };
+  const workspace = accessWorkspace(context);
+  const focal = accessFocalPoint(context);
+  const requestedLocation =
+    params.get("location") || `${workspace.title} / ${area}`;
+  const returnPath = safeAccessReturn(params.get("returnTo"), workspace.href);
+  const [reason, setReason] = useState(
+    urgent
+      ? params.get("reason") ||
+          `Access to ${area} is time-sensitive and the workspace focal point is unavailable.`
+      : "",
   );
-  const finance = workspace === "Income & Financial Operations";
-  const executive = workspace === "CEO & Executive Committee";
-  const freshservice = !projectRequest;
-  const returnPath = projectRequest
-    ? "/projects"
-    : digital
-      ? "/digital-tech/operations"
-      : executive
-        ? "/executive"
-        : finance
-          ? "/financial-operations"
-          : content
-            ? "/content-delivery"
-            : audience
-              ? "/audience-innovation/research"
-              : services
-                ? "/services"
-                : registeredWorkspace?.href || "/planning/restricted";
-  const requestType = isSupport ? "IT request" : "Access request";
-  const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const requestedLocation = params.get("location") || `${workspace} / ${area}`;
+  const [reasonEdited, setReasonEdited] = useState(false);
+  const requestType = isSupport ? "IT request" : "Urgent access request";
+  const projectDesk = workspaceId === "projects";
   return (
     <div className="service-desk-app">
       <header className="service-desk-header">
         <div className="service-desk-brand">
           <span
-            className={freshservice ? "freshservice-mark" : "jira-mark"}
+            className={projectDesk ? "jira-mark" : "freshservice-mark"}
             aria-hidden="true"
           >
-            {freshservice ? (
-              <TicketDiagonal24Regular />
-            ) : (
+            {projectDesk ? (
               <>
                 <i />
                 <i />
                 <i />
               </>
+            ) : (
+              <TicketDiagonal24Regular />
             )}
           </span>
           <div>
             <strong>Service Desk</strong>
             <span>
-              {freshservice ? "Freshservice" : "Jira Service Management"}
+              {projectDesk ? "Jira Service Management" : "Freshservice"}
             </span>
           </div>
         </div>
-        <span className="service-desk-user">
-          <img
-            src="/maya-avatar.svg"
-            alt={`Illustrated avatar of ${requester.name}`}
-          />
-          {requester.name}
-        </span>
+        <span className="service-desk-user">{requester.name}</span>
       </header>
       <main className="service-desk-main">
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
-          Back to{" "}
-          {projectRequest
-            ? "Projects"
-            : digital
-              ? "Digital & Technology"
-              : executive
-                ? "CEO & Executive Committee"
-                : finance
-                  ? "Income & Financial Operations"
-                  : content
-                    ? "Content Room"
-                    : audience
-                      ? "Audience research"
-                      : services
-                        ? "Organisation Services"
-                        : registeredWorkspace?.title || "Restricted Planning"}
+          Back to {workspace.title}
         </a>
         <div className="service-desk-breadcrumb">
-          Help centre <span>/</span>{" "}
+          Help centre <span>/</span>
           {isSupport ? "IT requests & incidents" : "Access & information"}
         </div>
-        {submitted ? (
+        {!isSupport && !urgent ? (
+          <AccessBoundary
+            {...context}
+            location={requestedLocation}
+            returnHref={returnPath}
+          />
+        ) : submitted ? (
           <section className="request-confirmation" role="status">
             <CheckmarkCircle24Regular />
-            <h1>{requestType} DEMO-1042 submitted.</h1>
-            <p>Your request is ready for review.</p>
+            <h1>{requestType} prepared</h1>
+            <p>
+              {isSupport
+                ? "Your request is ready for technical triage."
+                : "Service Desk will route the request for business authorisation and implement or escalate access where required."}
+            </p>
             <div>
-              {project && (
-                <>
-                  <strong>Project</strong>
-                  <span>{projectTitle(project)}</span>
-                </>
-              )}
               <strong>Requested location</strong>
               <span>{requestedLocation}</span>
               <strong>Requested by</strong>
               <span>{requester.name}</span>
+              {!isSupport && (
+                <>
+                  <strong>Focal point</strong>
+                  <span>{focal.name}</span>
+                </>
+              )}
               <strong>Reason</strong>
-              <span className="submitted-reason">{reason}</span>
+              <span
+                className="submitted-reason"
+                data-no-translate={reasonEdited || undefined}
+              >
+                {reasonEdited ? reason : t(reason)}
+              </span>
             </div>
-            <p className="simulation-note">
-              Demonstration only. No ticket was sent and no data left this
-              browser.
+            <p className="muted">
+              Preview only. No ticket is sent. Nothing leaves this browser.
             </p>
-            <Button
-              appearance="primary"
-              onClick={() => window.location.assign(returnPath)}
-            >
-              Return to workspace
-            </Button>
+            <p>
+              <Button
+                appearance="primary"
+                onClick={() => location.assign(returnPath)}
+              >
+                Return to workspace
+              </Button>
+            </p>
           </section>
         ) : (
           <>
@@ -157,68 +147,81 @@ export default function AccessRequest() {
                 <h1>
                   {isSupport
                     ? "IT requests & technical support"
-                    : "Request access"}
+                    : "Urgent access request"}
                 </h1>
                 <p>
                   {isSupport
                     ? "Describe the request or incident. First-level support will triage and hand over to a specialist where needed."
-                    : "Tell us why you need access to this information."}
+                    : "Use this when access is time-sensitive and the workspace focal point is unavailable."}
                 </p>
               </div>
             </div>
+            {!isSupport && (
+              <p>
+                Service Desk will route the request for business authorisation
+                and implement or escalate access where required.
+              </p>
+            )}
             <form
               className="access-ticket-form"
-              onSubmit={(e) => {
-                e.preventDefault();
+              onSubmit={(event) => {
+                event.preventDefault();
                 if (reason.trim()) setSubmitted(true);
               }}
             >
               {[
                 [
                   "Request type",
-                  projectRequest
-                    ? "Project workspace access"
-                    : isSupport
-                      ? "IT request / incident"
-                      : "Access to restricted information",
+                  isSupport
+                    ? "IT request / incident"
+                    : "Urgent access escalation",
                 ],
-                ["Workspace", workspace],
+                ["Workspace", workspace.title],
                 ...(project ? [["Project", projectTitle(project)]] : []),
                 ["Area", area],
                 ["Requested location", requestedLocation],
                 ["Requested by", requester.name],
+                ...(!isSupport
+                  ? [["Focal point", `${focal.name} · ${focal.role}`]]
+                  : []),
               ].map(([label, value]) => (
                 <label key={label}>
                   {label}
-                  <input readOnly value={value} />
+                  <input readOnly value={t(value)} />
                 </label>
               ))}
               <label>
                 {isSupport
                   ? "Request or incident description"
-                  : "Reason for needing access"}{" "}
+                  : "Reason for urgent access"}{" "}
                 <span className="required-marker">*</span>
                 <textarea
                   required
                   rows={5}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
+                  value={reasonEdited ? reason : t(reason)}
+                  onChange={(event) => {
+                    setReason(event.target.value);
+                    setReasonEdited(true);
+                  }}
                   placeholder={
                     isSupport
                       ? "Describe the service request or technical issue."
-                      : "Explain what you need to access and why."
+                      : "Describe the deadline and why the focal point cannot be reached."
                   }
                 />
               </label>
-              <p className="simulation-note">
-                Demonstration only. Submission stays in this browser.
+              <p className="muted">
+                Preview only. No ticket is sent. Submission stays in this
+                browser.
               </p>
               <Button
                 type="submit"
                 appearance="primary"
                 disabled={!reason.trim()}
               >
-                Submit request
+                {isSupport
+                  ? "Prepare request"
+                  : "Prepare urgent access request"}
               </Button>
             </form>
           </>

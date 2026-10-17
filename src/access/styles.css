@@ -1,0 +1,96 @@
+.access-boundary {
+  max-width: 720px;
+  padding: 28px 32px;
+  border-left: 3px solid #8a8886;
+  background: #faf9f8;
+  color: #242424;
+}
+.access-boundary-strict {
+  border-left-color: #79404a;
+  background: #fbf7f8;
+}
+.access-boundary .access-boundary-lock {
+  width: 24px;
+  height: 24px;
+  color: #616161;
+  margin-bottom: 12px;
+}
+.access-boundary h1,
+.access-boundary h2 {
+  margin: 8px 0 12px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+.access-boundary > p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.access-boundary .access-boundary-area {
+  font-size: 16px;
+  font-weight: 500;
+}
+.access-boundary .access-boundary-sensitivity {
+  display: block;
+  color: #79404a;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.access-boundary > .fui-Button {
+  margin-top: 10px;
+}
+.access-boundary-urgent {
+  margin: 22px 0 18px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #616161;
+}
+.access-boundary-urgent p {
+  margin: 0 0 3px;
+}
+.access-boundary-return {
+  display: block;
+  font-size: 14px;
+}
+.access-boundary-compact {
+  padding: 20px 24px;
+}
+.access-contact-panel h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.access-contact-panel p {
+  line-height: 1.5;
+}
+.access-contact-panel label {
+  display: grid;
+  gap: 8px;
+  margin: 24px 0 14px;
+}
+.access-contact-panel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  font: inherit;
+  border: 1px solid #8a8886;
+  border-radius: 2px;
+  resize: vertical;
+}
+.access-contact-panel [role="note"] {
+  display: block;
+  margin-top: 24px;
+}
+.access-ticket-form > .poc-annotation {
+  margin-block: 14px;
+}
+.service-desk-main > p {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .access-boundary {
+    padding: 20px;
+  }
+}

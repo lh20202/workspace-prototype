@@ -1,23 +1,26 @@
 import {
   workspaces,
-  staff,
   selectedStaffId,
+  resolveStaffPerson,
   type StaffPerson,
 } from "../intranet/catalog";
 import { channels, workspaceTitle } from "../logistics/data";
-import { departments, departmentHref } from "../coordination/data";
+import {
+  departments,
+  departmentHref,
+  resolveDepartment,
+} from "../coordination/data";
 import { currentProjects, projectHref, projectTitle } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
 import { hasWorkspaceTeams } from "../workspaces/registry";
-import { resolveContentChannel } from "../content/channels";
+import { resolveContentChannel, contentDefaultTab } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
 import {
   canSeeDepartment,
   canSeeLogisticsChannel,
   canSeeProject,
   canSeeWorkspace,
-  isInformationManager,
-  isWorkspaceMember,
+  canSeeWorkspaceChannel,
   projectChannels,
   visibleWorkspaceChannels,
 } from "./visibility";
@@ -64,6 +67,7 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
       .map((w) => ({
         id: w.id,
         label: w.title,
+        initials: w.id === "content" ? "CE" : undefined,
         channels: visibleWorkspaceChannels(person, w.id).map((name) => ({
           id: `${w.id}:${name}`,
           label: name,
@@ -78,7 +82,7 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
               : undefined,
           onSelect: () =>
             location.assign(
-              `/teams?${new URLSearchParams({ staff: person.id, workspace: w.id, channel: name, tab: "Posts" })}`,
+              `/teams?${new URLSearchParams({ staff: person.id, workspace: w.id, channel: name, tab: w.id === "content" ? contentDefaultTab(name) : "Posts" })}`,
             ),
         })),
       })),
@@ -112,38 +116,98 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
             ),
         })),
       })),
-    ...(isInformationManager(person)
+    ...(initialIncidents.some((incident) =>
+      incident.participants.some(
+        (participant) => participant.name === person.name,
+      ),
+    )
       ? [
           {
             id: "emergency",
             label: "Emergency Response",
             initials: "ER",
-            channels: initialIncidents.map((incident) => ({
-              id: `emergency:${incident.id}`,
-              label: `${incident.id} · ${incident.title}`,
-              private: true,
-              onSelect: () =>
-                location.assign(
-                  `/emergency-response/incidents/${incident.id}?staff=${person.id}`,
+            channels: initialIncidents
+              .filter((incident) =>
+                incident.participants.some(
+                  (participant) => participant.name === person.name,
                 ),
-            })),
+              )
+              .map((incident) => ({
+                id: `emergency:${incident.id}`,
+                label: `${incident.id} · ${incident.title}`,
+                private: true,
+                onSelect: () =>
+                  location.assign(
+                    `/emergency-response/incidents/${incident.id}?staff=${person.id}`,
+                  ),
+              })),
           },
         ]
       : []),
   ];
 }
 
-/** A SharePoint entry preserves a relevant preview identity, otherwise uses its work owner. */
+/** Opening Teams never changes the colleague selected in the preview controls. */
 export function teamsStaffForWorkspace(
-  workspaceId: string,
+  _workspaceId: string,
   preferredId = selectedStaffId(),
 ) {
-  const preferred = staff.find((s) => s.id === preferredId);
-  if (preferred && isWorkspaceMember(preferred, workspaceId))
-    return preferred.id;
-  return (
-    staff.find(
-      (s) => !isInformationManager(s) && isWorkspaceMember(s, workspaceId),
-    )?.id || "morgan"
-  );
+  return resolveStaffPerson(preferredId).id;
+}
+
+/** A persona switch retains only a channel the next colleague actually joined. */
+export function teamsPreviewHrefForStaff(
+  person: StaffPerson,
+  pathname: string,
+  search: string,
+) {
+  const params = new URLSearchParams(search);
+  params.set("staff", person.id);
+  const ownTeams = `/teams?${new URLSearchParams({ staff: person.id })}`;
+  if (pathname === "/logistics/teams") {
+    const channel = channels.find(
+      (item) => item.id === (params.get("channel") || "general"),
+    );
+    if (!channel || !canSeeLogisticsChannel(person, channel)) {
+      return `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: "important", tab: "Posts" })}`;
+    }
+  } else if (pathname === "/teams") {
+    const departmentValue = params.get("department") || params.get("division");
+    const department = resolveDepartment(departmentValue);
+    if (departmentValue) {
+      if (!department || !canSeeDepartment(person, department.id))
+        return ownTeams;
+      // Unit/file context belongs to the previous person; restart at their common department view.
+      for (const key of ["unit", "section", "folder", "file", "document"])
+        params.delete(key);
+    } else {
+      const workspaceId = params.get("workspace");
+      if (
+        !workspaceId ||
+        !canSeeWorkspaceChannel(
+          person,
+          workspaceId,
+          params.get("channel") || "General",
+        )
+      )
+        return ownTeams;
+    }
+  } else if (pathname.startsWith("/projects/")) {
+    const code =
+      pathname.split("/").find((part) => part.startsWith("PRJ-")) || "";
+    if (!canSeeProject(person, code)) return ownTeams;
+  } else if (pathname.startsWith("/emergency-response")) {
+    const incidentId = pathname.split("/")[3];
+    if (
+      !initialIncidents.some(
+        (incident) =>
+          incident.id === incidentId &&
+          incident.participants.some(
+            (participant) => participant.name === person.name,
+          ),
+      )
+    )
+      return ownTeams;
+  }
+  return `${pathname}?${params}`;
 }

@@ -7,21 +7,30 @@ import {
   contentFilesForChannel,
   resolveContentChannel,
   contentTeamsHref,
+  contentDefaultTab,
 } from "./channels";
 import {
   files,
+  packages,
   filesById,
   partnerShares,
   protectedTopics,
   sharedFiles,
 } from "./data";
-import { documentFor, folderFor, libraryFor, definitions } from "./libraries";
+import {
+  documentFor,
+  folderFor,
+  libraryFor,
+  definitions,
+  searchableContentFiles,
+} from "./libraries";
 import { canSeeWorkspace, canSeeWorkspaceChannel } from "../teams/visibility";
 import { teamsGroups } from "../teams/navigation";
 import { staff } from "../intranet/catalog";
+import { studioPosts } from "./conversations";
 
-describe("Content Room desk and temporary coverage membership", () => {
-  it("uses six durable desks and three finite coverage channels", () => {
+describe("Creative & Editorial Studio desk and temporary coverage membership", () => {
+  it("uses seven durable desks and three finite coverage channels", () => {
     expect(
       contentChannels
         .filter((channel) => channel.kind === "desk")
@@ -31,7 +40,8 @@ describe("Content Room desk and temporary coverage membership", () => {
       "Web Desk",
       "Social Desk",
       "Media Desk",
-      "Video & Multimedia",
+      "Publications & Email",
+      "Video & Visuals",
       "Production Coordination",
     ]);
     expect(
@@ -43,12 +53,10 @@ describe("Content Room desk and temporary coverage membership", () => {
           channel.kind === "temporary" && channel.lifecycle === "Active",
       ),
     ).toHaveLength(2);
-    expect(contentChannelReadOnly("Special Coverage · Community Week")).toBe(
-      true,
-    );
-    expect(contentChannelReadOnly("Campaign Room · Clean Water Week")).toBe(
-      false,
-    );
+    expect(contentChannelReadOnly("Campaign · Future Skills Week")).toBe(true);
+    expect(
+      contentChannelReadOnly("Special Coverage · City Innovation Summit"),
+    ).toBe(false);
   });
   it("limits cross-disciplinary collaborators to the coverage they joined", () => {
     expect(visibleContentChannels("maya").map((channel) => channel.id)).toEqual(
@@ -66,9 +74,16 @@ describe("Content Room desk and temporary coverage membership", () => {
         (channel) => channel.id !== "media",
       ),
     ).toBe(true);
-    expect(visibleContentChannels("morgan")).toHaveLength(
-      contentChannels.length,
-    );
+    expect(visibleContentChannels("morgan")).toEqual([]);
+    for (const person of staff) {
+      expect(visibleContentChannels(person.id).length).toBeLessThan(
+        contentChannels.length,
+      );
+      for (const channel of contentChannels)
+        expect(canSeeContentChannel(person.id, channel.name)).toBe(
+          channel.members.includes(person.id),
+        );
+    }
   });
   it("keeps safe company teams first and distinguishes temporary and archived channels", () => {
     const alex = staff.find((person) => person.id === "alex")!;
@@ -78,15 +93,21 @@ describe("Content Room desk and temporary coverage membership", () => {
       "logistics",
     ]);
     const room = groups.find((group) => group.id === "content")!;
-    expect(room.label).toBe("Content Room");
+    expect(room.label).toBe("Creative & Editorial Studio");
+    const maya = staff.find((person) => person.id === "maya")!;
     expect(
-      room.channels.find((channel) =>
-        channel.label.includes("Coastal Flooding"),
-      )?.cue,
+      teamsGroups(maya).find((group) => group.id === "content")!.channels[0]
+        .cue,
     ).toBe("Temporary");
     expect(
-      room.channels.find((channel) => channel.label.includes("Community Week"))
-        ?.cue,
+      room.channels.some((channel) =>
+        channel.label.includes("Major Transport Disruption"),
+      ),
+    ).toBe(false);
+    expect(
+      room.channels.find((channel) =>
+        channel.label.includes("Future Skills Week"),
+      )?.cue,
     ).toBe("Archived");
   });
   it("keeps old entry names compatible without creating duplicate channels", () => {
@@ -105,7 +126,7 @@ describe("Content Room desk and temporary coverage membership", () => {
   });
 });
 
-describe("Content Room canonical lifecycle files", () => {
+describe("Creative & Editorial Studio canonical lifecycle files", () => {
   it("reuses SharePoint identity for desk and coverage Shared files", () => {
     for (const channel of contentChannels) {
       expect(contentFilesForChannel(channel.name).length).toBeGreaterThan(0);
@@ -179,5 +200,113 @@ describe("Content Room canonical lifecycle files", () => {
           ),
         ).toBe(false);
     expect(files.every((file) => file.sensitivity === "Internal")).toBe(true);
+  });
+});
+
+describe("Studio topic expertise and different working patterns", () => {
+  it("uses four unrelated topic desks whose public context files feed channel production", () => {
+    const topics = contentChannels.filter(
+      (channel) => channel.kind === "topic",
+    );
+    expect(topics.map((channel) => channel.name)).toEqual([
+      "Cities & Mobility",
+      "Education & Skills",
+      "Digital Society",
+      "Arts & Culture",
+    ]);
+    for (const topic of topics) {
+      expect(
+        contentFilesForChannel(topic.id).every(
+          (file) => file.topic === topic.name,
+        ),
+      ).toBe(true);
+      const post = studioPosts[topic.id][0];
+      expect(post.handoff).toBeTruthy();
+      expect(
+        contentFilesForChannel(topic.id).some(
+          (file) => file.id === post.attachment,
+        ),
+      ).toBe(true);
+    }
+  });
+  it("opens Publications & Email in Shared while chat-heavy and handoff desks retain Posts", () => {
+    expect(contentDefaultTab("publications")).toBe("Shared");
+    expect(contentTeamsHref("alex", "publications")).toContain("tab=Shared");
+    for (const id of ["web", "social", "media"]) {
+      expect(contentDefaultTab(id)).toBe("Posts");
+      expect(studioPosts[id].length).toBeGreaterThan(
+        studioPosts.publications.length,
+      );
+    }
+    expect(resolveContentChannel("video")?.focus).toBe("handoff");
+    expect(studioPosts.video[0].handoff?.channel).toBe("coordination");
+    expect(contentFilesForChannel("publications").length).toBeGreaterThan(
+      studioPosts.publications.length,
+    );
+  });
+  it("makes public topic metadata searchable without adding protected fixtures", () => {
+    for (const topic of contentChannels.filter(
+      (channel) => channel.kind === "topic",
+    )) {
+      const results = searchableContentFiles.filter((file) =>
+        Object.values(file.metadata || {}).includes(topic.name),
+      );
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((file) => filesById.has(file.id))).toBe(true);
+    }
+    expect(
+      searchableContentFiles.some((file) =>
+        protectedTopics.some((topic) => topic.id === file.id),
+      ),
+    ).toBe(false);
+  });
+  it("links every desk/thread attachment to a real file included in that desk's Shared context", () => {
+    for (const channel of contentChannels)
+      for (const post of studioPosts[channel.id] || []) {
+        if (post.attachment)
+          expect(
+            contentFilesForChannel(channel.id).some(
+              (file) => file.id === post.attachment,
+            ),
+          ).toBe(true);
+        if (post.handoff)
+          expect(resolveContentChannel(post.handoff.channel)).toBeTruthy();
+      }
+  });
+  it("removes old visible coverage subjects from channels, production files, metadata and posts", () => {
+    const visible = JSON.stringify({
+      channels: contentChannels.map((channel) => ({
+        name: channel.name,
+        purpose: channel.purpose,
+      })),
+      packages: packages.map((item) => ({
+        name: item.name,
+        purpose: item.purpose,
+      })),
+      files: files.map((file) => ({
+        name: file.name,
+        folder: file.folder,
+        campaign: file.campaign,
+        metadata: documentFor(file).metadata,
+      })),
+      posts: Object.values(studioPosts)
+        .flat()
+        .map((post) => ({ text: post.text, reply: post.reply?.text })),
+    });
+    expect(visible).not.toMatch(
+      /coastal flooding|clean water week|community week|Content Room/i,
+    );
+    expect(
+      contentChannels
+        .filter((channel) => channel.kind === "temporary")
+        .map((channel) => channel.name),
+    ).toEqual([
+      "Rapid Coverage · Major Transport Disruption",
+      "Special Coverage · City Innovation Summit",
+      "Campaign · Future Skills Week",
+    ]);
+    expect(
+      resolveContentChannel("Rapid Response · Coastal Flooding")?.name,
+    ).toBe("Rapid Coverage · Major Transport Disruption");
   });
 });

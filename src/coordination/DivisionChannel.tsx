@@ -1,4 +1,6 @@
 import { useState } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import { canSeeDepartment } from "../teams/visibility";
 import {
   Button,
   Dialog,
@@ -48,7 +50,9 @@ export default function DepartmentChannel({
 }) {
   const params = new URLSearchParams(location.search),
     initialUnit = department.units.find((u) => u.id === params.get("unit"));
-  const entitled = canOpenDepartment(department, person);
+  const entitled =
+    canSeeDepartment(person, department.id) &&
+    canOpenDepartment(department, person);
   const [folder, setFolder] = useState(params.get("folder") || ""),
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
@@ -70,8 +74,10 @@ export default function DepartmentChannel({
     [replies, setReplies] = useState<Record<string, string[]>>({});
   const [sharePointOpen, setSharePointOpen] = useState(false);
   const query = searchQuery ?? localQuery;
-  const permittedFiles = accessibleFiles(department, person),
-    seededResults = searchCoordination(department, person, query),
+  const permittedFiles = entitled ? accessibleFiles(department, person) : [],
+    seededResults = entitled
+      ? searchCoordination(department, person, query)
+      : { files: [], posts: [] },
     unitAllowed = !!unit && canOpenUnit(department, unit, person);
   const results = {
     ...seededResults,
@@ -164,11 +170,16 @@ export default function DepartmentChannel({
   return (
     <div className="department-channel-body">
       {!entitled ? (
-        <section className="coord-channel-denied">
-          <LockClosed16Regular />
-          <h2>Access denied</h2>
-          <p>This channel is available to department members.</p>
-        </section>
+        <AccessBoundary
+          workspaceId="department"
+          department={department.id}
+          area="Department channel"
+          personId={person.id}
+          headingLevel={2}
+          compact
+          returnHref={`/teams?staff=${person.id}`}
+          returnLabel="Open your Teams view"
+        />
       ) : (
         <>
           {searchQuery === undefined && (
@@ -233,7 +244,7 @@ export default function DepartmentChannel({
                         <small>{p.time}</small>
                       </div>
                     </div>
-                    <p>{p.text}</p>
+                    <p data-no-translate={!original || undefined}>{p.text}</p>
                     {attachment && (
                       <button
                         className="coord-attachment"
@@ -284,7 +295,7 @@ export default function DepartmentChannel({
                         {avatar(person.name)}
                         <div>
                           <strong>{person.name}</strong>
-                          <p>{reply}</p>
+                          <p data-no-translate>{reply}</p>
                         </div>
                       </article>
                     ))}
@@ -530,8 +541,19 @@ export default function DepartmentChannel({
       >
         <DialogSurface>
           <DialogBody>
-            <DialogTitle>Access denied</DialogTitle>
-            <DialogContent>{denied}</DialogContent>
+            <DialogTitle>Department access</DialogTitle>
+            <DialogContent>
+              <AccessBoundary
+                workspaceId="department"
+                department={department.id}
+                area={denied || "Restricted department coordination"}
+                personId={person.id}
+                headingLevel={2}
+                compact
+                returnHref={`/teams?staff=${person.id}`}
+                returnLabel="Open your Teams view"
+              />
+            </DialogContent>
             <DialogActions>
               <Button
                 onClick={() => {

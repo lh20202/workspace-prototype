@@ -54,9 +54,9 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "content",
-    "Content Room",
+    "Creative & Editorial Studio",
     "/content-delivery",
-    "Shared production space for editorial, creative and channel teams coordinating live content, campaigns and rapid-response coverage.",
+    "Shared production space where channel teams and topic specialists plan, create, review and release public-facing work.",
     "Audience & experience",
     "content",
     true,

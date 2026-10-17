@@ -1,0 +1,160 @@
+import { germanMessages } from "./de";
+import { germanContent } from "./de-content";
+import { germanFiles } from "./de-files";
+
+export type Language = "en" | "de";
+const messages = { ...germanMessages, ...germanContent, ...germanFiles };
+const englishMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const germanMonths = [
+  "Januar",
+  "Februar",
+  "März",
+  "April",
+  "Mai",
+  "Juni",
+  "Juli",
+  "August",
+  "September",
+  "Oktober",
+  "November",
+  "Dezember",
+];
+const shortMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const germanShortMonths = [
+  "Jan.",
+  "Feb.",
+  "März",
+  "Apr.",
+  "Mai",
+  "Juni",
+  "Juli",
+  "Aug.",
+  "Sept.",
+  "Okt.",
+  "Nov.",
+  "Dez.",
+];
+
+function dateText(text: string): string | undefined {
+  const date = text.match(/^(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?$/);
+  if (date) {
+    const month = englishMonths.indexOf(date[2]);
+    const short = shortMonths.indexOf(date[2]);
+    if (month >= 0 || short >= 0)
+      return `${date[1]}. ${month >= 0 ? germanMonths[month] : germanShortMonths[short]}${date[3] ? ` ${date[3]}` : ""}`;
+  }
+  const month = text.match(/^([A-Za-z]+) (\d{4})$/);
+  if (month && englishMonths.includes(month[1]))
+    return `${germanMonths[englishMonths.indexOf(month[1])]} ${month[2]}`;
+  return undefined;
+}
+
+/** Translate display strings only. Canonical routes, IDs, field values and records stay English. */
+export function translateText(source: string, language: Language): string {
+  if (language === "en" || !source.trim()) return source;
+  const leading = source.match(/^\s*/)?.[0] || "";
+  const trailing = source.match(/\s*$/)?.[0] || "";
+  const text = source.trim().replace(/\s+/g, " ");
+  const direct = messages[text];
+  if (direct) return leading + direct + trailing;
+  const date = dateText(text);
+  if (date) return leading + date + trailing;
+  const accessDraft = text.match(/^I need access to (.+)\.$/);
+  if (accessDraft)
+    return `${leading}Ich benötige Zugriff auf den Bereich „${translateText(accessDraft[1], language)}“.${trailing}`;
+  const urgentReason = text.match(
+    /^Access to (.+) is time-sensitive and the workspace focal point is unavailable\.$/,
+  );
+  if (urgentReason)
+    return `${leading}Der Zugriff auf „${translateText(urgentReason[1], language)}“ ist zeitkritisch. Die zuständige Ansprechperson des Arbeitsbereichs ist nicht erreichbar.${trailing}`;
+  const signedIn = text.match(/^Signed in as (.+)$/);
+  if (signedIn) return `${leading}Angemeldet als ${signedIn[1]}${trailing}`;
+  const illustrated = text.match(/^Illustrated avatar of (.+)$/);
+  if (illustrated)
+    return `${leading}Illustrierter Avatar von ${illustrated[1]}${trailing}`;
+  const destination = text.match(/^Open destination:\s*(.+)$/);
+  if (destination)
+    return `${leading}Ziel öffnen: ${translateText(destination[1], language)}${trailing}`;
+  const fileType = text.match(/^(docx|xlsx|pptx|pdf|doc|xls|ppt) file$/i);
+  if (fileType)
+    return `${leading}${fileType[1].toUpperCase()}-Datei${trailing}`;
+  const week = text.match(/^Week (\d+)$/);
+  if (week) return `${leading}Woche ${week[1]}${trailing}`;
+  const counted = text.match(
+    /^(\d+) (documents?|files?|folders?|members?|replies|reply|channels?|items?|results?|open items?)$/i,
+  );
+  if (counted) {
+    const one = counted[1] === "1";
+    const noun: Record<string, string> = {
+      document: one ? "Dokument" : "Dokumente",
+      file: one ? "Datei" : "Dateien",
+      folder: one ? "Ordner" : "Ordner",
+      member: one ? "Mitglied" : "Mitglieder",
+      reply: one ? "Antwort" : "Antworten",
+      channel: one ? "Kanal" : "Kanäle",
+      item: one ? "Eintrag" : "Einträge",
+      result: one ? "Ergebnis" : "Ergebnisse",
+      "open item": one ? "offener Eintrag" : "offene Einträge",
+    };
+    const key =
+      counted[2] === "replies" ? "reply" : counted[2].replace(/s$/, "");
+    if (noun[key]) return `${leading}${counted[1]} ${noun[key]}${trailing}`;
+  }
+  // Compound bylines and locations keep names and canonical identifiers intact.
+  if (/\s[·|/→]\s/.test(text)) {
+    const parts = text.split(/(\s[·|/→]\s)/);
+    return (
+      leading +
+      parts
+        .map((part, i) => (i % 2 ? part : translateText(part, language)))
+        .join("") +
+      trailing
+    );
+  }
+  const today = text.match(/^(Today|Yesterday)(,?\s+.+)$/);
+  if (today)
+    return (
+      leading +
+      (today[1] === "Today" ? "Heute" : "Gestern") +
+      today[2] +
+      trailing
+    );
+  const parenthetical = text.match(/^(.+?)(\s*\([^()]+\))$/);
+  if (parenthetical && messages[parenthetical[1]])
+    return leading + messages[parenthetical[1]] + parenthetical[2] + trailing;
+  const file = text.match(
+    /^(.+?)(\.(?:docx?|xlsx?|pptx?|pdf|png|jpg|csv|mp4|txt))$/i,
+  );
+  if (file && messages[file[1]])
+    return leading + messages[file[1]] + file[2] + trailing;
+  const suffix = text.match(/^(.+?)([:…])$/);
+  if (suffix && messages[suffix[1]])
+    return leading + messages[suffix[1]] + suffix[2] + trailing;
+  return source;
+}

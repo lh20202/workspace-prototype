@@ -1,4 +1,7 @@
 import { useState } from "react";
+import SimulationMessage from "../components/SimulationMessage";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   Button,
   Drawer,
@@ -225,33 +228,27 @@ export default function FinanceApp() {
           </div>
           {notice && (
             <div role="status" className="finance-notice">
-              {notice}
+              <SimulationMessage message={notice} />
               <button onClick={() => setNotice("")}>Dismiss</button>
             </div>
           )}
           {protectedName || unknown ? (
-            <section className="finance-protected">
-              <LockClosed20Regular />
-              <h1>Access denied</h1>
-              <h2>{protectedName || "This location is unavailable"}</h2>
-              <p>
-                Specific authorisation is required. Contact Robin Wells or
-                submit an access request.
-              </p>
-              <a
-                href={`/service-desk/access-request?${new URLSearchParams({ workspace: title, area: area?.name || "Financial operations", location: `${title} / ${area?.name} / ${protectedName || "Unavailable location"}` })}`}
-              >
-                Request access →
-              </a>
-              <p>
-                <a href={`${base}/${page}`}>Return to workspace</a>
-              </p>
-            </section>
+            <AccessBoundary
+              workspaceId="finance"
+              area={protectedName || "Unavailable location"}
+              location={[title, area?.name, protectedName]
+                .filter(Boolean)
+                .join(" / ")}
+              returnHref={base}
+              strict
+            />
           ) : system ? (
             <section>
               <h1>{system.name}</h1>
               <p>{system.purpose}</p>
-              <p>Simulated external destination · {system.ref}</p>
+              <PocAnnotation title="System preview" variant="inline">
+                Simulated external destination · {system.ref}
+              </PocAnnotation>
               <a href={base}>Back to workspace</a>
             </section>
           ) : page === "home" ? (

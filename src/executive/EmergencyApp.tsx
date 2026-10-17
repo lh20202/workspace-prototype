@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   Button,
   Dialog,
@@ -11,9 +13,7 @@ import {
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
-import { isInformationManager } from "../teams/visibility";
-import TeamsAdministration from "../teams/Administration";
-import { staff } from "../intranet/catalog";
+import { staff, resolveStaffPerson } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   initialIncidents,
@@ -27,9 +27,10 @@ import {
 import "./styles.css";
 import "./emergency-teams.css";
 export default function EmergencyApp() {
-  const requestedPerson = staff.find(
-    (s) => s.id === new URLSearchParams(location.search).get("staff"),
-  );
+  const requestedStaff = new URLSearchParams(location.search).get("staff");
+  const requestedPerson = requestedStaff
+    ? resolveStaffPerson(requestedStaff)
+    : undefined;
   const [incidents, setIncidents] = useState(initialIncidents),
     [tab, setTab] = useState("Posts"),
     [post, setPost] = useState("");
@@ -39,15 +40,16 @@ export default function EmergencyApp() {
     archived = incident?.status === "Archived";
   const responseLead =
     !requestedPerson || incident?.lead === requestedPerson.name;
+  const visibleIncidents = requestedPerson
+    ? incidents.filter((i) =>
+        i.participants.some((p) => p.name === requestedPerson.name),
+      )
+    : incidents;
   const responseAccess =
     !requestedPerson ||
-    !!incident?.participants.some((p) => p.name === requestedPerson.name);
-  const visibleIncidents =
-    requestedPerson && !isInformationManager(requestedPerson)
-      ? incidents.filter((i) =>
-          i.participants.some((p) => p.name === requestedPerson.name),
-        )
-      : incidents;
+    (incident
+      ? visibleIncidents.includes(incident)
+      : !initialId && visibleIncidents.length > 0);
   const baseGroups = teamsGroups(requestedPerson || staff[0]).filter(
     (g) =>
       g.id !== "emergency" &&
@@ -177,14 +179,16 @@ export default function EmergencyApp() {
         userName={requestedPerson?.name || incident?.lead || "Drew Ellis"}
         teamName="Emergency Response"
         channelName={
-          incident ? `${incident.id} · ${incident.title}` : "Incident responses"
+          responseAccess && incident
+            ? `${incident.id} · ${incident.title}`
+            : "Incident responses"
         }
         groups={groups}
         selectedChannelId={`emergency:${selectedId}`}
         activeTab={tab === "Files" ? "Shared" : tab}
         onTabChange={(next) => setTab(next === "Shared" ? "Files" : next)}
         tabs={
-          incident
+          incident && responseAccess
             ? [
                 "Posts",
                 "Shared",
@@ -196,7 +200,9 @@ export default function EmergencyApp() {
             : ["Posts"]
         }
         privateChannel={!!incident}
-        onChannelInfo={incident ? () => setTab("Participants") : undefined}
+        onChannelInfo={
+          incident && responseAccess ? () => setTab("Participants") : undefined
+        }
         headerActions={
           incident && !archived && responseLead ? (
             <Button
@@ -213,9 +219,6 @@ export default function EmergencyApp() {
         }
         navigationFooter={
           <>
-            {requestedPerson && (
-              <TeamsAdministration person={requestedPerson} groups={groups} />
-            )}
             {responseLead && (
               <Button
                 appearance="subtle"
@@ -233,13 +236,16 @@ export default function EmergencyApp() {
         <div className="emergency-channel-surface">
           <div className="emergency-channel-content">
             {requestedPerson && !responseAccess ? (
-              <section className="m365-teams-empty">
-                <h2>Access denied</h2>
-                <p>
-                  Private response content is limited to the incident’s
-                  participants.
-                </p>
-              </section>
+              <AccessBoundary
+                workspaceId="emergency"
+                area="Private incident response"
+                personId={requestedPerson.id}
+                headingLevel={2}
+                compact
+                strict
+                returnHref={`/teams?staff=${requestedPerson.id}`}
+                returnLabel="Open your Teams view"
+              />
             ) : !incident ? (
               <>
                 {initialId && <h2>Response not available</h2>}
@@ -307,7 +313,9 @@ export default function EmergencyApp() {
                               </small>
                             </div>
                           </header>
-                          <p>{p.text}</p>
+                          <p data-no-translate={p.time === "Now" || undefined}>
+                            {p.text}
+                          </p>
                         </article>
                       ))}
                       <TeamsComposer
@@ -599,10 +607,10 @@ export default function EmergencyApp() {
             </DialogTitle>
             <DialogContent>
               <div className="incident-flow">
-                <p>
-                  Simulation only. Use fictional, low-detail values. No channel
-                  or membership is created outside this browser.
-                </p>
+                <PocAnnotation title="Simulation only" variant="inline">
+                  Use fictional, low-detail values. No channel or membership is
+                  created outside this browser.
+                </PocAnnotation>
                 {flow === "create" ? (
                   <>
                     <label>

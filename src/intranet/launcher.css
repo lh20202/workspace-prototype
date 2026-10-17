@@ -1,10 +1,18 @@
 .prototype-launcher {
+  position: relative;
   min-height: 100dvh;
   display: grid;
   place-items: center;
   background: #faf9f8;
   color: #242424;
   padding: 48px 24px;
+}
+:root .prototype-launcher > .launcher-language {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: auto;
+  max-width: none;
 }
 .launcher-content {
   width: min(760px, 100%);
@@ -67,34 +75,20 @@
   color: #616161;
   margin-top: 8px;
 }
-.exploratory-badge {
+.launcher-build-label {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #d7d5e5;
-  color: #535276;
-  background: #f3f2f8;
-  border-radius: 3px;
-  font-size: 10px;
+  color: #616161;
+  font-size: 11px;
   line-height: 16px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  padding: 1px 6px;
 }
-.architecture-preview-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.launcher-caveat {
+  display: block;
   font-size: 12px;
+  line-height: 16px;
   color: #616161;
-  margin-bottom: 16px;
-}
-.architecture-preview-label a {
-  margin-left: auto;
-  color: #616161;
-  text-decoration: none;
-}
-.architecture-preview-label a:hover {
-  text-decoration: underline;
+  margin-top: 4px;
 }
 @media (max-width: 600px) {
   .prototype-launcher {
@@ -114,12 +108,6 @@
   .launcher-choice h2 {
     font-size: 18px;
     line-height: 24px;
-  }
-  .architecture-preview-label {
-    flex-wrap: wrap;
-  }
-  .architecture-preview-label a {
-    margin-left: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {

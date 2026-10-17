@@ -1,4 +1,5 @@
 import type { OperationalFile } from "../logistics/data";
+import { matchesDisplayText } from "../i18n/search";
 export const title = "Audience Research & Marketing Insight";
 export const description =
   "Shared workspace for researching audiences, developing and testing new approaches, analysing performance and turning evidence into future outreach decisions.";
@@ -691,9 +692,10 @@ export function queryInitiatives(
     (i) =>
       (!stage || i.stage === stage) &&
       (!status || i.status === status) &&
-      `${i.name} ${i.question} ${i.segment} ${i.owner}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      matchesDisplayText(
+        [i.name, i.question, i.segment, i.owner].join("\n"),
+        search,
+      ) &&
       (view !== "Active Research" ||
         (!i.experiment && i.status !== "Completed")) &&
       (view !== "Experiments Running" ||
@@ -735,9 +737,7 @@ export function queryFiles(
     return (
       (view === "All Working Files" ? f.area === area : true) &&
       (!folder || f.folder === folder) &&
-      `${f.name} ${f.campaign} ${f.owner}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      matchesDisplayText([f.name, f.campaign, f.owner].join("\n"), search) &&
       (view !== "Active Work" || i.status !== "Completed") &&
       (view !== "Audience Research" || i.type === "Audience research") &&
       (view !== "Website & UX" || i.id === "RD-103") &&

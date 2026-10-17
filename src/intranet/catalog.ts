@@ -69,7 +69,6 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   elena: { departmentId: "people-culture", unitId: "learning-and-capability" },
   jamie: { departmentId: "people-culture", unitId: "people-operations" },
   harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
-  morgan: { departmentId: "strategy-technology", unitId: "it-services" },
 };
 export const staff = [
   ...baseStaff,
@@ -97,16 +96,23 @@ export const staff = [
     role: "Legal Adviser",
     workspace: "legal",
   },
-  {
-    id: "morgan",
-    name: "Morgan Reed",
-    role: "Information Management Specialist",
-    workspace: "archives",
-  },
 ].map((s) => ({ ...s, ...memberships[s.id] }));
 export type StaffPerson = (typeof staff)[number];
+/** A record owner/contact is not a selectable or privileged Teams identity. */
+export const recordContacts = [
+  { id: "morgan", name: "Morgan Reed", role: "Records Adviser" },
+];
+export function resolveStaffPerson(id?: string | null): StaffPerson {
+  return (
+    staff.find((person) => person.id === (id || selectedStaffId())) ||
+    staff.find((person) => person.id === "maya")!
+  );
+}
 export function selectedStaffId() {
-  const id = sessionStorage.getItem("workspace-preview-staff");
+  const id =
+    typeof sessionStorage === "undefined"
+      ? null
+      : sessionStorage.getItem("workspace-preview-staff");
   return staff.some((s) => s.id === id) ? id! : "maya";
 }
 export function rememberStaff(id: string) {

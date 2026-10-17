@@ -1,6 +1,11 @@
 import { documentVersions } from "./sharepoint/library";
 import FileIcon from "./components/DocumentIcon";
-import { planningPath, planningPage, accessRequestHref } from "./utils/routes";
+import CompanyMark from "./components/CompanyMark";
+import SimulationMessage from "./components/SimulationMessage";
+import PocAnnotation from "./components/PocAnnotation";
+import { planningPath, planningPage } from "./utils/routes";
+import AccessBoundary from "./access/AccessBoundary";
+import { teamsStaffForWorkspace } from "./teams/navigation";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -50,7 +55,6 @@ import {
   documents,
   libraries,
   currentUser,
-  accessContact,
   departments,
   quickLinks,
   currentCycle,
@@ -347,7 +351,7 @@ export default function App() {
           aria-label="Microsoft 365 apps"
           onClick={() =>
             setToast(
-              "Microsoft 365 app launcher is not connected in this prototype.",
+              "Microsoft 365 app launcher is not connected in this proof of concept.",
             )
           }
         >
@@ -451,11 +455,7 @@ export default function App() {
         </div>
       </header>
       <div className="site-header">
-        <div className="site-mark" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
+        <CompanyMark />
         <div className="site-title">
           <h1>Organisational Planning & Reporting</h1>
           <button
@@ -463,7 +463,9 @@ export default function App() {
             aria-label="Microsoft Teams connection"
             title="Microsoft Teams"
             onClick={() =>
-              setToast("This workspace's Teams connection is illustrative.")
+              location.assign(
+                `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning" })}`,
+              )
             }
           >
             <img src="/images/teams-logo.svg" alt="" />
@@ -520,7 +522,7 @@ export default function App() {
           <div className="sidebar-footer">
             <button onClick={() => setModal("about")}>
               <Info20Regular />
-              About this prototype
+              About this proof of concept
             </button>
           </div>
         </aside>
@@ -704,44 +706,21 @@ export default function App() {
                   </span>
                 </div>
                 {!allowed ? (
-                  <section className="access-state">
-                    <div className="access-icon">
-                      <LockClosed24Regular />
-                    </div>
-                    <h3>A protected space for sensitive planning</h3>
-                    <p>
-                      This area has a narrower access group because it contains
-                      restricted planning material.
-                    </p>
-                    <p>
-                      Access is limited to colleagues involved in the relevant
-                      review and decision-making.
-                    </p>
-                    <div className="access-help">
-                      <p>
-                        Need access? Contact <strong>{accessContact}</strong>,
-                        Planning Coordinator.
-                      </p>
-                      <p>
-                        If urgent,{" "}
-                        <button
-                          className="text-link"
-                          onClick={() =>
-                            window.location.assign(accessRequestHref(folder))
-                          }
-                        >
-                          click here to submit an access request to IT
-                        </button>
-                        .
-                      </p>
-                    </div>
-                    <Button
-                      appearance="primary"
-                      onClick={() => navigate("planning")}
-                    >
-                      Return to Planning Cycles
-                    </Button>
-                  </section>
+                  <AccessBoundary
+                    workspaceId="planning"
+                    area="Restricted Planning"
+                    location={[
+                      "Organisational Planning & Reporting",
+                      "Restricted Planning",
+                      folder,
+                    ]
+                      .filter(Boolean)
+                      .join(" / ")}
+                    personId="maya"
+                    headingLevel={2}
+                    returnHref="/planning/cycles"
+                    returnLabel="Return to Planning Cycles"
+                  />
                 ) : (
                   <>
                     {page === "approved" && (
@@ -1061,14 +1040,16 @@ export default function App() {
           <DialogBody>
             <DialogTitle>
               {modal === "about"
-                ? "About this prototype"
+                ? "About this proof of concept"
                 : modal === "milestones"
                   ? "2027 Annual Planning milestones"
                   : "Version history"}
             </DialogTitle>
             <DialogContent>
               {modal === "about" ? (
-                <p>This prototype uses fictional content.</p>
+                <PocAnnotation title="FICTIONAL DATA" variant="inline">
+                  This proof of concept uses fictional content.
+                </PocAnnotation>
               ) : modal === "milestones" ? (
                 <>
                   <span className="open-status">
@@ -1135,7 +1116,9 @@ export default function App() {
       {toast && (
         <div className="toast" role="status">
           <Info20Regular />
-          <span>{toast}</span>
+          <span>
+            <SimulationMessage message={toast} />
+          </span>
           <button
             aria-label="Dismiss notification"
             onClick={() => setToast("")}

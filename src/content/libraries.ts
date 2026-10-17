@@ -1,5 +1,5 @@
 import type { LibraryDocument, LibraryDefinition } from "../sharepoint/library";
-import { packages as initialPackages, type ContentFile } from "./data";
+import { files, packages as initialPackages, type ContentFile } from "./data";
 export const libraries = [
   { id: "production", title: "Current Production" },
   { id: "editorial", title: "Editorial & Messaging" },
@@ -86,6 +86,7 @@ export const documentFor = (file: ContentFile): LibraryDocument => {
       Rights: item.rights,
       "Review due": item.reviewDue,
       "Release date": item.releaseDate,
+      Topic: file.topic,
     },
   };
 };
@@ -103,6 +104,7 @@ export const definitions: Record<string, LibraryDefinition> = {
     ],
     fields: [
       { key: "Production", label: "Production" },
+      { key: "Topic", label: "Topic" },
       { key: "Rights", label: "Rights" },
       { key: "contentType", label: "Content type" },
     ],
@@ -230,3 +232,14 @@ export const definitions: Record<string, LibraryDefinition> = {
     ],
   },
 };
+
+/** Site search uses the same public production metadata as Details and Shared. */
+export const searchableContentFiles = files.map((file) => {
+  const document = documentFor(file);
+  return {
+    ...file,
+    metadata: document.metadata,
+    contentType: document.contentType,
+    folderPath: document.folder,
+  };
+});

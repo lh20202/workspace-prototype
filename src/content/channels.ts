@@ -3,15 +3,19 @@ import { files, type ContentFile } from "./data";
 export interface ContentChannel {
   id: string;
   name: string;
-  kind: "desk" | "temporary";
+  kind: "desk" | "topic" | "temporary";
   lifecycle: "Active" | "Archived";
   members: string[];
   purpose: string;
+  focus?: "conversation" | "files" | "handoff";
+  preferredLibrary?: "production" | "editorial" | "creative" | "published";
   packageIds?: string[];
+  fileIds?: string[];
   areas?: string[];
+  topic?: string;
 }
 
-/** Conversation membership follows the working desk/coverage, never a file-library mirror. */
+/** Desks and short-lived coverage reflect who collaborates, not one channel per library. */
 export const contentChannels: ContentChannel[] = [
   {
     id: "editorial",
@@ -20,6 +24,7 @@ export const contentChannels: ContentChannel[] = [
     lifecycle: "Active",
     members: ["alex", "taylor"],
     areas: ["editorial"],
+    focus: "conversation",
     purpose: "Story planning, working copy and editorial review.",
   },
   {
@@ -28,7 +33,10 @@ export const contentChannels: ContentChannel[] = [
     kind: "desk",
     lifecycle: "Active",
     members: ["alex"],
-    areas: ["digital"],
+    fileIds: files
+      .filter((file) => file.area === "digital" || file.id === "landing-copy")
+      .map((file) => file.id),
+    focus: "conversation",
     purpose:
       "Page copy, accessibility and content acceptance. CMS engineering stays in Digital & Technology.",
   },
@@ -39,6 +47,7 @@ export const contentChannels: ContentChannel[] = [
     lifecycle: "Active",
     members: ["alex"],
     areas: ["channels"],
+    focus: "conversation",
     purpose: "Channel adaptations, publishing windows and social copy.",
   },
   {
@@ -46,17 +55,38 @@ export const contentChannels: ContentChannel[] = [
     name: "Media Desk",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex"],
+    members: ["robin"],
     packageIds: ["PKG-109"],
+    focus: "conversation",
     purpose: "Public release drafting and approved publication coordination.",
   },
   {
-    id: "video",
-    name: "Video & Multimedia",
+    id: "publications",
+    name: "Publications & Email",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex", "taylor"],
+    members: ["taylor"],
+    focus: "files",
+    preferredLibrary: "creative",
+    fileIds: [
+      "quarterly-draft",
+      "quarterly-display",
+      "print-layout",
+      "print-selects",
+      "welcome-message",
+      "welcome-adapt",
+    ],
+    purpose:
+      "Work through publication layouts, email copy, image selections and release checks in Shared.",
+  },
+  {
+    id: "video",
+    name: "Video & Visuals",
+    kind: "desk",
+    lifecycle: "Active",
+    members: ["alex"],
     packageIds: ["PKG-103", "PKG-104", "PKG-111"],
+    focus: "handoff",
     purpose: "Storyboards, review cuts, captions and accessible delivery.",
   },
   {
@@ -64,32 +94,74 @@ export const contentChannels: ContentChannel[] = [
     name: "Production Coordination",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex", "taylor"],
+    members: ["alex", "robin"],
+    focus: "handoff",
     purpose: "Priorities, review handoffs and the next publishing window.",
   },
   {
+    id: "cities-mobility",
+    name: "Cities & Mobility",
+    kind: "topic",
+    lifecycle: "Active",
+    members: ["taylor"],
+    topic: "Cities & Mobility",
+    purpose:
+      "Topic specialists check city and transport context before the channel desks adapt it for publication.",
+  },
+  {
+    id: "education-skills",
+    name: "Education & Skills",
+    kind: "topic",
+    lifecycle: "Active",
+    members: ["taylor", "elena"],
+    topic: "Education & Skills",
+    purpose:
+      "Bring learning and skills context into briefs, email copy and accessible explainers.",
+  },
+  {
+    id: "digital-society",
+    name: "Digital Society",
+    kind: "topic",
+    lifecycle: "Active",
+    members: ["alex"],
+    topic: "Digital Society",
+    purpose:
+      "Check public-facing language about digital services and pass useful context to Editorial and Web.",
+  },
+  {
+    id: "arts-culture",
+    name: "Arts & Culture",
+    kind: "topic",
+    lifecycle: "Active",
+    members: ["alex"],
+    topic: "Arts & Culture",
+    purpose:
+      "Review programme context and credits for print, event and multimedia production.",
+  },
+  // Stable IDs retain old bookmarks; their visible subjects and files have changed.
+  {
     id: "coastal-flooding",
-    name: "Rapid Response · Coastal Flooding",
+    name: "Rapid Coverage · Major Transport Disruption",
     kind: "temporary",
     lifecycle: "Active",
-    members: ["alex", "taylor", "maya"],
+    members: ["maya"],
     packageIds: ["PKG-108"],
     purpose:
-      "Temporary editorial, audience and customer liaison for fictional public-information coverage. Operational briefings remain protected.",
+      "Editorial, topic and customer-liaison colleagues coordinate a time-sensitive public update. Operational briefings stay in their protected location.",
   },
   {
     id: "clean-water-week",
-    name: "Campaign Room · Clean Water Week",
+    name: "Special Coverage · City Innovation Summit",
     kind: "temporary",
     lifecycle: "Active",
-    members: ["alex", "taylor"],
+    members: ["taylor"],
     packageIds: ["PKG-113"],
     purpose:
-      "Temporary editorial and audience collaboration for the fictional Clean Water Week publishing series.",
+      "Temporary city-topic and channel collaboration for the summit's public-facing coverage.",
   },
   {
     id: "community-week",
-    name: "Special Coverage · Community Week",
+    name: "Campaign · Future Skills Week",
     kind: "temporary",
     lifecycle: "Archived",
     members: ["alex"],
@@ -105,6 +177,10 @@ const aliases: Record<string, string> = {
   "Editorial & Messaging": "editorial",
   "Creative Production": "video",
   "Digital Content & Experience": "web",
+  "Video & Multimedia": "video",
+  "Rapid Response · Coastal Flooding": "coastal-flooding",
+  "Campaign Room · Clean Water Week": "clean-water-week",
+  "Special Coverage · Community Week": "community-week",
   general: "coordination",
   creative: "video",
   digital: "web",
@@ -117,29 +193,36 @@ export function resolveContentChannel(value: string) {
   );
 }
 export const visibleContentChannels = (personId: string) =>
-  contentChannels.filter(
-    (channel) => personId === "morgan" || channel.members.includes(personId),
-  );
+  contentChannels.filter((channel) => channel.members.includes(personId));
 export const canSeeContentChannel = (personId: string, value: string) => {
   const channel = resolveContentChannel(value);
-  return (
-    !!channel && (personId === "morgan" || channel.members.includes(personId))
-  );
+  return !!channel && channel.members.includes(personId);
 };
 export const contentChannelReadOnly = (value: string) =>
   resolveContentChannel(value)?.lifecycle === "Archived";
+export const contentDefaultTab = (value: string) =>
+  resolveContentChannel(value)?.focus === "files" ? "Shared" : "Posts";
 export function contentFilesForChannel(value: string): ContentFile[] {
   const channel = resolveContentChannel(value);
   if (!channel) return [];
   return files.filter((file) =>
-    channel.packageIds
-      ? channel.packageIds.includes(file.packageId)
-      : channel.areas
-        ? channel.areas.includes(file.area)
-        : true,
+    channel.fileIds
+      ? channel.fileIds.includes(file.id)
+      : channel.packageIds
+        ? channel.packageIds.includes(file.packageId)
+        : channel.topic
+          ? file.topic === channel.topic
+          : channel.areas
+            ? channel.areas.includes(file.area)
+            : true,
   );
 }
-export function contentTeamsHref(personId: string, channel = "coordination") {
-  const resolved = resolveContentChannel(channel);
-  return `/teams?${new URLSearchParams({ staff: personId, workspace: "content", channel: resolved?.name || "Production Coordination", tab: "Posts" })}`;
+export function contentTeamsHref(personId: string, channel?: string) {
+  const visible = visibleContentChannels(personId);
+  const resolved =
+    !channel || ["General", "general"].includes(channel)
+      ? visible.find((item) => item.id === "coordination") || visible[0]
+      : resolveContentChannel(channel);
+  const name = resolved?.name || channel || "Production Coordination";
+  return `/teams?${new URLSearchParams({ staff: personId, workspace: "content", channel: name, tab: contentDefaultTab(name) })}`;
 }

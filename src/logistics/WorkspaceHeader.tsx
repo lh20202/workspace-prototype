@@ -10,8 +10,10 @@ import {
   Star20Filled,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import CompanyMark from "../components/CompanyMark";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 import "../sharepoint/fidelity.css";
+import { matchesDisplayText } from "../i18n/search";
 export default function WorkspaceHeader({
   onSearchChange,
   onOpen,
@@ -42,18 +44,18 @@ export default function WorkspaceHeader({
   const [query, setQuery] = useState("");
   const [favorite, setFavorite] = useState(true);
   const results = searchFiles.filter((f) =>
-    [
-      f.name,
-      f.folderPath || f.folder,
-      f.campaign,
-      f.owner,
-      f.status,
-      f.contentType,
-      ...Object.values(f.metadata || {}),
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(query.trim().toLowerCase()),
+    matchesDisplayText(
+      [
+        f.name,
+        f.folderPath || f.folder,
+        f.campaign,
+        f.owner,
+        f.status,
+        f.contentType,
+        ...Object.values(f.metadata || {}),
+      ].join("\n"),
+      query,
+    ),
   );
   return (
     <>
@@ -63,7 +65,7 @@ export default function WorkspaceHeader({
           aria-label="Microsoft 365 apps"
           onClick={() =>
             onMessage(
-              "Microsoft 365 app launcher is illustrative in this prototype.",
+              "Microsoft 365 app launcher is illustrative in this proof of concept.",
             )
           }
         >
@@ -164,11 +166,7 @@ export default function WorkspaceHeader({
         </div>
       </header>
       <div className="site-header">
-        <div className="site-mark" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
+        <CompanyMark />
         <div className="site-title">
           <h1>{title}</h1>
           {onTeams && (

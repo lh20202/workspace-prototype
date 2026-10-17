@@ -13,7 +13,7 @@ export const technicalPosts = [
   {
     channel: "Innovators",
     author: "Devon Park",
-    text: "For the Company Data API POC, I’d keep the boundary explicit: TypeScript request validation at the edge, Python workers for the batch jobs. Anyone see a reason to put the whole pipeline behind one synchronous endpoint?",
+    text: "For the Company Data API proof of concept, I’d keep the boundary explicit: TypeScript request validation at the edge, Python workers for the batch jobs. Anyone see a reason to put the whole pipeline behind one synchronous endpoint?",
     reply:
       "Casey Blake: Separate failure domains look easier to test. Can we capture the retry and idempotency trade-off in the ADR before choosing?",
     repo: "service-integrations",
@@ -53,7 +53,7 @@ export const technicalPosts = [
   {
     channel: "AI Lab",
     author: "Riley Chen",
-    text: "For the chatbot POC I’d keep embeddings local and test Qdrant before a hosted vector service. The RAG harness now separates retrieval quality from answer quality, with no real customer data in the test set.",
+    text: "For the chatbot proof of concept I’d keep embeddings local and test Qdrant before a hosted vector service. The RAG harness now separates retrieval quality from answer quality, with no real customer data in the test set.",
     reply:
       "Devon Park: Added a review task for privacy-preserving fixtures, prompt changes and model licence notes. Let’s use the same run manifest when comparing local inference settings.",
     repo: "chatbot-platform",
@@ -63,7 +63,7 @@ export const technicalPosts = [
   {
     channel: "Web & CRM DevOps",
     author: "Devon Park",
-    text: "CRM webhook retry handling is ready for contract review. The delivery checklist links content acceptance from Content Room; deployment and runtime checks stay with this engineering release.",
+    text: "CRM webhook retry handling is ready for contract review. The delivery checklist links content acceptance from Creative & Editorial Studio; deployment and runtime checks stay with this engineering release.",
     reply:
       "Riley Chen: Please include the synthetic event replay result with the review, not a copy of CRM customer records.",
     repo: "customer-platform",

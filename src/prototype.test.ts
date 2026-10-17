@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Launcher from "./intranet/Launcher";
+import Directory from "./intranet/Directory";
+import PocAnnotation from "./components/PocAnnotation";
 import { accessRequestHref, pageTitle, prototypeForPath } from "./utils/routes";
 import { posts, filesById, permits } from "./logistics/data";
 import {
@@ -19,7 +21,7 @@ describe("launcher and service desk routes", () => {
     );
   });
   it("sets distinct product and page titles", () => {
-    expect(pageTitle("/")).toBe("Digital workspace design");
+    expect(pageTitle("/")).toBe("Digital workspace proof of concept");
     expect(pageTitle("/architecture")).toBe(
       "Full Architecture Proof of Concept | Exploratory",
     );
@@ -31,15 +33,60 @@ describe("launcher and service desk routes", () => {
       "Access request | Service Desk",
     );
   });
-  it("distinguishes two reference prototypes from the exploratory architecture proof of concept", () => {
+  it("distinguishes two reference proofs of concept from the exploratory architecture", () => {
     const launcher = renderToStaticMarkup(createElement(Launcher));
-    expect(launcher.match(/Reference prototype/g)).toHaveLength(2);
+    expect(launcher.match(/Reference proof of concept/g)).toHaveLength(2);
     expect(launcher).toContain("Full Architecture Proof of Concept");
-    expect(launcher).toContain("EXPLORATORY");
-    expect(launcher).not.toMatch(/beta/i);
+    expect(launcher).toContain("Digital workspace proof of concept");
+    expect(launcher).toContain("BETA TEST");
+    expect(launcher).toContain('class="launcher-build-label"');
+    expect(launcher).not.toContain("Reference prototype");
+    expect(launcher.replace(/<[^>]*>/g, "")).not.toContain("POC");
+    expect(launcher).toContain("Work in progress · expect rough edges");
     expect(launcher).toContain('href="/planning"');
     expect(launcher).toContain('href="/logistics"');
     expect(launcher).toContain('href="/architecture"');
+  });
+  it("separates preview navigation from disabled intranet context", () => {
+    vi.stubGlobal("location", { pathname: "/architecture", search: "" });
+    vi.stubGlobal("sessionStorage", { getItem: () => null });
+    try {
+      const directory = renderToStaticMarkup(createElement(Directory));
+      const controls =
+        directory.match(
+          /<nav[^>]*aria-label="Preview controls"[\s\S]*?<\/nav>/,
+        )?.[0] || "";
+      const intranet =
+        directory.match(
+          /<nav[^>]*aria-label="Intranet navigation"[\s\S]*?<\/nav>/,
+        )?.[0] || "";
+      expect(controls).toContain("← All workspaces");
+      expect(controls).toContain("Architecture");
+      expect(controls).toContain("Fictional names and content");
+      expect(intranet.match(/<button[^>]*disabled=""/g)).toHaveLength(4);
+      expect(intranet).toContain('href="/architecture" aria-current="page"');
+      expect(intranet).not.toContain("aria-haspopup");
+      expect(intranet).not.toContain("POC menu");
+      expect(directory).not.toContain("Illustrative intranet navigation");
+      expect(directory.replace(/<[^>]*>/g, "")).not.toContain("POC");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+  it("uses one annotation family for build tags, fictional data and simulation notes", () => {
+    const variants = ["tag", "sticker", "inline"] as const;
+    for (const variant of variants) {
+      const annotation = renderToStaticMarkup(
+        createElement(
+          PocAnnotation,
+          { title: "TEST DATA", variant },
+          "Fictional names & content",
+        ),
+      );
+      expect(annotation).toContain('class="poc-annotation ');
+      expect(annotation).toContain(`data-poc-annotation="${variant}"`);
+      expect(annotation).toContain('role="note"');
+    }
   });
   it("carries the attempted restricted path into the access form", () => {
     const url = new URL(

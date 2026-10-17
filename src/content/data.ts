@@ -1,7 +1,8 @@
 import type { OperationalFile } from "../logistics/data";
-export const title = "Content Room";
+import { matchesDisplayText } from "../i18n/search";
+export const title = "Creative & Editorial Studio";
 export const description =
-  "Shared production space for editorial, creative and channel teams coordinating live content, campaigns and rapid-response coverage.";
+  "Shared production space where channel teams and topic specialists plan, create, review and release public-facing work.";
 export const demoToday = "2026-10-16";
 export const navigation = [
   { id: "pipeline", name: "Content Pipeline" },
@@ -322,7 +323,7 @@ export const packages: Package[] = [
       { tool: "planable", id: "PLN-2425" },
     ],
   }),
-  p("PKG-108", "Rapid Response · Coastal Flooding", {
+  p("PKG-108", "Rapid Coverage · Major Transport Disruption", {
     purpose: "Prepare a generic timely public information package",
     formats: ["Web update", "Social copy"],
     channels: ["Website", "Social"],
@@ -345,7 +346,7 @@ export const packages: Package[] = [
     ],
   }),
   p("PKG-109", "Media Release Package", {
-    purpose: "Prepare a fictional media announcement",
+    purpose: "Prepare a public media announcement",
     formats: ["Media release"],
     channels: ["Website", "Email"],
     permitted: ["Website", "Email"],
@@ -400,8 +401,8 @@ export const packages: Package[] = [
       { tool: "wistia", id: "WIS-130" },
     ],
   }),
-  p("PKG-112", "Community Week Social Stories", {
-    purpose: "Evaluate a completed fictional social story series",
+  p("PKG-112", "Future Skills Week", {
+    purpose: "Evaluate the completed Future Skills Week publishing series",
     formats: ["Social", "Graphics"],
     channels: ["Social"],
     permitted: ["Social"],
@@ -425,8 +426,8 @@ export const packages: Package[] = [
   }),
 ];
 packages.push(
-  p("PKG-113", "Clean Water Week", {
-    purpose: "Coordinate a fictional public-information content series",
+  p("PKG-113", "City Innovation Summit", {
+    purpose: "Coordinate the City Innovation Summit public-information series",
     formats: ["Web update", "Social copy", "Graphics"],
     channels: ["Website", "Social"],
     permitted: ["Website", "Social"],
@@ -444,6 +445,7 @@ export interface ContentFile extends OperationalFile {
   area: string;
   workType: string;
   review: string;
+  topic: string;
 }
 const f = (
   id: string,
@@ -461,6 +463,13 @@ const f = (
     name,
     workType,
     review,
+    topic: ["PKG-108", "PKG-113"].includes(packageId)
+      ? "Cities & Mobility"
+      : ["PKG-106", "PKG-111", "PKG-112"].includes(packageId)
+        ? "Education & Skills"
+        : ["PKG-104", "PKG-110"].includes(packageId)
+          ? "Arts & Culture"
+          : "Digital Society",
     library: "resources",
     folder: pkg.name,
     campaign: pkg.name,
@@ -680,7 +689,7 @@ export const files: ContentFile[] = [
     "social-evaluation",
     "PKG-112",
     "channels",
-    "Social story evaluation.pptx",
+    "Future Skills Week — Evaluation.pptx",
     "Decision",
   ),
 ];
@@ -711,7 +720,7 @@ files.push(
     "water-brief",
     "PKG-113",
     "editorial",
-    "Clean Water Week — Content Brief.docx",
+    "City Innovation Summit — Content Brief.docx",
     "Brief",
   ),
   f(
@@ -740,7 +749,7 @@ files.push(
     "community-final",
     "PKG-112",
     "channels",
-    "Community Week — Published Copy.pdf",
+    "Future Skills Week — Published Copy.pdf",
     "Published output",
     "Published",
   ),
@@ -835,7 +844,7 @@ export const pipelineViews = [
   "Ready for Delivery",
   "Publishing This Month",
   "Website & Digital",
-  "Video & Multimedia",
+  "Video & Visuals",
   "Live & Virtual",
   "External Partner Work",
   "Completed",
@@ -849,9 +858,10 @@ export function queryPackages(
 ) {
   return items.filter(
     (p) =>
-      `${p.name} ${p.purpose} ${p.lead} ${p.partner || ""}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      matchesDisplayText(
+        [p.name, p.purpose, p.lead, p.partner || ""].join("\n"),
+        search,
+      ) &&
       (!channel || p.channels.includes(channel)) &&
       (!format || p.formats.includes(format)) &&
       (view !== "In Production" || !["Live", "Closed"].includes(p.stage)) &&
@@ -860,7 +870,7 @@ export function queryPackages(
       (view !== "Publishing This Month" ||
         p.releaseDate.startsWith("2026-10")) &&
       (view !== "Website & Digital" || p.channels.includes("Website")) &&
-      (view !== "Video & Multimedia" ||
+      (!["Video & Visuals", "Video & Multimedia"].includes(view) ||
         p.formats.some((f) =>
           ["Video", "Short video", "Audio", "Photography", "Graphics"].includes(
             f,
@@ -929,7 +939,12 @@ export const teamChannels = [
   { id: "web", name: "Web Desk", areas: ["digital"] },
   { id: "social", name: "Social Desk", areas: ["channels"] },
   { id: "media", name: "Media Desk", areas: ["editorial"] },
-  { id: "video", name: "Video & Multimedia", areas: ["creative"] },
+  {
+    id: "publications",
+    name: "Publications & Email",
+    areas: ["editorial", "creative", "channels"],
+  },
+  { id: "video", name: "Video & Visuals", areas: ["creative"] },
   {
     id: "coordination",
     name: "Production Coordination",

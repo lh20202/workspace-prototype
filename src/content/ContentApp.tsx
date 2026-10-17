@@ -1,4 +1,5 @@
 import { teamsStaffForWorkspace } from "../teams/navigation";
+import { resolveStaffPerson } from "../intranet/catalog";
 import { useState, useEffect, type MouseEvent } from "react";
 import {
   Button,
@@ -22,6 +23,9 @@ import {
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import TeamsHomePanel from "../components/TeamsHomePanel";
+import AccessBoundary from "../access/AccessBoundary";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   title,
   description,
@@ -46,18 +50,20 @@ import {
 } from "./data";
 import "../services/styles.css";
 import "./styles.css";
-import {
-  contentTeamsHref,
-  resolveContentChannel,
-  visibleContentChannels,
-} from "./channels";
+import { contentTeamsHref, visibleContentChannels } from "./channels";
 const base = "/content-delivery";
 const date = (value: string) =>
   new Date(value + "T12:00:00").toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
   });
-import { libraries, libraryFor, documentFor, definitions } from "./libraries";
+import {
+  libraries,
+  libraryFor,
+  documentFor,
+  definitions,
+  searchableContentFiles,
+} from "./libraries";
 const fileLink = (file: ContentFile) =>
   `${base}/${libraryFor(file)}?file=${file.id}`;
 export default function ContentApp() {
@@ -86,15 +92,14 @@ export default function ContentApp() {
     const source = new URL(url, location.origin);
     if (source.pathname !== "/content-delivery/teams") return;
     const requestedPerson = source.searchParams.get("staff");
-    const personId =
-      requestedPerson && visibleContentChannels(requestedPerson).length
-        ? requestedPerson
-        : teamsStaffForWorkspace("content");
-    const channel = resolveContentChannel(
-      source.searchParams.get("channel") || "General",
-    );
+    const personId = requestedPerson
+      ? resolveStaffPerson(requestedPerson).id
+      : teamsStaffForWorkspace("content");
     const target = new URL(
-      contentTeamsHref(personId, channel?.id),
+      contentTeamsHref(
+        personId,
+        source.searchParams.get("channel") || undefined,
+      ),
       location.origin,
     );
     const file = filesById.get(source.searchParams.get("file") || "");
@@ -236,13 +241,12 @@ export default function ContentApp() {
   const milestoneItems = calendarEntries(packages);
   const packageContext =
     selected || packages.find((item) => initialFolder === item.name);
-  const teamsPerson = teamsStaffForWorkspace("content");
+  const teamsPerson = teamsStaffForWorkspace(
+    "content",
+    params.get("staff") || undefined,
+  );
   const homeChannels = visibleContentChannels(teamsPerson)
-    .filter(
-      (channel) =>
-        channel.lifecycle === "Active" &&
-        ["editorial", "web", "video", "coastal-flooding"].includes(channel.id),
-    )
+    .filter((channel) => channel.lifecycle === "Active")
     .slice(0, 4);
   return (
     <div
@@ -256,15 +260,11 @@ export default function ContentApp() {
           </a>
           <WorkspaceHeader
             title={title}
-            searchFiles={files}
+            searchFiles={searchableContentFiles}
             memberCount={24}
             helpText={description}
             onOpen={(file) => navigate(fileLink(filesById.get(file.id)!))}
-            onTeams={() =>
-              location.assign(
-                `/teams?staff=${teamsStaffForWorkspace("content")}&workspace=content`,
-              )
-            }
+            onTeams={() => location.assign(contentTeamsHref(teamsPerson))}
             onMessage={setMessage}
           />
         </>
@@ -280,7 +280,7 @@ export default function ContentApp() {
             <strong>{routePackage!.name}</strong>
             <small>Shared production area · {routePackage!.partner}</small>
           </div>
-          <span>Partner preview</span>
+          <PocAnnotation title="PARTNER PREVIEW" variant="inline" />
         </header>
       )}
       <div className="workspace">
@@ -351,29 +351,17 @@ export default function ContentApp() {
               <a href={base}>Return to workspace</a>
             </>
           ) : topic ? (
-            <section className="service-restricted">
-              <LockClosed20Regular />
-              <h2>Access denied</h2>
-              <h3>{topic.name}</h3>
-              <p>{pkg(topic.packageId).name}</p>
-              <a
-                href={
-                  "/service-desk/access-request?" +
-                  new URLSearchParams({
-                    workspace: title,
-                    area: pkg(topic.packageId).name,
-                    location: `${title} / ${pkg(topic.packageId).name} / ${topic.name}`,
-                  })
-                }
-              >
-                Request access through Freshservice
-              </a>
-              <p>
-                <a href={packageHref(topic.packageId)}>
-                  Back to shared production files
-                </a>
-              </p>
-            </section>
+            <AccessBoundary
+              workspaceId="content"
+              area={topic.name}
+              location={`${title} / ${pkg(topic.packageId).name} / ${topic.name}`}
+              strict={
+                topic.id === "participant-administration" ||
+                topic.id === "commercial-proposal"
+              }
+              returnHref={packageHref(topic.packageId)}
+              returnLabel="Back to shared production files"
+            />
           ) : share ? (
             <>
               <DocumentLibrary
@@ -402,20 +390,15 @@ export default function ContentApp() {
             </>
           ) : tool ? (
             <section className="system-destination">
-              <span className="external-system-label">
-                <ArrowUpRight20Regular />
-                Production system preview
-              </span>
+              <PocAnnotation title="SYSTEM PREVIEW" variant="inline">
+                No data is transmitted.
+              </PocAnnotation>
               <h2>{tool.name}</h2>
               <p>{tool.purpose}.</p>
               {selected && <p>{selected.name}</p>}
               {params.get("reference") && (
                 <p>Reference: {params.get("reference")}</p>
               )}
-              <p className="service-muted">
-                This preview represents the specialist platform; no data is
-                transmitted.
-              </p>
               <a
                 href={
                   selected ? packageHref(selected.id) : `${base}/production`
@@ -434,12 +417,12 @@ export default function ContentApp() {
             </section>
           ) : page === "home" ? (
             <>
-              <header className="content-room-home-heading">
-                <h1>{title}</h1>
-                <p>{description}</p>
-              </header>
               <div className="content-room-home-grid">
                 <div>
+                  <header className="content-room-home-heading">
+                    <h1>{title}</h1>
+                    <p>{description}</p>
+                  </header>
                   <section className="content-room-production">
                     <h2>Active production</h2>
                     {[
@@ -495,46 +478,20 @@ export default function ContentApp() {
                     </a>
                   </div>
                 </div>
-                <section
-                  className="content-room-teams"
-                  aria-labelledby="content-teams-heading"
-                >
-                  <div className="content-room-teams-title">
-                    <img
-                      src="/images/teams-logo.svg"
-                      alt="Microsoft Teams"
-                      width="28"
-                      height="28"
-                    />
-                    <h2 id="content-teams-heading">Live coordination</h2>
-                  </div>
-                  <p>
-                    Join the desk or coverage conversation. Production files
-                    stay in SharePoint.
-                  </p>
-                  <div className="content-room-team-links">
-                    {homeChannels.map((channel) => (
-                      <a
-                        key={channel.id}
-                        href={contentTeamsHref(teamsPerson, channel.id)}
-                      >
-                        <span>
-                          {channel.name}
-                          {channel.kind === "temporary" && (
-                            <small>Temporary coverage</small>
-                          )}
-                        </span>
-                        <ArrowRight20Regular />
-                      </a>
-                    ))}
-                  </div>
-                  <a
-                    className="content-room-open-teams"
-                    href={contentTeamsHref(teamsPerson)}
-                  >
-                    Open Content Room in Teams <ArrowUpRight20Regular />
-                  </a>
-                </section>
+                <TeamsHomePanel
+                  heading="Live studio coordination"
+                  description="Join a desk or coverage conversation. Production files stay in SharePoint."
+                  channels={homeChannels.map((channel) => ({
+                    name: channel.name,
+                    href: contentTeamsHref(teamsPerson, channel.id),
+                    cue:
+                      channel.kind === "temporary"
+                        ? "Temporary coverage"
+                        : undefined,
+                  }))}
+                  openHref={contentTeamsHref(teamsPerson)}
+                  openLabel="Open studio in Teams"
+                />
               </div>
             </>
           ) : register ? (
@@ -604,7 +561,7 @@ export default function ContentApp() {
               </div>
             </section>
           ) : page === "teams" ? (
-            <p role="status">Opening Content Room in Teams…</p>
+            <p role="status">Opening Creative & Editorial Studio in Teams…</p>
           ) : page === "calendar" ? (
             <>
               <h2>Production Calendar</h2>
@@ -1025,8 +982,7 @@ function ProductionCalendar({
         </section>
       )}
       <p className="service-muted">
-        Fictional milestones · October 2026. Detailed channel timing and
-        publishing approvals remain in Planable.
+        Detailed channel timing and publishing approvals remain in Planable.
       </p>
     </>
   );

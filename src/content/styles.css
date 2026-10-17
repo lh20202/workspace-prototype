@@ -71,7 +71,7 @@
   line-height: 16px;
   margin-top: 4px;
 }
-.content-scoped-header > span {
+.content-scoped-header > span:not(.poc-annotation) {
   margin-left: auto;
   padding: 4px 8px;
   background: #f1f0f8;
