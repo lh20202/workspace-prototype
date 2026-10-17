@@ -7,7 +7,7 @@ import {
 import PocAnnotation from "./PocAnnotation";
 import BetaBadge from "./BetaBadge";
 import DemoInfo, { roleAccessInfoText } from "./DemoInfo";
-import { LanguageToggle, useTranslation } from "../i18n/Language";
+import { useTranslation } from "../i18n/Language";
 import { staff, resolveStaffPerson } from "../intranet/catalog";
 import WorkspaceFAQ from "./WorkspaceFAQ";
 import { previewRoleGroups } from "../access/policy";
@@ -218,7 +218,6 @@ export default function PrototypeNavigator({
                 </PocAnnotation>
               </div>
             )}
-            <LanguageToggle />
           </div>
         </nav>
         <div className="demo-fictional-status" role="note">

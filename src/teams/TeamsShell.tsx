@@ -1,3 +1,4 @@
+import { LanguageToggle } from "../i18n/Language";
 import TeamsMark from "../components/TeamsMark";
 import TeamIdentity, { type TeamKind } from "./TeamIdentity";
 import AccessLock from "../components/AccessLock";
@@ -180,6 +181,9 @@ function TeamsShellSession({
           )}
         </div>
         <div className="m365-teams-account">
+          <div className="product-language-toggle teams-language-toggle">
+            <LanguageToggle />
+          </div>
           <button
             aria-label="Settings and more"
             aria-expanded={panel === "settings"}

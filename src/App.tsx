@@ -1,4 +1,5 @@
 import SiteSettingsButton from "./components/SiteSettingsButton";
+import { LanguageToggle } from "./i18n/Language";
 import SensitivityBadge from "./sharepoint/SensitivityBadge";
 import AccessLock from "./components/AccessLock";
 import { canAccessArea } from "./access/policy";
@@ -449,6 +450,7 @@ export default function App() {
             onMessage={setToast}
             ordinaryMessage="Workspace preferences use the default reading and document view."
           />
+          <LanguageToggle />
           <button
             className="profile-button"
             aria-label={`Signed in as ${person.name}`}

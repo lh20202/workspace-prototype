@@ -4,6 +4,7 @@ import WorkspaceIcon from "../components/WorkspaceIcon";
 import AccessLock from "../components/AccessLock";
 import TeamsMark from "../components/TeamsMark";
 import StaffLink from "../components/StaffLink";
+import { LanguageToggle } from "../i18n/Language";
 import {
   GridDots24Regular,
   ChevronRight16Regular,
@@ -74,6 +75,7 @@ export default function Directory() {
           <GridDots24Regular aria-hidden="true" />
           <strong>SharePoint</strong>
           <span className="directory-brand-end">Company intranet</span>
+          <LanguageToggle />
         </header>
         <nav
           className="directory-nav"

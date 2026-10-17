@@ -10,7 +10,7 @@ import {
 import { allProjects, projectTitle } from "../projects/data";
 import { resolveStaffPerson } from "../intranet/catalog";
 import AccessBoundary from "../access/AccessBoundary";
-import { useTranslation } from "../i18n/Language";
+import { LanguageToggle, useTranslation } from "../i18n/Language";
 import {
   accessWorkspaceId,
   accessWorkspace,
@@ -69,6 +69,7 @@ export default function AccessRequest() {
           </div>
         </div>
         <span className="service-desk-user">{requester.name}</span>
+        <LanguageToggle />
       </header>
       <main className="service-desk-main">
         <a className="service-desk-back" href={returnPath}>

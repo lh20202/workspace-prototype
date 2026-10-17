@@ -38,3 +38,116 @@
 .language-toggle > span {
   opacity: 0.4;
 }
+
+/* Language belongs to the page being explored, alongside its usual utilities. */
+.product-language-toggle {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+:root .m365-teams .language-toggle button {
+  min-height: 24px;
+  padding: 4px;
+  border-radius: 2px;
+  font: inherit;
+}
+:root .m365-header .workspace-search {
+  width: min(520px, calc(100% - 580px));
+}
+:root .service-desk-header {
+  gap: 20px;
+}
+:root .service-desk-user {
+  margin-left: auto;
+}
+.external-preview-language {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+:root .content-scoped-header > .language-toggle {
+  margin-left: auto;
+}
+@media (max-width: 1100px) {
+  :root .m365-teams-topbar {
+    grid-template-columns: 284px minmax(160px, 1fr) auto;
+  }
+}
+@media (max-width: 760px) {
+  :root .m365-teams-topbar {
+    grid-template-columns: 80px minmax(60px, 1fr) auto;
+  }
+  :root .wiki-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px 12px;
+  }
+  :root .wiki-header > .wiki-search {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+  :root .wiki-header > .wiki-language-toggle {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+@media (max-width: 720px) {
+  :root .m365-header .workspace-search {
+    width: auto;
+    min-width: 0;
+  }
+  :root .m365-header .workspace-search .fui-Input {
+    min-width: 0;
+  }
+}
+@media (max-width: 560px) {
+  :root .m365-teams-topbar {
+    grid-template-columns: 64px minmax(50px, 1fr) auto;
+  }
+  :root .m365-teams-account {
+    gap: 4px;
+  }
+  :root .service-desk-header {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 8px 16px;
+  }
+  :root .service-desk-user {
+    order: 1;
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  :root .service-desk-header > .language-toggle {
+    margin-left: auto;
+  }
+}
+@media (max-width: 480px) {
+  :root .directory-brand {
+    gap: 10px;
+  }
+  :root .directory-brand-end {
+    display: none;
+  }
+  :root .directory-brand > .language-toggle {
+    margin-left: auto;
+  }
+  :root .m365-header {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-rows: 40px 32px;
+    height: 88px;
+    row-gap: 0;
+    padding-bottom: 8px;
+  }
+  :root .m365-header .global-utilities {
+    grid-column: 3;
+    grid-row: 1;
+    gap: 8px;
+  }
+  :root .m365-header .workspace-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+  }
+}

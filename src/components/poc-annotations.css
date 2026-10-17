@@ -112,14 +112,6 @@
   min-width: 0;
   margin-left: auto;
 }
-:root .poc-controls .prototype-utilities > .language-toggle {
-  flex: none;
-}
-:root .poc-controls .language-toggle button:hover,
-:root .poc-controls .language-toggle button:active {
-  background: #3d3d3d;
-  color: #fff;
-}
 :root .demo-control-frame > .demo-fictional-status {
   display: flex;
   align-items: center;
@@ -455,15 +447,10 @@
   }
   :root .poc-controls .prototype-utilities {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     align-items: end;
     flex: 1 1 100%;
     gap: 8px 16px;
-  }
-  :root .poc-controls .prototype-utilities > .language-toggle {
-    justify-self: end;
-    align-self: end;
-    margin-bottom: 5px;
   }
   :root .poc-controls .response-preview {
     grid-column: 1 / -1;
@@ -478,16 +465,11 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;
   }
-  :root .poc-controls .prototype-utilities > .language-toggle {
-    grid-row: 1;
-    justify-self: end;
-    margin-bottom: 0;
-  }
   :root .poc-controls .preview-role-control {
-    grid-row: 2;
+    grid-row: 1;
   }
   :root .poc-controls .response-preview {
-    grid-row: 3;
+    grid-row: 2;
   }
   :root .demo-control-frame > .demo-fictional-status {
     justify-content: flex-start;

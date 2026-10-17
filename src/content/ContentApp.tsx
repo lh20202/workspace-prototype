@@ -11,6 +11,7 @@ import WorkspaceDenied from "../access/WorkspaceDenied";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
 import StaffLink from "../components/StaffLink";
+import { LanguageToggle } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState, useEffect, type MouseEvent } from "react";
 import {
@@ -321,6 +322,7 @@ export default function ContentApp() {
             <small>Shared production area · {routePackage!.partner}</small>
           </div>
           <PocAnnotation title="PARTNER PREVIEW" variant="inline" />
+          <LanguageToggle />
         </header>
       )}
       <div className="workspace">

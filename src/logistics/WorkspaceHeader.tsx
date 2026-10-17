@@ -17,6 +17,7 @@ import HubNavigation from "../components/HubNavigation";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 import "../sharepoint/fidelity.css";
 import { matchesDisplayText } from "../i18n/search";
+import { LanguageToggle } from "../i18n/Language";
 export default function WorkspaceHeader({
   onSearchChange,
   onOpen,
@@ -138,6 +139,7 @@ export default function WorkspaceHeader({
             <QuestionCircle24Regular />
           </button>
           <SiteSettingsButton onMessage={onMessage} />
+          <LanguageToggle />
           <button
             className="profile-button"
             aria-label={`Signed in as ${userName}`}

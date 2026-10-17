@@ -3,6 +3,7 @@ import StaffLink from "../components/StaffLink";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import { getExternalEnvironment, type ExternalEnvironment } from "./catalog";
 import { externalReturnHref } from "./previewRoutes";
+import { LanguageToggle } from "../i18n/Language";
 import "./external-preview.css";
 
 export default function ExternalEnvironmentPreview({
@@ -27,6 +28,9 @@ export default function ExternalEnvironmentPreview({
       data-environment={destination.id}
       aria-labelledby="external-environment-title"
     >
+      <div className="external-preview-language">
+        <LanguageToggle />
+      </div>
       <div className="external-backdrop" aria-hidden="true">
         <div className="external-backdrop-masthead">
           <i />

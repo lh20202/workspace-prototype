@@ -1,3 +1,4 @@
+import { LanguageToggle } from "../i18n/Language";
 import { canAccessWikiArea } from "../access/policy";
 import { resolveStaffPerson } from "../intranet/catalog";
 import AccessBoundary from "../access/AccessBoundary";
@@ -183,6 +184,9 @@ export default function WikiApp() {
               )}
             </nav>
           )}
+        </div>
+        <div className="product-language-toggle wiki-language-toggle">
+          <LanguageToggle />
         </div>
       </header>
       <HubNavigation workspaceId="sales-wiki" />
