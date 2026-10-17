@@ -11,7 +11,7 @@ export const germanExternalEnvironments: Record<string, string> = {
   Tools: "Tools",
   "Knowledge & external environments": "Wissen und externe Angebote",
   "External environments": "Externe Angebote",
-  "International Taskforce Portal": "Portal der internationalen Taskforce",
+  "International Crew Portal": "Portal für internationale Mitarbeitende",
   "Executive Committee Members portal":
     "Portal für Mitglieder des Exekutivausschusses",
   "Executive Committee Members portal ↗":
@@ -73,8 +73,8 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Formales Portal für Mitglieder und Gremienarbeit",
   "City health information and services":
     "Informationen und Angebote des städtischen Gesundheitsdienstes",
-  "International taskforce information and coordination":
-    "Informationen und Koordination für die internationale Taskforce",
+  "International crew information and coordination":
+    "Informationen und Koordination für internationale Mitarbeitende",
   "Linked environment; access is managed separately":
     "Verknüpftes Angebot; Zugriffsrechte werden separat verwaltet",
   "Purse Strings": "Geldströme",

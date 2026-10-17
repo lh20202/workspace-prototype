@@ -320,10 +320,10 @@ export const environmentRegistry: WorkspaceDefinition[] = [
     ],
     [
       "taskforce",
-      "International Taskforce Portal",
+      "International Crew Portal",
       "/external/taskforce",
       "personnel",
-      "International taskforce information and coordination",
+      "International crew information and coordination",
     ],
   ].map(([id, , href, hubId, purpose]): WorkspaceDefinition => ({
     id,

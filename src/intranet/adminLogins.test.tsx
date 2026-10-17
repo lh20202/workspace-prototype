@@ -94,7 +94,7 @@ describe("canonical environment and vendor identities", () => {
     const entries = [
       ["sales-marketing", "media-library", "Global Media Library"],
       ["infrastructure", "members", "Executive Committee Members portal"],
-      ["personnel", "taskforce", "International Taskforce Portal"],
+      ["personnel", "taskforce", "International Crew Portal"],
     ] as const;
     for (const [hub, id, label] of entries) {
       const destination = architectureDestinationById.get(id)!;
