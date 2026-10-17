@@ -1,3 +1,5 @@
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import { PocPreviewControls } from "../components/PocAnnotation";
@@ -11,6 +13,7 @@ import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
 import { canSeeProject, projectChannels } from "../teams/visibility";
 import DocumentIcon from "../components/DocumentIcon";
+import NavigationIcon from "../components/NavigationIcon";
 import "../teams/integrations.css";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import type { LibraryDocument } from "../sharepoint/library";
@@ -154,7 +157,9 @@ export default function ProjectsApp() {
       </table>
     </div>
   );
-  const link = (p: Project) => <a href={projectHref(p)}>{projectTitle(p)}</a>;
+  const link = (p: Project) => (
+    <StaffLink href={projectHref(p)}>{projectTitle(p)}</StaffLink>
+  );
   const projectList = (list: Project[], full = false) => (
     <>
       {" "}
@@ -205,7 +210,13 @@ export default function ProjectsApp() {
                   safe ? p.end : "—",
                   safe ? "2026-10-26" : "—",
                   safe ? p.area : "—",
-                  safe ? <a href={p.delivery}>Open delivery owner ↗</a> : "—",
+                  safe ? (
+                    <StaffLink href={p.delivery}>
+                      Open delivery owner ↗
+                    </StaffLink>
+                  ) : (
+                    "—"
+                  ),
                   access(p),
                 ]
               : [
@@ -319,7 +330,7 @@ export default function ProjectsApp() {
       location={`Projects / ${title} / ${page}`}
       project={project?.code}
       personId={person.id}
-      returnHref="/projects"
+      returnHref={withExplicitStaff("/projects")}
       returnLabel="Back to Projects"
       strict={project?.access === "Restricted"}
     />
@@ -335,7 +346,7 @@ export default function ProjectsApp() {
           project={project.code}
           location={`Projects / ${title} / Production Security Review`}
           personId={person.id}
-          returnHref={root}
+          returnHref={withExplicitStaff(root)}
           strict
         />
       );
@@ -529,7 +540,7 @@ export default function ProjectsApp() {
             )}
           </details>
           <p>
-            <a
+            <StaffLink
               href={
                 project.archived === "Transferred to Archive"
                   ? "/archives/collections?collection=Project%20Memory&record=ARC-PRJ-2024-018"
@@ -540,7 +551,7 @@ export default function ProjectsApp() {
                 ? "View archive record"
                 : "Appraisal and transfer"}{" "}
               ↗
-            </a>
+            </StaffLink>
           </p>
         </>
       );
@@ -576,13 +587,17 @@ export default function ProjectsApp() {
         <section>
           <h2>Delivery & support</h2>
           <div className="project-context-links">
-            <a href={project.delivery}>{project.area} ↗</a>
-            <a href="/executive/initiatives">Stage decision ↗</a>
-            <a href="/financial-operations/planning">Funding / forecast ↗</a>
+            <StaffLink href={project.delivery}>{project.area} ↗</StaffLink>
+            <StaffLink href="/executive/initiatives">
+              Stage decision ↗
+            </StaffLink>
+            <StaffLink href="/financial-operations/planning">
+              Funding / forecast ↗
+            </StaffLink>
             {!readOnly && (
-              <a href={`${root}/security`}>
+              <StaffLink href={`${root}/security`}>
                 Production Security Review <LockClosed16Regular />
-              </a>
+              </StaffLink>
             )}
           </div>
         </section>
@@ -609,7 +624,7 @@ export default function ProjectsApp() {
         .filter(([x]) => x.toLowerCase().includes(query.toLowerCase()))
         .map(([x, href]) => (
           <p key={x}>
-            <a href={"/projects/" + href}>{x}</a>
+            <StaffLink href={"/projects/" + href}>{x}</StaffLink>
           </p>
         ))}
     </section>
@@ -624,8 +639,8 @@ export default function ProjectsApp() {
             files={centralFiles("control")}
           />
           <p>
-            <a href="/projects/reviews">Project Reviews</a> ·{" "}
-            <a href="/projects/current">Current Projects</a>
+            <StaffLink href="/projects/reviews">Project Reviews</StaffLink> ·{" "}
+            <StaffLink href="/projects/current">Current Projects</StaffLink>
           </p>
         </>
       );
@@ -664,9 +679,9 @@ export default function ProjectsApp() {
             </details>
           ))}
           <p>
-            <a href="/archives">
+            <StaffLink href="/archives">
               Company Archives · Appraisal, retention and preservation ↗
-            </a>
+            </StaffLink>
           </p>
         </>
       );
@@ -678,7 +693,7 @@ export default function ProjectsApp() {
           current and completed project workspaces.
         </p>
         <h2>
-          <a href="/projects/current">Current Projects</a>
+          <StaffLink href="/projects/current">Current Projects</StaffLink>
         </h2>
         {projectList(currentProjects)}
       </>
@@ -699,7 +714,7 @@ export default function ProjectsApp() {
         channel: nextChannel,
         tab: nextTab,
       });
-      history.pushState({}, "", `${root}/teams?${params}`);
+      history.pushState({}, "", withExplicitStaff(`${root}/teams?${params}`));
     };
     return (
       <TeamsShell
@@ -726,13 +741,15 @@ export default function ProjectsApp() {
             ? undefined
             : () => {
                 if (tab !== "Shared") {
-                  location.assign(root);
+                  location.assign(withExplicitStaff(root));
                   return;
                 }
                 const params = new URLSearchParams(location.search);
                 params.delete("channel");
                 params.delete("tab");
-                location.assign(`${root}/documents?${params}`);
+                location.assign(
+                  withExplicitStaff(`${root}/documents?${params}`),
+                );
               }
         }
         searchValue={query}
@@ -789,7 +806,7 @@ export default function ProjectsApp() {
                       ? "The handover review is ready. Please review the delivery plan before our next milestone."
                       : "Please review the current actions ahead of our next project check-in."}
                 </p>
-                <a
+                <StaffLink
                   className="teams-project-attachment"
                   href={
                     selectedChannel === "Decisions & Actions"
@@ -807,7 +824,7 @@ export default function ProjectsApp() {
                   {selectedChannel === "Decisions & Actions"
                     ? "Decisions & Actions"
                     : "Delivery Plan.xlsx"}
-                </a>
+                </StaffLink>
                 {projectReplies
                   .filter((p) => p.channel === selectedChannel)
                   .map((p, i) => (
@@ -924,7 +941,10 @@ export default function ProjectsApp() {
           !readOnly &&
           permitted &&
           canSeeProject(person, project.code)
-            ? () => location.assign(`${root}/teams?staff=${person.id}`)
+            ? () =>
+                location.assign(
+                  withExplicitStaff(`${root}/teams?staff=${person.id}`),
+                )
             : undefined
         }
         onMessage={(m) => window.alert(m)}
@@ -940,6 +960,13 @@ export default function ProjectsApp() {
               value={person.id}
               onChange={(e) => {
                 rememberStaff(e.target.value);
+                const params = new URLSearchParams(location.search);
+                params.set("staff", e.target.value);
+                history.replaceState(
+                  {},
+                  "",
+                  `${location.pathname}?${params}${location.hash}`,
+                );
                 setPersonId(e.target.value);
               }}
             >
@@ -951,39 +978,60 @@ export default function ProjectsApp() {
             </select>
           </PocPreviewControls>
           <nav aria-label="Projects navigation">
-            {project && <a href="/projects">← Back to Projects</a>}
+            {project && (
+              <StaffLink href="/projects">← Back to Projects</StaffLink>
+            )}
             {mode.map(([id, label]) => (
-              <a
+              <StaffLink
                 key={id}
                 href={id === "home" ? root : `${root}/${id}`}
                 aria-current={page === id ? "page" : undefined}
               >
+                <NavigationIcon
+                  kind={
+                    id === "home"
+                      ? "home"
+                      : ["documents", "control", "support"].includes(id)
+                        ? "library"
+                        : id === "handover"
+                          ? "page"
+                          : "list"
+                  }
+                />
                 {label}
-              </a>
+              </StaffLink>
             ))}
             {!project && (
               <>
                 <details>
-                  <summary>Current Projects</summary>
+                  <summary>
+                    <NavigationIcon kind="list" />
+                    Current Projects
+                  </summary>
                   {currentProjects.map((p) => (
-                    <a key={p.code} href={projectHref(p)}>
+                    <StaffLink key={p.code} href={projectHref(p)}>
+                      <NavigationIcon
+                        kind={p.access === "Restricted" ? "restricted" : "page"}
+                      />
                       {projectTitle(p)}{" "}
-                      {p.access === "Restricted" && <LockClosed16Regular />}
-                    </a>
+                    </StaffLink>
                   ))}
                 </details>
-                <a href="/projects/archive">Project Archives</a>
+                <StaffLink href="/projects/archive">
+                  <NavigationIcon kind="archive" />
+                  Project Archives
+                </StaffLink>
               </>
             )}
           </nav>
         </aside>
         <main className="projects-main">
           <nav className="breadcrumb" aria-label="Project location">
-            <a href="/projects">Projects</a>
+            <StaffLink href="/projects">Projects</StaffLink>
             {project && (
               <>
                 {" "}
-                / <a href={root}>{project.code}</a>
+                / <StaffLink href={root}>{project.code}</StaffLink>
               </>
             )}
           </nav>

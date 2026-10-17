@@ -11,6 +11,7 @@ import {
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import CompanyMark from "../components/CompanyMark";
+import HubNavigation from "../components/HubNavigation";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 import "../sharepoint/fidelity.css";
 import { matchesDisplayText } from "../i18n/search";
@@ -165,6 +166,7 @@ export default function WorkspaceHeader({
           </button>
         </div>
       </header>
+      <HubNavigation />
       <div className="site-header">
         <CompanyMark />
         <div className="site-title">

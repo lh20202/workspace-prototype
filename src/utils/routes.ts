@@ -1,4 +1,4 @@
-import { workspaceRegistry } from "../workspaces/registry";
+import { environmentRegistry } from "../workspaces/registry";
 export function planningPath(page: string) {
   return page === "home"
     ? "/planning"
@@ -27,10 +27,22 @@ export function prototypeForPath(
   | "executive"
   | "governance"
   | "emergency"
+  | "wiki"
+  | "frontline"
   | "functional" {
   if (pathname === "/") return "launcher";
   if (pathname === "/architecture" || pathname === "/architecture/")
     return "architecture";
+  if (
+    pathname === "/sales-marketing/wiki" ||
+    pathname.startsWith("/sales-marketing/wiki/")
+  )
+    return "wiki";
+  if (
+    pathname === "/frontline-sales" ||
+    pathname.startsWith("/frontline-sales/")
+  )
+    return "frontline";
   if (pathname === "/projects" || pathname.startsWith("/projects/"))
     return "projects";
   if (
@@ -43,6 +55,7 @@ export function prototypeForPath(
       "/employment-admin",
       "/customer-relations",
       "/employee-council",
+      "/welfare-representation",
     ].some((base) => pathname === base || pathname.startsWith(base + "/"))
   )
     return "functional";
@@ -82,12 +95,12 @@ export function pageTitle(pathname: string) {
     return "Full Architecture Proof of Concept | Exploratory";
   if (pathname.startsWith("/logistics/teams"))
     return "Acquisition & Activation Logistics | Teams";
-  const registered = workspaceRegistry.find(
+  const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
   );
   if (registered) return registered.title;
   if (pathname.startsWith("/employee-council"))
-    return "Employee Representative Council";
+    return "Welfare & Employee Representation";
   if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
   if (pathname.startsWith("/governance")) return "Governance & Members Portal";
   if (pathname.startsWith("/emergency-response"))
@@ -106,7 +119,7 @@ export function pageTitle(pathname: string) {
   )
     return "Audience Research & Marketing Insight";
   if (pathname === "/services" || pathname.startsWith("/services/"))
-    return "Organisation Services";
+    return "Staff Service Operations";
   if (pathname === "/service-desk/it-support")
     return "IT requests | Service Desk";
   if (pathname.startsWith("/service-desk/"))

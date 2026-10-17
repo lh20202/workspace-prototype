@@ -1,5 +1,25 @@
 /** Professionally phrased German for seeded business conversations and descriptions. */
 export const germanContent: Record<string, string> = {
+  "Strictly confidential coordination for staff welfare, safeguarding and independent employee representation.":
+    "Streng vertrauliche Koordination der Mitarbeitendenfürsorge, des Schutzes von Mitarbeitenden und der unabhängigen Personalvertretung.",
+  "Access is limited to authorised participants and remains separate for each protected area.":
+    "Nur autorisierte Beteiligte haben Zugriff. Die Berechtigungen werden für jeden geschützten Bereich getrennt vergeben.",
+  "Working methods and aggregate coordination only. Individual support and representation records are not held in this demonstration.":
+    "Dieser Bereich dient ausschließlich Arbeitsverfahren und übergreifender Koordination. Individuelle Unterstützungs- und Vertretungsakten werden in dieser Demonstration nicht geführt.",
+  "Employee representation has independent membership. Welfare participation does not grant access to internal representative work.":
+    "Die Personalvertretung hat einen eigenen Teilnehmendenkreis. Eine Berechtigung für die Mitarbeitendenfürsorge erlaubt keinen Zugriff auf die interne Arbeit der Personalvertretung.",
+  "Independent employee representatives control this area. Internal consultation preparation is not shared with welfare or employment operations.":
+    "Die unabhängige Personalvertretung verwaltet diesen Bereich. Interne Konsultationsvorbereitungen werden nicht mit der Mitarbeitendenfürsorge oder der Personaladministration geteilt.",
+  "Working methods and non-identifiable support-path coordination.":
+    "Arbeitsverfahren und Koordination von Unterstützungswegen ohne Personenbezug.",
+  "Reporting routes, referral responsibilities and aggregate process review.":
+    "Meldewege, Zuständigkeiten für Weiterverweisungen und übergreifende Prozessprüfung.",
+  "Independent representative working methods and consultation preparation.":
+    "Unabhängige Arbeitsverfahren der Personalvertretung und Vorbereitung von Konsultationen.",
+  "Agreed, non-identifiable outputs shared across the protected areas.":
+    "Abgestimmte Ergebnisse ohne Personenbezug, die zwischen den geschützten Bereichen ausgetauscht werden.",
+  "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare & Employee Representation.":
+    "Offene Veranstaltungen für das Wohlbefinden und die zugehörige Kommunikation. Vertrauliche Unterstützung und die Wahrnehmung der Fürsorgepflicht liegen bei Mitarbeitendenfürsorge und Personalvertretung.",
   "Use Quick links for key documents, or search by filename. Library filters narrow results by planning metadata.":
     "Nutzen Sie die Schnellzugriffe für wichtige Dokumente oder suchen Sie nach einem Dateinamen. Mit den Bibliotheksfiltern grenzen Sie die Ergebnisse anhand der Planungsmetadaten ein.",
   "Shared workspace for organisation-wide strategy, planning, review and performance reporting.":

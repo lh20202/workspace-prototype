@@ -12,8 +12,13 @@ import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import DocumentIcon from "../components/DocumentIcon";
+import NavigationIcon, {
+  type NavigationKind,
+} from "../components/NavigationIcon";
 import TeamsHomePanel from "../components/TeamsHomePanel";
 import SimulationMessage from "../components/SimulationMessage";
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { canSeeWorkspaceChannel } from "../teams/visibility";
 import { staff } from "../intranet/catalog";
@@ -32,6 +37,7 @@ import {
   type FunctionalLibrary,
 } from "./siteArchitecture";
 import ArchivePane from "./ArchivePane";
+import WelfareWorkspace from "./WelfareWorkspace";
 import "../services/styles.css";
 import "./styles.css";
 
@@ -43,7 +49,28 @@ const networks = [
   "Women & Gender Equity Network",
 ];
 
-export default function FunctionalApp({ id: providedId }: { id?: string }) {
+const archiveNavigationKinds: Record<string, NavigationKind> = {
+  collections: "archive",
+  "legacy-drive": "library",
+  global: "archive",
+  retention: "list",
+  transfer: "list",
+  cataloguing: "list",
+  preservation: "list",
+  access: "list",
+  projects: "list",
+};
+
+export default function FunctionalApp({ id }: { id?: string }) {
+  if (
+    id === "welfare" ||
+    location.pathname.startsWith("/welfare-representation")
+  )
+    return <WelfareWorkspace />;
+  return <StandardFunctionalApp id={id} />;
+}
+
+function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   const parts = location.pathname.split("/").filter(Boolean);
   const workspace =
     workspaceRegistry.find((w) => w.href === `/${parts[0]}`) ||
@@ -92,7 +119,20 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
   );
   const contextStaff = staff.find((person) => person.id === contextStaffId)!;
   const actor = contextStaff.name;
-  const href = (destination: string) => `${workspace.href}/${destination}`;
+  const employmentAllowed =
+    workspace.id !== "employment" || contextStaffId === "jamie";
+  // An explicit preview colleague must survive internal links without changing
+  // the identity selected for other workspaces in this browser session.
+  function preserveEmploymentPerson(destination: string) {
+    const carried = withExplicitStaff(destination);
+    if (!/^\/employment-admin(?:[/?#]|$)/.test(carried)) return carried;
+    const target = new URL(carried, location.href);
+    target.searchParams.set("staff", contextStaffId);
+    return `${target.pathname}${target.search}${target.hash}`;
+  }
+  const homeHref = preserveEmploymentPerson(workspace.href);
+  const href = (destination: string) =>
+    preserveEmploymentPerson(`${workspace.href}/${destination}`);
   const libraryFiles = (library: FunctionalLibrary) =>
     functionalLibraryDocuments(config, library);
   const initialLibraryFolder =
@@ -104,7 +144,8 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
           )
           ?.folder.split("/")[0]
       : undefined;
-  const fileHref = (fileId: string) => functionalFileHref(config, fileId);
+  const fileHref = (fileId: string) =>
+    preserveEmploymentPerson(functionalFileHref(config, fileId));
   function openSearchFile(id: string) {
     location.assign(fileHref(id));
   }
@@ -126,7 +167,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
         )
       : undefined;
   const legacyFileDestination = movedFileOwner
-    ? functionalFileHref(movedFileOwner, requestedFileId)
+    ? preserveEmploymentPerson(
+        functionalFileHref(movedFileOwner, requestedFileId),
+      )
     : parts.length === 2 &&
         library &&
         requestedFileLibrary &&
@@ -166,7 +209,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
           {toolIds.map((id) => {
             const t = config.tools.find((x) => x.id === id)!;
             return (
-              <a
+              <StaffLink
                 key={id}
                 href={
                   id === "freshservice"
@@ -175,44 +218,58 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 }
               >
                 Open in {t.name} ↗
-              </a>
+              </StaffLink>
             );
           })}
           {workspace.id === "services" && l?.areas.includes("purchasing") && (
             <>
-              <a href="/legal-compliance/contracts">Contract review ↗</a>
-              <a href="/financial-operations/payments">Payments ↗</a>
+              <StaffLink href="/legal-compliance/contracts">
+                Contract review ↗
+              </StaffLink>
+              <StaffLink href="/financial-operations/payments">
+                Payments ↗
+              </StaffLink>
             </>
           )}
           {workspace.id === "quality" && l?.areas.includes("process") && (
-            <a href="/projects">Project Control & Support ↗</a>
+            <StaffLink href="/projects">Project Control & Support ↗</StaffLink>
           )}
           {workspace.id === "customer" && l?.areas.includes("quality") && (
-            <a href="/quality-monitoring/process">Process improvement ↗</a>
+            <StaffLink href="/quality-monitoring/process">
+              Process improvement ↗
+            </StaffLink>
           )}
           {workspace.id === "digital" && l?.areas.includes("web-crm") && (
             <>
-              <a href="/content-delivery/digital">Content requirements ↗</a>
-              <a href="/audience-innovation/automation">
+              <StaffLink href="/content-delivery/digital">
+                Content requirements ↗
+              </StaffLink>
+              <StaffLink href="/audience-innovation/automation">
                 Marketing automation concepts ↗
-              </a>
+              </StaffLink>
             </>
           )}
           {workspace.id === "digital" &&
             l?.areas.includes("information-architecture") && (
-              <a href="/archives/retention">Retention requirements ↗</a>
+              <StaffLink href="/archives/retention">
+                Retention requirements ↗
+              </StaffLink>
             )}
           {workspace.id === "people" && l?.areas.includes("communications") && (
-            <a href="/digital-tech/m365">Publishing platform support ↗</a>
+            <StaffLink href="/digital-tech/m365">
+              Publishing platform support ↗
+            </StaffLink>
           )}
           {workspace.id === "people" && l?.areas.includes("frameworks") && (
-            <a href="/employee-council">Employee Representative Council ↗</a>
+            <StaffLink href="/welfare-representation/approved-consultation">
+              Approved consultation outputs ↗
+            </StaffLink>
           )}
           {protectedLinks.map((s) => (
-            <a key={s.id} href={href(`${s.area}/${s.id}`)}>
+            <StaffLink key={s.id} href={href(`${s.area}/${s.id}`)}>
               <LockClosed20Regular />
               {s.name}
-            </a>
+            </StaffLink>
           ))}
         </div>
       </details>
@@ -304,18 +361,35 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
       </>
     );
   }
-  if (location.pathname.startsWith("/employee-council"))
+  if (!employmentAllowed)
     return (
-      <div className="council-boundary">
-        <header>Employee Representative Council</header>
-        <main>
+      <div className="app-shell services-app functional-app">
+        <StaffLink className="skip-link" href="#functional-main">
+          Skip to workspace
+        </StaffLink>
+        <WorkspaceHeader
+          title={workspace.title}
+          userName={actor}
+          userRole={contextStaff.role}
+          searchFiles={[]}
+          onOpen={() => {}}
+          onMessage={setNotice}
+          helpText="Access is limited to authorised participants and remains separate for each protected area."
+        />
+        <main className="services-main functional-main" id="functional-main">
+          {notice && (
+            <p role="status" className="functional-notice">
+              <SimulationMessage message={notice} />
+              <button onClick={() => setNotice("")}>Dismiss</button>
+            </p>
+          )}
           <AccessBoundary
-            workspaceId="council"
-            area="Council participation"
-            strict
-            returnHref="/people-culture/workforce-documents"
-            returnLabel="Return to People & Culture"
+            workspaceId="employment"
+            area={workspace.title}
             personId={contextStaffId}
+            strict
+            returnHref="/architecture"
+            returnLabel="Back to all workspaces"
           />
         </main>
       </div>
@@ -353,9 +427,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
             readOnly
           />
           <p>
-            <a href="/content-delivery/digital">Content requirements ↗</a>
+            <StaffLink href="/content-delivery/digital">
+              Content requirements ↗
+            </StaffLink>
           </p>
-          <a href="/digital-tech/web-crm">Leave partner preview →</a>
+          <StaffLink href="/digital-tech/web-crm">
+            Leave partner preview →
+          </StaffLink>
         </main>
       </div>
     );
@@ -378,9 +456,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
     <div
       className={`app-shell services-app functional-app ${workspace.id === "archives" ? "archives-app" : ""}`}
     >
-      <a className="skip-link" href="#functional-main">
+      <StaffLink className="skip-link" href="#functional-main">
         Skip to workspace
-      </a>
+      </StaffLink>
       <WorkspaceHeader
         title={workspace.title}
         userName={actor}
@@ -401,24 +479,28 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
       <div className="functional-layout">
         <aside className="sidebar services-sidebar">
           <nav aria-label={`${workspace.title} navigation`}>
-            <a
-              href={workspace.href}
+            <StaffLink
+              href={homeHref}
               aria-current={page === "home" ? "page" : undefined}
             >
+              <NavigationIcon kind="home" />
               Home
-            </a>
+            </StaffLink>
             {workspace.id === "archives"
               ? config.areas.map((a) => (
-                  <a
+                  <StaffLink
                     key={a.id}
                     href={href(a.id)}
                     aria-current={page === a.id ? "page" : undefined}
                   >
+                    <NavigationIcon
+                      kind={archiveNavigationKinds[a.id] || "page"}
+                    />
                     {a.name}
-                  </a>
+                  </StaffLink>
                 ))
               : siteLibraries.map((l) => (
-                  <a
+                  <StaffLink
                     key={l.id}
                     href={href(l.id)}
                     aria-current={
@@ -427,45 +509,50 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                         : undefined
                     }
                   >
+                    <NavigationIcon kind="library" />
                     {l.name}
-                  </a>
+                  </StaffLink>
                 ))}
             {workspace.id === "archives" && (
-              <a
+              <StaffLink
                 href={href("archive-practice")}
                 aria-current={
                   library?.id === "archive-practice" ? "page" : undefined
                 }
               >
+                <NavigationIcon kind="library" />
                 Archive Practice & Transfers
-              </a>
+              </StaffLink>
             )}
             {workspace.id === "quality" && (
-              <a
+              <StaffLink
                 href={href("actions")}
                 aria-current={isList ? "page" : undefined}
               >
+                <NavigationIcon kind="list" />
                 Actions & Reviews
-              </a>
+              </StaffLink>
             )}
             {workspace.id === "customer" && (
-              <a
+              <StaffLink
                 href={href("actions")}
                 aria-current={isList ? "page" : undefined}
               >
+                <NavigationIcon kind="list" />
                 Follow-up
-              </a>
+              </StaffLink>
             )}
             {workspace.id === "people" && (
-              <a
+              <StaffLink
                 href={href("communities")}
                 aria-current={isCommunityPage && !subject ? "page" : undefined}
               >
+                <NavigationIcon kind="page" />
                 Staff communities
-              </a>
+              </StaffLink>
             )}
             {workspace.id === "employment" && (
-              <a
+              <StaffLink
                 href={href("protected/employee-records")}
                 aria-current={
                   subject?.id === "employee-records" ? "page" : undefined
@@ -473,10 +560,10 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               >
                 <LockClosed20Regular />
                 Employment Records & Contracts
-              </a>
+              </StaffLink>
             )}
             {protectedNavigation[workspace.id] && (
-              <a
+              <StaffLink
                 href={href(
                   workspace.id === "people"
                     ? "communities/network-membership"
@@ -494,13 +581,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               >
                 <LockClosed20Regular />
                 {protectedNavigation[workspace.id]}
-              </a>
+              </StaffLink>
             )}
           </nav>
         </aside>
         <main className="services-main functional-main" id="functional-main">
           <div className="functional-breadcrumb">
-            <a href={workspace.href}>Workspace</a> /{" "}
+            <StaffLink href={homeHref}>Workspace</StaffLink> /{" "}
             {subject
               ? "Access required"
               : tool?.name || (page === "home" ? "Home" : heading)}
@@ -517,7 +604,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               area={subject?.name || "Unavailable location"}
               strict={subject?.strict}
               personId={contextStaffId}
-              returnHref={workspace.href}
+              returnHref={homeHref}
             />
           ) : tool ? (
             <section className="functional-system">
@@ -539,7 +626,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               <PocAnnotation title="System preview" variant="inline">
                 Simulated external destination
               </PocAnnotation>
-              <a href={workspace.href}>Back to workspace</a>
+              <StaffLink href={homeHref}>Back to workspace</StaffLink>
             </section>
           ) : workspace.id === "archives" && !library ? (
             <>
@@ -589,7 +676,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                       .sort((a, b) => b.modified.localeCompare(a.modified))
                       .slice(0, 4)
                       .map((file) => (
-                        <a
+                        <StaffLink
                           key={file.id}
                           className="functional-recent-file"
                           href={fileHref(file.id)}
@@ -610,7 +697,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                               })}
                             </small>
                           </span>
-                        </a>
+                        </StaffLink>
                       ))}
                   </section>
                 </div>
@@ -638,10 +725,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                     <h2>{home.handoffsHeading || "Frequent tasks"}</h2>
                     <div className="functional-home-handoffs">
                       {home.handoffs.map((link) => (
-                        <a key={link.href} href={link.href}>
+                        <StaffLink
+                          key={link.href}
+                          href={preserveEmploymentPerson(link.href)}
+                        >
                           {link.label}
                           <span aria-hidden="true"> →</span>
-                        </a>
+                        </StaffLink>
                       ))}
                     </div>
                   </section>
@@ -664,24 +754,24 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 <p key={n}>{n}</p>
               ))}
               <p>
-                <a href={href("communities/network-membership")}>
+                <StaffLink href={href("communities/network-membership")}>
                   <LockClosed20Regular />
                   Private community collaboration
-                </a>
+                </StaffLink>
               </p>
-              <a href={href("workforce-documents")}>
+              <StaffLink href={href("workforce-documents")}>
                 Company event documents →
-              </a>
+              </StaffLink>
             </>
           ) : page === "protected" ? (
             <>
               <h1>{protectedHeading[workspace.id] || "Controlled Access"}</h1>
               <div className="functional-protected-links">
                 {config.protected.map((s) => (
-                  <a key={s.id} href={href(`${s.area}/${s.id}`)}>
+                  <StaffLink key={s.id} href={href(`${s.area}/${s.id}`)}>
                     <LockClosed20Regular />
                     {s.name}
-                  </a>
+                  </StaffLink>
                 ))}
               </div>
             </>

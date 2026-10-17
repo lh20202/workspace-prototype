@@ -143,7 +143,13 @@ describe("Configured SharePoint libraries", () => {
         );
         expect(owners, `${config.id}: ${file.id}`).toHaveLength(1);
         expect(owners[0].areas).toContain(file.area);
-        expect(functionalLibraryDocuments(config, owners[0])).toContain(file);
+        expect(
+          functionalLibraryDocuments(
+            config,
+            owners[0],
+            file.area === "employee-representation" ? "skyler" : "riley",
+          ),
+        ).toContain(file);
         expect(file.folder).toBe(file.folderPath);
       }
     }

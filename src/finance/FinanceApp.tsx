@@ -1,3 +1,5 @@
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState } from "react";
 import SimulationMessage from "../components/SimulationMessage";
 import AccessBoundary from "../access/AccessBoundary";
@@ -11,6 +13,8 @@ import {
 } from "@fluentui/react-components";
 import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
+import { resolveStaffPerson } from "../intranet/catalog";
+import NavigationIcon from "../components/NavigationIcon";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   title,
@@ -30,6 +34,9 @@ import "./styles.css";
 const base = "/financial-operations";
 import { libraries, libraryFiles, definitions, folderNames } from "./libraries";
 export default function FinanceApp() {
+  const person = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
   const parts = location.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home",
     subject = parts[2];
@@ -62,7 +69,9 @@ export default function FinanceApp() {
   };
   const systemLink = (id: string) => {
     const s = systems.find((s) => s.id === id)!;
-    return <a href={`${base}/systems/${id}`}>Open in {s.name} ↗</a>;
+    return (
+      <StaffLink href={`${base}/systems/${id}`}>Open in {s.name} ↗</StaffLink>
+    );
   };
   const protectedAreas = library?.areas || [];
   const subjects = protectedAreas.flatMap((id) =>
@@ -171,17 +180,23 @@ export default function FinanceApp() {
             : library?.name || area?.name || system?.name || "Home";
   return (
     <div className="app-shell services-app finance-app">
-      <a className="skip-link" href="#finance-main">
+      <StaffLink className="skip-link" href="#finance-main">
         Skip to financial workspace
-      </a>
+      </StaffLink>
       <WorkspaceHeader
         title={title}
+        userName={person.name}
+        userRole={person.role}
         searchFiles={files}
         memberCount={28}
         onOpen={(f) => {
           const l = libraries.find((x) => x.areas.includes(f.folder));
           if (l)
-            location.assign(`${base}/${l.id}?file=${encodeURIComponent(f.id)}`);
+            location.assign(
+              withExplicitStaff(
+                `${base}/${l.id}?file=${encodeURIComponent(f.id)}`,
+              ),
+            );
         }}
         onMessage={setNotice}
         helpText="Financial working documents, close coordination and planning contributions."
@@ -189,17 +204,22 @@ export default function FinanceApp() {
       <div className="workspace-body finance-layout">
         <aside className="sidebar services-sidebar">
           <nav aria-label="Financial workspace navigation">
-            <a href={base} aria-current={page === "home" ? "page" : undefined}>
+            <StaffLink
+              href={base}
+              aria-current={page === "home" ? "page" : undefined}
+            >
+              <NavigationIcon kind="home" />
               Home
-            </a>
+            </StaffLink>
             {libraries.map((l) => (
-              <a
+              <StaffLink
                 key={l.id}
                 href={`${base}/${l.id}`}
                 aria-current={library?.id === l.id ? "page" : undefined}
               >
+                <NavigationIcon kind="library" />
                 {l.name}
-              </a>
+              </StaffLink>
             ))}
             {[
               ["close-checklist", "Close Checklist"],
@@ -207,14 +227,22 @@ export default function FinanceApp() {
               ["calendar", "Financial Calendar"],
               ["restricted", "Restricted"],
             ].map(([id, name]) => (
-              <a
+              <StaffLink
                 key={id}
                 href={`${base}/${id}`}
                 aria-current={page === id ? "page" : undefined}
               >
-                {id === "restricted" && <LockClosed20Regular />}
+                <NavigationIcon
+                  kind={
+                    id === "restricted"
+                      ? "restricted"
+                      : id === "calendar"
+                        ? "calendar"
+                        : "list"
+                  }
+                />
                 {name}
-              </a>
+              </StaffLink>
             ))}
           </nav>
         </aside>
@@ -223,7 +251,7 @@ export default function FinanceApp() {
           className={`services-main finance-main${page === "home" ? " finance-home" : ""}`}
         >
           <div className="finance-breadcrumb">
-            <a href={base}>Workspace</a> /{" "}
+            <StaffLink href={base}>Workspace</StaffLink> /{" "}
             {protectedName ? "Access required" : activeName}
           </div>
           {notice && (
@@ -239,7 +267,8 @@ export default function FinanceApp() {
               location={[title, area?.name, protectedName]
                 .filter(Boolean)
                 .join(" / ")}
-              returnHref={base}
+              personId={person.id}
+              returnHref={withExplicitStaff(base)}
               strict
             />
           ) : system ? (
@@ -249,7 +278,7 @@ export default function FinanceApp() {
               <PocAnnotation title="System preview" variant="inline">
                 Simulated external destination · {system.ref}
               </PocAnnotation>
-              <a href={base}>Back to workspace</a>
+              <StaffLink href={base}>Back to workspace</StaffLink>
             </section>
           ) : page === "home" ? (
             <>
@@ -261,13 +290,13 @@ export default function FinanceApp() {
                   Resolve reconciliation questions and confirm contribution
                   owners ahead of the 30 October close.
                 </p>
-                <a href={`${base}/close-checklist`}>
+                <StaffLink href={`${base}/close-checklist`}>
                   Continue the close checklist →
-                </a>
+                </StaffLink>
                 <p>
-                  <a href={`${base}/planning-documents?file=FIN-05`}>
+                  <StaffLink href={`${base}/planning-documents?file=FIN-05`}>
                     2027 budget commentary →
-                  </a>
+                  </StaffLink>
                 </p>
               </section>
               <section>
@@ -277,7 +306,9 @@ export default function FinanceApp() {
                     <span>Oct {e.day}</span> · {rowLink(e.item)}
                   </p>
                 ))}
-                <a href={`${base}/calendar`}>Financial calendar →</a>
+                <StaffLink href={`${base}/calendar`}>
+                  Financial calendar →
+                </StaffLink>
               </section>
               <DocumentLibrary
                 title="Recently updated documents"
@@ -298,10 +329,13 @@ export default function FinanceApp() {
               <div className="finance-protected-links">
                 {Object.entries(protectedSubjects).flatMap(([id, entries]) =>
                   entries.map(([key, name]) => (
-                    <a key={`${id}-${key}`} href={`${base}/${id}/${key}`}>
+                    <StaffLink
+                      key={`${id}-${key}`}
+                      href={`${base}/${id}/${key}`}
+                    >
                       <LockClosed20Regular />
                       {name}
-                    </a>
+                    </StaffLink>
                   )),
                 )}
               </div>
@@ -359,17 +393,22 @@ export default function FinanceApp() {
               />
               {library.id === "income-documents" && (
                 <p>
-                  <a href={`${base}/reconciliation-issues`}>
+                  <StaffLink href={`${base}/reconciliation-issues`}>
                     Reconciliation Issues
-                  </a>{" "}
+                  </StaffLink>{" "}
                   · {systemLink("blackline")}
                 </p>
               )}
               {library.id === "payment-documents" && (
                 <p>
-                  <a href={`${base}/close-checklist`}>Close Checklist</a> ·{" "}
-                  <a href="/services/purchasing">Purchasing & Suppliers ↗</a> ·{" "}
-                  {systemLink("netsuite")}
+                  <StaffLink href={`${base}/close-checklist`}>
+                    Close Checklist
+                  </StaffLink>{" "}
+                  ·{" "}
+                  <StaffLink href="/services/purchasing">
+                    Purchasing & Suppliers ↗
+                  </StaffLink>{" "}
+                  · {systemLink("netsuite")}
                 </p>
               )}
               {library.id === "treasury-documents" && (
@@ -479,10 +518,10 @@ export default function FinanceApp() {
                 <section>
                   <div className="finance-protected-links">
                     {subjects.map((s) => (
-                      <a key={s.href} href={s.href}>
+                      <StaffLink key={s.href} href={s.href}>
                         <LockClosed20Regular />
                         {s.name}
-                      </a>
+                      </StaffLink>
                     ))}
                   </div>
                 </section>
@@ -533,7 +572,9 @@ export default function FinanceApp() {
               </dl>
               <p>{selected.handoff}</p>
               <p>{systemLink(selected.system)}</p>
-              <a href={`${base}/${selected.area}`}>Related documents →</a>
+              <StaffLink href={`${base}/${selected.area}`}>
+                Related documents →
+              </StaffLink>
             </>
           )}
         </DrawerBody>

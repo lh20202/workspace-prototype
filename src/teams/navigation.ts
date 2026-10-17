@@ -27,14 +27,14 @@ import {
 
 /** A functional site without live Teams uses the colleague's department conversation. */
 export function defaultTeamsContext(person: StaffPerson) {
-  return hasWorkspaceTeams(person.workspace)
-    ? { workspaceId: person.workspace, departmentId: undefined }
-    : {
-        workspaceId: undefined,
-        departmentId: departments.find(
-          (department) => department.id === person.departmentId,
-        )?.id,
-      };
+  if (hasWorkspaceTeams(person.workspace))
+    return { workspaceId: person.workspace, departmentId: undefined };
+  const department = departments.find(
+    (item) => item.id === person.departmentId,
+  );
+  return department
+    ? { workspaceId: undefined, departmentId: department.id }
+    : { workspaceId: "logistics", departmentId: undefined };
 }
 
 export function teamsGroups(person: StaffPerson): TeamsGroup[] {

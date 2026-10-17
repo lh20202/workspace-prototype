@@ -15,11 +15,7 @@ import {
   DialogActions,
 } from "@fluentui/react-components";
 import {
-  Home24Regular,
   Folder24Regular,
-  Location24Regular,
-  Library24Regular,
-  LearningApp24Regular,
   CheckmarkCircle24Regular,
   Search20Regular,
   Add20Regular,
@@ -28,7 +24,6 @@ import {
   Filter20Regular,
   ChevronDown16Regular,
   ArrowRight20Regular,
-  PeopleTeam24Regular,
   Dismiss20Regular,
   Info20Regular,
   History20Regular,
@@ -38,6 +33,7 @@ import {
   People24Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import NavigationIcon from "../components/NavigationIcon";
 import TeamsHomePanel from "../components/TeamsHomePanel";
 import SimulationMessage from "../components/SimulationMessage";
 import PocAnnotation from "../components/PocAnnotation";
@@ -46,6 +42,8 @@ import FileTable, { FileStatus, shortDate } from "./FileTable";
 import LocationsList from "./LocationsList";
 import TeamsView from "./TeamsView";
 import { resolveStaffPerson } from "../intranet/catalog";
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
 import {
   files,
@@ -146,7 +144,9 @@ export default function LogisticsApp() {
     history.pushState(
       {},
       "",
-      `/logistics${page === "home" ? "" : `/${page}`}${query.size ? "?" + query : ""}`,
+      withExplicitStaff(
+        `/logistics${page === "home" ? "" : `/${page}`}${query.size ? "?" + query : ""}`,
+      ),
     );
     window.dispatchEvent(new Event("workspace:navigation"));
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -196,20 +196,14 @@ export default function LogisticsApp() {
       ? [...new Set(scoped.map((f) => f.folder))].filter(Boolean)
       : [];
   const displayRows = folders.length ? rows.filter((f) => !f.folder) : rows;
-  const libraryIcons = {
-    operations: Folder24Regular,
-    resources: Library24Regular,
-    training: LearningApp24Regular,
-    records: CheckmarkCircle24Regular,
-  };
   return (
     <div className="app-shell logistics-shell">
-      <a
+      <StaffLink
         className="skip-link"
         href={route.page === "teams" ? "#teams-main" : "#logistics-main"}
       >
         Skip to content
-      </a>
+      </StaffLink>
       {route.page === "teams" ? (
         <TeamsView
           channelId={route.channel}
@@ -234,7 +228,7 @@ export default function LogisticsApp() {
                   aria-current={route.page === "home" ? "page" : undefined}
                   onClick={() => navigate("home")}
                 >
-                  <Home24Regular />
+                  <NavigationIcon kind="home" />
                   Home
                 </button>
                 <div className="nav-section">OPERATIONS & SUPPORT</div>
@@ -249,7 +243,7 @@ export default function LogisticsApp() {
                     }
                     onClick={() => navigate(l.id)}
                   >
-                    <Folder24Regular />
+                    <NavigationIcon kind="library" />
                     {l.name}
                   </button>
                 ))}
@@ -257,25 +251,24 @@ export default function LogisticsApp() {
                   className={route.page === "locations" ? "nav-active" : ""}
                   onClick={() => navigate("locations")}
                 >
-                  <Location24Regular />
+                  <NavigationIcon kind="list" />
                   Locations & Permits
                 </button>
                 <button
                   className={route.page === "calendar" ? "nav-active" : ""}
                   onClick={() => navigate("calendar")}
                 >
-                  <Calendar24Regular />
+                  <NavigationIcon kind="calendar" />
                   Shared calendar
                 </button>
                 {libraries.slice(1).map((l) => {
-                  const Icon = libraryIcons[l.id];
                   return (
                     <button
                       key={l.id}
                       className={route.page === l.id ? "nav-active" : ""}
                       onClick={() => navigate(l.id)}
                     >
-                      <Icon />
+                      <NavigationIcon kind="library" />
                       {l.name}
                     </button>
                   );
@@ -285,7 +278,7 @@ export default function LogisticsApp() {
                 <button
                   onClick={() => navigate("teams", { channel: "general" })}
                 >
-                  <PeopleTeam24Regular />
+                  <NavigationIcon kind="teams" />
                   Open Teams channels
                 </button>
               </div>
@@ -775,9 +768,12 @@ export default function LogisticsApp() {
                 </Button>
               </div>
               {route.page === "teams" && (
-                <a className="details-sp-link" href={fileHref(selected)}>
+                <StaffLink
+                  className="details-sp-link"
+                  href={fileHref(selected)}
+                >
                   Open in SharePoint <ArrowRight20Regular />
-                </a>
+                </StaffLink>
               )}
               <h4>Properties</h4>
               <dl className="properties">

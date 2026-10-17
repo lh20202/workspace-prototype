@@ -1,5 +1,11 @@
 /** Localized display titles; the original file identity and download names remain unchanged. */
 export const germanFiles: Record<string, string> = {
+  "Support Pathways — Working Method": "Unterstützungswege – Arbeitsverfahren",
+  "Reporting & Referral — Working Method":
+    "Meldung und Weiterverweisung – Arbeitsverfahren",
+  "Independent Consultation — Preparation Method":
+    "Unabhängige Konsultation – Vorbereitungsverfahren",
+  "Agreed Consultation Principles": "Abgestimmte Konsultationsgrundsätze",
   "Annual delivery dependencies": "Abhängigkeiten der Jahresumsetzung",
   "Planning guidance 2027": "Planungsleitfaden 2027",
   "Mid-year planning review 2026": "Planungsüberprüfung zur Jahresmitte 2026",

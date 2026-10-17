@@ -2,6 +2,86 @@ import {
   employmentProtectedSubjects,
   legacyEmploymentBoundary,
 } from "./employmentSubjects";
+import { legacyWelfareDestination } from "./welfare";
+
+export type HubId = "sales-marketing" | "infrastructure" | "personnel";
+export type EnvironmentType = "workspace" | "portal" | "wiki";
+export type WorkspaceAccessLevel = "internal" | "strictly-confidential";
+
+export interface HubDefinition {
+  id: HubId;
+  name: string;
+  icon: string;
+  description: string;
+  workspaceIds: string[];
+  /** References to registered environments, surfaced only once implemented. */
+  wiki?: string;
+  portal?: string;
+}
+
+export const hubDefinitions: HubDefinition[] = [
+  {
+    id: "sales-marketing",
+    name: "Sales & Marketing",
+    icon: "organisation",
+    description: "",
+    workspaceIds: ["audience", "content", "logistics", "customer"],
+    wiki: "sales-wiki",
+    portal: "frontline-sales",
+  },
+  {
+    id: "infrastructure",
+    name: "Infrastructure",
+    icon: "infrastructure",
+    description: "",
+    workspaceIds: [
+      "executive",
+      "planning",
+      "projects",
+      "quality",
+      "legal",
+      "services",
+      "digital",
+      "archives",
+    ],
+  },
+  {
+    id: "personnel",
+    name: "Personnel",
+    icon: "personnel",
+    description: "",
+    workspaceIds: ["people", "employment", "welfare"],
+  },
+];
+export const hubById = new Map(hubDefinitions.map((hub) => [hub.id, hub]));
+export const architectureSections: (
+  { type: "hub"; id: HubId } | { type: "workspace"; id: string }
+)[] = [
+  { type: "hub", id: "sales-marketing" },
+  { type: "hub", id: "infrastructure" },
+  { type: "workspace", id: "finance" },
+  { type: "hub", id: "personnel" },
+];
+const hubLabels: Record<string, string> = {
+  audience: "Research & Insight",
+  content: "Creative & Editorial",
+  logistics: "Acquisition",
+  customer: "Customer Care",
+  executive: "CEO",
+  planning: "Planning",
+  projects: "Projects",
+  quality: "Quality & Monitoring",
+  legal: "Legal",
+  services: "Staff Service Operations",
+  digital: "Digital & Technology",
+  archives: "Company Archives",
+  employment: "Employment & Hiring",
+};
+export const strictlyConfidentialWorkspaceIds = [
+  "executive",
+  "employment",
+  "welfare",
+];
 
 export interface WorkspaceDefinition {
   id: string;
@@ -14,6 +94,10 @@ export interface WorkspaceDefinition {
   teams: boolean;
   accessModel: string;
   departmentRelationships: string[];
+  hubId?: HubId;
+  hubLabel: string;
+  accessLevel: WorkspaceAccessLevel;
+  environmentType: EnvironmentType;
 }
 const seed: [string, string, string, string, string, string, boolean][] = [
   [
@@ -81,7 +165,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "services",
-    "Organisation Services",
+    "Staff Service Operations",
     "/services",
     "Office maintenance and equipment, purchasing and suppliers, travel services and reception.",
     "Workplace operations",
@@ -134,6 +218,15 @@ const seed: [string, string, string, string, string, string, boolean][] = [
     false,
   ],
   [
+    "welfare",
+    "Welfare & Employee Representation",
+    "/welfare-representation",
+    "Strictly confidential coordination for staff welfare, safeguarding and independent employee representation.",
+    "Personnel",
+    "welfare",
+    false,
+  ],
+  [
     "executive",
     "CEO & Executive Committee",
     "/executive",
@@ -162,14 +255,71 @@ export const workspaceRegistry: WorkspaceDefinition[] = seed.map(
     group,
     icon,
     teams,
-    accessModel:
-      "Shared functional work; sensitive subjects require specific participation",
+    hubId: hubDefinitions.find((hub) => hub.workspaceIds.includes(id))?.id,
+    hubLabel: hubLabels[id] || title,
+    accessLevel: strictlyConfidentialWorkspaceIds.includes(id)
+      ? "strictly-confidential"
+      : "internal",
+    environmentType: "workspace",
+    accessModel: strictlyConfidentialWorkspaceIds.includes(id)
+      ? "Strictly confidential; protected areas require separate participation"
+      : "Shared functional work; sensitive subjects require specific participation",
     departmentRelationships: [],
   }),
 );
 // Teams is deliberate: live operations, production and engineering; Planning keeps its lightweight reference connection.
 // Other functional coordination uses company/department Teams rather than duplicate generic feeds.
 export const workspaceById = new Map(workspaceRegistry.map((w) => [w.id, w]));
+/** Knowledge and execution environments are related to sites, not additional SharePoint workspaces. */
+export const environmentRegistry: WorkspaceDefinition[] = [
+  ...workspaceRegistry,
+  {
+    id: "sales-wiki",
+    title: "Sales & Marketing Wiki",
+    href: "/sales-marketing/wiki",
+    description:
+      "Stable sales and marketing knowledge, reference material and practical guidance.",
+    purpose: "Function-wide knowledge and guidance",
+    group: "Sales & Marketing",
+    icon: "wiki",
+    teams: false,
+    accessModel:
+      "Internal knowledge; protected source systems retain their own access controls",
+    departmentRelationships: [],
+    hubId: "sales-marketing",
+    hubLabel: "Sales & Marketing Wiki",
+    accessLevel: "internal",
+    environmentType: "wiki",
+  },
+  {
+    id: "frontline-sales",
+    title: "Frontline Sales Portal",
+    href: "/frontline-sales",
+    description:
+      "Today's frontline briefing, shift context and immediate customer actions.",
+    purpose: "Day-to-day frontline sales execution",
+    group: "Sales & Marketing",
+    icon: "portal",
+    teams: false,
+    accessModel:
+      "Internal task simulation; customer systems retain their own access controls",
+    departmentRelationships: [],
+    hubId: "sales-marketing",
+    hubLabel: "Frontline Sales Portal",
+    accessLevel: "internal",
+    environmentType: "portal",
+  },
+];
+export const environmentById = new Map(
+  environmentRegistry.map((environment) => [environment.id, environment]),
+);
+/** Hub association groups sites; each site retains its own access boundary. */
+export function environmentsForHub(id: HubId) {
+  const hub = hubById.get(id)!;
+  return [...new Set([...hub.workspaceIds, hub.wiki, hub.portal])]
+    .map((environmentId) => environmentId && environmentById.get(environmentId))
+    .filter((environment): environment is WorkspaceDefinition => !!environment);
+}
 export const hasWorkspaceTeams = (id: string) =>
   workspaceById.get(id)?.teams === true;
 export const legacyRedirects: Record<string, string> = {
@@ -221,6 +371,8 @@ export const legacyRedirects: Record<string, string> = {
   "/content-delivery/tools/staffbase": "/people-culture/communications",
 };
 export function resolveLegacy(path: string) {
+  const welfareDestination = legacyWelfareDestination(path);
+  if (welfareDestination) return welfareDestination;
   if (path === "/people-culture/protected")
     return "/employment-admin/protected";
   if (legacyRedirects[path]) return legacyRedirects[path];

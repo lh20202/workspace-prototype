@@ -17,6 +17,8 @@ const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
 const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
 const GovernanceApp = lazy(() => import("./executive/GovernanceApp"));
 const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
+const WikiApp = lazy(() => import("./wiki/WikiApp"));
+const FrontlineApp = lazy(() => import("./frontline/FrontlineApp"));
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   const redirect = resolveLegacy(location.pathname);
@@ -44,7 +46,11 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "projects" ? (
+        {prototype === "wiki" ? (
+          <WikiApp />
+        ) : prototype === "frontline" ? (
+          <FrontlineApp />
+        ) : prototype === "projects" ? (
           <ProjectsApp />
         ) : prototype === "functional" ? (
           <FunctionalApp />

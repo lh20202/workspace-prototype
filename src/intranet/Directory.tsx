@@ -1,6 +1,8 @@
 import { useState } from "react";
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import { PocPreviewControls } from "../components/PocAnnotation";
+import EnvironmentIcon from "../components/EnvironmentIcon";
+import StaffLink from "../components/StaffLink";
 import {
   ChartMultiple24Regular,
   PeopleTeam24Regular,
@@ -18,14 +20,26 @@ import {
   Headset24Regular,
   Briefcase24Regular,
   PersonBriefcase24Regular,
+  Building24Regular,
+  Organization24Regular,
+  Heart24Regular,
+  LockClosed16Regular,
 } from "@fluentui/react-icons";
-import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
+import { staff, resolveStaffPerson, rememberStaff } from "./catalog";
+import {
+  architectureSections,
+  environmentsForHub,
+  hubById,
+  workspaceById,
+  type WorkspaceDefinition,
+} from "../workspaces/registry";
 import "./styles.css";
 import "./launcher.css";
 import { departments, departmentHref } from "../coordination/data";
 import "../coordination/styles.css";
 import "../executive/styles.css";
 import "../workspaces/styles.css";
+import "./architecture-hubs.css";
 const workspaceIcons: Record<string, typeof Code24Regular> = {
   projects: Briefcase24Regular,
   planning: ChartMultiple24Regular,
@@ -42,9 +56,56 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
   archives: Library24Regular,
   customer: Headset24Regular,
   employment: PersonBriefcase24Regular,
+  welfare: Heart24Regular,
 };
+const hubIcons: Record<string, typeof Code24Regular> = {
+  organisation: Organization24Regular,
+  infrastructure: Building24Regular,
+  personnel: PeopleTeam24Regular,
+};
+function WorkspaceTile({
+  workspace,
+  single = false,
+}: {
+  workspace: WorkspaceDefinition;
+  single?: boolean;
+}) {
+  const Icon = workspaceIcons[workspace.id];
+  const Heading = single ? "h2" : "h3";
+  return (
+    <StaffLink
+      className={`directory-tile${single ? " directory-single-workspace" : ""}`}
+      href={workspace.href}
+    >
+      <span className="directory-tile-icon" aria-hidden="true">
+        <Icon />
+      </span>
+      <div>
+        <Heading>
+          {workspace.hubLabel}
+          {workspace.accessLevel === "strictly-confidential" && (
+            <span
+              className="directory-confidential"
+              role="img"
+              aria-label="Strictly confidential"
+              title="Strictly confidential"
+            >
+              <LockClosed16Regular aria-hidden="true" />
+            </span>
+          )}
+        </Heading>
+      </div>
+      <span className="directory-open" aria-hidden="true">
+        <ArrowRight20Regular />
+      </span>
+    </StaffLink>
+  );
+}
 export default function Directory() {
-  const [person, setPerson] = useState(selectedStaffId);
+  const [person, setPerson] = useState(
+    () =>
+      resolveStaffPerson(new URLSearchParams(location.search).get("staff")).id,
+  );
   return (
     <div className="architecture-poc-page">
       <PrototypeNavigator />
@@ -72,9 +133,9 @@ export default function Directory() {
               {x}
             </button>
           ))}
-          <a href="/architecture" aria-current="page">
+          <StaffLink href="/architecture" aria-current="page">
             Digital Workspaces
-          </a>
+          </StaffLink>
         </nav>
         <main className="directory-main">
           <div className="directory-heading">
@@ -84,21 +145,81 @@ export default function Directory() {
             </div>
           </div>
           <div className="directory-content">
-            <div className="directory-grid">
-              {workspaces.map((w) => {
-                const Icon = workspaceIcons[w.id];
+            <div className="directory-groups">
+              {architectureSections.map((section) => {
+                if (section.type === "workspace") {
+                  const workspace = workspaceById.get(section.id)!;
+                  return (
+                    <section
+                      className="directory-functional-area"
+                      aria-label={workspace.title}
+                      key={workspace.id}
+                    >
+                      <WorkspaceTile workspace={workspace} single />
+                    </section>
+                  );
+                }
+                const hub = hubById.get(section.id)!;
+                const Icon = hubIcons[hub.icon];
                 return (
-                  <a className="directory-tile" key={w.id} href={w.href}>
-                    <span className="directory-tile-icon">
-                      <Icon />
-                    </span>
-                    <div>
-                      <h2>{w.title}</h2>
+                  <section
+                    className={`directory-hub directory-hub-${hub.id}`}
+                    aria-labelledby={`hub-${hub.id}`}
+                    key={hub.id}
+                  >
+                    <header className="directory-hub-heading">
+                      <span className="directory-hub-icon" aria-hidden="true">
+                        <Icon />
+                      </span>
+                      <div>
+                        <h2 id={`hub-${hub.id}`}>{hub.name}</h2>
+                        {hub.description && <p>{hub.description}</p>}
+                      </div>
+                    </header>
+                    <div className="directory-hub-grid">
+                      {environmentsForHub(hub.id)
+                        .filter(
+                          (environment) =>
+                            environment.environmentType === "workspace",
+                        )
+                        .map((workspace) => (
+                          <WorkspaceTile
+                            workspace={workspace}
+                            key={workspace.id}
+                          />
+                        ))}
                     </div>
-                    <span className="directory-open" aria-hidden="true">
-                      <ArrowRight20Regular />
-                    </span>
-                  </a>
+                    {environmentsForHub(hub.id).some(
+                      (environment) =>
+                        environment.environmentType !== "workspace",
+                    ) && (
+                      <div
+                        className="directory-knowledge"
+                        aria-label="Knowledge & frontline"
+                      >
+                        {environmentsForHub(hub.id)
+                          .filter(
+                            (environment) =>
+                              environment.environmentType !== "workspace",
+                          )
+                          .map((environment) => (
+                            <StaffLink
+                              key={environment.id}
+                              href={environment.href}
+                            >
+                              <EnvironmentIcon
+                                type={
+                                  environment.environmentType as
+                                    "wiki" | "portal"
+                                }
+                              />
+                              <span>{environment.title}</span>
+                              <ArrowRight20Regular aria-hidden="true" />
+                            </StaffLink>
+                          ))}
+                      </div>
+                    )}
+                  </section>
                 );
               })}
             </div>
@@ -111,7 +232,7 @@ export default function Directory() {
               {departments.map((d) => {
                 const Icon = PeopleTeam24Regular;
                 return (
-                  <a
+                  <StaffLink
                     className="department-quick-link"
                     key={d.id}
                     href={departmentHref(person, d.id)}
@@ -127,7 +248,7 @@ export default function Directory() {
                       </small>
                     </span>
                     <ChevronRight16Regular />
-                  </a>
+                  </StaffLink>
                 );
               })}
             </aside>
@@ -143,6 +264,9 @@ export default function Directory() {
             onChange={(e) => {
               setPerson(e.target.value);
               rememberStaff(e.target.value);
+              const params = new URLSearchParams(location.search);
+              params.set("staff", e.target.value);
+              history.replaceState(null, "", `${location.pathname}?${params}`);
             }}
           >
             {staff.map((s) => (
@@ -152,9 +276,9 @@ export default function Directory() {
             ))}
           </select>
         </label>
-        <a href={`/teams?staff=${person}`}>
+        <StaffLink href={`/teams?staff=${person}`}>
           Open Teams view <ArrowRight20Regular />
-        </a>
+        </StaffLink>
       </PocPreviewControls>
     </div>
   );

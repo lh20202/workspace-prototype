@@ -3,9 +3,11 @@ import FileIcon from "./components/DocumentIcon";
 import CompanyMark from "./components/CompanyMark";
 import SimulationMessage from "./components/SimulationMessage";
 import PocAnnotation from "./components/PocAnnotation";
+import HubNavigation from "./components/HubNavigation";
 import { planningPath, planningPage } from "./utils/routes";
 import AccessBoundary from "./access/AccessBoundary";
 import { teamsStaffForWorkspace } from "./teams/navigation";
+import { resolveStaffPerson } from "./intranet/catalog";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -28,8 +30,6 @@ import {
   Document24Regular,
   LockClosed24Regular,
   CheckmarkCircle24Regular,
-  ChartMultiple24Regular,
-  TargetArrow24Regular,
   Search20Regular,
   Add20Regular,
   ArrowUpload20Regular,
@@ -58,6 +58,7 @@ import {
   departments,
   quickLinks,
   currentCycle,
+  departmentSubmissionsFolder,
   milestones,
   type Document,
   type View,
@@ -75,9 +76,9 @@ import {
 import "./sharepoint/fidelity.css";
 const icons = {
   planning: Folder24Regular,
-  strategy: TargetArrow24Regular,
-  reporting: ChartMultiple24Regular,
-  approved: CheckmarkCircle24Regular,
+  strategy: Folder24Regular,
+  reporting: Folder24Regular,
+  approved: Folder24Regular,
   restricted: LockClosed24Regular,
 };
 const views: View[] = [
@@ -115,6 +116,9 @@ function route() {
   };
 }
 export default function App() {
+  const person = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
   const [locationState, setLocationState] = useState(route);
   const { page, folder, view } = locationState;
   const role = currentUser.role;
@@ -179,6 +183,8 @@ export default function App() {
     documentId = "",
   ) {
     const params = new URLSearchParams();
+    const staff = new URLSearchParams(location.search).get("staff");
+    if (staff) params.set("staff", staff);
     if (nextFolder) params.set("folder", nextFolder);
     if (nextView !== "All Documents") params.set("view", nextView);
     for (const [key, value] of Object.entries(nextFilters))
@@ -445,15 +451,26 @@ export default function App() {
           </button>
           <button
             className="profile-button"
-            aria-label="Signed in as Maya Chen"
-            onClick={() =>
-              setToast("Maya Chen · Workspace member and contributor")
-            }
+            aria-label={`Signed in as ${person.name}`}
+            onClick={() => setToast(`${person.name} · ${person.role}`)}
           >
-            <img src="/maya-avatar.svg" alt="Illustrated avatar of Maya Chen" />
+            {person.name === "Maya Chen" ? (
+              <img
+                src="/maya-avatar.svg"
+                alt="Illustrated avatar of Maya Chen"
+              />
+            ) : (
+              <span className="executive-avatar" aria-hidden="true">
+                {person.name
+                  .split(" ")
+                  .map((name) => name[0])
+                  .join("")}
+              </span>
+            )}
           </button>
         </div>
       </header>
+      <HubNavigation workspaceId="planning" />
       <div className="site-header">
         <CompanyMark />
         <div className="site-title">
@@ -518,6 +535,20 @@ export default function App() {
                 </button>
               );
             })}
+            <div className="nav-section">JUMP TO</div>
+            <button
+              aria-current={
+                page === "planning" &&
+                (folder === departmentSubmissionsFolder ||
+                  folder.startsWith(departmentSubmissionsFolder + "/"))
+                  ? "location"
+                  : undefined
+              }
+              onClick={() => navigate("planning", departmentSubmissionsFolder)}
+            >
+              <Folder24Regular />
+              <span>Department submissions</span>
+            </button>
           </nav>
           <div className="sidebar-footer">
             <button onClick={() => setModal("about")}>

@@ -6,18 +6,18 @@ Planning remains the reference: separate working planning, strategy, reporting, 
 
 Every site retains Home. Existing route prefixes and earlier library/area links remain available.
 
-| Workspace | Libraries and additional destinations |
-| --- | --- |
-| Organisation Services | Service Operations; Purchasing & Suppliers; Bookings & Coordination. Protected purchasing and visitor matters appear in their business context. |
-| Quality, Monitoring & Improvement | Quality & Monitoring; Process & Improvement; Eco Practice; Actions & Reviews list. |
-| Digital & Technology | Engineering Delivery; Architecture & Decisions; Platform Operations; Protected Technology. |
-| Legal, Privacy & Compliance | Advice, Compliance & Policy; Privacy & Assurance; Contract Review. Protected subjects remain contextual. |
-| People & Culture | Workforce & Culture; Hiring & Selection Planning; Capability & Learning; Staff Communications; Staff communities page; Employment Records & Cases. |
-| Customer Care & Relations | Care Standards & Quality; Relationships & Accounts; Meetings & Negotiations; Follow-up list; Protected Customer Matters. |
-| Company Archives | Existing search/catalogue, legacy discovery, retention, appraisal/transfer, description, preservation, access and project controls; Archive Practice & Transfers replaces Archive Working Documents. |
-| Audience Research & Marketing Insight | Research & Insight; Experiments & Testing; Analysis & Reporting, with its existing research register, calendar and concepts. |
-| Content Creation & Delivery | Current Production; Editorial & Messaging; Creative & Digital Content, retaining production register/calendar and system handoffs. |
-| Income & Financial Operations | Income & Reconciliation; Payments & Close; Planning & Analysis; Accounting & Reporting; Treasury & Banking, plus existing checklists/issues/calendar and subject-level protection. |
+| Workspace                             | Libraries and additional destinations                                                                                                                                                                |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Staff Service Operations              | Service Operations; Purchasing & Suppliers; Bookings & Coordination. Protected purchasing and visitor matters appear in their business context.                                                      |
+| Quality, Monitoring & Improvement     | Quality & Monitoring; Process & Improvement; Eco Practice; Actions & Reviews list.                                                                                                                   |
+| Digital & Technology                  | Engineering Delivery; Architecture & Decisions; Platform Operations; Protected Technology.                                                                                                           |
+| Legal, Privacy & Compliance           | Advice, Compliance & Policy; Privacy & Assurance; Contract Review. Protected subjects remain contextual.                                                                                             |
+| People & Culture                      | Workforce & Culture; Hiring & Selection Planning; Capability & Learning; Staff Communications; Staff communities page; Employment Records & Cases.                                                   |
+| Customer Care & Relations             | Care Standards & Quality; Relationships & Accounts; Meetings & Negotiations; Follow-up list; Protected Customer Matters.                                                                             |
+| Company Archives                      | Existing search/catalogue, legacy discovery, retention, appraisal/transfer, description, preservation, access and project controls; Archive Practice & Transfers replaces Archive Working Documents. |
+| Audience Research & Marketing Insight | Research & Insight; Experiments & Testing; Analysis & Reporting, with its existing research register, calendar and concepts.                                                                         |
+| Content Creation & Delivery           | Current Production; Editorial & Messaging; Creative & Digital Content, retaining production register/calendar and system handoffs.                                                                   |
+| Income & Financial Operations         | Income & Reconciliation; Payments & Close; Planning & Analysis; Accounting & Reporting; Treasury & Banking, plus existing checklists/issues/calendar and subject-level protection.                   |
 
 Services' old generic Documents route aliases Service Operations; canonical file IDs route to their actual libraries. Specialised Planning, Logistics, executive, governance, emergency and project implementations remain intact. Project documents now form three coherent planning/review/handover sets rather than six single-file folders.
 

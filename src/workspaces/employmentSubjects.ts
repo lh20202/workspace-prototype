@@ -22,9 +22,6 @@ export const employmentProtectedSubjects: [string, string, string, boolean][] =
     ["employee-records", "Employee Records & Contracts", "protected", true],
     ["employment-changes", "Employment Changes", "protected", true],
     ["compensation", "Individual Compensation", "protected", true],
-    ["employee-relations", "Employee Relations Cases", "protected", true],
-    ["complaints", "Complaints & Investigations", "protected", true],
-    ["welfare", "Welfare & Safeguarding Cases", "protected", true],
   ];
 
 export const employmentProtectedIds = new Set(

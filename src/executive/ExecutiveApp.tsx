@@ -3,6 +3,7 @@ import AccessBoundary from "../access/AccessBoundary";
 import { PocPreviewControls } from "../components/PocAnnotation";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
+import NavigationIcon from "../components/NavigationIcon";
 import DocumentLibrary, {
   type LibraryDocument,
 } from "../sharepoint/DocumentLibrary";
@@ -24,12 +25,18 @@ import {
 import "../services/styles.css";
 import "../finance/styles.css";
 import "./styles.css";
+import { resolveStaffPerson } from "../intranet/catalog";
 import { executiveDocument, executiveDefinition } from "./libraries";
 export default function ExecutiveApp() {
   const page = location.pathname.split("/")[2] || "home";
   const requestedRole = new URLSearchParams(location.search).get("preview");
-  const role: ExecutiveRole =
-    roles.find((r) => r.id === requestedRole)?.id || "base";
+  const staffId = new URLSearchParams(location.search).get("staff");
+  const staffPerson = resolveStaffPerson(staffId);
+  const staffRole = roles.find((item) => item.person === staffPerson.name);
+  const explicitRole =
+    !staffId && roles.find((item) => item.id === requestedRole);
+  const workspaceAllowed = !!staffRole || !!explicitRole;
+  const role: ExecutiveRole = (explicitRole || staffRole)?.id || "base";
   const person = roles.find((r) => r.id === role)!;
   const href = (area: string, as = role) =>
     `/executive${area === "home" ? "" : `/${area}`}?preview=${as}`;
@@ -118,6 +125,40 @@ export default function ExecutiveApp() {
       </div>
     );
   }
+  if (!workspaceAllowed)
+    return (
+      <div className="app-shell services-app executive-app">
+        <WorkspaceHeader
+          title={title}
+          searchFiles={[]}
+          userName={staffPerson.name}
+          userRole={staffPerson.role}
+          memberCount={14}
+          onMessage={setNotice}
+          onOpen={() => {}}
+          helpText="Access is limited to authorised participants and remains separate for each protected area."
+        />
+        <main
+          className="services-main finance-main executive-main"
+          id="executive-main"
+        >
+          {notice && (
+            <p role="status" className="finance-notice">
+              {notice}
+              <button onClick={() => setNotice("")}>Dismiss</button>
+            </p>
+          )}
+          <AccessBoundary
+            workspaceId="executive"
+            area={title}
+            personId={staffPerson.id}
+            strict
+            returnHref="/architecture"
+            returnLabel="Back to all workspaces"
+          />
+        </main>
+      </div>
+    );
   const portal = (
     <a href="/governance">
       <LockClosed20Regular />
@@ -177,6 +218,7 @@ export default function ExecutiveApp() {
               href={href("home")}
               aria-current={page === "home" ? "page" : undefined}
             >
+              <NavigationIcon kind="home" />
               Home
             </a>
             {navigation
@@ -187,7 +229,15 @@ export default function ExecutiveApp() {
                   href={href(a.id)}
                   aria-current={page === a.id ? "page" : undefined}
                 >
-                  {a.restricted && <LockClosed20Regular />}
+                  <NavigationIcon
+                    kind={
+                      a.restricted
+                        ? "restricted"
+                        : a.id === "decisions"
+                          ? "list"
+                          : "library"
+                    }
+                  />
                   {a.name}
                 </a>
               ))}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
+import NavigationIcon from "../components/NavigationIcon";
 import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
 import {
   LockClosed20Regular,
@@ -60,7 +61,10 @@ export default function GovernanceApp() {
       </PocPreviewControls>
       <div className="governance-layout">
         <nav aria-label="Governance navigation">
-          <a href={`/governance?preview=${role}`}>Portal home</a>
+          <a href={`/governance?preview=${role}`}>
+            <NavigationIcon kind="home" />
+            Portal home
+          </a>
           {links.map((l) => (
             <a
               key={l.id}

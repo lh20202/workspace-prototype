@@ -1,0 +1,77 @@
+/* Shared SharePoint hub chrome; local site navigation remains separate below it. */
+:root .hub-navigation {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  min-height: 44px;
+  min-width: 0;
+  padding-inline: 32px;
+  border-bottom: 1px solid #edebe9;
+  background: #fff;
+  color: #323130;
+  font-size: 14px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 20px;
+}
+:root .hub-navigation-sites {
+  display: flex;
+  flex: 1 1 0;
+  gap: 24px;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+:root .hub-navigation-sites::-webkit-scrollbar {
+  display: none;
+}
+:root .hub-navigation a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 0 8px;
+  border-bottom: 2px solid transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+:root .hub-navigation a:hover {
+  color: #005a9e;
+  border-bottom-color: #c8c6c4;
+}
+:root .hub-navigation a[aria-current="page"] {
+  border-bottom-color: #ee0000;
+  font-weight: 600;
+}
+:root .hub-navigation a[data-environment="wiki"] .environment-icon {
+  color: #486857;
+}
+:root .hub-navigation a[data-environment="portal"] .environment-icon {
+  color: #216f86;
+}
+:root .hub-navigation a:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: -3px;
+}
+:root .hub-navigation-intranet {
+  margin-left: auto;
+}
+@media (max-width: 800px) {
+  :root .hub-navigation {
+    gap: 20px;
+    padding-inline: 16px;
+  }
+  :root .hub-navigation-sites {
+    gap: 20px;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root .hub-navigation a {
+    transition:
+      color 130ms ease,
+      border-bottom-color 130ms ease;
+  }
+}

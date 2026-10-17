@@ -17,7 +17,7 @@ export interface OperationalFile {
   validFrom: string;
   validTo: string;
   modified: string;
-  sensitivity: "Internal";
+  sensitivity: "Internal" | "Strictly confidential";
   recordState: "Working information" | "Current standard" | "Final record";
 }
 export const workspaceTitle = "Acquisition & Activation Logistics";

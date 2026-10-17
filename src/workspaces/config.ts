@@ -1,6 +1,7 @@
 import { workspaceById } from "./registry";
 import { enrichFunctionalFiles } from "./contentRealism";
 import { employmentProtectedSubjects } from "./employmentSubjects";
+import { welfareConfig, welfareFilesForPerson } from "./welfare";
 import type { FunctionalConfig, WorkingFile } from "./types";
 // Explicit IDs preserve established links when a fixture moves to another owner.
 // The seed itself belongs only to its current business workspace.
@@ -532,8 +533,8 @@ const seeds = {
       ],
       [
         "wellbeing",
-        "Wellbeing & Duty of Care",
-        "Shared wellbeing programme and support-path coordination.",
+        "Wellbeing Programmes",
+        "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare & Employee Representation.",
       ],
     ],
     items: [
@@ -600,7 +601,7 @@ const seeds = {
       [
         "wellbeing",
         "Wellbeing events programme",
-        "Coordinate open events and appropriate support routes",
+        "Coordinate open wellbeing events and programme communications",
         "PEOPLE-114",
       ],
       [
@@ -1066,6 +1067,9 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
     tools: s.tools.map(([id, name, purpose]) => ({ id, name, purpose })),
   }),
 );
+functionalConfigs.push(welfareConfig);
 export const configById = new Map(functionalConfigs.map((c) => [c.id, c]));
-export const filesForWorkspace = (id: string) =>
-  configById.get(id)?.files || [];
+export const filesForWorkspace = (id: string, personId?: string) =>
+  id === "welfare"
+    ? welfareFilesForPerson(personId || "")
+    : configById.get(id)?.files || [];

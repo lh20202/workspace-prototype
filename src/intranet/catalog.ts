@@ -68,9 +68,24 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   devon: { departmentId: "strategy-technology", unitId: "it-services" },
   elena: { departmentId: "people-culture", unitId: "learning-and-capability" },
   jamie: { departmentId: "people-culture", unitId: "people-operations" },
+  riley: { departmentId: "people-culture", unitId: "people-operations" },
+  // Independent representation is not an HR operational department membership.
+  skyler: { departmentId: "", unitId: "" },
   harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
 };
 export const staff = [
+  {
+    id: "riley",
+    name: "Riley Quinn",
+    role: "Staff Welfare Coordinator",
+    workspace: "welfare",
+  },
+  {
+    id: "skyler",
+    name: "Skyler Lane",
+    role: "Independent Employee Representative",
+    workspace: "welfare",
+  },
   ...baseStaff,
   {
     id: "jamie",

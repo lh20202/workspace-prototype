@@ -1,9 +1,17 @@
 import { germanMessages } from "./de";
 import { germanContent } from "./de-content";
 import { germanFiles } from "./de-files";
+import { germanFrontline } from "./de-frontline";
+import { germanWiki } from "./de-wiki";
 
 export type Language = "en" | "de";
-const messages = { ...germanMessages, ...germanContent, ...germanFiles };
+const messages = {
+  ...germanMessages,
+  ...germanContent,
+  ...germanFiles,
+  ...germanFrontline,
+  ...germanWiki,
+};
 const englishMonths = [
   "January",
   "February",

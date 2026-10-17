@@ -5,6 +5,7 @@ import type {
 } from "../sharepoint/library";
 import type { FunctionalConfig, WorkingFile } from "./types";
 import { workspaceById } from "./registry";
+import { welfareFilesForPerson } from "./welfare";
 
 export interface FunctionalLibrary extends LibraryDefinition {
   areas: string[];
@@ -56,6 +57,36 @@ function library(
   };
 }
 export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
+  welfare: [
+    library(
+      "welfare-support",
+      "Welfare & Psychosocial Support",
+      ["welfare-support"],
+      "Protected support methods and non-identifiable coordination.",
+      [column("Scope")],
+    ),
+    library(
+      "safeguarding-complaints",
+      "Safeguarding & Complaints",
+      ["safeguarding-complaints"],
+      "Protected reporting and referral methods.",
+      [column("Scope")],
+    ),
+    library(
+      "employee-representation",
+      "Employee Representation",
+      ["employee-representation"],
+      "Independent representative preparation; separate participant membership.",
+      [column("Scope")],
+    ),
+    library(
+      "approved-consultation",
+      "Approved consultation outputs",
+      ["approved-consultation"],
+      "Agreed, non-identifiable outputs shared across the protected areas.",
+      [column("Scope")],
+    ),
+  ],
   services: [
     library(
       "service-operations",
@@ -591,8 +622,13 @@ export function functionalFileHref(config: FunctionalConfig, fileId: string) {
 export function functionalLibraryDocuments(
   config: FunctionalConfig,
   library: FunctionalLibrary,
+  personId?: string,
 ): LibraryDocument[] {
-  return config.files.filter((file) => file.documentLibrary === library.id);
+  const files =
+    config.id === "welfare"
+      ? welfareFilesForPerson(personId || "")
+      : config.files;
+  return files.filter((file) => file.documentLibrary === library.id);
 }
 
 export const protectedNavigation: Record<string, string> = {

@@ -1,5 +1,50 @@
 /** Professional German UI copy. Keys remain canonical English; routes, IDs and data are unchanged. */
 export const germanMessages: Record<string, string> = {
+  "Article navigation": "Artikelnavigation",
+  "Hub navigation": "Hub-Navigation",
+  "Employment & Hiring": "Personal- und Einstellungsverwaltung",
+  "JUMP TO": "DIREKT ZU",
+  "Department submissions": "Abteilungsbeiträge",
+  "Approved consultation outputs ↗": "Freigegebene Konsultationsergebnisse ↗",
+  "Protected support methods and non-identifiable coordination.":
+    "Geschützte Unterstützungsverfahren und Koordination ohne Personenbezug.",
+  "Protected reporting and referral methods.":
+    "Geschützte Melde- und Weiterverweisungsverfahren.",
+  "Independent representative preparation; separate participant membership.":
+    "Unabhängige Vorbereitung der Personalvertretung mit eigenem Teilnehmendenkreis.",
+  "Welfare & Employee Representation navigation":
+    "Navigation für Mitarbeitendenfürsorge und Personalvertretung",
+  "Protected working material": "Geschützte Arbeitsunterlagen",
+  "Your protected areas": "Ihre geschützten Bereiche",
+  "Open approved outputs →": "Freigegebene Ergebnisse öffnen →",
+  Coordination: "Koordination",
+  "Approved consultation outputs": "Freigegebene Konsultationsergebnisse",
+  "Approved outputs": "Freigegebene Ergebnisse",
+  "2026 consultation": "Konsultation 2026",
+  "Working methods": "Arbeitsverfahren",
+  "Approved Consultation Output": "Freigegebenes Konsultationsergebnis",
+  "Protected Working Method": "Geschütztes Arbeitsverfahren",
+  "Approved consultation": "Freigegebene Konsultation",
+  "Working method": "Arbeitsverfahren",
+  "Protected coordination": "Geschützte Koordination",
+  Scope: "Geltungsbereich",
+  "Methods and non-identifiable coordination only":
+    "Nur Verfahren und Koordination ohne Personenbezug",
+  "Support pathway review": "Prüfung der Unterstützungswege",
+  "Review referral responsibilities and aggregate service themes":
+    "Zuständigkeiten für Weiterverweisungen und übergreifende Unterstützungsthemen prüfen",
+  "Non-identifiable coordination": "Koordination ohne Personenbezug",
+  "Reporting route review": "Prüfung der Meldewege",
+  "Check reporting routes and separation of responsibilities":
+    "Meldewege und klare Trennung der Zuständigkeiten prüfen",
+  "Process review": "Prozessprüfung",
+  "Representative consultation cycle":
+    "Konsultationszyklus der Personalvertretung",
+  "Agree the independent review timetable and approved outputs":
+    "Zeitplan für die unabhängige Prüfung und freigegebene Ergebnisse abstimmen",
+  "Independent consultation": "Unabhängige Konsultation",
+  "Authorised consultation participants":
+    "Autorisierte Beteiligte der Konsultation",
   Home: "Startseite",
   Back: "Zurück",
   Forward: "Weiter",
@@ -113,6 +158,8 @@ export const germanMessages: Record<string, string> = {
   "VIEW ONLY": "NUR LESEZUGRIFF",
   Restricted: "Zugriffsbeschränkt",
   "Strictly confidential": "Streng vertraulich",
+  "Strictly confidential; protected areas require separate participation":
+    "Streng vertraulich; geschützte Bereiche erfordern eine gesonderte Berechtigung",
   Private: "Privat",
   "Private group": "Private Gruppe",
   Standard: "Standard",
@@ -561,6 +608,23 @@ export const germanMessages: Record<string, string> = {
   "Response Coordinator": "Krisenkoordination",
   "Independent Council Contact": "Unabhängiger Kontakt der Personalvertretung",
   Projects: "Projekte",
+  "Sales & Marketing": "Vertrieb und Marketing",
+  Infrastructure: "Infrastruktur",
+  Personnel: "Personal",
+  "Creative & Editorial": "Kreation und Redaktion",
+  Acquisition: "Akquise",
+  "Welfare & Employee Representation":
+    "Mitarbeitendenfürsorge und Personalvertretung",
+  "Welfare & Employee Representation workspace":
+    "Arbeitsbereich Mitarbeitendenfürsorge und Personalvertretung",
+  "Welfare & Psychosocial Support": "Fürsorge und psychosoziale Unterstützung",
+  "Safeguarding & Complaints": "Schutz und Beschwerdeverfahren",
+  "Employee Representation": "Personalvertretung",
+  "Staff Welfare Coordinator": "Koordination der Mitarbeitendenfürsorge",
+  "Independent Employee Representative": "Unabhängige Personalvertretung",
+  "Wellbeing Programmes": "Programme für Gesundheit und Wohlbefinden",
+  "Coordinate open wellbeing events and programme communications":
+    "Offene Veranstaltungen für das Wohlbefinden und die Programmkommunikation koordinieren",
   "Organisational Planning & Reporting":
     "Organisationsplanung und Berichtswesen",
   "Acquisition & Activation Logistics": "Logistik für Akquise und Aktivierung",
@@ -569,7 +633,7 @@ export const germanMessages: Record<string, string> = {
   "Creative & Editorial Studio": "Kreativ- und Redaktionsstudio",
   "Customer Care & Relations": "Kundenbetreuung und Beziehungsmanagement",
   "Income & Financial Operations": "Einnahmen und Finanzprozesse",
-  "Organisation Services": "Organisationsservices",
+  "Staff Service Operations": "Interne Serviceprozesse",
   "Quality, Monitoring & Improvement": "Qualität, Monitoring und Verbesserung",
   "Digital & Technology": "Digitales und Technologie",
   "Legal, Privacy & Compliance": "Recht, Datenschutz und Compliance",
@@ -1103,7 +1167,7 @@ export const germanMessages: Record<string, string> = {
   "Quarterly organisational performance review":
     "Vierteljährliche Leistungsbewertung der Organisation",
   "Approved reporting follow-up": "Nachverfolgung genehmigter Berichte",
-  CEO: "Geschäftsführung",
+  CEO: "Geschäftsleitung",
   "Three-year investment outlook": "Dreijähriger Investitionsausblick",
   "Executive review coordination":
     "Koordination der Prüfung durch die Geschäftsleitung",
@@ -2566,7 +2630,7 @@ export const germanMessages: Record<string, string> = {
     "Analyse zur Personalisierung und nächsten geeigneten Aktion",
   "Which message option should the experiment compare?":
     "Welche Nachrichtenvarianten soll das Experiment vergleichen?",
-  "Research & Insight": "Forschung und Erkenntnisse",
+  "Research & Insight": "Recherche & Analyse",
   "Experiments & Testing": "Experimente und Tests",
   "Analysis & Reporting": "Analyse und Berichtswesen",
   Study: "Studie",
@@ -2689,7 +2753,7 @@ export const germanMessages: Record<string, string> = {
   "Media release": "Pressemitteilung",
   "Distribution information is embargoed until the approved release window.":
     "Informationen zur Verbreitung unterliegen bis zum genehmigten Veröffentlichungsfenster einer Sperrfrist.",
-  Legal: "Rechtlich",
+  Legal: "Recht",
   "Community Print Explainer":
     "Gedrucktes Informationsformat für die Öffentlichkeit",
   "Adapt service information for a print audience":
@@ -2924,7 +2988,8 @@ export const germanMessages: Record<string, string> = {
     "Arbeitsbereich Kundenbetreuung und Beziehungsmanagement",
   "Income & Financial Operations workspace":
     "Arbeitsbereich Einnahmen und Finanzprozesse",
-  "Organisation Services workspace": "Arbeitsbereich Organisationsservices",
+  "Staff Service Operations workspace":
+    "Arbeitsbereich Interne Serviceprozesse",
   "Quality, Monitoring & Improvement workspace":
     "Arbeitsbereich Qualität, Monitoring und Verbesserung",
   "Digital & Technology workspace": "Arbeitsbereich Digitales und Technologie",

@@ -20,8 +20,8 @@ import {
 } from "../content/data";
 import { prototypeForPath } from "../utils/routes";
 describe("canonical functional ownership", () => {
-  it("registers 15 business purposes after separating controlled employment operations", () => {
-    expect(workspaceRegistry).toHaveLength(15);
+  it("registers 16 business purposes with separate confidential welfare ownership", () => {
+    expect(workspaceRegistry).toHaveLength(16);
     expect(new Set(workspaceRegistry.map((w) => w.href)).size).toBe(
       workspaceRegistry.length,
     );
@@ -61,10 +61,13 @@ describe("canonical functional ownership", () => {
   });
   it("keeps canonical files scoped to their owning register and Teams view", () => {
     for (const cfg of functionalConfigs) {
-      expect(filesForWorkspace(cfg.id)).toBe(cfg.files);
+      if (cfg.id === "welfare") expect(filesForWorkspace(cfg.id)).toEqual([]);
+      else expect(filesForWorkspace(cfg.id)).toBe(cfg.files);
       for (const f of cfg.files) {
         expect(cfg.areas.some((a) => a.id === f.area)).toBe(true);
-        expect(f.sensitivity).toBe("Internal");
+        expect(f.sensitivity).toBe(
+          cfg.id === "welfare" ? "Strictly confidential" : "Internal",
+        );
       }
       expect(new Set(cfg.files.map((f) => f.id)).size).toBe(cfg.files.length);
     }

@@ -152,9 +152,6 @@ describe("employment administration has a separate business owner", () => {
       "absence-administration",
       "employee-master-data",
       "payroll-inputs",
-      "employee-relations",
-      "complaints",
-      "welfare",
     ])
       expect(subjectIds.has(id)).toBe(true);
     expect(employment.protected.every((subject) => subject.strict)).toBe(true);

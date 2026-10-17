@@ -229,7 +229,7 @@ const seed: [string, string, string, string, string, string, string, string][] =
       "Robin Wells",
       "Scheduled",
       "netsuite",
-      "Organisation Services",
+      "Staff Service Operations",
       "Purchasing → validate obligation → settle",
     ],
     [

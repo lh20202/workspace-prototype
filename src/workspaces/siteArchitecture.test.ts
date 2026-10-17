@@ -37,9 +37,11 @@ describe("purposeful functional SharePoint information architecture", () => {
         const library = libraryForFile(config, file.id)!;
         expect(library, `${config.id}: ${file.name}`).toBeDefined();
         expect(
-          functionalLibraryDocuments(config, library).find(
-            (item) => item.id === file.id,
-          ),
+          functionalLibraryDocuments(
+            config,
+            library,
+            file.area === "employee-representation" ? "skyler" : "riley",
+          ).find((item) => item.id === file.id),
         ).toBe(file);
         expect(file.folder.split("/")).toHaveLength(2);
         expect(file.folder).toBe(file.folderPath);

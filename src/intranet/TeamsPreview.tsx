@@ -72,13 +72,16 @@ export default function TeamsPreview() {
   const params = new URLSearchParams(location.search);
   const person = resolveStaffPerson(params.get("staff"));
   const requestedWorkspace = params.get("workspace");
+  const defaultContext = defaultTeamsContext(person);
   const workspace =
     workspaces.find((item) => item.id === requestedWorkspace) ||
-    workspaces.find((item) => item.id === person.workspace)!;
+    workspaces.find(
+      (item) => item.id === (defaultContext.workspaceId || person.workspace),
+    )!;
   const department =
     resolveDepartment(params.get("department") || params.get("division")) ||
     (!requestedWorkspace
-      ? resolveDepartment(defaultTeamsContext(person).departmentId || null)
+      ? resolveDepartment(defaultContext.departmentId || null)
       : undefined);
   const workspaceUnavailable = !department && !hasWorkspaceTeams(workspace.id);
   const requested = params.get("channel") || "General";

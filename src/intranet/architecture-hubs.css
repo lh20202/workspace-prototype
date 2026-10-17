@@ -1,0 +1,317 @@
+/* Hubs describe a family of sites; the individual links retain the directory style. */
+:root .architecture-poc-page .directory-content .directory-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+:root .architecture-poc-page .directory-groups .directory-hub {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e4e9eb;
+  border-radius: 4px;
+  background: #f8fafb;
+}
+
+:root .architecture-poc-page .directory-hub-sales-marketing {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+:root .architecture-poc-page .directory-hub-infrastructure {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+:root .architecture-poc-page .directory-hub-personnel {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
+
+:root .architecture-poc-page .directory-hub-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  margin-bottom: 10px;
+}
+
+:root .architecture-poc-page .directory-hub-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  color: #356d7c;
+}
+
+:root .architecture-poc-page .directory-hub-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+:root .architecture-poc-page .directory-hub-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}
+
+:root .architecture-poc-page .directory-hub-heading p {
+  margin: 2px 0 0;
+  color: #616161;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+:root .architecture-poc-page .directory-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+:root .architecture-poc-page .directory-knowledge {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #dbe3e6;
+}
+
+:root .architecture-poc-page .directory-knowledge a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 8px;
+  color: #435d69;
+  background: #eef3f4;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+:root
+  .architecture-poc-page
+  .directory-knowledge
+  a
+  > span:not(.environment-icon) {
+  flex: 1;
+}
+
+:root .architecture-poc-page .directory-knowledge a > svg {
+  flex-shrink: 0;
+  width: 16px;
+}
+
+:root .architecture-poc-page .directory-knowledge a:hover {
+  background: #e2ecef;
+  color: #005a70;
+}
+
+:root .architecture-poc-page .directory-knowledge a:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root .architecture-poc-page .directory-knowledge a {
+    transition:
+      background-color 140ms ease,
+      color 140ms ease;
+  }
+}
+
+:root .architecture-poc-page .directory-hub-personnel .directory-hub-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+:root .architecture-poc-page .directory-functional-area {
+  display: flex;
+  align-items: center;
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  padding-block: 12px;
+}
+
+:root
+  .architecture-poc-page
+  .intranet-directory
+  .directory-content
+  .directory-groups
+  :is(.directory-tile, .directory-tile:last-child:nth-child(odd)) {
+  grid-column: auto;
+  grid-template-columns: 24px minmax(0, 1fr) 16px;
+  min-height: 56px;
+  padding: 8px;
+  gap: 8px;
+}
+
+:root .architecture-poc-page .directory-groups .directory-tile > div {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+:root .architecture-poc-page .directory-groups .directory-tile-icon {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+:root
+  .architecture-poc-page
+  .directory-content
+  .directory-groups
+  .directory-tile
+  h3,
+:root
+  .architecture-poc-page
+  .directory-content
+  .directory-groups
+  .directory-tile
+  h2 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  overflow-wrap: normal;
+}
+
+:root
+  .architecture-poc-page
+  .intranet-directory
+  .directory-content
+  .directory-groups
+  :is(
+    .directory-tile,
+    .directory-tile:last-child:nth-child(odd)
+  ).directory-single-workspace {
+  width: 100%;
+  min-height: 76px;
+  padding: 12px;
+}
+
+:root .architecture-poc-page .directory-confidential {
+  display: inline-flex;
+  margin-left: 6px;
+  color: #616b70;
+  vertical-align: -2px;
+}
+
+:root .architecture-poc-page .directory-confidential svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (min-width: 1101px) and (max-height: 760px) {
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-main:has(.directory-content .directory-groups) {
+    padding-top: 12px;
+    padding-bottom: 64px;
+  }
+
+  :root .architecture-poc-page .intranet-directory .directory-heading {
+    margin-bottom: 8px;
+  }
+
+  :root .architecture-poc-page .intranet-directory .directory-heading h1 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  :root .architecture-poc-page .intranet-directory .directory-heading p {
+    margin: 4px 0 0;
+  }
+
+  :root .architecture-poc-page .directory-content .directory-groups {
+    gap: 8px;
+  }
+
+  :root .architecture-poc-page .directory-groups .directory-hub {
+    padding: 8px;
+  }
+
+  :root .architecture-poc-page .directory-hub-heading {
+    margin-bottom: 4px;
+  }
+
+  :root .architecture-poc-page .directory-hub-grid {
+    gap: 4px;
+  }
+
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-content
+    .directory-groups
+    :is(.directory-tile, .directory-tile:last-child:nth-child(odd)) {
+    min-height: 40px;
+    padding: 4px 6px;
+    gap: 6px;
+  }
+
+  :root .architecture-poc-page .directory-functional-area {
+    padding-block: 4px;
+  }
+
+  :root .architecture-poc-page .directory-knowledge {
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+
+  :root .architecture-poc-page .directory-knowledge a {
+    min-height: 40px;
+  }
+
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-content
+    .directory-groups
+    :is(
+      .directory-tile,
+      .directory-tile:last-child:nth-child(odd)
+    ).directory-single-workspace {
+    min-height: 56px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 1100px) {
+  :root .architecture-poc-page .directory-content .directory-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :root .architecture-poc-page .directory-groups > section {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  :root .architecture-poc-page .directory-hub-personnel .directory-hub-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  :root .architecture-poc-page .directory-knowledge {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :root .architecture-poc-page .directory-hub-grid,
+  :root .architecture-poc-page .directory-hub-personnel .directory-hub-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :root .architecture-poc-page .directory-groups .directory-hub {
+    padding: 10px;
+  }
+}

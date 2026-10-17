@@ -34,6 +34,7 @@ export const roles: Role[] = [
   "Executive Reviewer",
 ];
 export const currentCycle = "2027 Annual Planning";
+export const departmentSubmissionsFolder = `${currentCycle}/Department submissions`;
 export const libraries: {
   id: LibraryId;
   name: string;
@@ -419,7 +420,7 @@ export const documents: Document[] = allDocuments
         d.cycle !== currentCycle
           ? d.cycle
           : d.type === "Submission"
-            ? `${currentCycle}/Department submissions/${d.area}`
+            ? `${departmentSubmissionsFolder}/${d.area}`
             : ["Guidance", "Decision log"].includes(d.type)
               ? `${currentCycle}/Guidance & decisions`
               : `${currentCycle}/Organisational plan`;

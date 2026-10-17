@@ -52,6 +52,16 @@ describe("search matches the same canonical records in English and German", () =
         "  GENEHMIGT   Planung und Analyse ",
       ),
     ).toBe(true);
+    expect(
+      matchesDisplayText("Staff Service Operations", "Interne Serviceprozesse"),
+    ).toBe(true);
+    expect(
+      matchesDisplayText(
+        "Welfare & Employee Representation",
+        "Personalvertretung",
+      ),
+    ).toBe(true);
+    expect(matchesDisplayText("Personnel", "Personal")).toBe(true);
     expect(matchesDisplayText("PRJ-2026-014", "PRJ-2026-014")).toBe(true);
     expect(matchesDisplayText("Approved", " ")).toBe(true);
     expect(matchesDisplayText("Draft", "Genehmigt")).toBe(false);

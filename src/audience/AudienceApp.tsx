@@ -1,3 +1,5 @@
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState, type MouseEvent } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation from "../components/PocAnnotation";
@@ -21,6 +23,7 @@ import {
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
+import { resolveStaffPerson } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   title,
@@ -80,6 +83,7 @@ export default function AudienceApp() {
   }, [message]);
   const parsed = new URL(url, location.origin);
   const params = parsed.searchParams;
+  const person = resolveStaffPerson(params.get("staff"));
   const parts = parsed.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home";
   const protectedStudy =
@@ -109,7 +113,11 @@ export default function AudienceApp() {
     system ||
     protectedStudy;
   const nav = (href: string, replace = false) => {
-    history[replace ? "replaceState" : "pushState"]({}, "", href);
+    history[replace ? "replaceState" : "pushState"](
+      {},
+      "",
+      withExplicitStaff(href),
+    );
     setUrl(location.pathname + location.search + location.hash);
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
@@ -190,7 +198,7 @@ export default function AudienceApp() {
     <section className="service-section">
       <div className="service-section-heading">
         <h2>Research & Experiment Register</h2>
-        <a href={`${base}/calendar`}>Research calendar</a>
+        <StaffLink href={`${base}/calendar`}>Research calendar</StaffLink>
       </div>
       <div className="service-library-toolbar">
         <label>
@@ -276,9 +284,11 @@ export default function AudienceApp() {
                         </button>
                       </td>
                       <td>
-                        <a href={fileLink(filesById.get(decision.evidence)!)}>
+                        <StaffLink
+                          href={fileLink(filesById.get(decision.evidence)!)}
+                        >
                           {decision.recommendation}
-                        </a>
+                        </StaffLink>
                       </td>
                       <td>{decision.owner}</td>
                       <td>{decision.status}</td>
@@ -308,11 +318,13 @@ export default function AudienceApp() {
   );
   return (
     <div className="app-shell services-app audience-app" onClick={intercept}>
-      <a className="skip-link" href="#audience-main">
+      <StaffLink className="skip-link" href="#audience-main">
         Skip to content
-      </a>
+      </StaffLink>
       <WorkspaceHeader
         title={title}
+        userName={person.name}
+        userRole={person.role}
         searchFiles={files}
         memberCount={18}
         helpText={description}
@@ -322,12 +334,15 @@ export default function AudienceApp() {
       <div className="workspace">
         <aside className="sidebar services-sidebar">
           <nav aria-label="Audience workspace navigation">
-            <a href={base} aria-current={page === "home" ? "page" : undefined}>
+            <StaffLink
+              href={base}
+              aria-current={page === "home" ? "page" : undefined}
+            >
               <Home24Regular />
               Home
-            </a>
+            </StaffLink>
             {libraries.map((library) => (
-              <a
+              <StaffLink
                 key={library.id}
                 href={`${base}/${library.id}`}
                 aria-current={
@@ -336,20 +351,20 @@ export default function AudienceApp() {
               >
                 <Folder24Regular />
                 {library.title}
-              </a>
+              </StaffLink>
             ))}
-            <a
+            <StaffLink
               href={`${base}/register`}
               aria-current={register ? "page" : undefined}
             >
               <List24Regular />
               Research & Experiment Register
-            </a>
+            </StaffLink>
           </nav>
         </aside>
         <main className="services-main" id="audience-main">
           <div className="breadcrumb">
-            <a href={base}>Workspace</a>
+            <StaffLink href={base}>Workspace</StaffLink>
             {page !== "home" && (
               <>
                 {" "}
@@ -370,7 +385,7 @@ export default function AudienceApp() {
           {!known ? (
             <>
               <h2>Page not found</h2>
-              <a href={base}>Return to workspace</a>
+              <StaffLink href={base}>Return to workspace</StaffLink>
             </>
           ) : protectedStudy ? (
             <AccessBoundary
@@ -378,7 +393,10 @@ export default function AudienceApp() {
               area="Website Usability Study — Participant administration"
               location={`${title} / Website Usability Study / Participant administration`}
               headingLevel={2}
-              returnHref={`${base}/research?library=Research+%26+Insight&folder=UX+%26+Usability%2FWebsite+Usability+Study`}
+              personId={person.id}
+              returnHref={withExplicitStaff(
+                `${base}/research?library=Research+%26+Insight&folder=UX+%26+Usability%2FWebsite+Usability+Study`,
+              )}
               returnLabel="Back to shared study files"
               strict
             />
@@ -423,11 +441,11 @@ export default function AudienceApp() {
                 Illustrative aggregate results. Detailed tracking remains in the
                 analytics platform.
               </PocAnnotation>
-              <a
+              <StaffLink
                 href={`${base}/analytics?library=Analysis+%26+Reporting&folder=Website+Analysis`}
               >
                 Website analysis files
-              </a>
+              </StaffLink>
             </section>
           ) : page === "home" ? (
             <>
@@ -444,12 +462,12 @@ export default function AudienceApp() {
                   October.
                 </p>
                 <div className="audience-simple-links">
-                  <a href={`${base}/research?file=seg-synthesis`}>
+                  <StaffLink href={`${base}/research?file=seg-synthesis`}>
                     Review the findings
-                  </a>
-                  <a href={`${base}/register?view=Ready+for+Review`}>
+                  </StaffLink>
+                  <StaffLink href={`${base}/register?view=Ready+for+Review`}>
                     Experiments awaiting review
-                  </a>
+                  </StaffLink>
                 </div>
               </section>
               <DocumentLibrary
@@ -467,9 +485,9 @@ export default function AudienceApp() {
                 embedded
               />
               <p>
-                <a href="/content-delivery/production">
+                <StaffLink href="/content-delivery/production">
                   Hand approved audience recommendations to content production →
-                </a>
+                </StaffLink>
               </p>
             </>
           ) : register ? (
@@ -513,11 +531,15 @@ export default function AudienceApp() {
                 </table>
               </div>
               <div className="audience-simple-links">
-                <a href="/content-delivery/digital">
+                <StaffLink href="/content-delivery/digital">
                   Content and message requirements
-                </a>
-                <a href="/digital-tech/ai-automation">Digital implementation</a>
-                <a href={`${base}/analytics`}>Evaluation and reporting</a>
+                </StaffLink>
+                <StaffLink href="/digital-tech/ai-automation">
+                  Digital implementation
+                </StaffLink>
+                <StaffLink href={`${base}/analytics`}>
+                  Evaluation and reporting
+                </StaffLink>
               </div>
             </section>
           ) : activeLibrary ? (
@@ -533,23 +555,23 @@ export default function AudienceApp() {
               />
               {activeLibrary.id === "research" && (
                 <p>
-                  <a
+                  <StaffLink
                     className="rd-protected-link"
                     href={`${base}/research/website-usability/participant-administration`}
                   >
                     <LockClosed20Regular />
                     Participant administration
-                  </a>
+                  </StaffLink>
                 </p>
               )}
               {activeLibrary.id === "analytics" && (
                 <div className="audience-simple-links">
-                  <a href={`${base}/systems/website-analytics`}>
+                  <StaffLink href={`${base}/systems/website-analytics`}>
                     Website Analytics
-                  </a>
-                  <a href={`${base}/systems/performance`}>
+                  </StaffLink>
+                  <StaffLink href={`${base}/systems/performance`}>
                     Performance analytics
-                  </a>
+                  </StaffLink>
                 </div>
               )}
             </>
@@ -625,9 +647,9 @@ export default function AudienceApp() {
                 {files
                   .filter((file) => file.initiativeId === initiative.id)
                   .map((file) => (
-                    <a href={fileLink(file)} key={file.id}>
+                    <StaffLink href={fileLink(file)} key={file.id}>
                       {file.name}
-                    </a>
+                    </StaffLink>
                   ))}
               </div>
               {decisions

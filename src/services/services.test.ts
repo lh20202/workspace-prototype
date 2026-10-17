@@ -1,8 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { areas, documents, filesById, systems } from "./data";
+import { areas, documents, filesById, systems, title } from "./data";
 import { resolveLegacy } from "../workspaces/registry";
 import { configById } from "../workspaces/config";
-describe("Organisation Services has four operational purposes", () => {
+import { pageTitle, prototypeForPath } from "../utils/routes";
+describe("Staff Service Operations has four operational purposes", () => {
+  it("uses the new visible name while preserving the Services route", () => {
+    expect(title).toBe("Staff Service Operations");
+    expect(pageTitle("/services")).toBe("Staff Service Operations");
+    expect(pageTitle("/services/purchasing")).toBe("Staff Service Operations");
+    expect(prototypeForPath("/services")).toBe("services");
+    expect(prototypeForPath("/services/purchasing")).toBe("services");
+  });
   it("contains only office, purchasing, travel and reception", () => {
     expect(areas.map((a) => a.name)).toEqual([
       "Office Maintenance & Equipment",

@@ -43,8 +43,11 @@ describe("department coordination architecture", () => {
     ).toBe(true);
     expect(JSON.stringify(documents)).not.toMatch(/division/i);
   });
-  it("maps every retained staff persona to an actual department and unit", () => {
-    for (const p of staff) {
+  it("maps organisational staff to a department and keeps the representative independent", () => {
+    const representative = staff.find((person) => person.id === "skyler")!;
+    expect(representative.departmentId).toBe("");
+    expect(representative.unitId).toBe("");
+    for (const p of staff.filter((person) => person.id !== "skyler")) {
       const d = departments.find((d) => d.id === p.departmentId)!;
       expect(d).toBeDefined();
       expect(d.units.some((u) => u.id === p.unitId)).toBe(true);

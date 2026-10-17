@@ -270,7 +270,7 @@ const misfiled: Record<
       name: "Supplier Onboarding Checklist.docx",
       kind: "Misplaced business upload",
       destination: "/services/purchasing",
-      destinationName: "Organisation Services → Purchasing & Suppliers",
+      destinationName: "Staff Service Operations → Purchasing & Suppliers",
     },
     reply:
       "Thanks, Casey — this is the shared supplier onboarding checklist, rather than our local project meeting admin. Could you move the working file to Purchasing & Suppliers and link it here? Colleagues handling suppliers can then use the same copy. Let me know if you want a hand.",

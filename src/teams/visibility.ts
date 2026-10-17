@@ -22,6 +22,8 @@ export const workspaceMemberships: Record<string, string[]> = {
   elena: ["people", "content"],
   harper: ["legal"],
   jamie: ["employment"],
+  riley: ["welfare"],
+  skyler: ["welfare"],
 };
 export const logisticsChannelMemberships: Record<string, string[]> = {
   maya: ["street", "central-city", "telephone"],

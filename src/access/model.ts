@@ -28,6 +28,7 @@ const focalPeople: Record<string, string> = {
   legal: "harper",
   people: "elena",
   employment: "jamie",
+  welfare: "riley",
   executive: "robin",
   archives: "morgan",
   projects: "casey",
@@ -45,18 +46,14 @@ const specialContacts: Record<string, AccessFocalPoint> = {
     role: "Response Coordinator",
   },
   council: {
-    id: "council-contact",
+    id: "skyler",
     name: "Skyler Lane",
-    role: "Independent Council Contact",
+    role: "Independent Employee Representative",
   },
 };
 const specialWorkspaces: Record<string, { title: string; href: string }> = {
   governance: { title: "Governance & Members Portal", href: "/governance" },
   emergency: { title: "Emergency Response", href: "/emergency-response" },
-  council: {
-    title: "Employee Representative Council",
-    href: "/employee-council",
-  },
 };
 export function accessWorkspace(
   context: Pick<AccessContext, "workspaceId" | "department">,
@@ -68,7 +65,9 @@ export function accessWorkspace(
       href: `/teams?department=${department.id}`,
     };
   return (
-    workspaceById.get(context.workspaceId) ||
+    workspaceById.get(
+      context.workspaceId === "council" ? "welfare" : context.workspaceId,
+    ) ||
     specialWorkspaces[context.workspaceId] || {
       title: "Digital workspaces",
       href: "/architecture",
@@ -76,7 +75,8 @@ export function accessWorkspace(
   );
 }
 export function accessFocalPoint(
-  context: Pick<AccessContext, "workspaceId" | "department" | "personId">,
+  context: Pick<AccessContext, "workspaceId" | "department" | "personId"> &
+    Partial<Pick<AccessContext, "area">>,
 ): AccessFocalPoint {
   const department = departments.find((item) => item.id === context.department);
   if (department)
@@ -85,6 +85,13 @@ export function accessFocalPoint(
       name: department.coordinator.name,
       role: department.coordinator.role,
     };
+  if (
+    context.workspaceId === "welfare" &&
+    /^(Employee Representation|Independent representative|Council participation)/i.test(
+      context.area || "",
+    )
+  )
+    return specialContacts.council;
   const special = specialContacts[context.workspaceId];
   if (special) return special;
   const person =
@@ -120,6 +127,16 @@ export function accessWorkspaceId(
   value: string | null,
   explicit?: string | null,
 ) {
+  if (explicit === "council" || value === "Employee Representative Council")
+    return "welfare";
+  // Preserve saved access-request links after the visible service-site rename.
+  if (
+    !explicit &&
+    ["Organisation Services", "Organisation Services workspace"].includes(
+      value || "",
+    )
+  )
+    return "services";
   if (
     explicit &&
     (workspaceById.has(explicit) ||

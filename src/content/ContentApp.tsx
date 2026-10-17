@@ -1,5 +1,7 @@
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState, useEffect, type MouseEvent } from "react";
 import {
   Button,
@@ -148,7 +150,11 @@ export default function ContentApp() {
     !!tool ||
     ["tools", "teams", "calendar", "production-register"].includes(page);
   const navigate = (href: string, replace = false) => {
-    history[replace ? "replaceState" : "pushState"]({}, "", href);
+    history[replace ? "replaceState" : "pushState"](
+      {},
+      "",
+      withExplicitStaff(href, parsed.search),
+    );
     setUrl(location.pathname + location.search);
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
@@ -208,23 +214,23 @@ export default function ContentApp() {
   const refs = (item: Package) => (
     <div className="content-reference-list">
       {item.refs.map((reference) => (
-        <a
+        <StaffLink
           key={reference.tool + reference.id}
           href={toolHref(reference.tool, item.id, reference.id)}
         >
           {tools.find((tool) => tool.id === reference.tool)!.name} ·{" "}
           {reference.id}
           <ArrowUpRight20Regular />
-        </a>
+        </StaffLink>
       ))}
     </div>
   );
   const fileList = (source: ContentFile[]) => (
     <div className="content-simple-links">
       {source.map((file) => (
-        <a key={file.id} href={fileLink(file)}>
+        <StaffLink key={file.id} href={fileLink(file)}>
           {file.name}
-        </a>
+        </StaffLink>
       ))}
     </div>
   );
@@ -255,9 +261,9 @@ export default function ContentApp() {
     >
       {!share ? (
         <>
-          <a className="skip-link" href="#content-main">
+          <StaffLink className="skip-link" href="#content-main">
             Skip to content
-          </a>
+          </StaffLink>
           <WorkspaceHeader
             title={title}
             searchFiles={searchableContentFiles}
@@ -287,15 +293,15 @@ export default function ContentApp() {
         {!share && (
           <aside className="sidebar services-sidebar">
             <nav aria-label="Content workspace navigation">
-              <a
+              <StaffLink
                 href={base}
                 aria-current={page === "home" ? "page" : undefined}
               >
                 <Home24Regular />
                 Home
-              </a>
+              </StaffLink>
               {libraries.map((library) => (
-                <a
+                <StaffLink
                   key={library.id}
                   href={`${base}/${library.id}`}
                   aria-current={
@@ -306,15 +312,15 @@ export default function ContentApp() {
                 >
                   <Folder24Regular />
                   {library.title}
-                </a>
+                </StaffLink>
               ))}
-              <a
+              <StaffLink
                 href={`${base}/calendar`}
                 aria-current={page === "calendar" ? "page" : undefined}
               >
                 <Calendar24Regular />
                 Production Calendar
-              </a>
+              </StaffLink>
             </nav>
           </aside>
         )}
@@ -324,7 +330,7 @@ export default function ContentApp() {
               "Shared production area"
             ) : (
               <>
-                <a href={base}>Workspace</a>
+                <StaffLink href={base}>Workspace</StaffLink>
                 {page !== "home" && (
                   <>
                     {" "}
@@ -348,7 +354,7 @@ export default function ContentApp() {
           {!valid ? (
             <>
               <h2>Page not found</h2>
-              <a href={base}>Return to workspace</a>
+              <StaffLink href={base}>Return to workspace</StaffLink>
             </>
           ) : topic ? (
             <AccessBoundary
@@ -377,7 +383,9 @@ export default function ContentApp() {
                 {date(routePackage!.releaseDate)} · {routePackage!.lead}
               </p>
               <p>
-                <a href={packageHref(share.packageId)}>Leave partner preview</a>
+                <StaffLink href={packageHref(share.packageId)}>
+                  Leave partner preview
+                </StaffLink>
               </p>
               {candidateFile &&
                 !sharedFiles(share.packageId).some(
@@ -399,13 +407,13 @@ export default function ContentApp() {
               {params.get("reference") && (
                 <p>Reference: {params.get("reference")}</p>
               )}
-              <a
+              <StaffLink
                 href={
                   selected ? packageHref(selected.id) : `${base}/production`
                 }
               >
                 Back to production
-              </a>
+              </StaffLink>
             </section>
           ) : page === "tools" ? (
             <section>
@@ -413,7 +421,9 @@ export default function ContentApp() {
               <p>
                 Use a production record to open its related specialist system.
               </p>
-              <a href={`${base}/production-register`}>Production Register</a>
+              <StaffLink href={`${base}/production-register`}>
+                Production Register
+              </StaffLink>
             </section>
           ) : page === "home" ? (
             <>
@@ -430,7 +440,7 @@ export default function ContentApp() {
                       ["PKG-103", "Review"],
                       ["PKG-101", "Review scheduled"],
                     ].map(([id, status]) => (
-                      <a
+                      <StaffLink
                         key={id}
                         href={`${base}/production?${new URLSearchParams({ folder: pkg(id).name })}`}
                       >
@@ -446,7 +456,7 @@ export default function ContentApp() {
                         </span>
                         <span className="content-room-stage">{status}</span>
                         <ArrowRight20Regular />
-                      </a>
+                      </StaffLink>
                     ))}
                   </section>
                   <DocumentLibrary
@@ -466,16 +476,16 @@ export default function ContentApp() {
                     }
                   />
                   <div className="content-room-handoffs">
-                    <a href={`${base}/tools/planable`}>
+                    <StaffLink href={`${base}/tools/planable`}>
                       Publishing approvals in Planable <ArrowUpRight20Regular />
-                    </a>
-                    <a href="/audience-innovation/research">
+                    </StaffLink>
+                    <StaffLink href="/audience-innovation/research">
                       Audience evidence <ArrowRight20Regular />
-                    </a>
-                    <a href="/digital-tech/web-crm">
+                    </StaffLink>
+                    <StaffLink href="/digital-tech/web-crm">
                       CMS engineering in Digital & Technology{" "}
                       <ArrowRight20Regular />
-                    </a>
+                    </StaffLink>
                   </div>
                 </div>
                 <TeamsHomePanel
@@ -588,20 +598,24 @@ export default function ContentApp() {
                 readOnly={activeLibrary.id === "published"}
               />
               <div className="content-simple-links">
-                <a href={`${base}/production-register`}>Production Register</a>
+                <StaffLink href={`${base}/production-register`}>
+                  Production Register
+                </StaffLink>
                 {page === "digital" && (
-                  <a href="/digital-tech/web-crm">Digital & Technology</a>
+                  <StaffLink href="/digital-tech/web-crm">
+                    Digital & Technology
+                  </StaffLink>
                 )}
                 {packageContext &&
                   partnerShares
                     .filter((share) => share.packageId === packageContext.id)
                     .map((share) => (
-                      <a
+                      <StaffLink
                         href={`${base}/packages/${share.packageId}/shared`}
                         key={share.packageId}
                       >
                         Partner collaboration · {packageContext.partner}
-                      </a>
+                      </StaffLink>
                     ))}
               </div>
             </>
@@ -691,7 +705,7 @@ export default function ContentApp() {
                 Permitted channels: {selected.permitted.join(" · ")}
                 <br />
                 Rights reference:{" "}
-                <a
+                <StaffLink
                   href={toolHref(
                     "salesforce",
                     selected.id,
@@ -699,7 +713,7 @@ export default function ContentApp() {
                   )}
                 >
                   {selected.rightsReference}
-                </a>
+                </StaffLink>
                 {selected.embargo && (
                   <>
                     <br />
@@ -735,14 +749,14 @@ export default function ContentApp() {
               <h4>Related systems</h4>
               {refs(selected)}
               <h4>Audience research</h4>
-              <a href={selected.research}>
+              <StaffLink href={selected.research}>
                 Open related audience research <ArrowRight20Regular />
-              </a>
+              </StaffLink>
               <p>
-                <a href="/audience-innovation/analytics">
+                <StaffLink href="/audience-innovation/analytics">
                   Return performance evidence to Audience Research & Marketing
                   Insight
-                </a>
+                </StaffLink>
               </p>
               {selected.id === "PKG-102" && (
                 <p>
@@ -754,22 +768,22 @@ export default function ContentApp() {
                 .filter((s) => s.packageId === selected.id)
                 .map((s) => (
                   <p key={s.packageId}>
-                    <a href={`${base}/packages/${s.packageId}/shared`}>
+                    <StaffLink href={`${base}/packages/${s.packageId}/shared`}>
                       {s.name} — {selected.partner}
-                    </a>
+                    </StaffLink>
                   </p>
                 ))}
               {protectedTopics
                 .filter((t) => t.packageId === selected.id)
                 .map((t) => (
                   <p key={t.id}>
-                    <a
+                    <StaffLink
                       className="content-protected-link"
                       href={protectedHref(t)}
                     >
                       <LockClosed20Regular />
                       {t.name} · narrower access group
-                    </a>
+                    </StaffLink>
                   </p>
                 ))}
               <h4>Review conversation</h4>
@@ -880,9 +894,9 @@ function ProductionCalendar({
             year: "numeric",
           })}
         </h3>
-        <a href={toolHref("planable")}>
+        <StaffLink href={toolHref("planable")}>
           Open in Planable <ArrowUpRight20Regular />
-        </a>
+        </StaffLink>
       </div>
       <div className="sp-calendar-scroll">
         <table className="sp-month-calendar" aria-label="Production calendar">
@@ -970,9 +984,9 @@ function ProductionCalendar({
                   <Button onClick={() => openPackage(p.id)}>
                     Open package
                   </Button>{" "}
-                  <a href={toolHref("planable", p.id, ref?.id || "")}>
+                  <StaffLink href={toolHref("planable", p.id, ref?.id || "")}>
                     Open in Planable {ref?.id}
-                  </a>
+                  </StaffLink>
                 </div>
               );
             })}

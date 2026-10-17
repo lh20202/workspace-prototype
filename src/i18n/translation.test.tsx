@@ -60,6 +60,72 @@ describe("English and German display language", () => {
       "Der Service Desk holt die fachliche Genehmigung ein und setzt den Zugriff bei Bedarf um oder eskaliert die Anfrage.",
     );
   });
+  it("translates hub headings and short workspace labels consistently", () => {
+    const hubLabels = {
+      "Sales & Marketing": "Vertrieb und Marketing",
+      Infrastructure: "Infrastruktur",
+      Personnel: "Personal",
+      "Research & Insight": "Recherche & Analyse",
+      "Creative & Editorial": "Kreation und Redaktion",
+      Acquisition: "Akquise",
+      "Customer Care": "Kundenbetreuung",
+      CEO: "Geschäftsleitung",
+      Planning: "Planung",
+      Projects: "Projekte",
+      "Quality & Monitoring": "Qualität und Monitoring",
+      Legal: "Recht",
+      "Staff Service Operations": "Interne Serviceprozesse",
+      "Digital & Technology": "Digitales und Technologie",
+      "Company Archives": "Unternehmensarchiv",
+    };
+    for (const [english, german] of Object.entries(hubLabels)) {
+      expect(translateText(english, "de")).toBe(german);
+      expect(translateText(english, "en")).toBe(english);
+    }
+    expect(translateText("Staff Service Operations workspace", "de")).toBe(
+      "Arbeitsbereich Interne Serviceprozesse",
+    );
+    expect(
+      translateText("Staff Service Operations → Purchasing & Suppliers", "de"),
+    ).toBe("Interne Serviceprozesse → Einkauf und Lieferanten");
+  });
+  it("translates confidential personnel work and independent representation clearly", () => {
+    const protectedLabels = {
+      "Strictly confidential": "Streng vertraulich",
+      "Strictly confidential; protected areas require separate participation":
+        "Streng vertraulich; geschützte Bereiche erfordern eine gesonderte Berechtigung",
+      "Welfare & Employee Representation":
+        "Mitarbeitendenfürsorge und Personalvertretung",
+      "Welfare & Employee Representation workspace":
+        "Arbeitsbereich Mitarbeitendenfürsorge und Personalvertretung",
+      "Welfare & Psychosocial Support":
+        "Fürsorge und psychosoziale Unterstützung",
+      "Safeguarding & Complaints": "Schutz und Beschwerdeverfahren",
+      "Employee Representation": "Personalvertretung",
+    };
+    for (const [english, german] of Object.entries(protectedLabels)) {
+      expect(translateText(english, "de")).toBe(german);
+    }
+    expect(translateText("Support Pathways — Working Method.docx", "de")).toBe(
+      "Unterstützungswege – Arbeitsverfahren.docx",
+    );
+    expect(translateText("Approved outputs/2026 consultation", "de")).toBe(
+      "Freigegebene Ergebnisse/Konsultation 2026",
+    );
+    expect(
+      translateText(
+        "Employee representation has independent membership. Welfare participation does not grant access to internal representative work.",
+        "de",
+      ),
+    ).toBe(
+      "Die Personalvertretung hat einen eigenen Teilnehmendenkreis. Eine Berechtigung für die Mitarbeitendenfürsorge erlaubt keinen Zugriff auf die interne Arbeit der Personalvertretung.",
+    );
+    expect(translateText("/services", "de")).toBe("/services");
+    expect(translateText("/welfare-representation", "de")).toBe(
+      "/welfare-representation",
+    );
+    expect(translateText("/employee-council", "de")).toBe("/employee-council");
+  });
   it("keeps proper names, routes, IDs and English source strings intact", () => {
     for (const value of [
       "Maya Chen",

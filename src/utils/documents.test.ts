@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { documents, currentCycle } from "../data/workspace";
+import {
+  documents,
+  currentCycle,
+  departmentSubmissionsFolder,
+} from "../data/workspace";
 import { queryDocuments, emptyFilters, canAccessRestricted } from "./documents";
 describe("document discovery", () => {
   it("selects only the current cycle", () => {
@@ -56,6 +60,35 @@ describe("document discovery", () => {
 import { departments, quickLinks, currentUser } from "../data/workspace";
 import { filtersFromParams } from "./documents";
 describe("home shortcuts", () => {
+  it("scopes the persistent department shortcut to the current submissions and retains their canonical objects", () => {
+    const planning = documents.filter(
+      (document) => document.library === "planning",
+    );
+    const result = queryDocuments(
+      planning,
+      "All Documents",
+      "",
+      emptyFilters,
+      departmentSubmissionsFolder,
+    );
+    expect(result.length).toBeGreaterThan(0);
+    expect(
+      result.every(
+        (document) =>
+          document.type === "Submission" && document.cycle === currentCycle,
+      ),
+    ).toBe(true);
+    expect(new Set(result.map((document) => document.id)).size).toBe(
+      result.length,
+    );
+    for (const document of result)
+      expect(documents.find((item) => item.id === document.id)).toBe(document);
+    expect(
+      childFolders(planning, departmentSubmissionsFolder)
+        .map((folder) => folder.name)
+        .sort(),
+    ).toEqual([...departments].sort());
+  });
   it.each(departments)("finds current-cycle submissions for %s", (area) => {
     const params = new URLSearchParams({ area, type: "Submission" });
     const result = queryDocuments(

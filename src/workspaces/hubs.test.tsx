@@ -1,0 +1,215 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
+import { createElement } from "react";
+import {
+  architectureSections,
+  environmentsForHub,
+  hubDefinitions,
+  strictlyConfidentialWorkspaceIds,
+  workspaceById,
+  workspaceRegistry,
+  environmentRegistry,
+  environmentById,
+  resolveLegacy,
+} from "./registry";
+import Directory from "../intranet/Directory";
+import ExecutiveApp from "../executive/ExecutiveApp";
+import TeamsPreview from "../intranet/TeamsPreview";
+import { staff } from "../intranet/catalog";
+import { defaultTeamsContext, teamsGroups } from "../teams/navigation";
+import { prototypeForPath, pageTitle } from "../utils/routes";
+import { accessFocalPoint, accessWorkspaceId } from "../access/model";
+
+function at(path: string, person = "maya") {
+  vi.stubGlobal("location", new URL(path, "https://example.test"));
+  vi.stubGlobal("sessionStorage", { getItem: () => person });
+}
+afterEach(() => vi.unstubAllGlobals());
+
+describe("hub families retain one canonical owner for every environment", () => {
+  it("defines the three hub families and keeps finance outside a multi-site hub", () => {
+    expect(hubDefinitions.map((hub) => [hub.name, hub.workspaceIds])).toEqual([
+      ["Sales & Marketing", ["audience", "content", "logistics", "customer"]],
+      [
+        "Infrastructure",
+        [
+          "executive",
+          "planning",
+          "projects",
+          "quality",
+          "legal",
+          "services",
+          "digital",
+          "archives",
+        ],
+      ],
+      ["Personnel", ["people", "employment", "welfare"]],
+    ]);
+    expect(architectureSections).toEqual([
+      { type: "hub", id: "sales-marketing" },
+      { type: "hub", id: "infrastructure" },
+      { type: "workspace", id: "finance" },
+      { type: "hub", id: "personnel" },
+    ]);
+    expect(workspaceById.get("finance")?.hubId).toBeUndefined();
+    expect(
+      workspaceRegistry.filter((workspace) => workspace.id === "finance"),
+    ).toHaveLength(1);
+  });
+  it("has no missing, duplicate or orphan environments and keeps routes stable", () => {
+    const grouped = hubDefinitions.flatMap((hub) => environmentsForHub(hub.id));
+    const independent = architectureSections
+      .filter((section) => section.type === "workspace")
+      .map((section) => workspaceById.get(section.id)!);
+    expect([...grouped, ...independent].map((item) => item.id).sort()).toEqual(
+      environmentRegistry.map((item) => item.id).sort(),
+    );
+    for (const hub of hubDefinitions)
+      for (const environment of environmentsForHub(hub.id)) {
+        expect(environment.hubId).toBe(hub.id);
+        if (environment.environmentType !== "workspace")
+          expect(hub.id).toBe("sales-marketing");
+      }
+    expect(
+      environmentsForHub("sales-marketing").map((item) => item.hubLabel),
+    ).toEqual([
+      "Research & Insight",
+      "Creative & Editorial",
+      "Acquisition",
+      "Customer Care",
+      "Sales & Marketing Wiki",
+      "Frontline Sales Portal",
+    ]);
+    expect(workspaceById.get("services")).toMatchObject({
+      title: "Staff Service Operations",
+      href: "/services",
+    });
+    expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");
+    expect(
+      prototypeForPath("/welfare-representation/employee-representation"),
+    ).toBe("functional");
+    expect(pageTitle("/welfare-representation")).toBe(
+      "Welfare & Employee Representation",
+    );
+    expect(accessWorkspaceId("Organisation Services")).toBe("services");
+    expect(
+      accessFocalPoint({
+        workspaceId: accessWorkspaceId(null, "council"),
+        area: "Council participation",
+      }).id,
+    ).toBe("skyler");
+  });
+  it("surfaces only the Sales Wiki and Frontline Portal as distinct environments", () => {
+    expect(
+      hubDefinitions
+        .filter((hub) => hub.wiki || hub.portal)
+        .map((hub) => hub.id),
+    ).toEqual(["sales-marketing"]);
+    expect(
+      workspaceRegistry.every(
+        (workspace) => workspace.environmentType === "workspace",
+      ),
+    ).toBe(true);
+    at("/architecture");
+    const html = renderToStaticMarkup(createElement(Directory));
+    for (const id of ["sales-wiki", "frontline-sales"]) {
+      const environment = environmentById.get(id)!;
+      expect(html).toContain(`href="${environment.href}"`);
+      expect(html).not.toContain(
+        `class="directory-tile" href="${environment.href}"`,
+      );
+      expect(prototypeForPath(environment.href)).toBe(
+        id === "sales-wiki" ? "wiki" : "frontline",
+      );
+    }
+    expect(html).not.toMatch(
+      /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
+    );
+  });
+  it("renders hub sections, a separate finance link and exactly three quiet confidentiality locks", () => {
+    at("/architecture");
+    const html = renderToStaticMarkup(createElement(Directory));
+    for (const hub of hubDefinitions)
+      expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
+    expect(html).toContain('class="directory-functional-area"');
+    expect(html).toContain('aria-label="Department Teams"');
+    expect(html.match(/title="Strictly confidential"/g)).toHaveLength(3);
+    expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
+      "employment",
+      "executive",
+      "welfare",
+    ]);
+    for (const workspace of workspaceRegistry) {
+      const tile = html.match(
+        new RegExp(
+          `<a(?=[^>]*class="directory-tile[^"]*")(?=[^>]*href="${workspace.href}")[^>]*>[\\s\\S]*?<\\/a>`,
+        ),
+      )?.[0];
+      expect(tile).toBeDefined();
+      expect(tile!.includes('aria-label="Strictly confidential"')).toBe(
+        workspace.accessLevel === "strictly-confidential",
+      );
+    }
+    expect(html).not.toMatch(
+      /Support pathway review|Reporting route review|Representative consultation cycle/,
+    );
+  });
+});
+
+describe("confidential membership remains separate from hub association", () => {
+  it("retains the explicitly selected colleague when returning to Architecture", () => {
+    at("/architecture?staff=devon", "maya");
+    const html = renderToStaticMarkup(createElement(Directory));
+    expect(html).toContain('<option value="devon" selected=""');
+    expect(html).toContain('href="/digital-tech?staff=devon"');
+    expect(html).toContain('href="/sales-marketing/wiki?staff=devon"');
+    expect(html).toContain('href="/teams?staff=devon"');
+  });
+  it("denies ordinary CEO entry without exposing executive working files", () => {
+    at("/executive?staff=maya");
+    const denied = renderToStaticMarkup(createElement(ExecutiveApp));
+    expect(denied).toContain("Access required");
+    expect(denied).toContain("<strong>Robin Avery</strong>");
+    expect(denied).not.toContain("Governance Submission Schedule.xlsx");
+    at("/executive?staff=maya&preview=leadership");
+    expect(renderToStaticMarkup(createElement(ExecutiveApp))).toContain(
+      "Access required",
+    );
+    at("/executive?staff=robin", "robin");
+    expect(renderToStaticMarkup(createElement(ExecutiveApp))).toContain(
+      "Governance Submission Schedule.xlsx",
+    );
+    at("/executive/leadership?preview=leadership");
+    const leadership = renderToStaticMarkup(createElement(ExecutiveApp));
+    expect(leadership).toContain('aria-label="Signed in as Avery Quinn"');
+    expect(leadership).not.toContain("Access required");
+  });
+  it("keeps the independent representative in company conversations without inventing HR or welfare Teams", () => {
+    const representative = staff.find((person) => person.id === "skyler")!;
+    expect(defaultTeamsContext(representative)).toEqual({
+      workspaceId: "logistics",
+      departmentId: undefined,
+    });
+    expect(teamsGroups(representative).map((group) => group.id)).toEqual([
+      "company",
+      "logistics",
+    ]);
+    at("/teams?staff=skyler", "skyler");
+    const html = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(html).toContain("Opening Teams");
+    expect(html).not.toContain("MCG Department");
+    expect(html).not.toContain("PAC Department");
+    expect(html).not.toContain("Manage teams");
+  });
+  it("keeps legacy legal investigations with Legal when sensitive personnel routes move", () => {
+    expect(resolveLegacy("/services/legal/investigations/INV-008")).toBe(
+      "/legal-compliance/protected/formal-cases",
+    );
+    expect(resolveLegacy("/employee-council/deliberations/private-note")).toBe(
+      "/welfare-representation/employee-representation",
+    );
+    expect(
+      resolveLegacy("/employment-admin/protected/welfare/old-record"),
+    ).toBe("/welfare-representation/welfare-support");
+  });
+});
