@@ -25,7 +25,7 @@ The same popup opens from Welcome and Demo Controls. A fixed title and Close act
 
 - Can I work with colleagues in other countries?
 - Can I work with people outside the company?
-- What's the difference between Teams and a workspace?
+- What's the difference between a channel and a workspace?
 - I work with lots of different tools and platforms — how do they fit in?
 - I already work in lots of sites and Teams channels — will this add even more?
 

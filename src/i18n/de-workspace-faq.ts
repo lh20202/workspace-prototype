@@ -58,10 +58,10 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Kann ich mit Personen außerhalb des Unternehmens zusammenarbeiten?",
   "Yes, where external collaboration is needed. Access is limited to the specific shared area or material they need rather than opening up the wider workspace.":
     "Ja, wenn die Zusammenarbeit mit externen Personen erforderlich ist. Diese erhalten nur Zugriff auf den dafür vorgesehenen gemeinsamen Bereich oder die benötigten Unterlagen, nicht auf den gesamten Arbeitsbereich.",
-  "What's the difference between Teams and a workspace?":
-    "Was ist der Unterschied zwischen Teams und einem Arbeitsbereich?",
-  "Teams is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.":
-    "Teams dient vor allem dem Austausch und der täglichen Abstimmung. Im Arbeitsbereich liegen die gemeinsam genutzten Dateien und strukturierten Arbeitsinformationen.",
+  "What's the difference between a channel and a workspace?":
+    "Was ist der Unterschied zwischen einem Kanal und einem Arbeitsbereich?",
+  "A channel is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.":
+    "Ein Kanal dient vor allem dem Austausch und der täglichen Abstimmung. Im Arbeitsbereich liegen die gemeinsam genutzten Dateien und strukturierten Arbeitsinformationen.",
   "I work with lots of different tools and platforms — how do they fit in?":
     "Ich nutze viele verschiedene Tools und Plattformen — wie passen sie dazu?",
   "Workspaces bring the shared documents and collaboration around the work together. Specialist systems still do the jobs they're designed for, and the workspace links you to them instead of trying to duplicate everything.":

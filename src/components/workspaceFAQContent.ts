@@ -115,9 +115,9 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
       },
       {
         id: "teams-workspace-difference",
-        question: "What's the difference between Teams and a workspace?",
+        question: "What's the difference between a channel and a workspace?",
         answer:
-          "Teams is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.",
+          "A channel is mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.",
       },
       {
         id: "specialist-tools",
