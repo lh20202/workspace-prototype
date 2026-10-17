@@ -10,6 +10,7 @@ import {
   departmentHref,
 } from "./data";
 import { staff, peopleDirectory, workspaces } from "../intranet/catalog";
+import { germanTeamsDepartments } from "../i18n/de-teams-departments";
 import {
   documents,
   departments as planningDepartments,
@@ -131,6 +132,33 @@ describe("department coordination architecture", () => {
       expect(d.posts.filter((p) => !p.upload).length).toBeGreaterThan(
         d.posts.filter((p) => p.upload).length,
       );
+    }
+  });
+  it("keeps conversation authors in the department and provides German for seeded messages", () => {
+    const colleagues = [...peopleDirectory, ...staff];
+    for (const department of departments) {
+      for (const post of department.posts) {
+        expect(
+          colleagues.some(
+            (person) =>
+              person.name === post.author &&
+              person.departmentId === department.id,
+          ),
+        ).toBe(true);
+        expect(germanTeamsDepartments[post.text]).toBeTruthy();
+        if (post.moderatorReply)
+          expect(germanTeamsDepartments[post.moderatorReply]).toBeTruthy();
+        for (const reply of post.replies || []) {
+          expect(
+            colleagues.some(
+              (person) =>
+                person.name === reply.author &&
+                person.departmentId === department.id,
+            ),
+          ).toBe(true);
+          expect(germanTeamsDepartments[reply.text]).toBeTruthy();
+        }
+      }
     }
   });
   it("uses only implemented functional destinations including People learning", () => {

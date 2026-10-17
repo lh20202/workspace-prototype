@@ -145,8 +145,11 @@ describe("active workspace, intranet and wiki moderation", () => {
       (name) => name !== "General",
     ))
       expect(germanPublishing[channel]).toBeTruthy();
-    for (const post of publishingPosts)
-      expect(germanPublishing[post.text]).toBeTruthy();
+    for (const post of publishingPosts) {
+      expect(translateText(post.text, "de")).not.toBe(post.text);
+      for (const reply of post.replies || [])
+        expect(translateText(reply.text, "de")).not.toBe(reply.text);
+    }
     for (const file of publishingConfig.files) {
       expect(translateText(file.name, "de")).not.toBe(file.name);
       expect(translateText(file.folder, "de")).not.toBe(file.folder);

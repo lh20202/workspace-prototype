@@ -288,6 +288,21 @@ export default function DepartmentChannel({
                         </div>
                       </article>
                     )}
+                    {original?.replies?.map((reply, i) => (
+                      <article
+                        className="m365-teams-reply coord-local-reply"
+                        key={`seed-${i}`}
+                      >
+                        {avatar(reply.author)}
+                        <div className="thread-reply-body">
+                          <header>
+                            <strong>{reply.author}</strong>
+                            <span>{reply.time}</span>
+                          </header>
+                          <p>{reply.text}</p>
+                        </div>
+                      </article>
+                    ))}
                     {(replies[p.id] || []).map((reply, i) => (
                       <article
                         className="m365-teams-reply coord-local-reply"

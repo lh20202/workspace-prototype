@@ -63,6 +63,7 @@ export interface CoordinationPost {
   attachmentId?: string;
   upload?: ThreadUpload;
   moderatorReply?: string;
+  replies?: { author: string; text: string; time: string }[];
 }
 export interface Department {
   id: string;
@@ -225,7 +226,7 @@ const misfiled: Record<
 > = {
   "marketing-growth": {
     author: "Jamie Brooks",
-    text: "Latest website conversion analysis is here — interesting drop-off around step three.",
+    text: "I've attached October's conversion analysis. There's a bigger drop-off at step three than I expected — has anyone else seen this?",
     upload: {
       id: "UP-MKT-01",
       name: "Website Conversion Analysis — October.pptx",
@@ -235,11 +236,11 @@ const misfiled: Record<
         "Audience Research & Marketing Insight → Measurement & Analytics",
     },
     reply:
-      "Thanks, Jamie — this is the working website conversion analysis. Could you move the file to Measurement & Analytics and link it here? The discussion can stay in this thread, so everyone on the study uses the same working copy. Give me a shout if you need a hand.",
+      "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.",
   },
   communications: {
     author: "Alex Morgan",
-    text: "Storyboard from today’s review attached — comments welcome.",
+    text: "Here's the storyboard from this morning. Does the opening scene get the point across quickly enough?",
     upload: {
       id: "UP-COM-01",
       name: "Service Explainer — Storyboard.pptx",
@@ -248,11 +249,11 @@ const misfiled: Record<
       destinationName: "Creative & Editorial Studio → Creative & Multimedia",
     },
     reply:
-      "Nice one, Alex — this is the storyboard production colleagues are actively reviewing. Could you keep the working version in Creative Production and link it back here? We can carry on discussing it here. Happy to help move it.",
+      "Looks like this is the live storyboard. Can you keep it in Creative & Multimedia and drop the link here? Saves us reviewing two versions.",
   },
   "finance-services": {
     author: "Sam Patel",
-    text: "Updated Q4 scenario assumptions after today’s discussion.",
+    text: "Q4 assumptions attached, with the changes from today's call. Can someone check the timing in the second scenario?",
     upload: {
       id: "UP-FIN-01",
       name: "Q4 Forecast Assumptions.xlsx",
@@ -261,11 +262,11 @@ const misfiled: Record<
       destinationName: "Income & Financial Operations → Planning & Analysis",
     },
     reply:
-      "Thanks, Sam. As these are the actual Q4 forecast working assumptions, could you move the file to Planning & Analysis rather than department admin? Keep a link in this thread so the conversation stays connected to the working version. Happy to help with the move.",
+      "Ah, this one's part of the Q4 forecast. Can you put it in Planning & Analysis and link it here? Fine to keep the discussion in this thread.",
   },
   "strategy-technology": {
     author: "Casey Blake",
-    text: "Updated supplier onboarding checklist from the project discussion.",
+    text: "I've updated the supplier checklist after the project call. Have I missed anything before we send it back?",
     upload: {
       id: "UP-STT-01",
       name: "Supplier Onboarding Checklist.docx",
@@ -274,11 +275,11 @@ const misfiled: Record<
       destinationName: "Staff Service Operations → Purchasing & Suppliers",
     },
     reply:
-      "Thanks, Casey — this is the shared supplier onboarding checklist, rather than our local project meeting admin. Could you move the working file to Purchasing & Suppliers and link it here? Colleagues handling suppliers can then use the same copy. Let me know if you want a hand.",
+      "Can we keep this in Purchasing & Suppliers and link it back? They'll need the latest copy too. Give me a shout if you want a hand moving it.",
   },
   "people-culture": {
     author: "Elena Rossi",
-    text: "Pilot feedback from the manager capability sessions is attached.",
+    text: "Feedback from the manager sessions is attached. The shorter exercise seems to have worked better — worth keeping for the next round?",
     upload: {
       id: "UP-PC-01",
       name: "Manager Capability Programme — Pilot Feedback.xlsx",
@@ -287,11 +288,11 @@ const misfiled: Record<
       destinationName: "People & Culture → Capability & Learning",
     },
     reply:
-      "Thanks, Elena — this is the programme evaluation the learning colleagues are working on. Could you move the working file to Capability & Learning and link it here? We can keep the department discussion in this thread. Happy to help with the move.",
+      "Could you keep the feedback in Capability & Learning and post the link here? Then the learning team can add to the same copy.",
   },
   "executive-office": {
     author: "Robin Avery",
-    text: "Stage review paper from today’s initiative discussion attached.",
+    text: "Stage review attached after today's discussion. I'd like to settle the outstanding handover point before Tuesday.",
     upload: {
       id: "UP-EX-01",
       name: "PRJ-2026-014 · Customer Platform Renewal — Stage Review.pptx",
@@ -300,7 +301,168 @@ const misfiled: Record<
       destinationName: "Projects → PRJ-2026-014 · Customer Platform Renewal",
     },
     reply:
-      "Thanks, Robin — this is the project stage-review paper. Could you keep the working version in PRJ-2026-014 · Customer Platform Renewal and link its decision reference to Strategic Initiatives? Our meeting coordination can stay in this thread. Happy to help route it to the initiative owner.",
+      "Can we keep the paper with PRJ-2026-014 and link the decision reference to Strategic Initiatives? I'll help get it to the initiative owner; we can sort Tuesday's agenda here.",
+  },
+};
+const departmentConversation: Record<string, string[]> = {
+  "marketing-growth": [
+    "Unit planning inputs are due Friday. I've updated the tracker — could each unit check its line before then?",
+    "Anyone coming for lunch on Thursday? I've booked for 12:30 and can still add a couple of seats.",
+    "Tuesday's Unit Directors agenda is up. Anything we need to add before I send it round?",
+    "A few of us are away next week. I've updated the capacity view; can someone cover the Thursday check-in?",
+    "I've started the 2027 retreat agenda. What would make the day useful for your team?",
+    "Still got conference expenses to submit? The checklist's attached — Friday is the deadline.",
+    "Planning ahead for next summer: courtyard or park for the picnic? Add any activity ideas to the note.",
+  ],
+  communications: [
+    "Friday is the deadline for unit planning inputs. The tracker is up to date now; two lines still need owners.",
+    "Friday lunch is booked for 13:00. Anyone else joining?",
+    "I've added the unit updates to Tuesday's agenda. Can we leave ten minutes for the publishing schedule?",
+    "Next week's capacity view is attached. Who can cover the morning check-in while I'm away?",
+    "Retreat agenda attached. I'd like to keep the afternoon for something we can actually work on together — any suggestions?",
+    "Last call for conference expenses this week. I've attached the checklist in case it's useful.",
+    "Any ideas for next summer's picnic? I've started a note so we don't lose the suggestions.",
+  ],
+  "finance-services": [
+    "Unit planning inputs are due on Friday. Can each unit check the tracker? I'd like to catch any gaps before the deadline.",
+    "Thursday lunch, 12:30 — anyone joining? I need numbers for the booking by this afternoon.",
+    "Tuesday's Unit Directors agenda is ready. Is there anything on month-end cover we should add?",
+    "I've updated next week's capacity view. Can anyone spare an hour on Thursday if the close runs over?",
+    "The 2027 retreat agenda is attached. Could we make room for a session on the handoffs that keep slowing us down?",
+    "Conference expenses need to be in by Friday. The checklist covers what to include with the claim.",
+    "We're collecting ideas for next summer's picnic. Courtyard would be easier, but happy to hear other suggestions.",
+  ],
+  "strategy-technology": [
+    "Unit planning inputs are due Friday. I've refreshed the tracker — let me know if your unit needs help getting its line finished.",
+    "Lunch on Thursday at 12:30? I've booked a table; reply here if you'd like a seat.",
+    "Tuesday's agenda is attached. @Devon, do you need a slot for next week's release cover?",
+    "A few people are away next week. Capacity view is updated; please check we haven't left any support gaps.",
+    "First pass at the retreat agenda is up. I'd rather leave some room for discussion than fill it with updates.",
+    "Quick reminder: conference expenses are due Friday. Checklist attached.",
+    "For next summer's picnic, would people prefer the courtyard or the park? Activity ideas can go in the note.",
+  ],
+  "people-culture": [
+    "Friday's the deadline for unit planning inputs. I've updated the tracker; can you check your unit's entry?",
+    "Anyone free for lunch on Thursday? Table's booked for 12:30, and there's room for a few more.",
+    "Agenda for Tuesday is up. Can we add a short slot on cover for the next round of workshops?",
+    "Next week's capacity view is attached. We're a bit stretched on Thursday — is anyone able to help with the workshop setup?",
+    "I've drafted the 2027 retreat agenda. What would you like us to spend more time on this year?",
+    "Conference expenses are due by Friday. I've attached the checklist for anyone still putting their claim together.",
+    "Next summer's picnic: courtyard or park? I've added a few activity ideas — feel free to add yours.",
+  ],
+  "executive-office": [
+    "Unit planning inputs are due Friday. I've updated the tracker. Please check the outstanding entries before tomorrow's check-in.",
+    "I'm booking Thursday lunch for 12:30. Let me know by this afternoon if you'd like to join.",
+    "Tuesday's Unit Directors agenda is attached. Are there any decisions we need to allow more time for?",
+    "I've updated next week's capacity view. We still need cover for the Thursday morning briefing.",
+    "Draft retreat agenda attached. I'd welcome suggestions for the afternoon discussion.",
+    "Conference expenses need to be submitted by Friday. The checklist is attached.",
+    "I've opened the ideas note for next summer's picnic. Any preference between the courtyard and the park?",
+  ],
+};
+const departmentReplies: Record<
+  string,
+  Record<string, NonNullable<CoordinationPost["replies"]>>
+> = {
+  "marketing-growth": {
+    P1: [
+      {
+        author: "Taylor Brooks",
+        text: "Ours is nearly there. I'll add the final figures tomorrow morning.",
+        time: "09:18",
+      },
+    ],
+    P2: [
+      {
+        author: "Taylor Brooks",
+        text: "Yes please, one more for lunch.",
+        time: "09:32",
+      },
+      {
+        author: "Priya Shah",
+        text: "Me too, if there's still space.",
+        time: "10:06",
+      },
+      {
+        author: "Maya Chen",
+        text: "Both added. I'll confirm the numbers at 11.",
+        time: "10:14",
+      },
+    ],
+    P4: [
+      {
+        author: "Taylor Brooks",
+        text: "I can cover Thursday. Send me the invite.",
+        time: "10:31",
+      },
+    ],
+  },
+  communications: {
+    P4: [
+      {
+        author: "Morgan Lee",
+        text: "I can do Monday and Tuesday. Anyone free on Wednesday?",
+        time: "10:29",
+      },
+      {
+        author: "Alex Morgan",
+        text: "Wednesday works for me — thanks.",
+        time: "10:42",
+      },
+    ],
+  },
+  "finance-services": {
+    P2: [
+      {
+        author: "Jordan Lee",
+        text: "Count me in. I can get there just after 12:30.",
+        time: "09:34",
+      },
+    ],
+    P4: [
+      {
+        author: "Jordan Lee",
+        text: "I can help after 14:00. Shall I keep that hour free?",
+        time: "10:28",
+      },
+      {
+        author: "Sam Patel",
+        text: "Yes please. That should give us enough cover.",
+        time: "10:36",
+      },
+    ],
+  },
+  "strategy-technology": {
+    P3: [
+      {
+        author: "Devon Park",
+        text: "Five minutes should do it. I'll bring the gaps rather than run through the whole rota.",
+        time: "10:11",
+      },
+    ],
+  },
+  "people-culture": {
+    P4: [
+      {
+        author: "Jamie Ellis",
+        text: "I can help with setup before 10, then I need to get back to the admin queue.",
+        time: "10:33",
+      },
+      {
+        author: "Clara Jensen",
+        text: "That would be great. Setup should be done by 09:45.",
+        time: "10:39",
+      },
+    ],
+  },
+  "executive-office": {
+    P4: [
+      {
+        author: "Robin Avery",
+        text: "I can take the briefing. Please send me the latest agenda.",
+        time: "10:38",
+      },
+    ],
   },
 };
 export const departments: Department[] = definitions.map(
@@ -386,23 +548,20 @@ export const departments: Department[] = definitions.map(
       {
         id: `${id}-P1`,
         author: coordinatorName,
-        text: "Reminder that unit inputs for the planning cycle are due Friday. The local tracker in Shared has been updated.",
+        text: departmentConversation[id][0],
         time: "09:10",
         attachmentId: byFolder("Planning Cycle Coordination"),
       },
       {
         id: `${id}-P2`,
         author: colleague,
-        text:
-          id === "communications"
-            ? "Friday lunch is booked for 13:00. Anyone else joining?"
-            : "Anyone joining the department lunch on Thursday? I’ve booked a table for 12:30.",
+        text: departmentConversation[id][1],
         time: "09:30",
       },
       {
         id: `${id}-P3`,
         author: coordinatorName,
-        text: "Agenda for Tuesday’s Unit Directors meeting is up — please add anything you want covered.",
+        text: departmentConversation[id][2],
         time: "10:05",
         attachmentId: byFolder("Leadership & Unit Directors"),
       },
@@ -414,21 +573,21 @@ export const departments: Department[] = definitions.map(
             : id === "marketing-growth"
               ? "Maya Chen"
               : coordinatorName,
-        text: "Quick heads-up that a few colleagues are away next week. Cover arrangements are updated.",
+        text: departmentConversation[id][3],
         time: "10:25",
         attachmentId: byFolder("Workload & Capacity"),
       },
       {
         id: `${id}-P5`,
         author: coordinatorName,
-        text: "Retreat venue shortlist is in Away Days. Please vote by Wednesday.",
+        text: departmentConversation[id][4],
         time: "11:00",
         attachmentId: byFolder("Retreats & Away Days"),
       },
       {
         id: `${id}-P6`,
         author: coordinatorName,
-        text: "Expense submissions from the conference are due at the end of the week. The submission checklist is in Shared.",
+        text: departmentConversation[id][5],
         time: "11:25",
         attachmentId: library.find(
           (f) => f.name === "Expense Submission Checklist.docx",
@@ -449,7 +608,7 @@ export const departments: Department[] = definitions.map(
       posts.splice(5, 0, {
         id: `${id}-recruitment-handoff`,
         author: "Clara Jensen",
-        text: "The candidate-workflow administration checklist is ready for a process review. It contains no candidate information.",
+        text: "The recruitment handoff checklist is ready for a quick process check. It's just the steps, with no candidate details.",
         time: "10:50",
         upload: {
           id: "UP-PC-02",
@@ -460,13 +619,13 @@ export const departments: Department[] = definitions.map(
             "Employment & Hiring Administration → Recruitment Administration",
         },
         moderatorReply:
-          "Thanks — the shared candidate-workflow administration belongs in Employment & Hiring Administration. Please keep the process checklist there and link it here. Applications, assessments, references and individual decisions must stay in their separately authorised locations. Leadership and culture programmes remain in People & Culture.",
+          "Could you put this in Employment & Hiring Administration → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.",
       });
     if (id === "strategy-technology")
       posts.splice(5, 0, {
         id: `${id}-engineering-handoff`,
         author: "Devon Park",
-        text: "Shared the next HR-platform interface review notes for the technical release discussion.",
+        text: "HR-platform interface notes attached. Can someone check the authentication changes before the release review?",
         time: "10:55",
         upload: {
           id: "UP-STT-02",
@@ -476,15 +635,19 @@ export const departments: Department[] = definitions.map(
           destinationName: "Digital & Technology → Engineering Delivery",
         },
         moderatorReply:
-          "Thanks, Devon — the API, authentication and integration work belongs in Digital & Technology. Please keep the technical review there and link it here. Employment & Hiring Administration owns the business process and individual employment records, with their separate access controls.",
+          "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Employment & Hiring Administration.",
       });
     posts.push({
       id: `${id}-P7`,
       author: coordinatorName,
-      text: "Summer picnic poll: courtyard or park? Add your activity ideas to the shared note.",
+      text: departmentConversation[id][6],
       time: "12:05",
       attachmentId: byFolder("Social & Team Activities"),
     });
+    for (const post of posts) {
+      const key = post.id.slice(id.length + 1);
+      post.replies = departmentReplies[id]?.[key];
+    }
     return {
       id,
       name,

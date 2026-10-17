@@ -79,7 +79,7 @@ export function createIncident(
     posts: [
       {
         author: lead,
-        text: "Initial response group confirmed. Please use this channel for all incident coordination.",
+        text: "The initial response group is in. Keep incident updates here so we have one record.",
         time: startTime,
       },
     ],
@@ -153,18 +153,18 @@ const first = createIncident(
 );
 first.posts.push(
   {
-    author: "Riley Drew · IT specialist",
-    text: "Service impact assessment added to Files.",
+    author: "Devon Park",
+    text: "Impact Assessment is in Files. I’ll update it as the service checks come back.",
     time: "10:10",
   },
   {
-    author: "Harper Cole · Legal adviser",
-    text: "Reviewing notification obligations. Update to follow.",
+    author: "Harper Cole",
+    text: "I’m checking the notification requirements. I’ll update here once they’re clear.",
     time: "10:20",
   },
   {
-    author: "Avery Quinn · Executive lead",
-    text: "Decision required on temporary operating measure.",
+    author: "Robin Avery",
+    text: "The temporary operating measure needs a decision. I’ll confirm the conditions before we implement it.",
     time: "10:30",
   },
 );

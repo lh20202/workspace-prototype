@@ -112,23 +112,35 @@ export default function ContentConversation({
               </div>
             ))}
             <div className="m365-teams-reactions">
-              {(post.reactions || [{ emoji: "👍", count: 2 }]).map(
-                ({ emoji, count }) => {
-                  const key = `${post.id}:${emoji}`;
-                  return (
-                    <button
-                      key={emoji}
-                      aria-label={`React ${emoji}`}
-                      aria-pressed={!!reactions[key]}
-                      disabled={readOnly}
-                      onClick={() =>
-                        setReactions({ ...reactions, [key]: !reactions[key] })
-                      }
-                    >
-                      {emoji} {count + (reactions[key] ? 1 : 0)}
-                    </button>
-                  );
-                },
+              {(post.reactions || []).map(({ emoji, count }) => {
+                const key = `${post.id}:${emoji}`;
+                return (
+                  <button
+                    key={emoji}
+                    aria-label={`React ${emoji}`}
+                    aria-pressed={!!reactions[key]}
+                    disabled={readOnly}
+                    onClick={() =>
+                      setReactions({ ...reactions, [key]: !reactions[key] })
+                    }
+                  >
+                    {emoji} {count + (reactions[key] ? 1 : 0)}
+                  </button>
+                );
+              })}
+              {!post.reactions?.length && !readOnly && (
+                <button
+                  aria-label="Like this post"
+                  aria-pressed={!!reactions[`${post.id}:👍`]}
+                  onClick={() =>
+                    setReactions({
+                      ...reactions,
+                      [`${post.id}:👍`]: !reactions[`${post.id}:👍`],
+                    })
+                  }
+                >
+                  {reactions[`${post.id}:👍`] ? "👍 1" : "Like"}
+                </button>
               )}
               {!readOnly && (
                 <button

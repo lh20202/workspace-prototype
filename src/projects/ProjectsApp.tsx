@@ -33,6 +33,7 @@ import {
   reviewRows,
   type Project,
 } from "./data";
+import { projectConversation } from "./conversations";
 import "./styles.css";
 const centralNav = [
   ["home", "Home"],
@@ -710,6 +711,7 @@ export default function ProjectsApp() {
     const selectedChannel = projectChannels.includes(channel)
       ? channel
       : "General";
+    const conversation = projectConversation(project, selectedChannel);
     const changeTeamsLocation = (nextChannel: string, nextTab: string) => {
       setChannel(nextChannel);
       setTab(nextTab);
@@ -803,16 +805,10 @@ export default function ProjectsApp() {
                   </span>
                   <div>
                     <strong>{project.lead}</strong>
-                    <span>Today, 10:15</span>
+                    <span>{conversation.time}</span>
                   </div>
                 </div>
-                <p>
-                  {selectedChannel === "Decisions & Actions"
-                    ? "Please record the stage decision and follow-up in the project decision log before the next review."
-                    : selectedChannel === "Project Delivery"
-                      ? "The handover review is ready. Please review the delivery plan before our next milestone."
-                      : "Please review the current actions ahead of our next project check-in."}
-                </p>
+                <p>{conversation.text}</p>
                 <StaffLink
                   className="teams-project-attachment"
                   href={
@@ -832,6 +828,27 @@ export default function ProjectsApp() {
                     ? "Decisions & Actions"
                     : "Delivery Plan.xlsx"}
                 </StaffLink>
+                {conversation.replies.map((reply, i) => (
+                  <article
+                    className="teams-thread-reply"
+                    key={`seed-${i}`}
+                    aria-label={`Reply from ${reply.author}`}
+                  >
+                    <span className="post-avatar small" aria-hidden="true">
+                      {reply.author
+                        .split(" ")
+                        .map((name) => name[0])
+                        .join("")}
+                    </span>
+                    <div className="thread-reply-body">
+                      <header>
+                        <strong>{reply.author}</strong>
+                        <span>{reply.time}</span>
+                      </header>
+                      <p>{reply.text}</p>
+                    </div>
+                  </article>
+                ))}
                 {projectReplies
                   .filter((p) => p.channel === selectedChannel)
                   .map((p, i) => (

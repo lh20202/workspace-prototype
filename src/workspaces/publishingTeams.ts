@@ -1,3 +1,5 @@
+import type { ConversationMessage } from "./technicalTeams";
+
 export const publishingChannels = [
   "General",
   "Workspace Moderation",
@@ -7,54 +9,96 @@ export const publishingChannels = [
   "Navigation & Findability",
 ];
 
-export const publishingPosts = [
+export const publishingPosts: ConversationMessage[] = [
   {
     channel: "General",
     author: "Jordan Lee",
-    text: "This week’s moderation reviews are in the register. Please confirm the business owner before asking Digital & Technology to implement a change.",
-    reply:
-      "Devon Park: I’ll pick up the technical handoffs once the owner and intended audience are clear.",
+    time: "08:49",
+    text: "This week’s reviews are in the register. Can we settle the owner and audience before sending the changes to Digital? It’ll save another round of questions.",
   },
   {
     channel: "Workspace Moderation",
-    author: "Maya Chen",
-    text: "Customer Care requested another private library, but the content looks like an existing protected relationship area. Can we check the requirement before anything is created?",
-    reply:
-      "Jordan Lee: I’ve added the clarification to the register. Let’s confirm the content owner and audience first.",
+    author: "Jordan Lee",
+    time: "09:23",
+    text: "Customer Care asked for another private library. This looks like it might already fit in their protected relationship area. Can someone check with them before we set anything up?",
+    replies: [
+      {
+        author: "Elena Rossi",
+        text: "I’ll ask the owner what’s missing and who needs access. Added it to the register so we don’t lose it.",
+        time: "09:46",
+      },
+    ],
   },
   {
     channel: "Workspace Moderation",
     author: "Casey Blake",
-    text: "The Projects workspace has two closed projects still appearing in Current Projects. I’ve linked the affected view in the review register.",
-    reply:
-      "Devon Park: I’ll check the view after the project owners confirm the closure state.",
+    time: "14:08",
+    text: "Two closed projects are still showing in Current Projects. I’ve linked the view in the review register — are we waiting for final handover on those?",
+    replies: [
+      {
+        author: "Devon Park",
+        text: "I’ll check the view once the project owners confirm the closure status.",
+        time: "14:31",
+      },
+      {
+        author: "Casey Blake",
+        text: "Thanks, I’ll ask them and come back here.",
+        time: "14:43",
+      },
+    ],
   },
   {
     channel: "Intranet Moderation",
     author: "Casey Blake",
-    text: "Planning has a new approved reporting view. Can someone check whether the intranet link still points to the old location?",
-    reply:
-      "Elena Rossi: I’ll confirm the published link with the page owner today.",
+    time: "10:16",
+    text: "Planning’s approved reporting view has changed. Could someone check the intranet link? I think it still opens the old location.",
+    replies: [
+      {
+        author: "Elena Rossi",
+        text: "I’ll check it with the page owner today.",
+        time: "10:52",
+      },
+    ],
+    likes: 1,
   },
   {
     channel: "Wiki Moderation",
-    author: "Taylor Brooks",
-    text: "The Sales & Marketing Wiki has three pages due for review this month. The owners are listed in the register.",
-    reply:
-      "Elena Rossi: I’ve asked them to confirm their review dates before the next publishing handoff.",
+    author: "Elena Rossi",
+    time: "11:41",
+    text: "Three Sales & Marketing Wiki pages are due for review this month. Owners are in the register. Do we have dates from everyone yet?",
+    replies: [
+      {
+        author: "Jordan Lee",
+        text: "Not yet. I’ve asked them to confirm before the next publishing handoff.",
+        time: "12:18",
+      },
+    ],
   },
   {
     channel: "Publishing & Ownership",
     author: "Elena Rossi",
-    text: "The page owner will approve the updated guidance before publication. Please keep the working draft linked from its workspace rather than uploading a second copy here.",
-    reply:
-      "Jordan Lee: Agreed. The handoff checklist now points to the owner’s source file.",
+    time: "13:29",
+    text: "The updated guidance is waiting for the page owner’s approval. Can we link the working draft from its workspace here? I’d rather not start a second copy.",
+    replies: [
+      {
+        author: "Jordan Lee",
+        text: "Done — the handoff checklist now links to the owner’s file.",
+        time: "13:44",
+      },
+    ],
+    likes: 1,
   },
   {
     channel: "Navigation & Findability",
     author: "Devon Park",
-    text: "Search feedback: people are finding the published policy but not the working procedure. I’ve added both routes to today’s navigation review.",
-    reply:
-      "Harper Cole: I’ll check the wording with the procedure owner. Any search configuration change stays with Digital & Technology.",
+    time: "15:06",
+    text: "Yesterday’s search feedback: people find the published policy but miss the working procedure. I’ve added both routes to today’s navigation review. Could the page titles be the problem?",
+    replies: [
+      {
+        author: "Harper Cole",
+        text: "I’ll look at the wording with the procedure owner first. If search configuration needs changing, I’ll bring it back to Digital.",
+        time: "15:39",
+      },
+    ],
   },
 ];

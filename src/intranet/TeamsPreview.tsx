@@ -509,7 +509,7 @@ export default function TeamsPreview() {
 }
 const planningUpdate = {
   author: "Casey Blake",
-  text: "The annual planning guidance is ready for review. Please raise any questions about department submissions in this thread before Friday.",
+  text: "I’ve updated the annual planning guidance. Any questions about your department’s submission? Let me know before Friday so I can clear them up before the deadline.",
 };
 function CoordinationFeed({
   userName,

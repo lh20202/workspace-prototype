@@ -315,7 +315,7 @@ export default function TeamsView({
                   <ThreadReply
                     author={p.reply.split(":")[0]}
                     text={p.reply.slice(p.reply.indexOf(":") + 1).trim()}
-                    time="10:24"
+                    time={p.replyTime || p.time}
                     reactions={p.id === "post-daisy"}
                   />
                 )}
@@ -556,14 +556,20 @@ function ThreadReply({
   authored?: boolean;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
-  const choices = [
-    { emoji: "👍", name: "Like", count: reactions ? 3 : 0 },
-    { emoji: "😂", name: "Laugh", count: reactions ? 2 : 0 },
-    { emoji: "❤️", name: "Love", count: reactions ? 1 : 0 },
-    { emoji: "😮", name: "Surprised", count: 0 },
-    { emoji: "🐱", name: "Cat", count: reactions ? 2 : 0 },
-    { emoji: "👽", name: "Alien", count: reactions ? 1 : 0 },
-  ];
+  const choices = reactions
+    ? [
+        { emoji: "👍", name: "Like", count: reactions ? 3 : 0 },
+        { emoji: "😂", name: "Laugh", count: reactions ? 2 : 0 },
+        { emoji: "❤️", name: "Love", count: reactions ? 1 : 0 },
+        { emoji: "😮", name: "Surprised", count: 0 },
+        { emoji: "🐱", name: "Cat", count: reactions ? 2 : 0 },
+        { emoji: "👽", name: "Alien", count: reactions ? 1 : 0 },
+      ]
+    : [
+        { emoji: "👍", name: "Like", count: 0 },
+        { emoji: "✅", name: "Agreed", count: 0 },
+        { emoji: "👀", name: "Seen", count: 0 },
+      ];
   return (
     <article className="teams-thread-reply" aria-label={`Reply from ${author}`}>
       <span className="post-avatar small" aria-hidden="true">

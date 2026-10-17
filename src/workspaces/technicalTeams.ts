@@ -1,3 +1,19 @@
+export interface ConversationReply {
+  author: string;
+  text: string;
+  time: string;
+}
+export interface ConversationMessage {
+  channel: string;
+  author: string;
+  text: string;
+  time?: string;
+  replies?: ConversationReply[];
+  likes?: number;
+  repo?: string;
+  kind?: string;
+  ref?: string;
+}
 export const technicalChannels = [
   "General",
   "Engineering",
@@ -9,20 +25,37 @@ export const technicalChannels = [
   "Platform Operations",
   "Security Engineering",
 ];
-export const technicalPosts = [
+export const technicalPosts: ConversationMessage[] = [
   {
     channel: "Security Engineering",
     author: "Devon Park",
-    text: "The privileged-access review is ready for peer review. Please confirm service owners against approved change references; credentials and vulnerability details remain in their separately controlled systems.",
-    reply:
-      "Ari Morgan: I’ll check the review checklist and the recorded approval references before the change window.",
+    time: "08:42",
+    text: "Privileged-access review is ready. @Ari can you check the service owners against the approved changes before the window? Credentials and vulnerability details are still in their separate systems.",
+    replies: [
+      {
+        author: "Ari Morgan",
+        text: "On it. I’ll check the approval references as well.",
+        time: "09:06",
+      },
+    ],
   },
   {
     channel: "Innovators",
     author: "Devon Park",
-    text: "For the Company Data API proof of concept, I’d keep the boundary explicit: TypeScript request validation at the edge, Python workers for the batch jobs. Anyone see a reason to put the whole pipeline behind one synchronous endpoint?",
-    reply:
-      "Casey Blake: Separate failure domains look easier to test. Can we capture the retry and idempotency trade-off in the ADR before choosing?",
+    time: "09:17",
+    text: "Company Data API: I’d validate requests in TypeScript at the edge and keep the batch workers in Python. Is there a good reason to put the whole pipeline behind one synchronous endpoint?",
+    replies: [
+      {
+        author: "Ari Morgan",
+        text: "Separate failure domains would be easier to test. What does that mean for retries and idempotency?",
+        time: "09:31",
+      },
+      {
+        author: "Devon Park",
+        text: "That’s the trade-off I want to settle. I’ll add both options to the Architecture Decision Record before we choose.",
+        time: "09:54",
+      },
+    ],
     repo: "service-integrations",
     kind: "issue",
     ref: "214",
@@ -30,9 +63,16 @@ export const technicalPosts = [
   {
     channel: "Innovators",
     author: "Riley Chen",
-    text: "The containerised preview build is finally reproducible. I’ve left the CI/CD job deliberately boring: typecheck, contract tests, image build, then an approval before deployment. Could use another pair of eyes on the edge-function timeout handling.",
-    reply:
-      "Devon Park: Nice. Let’s review the API contract tests separately from the deployment wiring so the PR stays readable.",
+    time: "11:08",
+    text: "Container preview builds are reproducible now. CI/CD runs typecheck, contract tests and the image build, then waits for deployment approval. Could someone check the edge-function timeout handling in this PR?",
+    replies: [
+      {
+        author: "Devon Park",
+        text: "I’ll take the timeout handling. Can we review the API contract tests separately from the deploy wiring?",
+        time: "11:23",
+      },
+    ],
+    likes: 1,
     repo: "company-web",
     kind: "pr",
     ref: "476",
@@ -40,9 +80,15 @@ export const technicalPosts = [
   {
     channel: "Innovators",
     author: "Ari Morgan",
-    text: "SPFx experiment: rendering the compact search results with React is straightforward; the awkward bit is Graph throttling. I’ve isolated the adapter so we can test backoff without a tenant dependency.",
-    reply:
-      "Riley Chen: Good call. Keep the local fixture synthetic and put the adapter limitation in the review notes.",
+    time: "14:36",
+    text: "Compact search results render fine in React/SPFx. Graph throttling is the awkward part. I’ve split out the adapter so we can test backoff without a tenant.",
+    replies: [
+      {
+        author: "Riley Chen",
+        text: "I can look at the adapter. Let’s keep the local fixture synthetic and note the tenant limitation in the review.",
+        time: "15:02",
+      },
+    ],
     repo: "m365-extensions",
     kind: "repository",
     ref: "",
@@ -50,9 +96,20 @@ export const technicalPosts = [
   {
     channel: "AI Lab",
     author: "Devon Park",
-    text: "Has anyone compared Qwen3 and Mistral Small for structured extraction locally? In our fictional fixture, schema constraints improved JSON consistency, but inference latency still needs work. I’ve kept licence review as a separate acceptance gate.",
-    reply:
-      "Ari Morgan: Let’s compare classification and long-context cases separately. The smaller model may be fine for one and unreliable for the other; the evaluation set needs to show both.",
+    time: "10:24",
+    text: "Has anyone tried Qwen3 and Mistral Small locally for structured extraction? Schema constraints helped JSON consistency on our synthetic test set, but latency still needs work. Licence review is still a separate gate.",
+    replies: [
+      {
+        author: "Ari Morgan",
+        text: "Were classification and long-context cases in the same run? I’d split those out before we draw conclusions about the smaller model.",
+        time: "10:51",
+      },
+      {
+        author: "Devon Park",
+        text: "Good point. I’ll separate the results in Model Evaluation.xlsx.",
+        time: "11:04",
+      },
+    ],
     repo: "internal-ai",
     kind: "pr",
     ref: "482",
@@ -60,9 +117,15 @@ export const technicalPosts = [
   {
     channel: "AI Lab",
     author: "Riley Chen",
-    text: "For the chatbot proof of concept I’d keep embeddings local and test Qdrant before a hosted vector service. The RAG harness now separates retrieval quality from answer quality, with no real customer data in the test set.",
-    reply:
-      "Devon Park: Added a review task for privacy-preserving fixtures, prompt changes and model licence notes. Let’s use the same run manifest when comparing local inference settings.",
+    time: "13:47",
+    text: "I’d try Qdrant locally before paying for a hosted vector store for the chatbot. Embeddings can stay local too. The RAG harness now scores retrieval and answers separately; the test set has no real customer data.",
+    replies: [
+      {
+        author: "Devon Park",
+        text: "Added privacy-safe fixtures, prompt changes and licence notes to the issue. Can we keep the run manifest the same when we compare inference settings?",
+        time: "14:19",
+      },
+    ],
     repo: "chatbot-platform",
     kind: "issue",
     ref: "193",
@@ -70,9 +133,15 @@ export const technicalPosts = [
   {
     channel: "Web & CRM DevOps",
     author: "Devon Park",
-    text: "CRM webhook retry handling is ready for contract review. The delivery checklist links content acceptance from Creative & Editorial Studio; deployment and runtime checks stay with this engineering release.",
-    reply:
-      "Riley Chen: Please include the synthetic event replay result with the review, not a copy of CRM customer records.",
+    time: "09:38",
+    text: "CRM webhook retries are ready for contract review in release 2026.10. Content acceptance from Creative & Editorial is linked in the Deployment Checklist; deploy and runtime checks are still ours.",
+    replies: [
+      {
+        author: "Riley Chen",
+        text: "Can you add the synthetic event replay result to the release review? We don’t need any CRM customer records there.",
+        time: "10:02",
+      },
+    ],
     repo: "customer-platform",
     kind: "release",
     ref: "2026.10",
@@ -80,9 +149,16 @@ export const technicalPosts = [
   {
     channel: "M365 & SPFx",
     author: "Ari Morgan",
-    text: "Metadata provisioning change is ready for review. Business taxonomy comes from the functional owners; retention requirements come from Archives. This PR implements the configuration and migration mapping.",
-    reply:
-      "Devon Park: I’ll review the rollback path and Graph permission scope. No tenant credentials in the working notes.",
+    time: "15:14",
+    text: "Metadata provisioning PR is up: configuration and migration mapping. I’ve used the functional owners’ taxonomy and Archives’ retention requirements. @Devon, could you check the rollback path?",
+    replies: [
+      {
+        author: "Devon Park",
+        text: "Yes, and I’ll check the Graph permission scope. Keep tenant credentials out of the review notes.",
+        time: "15:43",
+      },
+    ],
+    likes: 2,
     repo: "m365-extensions",
     kind: "pr",
     ref: "318",
@@ -90,9 +166,8 @@ export const technicalPosts = [
   {
     channel: "General",
     author: "Devon Park",
-    text: "This week’s reviews: customer platform integration, local classification evaluation and M365 search. Please link the repository issue and the working design so we can review the same context.",
-    reply:
-      "Ari Morgan: I’ve linked the release review and design notes in Shared.",
+    time: "08:56",
+    text: "Reviews this week: customer platform integration, local classification evals and M365 search. Bring the repo issue and working design to each review so we’re looking at the same version.",
     repo: "service-integrations",
     kind: "repository",
     ref: "",
@@ -100,9 +175,21 @@ export const technicalPosts = [
   {
     channel: "Engineering",
     author: "Riley Chen",
-    text: "Company Data API contract review is open. Looking for feedback on pagination, error semantics and event versioning before we lock the first consumer interface.",
-    reply:
-      "Devon Park: Added a small Python consumer fixture to test the contract boundary.",
+    time: "10:07",
+    text: "API contract review is open. Can someone check pagination, error semantics and event versioning before we lock the first consumer interface?",
+    replies: [
+      {
+        author: "Devon Park",
+        text: "I’ve added a small Python consumer fixture to test the contract boundary.",
+        time: "10:26",
+      },
+      {
+        author: "Riley Chen",
+        text: "Thanks. I’ll use that for the pagination check.",
+        time: "10:41",
+      },
+    ],
+    likes: 1,
     repo: "service-integrations",
     kind: "issue",
     ref: "217",
@@ -110,9 +197,15 @@ export const technicalPosts = [
   {
     channel: "Architecture & Governance",
     author: "Ari Morgan",
-    text: "The architecture review compares managed hosting and container deployment for the new service. Please record operational ownership and failure recovery trade-offs in the decision note.",
-    reply:
-      "Riley Chen: Agreed. Keep the investment decision linked to executive oversight rather than copying their paper.",
+    time: "11:32",
+    text: "Managed hosting or containers for the new service? I’ve put the trade-offs in the Architecture Decision Record. We still need to agree who runs it and how we recover if it fails.",
+    replies: [
+      {
+        author: "Riley Chen",
+        text: "Agreed. I’ll keep the investment decision linked to the executive paper rather than copying it into the record.",
+        time: "12:09",
+      },
+    ],
     repo: "company-web",
     kind: "issue",
     ref: "229",
@@ -120,9 +213,15 @@ export const technicalPosts = [
   {
     channel: "Platform Operations",
     author: "Devon Park",
-    text: "Change review is open for the service workflow. Freshservice holds the request and operational approvals; Shared has our implementation checklist.",
-    reply:
-      "Ari Morgan: I’ll confirm the authorised account and device handoff with the new-starter owner.",
+    time: "13:18",
+    text: "Service workflow change is ready for review. Request and approvals are in Freshservice; the Service Change — Handoff Checklist is in Shared.",
+    replies: [
+      {
+        author: "Ari Morgan",
+        text: "I’ll check the authorised account and device handoff with the new-starter owner.",
+        time: "13:52",
+      },
+    ],
     repo: "service-integrations",
     kind: "issue",
     ref: "231",

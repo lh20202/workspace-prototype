@@ -765,6 +765,7 @@ export interface Post {
   text: string;
   fileIds: string[];
   reply?: string;
+  replyTime?: string;
   locationLink?: boolean;
   pet?: string;
   image?: { src: string; alt: string };
@@ -776,16 +777,18 @@ export const posts: Post[] = [
     author: "Jamie Brooks",
     time: "09:10",
     title: "This week’s operational handover",
-    text: "In-person and calling operations are active. Please check the current on-call rota before raising cross-operation issues.",
+    text: "Both teams are out today. I’ve attached the on-call rota — check who’s covering before you ring round.",
     fileIds: ["on-call"],
-    reply: "Maya Chen: Thanks — the calling team has the current handover.",
+    replyTime: "09:17",
+    reply:
+      "Maya Chen: Got it. I’ve passed the handover on to the calling team.",
   },
   {
     id: "post-general2",
     channel: "general",
     author: "Alex Morgan",
     time: "Yesterday",
-    text: "Keep reusable guidance in Shared Operations. Link to the current guide from your channel so everyone uses the same material.",
+    text: "Here’s the escalation guide again — a few people were looking for it yesterday. This is the current copy.",
     fileIds: ["escalation-guide"],
   },
   {
@@ -794,19 +797,20 @@ export const posts: Post[] = [
     author: "Sam Patel",
     time: "08:30",
     title: "Equipment checks before deployment",
-    text: "Please use the shared packing list and record any allocation issue in the campaign issues log.",
+    text: "Can everyone check their kit against the packing list before heading out? Log anything missing so we can sort the spares.",
     fileIds: ["packing-list", "issues"],
-    reply:
-      "Jamie Brooks: Spare materials are ready at the shared collection point.",
+    replyTime: "08:39",
+    reply: "Jamie Brooks: Spare materials are at the collection point now.",
   },
   {
     id: "post-central",
     channel: "central-city",
     author: "Alex Morgan",
     time: "08:42",
-    text: "Central Station Plaza has moved to the east entrance because of construction. The location tracker has been updated.",
+    text: "We’re at the east entrance of Central Station Plaza today because of the building work. I’ve updated the location tracker.",
     fileIds: ["central-deployment"],
-    reply: "Jamie Brooks: Thanks — deployment sheet updated as well.",
+    replyTime: "08:46",
+    reply: "Jamie Brooks: Deployment sheet’s updated too. Same start time.",
     locationLink: true,
   },
   {
@@ -814,7 +818,7 @@ export const posts: Post[] = [
     channel: "central-city",
     author: "Jamie Brooks",
     time: "Yesterday",
-    text: "Please use the current October campaign brief for tomorrow’s starter session.",
+    text: "Tomorrow’s starter session: use the October brief attached here. I’ve included the conversation guide as well.",
     fileIds: ["street-brief", "street-guide"],
   },
   {
@@ -822,7 +826,7 @@ export const posts: Post[] = [
     channel: "north-city",
     author: "Jordan Lee",
     time: "08:55",
-    text: "North Square is confirmed for Friday. The location schedule contains the meeting point and handover time.",
+    text: "Friday at North Square is confirmed. Meeting point and handover time are in the attached schedule.",
     fileIds: ["north-schedule"],
     locationLink: true,
   },
@@ -831,7 +835,7 @@ export const posts: Post[] = [
     channel: "travel",
     author: "Sam Patel",
     time: "09:05",
-    text: "Week 3 itinerary is ready. Lakeside Centre is awaiting confirmation; keep the alternative stop available until the tracker is updated.",
+    text: "Week 3 itinerary is up. Still waiting on Lakeside Centre, so keep the alternative stop available for now.",
     fileIds: ["travel-itinerary", "packing-list"],
     locationLink: true,
   },
@@ -841,17 +845,18 @@ export const posts: Post[] = [
     author: "Maya Chen",
     time: "09:15",
     title: "Renewal calling — current brief",
-    text: "Use the renewal brief and the current calling conversation guide this week. Please keep campaign handover points in the shared notes.",
+    text: "Renewal brief and calling guide attached for this week. Anything the next shift needs to know? Add it to the handover notes.",
     fileIds: ["renewal-brief", "telephone-guide"],
+    replyTime: "09:26",
     reply:
-      "Jordan Lee: The welcome-call script is still being reviewed for next week.",
+      "Jordan Lee: One thing for next week: the welcome-call script is still in review. It’s not ready to use yet.",
   },
   {
     id: "post-phone2",
     channel: "telephone",
     author: "Jordan Lee",
     time: "Yesterday",
-    text: "The October call schedule is updated. Please flag any equipment issue in the operations log.",
+    text: "October call schedule is updated. If your headset’s playing up, add it to the issues log before the next shift.",
     fileIds: ["telephone-schedule", "issues"],
   },
   {
@@ -859,7 +864,7 @@ export const posts: Post[] = [
     channel: "coaches",
     author: "Sam Patel",
     time: "08:20",
-    text: "Coaching coverage for this week is in the shared schedule. Use the team lead checklist for operational handovers.",
+    text: "This week’s coaching cover is in the schedule. @Jamie, can you check the afternoon slots? Handover checklist is attached too.",
     fileIds: ["coach-schedule", "team-lead-checklist"],
   },
   {
@@ -867,7 +872,7 @@ export const posts: Post[] = [
     channel: "onboarding",
     author: "Jamie Brooks",
     time: "Yesterday",
-    text: "New starter session is Thursday at 10:00. Bring the shared checklist and your questions about the conversation guide.",
+    text: "Starter session is Thursday at 10:00. Bring the checklist and any questions you’ve picked up from the conversation guide.",
     fileIds: ["starter-checklist", "street-guide"],
   },
   {
@@ -876,7 +881,7 @@ export const posts: Post[] = [
     author: "Jordan Lee",
     time: "Yesterday",
     title: "Office access maintenance this Saturday",
-    text: "Use the alternative entrance between 09:00 and 12:00 while routine maintenance is completed.",
+    text: "The main entrance will be closed for maintenance on Saturday, 09:00–12:00. Use the alternative entrance during that time.",
     fileIds: [],
   },
   {
@@ -884,7 +889,7 @@ export const posts: Post[] = [
     channel: "bulletin",
     author: "Alex Morgan",
     time: "Yesterday",
-    text: "This week’s internal bulletin is available: starter sessions on Thursday, an optional learning session on Friday, and the next shared office check-in on Monday.",
+    text: "A few dates for the week: starter sessions Thursday, the optional learning session Friday, then our office check-in on Monday.",
     fileIds: [],
   },
   {
@@ -892,7 +897,7 @@ export const posts: Post[] = [
     channel: "office",
     author: "Maya Chen",
     time: "Yesterday",
-    text: "Shared meeting-room supplies have been restocked. Please leave the space ready for the next group.",
+    text: "Meeting rooms have pens and paper again. Could the last person out give the table a quick tidy? Thanks!",
     fileIds: [],
   },
   {
@@ -901,6 +906,7 @@ export const posts: Post[] = [
     author: "Maya Chen",
     time: "10:20",
     text: "important mews coming in live",
+    replyTime: "10:24",
     reply: "Alex Morgan: take me to your leader",
     fileIds: [],
     image: { src: "/images/daisy.jpg", alt: "Daisy the cat" },
@@ -919,7 +925,7 @@ export const posts: Post[] = [
     channel: "learning",
     author: "Sam Patel",
     time: "Yesterday",
-    text: "Optional session on clear operational handovers: Friday at 11:00. Bring a generic example to practise with.",
+    text: "Anyone joining the handover session on Friday at 11:00? Bring an example we can practise on, with any personal details removed.",
     fileIds: [],
   },
   {
@@ -927,7 +933,7 @@ export const posts: Post[] = [
     channel: "socials",
     author: "Jamie Brooks",
     time: "Yesterday",
-    text: "There’s an optional lunchtime board-game break on Friday. Everyone is welcome.",
+    text: "Board games at lunch on Friday? I’ll bring a couple. Drop in if you’re around.",
     fileIds: [],
   },
 ];

@@ -1,25 +1,14 @@
 import { useState } from "react";
 import { Code20Regular } from "@fluentui/react-icons";
 import { TeamsComposer } from "../teams/TeamsShell";
-import { technicalPosts, gitHref } from "./technicalTeams";
-interface ConversationPost {
+import {
+  technicalPosts,
+  gitHref,
+  type ConversationMessage,
+} from "./technicalTeams";
+interface ConversationPost extends ConversationMessage {
   id: string;
-  author: string;
-  text: string;
   time: string;
-  reply?: string;
-  repo?: string;
-  kind?: string;
-  ref?: string;
-}
-interface ConversationMessage {
-  channel: string;
-  author: string;
-  text: string;
-  reply?: string;
-  repo?: string;
-  kind?: string;
-  ref?: string;
 }
 const initials = (name: string) =>
   name
@@ -52,11 +41,16 @@ export default function TechnicalConversation({
       .map((p, i) => ({
         ...p,
         id: `${channel}-${i}`,
-        time: `09:${i === 0 ? "12" : i === 1 ? "28" : "45"}`,
+        time: p.time || "Earlier",
       })),
     ...posts.filter((p) => p.channel === channel),
   ].filter((p) =>
-    [p.author, p.text, p.reply, p.repo]
+    [
+      p.author,
+      p.text,
+      p.replies?.map((reply) => `${reply.author} ${reply.text}`).join(" "),
+      p.repo,
+    ]
       .join(" ")
       .toLowerCase()
       .includes(searchQuery.trim().toLowerCase()),
@@ -67,10 +61,7 @@ export default function TechnicalConversation({
         <p className="m365-teams-empty">No messages found.</p>
       )}
       {currentPosts.map((p) => {
-        const separator = p.reply?.indexOf(":") ?? -1;
-        const replyAuthor = separator >= 0 ? p.reply!.slice(0, separator) : "";
-        const replyText =
-          separator >= 0 ? p.reply!.slice(separator + 1).trim() : p.reply;
+        const likeCount = (p.likes || 0) + Number(likes.includes(p.id));
         return (
           <article className="m365-teams-post" key={p.id}>
             <header className="m365-teams-post-header">
@@ -104,20 +95,20 @@ export default function TechnicalConversation({
                 </span>
               </a>
             )}
-            {replyText && (
-              <article className="m365-teams-reply">
+            {p.replies?.map((reply, index) => (
+              <article className="m365-teams-reply" key={index}>
                 <span className="m365-teams-avatar">
-                  {initials(replyAuthor)}
+                  {initials(reply.author)}
                 </span>
                 <div>
                   <header>
-                    <strong>{replyAuthor}</strong>
-                    <time>09:48</time>
+                    <strong>{reply.author}</strong>
+                    <time>{reply.time}</time>
                   </header>
-                  <p>{replyText}</p>
+                  <p>{reply.text}</p>
                 </div>
               </article>
-            )}
+            ))}
             {(replies[p.id] || []).map((text, i) => (
               <article className="m365-teams-reply" key={i}>
                 <span className="m365-teams-avatar">{initials(userName)}</span>
@@ -142,7 +133,7 @@ export default function TechnicalConversation({
                   )
                 }
               >
-                👍 {likes.includes(p.id) ? 3 : 2}
+                {likeCount ? `👍 ${likeCount}` : "Like"}
               </button>
               <button
                 onClick={() => {

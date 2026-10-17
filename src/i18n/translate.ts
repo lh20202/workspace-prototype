@@ -6,6 +6,10 @@ import { germanWiki } from "./de-wiki";
 import { germanAccessUpdate } from "./de-access-update";
 import { germanPublishing } from "./de-publishing";
 import { germanPersonnelSignposting } from "./de-personnel-signposting";
+import { germanTeamsLogistics } from "./de-teams-logistics";
+import { germanTeamsStudio } from "./de-teams-studio";
+import { germanTeamsTechnical } from "./de-teams-technical";
+import { germanTeamsDepartments } from "./de-teams-departments";
 
 export type Language = "en" | "de";
 const messages = {
@@ -17,6 +21,10 @@ const messages = {
   ...germanAccessUpdate,
   ...germanPublishing,
   ...germanPersonnelSignposting,
+  ...germanTeamsLogistics,
+  ...germanTeamsStudio,
+  ...germanTeamsTechnical,
+  ...germanTeamsDepartments,
 };
 const englishMonths = [
   "January",
