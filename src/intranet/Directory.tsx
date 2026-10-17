@@ -89,7 +89,7 @@ export default function Directory() {
             width="40"
             height="32"
           />
-          <strong>Sample Organisation GmbH</strong>
+          <strong>Sample Organisation</strong>
           {["Home", "News", "Our organisation", "Tools & support"].map((x) => (
             <button type="button" key={x} disabled>
               {x}

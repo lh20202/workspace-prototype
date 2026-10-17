@@ -413,7 +413,7 @@ export const germanMessages: Record<string, string> = {
   "Selected response lead": "Ausgewählte Einsatzleitung",
   "Response preview": "Krisenreaktion in der Vorschau",
   "Leave response": "Krisenreaktion verlassen",
-  "Sample Organisation GmbH": "Musterorganisation",
+  "Sample Organisation": "Musterorganisation",
   "Our organisation": "Unsere Organisation",
   News: "Nachrichten",
   "Tools & support": "Tools und Unterstützung",
