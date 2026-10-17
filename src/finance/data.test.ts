@@ -98,7 +98,10 @@ describe("shared financial operating model", () => {
     expect(channelFiles("General")).toHaveLength(files.length);
   });
   it("every fictional staff preview belongs to a real existing workspace", () => {
-    expect(workspaces).toHaveLength(14);
+    expect(workspaces).toHaveLength(15);
+    expect(workspaces.some((workspace) => workspace.id === "employment")).toBe(
+      true,
+    );
     expect(
       staff.some(
         (person) => person.role === "Information Management Specialist",

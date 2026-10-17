@@ -63,7 +63,7 @@ export const technicalPosts = [
   {
     channel: "Web & CRM DevOps",
     author: "Devon Park",
-    text: "CRM webhook retry handling is ready for contract review. The delivery checklist links content acceptance from Content Creation; deployment and runtime checks stay with this engineering release.",
+    text: "CRM webhook retry handling is ready for contract review. The delivery checklist links content acceptance from Content Room; deployment and runtime checks stay with this engineering release.",
     reply:
       "Riley Chen: Please include the synthetic event replay result with the review, not a copy of CRM customer records.",
     repo: "customer-platform",

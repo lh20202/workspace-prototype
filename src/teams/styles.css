@@ -7,7 +7,8 @@
 .prototype-frame > :is(.logistics-shell, .emergency-app):has(.m365-teams) {
   display: contents;
 }
-.m365-teams {
+/* Fluent portal hosts inherit the provider class; only the actual shell is a grid. */
+.prototype-frame .m365-teams {
   flex: 1;
   min-height: 0;
   display: grid;
@@ -717,4 +718,18 @@
   .m365-teams-post > a {
     margin-left: 0;
   }
+}
+
+.m365-teams-channel-cue {
+  margin-left: auto;
+  color: #61616d;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 400;
+}
+.m365-teams-channel:has(.m365-teams-channel-cue) > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

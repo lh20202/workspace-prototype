@@ -1,7 +1,7 @@
 import type { OperationalFile } from "../logistics/data";
-export const title = "Content Creation & Delivery";
+export const title = "Content Room";
 export const description =
-  "Shared workspace for planning, developing, reviewing and delivering public-facing content across formats, channels and digital products.";
+  "Shared production space for editorial, creative and channel teams coordinating live content, campaigns and rapid-response coverage.";
 export const demoToday = "2026-10-16";
 export const navigation = [
   { id: "pipeline", name: "Content Pipeline" },
@@ -128,7 +128,7 @@ const p = (id: string, name: string, over: Partial<Package>): Package => ({
   audience: "General public",
   formats: ["Editorial"],
   channels: ["Website"],
-  lead: "Maya Chen",
+  lead: "Alex Morgan",
   stage: "Development",
   status: "On track",
   reviewDue: "2026-10-20",
@@ -199,7 +199,7 @@ export const packages: Package[] = [
     permitted: ["Video", "Website"],
     stage: "Creative production",
     status: "Needs review",
-    lead: "Jordan Lee",
+    lead: "Alex Morgan",
     partner: "Silver Fern Creative",
     partnerType: "Creative / video studio",
     reviewDue: "2026-10-20",
@@ -284,7 +284,7 @@ export const packages: Package[] = [
     permitted: ["Email", "Website"],
     stage: "Ready for delivery",
     status: "Ready",
-    lead: "Sam Patel",
+    lead: "Taylor Brooks",
     reviewDue: "2026-10-15",
     releaseDate: "2026-10-21",
     reviews: [
@@ -304,7 +304,7 @@ export const packages: Package[] = [
     permitted: ["Website", "Video"],
     stage: "Review",
     status: "Needs review",
-    lead: "Jordan Lee",
+    lead: "Alex Morgan",
     reviewDue: "2026-10-23",
     releaseDate: "2026-11-03",
     rightsReference: "SF-4821",
@@ -322,14 +322,14 @@ export const packages: Package[] = [
       { tool: "planable", id: "PLN-2425" },
     ],
   }),
-  p("PKG-108", "Rapid Response Information Package", {
+  p("PKG-108", "Rapid Response · Coastal Flooding", {
     purpose: "Prepare a generic timely public information package",
     formats: ["Web update", "Social copy"],
     channels: ["Website", "Social"],
     permitted: ["Website", "Social"],
     stage: "Clearance",
     status: "Blocked",
-    lead: "Sam Patel",
+    lead: "Taylor Brooks",
     reviewDue: "2026-10-20",
     releaseDate: "2026-10-22",
     embargo: "2026-10-21",
@@ -400,7 +400,7 @@ export const packages: Package[] = [
       { tool: "wistia", id: "WIS-130" },
     ],
   }),
-  p("PKG-112", "Social Story Package", {
+  p("PKG-112", "Community Week Social Stories", {
     purpose: "Evaluate a completed fictional social story series",
     formats: ["Social", "Graphics"],
     channels: ["Social"],
@@ -424,6 +424,20 @@ export const packages: Package[] = [
     ],
   }),
 ];
+packages.push(
+  p("PKG-113", "Clean Water Week", {
+    purpose: "Coordinate a fictional public-information content series",
+    formats: ["Web update", "Social copy", "Graphics"],
+    channels: ["Website", "Social"],
+    permitted: ["Website", "Social"],
+    lead: "Alex Morgan",
+    stage: "Development",
+    reviewDue: "2026-10-23",
+    releaseDate: "2026-10-30",
+    condition:
+      "Use the reviewed public-information copy and approved illustrations only.",
+  }),
+);
 export const packagesById = new Map(packages.map((p) => [p.id, p]));
 export interface ContentFile extends OperationalFile {
   packageId: string;
@@ -670,6 +684,79 @@ export const files: ContentFile[] = [
     "Decision",
   ),
 ];
+files.push(
+  f(
+    "coastal-brief",
+    "PKG-108",
+    "editorial",
+    "Public information brief.docx",
+    "Brief",
+  ),
+  f(
+    "coastal-social",
+    "PKG-108",
+    "channels",
+    "Social adaptations.docx",
+    "Editorial draft",
+    "Needs review",
+  ),
+  f(
+    "coastal-web-review",
+    "PKG-108",
+    "digital",
+    "Web accessibility review.xlsx",
+    "Review",
+  ),
+  f(
+    "water-brief",
+    "PKG-113",
+    "editorial",
+    "Clean Water Week — Content Brief.docx",
+    "Brief",
+  ),
+  f(
+    "water-copy",
+    "PKG-113",
+    "editorial",
+    "Web and social working copy.docx",
+    "Editorial draft",
+    "Needs review",
+  ),
+  f(
+    "water-visual",
+    "PKG-113",
+    "creative",
+    "Illustration direction.pptx",
+    "Creative concept",
+  ),
+  f(
+    "water-release",
+    "PKG-113",
+    "channels",
+    "Publishing checklist.xlsx",
+    "Release checklist",
+  ),
+  f(
+    "community-final",
+    "PKG-112",
+    "channels",
+    "Community Week — Published Copy.pdf",
+    "Published output",
+    "Published",
+  ),
+  f(
+    "community-delivery",
+    "PKG-112",
+    "channels",
+    "Publication register.xlsx",
+    "Delivery record",
+    "Closed",
+  ),
+);
+for (const file of files.filter(
+  (file) => file.packageId === "PKG-112" && file.id !== "social-evaluation",
+))
+  file.modified = "2026-09-30";
 for (const pkg of packages)
   pkg.refs = pkg.refs.filter(
     (r) =>
@@ -836,20 +923,24 @@ export function updateStage(p: Package, stage: string) {
     blockers,
   };
 }
+// Legacy channel-file shortcuts stay compatible; the full conversation model is in channels.ts.
 export const teamChannels = [
+  { id: "editorial", name: "Editorial Desk", areas: ["editorial"] },
+  { id: "web", name: "Web Desk", areas: ["digital"] },
+  { id: "social", name: "Social Desk", areas: ["channels"] },
+  { id: "media", name: "Media Desk", areas: ["editorial"] },
+  { id: "video", name: "Video & Multimedia", areas: ["creative"] },
   {
-    id: "general",
-    name: "General",
+    id: "coordination",
+    name: "Production Coordination",
     areas: ["editorial", "creative", "channels", "digital"],
   },
-  { id: "editorial", name: "Editorial & Messaging", areas: ["editorial"] },
-  { id: "creative", name: "Creative Production", areas: ["creative"] },
-  { id: "digital", name: "Digital Content & Experience", areas: ["digital"] },
-  { id: "coordination", name: "Production Coordination", areas: ["channels"] },
 ];
 export const filesForChannel = (id: string) =>
-  files.filter((f) =>
-    teamChannels.find((c) => c.id === id)?.areas.includes(f.area),
+  files.filter((file) =>
+    teamChannels
+      .find((channel) => channel.id === id)
+      ?.areas.includes(file.area),
   );
 export function calendarEntries(items: Package[]) {
   return items

@@ -4,6 +4,7 @@ import type {
   LibraryDocument,
 } from "../sharepoint/library";
 import type { FunctionalConfig, WorkingFile } from "./types";
+import { workspaceById } from "./registry";
 
 export interface FunctionalLibrary extends LibraryDefinition {
   areas: string[];
@@ -353,7 +354,7 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
       [
         "workforce",
         "culture",
-        "employment",
+        "frameworks",
         "communities",
         "analytics",
         "wellbeing",
@@ -362,17 +363,6 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
       [
         column("Programme"),
         column("Activity"),
-        column("Review date", "Review date", "date"),
-      ],
-    ),
-    library(
-      "hiring-documents",
-      "Hiring & Selection Planning",
-      ["hiring"],
-      "Develop role criteria and selection methods without candidate records.",
-      [
-        column("Activity"),
-        column("Planning period"),
         column("Review date", "Review date", "date"),
       ],
     ),
@@ -425,6 +415,77 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
             recursive: true,
           },
           review,
+        ],
+      },
+    ),
+  ],
+  employment: [
+    library(
+      "recruitment-administration",
+      "Recruitment Administration",
+      ["hiring"],
+      "Coordinate vacancy setup, panels and recruitment handoffs. Candidate applications, assessments, references and decisions require separate authorisation.",
+      [
+        column("Activity"),
+        column("Recruitment stage"),
+        column("Review date", "Review date", "date"),
+      ],
+      {
+        aliases: ["hiring", "hiring-documents"],
+        contentTypes: [
+          {
+            id: "vacancy-coordination",
+            name: "Vacancy Coordination",
+            extension: "docx",
+            fields: ["Activity", "Recruitment stage"],
+            template:
+              "Vacancy setup, approval route, panel preparation and shared milestones; no candidate details",
+            defaults: { "Recruitment stage": "Vacancy setup" },
+          },
+          {
+            id: "recruitment-handoff",
+            name: "Recruitment Handoff",
+            extension: "docx",
+            fields: ["Activity", "Review date"],
+            template:
+              "Process responsibilities, readiness checks and the authorised system handoff; no candidate details",
+            defaults: { "Recruitment stage": "Handoff" },
+          },
+        ],
+        views: [
+          all,
+          {
+            id: "stage",
+            name: "By recruitment stage",
+            sortBy: "Recruitment stage",
+            recursive: true,
+          },
+          review,
+        ],
+      },
+    ),
+    library(
+      "employment-operations",
+      "Employment Operations",
+      ["employment", "inputs"],
+      "Shared change-control methods and employment-system handoffs. Individual contracts, employment changes and payroll inputs remain restricted.",
+      [
+        column("Activity"),
+        column("System of record"),
+        column("Review date", "Review date", "date"),
+      ],
+      {
+        aliases: ["employment", "changes", "payroll"],
+        contentTypes: [
+          {
+            id: "employment-process",
+            name: "Employment Process",
+            extension: "docx",
+            fields: ["Activity", "System of record"],
+            template:
+              "Authorisation route, process checks and system responsibilities; no individual records",
+            defaults: { "System of record": "Workday HCM" },
+          },
         ],
       },
     ),
@@ -519,6 +580,14 @@ export function libraryForFile(config: FunctionalConfig, fileId: string) {
     (l) => l.id === file?.documentLibrary,
   );
 }
+export function functionalFileHref(config: FunctionalConfig, fileId: string) {
+  const file = config.files.find((candidate) => candidate.id === fileId);
+  const library = libraryForFile(config, fileId);
+  const base = workspaceById.get(config.id)?.href || "/architecture";
+  return file && library
+    ? `${base}/${library.id}?${new URLSearchParams({ library: library.name, folder: functionalFolder(file), file: file.id })}`
+    : base;
+}
 export function functionalLibraryDocuments(
   config: FunctionalConfig,
   library: FunctionalLibrary,
@@ -528,14 +597,16 @@ export function functionalLibraryDocuments(
 
 export const protectedNavigation: Record<string, string> = {
   digital: "Protected Technology",
-  people: "Employment Records & Cases",
+  people: "Private Staff Communities",
+  employment: "Restricted Information",
   customer: "Protected Customer Matters",
 };
 export const protectedHeading: Record<string, string> = {
   services: "Commercial & Visitor Access",
   digital: "Protected Technology",
   legal: "Protected Legal Matters",
-  people: "Employment Records & Cases",
+  people: "Private Staff Communities",
+  employment: "Restricted Employment Information",
   customer: "Protected Customer Matters",
 };
 
@@ -545,6 +616,7 @@ export interface FunctionalHome {
   areas: string[];
   recentHeading: string;
   handoffs: { label: string; href: string }[];
+  handoffsHeading?: string;
   teams?: { heading: string; cue: string; channels: string[] };
 }
 export const functionalHomes: Record<string, FunctionalHome> = {
@@ -595,6 +667,7 @@ export const functionalHomes: Record<string, FunctionalHome> = {
         href: "/digital-tech/systems/github?repo=company-web&kind=repository",
       },
       { label: "Request IT support", href: "/service-desk/it-support" },
+      { label: "Employment process ownership", href: "/employment-admin" },
     ],
     teams: {
       heading: "Technical coordination in Teams",
@@ -631,12 +704,32 @@ export const functionalHomes: Record<string, FunctionalHome> = {
         href: "/people-culture/communications-documents?folder=All-staff%20meetings%2FOctober%202026&library=Staff%20Communications",
       },
       {
-        label: "Open the recruiting workflow",
-        href: "/people-culture/systems/greenhouse",
+        label: "Recruitment & employment administration",
+        href: "/employment-admin",
       },
       {
         label: "Find an open staff network",
         href: "/people-culture/communities",
+      },
+    ],
+    handoffsHeading: "Programme shortcuts",
+  },
+  employment: {
+    heading: "Recruitment & employment readiness",
+    context:
+      "Coordinate shared vacancy preparation and approved process handoffs. Individual employment matters are handled only in their authorised records or systems.",
+    areas: ["hiring", "employment"],
+    recentHeading: "Shared procedures & preparation",
+    handoffsHeading: "Authoritative systems",
+    handoffs: [
+      {
+        label: "Open Greenhouse Recruiting",
+        href: "/employment-admin/systems/greenhouse",
+      },
+      { label: "Open Workday HCM", href: "/employment-admin/systems/workday" },
+      {
+        label: "Learning & induction programmes",
+        href: "/people-culture/learning",
       },
     ],
   },

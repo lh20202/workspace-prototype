@@ -39,8 +39,6 @@ import {
   sharedFiles,
   protectedTopics,
   protectedHref,
-  teamChannels,
-  filesForChannel,
   calendarEntries,
   type Package,
   type ContentFile,
@@ -48,6 +46,11 @@ import {
 } from "./data";
 import "../services/styles.css";
 import "./styles.css";
+import {
+  contentTeamsHref,
+  resolveContentChannel,
+  visibleContentChannels,
+} from "./channels";
 const base = "/content-delivery";
 const date = (value: string) =>
   new Date(value + "T12:00:00").toLocaleDateString("en-GB", {
@@ -79,6 +82,30 @@ export default function ContentApp() {
   const params = parsed.searchParams;
   const parts = parsed.pathname.split("/").filter(Boolean);
   const page = parts[1] || "home";
+  useEffect(() => {
+    const source = new URL(url, location.origin);
+    if (source.pathname !== "/content-delivery/teams") return;
+    const requestedPerson = source.searchParams.get("staff");
+    const personId =
+      requestedPerson && visibleContentChannels(requestedPerson).length
+        ? requestedPerson
+        : teamsStaffForWorkspace("content");
+    const channel = resolveContentChannel(
+      source.searchParams.get("channel") || "General",
+    );
+    const target = new URL(
+      contentTeamsHref(personId, channel?.id),
+      location.origin,
+    );
+    const file = filesById.get(source.searchParams.get("file") || "");
+    if (file) {
+      target.searchParams.set("tab", "Shared");
+      target.searchParams.set("file", file.id);
+      target.searchParams.set("documentLibrary", libraryFor(file));
+      target.searchParams.set("folder", documentFor(file).folder);
+    }
+    location.replace(target.pathname + target.search);
+  }, [url]);
   const pkg = (id: string) => packages.find((item) => item.id === id)!;
   const routePackage =
     page === "packages"
@@ -157,9 +184,6 @@ export default function ContentApp() {
     params.get("channel") || "",
     params.get("format") || "",
   );
-  const teamChannel =
-    teamChannels.find((item) => item.id === params.get("channel")) ||
-    teamChannels[0];
   const patch = (id: string, changes: Partial<Package>) =>
     setPackages(
       packages.map((item) => (item.id === id ? { ...item, ...changes } : item)),
@@ -212,6 +236,14 @@ export default function ContentApp() {
   const milestoneItems = calendarEntries(packages);
   const packageContext =
     selected || packages.find((item) => initialFolder === item.name);
+  const teamsPerson = teamsStaffForWorkspace("content");
+  const homeChannels = visibleContentChannels(teamsPerson)
+    .filter(
+      (channel) =>
+        channel.lifecycle === "Active" &&
+        ["editorial", "web", "video", "coastal-flooding"].includes(channel.id),
+    )
+    .slice(0, 4);
   return (
     <div
       className={`app-shell services-app content-app ${share ? "content-partner-preview" : ""}`}
@@ -402,41 +434,108 @@ export default function ContentApp() {
             </section>
           ) : page === "home" ? (
             <>
-              <div className="library-heading">
+              <header className="content-room-home-heading">
+                <h1>{title}</h1>
+                <p>{description}</p>
+              </header>
+              <div className="content-room-home-grid">
                 <div>
-                  <h2>{title}</h2>
-                  <p>Develop, review and deliver public-facing content.</p>
+                  <section className="content-room-production">
+                    <h2>Active production</h2>
+                    {[
+                      ["PKG-108", "In production"],
+                      ["PKG-103", "Review"],
+                      ["PKG-101", "Review scheduled"],
+                    ].map(([id, status]) => (
+                      <a
+                        key={id}
+                        href={`${base}/production?${new URLSearchParams({ folder: pkg(id).name })}`}
+                      >
+                        <span>
+                          <strong>{pkg(id).name}</strong>
+                          <small>
+                            {id === "PKG-108"
+                              ? "Public-information copy and channel adaptations"
+                              : id === "PKG-103"
+                                ? "Captions, review cut and delivery checks"
+                                : "Email sequence and landing-page content"}
+                          </small>
+                        </span>
+                        <span className="content-room-stage">{status}</span>
+                        <ArrowRight20Regular />
+                      </a>
+                    ))}
+                  </section>
+                  <DocumentLibrary
+                    title="Recent production files"
+                    files={files
+                      .filter((file) =>
+                        [
+                          "welcome-message",
+                          "video-roughcut",
+                          "rapid-copy",
+                        ].includes(file.id),
+                      )
+                      .map(documentFor)}
+                    embedded
+                    onOpen={(file) =>
+                      navigate(fileLink(filesById.get(file.id)!))
+                    }
+                  />
+                  <div className="content-room-handoffs">
+                    <a href={`${base}/tools/planable`}>
+                      Publishing approvals in Planable <ArrowUpRight20Regular />
+                    </a>
+                    <a href="/audience-innovation/research">
+                      Audience evidence <ArrowRight20Regular />
+                    </a>
+                    <a href="/digital-tech/web-crm">
+                      CMS engineering in Digital & Technology{" "}
+                      <ArrowRight20Regular />
+                    </a>
+                  </div>
                 </div>
+                <section
+                  className="content-room-teams"
+                  aria-labelledby="content-teams-heading"
+                >
+                  <div className="content-room-teams-title">
+                    <img
+                      src="/images/teams-logo.svg"
+                      alt="Microsoft Teams"
+                      width="28"
+                      height="28"
+                    />
+                    <h2 id="content-teams-heading">Live coordination</h2>
+                  </div>
+                  <p>
+                    Join the desk or coverage conversation. Production files
+                    stay in SharePoint.
+                  </p>
+                  <div className="content-room-team-links">
+                    {homeChannels.map((channel) => (
+                      <a
+                        key={channel.id}
+                        href={contentTeamsHref(teamsPerson, channel.id)}
+                      >
+                        <span>
+                          {channel.name}
+                          {channel.kind === "temporary" && (
+                            <small>Temporary coverage</small>
+                          )}
+                        </span>
+                        <ArrowRight20Regular />
+                      </a>
+                    ))}
+                  </div>
+                  <a
+                    className="content-room-open-teams"
+                    href={contentTeamsHref(teamsPerson)}
+                  >
+                    Open Content Room in Teams <ArrowUpRight20Regular />
+                  </a>
+                </section>
               </div>
-              <section className="service-section">
-                <h3>Preparing the next releases</h3>
-                <p>
-                  Complete editorial and accessibility checks before the October
-                  publishing window.
-                </p>
-                <a href={`${base}/production-register?view=Needs+Review`}>
-                  Review production awaiting approval →
-                </a>
-              </section>
-              <DocumentLibrary
-                title="Recent production files"
-                files={files
-                  .filter((file) => libraryFor(file) === "production")
-                  .map(documentFor)}
-                embedded
-              />
-              <section className="service-section">
-                <h3>Publishing handoffs</h3>
-                <div className="content-simple-links">
-                  <a href={`${base}/production-register?view=Needs+Review`}>
-                    Production needing review
-                  </a>
-                  <a href={`${base}/tools/planable`}>
-                    Publishing approvals in Planable
-                  </a>
-                  <a href="/audience-innovation/research">Audience research</a>
-                </div>
-              </section>
             </>
           ) : register ? (
             <section className="service-section">
@@ -505,48 +604,7 @@ export default function ContentApp() {
               </div>
             </section>
           ) : page === "teams" ? (
-            <>
-              <div className="content-team-heading">
-                <img
-                  src="/images/teams-logo.svg"
-                  alt="Microsoft Teams"
-                  width="32"
-                  height="32"
-                />
-                <h2>{title}</h2>
-              </div>
-              <div
-                className="content-channel-tabs"
-                role="group"
-                aria-label="Team channels"
-              >
-                {teamChannels.map((channel) => (
-                  <Button
-                    key={channel.id}
-                    appearance={
-                      teamChannel.id === channel.id ? "primary" : "secondary"
-                    }
-                    onClick={() =>
-                      setParams({ channel: channel.id, file: "", package: "" })
-                    }
-                  >
-                    {channel.name}
-                  </Button>
-                ))}
-              </div>
-              <DocumentLibrary
-                key={teamChannel.id}
-                title={`${teamChannel.name} shared files`}
-                files={filesForChannel(teamChannel.id).map(documentFor)}
-              />
-              {teamChannel.id === "digital" && (
-                <p>
-                  <a href="/digital-tech/web-crm/partner-review">
-                    Technical partner review in Digital & Technology
-                  </a>
-                </p>
-              )}
-            </>
+            <p role="status">Opening Content Room in Teams…</p>
           ) : page === "calendar" ? (
             <>
               <h2>Production Calendar</h2>
@@ -570,6 +628,7 @@ export default function ContentApp() {
                   .filter((file) => libraryFor(file) === activeLibrary.id)
                   .map(documentFor)}
                 initialFolder={initialFolder}
+                readOnly={activeLibrary.id === "published"}
               />
               <div className="content-simple-links">
                 <a href={`${base}/production-register`}>Production Register</a>

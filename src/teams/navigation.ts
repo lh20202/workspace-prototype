@@ -8,6 +8,7 @@ import { channels, workspaceTitle } from "../logistics/data";
 import { departments, departmentHref } from "../coordination/data";
 import { currentProjects, projectHref, projectTitle } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
+import { resolveContentChannel } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
 import {
   canSeeDepartment,
@@ -55,6 +56,13 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
           label: name,
           unread: w.id === "digital" && name === "AI Lab",
           private: name === "Security Engineering",
+          cue:
+            w.id === "content" &&
+            resolveContentChannel(name)?.kind === "temporary"
+              ? resolveContentChannel(name)?.lifecycle === "Archived"
+                ? "Archived"
+                : "Temporary"
+              : undefined,
           onSelect: () =>
             location.assign(
               `/teams?${new URLSearchParams({ staff: person.id, workspace: w.id, channel: name, tab: "Posts" })}`,

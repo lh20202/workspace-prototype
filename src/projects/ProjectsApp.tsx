@@ -591,9 +591,6 @@ export default function ProjectsApp() {
           <h2>Quick links</h2>
           <div className="project-context-links">
             <a href={project.delivery}>{project.area} ↗</a>
-            <a href={`${root}/decisions`}>Decisions & Actions</a>
-            <a href={`${root}/risks`}>Risks & Issues</a>
-            <a href={`${root}/handover`}>Delivery & Handover</a>
             <a href="/executive/initiatives">Stage decision ↗</a>
             <a href="/financial-operations/planning">Funding / forecast ↗</a>
             {!readOnly && (
@@ -698,15 +695,6 @@ export default function ProjectsApp() {
           <a href="/projects/current">Current Projects</a>
         </h2>
         {projectList(currentProjects)}
-        <section>
-          <h2>Quick links</h2>
-          <div className="project-context-links">
-            <a href="/projects/control">Project Control</a>
-            <a href="/projects/support">Project Support</a>
-            <a href="/projects/reviews">Project Reviews</a>
-            <a href="/projects/archive">Project Archives</a>
-          </div>
-        </section>
       </>
     );
   };

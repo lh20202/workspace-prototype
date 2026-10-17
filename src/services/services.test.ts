@@ -35,15 +35,15 @@ describe("Organisation Services has four operational purposes", () => {
   });
   it("moves legacy ordinary and protected routes to their owners", () => {
     expect(resolveLegacy("/services/technology")).toBe("/digital-tech");
-    expect(resolveLegacy("/services/projects")).toBe(
-      "/projects",
+    expect(resolveLegacy("/services/projects")).toBe("/projects");
+    expect(resolveLegacy("/services/hiring")).toBe(
+      "/employment-admin/recruitment-administration",
     );
-    expect(resolveLegacy("/services/hiring")).toBe("/people-culture/hiring");
     expect(resolveLegacy("/services/legal/matters/INV-008")).toBe(
       "/legal-compliance/protected/formal-cases",
     );
     expect(resolveLegacy("/services/hiring/recruitment/REC-221")).toBe(
-      "/people-culture/protected/candidate-assessments",
+      "/employment-admin/protected/candidate-assessments",
     );
     expect(resolveLegacy("/services/procurement/matters/TEND-102")).toBe(
       "/services/purchasing/live-tender",

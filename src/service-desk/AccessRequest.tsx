@@ -1,3 +1,4 @@
+import { workspaceRegistry } from "../workspaces/registry";
 import { useState } from "react";
 import { Button } from "@fluentui/react-components";
 import {
@@ -14,11 +15,12 @@ export default function AccessRequest() {
   const projectRequest =
     params.get("workspace") === "Projects" ||
     params.get("workspace") === "projects";
-  const requester = projectRequest
-    ? staff.find((s) => s.id === params.get("person")) ||
-      staff.find((s) => s.id === selectedStaffId()) ||
-      currentUser
-    : currentUser;
+  const requester =
+    staff.find(
+      (person) => person.id === (params.get("person") || params.get("staff")),
+    ) ||
+    staff.find((person) => person.id === selectedStaffId()) ||
+    currentUser;
   const isSupport = location.pathname === "/service-desk/it-support";
   const workspace = isSupport
     ? "Digital & Technology"
@@ -31,7 +33,11 @@ export default function AccessRequest() {
   const audience =
     workspace === "Audience Research & Marketing Insight" ||
     workspace === "Audience Insight & Innovation R&D";
-  const content = workspace === "Content Creation & Delivery";
+  const content =
+    workspace === "Content Creation & Delivery" || workspace === "Content Room";
+  const registeredWorkspace = workspaceRegistry.find(
+    (entry) => entry.title === workspace || entry.id === workspace,
+  );
   const finance = workspace === "Income & Financial Operations";
   const executive = workspace === "CEO & Executive Committee";
   const freshservice = !projectRequest;
@@ -49,7 +55,7 @@ export default function AccessRequest() {
               ? "/audience-innovation/research"
               : services
                 ? "/services"
-                : "/planning/restricted";
+                : registeredWorkspace?.href || "/planning/restricted";
   const requestType = isSupport ? "IT request" : "Access request";
   const [reason, setReason] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -100,12 +106,12 @@ export default function AccessRequest() {
                 : finance
                   ? "Income & Financial Operations"
                   : content
-                    ? "Content Creation & Delivery"
+                    ? "Content Room"
                     : audience
                       ? "Audience research"
                       : services
                         ? "Organisation Services"
-                        : "Restricted Planning"}
+                        : registeredWorkspace?.title || "Restricted Planning"}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>{" "}

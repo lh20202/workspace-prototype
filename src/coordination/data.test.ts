@@ -30,7 +30,9 @@ describe("department coordination architecture", () => {
       "EAO Department",
     ]);
     expect(departments.reduce((n, d) => n + d.units.length, 0)).toBe(33);
-    expect(workspaces).toHaveLength(14);
+    expect(workspaces.some((workspace) => workspace.id === "employment")).toBe(
+      true,
+    );
     expect(planningDepartments).toEqual(departments.map((d) => d.fullName));
     expect(
       documents.every(
@@ -135,7 +137,9 @@ describe("department coordination architecture", () => {
       "/content-delivery/creative",
       "/financial-operations/planning",
       "/services/purchasing",
+      "/digital-tech/systems-engineering",
       "/people-culture/learning",
+      "/employment-admin/recruitment-administration",
       "/projects/PRJ-2026-014/decisions",
     ]);
     expect(

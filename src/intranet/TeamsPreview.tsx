@@ -30,6 +30,13 @@ import {
 } from "../finance/libraries";
 import { executiveDocument, executiveDefinition } from "../executive/libraries";
 import { files as contentFiles } from "../content/data";
+import ContentConversation from "../content/ContentConversation";
+import {
+  resolveContentChannel,
+  visibleContentChannels,
+  contentFilesForChannel,
+  contentChannelReadOnly,
+} from "../content/channels";
 import { files as financialFiles } from "../finance/data";
 import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
@@ -91,11 +98,25 @@ export default function TeamsPreview() {
     workspaces.find((w) => w.id === params.get("workspace")) ||
     workspaces.find((w) => w.id === person.workspace)!;
   const requested = params.get("channel") || "General";
-  const initialChannel = (
-    workspaceChannels[workspace.id] || ["General"]
-  ).includes(requested)
-    ? requested
-    : "General";
+  const contentChannelName = (value: string) => {
+    const resolved = resolveContentChannel(value);
+    if (
+      value === "General" &&
+      !visibleContentChannels(person.id).some(
+        (item) => item.id === resolved?.id,
+      )
+    )
+      return (
+        visibleContentChannels(person.id)[0]?.name || "Production Coordination"
+      );
+    return resolved?.name || value;
+  };
+  const initialChannel =
+    workspace.id === "content"
+      ? contentChannelName(requested)
+      : (workspaceChannels[workspace.id] || ["General"]).includes(requested)
+        ? requested
+        : "General";
   const [channel, setChannel] = useState(initialChannel);
   const [tab, setTab] = useState(
     params.get("tab") === "Shared" || params.get("tab") === "Files"
@@ -141,10 +162,19 @@ export default function TeamsPreview() {
     const back = () => {
       const query = new URLSearchParams(location.search);
       const name = query.get("channel") || "General";
+      const restoredContentChannel = resolveContentChannel(name);
       setChannel(
-        (workspaceChannels[workspace.id] || ["General"]).includes(name)
-          ? name
-          : "General",
+        workspace.id === "content"
+          ? name === "General"
+            ? visibleContentChannels(person.id).find(
+                (item) => item.id === restoredContentChannel?.id,
+              )?.name ||
+              visibleContentChannels(person.id)[0]?.name ||
+              "Production Coordination"
+            : restoredContentChannel?.name || name
+          : (workspaceChannels[workspace.id] || ["General"]).includes(name)
+            ? name
+            : "General",
       );
       setTab(
         ["Files", "Shared"].includes(query.get("tab") || "")
@@ -155,7 +185,7 @@ export default function TeamsPreview() {
     };
     window.addEventListener("popstate", back);
     return () => window.removeEventListener("popstate", back);
-  }, [workspace.id]);
+  }, [workspace.id, person.id]);
   const groups = teamsGroups(person).map((group) => ({
     ...group,
     channels: group.channels.map((item) => ({
@@ -179,6 +209,8 @@ export default function TeamsPreview() {
     workspace.id === "digital" && channel === "Security Engineering";
   const files = (sharedFiles[workspace.id] || []).filter((f) => {
     if (securityDenied || workspaceDenied || channelDenied) return false;
+    if (workspace.id === "content")
+      return contentFilesForChannel(channel).some((file) => file.id === f.id);
     if (workspace.id === "digital" && channel !== "General")
       return (
         (f as OperationalFile & { area: string }).area === digitalArea[channel]
@@ -251,7 +283,11 @@ export default function TeamsPreview() {
         ]
       : workspace.id === "content"
         ? contentDefinitions[
-            selectedContent ? contentLibrary(selectedContent) : "production"
+            selectedContent
+              ? contentLibrary(selectedContent)
+              : files[0]
+                ? contentLibrary(files[0] as (typeof contentFiles)[number])
+                : "production"
           ]
         : workspace.id === "finance"
           ? financeDefinitions[
@@ -273,7 +309,13 @@ export default function TeamsPreview() {
     workspace.id === "audience"
       ? Object.values(audienceDefinitions)
       : workspace.id === "content"
-        ? Object.values(contentDefinitions)
+        ? Object.values(contentDefinitions).filter((definition) =>
+            files.some(
+              (file) =>
+                contentLibrary(file as (typeof contentFiles)[number]) ===
+                definition.id,
+            ),
+          )
         : workspace.id === "finance"
           ? Object.values(financeDefinitions)
           : functionalLibraries[workspace.id] ||
@@ -378,6 +420,16 @@ export default function TeamsPreview() {
           : openSharePoint
       }
       navigationFooter={<TeamsAdministration person={person} groups={groups} />}
+      headerActions={
+        workspace.id === "content" &&
+        resolveContentChannel(channel)?.kind === "temporary" ? (
+          <small className="content-room-header-cue">
+            {contentChannelReadOnly(channel)
+              ? "Archived · Read-only"
+              : "Temporary coverage"}
+          </small>
+        ) : undefined
+      }
       searchValue={search}
       onSearchChange={setSearch}
     >
@@ -449,11 +501,37 @@ export default function TeamsPreview() {
             files={visibleDocuments}
             definition={definition}
             headingLevel={2}
-            readOnly={["planning", "archives", "executive"].includes(
-              workspace.id,
-            )}
+            readOnly={
+              ["planning", "archives", "executive"].includes(workspace.id) ||
+              (workspace.id === "content" &&
+                (contentChannelReadOnly(channel) ||
+                  definition?.id === "published"))
+            }
           />
         </div>
+      ) : workspace.id === "content" ? (
+        <ContentConversation
+          key={channel}
+          channel={channel}
+          userName={person.name}
+          query={search}
+          onOpenFile={(id) => {
+            const source = contentFiles.find((file) => file.id === id);
+            if (!source || !files.some((file) => file.id === id)) return;
+            const libraryId = contentLibrary(source);
+            setSharedLibraryId(libraryId);
+            setTab("Shared");
+            setSearch("");
+            const query = new URLSearchParams(location.search);
+            query.set("tab", "Shared");
+            query.set("documentLibrary", libraryId);
+            query.set("file", id);
+            query.set("folder", contentDocument(source).folder);
+            query.delete("library");
+            query.delete("view");
+            history.replaceState({}, "", `/teams?${query}`);
+          }}
+        />
       ) : workspace.id === "digital" ? (
         <TechnicalConversation
           key={channel}
@@ -486,9 +564,9 @@ const updates: Record<string, { author: string; text: string }> = {
     author: "Taylor Brooks",
     text: "The segmentation research brief is ready for the team’s comments. Please flag any recruitment or analysis dependencies here.",
   },
-  content: {
-    author: "Alex Morgan",
-    text: "The welcome series review is scheduled for Thursday. Please confirm which production items are ready for review and flag any outstanding approvals.",
+  employment: {
+    author: "Jamie Ellis",
+    text: "Please confirm the vacancy setup checklist and interview coordination guidance before the next hiring round. Candidate decisions and individual employee records stay in their protected areas.",
   },
   finance: {
     author: "Sam Patel",

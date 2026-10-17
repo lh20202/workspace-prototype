@@ -21,6 +21,7 @@ import {
   Headset24Regular,
   Briefcase24Regular,
   Warning24Regular,
+  PersonBriefcase24Regular,
 } from "@fluentui/react-icons";
 import { workspaces, staff, selectedStaffId, rememberStaff } from "./catalog";
 import "./styles.css";
@@ -44,6 +45,7 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
   people: PeopleTeam24Regular,
   archives: Library24Regular,
   customer: Headset24Regular,
+  employment: PersonBriefcase24Regular,
 };
 export default function Directory() {
   const [person, setPerson] = useState(selectedStaffId);
@@ -114,11 +116,9 @@ export default function Directory() {
                     <Icon />
                   </span>
                   <div>
-                    <h2>{w.title} workspace</h2>
+                    <h2>{w.title}</h2>
                   </div>
-                  <span className="directory-open">
-                    <img src="/images/sharepoint-logo.svg" alt="" />
-                    <span className="directory-product-label">SharePoint</span>
+                  <span className="directory-open" aria-hidden="true">
                     <ArrowRight20Regular />
                   </span>
                 </a>
@@ -159,8 +159,7 @@ export default function Directory() {
       <footer className="directory-teams">
         <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
         <div className="directory-teams-copy">
-          <strong>Your work, connected in Teams</strong>
-          <span>See your channels and shared files.</span>
+          <strong>Preview your work in Teams</strong>
         </div>
         <label>
           Preview as

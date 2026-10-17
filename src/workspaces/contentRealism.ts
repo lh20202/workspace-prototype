@@ -1,5 +1,6 @@
 import type { WorkingFile } from "./types";
 import { functionalLibraries } from "./siteArchitecture";
+import { workspaceById } from "./registry";
 
 type AddedFile = [area: string, name: string, folder?: string];
 const additions: Record<string, AddedFile[]> = {
@@ -161,13 +162,17 @@ const areaFolders: Record<string, Record<string, string>> = {
   people: {
     workforce: "Workforce planning/2027 contributions",
     culture: "Leadership programme/Pilot design",
-    hiring: "Selection planning/Role and panel preparation",
     learning: "Learning programmes/Manager capability",
-    employment: "Employment methods/Process handoffs",
+    frameworks: "Employment frameworks/Organisation-wide design",
     communications: "All-staff meetings/October 2026",
     communities: "Company events/Programme planning",
     analytics: "Workforce analysis/Aggregate methods",
     wellbeing: "Wellbeing programme/Open events",
+  },
+  employment: {
+    hiring: "Vacancy coordination/Setup and panel preparation",
+    employment: "Employment process/Authorised handoffs",
+    inputs: "Input controls/System handoff methods",
   },
   customer: {
     care: "Care review/Service recovery",
@@ -342,27 +347,44 @@ function fileMetadata(id: string, file: WorkingFile): Record<string, string> {
               ? "Publishing"
               : "Preparation",
           }
-        : file.area === "hiring"
+        : file.area === "learning"
           ? {
               ...base,
-              Activity: "Selection methods",
-              "Planning period": "Q4 2026",
+              Programme: folder[1],
+              Audience: /Onboarding/.test(file.name)
+                ? "New starters"
+                : "People managers",
             }
-          : file.area === "learning"
-            ? {
-                ...base,
-                Programme: folder[1],
-                Audience: /Onboarding/.test(file.name)
-                  ? "New starters"
-                  : "People managers",
-              }
-            : {
-                ...base,
-                Programme: folder[0],
-                Activity: /Review|Feedback/.test(file.name)
-                  ? "Review"
-                  : "Planning",
-              };
+          : {
+              ...base,
+              Programme: folder[0],
+              Activity: /Review|Feedback/.test(file.name)
+                ? "Review"
+                : "Planning",
+            };
+    case "employment":
+      return file.area === "hiring"
+        ? {
+            ...base,
+            Activity: /Handoff/.test(file.name)
+              ? "Recruitment handoff"
+              : /Interview|Panel/.test(file.name)
+                ? "Panel preparation"
+                : "Vacancy setup",
+            "Recruitment stage": /Handoff/.test(file.name)
+              ? "Handoff"
+              : /Interview|Panel/.test(file.name)
+                ? "Panel readiness"
+                : "Vacancy setup",
+          }
+        : {
+            ...base,
+            Activity:
+              file.area === "inputs"
+                ? "Input-control procedure"
+                : "Authorised process handoff",
+            "System of record": "Workday HCM",
+          };
     case "customer":
       return [
         "relationships",
@@ -443,6 +465,14 @@ function contentTypeFor(id: string, file: WorkingFile) {
       : /Plan/.test(file.name)
         ? "learning-plan"
         : undefined;
+  if (id === "employment")
+    return file.area === "hiring"
+      ? /Handoff/.test(file.name)
+        ? "recruitment-handoff"
+        : /Vacancy/.test(file.name)
+          ? "vacancy-coordination"
+          : undefined
+      : "employment-process";
   if (id === "customer" && file.area === "meetings")
     return /Negotiation|Options/.test(file.name)
       ? "negotiation-plan"
@@ -465,7 +495,11 @@ export function enrichFunctionalFiles(
     type: name.split(".").at(-1)!,
   }));
   return [...existing, ...added].map((file, index) => {
-    const folderPath = folderForFunctionalFile(id, file.area, file.name);
+    const owningId =
+      id === "people" && ["hiring", "employment"].includes(file.area)
+        ? "employment"
+        : id;
+    const folderPath = folderForFunctionalFile(owningId, file.area, file.name);
     const target =
       id === "services" &&
       file.area === "reception" &&
@@ -473,7 +507,9 @@ export function enrichFunctionalFiles(
         ? functionalLibraries.services.find(
             (l) => l.id === "bookings-coordination",
           )!
-        : functionalLibraries[id].find((l) => l.areas.includes(file.area))!;
+        : functionalLibraries[owningId].find((l) =>
+            l.areas.includes(file.area),
+          )!;
     const modified = `2026-10-${String(2 + ((index * 3 + file.name.length) % 15)).padStart(2, "0")}`;
     const status: WorkingFile["status"] =
       /Checklist|Guidance|Method|Guide|Criteria|Contract.yaml/.test(file.name)
@@ -483,20 +519,28 @@ export function enrichFunctionalFiles(
           : "Draft";
     const result: WorkingFile = {
       ...file,
+      ...(owningId !== id
+        ? {
+            campaign: workspaceById.get(owningId)!.title,
+            location: workspaceById.get(owningId)!.title,
+          }
+        : {}),
       documentLibrary: target.id,
       folderPath,
       folder: folderPath,
       modified,
       status,
-      contentType: contentTypeFor(id, file),
+      contentType: contentTypeFor(owningId, file),
       owner:
         id === "digital"
           ? "Devon Park"
-          : id === "people"
-            ? "Elena Rossi"
-            : file.owner,
+          : owningId === "employment"
+            ? "Employment Operations"
+            : id === "people"
+              ? "Elena Rossi"
+              : file.owner,
     };
-    result.metadata = fileMetadata(id, result);
+    result.metadata = fileMetadata(owningId, result);
     result.workType =
       result.metadata.Activity ||
       result.metadata["Work type"] ||

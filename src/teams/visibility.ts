@@ -1,4 +1,8 @@
 import type { StaffPerson } from "../intranet/catalog";
+import {
+  visibleContentChannels,
+  canSeeContentChannel,
+} from "../content/channels";
 import { technicalChannels } from "../workspaces/technicalTeams";
 
 // Membership is deliberately narrower than SharePoint's open internal access.
@@ -14,6 +18,7 @@ export const workspaceMemberships: Record<string, string[]> = {
   devon: ["digital", "services", "planning", "archives"],
   elena: ["people"],
   harper: ["legal"],
+  jamie: ["employment"],
 };
 export const projectMemberships: Record<string, string[]> = {
   devon: ["PRJ-2026-014"],
@@ -28,7 +33,8 @@ export const workspaceChannels: Record<string, string[]> = {
   planning: ["General", "Planning coordination"],
   services: ["General"],
   audience: ["General", "Research coordination"],
-  content: ["General", "Production coordination"],
+  content: visibleContentChannels("morgan").map((channel) => channel.name),
+  employment: ["General", "Recruitment coordination"],
   finance: ["General", "Close coordination"],
   executive: ["General"],
   digital: technicalChannels,
@@ -47,6 +53,8 @@ export function canSeeWorkspace(
 ) {
   return (
     workspaceId === "logistics" ||
+    (workspaceId === "content" &&
+      visibleContentChannels(person.id).length > 0) ||
     (workspaceId !== "projects" && isWorkspaceMember(person, workspaceId))
   );
 }
@@ -55,6 +63,8 @@ export function visibleWorkspaceChannels(
   workspaceId: string,
 ) {
   if (!canSeeWorkspace(person, workspaceId)) return [];
+  if (workspaceId === "content")
+    return visibleContentChannels(person.id).map((channel) => channel.name);
   return (workspaceChannels[workspaceId] || ["General"]).filter(
     (name) => name !== "Security Engineering" || isInformationManager(person),
   );
@@ -64,6 +74,8 @@ export function canSeeWorkspaceChannel(
   workspaceId: string,
   channel: string,
 ) {
+  if (workspaceId === "content")
+    return canSeeContentChannel(person.id, channel);
   return visibleWorkspaceChannels(person, workspaceId).includes(channel);
 }
 export const canSeeDepartment = (

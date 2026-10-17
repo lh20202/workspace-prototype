@@ -20,9 +20,11 @@ import {
 } from "../content/data";
 import { prototypeForPath } from "../utils/routes";
 describe("canonical functional ownership", () => {
-  it("registers exactly 14 business purposes and no structural departments", () => {
-    expect(workspaceRegistry).toHaveLength(14);
-    expect(new Set(workspaceRegistry.map((w) => w.href)).size).toBe(14);
+  it("registers 15 business purposes after separating controlled employment operations", () => {
+    expect(workspaceRegistry).toHaveLength(15);
+    expect(new Set(workspaceRegistry.map((w) => w.href)).size).toBe(
+      workspaceRegistry.length,
+    );
     expect(
       workspaceRegistry.every(
         (w) => w.purpose && w.description && w.accessModel && w.teams,
@@ -96,7 +98,7 @@ describe("canonical functional ownership", () => {
       "/legal-compliance/protected/",
     );
     expect(resolveLegacy("/services/hiring/recruitment/REC-221")).toContain(
-      "/people-culture/protected/",
+      "/employment-admin/protected/",
     );
   });
 });

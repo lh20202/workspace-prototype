@@ -2,7 +2,7 @@
 
 Development snapshot of the fictional content fixtures. This report is not shown in the application.
 
-**58 library contexts · 459 files · 179 leaf folders.** Review flags: 43 single-file folders, 0 empty folders and 0 folders above 12 files.
+**60 library contexts · 475 files · 181 leaf folders.** Review flags: 40 single-file folders, 0 empty folders and 0 folders above 12 files.
 
 Counts support a realism review; they are not acceptance quotas or requirements from ISO standards. A single-file folder can be appropriate. No files are generated automatically to satisfy a count.
 
@@ -25,9 +25,10 @@ Counts support a realism review; they are not acceptance quotas or requirements 
 | legal | Privacy & Assurance | 7 | 3 | 2–3 | 0 | 0 | 0 |
 | legal | Contract Review | 3 | 1 | 3–3 | 0 | 0 | 0 |
 | people | Workforce & Culture | 14 | 6 | 2–3 | 0 | 0 | 0 |
-| people | Hiring & Selection Planning | 5 | 1 | 5–5 | 0 | 0 | 0 |
 | people | Capability & Learning | 6 | 2 | 3–3 | 0 | 0 | 0 |
 | people | Staff Communications | 9 | 2 | 3–6 | 0 | 0 | 0 |
+| employment | Recruitment Administration | 7 | 1 | 7–7 | 0 | 0 | 0 |
+| employment | Employment Operations | 5 | 2 | 2–3 | 0 | 0 | 0 |
 | customer | Care Standards & Quality | 9 | 3 | 2–4 | 0 | 0 | 0 |
 | customer | Relationships & Accounts | 11 | 4 | 2–4 | 0 | 0 | 0 |
 | customer | Meetings & Negotiations | 4 | 1 | 4–4 | 0 | 0 | 0 |
@@ -35,9 +36,10 @@ Counts support a realism review; they are not acceptance quotas or requirements 
 | Audience | Research & Insight | 17 | 7 | 1–4 | 1 | 0 | 0 |
 | Audience | Experiments & Testing | 6 | 3 | 1–4 | 2 | 0 | 0 |
 | Audience | Analysis & Reporting | 19 | 5 | 2–7 | 0 | 0 | 0 |
-| Content | Current Production | 17 | 4 | 4–5 | 0 | 0 | 0 |
-| Content | Editorial & Messaging | 8 | 6 | 1–2 | 4 | 0 | 0 |
-| Content | Creative & Digital Content | 9 | 6 | 1–2 | 3 | 0 | 0 |
+| Content | Current Production | 30 | 8 | 2–5 | 0 | 0 | 0 |
+| Content | Editorial & Messaging | 5 | 4 | 1–2 | 3 | 0 | 0 |
+| Content | Creative & Multimedia | 5 | 3 | 1–2 | 1 | 0 | 0 |
+| Content | Published & Final Content | 3 | 1 | 3–3 | 0 | 0 | 0 |
 | Finance | Income & Reconciliation | 8 | 2 | 4–4 | 0 | 0 | 0 |
 | Finance | Payments & Close | 3 | 1 | 3–3 | 0 | 0 | 0 |
 | Finance | Planning & Analysis | 6 | 2 | 3–3 | 0 | 0 | 0 |

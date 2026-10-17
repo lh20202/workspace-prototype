@@ -3,26 +3,36 @@ import { packages as initialPackages, type ContentFile } from "./data";
 export const libraries = [
   { id: "production", title: "Current Production" },
   { id: "editorial", title: "Editorial & Messaging" },
-  { id: "creative", title: "Creative & Digital Content" },
+  { id: "creative", title: "Creative & Multimedia" },
+  { id: "published", title: "Published & Final Content" },
 ];
-const currentPackages = ["PKG-101", "PKG-103", "PKG-104", "PKG-105"];
+const currentPackages = [
+  "PKG-101",
+  "PKG-102",
+  "PKG-103",
+  "PKG-104",
+  "PKG-105",
+  "PKG-108",
+  "PKG-113",
+];
 export const libraryFor = (file: ContentFile) =>
-  currentPackages.includes(file.packageId)
-    ? "production"
-    : file.area === "editorial"
-      ? "editorial"
-      : "creative";
+  initialPackages.find((item) => item.id === file.packageId)?.stage === "Closed"
+    ? "published"
+    : currentPackages.includes(file.packageId)
+      ? "production"
+      : file.area === "editorial"
+        ? "editorial"
+        : "creative";
 export const folderFor = (file: ContentFile) => {
+  if (libraryFor(file) === "published") return `2026/${file.campaign}`;
   if (libraryFor(file) === "production") {
-    const format =
-      file.packageId === "PKG-101"
-        ? "Campaigns"
-        : file.packageId === "PKG-103"
-          ? "Video"
-          : file.packageId === "PKG-104"
-            ? "Events"
-            : "Digital Experience";
-    return `${format}/${file.campaign}`;
+    // A working set stays together; a separate review area is worthwhile only
+    // for the video's paired storyboard/review-cut handoff, not every file type.
+    const section =
+      file.packageId === "PKG-103" && file.area === "creative"
+        ? "Creative & Review"
+        : "Working Copy";
+    return `${file.campaign}/${section}`;
   }
   if (libraryFor(file) === "editorial") {
     const group =
@@ -61,11 +71,13 @@ export const documentFor = (file: ContentFile): LibraryDocument => {
     owner: file.owner,
     status: file.review,
     contentType:
-      libraryFor(file) === "production"
-        ? /brief/i.test(file.workType)
-          ? "content-brief"
-          : "production-asset"
-        : undefined,
+      libraryFor(file) === "published"
+        ? "published-output"
+        : libraryFor(file) === "production"
+          ? /brief/i.test(file.workType)
+            ? "content-brief"
+            : "production-asset"
+          : undefined,
     summary: `${item.purpose}. ${item.testing} ${item.condition}`,
     metadata: {
       Production: file.campaign,
@@ -73,6 +85,7 @@ export const documentFor = (file: ContentFile): LibraryDocument => {
       "Work type": file.workType,
       Rights: item.rights,
       "Review due": item.reviewDue,
+      "Release date": item.releaseDate,
     },
   };
 };
@@ -148,9 +161,52 @@ export const definitions: Record<string, LibraryDefinition> = {
       },
     ],
   },
+  published: {
+    id: "published",
+    name: "Published & Final Content",
+    purpose:
+      "Final production outputs and delivery evidence retained after coverage closes.",
+    columns: [
+      { key: "name", label: "Name" },
+      { key: "Production", label: "Production" },
+      { key: "Channel", label: "Channel" },
+      { key: "Release date", label: "Released", type: "date" },
+      { key: "Rights", label: "Reuse rights" },
+    ],
+    fields: [
+      { key: "owner", label: "Owner" },
+      { key: "status", label: "Status" },
+      { key: "contentType", label: "Content type" },
+    ],
+    contentTypes: [
+      {
+        id: "published-output",
+        name: "Published Output",
+        template:
+          "Final approved output, publication reference and reuse conditions.",
+        fields: ["Production", "Release date", "Rights"],
+      },
+    ],
+    views: [
+      { id: "all", name: "All Documents" },
+      {
+        id: "released",
+        name: "By Release Date",
+        sortBy: "Release date",
+        descending: true,
+        recursive: true,
+      },
+      {
+        id: "production",
+        name: "By Production",
+        sortBy: "Production",
+        recursive: true,
+      },
+    ],
+  },
   creative: {
     id: "creative",
-    name: "Creative & Digital Content",
+    name: "Creative & Multimedia",
     columns: [
       { key: "name", label: "Name" },
       { key: "Channel", label: "Channel" },

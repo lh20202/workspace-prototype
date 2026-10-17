@@ -309,7 +309,7 @@ const seeds = {
       [
         "systems-engineering",
         "People Platform Integration",
-        "Review technical API change; employment records remain in People & Culture",
+        "Review technical API change; employment records remain in Employment & Hiring Administration",
       ],
       [
         "ai-automation",
@@ -513,9 +513,9 @@ const seeds = {
         "Learning design, capability reviews and onboarding development.",
       ],
       [
-        "employment",
-        "Reward & Employment",
-        "Employment processes and shared methods; individual records remain protected.",
+        "frameworks",
+        "Reward & Employment Frameworks",
+        "Organisation-wide reward principles and employment-framework design; individual administration belongs to Employment & Hiring Administration.",
       ],
       [
         "communications",
@@ -539,9 +539,9 @@ const seeds = {
         "Shared wellbeing programme and support-path coordination.",
       ],
       [
-        "protected",
-        "Protected Employment Information",
-        "Subject-specific employment participation only.",
+        "employment",
+        "Employment Administration",
+        "Operational employment handoffs are owned by Employment & Hiring Administration.",
       ],
     ],
     items: [
@@ -615,6 +615,11 @@ const seeds = {
         "Wellbeing events programme",
         "Coordinate open events and appropriate support routes",
       ],
+      [
+        "frameworks",
+        "Reward framework consultation",
+        "Review organisation-wide principles and aggregate consultation themes",
+      ],
     ],
     files: [
       ["workforce", "Workforce Planning — Contribution Schedule.xlsx"],
@@ -635,6 +640,8 @@ const seeds = {
       ["communities", "Winter Social — Participation Plan.docx"],
       ["analytics", "Aggregate People Questions.docx"],
       ["wellbeing", "Wellbeing Events — Planning.docx"],
+      ["frameworks", "Reward Framework — Design Principles.docx"],
+      ["frameworks", "Employment Framework — Consultation Plan.xlsx"],
     ],
     protected: [
       ["candidate-applications", "Candidate Applications", "hiring", false],
@@ -662,6 +669,74 @@ const seeds = {
         "Authoritative candidate workflow; authorised users only",
       ],
       ["staffbase", "Staffbase", "Internal communications publishing"],
+    ],
+  },
+  employment: {
+    areas: [
+      [
+        "hiring",
+        "Recruitment Administration",
+        "Vacancy setup, panel coordination, hiring-process preparation and controlled recruitment handoffs.",
+        "greenhouse",
+      ],
+      [
+        "employment",
+        "Employment Operations",
+        "Shared employment-change methods and authorised system handoffs.",
+        "workday",
+      ],
+      [
+        "inputs",
+        "Payroll & Benefits Coordination",
+        "Input-control procedures only; individual payroll and benefits inputs require specific authorisation.",
+        "workday",
+      ],
+      [
+        "protected",
+        "Restricted Employment Information",
+        "Separate authorisation for candidate subjects, individual employment records and cases.",
+      ],
+    ],
+    items: [
+      [
+        "hiring",
+        "Vacancy setup & panel readiness",
+        "Confirm the approval route and shared panel timetable in Greenhouse",
+      ],
+      [
+        "employment",
+        "Employment-change handoff review",
+        "Check the authorisation sequence and Workday process responsibilities",
+      ],
+    ],
+    files: [
+      ["hiring", "Vacancy Setup — Approval Checklist.docx"],
+      ["hiring", "Recruitment Handoff — Responsibility Map.docx"],
+      ["inputs", "Payroll Input — Control Checklist.docx"],
+      ["inputs", "Benefits Input — Handoff Procedure.docx"],
+      ["employment", "Leaver Process — System Handoff.docx"],
+    ],
+    protected: [
+      [
+        "payroll-inputs",
+        "Individual Payroll & Benefits Inputs",
+        "protected",
+        true,
+      ],
+      [
+        "absence-administration",
+        "Individual Absence Administration",
+        "protected",
+        true,
+      ],
+      ["employee-master-data", "Employee Master Data", "protected", true],
+    ],
+    tools: [
+      [
+        "workday",
+        "Workday HCM",
+        "Authoritative employment and personnel records, employment changes, payroll and benefits inputs. Authorised users only; SharePoint contains shared coordination methods.",
+      ],
     ],
   },
   customer: {
@@ -910,7 +985,7 @@ const seeds = {
     ],
   },
 };
-export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
+const initialConfigs: FunctionalConfig[] = Object.entries(seeds).map(
   ([id, s]) => ({
     id,
     areas: s.areas.map(([id, name, summary, tool]) => ({
@@ -925,13 +1000,15 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
       name,
       nextAction,
       owner:
-        id === "people"
-          ? "Elena Rossi"
-          : id === "digital"
-            ? "Casey Blake"
-            : id === "customer"
-              ? "Maya Chen"
-              : "Jordan Lee",
+        id === "employment"
+          ? "Employment Operations"
+          : id === "people"
+            ? "Elena Rossi"
+            : id === "digital"
+              ? "Casey Blake"
+              : id === "customer"
+                ? "Maya Chen"
+                : "Jordan Lee",
       status:
         i % 3 === 0
           ? "Needs review"
@@ -980,6 +1057,57 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
     })),
     tools: s.tools.map(([id, name, purpose]) => ({ id, name, purpose })),
   }),
+);
+// Keep the original file objects/IDs when correcting the business owner. Older
+// links can therefore resolve the same document in its new owning workspace.
+const initialPeople = initialConfigs.find((config) => config.id === "people")!;
+const administrationAreas = new Set(["hiring", "employment"]);
+const movedSubjects = initialPeople.protected.filter(
+  (subject) => subject.id !== "network-membership",
+);
+export const functionalConfigs: FunctionalConfig[] = initialConfigs.map(
+  (config) => {
+    if (config.id === "people")
+      return {
+        ...config,
+        areas: config.areas.filter((area) => !administrationAreas.has(area.id)),
+        items: config.items.filter(
+          (item) => !administrationAreas.has(item.area),
+        ),
+        files: config.files.filter(
+          (file) => !administrationAreas.has(file.area),
+        ),
+        protected: config.protected.filter(
+          (subject) => subject.id === "network-membership",
+        ),
+        tools: config.tools.filter((tool) => tool.id !== "greenhouse"),
+      };
+    if (config.id === "employment")
+      return {
+        ...config,
+        items: [
+          ...config.items,
+          ...initialPeople.items
+            .filter((item) => administrationAreas.has(item.area))
+            .map((item) => ({ ...item, owner: "Employment Operations" })),
+        ],
+        files: [
+          ...config.files,
+          ...initialPeople.files.filter((file) =>
+            administrationAreas.has(file.area),
+          ),
+        ],
+        protected: [
+          ...config.protected,
+          ...movedSubjects.map((subject) => ({ ...subject, strict: true })),
+        ],
+        tools: [
+          ...config.tools,
+          ...initialPeople.tools.filter((tool) => tool.id === "greenhouse"),
+        ],
+      };
+    return config;
+  },
 );
 export const configById = new Map(functionalConfigs.map((c) => [c.id, c]));
 export const filesForWorkspace = (id: string) =>

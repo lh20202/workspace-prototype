@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, type ReactNode } from "react";
+import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import {
   Alert24Regular,
   Chat24Regular,
@@ -32,6 +33,7 @@ export interface TeamsGroup {
     label: string;
     unread?: boolean;
     private?: boolean;
+    cue?: "Temporary" | "Archived";
     onSelect: () => void;
   }[];
 }
@@ -113,7 +115,16 @@ export default function TeamsShell({
     onSearchChange?.(value);
   };
   return (
-    <div className="m365-teams">
+    <FluentProvider
+      className="m365-teams"
+      theme={{
+        ...webLightTheme,
+        fontFamilyBase:
+          '"Segoe UI", "Segoe UI Variable", system-ui, sans-serif',
+        fontFamilyNumeric:
+          '"Segoe UI", "Segoe UI Variable", system-ui, sans-serif',
+      }}
+    >
       <header className="m365-teams-topbar">
         <div className="m365-teams-history">
           <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
@@ -320,6 +331,7 @@ export default function TeamsShell({
                       <button
                         className={`m365-teams-channel${channel.unread ? " is-unread" : ""}`}
                         key={channel.id}
+                        title={channel.label}
                         ref={
                           selectedChannelId === channel.id
                             ? selectedChannel
@@ -341,6 +353,11 @@ export default function TeamsShell({
                           <NumberSymbol20Regular />
                         )}
                         <span>{channel.label}</span>
+                        {channel.cue && (
+                          <small className="m365-teams-channel-cue">
+                            {channel.cue}
+                          </small>
+                        )}
                         {channel.unread && <i aria-label="Unread" />}
                       </button>
                     ))}
@@ -487,7 +504,7 @@ export default function TeamsShell({
           </div>
         </main>
       </div>
-    </div>
+    </FluentProvider>
   );
 }
 export function TeamsComposer({

@@ -67,11 +67,18 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   robin: { departmentId: "executive-office", unitId: "ceo-office" },
   devon: { departmentId: "strategy-technology", unitId: "it-services" },
   elena: { departmentId: "people-culture", unitId: "learning-and-capability" },
+  jamie: { departmentId: "people-culture", unitId: "people-operations" },
   harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
   morgan: { departmentId: "strategy-technology", unitId: "it-services" },
 };
 export const staff = [
   ...baseStaff,
+  {
+    id: "jamie",
+    name: "Jamie Ellis",
+    role: "Employment Operations Coordinator",
+    workspace: "employment",
+  },
   {
     id: "devon",
     name: "Devon Park",

@@ -242,7 +242,7 @@ const misfiled: Record<
       name: "Service Explainer — Storyboard.pptx",
       kind: "Misplaced business upload",
       destination: "/content-delivery/creative",
-      destinationName: "Content Creation & Delivery → Creative Production",
+      destinationName: "Content Room → Creative & Multimedia",
     },
     reply:
       "Nice one, Alex — this is the storyboard production colleagues are actively reviewing. Could you keep the working version in Creative Production and link it back here? We can carry on discussing it here. Happy to help move it.",
@@ -441,6 +441,39 @@ export const departments: Department[] = definitions.map(
         time: "10:40",
         upload: example.upload,
         moderatorReply: example.reply,
+      });
+    if (id === "people-culture")
+      posts.splice(5, 0, {
+        id: `${id}-recruitment-handoff`,
+        author: "Clara Jensen",
+        text: "The candidate-workflow administration checklist is ready for a process review. It contains no candidate information.",
+        time: "10:50",
+        upload: {
+          id: "UP-PC-02",
+          name: "Recruitment Workflow — Administration Handoff.docx",
+          kind: "Misplaced business upload",
+          destination: "/employment-admin/recruitment-administration",
+          destinationName:
+            "Employment & Hiring Administration → Recruitment Administration",
+        },
+        moderatorReply:
+          "Thanks — the shared candidate-workflow administration belongs in Employment & Hiring Administration. Please keep the process checklist there and link it here. Applications, assessments, references and individual decisions must stay in their separately authorised locations. Leadership and culture programmes remain in People & Culture.",
+      });
+    if (id === "strategy-technology")
+      posts.splice(5, 0, {
+        id: `${id}-engineering-handoff`,
+        author: "Devon Park",
+        text: "Shared the next HR-platform interface review notes for the technical release discussion.",
+        time: "10:55",
+        upload: {
+          id: "UP-STT-02",
+          name: "HR Platform Interface — Technical Review.docx",
+          kind: "Misplaced business upload",
+          destination: "/digital-tech/systems-engineering",
+          destinationName: "Digital & Technology → Engineering Delivery",
+        },
+        moderatorReply:
+          "Thanks, Devon — the API, authentication and integration work belongs in Digital & Technology. Please keep the technical review there and link it here. Employment & Hiring Administration owns the business process and individual employment records, with their separate access controls.",
       });
     posts.push({
       id: `${id}-P7`,

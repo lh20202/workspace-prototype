@@ -45,9 +45,9 @@ const seed: [string, string, string, string, string, string][] = [
   ],
   [
     "content",
-    "Content Creation & Delivery",
+    "Content Room",
     "/content-delivery",
-    "Messaging, editorial, creative production, content packages, channel adaptation and content acceptance.",
+    "Shared production space for editorial, creative and channel teams coordinating live content, campaigns and rapid-response coverage.",
     "Audience & experience",
     "content",
   ],
@@ -103,9 +103,17 @@ const seed: [string, string, string, string, string, string][] = [
     "people",
     "People & Culture",
     "/people-culture",
-    "Workforce, organisation, hiring, capability, employment, internal communications and staff communities.",
+    "Workforce and organisation development, leadership, culture, inclusion, capability, staff communications and wellbeing programmes.",
     "People & organisation",
     "people-culture",
+  ],
+  [
+    "employment",
+    "Employment & Hiring Administration",
+    "/employment-admin",
+    "Shared controlled workspace for recruitment administration, employment records, contracts and authorised employment changes.",
+    "Employment operations",
+    "employment",
   ],
   [
     "executive",
@@ -145,7 +153,7 @@ export const legacyRedirects: Record<string, string> = {
   "/services/technology": "/digital-tech",
   "/services/projects": "/projects",
   "/services/legal": "/legal-compliance",
-  "/services/hiring": "/people-culture/hiring",
+  "/services/hiring": "/employment-admin/recruitment-administration",
   "/services/resources": "/services",
   "/services/workplace": "/services/office",
   "/services/procurement": "/services/purchasing",
@@ -153,8 +161,34 @@ export const legacyRedirects: Record<string, string> = {
   "/services/systems/freshservice": "/service-desk/it-support",
   "/services/systems/jira": "/service-desk/it-support",
   "/services/systems/m365": "/digital-tech/m365",
-  "/services/systems/greenhouse": "/people-culture/systems/greenhouse",
-  "/services/systems/recruitment": "/people-culture/systems/greenhouse",
+  "/services/systems/greenhouse": "/employment-admin/systems/greenhouse",
+  "/services/systems/recruitment": "/employment-admin/systems/greenhouse",
+  "/services/systems/workday": "/employment-admin/systems/workday",
+  "/people-culture/hiring": "/employment-admin/recruitment-administration",
+  "/people-culture/hiring-documents":
+    "/employment-admin/recruitment-administration",
+  "/people-culture/employment": "/employment-admin/employment-operations",
+  "/people-culture/systems/greenhouse": "/employment-admin/systems/greenhouse",
+  "/people-culture/systems/recruitment": "/employment-admin/systems/greenhouse",
+  "/people-culture/systems/workday": "/employment-admin/systems/workday",
+  ...Object.fromEntries(
+    [
+      "candidate-applications",
+      "candidate-assessments",
+      "references",
+      "offers",
+      "placement",
+      "employee-records",
+      "employment-changes",
+      "compensation",
+      "employee-relations",
+      "complaints",
+      "welfare",
+    ].map((subject) => [
+      `/people-culture/protected/${subject}`,
+      `/employment-admin/protected/${subject}`,
+    ]),
+  ),
   "/services/systems/asana": "/projects/support",
   "/services/systems/m-files": "/archives",
   "/services/systems/docuware": "/archives",
@@ -175,6 +209,8 @@ export const legacyRedirects: Record<string, string> = {
   "/content-delivery/tools/staffbase": "/people-culture/communications",
 };
 export function resolveLegacy(path: string) {
+  if (path === "/people-culture/protected")
+    return "/employment-admin/protected";
   if (legacyRedirects[path]) return legacyRedirects[path];
   for (const [old, destination] of Object.entries(legacyRedirects).sort(
     (a, b) => b[0].length - a[0].length,
@@ -183,7 +219,11 @@ export function resolveLegacy(path: string) {
       if (old === "/services/legal")
         return "/legal-compliance/protected/formal-cases";
       if (old === "/services/hiring")
-        return "/people-culture/protected/candidate-assessments";
+        return "/employment-admin/protected/candidate-assessments";
+      if (old === "/people-culture/hiring")
+        return `/employment-admin/protected/${path.split("/")[3] || "candidate-assessments"}`;
+      if (old === "/people-culture/employment")
+        return `/employment-admin/protected/${path.split("/")[3] || "employment-changes"}`;
       if (old === "/services/technology")
         return "/digital-tech/protected/privileged-access";
       if (old === "/services/workplace")
@@ -202,7 +242,7 @@ export const primaryDestinations: Record<string, string> = {
   "Organisation-wide process redesign": "/quality-monitoring/process",
   "Supplier sourcing file": "/services/purchasing",
   "Supplier invoice": "/financial-operations/payments",
-  "Candidate assessment": "/people-culture/protected/candidate-assessments",
+  "Candidate assessment": "/employment-admin/protected/candidate-assessments",
   "HR-system API change": "/digital-tech/systems-engineering",
   "Annual All-Staff Meeting agenda": "/people-culture/communications",
   "Company picnic planning": "/people-culture/communities",
@@ -243,7 +283,7 @@ export const crossWorkspaceHandoffs = [
     steps: [
       {
         name: "Hiring and authorised employment process",
-        href: "/people-culture/hiring",
+        href: "/employment-admin/recruitment-administration",
       },
       { name: "Office and reception readiness", href: "/services/office" },
       {

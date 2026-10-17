@@ -40,6 +40,7 @@ export function prototypeForPath(
       "/archives",
       "/legal-compliance",
       "/people-culture",
+      "/employment-admin",
       "/customer-relations",
       "/employee-council",
     ].some((base) => pathname === base || pathname.startsWith(base + "/"))
@@ -98,7 +99,7 @@ export function pageTitle(pathname: string) {
     pathname === "/content-delivery" ||
     pathname.startsWith("/content-delivery/")
   )
-    return "Content Creation & Delivery";
+    return "Content Room";
   if (
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")

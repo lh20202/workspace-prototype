@@ -13,12 +13,13 @@ import DocumentIcon from "../components/DocumentIcon";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { staff } from "../intranet/catalog";
 import { workspaceRegistry, workspaceById } from "./registry";
-import { configById } from "./config";
+import { configById, functionalConfigs } from "./config";
 import type { WorkingItem } from "./types";
 import {
   functionalLibraries,
   functionalLibraryDocuments,
   functionalFolder,
+  functionalFileHref,
   libraryForFile,
   functionalHomes,
   protectedNavigation,
@@ -98,12 +99,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
           )
           ?.folder.split("/")[0]
       : undefined;
-  const fileHref = (fileId: string) => {
-    const file = config.files.find((f) => f.id === fileId);
-    const target = libraryForFile(config, fileId);
-    if (!file || !target) return workspace.href;
-    return `${href(target.id)}?${new URLSearchParams({ library: target.name, folder: functionalFolder(file), file: file.id })}`;
-  };
+  const fileHref = (fileId: string) => functionalFileHref(config, fileId);
   function openSearchFile(id: string) {
     location.assign(fileHref(id));
   }
@@ -113,12 +109,24 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
   const requestedLibraryTitle = new URLSearchParams(location.search).get(
     "library",
   );
-  const legacyFileDestination =
-    parts.length === 2 &&
-    library &&
-    requestedFileLibrary &&
-    (requestedFileLibrary.id !== library.id ||
-      (requestedLibraryTitle && requestedLibraryTitle !== library.name))
+  const movedFileOwner =
+    workspace.id === "people" &&
+    requestedFileId &&
+    !subject &&
+    (page === "home" || !!library)
+      ? functionalConfigs.find(
+          (candidate) =>
+            candidate.id === "employment" &&
+            candidate.files.some((file) => file.id === requestedFileId),
+        )
+      : undefined;
+  const legacyFileDestination = movedFileOwner
+    ? functionalFileHref(movedFileOwner, requestedFileId)
+    : parts.length === 2 &&
+        library &&
+        requestedFileLibrary &&
+        (requestedFileLibrary.id !== library.id ||
+          (requestedLibraryTitle && requestedLibraryTitle !== library.name))
       ? fileHref(requestedFileId)
       : "";
   useEffect(() => {
@@ -139,10 +147,14 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
     return toolIds.length > 0 ||
       protectedLinks.length > 0 ||
       (workspace.id === "people" &&
-        l?.areas.some((id) => ["communications", "employment"].includes(id))) ||
+        l?.areas.some((id) => ["communications", "frameworks"].includes(id))) ||
       (workspace.id === "digital" &&
         l?.areas.some((id) =>
-          ["web-crm", "information-architecture"].includes(id),
+          [
+            "web-crm",
+            "information-architecture",
+            "systems-engineering",
+          ].includes(id),
         )) ||
       (workspace.id === "customer" && l?.areas.includes("quality")) ||
       (workspace.id === "quality" && l?.areas.includes("process")) ||
@@ -186,13 +198,19 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
             </>
           )}
           {workspace.id === "digital" &&
+            l?.areas.includes("systems-engineering") && (
+              <a href="/employment-admin">
+                Employment process & record ownership ↗
+              </a>
+            )}
+          {workspace.id === "digital" &&
             l?.areas.includes("information-architecture") && (
               <a href="/archives/retention">Retention requirements ↗</a>
             )}
           {workspace.id === "people" && l?.areas.includes("communications") && (
             <a href="/digital-tech/m365">Publishing platform support ↗</a>
           )}
-          {workspace.id === "people" && l?.areas.includes("employment") && (
+          {workspace.id === "people" && l?.areas.includes("frameworks") && (
             <a href="/employee-council">Employee Representative Council ↗</a>
           )}
           {protectedLinks.map((s) => (
@@ -301,7 +319,9 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
           <p>
             Council participation is independent of People & Culture membership.
           </p>
-          <a href="/people-culture/employment">Return to People & Culture →</a>
+          <a href="/people-culture/workforce-documents">
+            Return to People & Culture →
+          </a>
         </main>
       </div>
     );
@@ -444,9 +464,24 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 Staff communities
               </a>
             )}
+            {workspace.id === "employment" && (
+              <a
+                href={href("protected/employee-records")}
+                aria-current={
+                  subject?.id === "employee-records" ? "page" : undefined
+                }
+              >
+                <LockClosed20Regular />
+                Employment Records & Contracts
+              </a>
+            )}
             {protectedNavigation[workspace.id] && (
               <a
-                href={href("protected")}
+                href={href(
+                  workspace.id === "people"
+                    ? "communities/network-membership"
+                    : "protected",
+                )}
                 aria-current={page === "protected" ? "page" : undefined}
               >
                 <LockClosed20Regular />
@@ -475,7 +510,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               <LockClosed20Regular />
               {subject?.strict && (
                 <span className="strict-label">
-                  {workspace.id === "people"
+                  {workspace.id === "employment" || workspace.id === "people"
                     ? "Strictly confidential"
                     : "Restricted"}
                 </span>
@@ -484,7 +519,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               <h2>{subject?.name || "This location is unavailable"}</h2>
               <p>Specific authorisation is required.</p>
               <a
-                href={`/service-desk/access-request?${new URLSearchParams({ workspace: workspace.title, area: subject?.name || "Restricted", location: `${workspace.title} / ${subject?.name || "Restricted"}` })}`}
+                href={`/service-desk/access-request?${new URLSearchParams({ workspace: workspace.title, area: subject?.name || "Restricted", location: `${workspace.title} / ${subject?.name || "Restricted"}`, person: contextStaffId })}`}
               >
                 Request access →
               </a>
@@ -587,7 +622,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                 </div>
                 <aside className="functional-home-aside">
                   <section>
-                    <h2>Frequent tasks</h2>
+                    <h2>{home.handoffsHeading || "Frequent tasks"}</h2>
                     <div className="functional-home-handoffs">
                       {home.handoffs.map((link) => (
                         <a key={link.href} href={link.href}>
