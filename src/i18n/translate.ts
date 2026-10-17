@@ -5,6 +5,7 @@ import { germanFrontline } from "./de-frontline";
 import { germanWiki } from "./de-wiki";
 import { germanAccessUpdate } from "./de-access-update";
 import { germanPublishing } from "./de-publishing";
+import { germanPersonnelSignposting } from "./de-personnel-signposting";
 
 export type Language = "en" | "de";
 const messages = {
@@ -15,6 +16,7 @@ const messages = {
   ...germanWiki,
   ...germanAccessUpdate,
   ...germanPublishing,
+  ...germanPersonnelSignposting,
 };
 const englishMonths = [
   "January",

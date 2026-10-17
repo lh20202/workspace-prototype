@@ -1,4 +1,4 @@
-/* Hubs describe a family of sites; the individual links retain the directory style. */
+/* Hubs group useful work destinations; links may enter an environment or one of its sections. */
 :root .architecture-poc-page .directory-content .directory-groups {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -210,7 +210,7 @@
   height: 14px;
 }
 
-@media (min-width: 1101px) and (max-height: 860px) {
+@media (min-width: 1101px) and (max-height: 960px) {
   :root
     .architecture-poc-page
     .intranet-directory
@@ -292,7 +292,7 @@
     .architecture-poc-page
     .intranet-directory
     .directory-main:has(.directory-content .directory-groups) {
-    padding-bottom: 50px;
+    padding-bottom: 49px;
   }
 
   :root .architecture-poc-page .directory-groups {
@@ -335,10 +335,7 @@
   /* Keep the short, full-width Personnel group on one row in laptop windows.
      Titles retain the same 14px type; only the group's heading moves inline. */
   :root .architecture-poc-page .directory-groups .directory-hub-personnel {
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
-    align-items: center;
-    gap: 12px;
+    display: block;
   }
 
   :root .architecture-poc-page .directory-hub-personnel .directory-hub-heading {
@@ -373,4 +370,127 @@
   :root .architecture-poc-page .directory-groups .directory-hub {
     padding: 10px;
   }
+}
+
+/* The Personnel signposts share one workspace and the same directory grammar. */
+:root .architecture-poc-page .directory-personnel-sections {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(240px, 1.3fr);
+  gap: 20px;
+}
+:root .architecture-poc-page .directory-subheading {
+  margin: 0 0 8px;
+  color: #616b70;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+}
+:root .architecture-poc-page .directory-personnel-controlled {
+  padding-left: 20px;
+  border-left: 1px solid #dbe3e6;
+}
+:root
+  .architecture-poc-page
+  .directory-personnel-controlled
+  .directory-hub-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+:root
+  .architecture-poc-page
+  .directory-content
+  .directory-groups
+  .directory-tile
+  h4 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+}
+@media (min-width: 1280px) and (max-height: 760px) {
+  :root
+    .architecture-poc-page
+    .directory-personnel-normal
+    > .directory-subheading {
+    margin-top: -30px;
+    margin-left: 120px;
+    margin-bottom: 12px;
+    text-align: right;
+  }
+
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-content
+    .directory-groups
+    :is(.directory-tile, .directory-tile:last-child:nth-child(odd)) {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+  :root
+    .architecture-poc-page
+    .intranet-directory
+    .directory-content
+    .directory-groups
+    .directory-tile
+    .directory-open {
+    display: none;
+  }
+
+  :root .architecture-poc-page .directory-content .directory-groups {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+  :root .architecture-poc-page .directory-groups .directory-hub-personnel {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+  :root .architecture-poc-page .directory-personnel-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  :root .architecture-poc-page .directory-hub-personnel .directory-hub-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  :root .architecture-poc-page .directory-personnel-controlled {
+    padding-left: 0;
+    border-left: 0;
+    padding-top: 8px;
+    border-top: 1px solid #dbe3e6;
+  }
+}
+@media (max-width: 1100px) {
+  :root .architecture-poc-page .directory-personnel-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  :root .architecture-poc-page .directory-personnel-controlled {
+    padding-left: 0;
+    border-left: 0;
+    padding-top: 16px;
+    border-top: 1px solid #dbe3e6;
+  }
+  :root
+    .architecture-poc-page
+    .directory-personnel-controlled
+    .directory-hub-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  :root
+    .architecture-poc-page
+    .directory-personnel-controlled
+    .directory-hub-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Long translated destination names wrap within their existing text column. */
+:root
+  .architecture-poc-page
+  .directory-content
+  .directory-groups
+  .directory-tile
+  :is(h2, h3, h4) {
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }

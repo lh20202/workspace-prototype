@@ -23,15 +23,18 @@ import {
   Organization24Regular,
   Heart24Regular,
   LockClosed16Regular,
+  BookOpen24Regular,
+  Megaphone24Regular,
+  CalendarMonth24Regular,
 } from "@fluentui/react-icons";
 import { resolveStaffPerson } from "./catalog";
+import { architectureSections, hubById } from "../workspaces/registry";
 import {
-  architectureSections,
-  environmentsForHub,
-  hubById,
-  workspaceById,
-  type WorkspaceDefinition,
-} from "../workspaces/registry";
+  architectureDestinationById,
+  destinationsForHub,
+  personnelDestinations,
+  type ArchitectureDestination,
+} from "./architectureDestinations";
 import "./styles.css";
 import "./launcher.css";
 import { departments, departmentHref } from "../coordination/data";
@@ -57,33 +60,44 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
   employment: PersonBriefcase24Regular,
   welfare: Heart24Regular,
   publishing: DesignIdeas24Regular,
+  workforce: Organization24Regular,
+  leadership: PeopleTeam24Regular,
+  learning: BookOpen24Regular,
+  communications: Megaphone24Regular,
+  reward: Money24Regular,
+  communities: CalendarMonth24Regular,
 };
 const hubIcons: Record<string, typeof Code24Regular> = {
   organisation: Organization24Regular,
   infrastructure: Building24Regular,
   personnel: PeopleTeam24Regular,
 };
-function WorkspaceTile({
-  workspace,
+function DestinationTile({
+  destination,
   single = false,
+  nested = false,
 }: {
-  workspace: WorkspaceDefinition;
+  destination: ArchitectureDestination;
   single?: boolean;
+  nested?: boolean;
 }) {
-  const Icon = workspaceIcons[workspace.id];
-  const Heading = single ? "h2" : "h3";
+  const Icon =
+    workspaceIcons[destination.id] ||
+    workspaceIcons[destination.icon] ||
+    Organization24Regular;
+  const Heading = single ? "h2" : nested ? "h4" : "h3";
   return (
     <StaffLink
       className={`directory-tile${single ? " directory-single-workspace" : ""}`}
-      href={workspace.href}
+      href={destination.href}
     >
       <span className="directory-tile-icon" aria-hidden="true">
         <Icon />
       </span>
       <div>
         <Heading>
-          {workspace.hubLabel}
-          {workspace.accessLevel === "strictly-confidential" && (
+          {destination.label}
+          {destination.accessLevel === "strictly-confidential" && (
             <span
               className="directory-confidential"
               role="img"
@@ -147,14 +161,16 @@ export default function Directory() {
             <div className="directory-groups">
               {architectureSections.map((section) => {
                 if (section.type === "workspace") {
-                  const workspace = workspaceById.get(section.id)!;
+                  const destination = architectureDestinationById.get(
+                    section.id,
+                  )!;
                   return (
                     <section
                       className="directory-functional-area"
-                      aria-label={workspace.title}
-                      key={workspace.id}
+                      aria-label={destination.label}
+                      key={destination.id}
                     >
-                      <WorkspaceTile workspace={workspace} single />
+                      <DestinationTile destination={destination} single />
                     </section>
                   );
                 }
@@ -175,31 +191,78 @@ export default function Directory() {
                         {hub.description && <p>{hub.description}</p>}
                       </div>
                     </header>
-                    <div className="directory-hub-grid">
-                      {environmentsForHub(hub.id)
-                        .filter(
-                          (environment) =>
-                            environment.environmentType === "workspace",
-                        )
-                        .map((workspace) => (
-                          <WorkspaceTile
-                            workspace={workspace}
-                            key={workspace.id}
-                          />
-                        ))}
-                    </div>
-                    {environmentsForHub(hub.id).some(
-                      (environment) =>
-                        environment.environmentType !== "workspace",
+                    {hub.id === "personnel" ? (
+                      <div className="directory-personnel-sections">
+                        <div
+                          className="directory-personnel-normal"
+                          role="group"
+                          aria-labelledby="personnel-normal"
+                        >
+                          <h3
+                            className="directory-subheading"
+                            id="personnel-normal"
+                          >
+                            People & organisation
+                          </h3>
+                          <div className="directory-hub-grid">
+                            {personnelDestinations.normal.map((destination) => (
+                              <DestinationTile
+                                destination={destination}
+                                key={destination.id}
+                                nested
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <div
+                          className="directory-personnel-controlled"
+                          role="group"
+                          aria-labelledby="personnel-controlled"
+                        >
+                          <h3
+                            className="directory-subheading"
+                            id="personnel-controlled"
+                          >
+                            Controlled environments
+                          </h3>
+                          <div className="directory-hub-grid">
+                            {personnelDestinations.controlled.map(
+                              (destination) => (
+                                <DestinationTile
+                                  destination={destination}
+                                  key={destination.id}
+                                  nested
+                                />
+                              ),
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="directory-hub-grid">
+                        {destinationsForHub(hub.id)
+                          .filter(
+                            (destination) =>
+                              !["wiki", "portal"].includes(destination.type),
+                          )
+                          .map((destination) => (
+                            <DestinationTile
+                              destination={destination}
+                              key={destination.id}
+                            />
+                          ))}
+                      </div>
+                    )}
+                    {destinationsForHub(hub.id).some((environment) =>
+                      ["wiki", "portal"].includes(environment.type),
                     ) && (
                       <div
                         className="directory-knowledge"
                         aria-label="Knowledge & frontline"
                       >
-                        {environmentsForHub(hub.id)
-                          .filter(
-                            (environment) =>
-                              environment.environmentType !== "workspace",
+                        {destinationsForHub(hub.id)
+                          .filter((environment) =>
+                            ["wiki", "portal"].includes(environment.type),
                           )
                           .map((environment) => (
                             <StaffLink
@@ -207,12 +270,9 @@ export default function Directory() {
                               href={environment.href}
                             >
                               <EnvironmentIcon
-                                type={
-                                  environment.environmentType as
-                                    "wiki" | "portal"
-                                }
+                                type={environment.type as "wiki" | "portal"}
                               />
-                              <span>{environment.title}</span>
+                              <span>{environment.label}</span>
                               <ArrowRight20Regular aria-hidden="true" />
                             </StaffLink>
                           ))}

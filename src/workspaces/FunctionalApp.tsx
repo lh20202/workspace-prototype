@@ -24,6 +24,7 @@ import { withExplicitStaff } from "../utils/staffNavigation";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { canSeeWorkspaceChannel } from "../teams/visibility";
 import { staff } from "../intranet/catalog";
+import { personnelDestinations } from "../intranet/architectureDestinations";
 import { workspaceRegistry, workspaceById } from "./registry";
 import { configById, functionalConfigs } from "./config";
 import type { WorkingItem } from "./types";
@@ -101,6 +102,12 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     page === "actions" ||
     (["quality", "publishing"].includes(workspace.id) && page === "reviews");
   const isCommunityPage = workspace.id === "people" && page === "communities";
+  const peopleDestination =
+    workspace.id === "people"
+      ? personnelDestinations.normal.find(
+          (destination) => destination.href.split("/").at(-1) === page,
+        )
+      : undefined;
   const [items, setItems] = useState(config.items);
   const [selected, setSelected] = useState<WorkingItem>();
   const [notice, setNotice] = useState("");
@@ -168,7 +175,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       safeFiles.some((candidate) => candidate.id === file.id),
     );
   const initialLibraryFolder =
-    area && library
+    area && library && (workspace.id !== "people" || library.areas.length > 1)
       ? config.files
           .find(
             (file) =>
@@ -184,6 +191,24 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   const requestedFileId =
     new URLSearchParams(location.search).get("file") || "";
   const requestedFileLibrary = libraryForFile(config, requestedFileId);
+  const peopleArea =
+    workspace.id === "people"
+      ? area?.id ||
+        config.files.find((file) => file.id === requestedFileId)?.area ||
+        config.files.find(
+          (file) =>
+            file.documentLibrary === library?.id &&
+            new URLSearchParams(location.search)
+              .get("folder")
+              ?.startsWith(file.folder.split("/")[0]),
+        )?.area ||
+        library?.areas[0]
+      : undefined;
+  const activePeopleSection = ["analytics", "wellbeing"].includes(
+    peopleArea || "",
+  )
+    ? "workforce"
+    : peopleArea;
   const requestedLibraryTitle = new URLSearchParams(location.search).get(
     "library",
   );
@@ -503,9 +528,10 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       : workspace.id === "quality"
         ? "Actions & Reviews"
         : "Follow-up"
-    : isCommunityPage
-      ? "Staff communities"
-      : library?.name || area?.name;
+    : peopleDestination?.label ||
+      (isCommunityPage
+        ? "Staff Communities & Events"
+        : library?.name || area?.name);
   return (
     <div
       className={`app-shell services-app functional-app ${workspace.id === "archives" ? "archives-app" : ""}`}
@@ -554,20 +580,40 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     {a.name}
                   </StaffLink>
                 ))
-              : siteLibraries.map((l) => (
-                  <StaffLink
-                    key={l.id}
-                    href={href(l.id)}
-                    aria-current={
-                      library?.id === l.id && !isList && !isCommunityPage
-                        ? "page"
-                        : undefined
-                    }
-                  >
-                    <NavigationIcon kind="library" />
-                    {l.name}
-                  </StaffLink>
-                ))}
+              : workspace.id === "people"
+                ? personnelDestinations.normal.map((destination) => {
+                    const section = destination.href.split("/").at(-1);
+                    return (
+                      <StaffLink
+                        key={destination.id}
+                        href={withExplicitStaff(destination.href)}
+                        aria-current={
+                          !subject && activePeopleSection === section
+                            ? "page"
+                            : undefined
+                        }
+                      >
+                        <NavigationIcon
+                          kind={section === "communities" ? "page" : "library"}
+                        />
+                        {destination.label}
+                      </StaffLink>
+                    );
+                  })
+                : siteLibraries.map((l) => (
+                    <StaffLink
+                      key={l.id}
+                      href={href(l.id)}
+                      aria-current={
+                        library?.id === l.id && !isList && !isCommunityPage
+                          ? "page"
+                          : undefined
+                      }
+                    >
+                      <NavigationIcon kind="library" />
+                      {l.name}
+                    </StaffLink>
+                  ))}
             {workspace.id === "archives" && (
               <StaffLink
                 href={href("archive-practice")}
@@ -604,15 +650,6 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               >
                 <NavigationIcon kind="list" />
                 Follow-up
-              </StaffLink>
-            )}
-            {workspace.id === "people" && (
-              <StaffLink
-                href={href("communities")}
-                aria-current={isCommunityPage && !subject ? "page" : undefined}
-              >
-                <NavigationIcon kind="page" />
-                Staff communities
               </StaffLink>
             )}
             {workspace.id === "employment" && (
@@ -864,7 +901,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             </>
           ) : isCommunityPage ? (
             <>
-              <h1>Staff communities</h1>
+              <h1>{heading}</h1>
               <p>
                 Open events and announcements. Contact a network coordinator to
                 join.
@@ -878,7 +915,11 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                   Private community collaboration
                 </StaffLink>
               </p>
-              <StaffLink href={href("workforce-documents")}>
+              <StaffLink
+                href={href(
+                  `workforce-documents?${new URLSearchParams({ library: library!.name, folder: initialLibraryFolder || "" })}`,
+                )}
+              >
                 Company event documents →
               </StaffLink>
             </>
@@ -896,6 +937,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             </>
           ) : library ? (
             <>
+              {peopleDestination && <h1>{peopleDestination.label}</h1>}
               <DocumentLibrary
                 key={`${library.id}-${page}`}
                 title={library.name}
@@ -907,7 +949,19 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                   ),
                 ]}
                 initialFolder={initialLibraryFolder}
+                headingLevel={peopleDestination ? 2 : 1}
               />
+              {workspace.id === "people" &&
+                activePeopleSection === "workforce" && (
+                  <div className="functional-context-links">
+                    <StaffLink href={href("analytics")}>
+                      People Analytics
+                    </StaffLink>
+                    <StaffLink href={href("wellbeing")}>
+                      Wellbeing Programmes
+                    </StaffLink>
+                  </div>
+                )}
               {relatedLinks(library)}
             </>
           ) : null}

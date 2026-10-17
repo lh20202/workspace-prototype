@@ -13,6 +13,11 @@ import {
   resolveLegacy,
 } from "./registry";
 import Directory from "../intranet/Directory";
+import {
+  architectureDestinations,
+  personnelDestinations,
+} from "../intranet/architectureDestinations";
+import HubNavigation from "../components/HubNavigation";
 import ExecutiveApp from "../executive/ExecutiveApp";
 import TeamsPreview from "../intranet/TeamsPreview";
 import {
@@ -27,6 +32,13 @@ import { accessFocalPoint, accessWorkspaceId } from "../access/model";
 function at(path: string, person = "maya") {
   vi.stubGlobal("location", new URL(path, "https://example.test"));
   vi.stubGlobal("sessionStorage", { getItem: () => person });
+}
+function directoryTile(html: string, href: string) {
+  return html.match(
+    new RegExp(
+      `<a(?=[^>]*class="directory-tile[^"]*")(?=[^>]*href="${href}")[^>]*>[\\s\\S]*?<\\/a>`,
+    ),
+  )?.[0];
 }
 afterEach(() => vi.unstubAllGlobals());
 
@@ -144,20 +156,67 @@ describe("hub families retain one canonical owner for every environment", () => 
       "executive",
       "welfare",
     ]);
-    for (const workspace of workspaceRegistry) {
-      const tile = html.match(
-        new RegExp(
-          `<a(?=[^>]*class="directory-tile[^"]*")(?=[^>]*href="${workspace.href}")[^>]*>[\\s\\S]*?<\\/a>`,
-        ),
-      )?.[0];
+    for (const destination of architectureDestinations.filter(
+      ({ type }) => type !== "wiki" && type !== "portal",
+    )) {
+      const tile = directoryTile(html, destination.href);
       expect(tile).toBeDefined();
       expect(tile!.includes('aria-label="Strictly confidential"')).toBe(
-        workspace.accessLevel === "strictly-confidential",
+        destination.accessLevel === "strictly-confidential",
       );
     }
     expect(html).not.toMatch(
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
+  });
+  it("renders six ordinary Personnel entrances and two full-label controlled workspaces", () => {
+    at("/architecture");
+    const html = renderToStaticMarkup(createElement(Directory));
+    expect(html).toContain('aria-labelledby="personnel-normal"');
+    expect(html).toContain('aria-labelledby="personnel-controlled"');
+    expect(html).toContain(
+      'id="personnel-normal">People &amp; organisation</h3>',
+    );
+    expect(html).toContain(
+      'id="personnel-controlled">Controlled environments</h3>',
+    );
+    for (const destination of personnelDestinations.normal) {
+      const tile = directoryTile(html, destination.href);
+      expect(tile).toBeDefined();
+      expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
+      expect(tile).not.toContain("Strictly confidential");
+    }
+    expect(directoryTile(html, "/people-culture")).toBeUndefined();
+    expect(personnelDestinations.controlled).toHaveLength(2);
+    for (const destination of personnelDestinations.controlled) {
+      const tile = directoryTile(html, destination.href);
+      expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
+      expect(tile?.match(/title="Strictly confidential"/g)).toHaveLength(1);
+    }
+    expect(directoryTile(html, "/employment-admin")).toContain(
+      "Employment &amp; Hiring Administration",
+    );
+  });
+  it("keeps the Personnel hub at environment level for every functional entrance", () => {
+    at("/people-culture/workforce?staff=jamie", "jamie");
+    for (const destination of personnelDestinations.normal) {
+      const html = renderToStaticMarkup(
+        createElement(HubNavigation, {
+          pathname: destination.href,
+          search: "?staff=jamie",
+        }),
+      );
+      expect(html.match(/<a\b/g)).toHaveLength(4);
+      expect(html).toContain(
+        'href="/people-culture?staff=jamie" data-environment="workspace" aria-current="page"',
+      );
+      expect(html).toContain("People &amp; Culture");
+      expect(html).toContain("Employment &amp; Hiring");
+      expect(html).toContain("Welfare &amp; Employee Representation");
+      expect(html).toContain("Company intranet");
+      for (const normal of personnelDestinations.normal)
+        expect(html).not.toContain(`href="${normal.href}`);
+    }
   });
 });
 
