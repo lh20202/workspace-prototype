@@ -35,7 +35,7 @@ export const hubDefinitions: HubDefinition[] = [
   {
     id: "infrastructure",
     name: "Org Central",
-    externalIds: ["members", "city-health"],
+    externalIds: ["members"],
     icon: "infrastructure",
     description: "",
     workspaceIds: [
@@ -317,13 +317,6 @@ export const environmentRegistry: WorkspaceDefinition[] = [
       "/governance",
       "infrastructure",
       "Formal member and governance environment",
-    ],
-    [
-      "city-health",
-      "City Health Unit",
-      "/external/city-health",
-      "infrastructure",
-      "City health information and services",
     ],
     [
       "taskforce",
