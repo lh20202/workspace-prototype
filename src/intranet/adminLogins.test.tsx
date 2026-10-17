@@ -93,7 +93,7 @@ describe("canonical environment and vendor identities", () => {
     const html = renderToStaticMarkup(createElement(Directory));
     const entries = [
       ["sales-marketing", "media-library", "Global Media Library"],
-      ["infrastructure", "members", "Members Portal"],
+      ["infrastructure", "members", "Executive Committee Members portal"],
       ["infrastructure", "city-health", "City Health Unit"],
       ["personnel", "taskforce", "International Taskforce Portal"],
     ] as const;

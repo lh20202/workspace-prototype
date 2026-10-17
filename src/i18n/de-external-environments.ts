@@ -12,10 +12,14 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Knowledge & external environments": "Wissen und externe Angebote",
   "External environments": "Externe Angebote",
   "International Taskforce Portal": "Portal der internationalen Taskforce",
-  "Members Portal": "Mitgliederportal",
-  "Members Portal ↗": "Mitgliederportal ↗",
-  "Governance & Members Portal": "Mitgliederportal",
-  "Governance & Members Portal ↗": "Mitgliederportal ↗",
+  "Executive Committee Members portal":
+    "Portal für Mitglieder des Exekutivausschusses",
+  "Executive Committee Members portal ↗":
+    "Portal für Mitglieder des Exekutivausschusses ↗",
+  "Governance & Members Portal":
+    "Portal für Mitglieder des Exekutivausschusses",
+  "Governance & Members Portal ↗":
+    "Portal für Mitglieder des Exekutivausschusses ↗",
   "City Health Unit": "Städtischer Gesundheitsdienst",
   "Global Media Library": "Globale Medienbibliothek",
   "Frontline Crew Portal": "Frontline Crew Portal",

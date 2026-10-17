@@ -313,7 +313,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
     ],
     [
       "members",
-      "Members Portal",
+      "Executive Committee Members portal",
       "/governance",
       "infrastructure",
       "Formal member and governance environment",

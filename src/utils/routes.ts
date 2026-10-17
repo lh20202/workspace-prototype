@@ -106,7 +106,8 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/employee-council"))
     return "Welfare & Employee Representation";
   if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
-  if (pathname.startsWith("/governance")) return "Members Portal";
+  if (pathname.startsWith("/governance"))
+    return "Executive Committee Members portal";
   if (pathname.startsWith("/emergency-response"))
     return "Emergency Response | Demo preview";
   if (pathname === "/teams") return "Digital workspaces | Teams";

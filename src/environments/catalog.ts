@@ -114,7 +114,11 @@ export const externalEnvironments: ExternalEnvironment[] = [
     variant: "frontline",
   },
   { id: "taskforce", name: "International Taskforce Portal", theme: "navy" },
-  { id: "members", name: "Members Portal", theme: "burgundy" },
+  {
+    id: "members",
+    name: "Executive Committee Members portal",
+    theme: "burgundy",
+  },
   { id: "city-health", name: "City Health Unit", theme: "teal" },
   { id: "media-library", name: "Global Media Library", theme: "violet" },
 ];

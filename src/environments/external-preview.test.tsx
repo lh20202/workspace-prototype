@@ -74,7 +74,9 @@ describe("shared external boundary", () => {
       "/governance/meeting-papers",
     ]) {
       expect(externalPreviewForPath(route)?.id).toBe("members");
-      expect(pageTitle(route)).toBe("Members Portal | Demo");
+      expect(pageTitle(route)).toBe(
+        "Executive Committee Members portal | Demo",
+      );
     }
     for (const route of ["/frontline-sales", "/frontline-sales/briefing"])
       expect(externalPreviewForPath(route)?.variant).toBe("frontline");

@@ -70,7 +70,10 @@ const specialContacts: Record<string, AccessFocalPoint> = {
   },
 };
 const specialWorkspaces: Record<string, { title: string; href: string }> = {
-  governance: { title: "Members Portal", href: "/governance" },
+  governance: {
+    title: "Executive Committee Members portal",
+    href: "/governance",
+  },
   emergency: { title: "Emergency Response", href: "/emergency-response" },
 };
 export function accessWorkspace(
