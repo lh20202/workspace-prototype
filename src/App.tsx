@@ -8,6 +8,7 @@ import HubNavigation from "./components/HubNavigation";
 import { planningPath, planningPage } from "./utils/routes";
 import AccessBoundary from "./access/AccessBoundary";
 import { teamsStaffForWorkspace } from "./teams/navigation";
+import { visibleWorkspaceChannels } from "./teams/visibility";
 import { resolveStaffPerson } from "./intranet/catalog";
 import { useEffect, useState } from "react";
 import {
@@ -474,18 +475,20 @@ export default function App() {
         <CompanyMark />
         <div className="site-title">
           <h1>Organisational Planning & Reporting</h1>
-          <button
-            className="teams-button"
-            aria-label="Microsoft Teams connection"
-            title="Microsoft Teams"
-            onClick={() =>
-              location.assign(
-                `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning" })}`,
-              )
-            }
-          >
-            <img src="/images/teams-logo.svg" alt="" />
-          </button>
+          {visibleWorkspaceChannels(person, "planning").length > 0 && (
+            <button
+              className="teams-button"
+              aria-label="Microsoft Teams connection"
+              title="Microsoft Teams"
+              onClick={() =>
+                location.assign(
+                  `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning", channel: visibleWorkspaceChannels(person, "planning")[0] })}`,
+                )
+              }
+            >
+              <img src="/images/teams-logo.svg" alt="" />
+            </button>
+          )}
         </div>
         <div className="site-context">
           <span>Private group</span>

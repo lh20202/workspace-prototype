@@ -6,12 +6,14 @@ import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
 export default function PrototypeNavigator() {
+  const emergency = location.pathname.startsWith("/emergency-response");
   const teams =
-    location.pathname === "/teams" || location.pathname.includes("/teams");
+    location.pathname === "/teams" ||
+    location.pathname.includes("/teams") ||
+    emergency;
   const person = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
   );
-  const emergency = location.pathname.startsWith("/emergency-response");
   const preview = usePreviewRoleContext();
   return (
     <div className="demo-control-frame">

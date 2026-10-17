@@ -3,12 +3,13 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { staff } from "../intranet/catalog";
 import TeamsView from "../logistics/TeamsView";
-import LogisticsApp from "../logistics/LogisticsApp";
+import LogisticsApp, { documentFromLocation } from "../logistics/LogisticsApp";
 import TeamsPreview from "../intranet/TeamsPreview";
 import ContentApp from "../content/ContentApp";
 import FunctionalApp from "../workspaces/FunctionalApp";
 import ProjectsApp from "../projects/ProjectsApp";
 import EmergencyApp from "../executive/EmergencyApp";
+import PlanningApp from "../App";
 import DepartmentChannel from "../coordination/DivisionChannel";
 import { departments } from "../coordination/data";
 import { channels, posts } from "../logistics/data";
@@ -57,7 +58,7 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
           !canSeeLogisticsChannel(person, channel),
       )!;
       expect(denied).toBeDefined();
-      for (const tab of ["Posts", "Shared"]) {
+      for (const tab of ["Posts", "Shared", "Notes", "Planner"]) {
         const html = logisticsChannel(
           `/logistics/teams?staff=${person.id}&channel=${denied.id}&tab=${tab}&document=${denied.fileIds[0]}`,
         );
@@ -76,6 +77,81 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
     expect(
       logisticsChannel("/logistics/teams?staff=sam&channel=pets&tab=Posts"),
     ).toContain("take me to your leader");
+  });
+  it("blocks Logistics General Posts and Shared deep links for every non-member", () => {
+    const general = channels.find((channel) => channel.id === "general")!;
+    for (const person of staff.filter((member) => member.id !== "maya")) {
+      for (const tab of ["Posts", "Shared", "Notes", "Planner"]) {
+        const html = logisticsChannel(
+          `/logistics/teams?staff=${person.id}&channel=general&tab=${tab}&document=${general.fileIds[0] || "operations-handbook"}`,
+        );
+        expect(html).toContain("Access required");
+        expect(html).not.toContain('class="document-library');
+        for (const post of posts.filter((post) => post.channel === "general"))
+          expect(html).not.toContain(post.text);
+      }
+    }
+  });
+  it("blocks file previews on both Logistics deep-link parameter variants", () => {
+    for (const person of staff.filter((member) => member.id !== "maya")) {
+      for (const parameter of ["document", "file"]) {
+        at(
+          `/logistics/teams?staff=${person.id}&channel=central-city&tab=Shared&${parameter}=central-deployment`,
+        );
+        const html = renderToStaticMarkup(createElement(LogisticsApp));
+        expect(html).toContain("Access required");
+        expect(html).not.toContain('class="detail-file"');
+        expect(html).not.toContain('class="document-library');
+        expect(documentFromLocation()).toBeNull();
+      }
+    }
+    for (const path of ["/logistics/teams/", "/logistics/teams/legacy-path"]) {
+      at(
+        `${path}?staff=taylor&channel=central-city&document=central-deployment`,
+      );
+      expect(documentFromLocation()).toBeNull();
+    }
+    at(
+      "/logistics/teams?staff=maya&channel=central-city&file=central-deployment",
+    );
+    expect(documentFromLocation()?.id).toBe("central-deployment");
+  });
+  it("does not fall back unknown channels to General", () => {
+    expect(
+      logisticsChannel(
+        "/logistics/teams?staff=maya&channel=unknown-channel&tab=Posts",
+      ),
+    ).toContain("Access required");
+    at(
+      "/teams?staff=devon&workspace=digital&channel=unknown-channel&tab=Posts",
+    );
+    expect(renderToStaticMarkup(createElement(TeamsPreview))).toContain(
+      "Access required",
+    );
+  });
+  it("denies direct technical and moderator Posts and Shared routes to all unjoined roles", () => {
+    for (const person of staff.filter((member) => member.id !== "devon")) {
+      for (const [workspace, channel] of [
+        ["digital", "AI Lab"],
+        ["publishing", "Wiki Moderation"],
+      ]) {
+        for (const tab of ["Posts", "Shared"]) {
+          at(
+            `/teams?${new URLSearchParams({ staff: person.id, workspace, channel, tab, file: "digital-F1" })}`,
+          );
+          const html = renderToStaticMarkup(createElement(TeamsPreview));
+          expect(html).toContain("Access required");
+          expect(html).not.toContain('class="document-library');
+          expect(html).not.toContain('class="technical-conversation');
+        }
+      }
+    }
+    at(
+      "/teams?staff=devon&workspace=employment&channel=General&tab=Shared&file=people-F3",
+    );
+    const employment = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(employment).not.toContain("Employee Master Record");
+    expect(employment).not.toContain('class="document-library');
   });
   it("denies direct Studio desk URLs before rendering any files or conversation", () => {
     for (const person of staff) {
@@ -143,7 +219,7 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
       const logistics = panelLinks(
         renderToStaticMarkup(createElement(LogisticsApp)),
       );
-      expect(logistics.length).toBeGreaterThan(0);
+      expect(logistics.length > 0).toBe(person.id === "maya");
       for (const link of logistics) {
         expect(link.searchParams.get("staff")).toBe(person.id);
         expect(
@@ -193,5 +269,32 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
       renderToStaticMarkup(createElement(FunctionalApp)),
     );
     expect(unrelated).toHaveLength(0);
+    for (const person of staff) {
+      for (const [path, workspace] of [
+        ["/digital-tech", "digital"],
+        ["/workspace-publishing", "publishing"],
+      ]) {
+        at(`${path}?staff=${person.id}`, person.id);
+        const links = panelLinks(
+          renderToStaticMarkup(createElement(FunctionalApp)),
+        );
+        expect(links.length > 0).toBe(person.id === "devon");
+        for (const link of links) {
+          expect(link.searchParams.get("staff")).toBe(person.id);
+          expect(
+            canSeeWorkspaceChannel(
+              person,
+              workspace,
+              link.searchParams.get("channel") || "General",
+            ),
+          ).toBe(true);
+        }
+      }
+      at(`/planning?staff=${person.id}`, person.id);
+      const planning = renderToStaticMarkup(createElement(PlanningApp));
+      expect(planning.includes('class="teams-button"')).toBe(
+        person.id === "robin",
+      );
+    }
   });
 });

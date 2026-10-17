@@ -94,6 +94,14 @@ export const peopleDirectory = [
   ...baseStaff,
   // Ordinary conversation authors remain colleagues, never additional preview roles.
   {
+    id: "nadia",
+    name: "Nadia Stein",
+    role: "Audience Researcher",
+    workspace: "audience",
+    departmentId: "marketing-growth",
+    unitId: "marketing-insight-and-performance",
+  },
+  {
     id: "priya",
     name: "Priya Shah",
     role: "Marketing Department Assistant",

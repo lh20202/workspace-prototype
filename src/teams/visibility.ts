@@ -14,7 +14,12 @@ import {
 /** Compatibility exports are projections, never a second membership table. */
 export const workspaceMemberships: Record<string, string[]> =
   Object.fromEntries(
-    previewRoles.map((role) => [role.id, Object.keys(role.teamChannels)]),
+    previewRoles.map((role) => [
+      role.id,
+      Object.entries(role.teamChannels)
+        .filter(([, channels]) => channels.length > 0)
+        .map(([workspaceId]) => workspaceId),
+    ]),
   );
 export const logisticsChannelMemberships: Record<string, string[]> =
   Object.fromEntries(

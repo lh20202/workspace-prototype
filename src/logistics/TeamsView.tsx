@@ -52,9 +52,8 @@ export default function TeamsView({
     new URLSearchParams(location.search).get("staff"),
   );
   useEffect(() => rememberStaff(person.id), [person.id]);
-  const channel =
-    channels.find((c) => c.id === channelId) ??
-    channels.find((c) => c.id === "general")!;
+  const requestedChannel = channels.find((c) => c.id === channelId);
+  const channel = requestedChannel ?? channels.find((c) => c.id === "general")!;
   const tab =
     channel.team === "company"
       ? "Posts"
@@ -74,7 +73,7 @@ export default function TeamsView({
   );
   const [liked, setLiked] = useState<string[]>([]);
   const [saved, setSaved] = useState<string[]>([]);
-  const allowed = canSeeLogisticsChannel(person, channel);
+  const allowed = !!requestedChannel && canSeeLogisticsChannel(person, channel);
   const permittedChannels = channels.filter((c) =>
     canSeeLogisticsChannel(person, c),
   );
@@ -102,7 +101,7 @@ export default function TeamsView({
       teamName={
         channel.team === "logistics" ? workspaceTitle : "Company Updates"
       }
-      channelName={channel.name}
+      channelName={requestedChannel?.name || channelId}
       groups={teamsGroups(person).map((group) => ({
         ...group,
         channels: group.channels.map((item) => ({
@@ -192,6 +191,7 @@ export default function TeamsView({
           <AccessBoundary
             workspaceId="logistics"
             area="Operational team channel"
+            resource={{ kind: "channel", workspaceId: channel.team, channelId }}
             personId={person.id}
             headingLevel={2}
             compact

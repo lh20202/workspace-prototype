@@ -21,6 +21,7 @@ export default function TeamsHomePanel({
   openHref: string;
   openLabel?: string;
 }) {
+  if (!channels.length) return null;
   return (
     <section className="teams-home-panel" aria-label={heading}>
       <h2>

@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createElement } from "react";
+import { createElement, isValidElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import PrototypeNavigator from "./PrototypeNavigator";
 import { PreviewRoleProvider } from "./PreviewRoleContext";
 import { germanAccessUpdate } from "../i18n/de-access-update";
 import { translateText } from "../i18n/translate";
+import * as teamsNavigation from "../teams/navigation";
 
 const hint = vi.hoisted(() => ({
   value: null as null | {
@@ -20,8 +21,25 @@ vi.mock("./PreviewRoleContext", async (importOriginal) => ({
 
 afterEach(() => {
   hint.value = null;
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
+
+function findRoleSelector(node: ReactNode):
+  | {
+      onChange: (event: { target: { value: string } }) => void;
+    }
+  | undefined {
+  if (!isValidElement<{ id?: string; children?: ReactNode }>(node))
+    return undefined;
+  if (node.props.id === "preview-role")
+    return node.props as ReturnType<typeof findRoleSelector>;
+  for (const child of [node.props.children].flat()) {
+    const match = findRoleSelector(child);
+    if (match) return match;
+  }
+  return undefined;
+}
 
 describe("external role-preview controls", () => {
   it.each([
@@ -30,6 +48,7 @@ describe("external role-preview controls", () => {
     "/sales-marketing/wiki",
     "/frontline-sales",
     "/architecture",
+    "/emergency-response/incidents/INC-104",
   ])("offers the same five role-first choices on %s", (pathname) => {
     vi.stubGlobal("location", new URL(pathname, "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
@@ -64,6 +83,40 @@ describe("external role-preview controls", () => {
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
     expect(html).toContain('href="/?staff=jamie"');
     expect(html).toContain('href="/architecture?staff=jamie"');
+  });
+
+  it.each([
+    "/teams?staff=devon&workspace=digital&channel=AI+Lab",
+    "/logistics/teams?staff=maya&channel=central-city",
+    "/projects/PRJ-2026-014/teams?staff=devon",
+    "/emergency-response/incidents/INC-104?staff=devon",
+  ])("uses membership-aware role switching from %s", (href) => {
+    const current = new URL(href, "https://example.test");
+    const assign = vi.fn();
+    vi.stubGlobal("location", {
+      href: current.href,
+      pathname: current.pathname,
+      search: current.search,
+      assign,
+    });
+    vi.stubGlobal("sessionStorage", {
+      getItem: () => null,
+      setItem: vi.fn(),
+    });
+    const destination = vi
+      .spyOn(teamsNavigation, "teamsPreviewHrefForStaff")
+      .mockReturnValue("/teams?staff=jamie");
+
+    findRoleSelector(PrototypeNavigator())!.onChange({
+      target: { value: "jamie" },
+    });
+
+    expect(destination).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "jamie" }),
+      current.pathname,
+      current.search,
+    );
+    expect(assign).toHaveBeenCalledWith("/teams?staff=jamie");
   });
 
   it("highlights the selector when an access-page prompt points to it", () => {

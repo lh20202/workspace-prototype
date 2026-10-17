@@ -28,7 +28,7 @@ export interface AccessBoundaryProps extends AccessContext {
   strict?: boolean;
   compact?: boolean;
   returnLabel?: string;
-  /** Exact protected destination; ordinary Teams membership boundaries omit it. */
+  /** Exact business destination or Teams participation boundary for the role cue. */
   resource?: AccessResource;
 }
 export default function AccessBoundary({

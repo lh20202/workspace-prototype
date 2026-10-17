@@ -58,7 +58,7 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
       contentChannelReadOnly("Special Coverage · City Innovation Summit"),
     ).toBe(false);
   });
-  it("limits cross-disciplinary collaborators to the coverage they joined", () => {
+  it("does not bend the five preview roles into Studio desk or temporary memberships", () => {
     expect(visibleContentChannels("maya").map((channel) => channel.id)).toEqual(
       [],
     );
@@ -69,51 +69,30 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     expect(canSeeWorkspaceChannel({ id: "maya" }, "content", "Web Desk")).toBe(
       false,
     );
-    expect(
-      visibleContentChannels("taylor").every(
-        (channel) => channel.id !== "media",
-      ),
-    ).toBe(true);
     expect(visibleContentChannels("morgan")).toEqual([]);
     for (const person of staff) {
-      expect(visibleContentChannels(person.id).length).toBeLessThan(
-        contentChannels.length,
-      );
+      expect(visibleContentChannels(person.id)).toEqual([]);
       for (const channel of contentChannels)
         expect(canSeeContentChannel(person.id, channel.name)).toBe(
           channel.members.includes(person.id),
         );
     }
   });
-  it("keeps safe company teams first and distinguishes temporary and archived channels", () => {
+  it("retains Studio and archived coverage without showing an empty Team to preview roles", () => {
     const taylor = staff.find((person) => person.id === "taylor")!;
     const groups = teamsGroups(taylor);
-    expect(groups.slice(0, 2).map((group) => group.id)).toEqual([
+    expect(groups.map((group) => group.id)).toEqual([
       "company",
-      "logistics",
+      "marketing-growth",
     ]);
-    const room = groups.find((group) => group.id === "content")!;
-    expect(room.label).toBe("Creative & Editorial Studio");
+    for (const person of staff)
+      expect(teamsGroups(person).some((group) => group.id === "content")).toBe(
+        false,
+      );
     expect(
-      room.channels.find((channel) =>
-        channel.label.includes("City Innovation Summit"),
-      )?.cue,
-    ).toBe("Temporary");
-    expect(
-      teamsGroups(staff.find((person) => person.id === "maya")!).some(
-        (group) => group.id === "content",
-      ),
-    ).toBe(false);
-    expect(
-      room.channels.some((channel) =>
-        channel.label.includes("Major Transport Disruption"),
-      ),
-    ).toBe(false);
-    expect(
-      room.channels.find((channel) =>
-        channel.label.includes("Future Skills Week"),
-      )?.cue,
-    ).toBeUndefined();
+      resolveContentChannel("Special Coverage · City Innovation Summit")?.kind,
+    ).toBe("temporary");
+    expect(contentChannelReadOnly("community-week")).toBe(true);
   });
   it("keeps old entry names compatible without creating duplicate channels", () => {
     expect(resolveContentChannel("General")?.name).toBe(

@@ -277,7 +277,7 @@ describe("confidential membership remains separate from hub association", () => 
     );
     const groups = teamsGroups(fallback).map((group) => group.id);
     expect(groups).toContain("company");
-    expect(groups).toContain("logistics");
+    expect(groups).not.toContain("logistics");
     expect(groups).not.toContain("welfare");
     expect(groups).not.toContain("publishing");
     at("/teams?staff=skyler", "skyler");

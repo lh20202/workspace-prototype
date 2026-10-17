@@ -284,7 +284,13 @@ export default function ContentApp() {
             memberCount={24}
             helpText={description}
             onOpen={(file) => navigate(fileLink(filesById.get(file.id)!))}
-            onTeams={() => location.assign(contentTeamsHref(teamsPerson))}
+            userName={resolveStaffPerson(teamsPerson).name}
+            userRole={resolveStaffPerson(teamsPerson).role}
+            onTeams={
+              homeChannels.length
+                ? () => location.assign(contentTeamsHref(teamsPerson))
+                : undefined
+            }
             onMessage={setMessage}
           />
         </>

@@ -22,7 +22,10 @@ import SimulationMessage from "../components/SimulationMessage";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { teamsStaffForWorkspace } from "../teams/navigation";
-import { canSeeWorkspaceChannel } from "../teams/visibility";
+import {
+  canSeeWorkspaceChannel,
+  visibleWorkspaceChannels,
+} from "../teams/visibility";
 import { staff } from "../intranet/catalog";
 import { personnelDestinations } from "../intranet/architectureDestinations";
 import { workspaceRegistry, workspaceById } from "./registry";
@@ -128,6 +131,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     new URLSearchParams(location.search).get("staff") || undefined,
   );
   const contextStaff = staff.find((person) => person.id === contextStaffId)!;
+  const teamChannels = visibleWorkspaceChannels(contextStaff, workspace.id);
   const actor = contextStaff.name;
   const workspaceAllowed = canAccessWorkspace(contextStaff, workspace.id);
   const subjectAllowed =
@@ -547,10 +551,10 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         searchFiles={safeFiles}
         onOpen={(f) => openSearchFile(f.id)}
         onTeams={
-          workspace.teams
+          teamChannels.length
             ? () =>
                 location.assign(
-                  `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`,
+                  `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel: teamChannels[0] })}`,
                 )
             : undefined
         }
@@ -867,7 +871,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                           name: channel,
                           href: `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel })}`,
                         }))}
-                      openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`}
+                      openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel: teamChannels[0] })}`}
                     />
                   )}
                   {workspace.id === "publishing" && (

@@ -17,13 +17,12 @@ export interface ContentChannel {
 }
 
 /** Desks and short-lived coverage reflect who collaborates, not one channel per library. */
-export const contentChannels: ContentChannel[] = [
+const channelDefinitions: Omit<ContentChannel, "members">[] = [
   {
     id: "editorial",
     name: "Editorial Desk",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex", "taylor"],
     areas: ["editorial"],
     focus: "conversation",
     purpose: "Story planning, working copy and editorial review.",
@@ -33,7 +32,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Web Desk",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex"],
     fileIds: files
       .filter((file) => file.area === "digital" || file.id === "landing-copy")
       .map((file) => file.id),
@@ -46,7 +44,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Social Desk",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex"],
     areas: ["channels"],
     focus: "conversation",
     purpose: "Channel adaptations, publishing windows and social copy.",
@@ -56,7 +53,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Media Desk",
     kind: "desk",
     lifecycle: "Active",
-    members: ["robin"],
     packageIds: ["PKG-109"],
     focus: "conversation",
     purpose: "Public release drafting and approved publication coordination.",
@@ -66,7 +62,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Publications & Email",
     kind: "desk",
     lifecycle: "Active",
-    members: ["taylor"],
     focus: "files",
     preferredLibrary: "creative",
     fileIds: [
@@ -85,7 +80,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Video & Visuals",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex"],
     packageIds: ["PKG-103", "PKG-104", "PKG-111"],
     focus: "handoff",
     purpose: "Storyboards, review cuts, captions and accessible delivery.",
@@ -95,7 +89,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Production Coordination",
     kind: "desk",
     lifecycle: "Active",
-    members: ["alex", "robin"],
     focus: "handoff",
     purpose: "Priorities, review handoffs and the next publishing window.",
   },
@@ -104,7 +97,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Cities & Mobility",
     kind: "topic",
     lifecycle: "Active",
-    members: ["taylor"],
     topic: "Cities & Mobility",
     purpose:
       "Topic specialists check city and transport context before the channel desks adapt it for publication.",
@@ -114,7 +106,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Education & Skills",
     kind: "topic",
     lifecycle: "Active",
-    members: ["taylor", "elena"],
     topic: "Education & Skills",
     purpose:
       "Bring learning and skills context into briefs, email copy and accessible explainers.",
@@ -124,7 +115,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Digital Society",
     kind: "topic",
     lifecycle: "Active",
-    members: ["alex"],
     topic: "Digital Society",
     purpose:
       "Check public-facing language about digital services and pass useful context to Editorial and Web.",
@@ -134,7 +124,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Arts & Culture",
     kind: "topic",
     lifecycle: "Active",
-    members: ["alex"],
     topic: "Arts & Culture",
     purpose:
       "Review programme context and credits for print, event and multimedia production.",
@@ -145,7 +134,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Rapid Coverage · Major Transport Disruption",
     kind: "temporary",
     lifecycle: "Active",
-    members: ["maya"],
     packageIds: ["PKG-108"],
     purpose:
       "Editorial, topic and customer-liaison colleagues coordinate a time-sensitive public update. Operational briefings stay in their protected location.",
@@ -155,7 +143,6 @@ export const contentChannels: ContentChannel[] = [
     name: "Special Coverage · City Innovation Summit",
     kind: "temporary",
     lifecycle: "Active",
-    members: ["taylor"],
     packageIds: ["PKG-113"],
     purpose:
       "Temporary city-topic and channel collaboration for the summit's public-facing coverage.",
@@ -165,19 +152,22 @@ export const contentChannels: ContentChannel[] = [
     name: "Campaign · Future Skills Week",
     kind: "temporary",
     lifecycle: "Archived",
-    members: ["alex"],
     packageIds: ["PKG-112"],
     purpose:
       "Coverage closed on 30 September. The conversation is read-only; final outputs and delivery evidence remain in SharePoint.",
   },
-].map((channel) => ({
-  ...channel,
-  // Fictional collaborators remain in the post history, but selectable-role
-  // membership is always derived from the central policy.
-  members: previewRoles
-    .filter((role) => canAccessChannel(role, "content", channel.id))
-    .map((role) => role.id),
-})) as ContentChannel[];
+];
+
+export const contentChannels: ContentChannel[] = channelDefinitions.map(
+  (channel) => ({
+    ...channel,
+    // Fictional collaborators remain in the post history, but selectable-role
+    // membership is always derived from the central policy.
+    members: previewRoles
+      .filter((role) => canAccessChannel(role, "content", channel.id))
+      .map((role) => role.id),
+  }),
+);
 
 const aliases: Record<string, string> = {
   General: "coordination",

@@ -19,7 +19,7 @@ export const studioPosts: Record<string, StudioPost[]> = {
       text: "Welcome copy is attached. I’ve tightened the intro, but the opening still feels a bit long. Can we settle that before Thursday’s handoff?",
       attachment: "welcome-message",
       reply: {
-        author: "Taylor Brooks",
+        author: "Nadia Stein",
         text: "The shorter version works better in the audience checks. I’d lose the second clause and keep the practical next step.",
       },
       reactions: [{ emoji: "👍", count: 3 }],
@@ -153,7 +153,7 @@ export const studioPosts: Record<string, StudioPost[]> = {
   "cities-mobility": [
     {
       id: "city-context",
-      author: "Taylor Brooks",
+      author: "Nadia Stein",
       time: "Today, 08:55",
       text: "I’ve put the agreed transport terms in the brief. Can we lead with what changes for readers, then bring in the wider city context?",
       attachment: "coastal-brief",
@@ -170,7 +170,7 @@ export const studioPosts: Record<string, StudioPost[]> = {
   "education-skills": [
     {
       id: "skills-context",
-      author: "Taylor Brooks",
+      author: "Nadia Stein",
       time: "Yesterday, 14:10",
       text: "The audio intro still doesn’t quite say what people will learn. I’d make that the first sentence. The Future Skills Week evaluation is useful background, but the old campaign wording won’t fit this one.",
       attachment: "audio-script",
@@ -233,7 +233,7 @@ export const studioPosts: Record<string, StudioPost[]> = {
       text: "Summit brief is ready for review. We still need to settle the opening and illustration direction before I lock the Planable schedule. Can you look this morning?",
       attachment: "water-brief",
       reply: {
-        author: "Taylor Brooks",
+        author: "Nadia Stein",
         text: "I can look at 11. I’ll check the audience angle and city context, then link the research summary from the brief.",
       },
       reactions: [{ emoji: "✅", count: 2 }],

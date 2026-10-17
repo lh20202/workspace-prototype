@@ -83,10 +83,12 @@ export function logisticsRoute() {
     },
   };
 }
-function documentFromLocation() {
+export function documentFromLocation() {
   const params = new URLSearchParams(location.search);
-  const file = filesById.get(params.get("document") || "");
-  if (!file || !location.pathname.endsWith("/teams")) return file || null;
+  const file = filesById.get(
+    params.get("document") || params.get("file") || "",
+  );
+  if (!file || logisticsRoute().page !== "teams") return file || null;
   const person = resolveStaffPerson(params.get("staff"));
   const channel = channels.find(
     (c) => c.id === (params.get("channel") || "general"),
@@ -100,6 +102,11 @@ function documentFromLocation() {
 export default function LogisticsApp() {
   const teamsPerson = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
+  );
+  const homeTeamsChannels = channels.filter(
+    (channel) =>
+      channel.team === "logistics" &&
+      canSeeLogisticsChannel(teamsPerson, channel),
   );
   const [route, setRoute] = useState(logisticsRoute);
   const [search, setSearch] = useState("");
@@ -217,7 +224,13 @@ export default function LogisticsApp() {
         <>
           <WorkspaceHeader
             onOpen={openFromHome}
-            onTeams={() => navigate("teams", { channel: "general" })}
+            userName={teamsPerson.name}
+            userRole={teamsPerson.role}
+            onTeams={
+              homeTeamsChannels.length
+                ? () => navigate("teams", { channel: homeTeamsChannels[0].id })
+                : undefined
+            }
             onMessage={setToast}
           />
           <div className="workspace">
@@ -274,14 +287,18 @@ export default function LogisticsApp() {
                   );
                 })}
               </nav>
-              <div className="sidebar-footer">
-                <button
-                  onClick={() => navigate("teams", { channel: "general" })}
-                >
-                  <NavigationIcon kind="teams" />
-                  Open Teams channels
-                </button>
-              </div>
+              {homeTeamsChannels.length > 0 && (
+                <div className="sidebar-footer">
+                  <button
+                    onClick={() =>
+                      navigate("teams", { channel: homeTeamsChannels[0].id })
+                    }
+                  >
+                    <NavigationIcon kind="teams" />
+                    Open Teams channels
+                  </button>
+                </div>
+              )}
             </aside>
             <main className="main-content" id="logistics-main">
               {route.page === "home" ? (
@@ -307,17 +324,21 @@ export default function LogisticsApp() {
                       >
                         Calling rota
                       </Button>
-                      <Button
-                        icon={<People24Regular />}
-                        onClick={() =>
-                          navigate("teams", {
-                            channel: "coaches",
-                            tab: "Planner",
-                          })
-                        }
-                      >
-                        Coach & team lead planner
-                      </Button>
+                      {homeTeamsChannels.some(
+                        (channel) => channel.id === "coaches",
+                      ) && (
+                        <Button
+                          icon={<People24Regular />}
+                          onClick={() =>
+                            navigate("teams", {
+                              channel: "coaches",
+                              tab: "Planner",
+                            })
+                          }
+                        >
+                          Coach & team lead planner
+                        </Button>
+                      )}
                       <Button
                         icon={<Calendar24Regular />}
                         onClick={() => navigate("calendar")}
@@ -407,24 +428,21 @@ export default function LogisticsApp() {
                       </div>
                     </section>
                   </div>
-                  <aside className="home-aside">
-                    <TeamsHomePanel
-                      heading="Your day-to-day coordination"
-                      description="Share updates, discuss handovers and work with the team."
-                      channels={channels
-                        .filter(
-                          (channel) =>
-                            channel.team === "logistics" &&
-                            canSeeLogisticsChannel(teamsPerson, channel),
-                        )
-                        .slice(0, 6)
-                        .map((channel) => ({
-                          name: channel.name,
-                          href: `/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: channel.id, tab: "Posts" })}`,
-                        }))}
-                      openHref={`/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: "general", tab: "Posts" })}`}
-                    />
-                  </aside>
+                  {homeTeamsChannels.length > 0 && (
+                    <aside className="home-aside">
+                      <TeamsHomePanel
+                        heading="Your day-to-day coordination"
+                        description="Share updates, discuss handovers and work with the team."
+                        channels={homeTeamsChannels
+                          .slice(0, 6)
+                          .map((channel) => ({
+                            name: channel.name,
+                            href: `/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: channel.id, tab: "Posts" })}`,
+                          }))}
+                        openHref={`/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: homeTeamsChannels[0].id, tab: "Posts" })}`}
+                      />
+                    </aside>
+                  )}
                 </div>
               ) : (
                 <>

@@ -334,7 +334,10 @@ export default function ProjectsApp() {
       project={project?.code}
       resource={
         project
-          ? { kind: "project", projectId: project.code }
+          ? {
+              kind: teams ? "project-team" : "project",
+              projectId: project.code,
+            }
           : { kind: "area", workspaceId: "projects", areaId: page }
       }
       personId={person.id}
@@ -777,6 +780,7 @@ export default function ProjectsApp() {
               workspaceId="projects"
               area="Project team"
               project={project.code}
+              resource={{ kind: "project-team", projectId: project.code }}
               personId={person.id}
               headingLevel={2}
               compact

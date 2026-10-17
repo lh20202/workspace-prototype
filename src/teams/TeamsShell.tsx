@@ -64,7 +64,12 @@ export function initials(name: string) {
     .map((x) => x[0])
     .join("");
 }
-export default function TeamsShell({
+export default function TeamsShell(props: TeamsShellProps) {
+  // A role change starts with fresh local navigation, search and utility panels.
+  return <TeamsShellSession key={props.userName} {...props} />;
+}
+
+function TeamsShellSession({
   userName,
   teamName,
   channelName,
@@ -83,6 +88,7 @@ export default function TeamsShell({
   navigationFooter,
   children,
 }: TeamsShellProps) {
+  const visibleGroups = groups.filter((group) => group.channels.length > 0);
   const [closed, setClosed] = useState<string[]>([]);
   const [filter, setFilter] = useState("Channels");
   const [query, setQuery] = useState("");
@@ -253,7 +259,7 @@ export default function TeamsShell({
                 </button>
                 <button
                   onClick={() => {
-                    setClosed(groups.map((g) => g.id));
+                    setClosed(visibleGroups.map((g) => g.id));
                     setListOptions(false);
                   }}
                 >
@@ -261,7 +267,7 @@ export default function TeamsShell({
                 </button>
                 <button
                   onClick={() => {
-                    setClosed(groups.map((g) => `open:${g.id}`));
+                    setClosed(visibleGroups.map((g) => `open:${g.id}`));
                     setListOptions(false);
                   }}
                 >
@@ -283,7 +289,7 @@ export default function TeamsShell({
           </div>
           <div className="m365-teams-nav-scroll">
             <div className="m365-teams-section-label">Teams and channels</div>
-            {groups.map((group) => {
+            {visibleGroups.map((group) => {
               const active = group.channels.some(
                 (c) => c.id === selectedChannelId,
               );

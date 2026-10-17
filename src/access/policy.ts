@@ -3,6 +3,11 @@
  * product views and Teams adapters ask the same policy rather than inferring
  * business access from a job title, seniority or technical administration.
  */
+export type TeamsLanding =
+  | { kind: "workspace"; workspaceId: string; channelId: string }
+  | { kind: "department"; departmentId: string }
+  | { kind: "company"; channelId: string };
+
 export interface PreviewRole {
   id: string;
   name: string;
@@ -13,6 +18,7 @@ export interface PreviewRole {
   workspaceMemberships: string[];
   restrictedAreas: Record<string, string[]>;
   teamChannels: Record<string, string[]>;
+  teamsLanding: TeamsLanding;
   projectMemberships: string[];
   projectTeamMemberships: string[];
   temporaryTeamMemberships: string[];
@@ -43,18 +49,11 @@ export const previewRoles: PreviewRole[] = [
     unitId: "marketing-insight-and-performance",
     workspaceMemberships: [...ordinaryWorkspaces, "audience", "content"],
     restrictedAreas: {},
-    teamChannels: {
-      content: [
-        "editorial",
-        "publications",
-        "cities-mobility",
-        "education-skills",
-        "clean-water-week",
-      ],
-    },
+    teamChannels: {},
+    teamsLanding: { kind: "department", departmentId: "marketing-growth" },
     projectMemberships: ["PRJ-2026-021", "PRJ-2026-031", "PRJ-2024-018"],
     projectTeamMemberships: [],
-    temporaryTeamMemberships: ["clean-water-week"],
+    temporaryTeamMemberships: [],
     emergencyMemberships: [],
   },
   {
@@ -66,7 +65,14 @@ export const previewRoles: PreviewRole[] = [
     unitId: "acquisition-and-direct-engagement",
     workspaceMemberships: [...ordinaryWorkspaces],
     restrictedAreas: {},
-    teamChannels: { logistics: ["street", "central-city", "telephone"] },
+    teamChannels: {
+      logistics: ["general", "street", "central-city", "telephone"],
+    },
+    teamsLanding: {
+      kind: "workspace",
+      workspaceId: "logistics",
+      channelId: "general",
+    },
     projectMemberships: ["PRJ-2026-014"],
     projectTeamMemberships: ["PRJ-2026-014"],
     temporaryTeamMemberships: [],
@@ -103,8 +109,8 @@ export const previewRoles: PreviewRole[] = [
     },
     teamChannels: {
       planning: ["General", "Planning coordination"],
-      content: ["media", "coordination"],
     },
+    teamsLanding: { kind: "department", departmentId: "executive-office" },
     projectMemberships: [
       "PRJ-2026-014",
       "PRJ-2026-027",
@@ -137,6 +143,7 @@ export const previewRoles: PreviewRole[] = [
       welfare: ["welfare-support", "approved-consultation"],
     },
     teamChannels: {},
+    teamsLanding: { kind: "department", departmentId: "people-culture" },
     projectMemberships: ["PRJ-2026-034", "PRJ-2023-019"],
     projectTeamMemberships: ["PRJ-2026-034"],
     temporaryTeamMemberships: [],
@@ -173,6 +180,11 @@ export const previewRoles: PreviewRole[] = [
         "Publishing & Ownership",
         "Navigation & Findability",
       ],
+    },
+    teamsLanding: {
+      kind: "workspace",
+      workspaceId: "digital",
+      channelId: "Engineering",
     },
     projectMemberships: ["PRJ-2026-014", "PRJ-2026-042", "PRJ-2020-006"],
     projectTeamMemberships: ["PRJ-2026-014", "PRJ-2026-042"],
@@ -483,9 +495,11 @@ export function canAccessChannel(
       "learning",
       "socials",
     ].includes(channelId);
-  if (workspaceId === "logistics" && ["general", "General"].includes(channelId))
-    return true;
-  return !!role.teamChannels[workspaceId]?.includes(channelId);
+  const canonicalChannel =
+    workspaceId === "logistics" && channelId === "General"
+      ? "general"
+      : channelId;
+  return !!role.teamChannels[workspaceId]?.includes(canonicalChannel);
 }
 export const canAccessEmergency = (person: PolicyPerson, incidentId: string) =>
   !!previewRoleFor(person)?.emergencyMemberships.includes(incidentId);
@@ -496,6 +510,8 @@ export type AccessResource =
   | { kind: "wiki"; areaId: string }
   | { kind: "portal" }
   | { kind: "project"; projectId: string }
+  | { kind: "project-team"; projectId: string }
+  | { kind: "channel"; workspaceId: string; channelId: string }
   | { kind: "department"; departmentId: string }
   | { kind: "emergency"; incidentId: string };
 
@@ -511,6 +527,10 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
       return canAccessPortal(person);
     case "project":
       return canAccessProject(person, resource.projectId);
+    case "project-team":
+      return canAccessProjectTeam(person, resource.projectId);
+    case "channel":
+      return canAccessChannel(person, resource.workspaceId, resource.channelId);
     case "department":
       return canAccessDepartment(person, resource.departmentId);
     case "emergency":
@@ -519,7 +539,7 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
 }
 export const allowedPreviewRoles = (resource: AccessResource) =>
   previewRoles.filter((role) => resourceAccess(role, resource));
-/** Team membership is not a protected-business-access demonstration cue. */
+/** A role cue requires entitlement to the precise denied destination. */
 export function hasAlternativePreviewAccess(
   resource: AccessResource,
   currentId: string,

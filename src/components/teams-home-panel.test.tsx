@@ -6,6 +6,17 @@ import CompanyMark from "./CompanyMark";
 import SimulationMessage from "./SimulationMessage";
 
 describe("shared Teams Home panel", () => {
+  it("omits the whole panel when no joined channels are available", () => {
+    expect(
+      renderToStaticMarkup(
+        <TeamsHomePanel
+          description="Discuss current work."
+          channels={[]}
+          openHref="/teams?workspace=digital"
+        />,
+      ),
+    ).toBe("");
+  });
   it("identifies each channel as a Teams destination with one adjacent logo", () => {
     const channels = [
       {

@@ -10,10 +10,13 @@ import { contentChannels, visibleContentChannels } from "../content/channels";
 import { initialIncidents } from "../executive/incidentData";
 import { currentProjects } from "../projects/data";
 import { departments } from "../coordination/data";
+import { technicalChannels } from "../workspaces/technicalTeams";
+import { publishingChannels } from "../workspaces/publishingTeams";
 import {
   canAccessEmergency,
   canAccessProjectTeam,
   canAccessChannel,
+  canAccessWorkspace,
 } from "../access/policy";
 import {
   teamsGroups,
@@ -67,21 +70,19 @@ describe("all Teams surfaces follow the central five-role policy", () => {
     expect(resolveStaffPerson().id).toBe("taylor");
     expect(teamsStaffForWorkspace("content", "maya")).toBe("maya");
   });
-  it("puts company conversations and logistics General first for all five roles", () => {
+  it("keeps Company Updates universal without joining every role to Logistics", () => {
     for (const member of staff) {
       const groups = teamsGroups(member);
-      expect(groups.slice(0, 2).map((g) => g.id)).toEqual([
-        "company",
-        "logistics",
-      ]);
+      expect(groups[0].id).toBe("company");
       expect(groups[0].channels.map((c) => c.id)).toEqual(
         channels
           .filter((c) => c.team === "company")
           .map((c) => `company:${c.id}`),
       );
-      expect(groups[1].channels.map((c) => c.id)).toContain(
-        "logistics:general",
+      expect(groups.some((group) => group.id === "logistics")).toBe(
+        member.id === "maya",
       );
+      expect(groups.every((group) => group.channels.length > 0)).toBe(true);
       const ids = groups.flatMap((g) => g.channels.map((c) => c.id));
       expect(new Set(ids).size).toBe(ids.length);
     }
@@ -109,7 +110,56 @@ describe("all Teams surfaces follow the central five-role policy", () => {
         operational
           .filter((c) => canSeeLogisticsChannel(person(id), c))
           .map((c) => c.id),
-      ).toEqual(["general"]);
+      ).toEqual([]);
+  });
+  it("keeps the five-role Team matrix explicit and independent of SharePoint visibility", () => {
+    const expected = {
+      taylor: ["company", "marketing-growth"],
+      maya: ["company", "logistics", "marketing-growth", "PRJ-2026-014"],
+      robin: [
+        "company",
+        "planning",
+        "executive-office",
+        "PRJ-2026-027",
+        "emergency",
+      ],
+      jamie: ["company", "people-culture", "PRJ-2026-034", "emergency"],
+      devon: [
+        "company",
+        "digital",
+        "publishing",
+        "strategy-technology",
+        "PRJ-2026-014",
+        "PRJ-2026-042",
+        "emergency",
+      ],
+    };
+    for (const member of staff) {
+      expect(teamsGroups(member).map((group) => group.id)).toEqual(
+        expected[member.id as keyof typeof expected],
+      );
+      const ownDepartment = teamsGroups(member).filter((group) =>
+        departments.some((department) => department.id === group.id),
+      );
+      expect(ownDepartment.map((group) => group.id)).toEqual([
+        member.departmentId,
+      ]);
+      expect(canAccessWorkspace(member, "logistics")).toBe(true);
+      expect(canSeeWorkspace(member, "logistics")).toBe(member.id === "maya");
+      expect(canSeeWorkspace(member, "content")).toBe(false);
+      expect(visibleWorkspaceChannels(member, "planning")).toEqual(
+        member.id === "robin" ? ["General", "Planning coordination"] : [],
+      );
+      expect(visibleWorkspaceChannels(member, "digital")).toEqual(
+        member.id === "devon" ? technicalChannels : [],
+      );
+      expect(visibleWorkspaceChannels(member, "publishing")).toEqual(
+        member.id === "devon" ? publishingChannels : [],
+      );
+    }
+    // Ordinary SharePoint readers still have no live Studio or project Team membership.
+    expect(canAccessWorkspace("taylor", "content")).toBe(true);
+    expect(canAccessProjectTeam("taylor", "PRJ-2026-021")).toBe(false);
   });
   it("uses identical grants in sidebars, direct channels, temporary rooms and moderator Teams", () => {
     for (const member of staff) {
@@ -178,7 +228,7 @@ describe("all Teams surfaces follow the central five-role policy", () => {
         "/logistics/teams",
         "?staff=maya&channel=central-city&document=central-schedule&tab=Shared",
       ),
-    ).toBe("/logistics/teams?staff=jamie&channel=important&tab=Posts");
+    ).toBe("/teams?staff=jamie");
     expect(
       teamsPreviewHrefForStaff(
         person("jamie"),
@@ -211,5 +261,19 @@ describe("all Teams surfaces follow the central five-role policy", () => {
         "?staff=devon",
       ),
     ).toBe("/teams?staff=maya");
+    expect(
+      teamsPreviewHrefForStaff(
+        person("devon"),
+        "/logistics/teams",
+        "?staff=maya&channel=central-city&tab=Shared&document=central-schedule",
+      ),
+    ).toBe("/teams?staff=devon");
+    expect(
+      teamsPreviewHrefForStaff(
+        person("jamie"),
+        "/teams",
+        "?staff=devon&workspace=digital&channel=AI+Lab&tab=Shared&file=restricted-file",
+      ),
+    ).toBe("/teams?staff=jamie");
   });
 });

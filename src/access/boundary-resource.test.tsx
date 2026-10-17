@@ -117,4 +117,42 @@ describe("the role signpost uses the actual denied destination", () => {
       expect(html).not.toContain(prompt);
     },
   );
+
+  it.each([
+    [{ kind: "channel", workspaceId: "logistics", channelId: "general" }, true],
+    [{ kind: "channel", workspaceId: "digital", channelId: "AI Lab" }, true],
+    [
+      {
+        kind: "channel",
+        workspaceId: "publishing",
+        channelId: "Wiki Moderation",
+      },
+      true,
+    ],
+    [
+      { kind: "channel", workspaceId: "content", channelId: "editorial" },
+      false,
+    ],
+    [
+      { kind: "channel", workspaceId: "logistics", channelId: "north-city" },
+      false,
+    ],
+    [{ kind: "project-team", projectId: "PRJ-2026-021" }, false],
+    [{ kind: "project-team", projectId: "PRJ-2026-027" }, true],
+  ] as [AccessResource, boolean][])(
+    "offers a Teams role cue only for actual participation: %j",
+    (resource, alternative) => {
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <AccessBoundary
+            workspaceId="logistics"
+            area="Team conversation"
+            personId="taylor"
+            resource={resource}
+          />
+        </PreviewRoleProvider>,
+      );
+      expect(html.includes(prompt)).toBe(alternative);
+    },
+  );
 });

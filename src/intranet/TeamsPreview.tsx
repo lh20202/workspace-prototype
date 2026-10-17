@@ -24,7 +24,6 @@ import { files as contentFiles } from "../content/data";
 import ContentConversation from "../content/ContentConversation";
 import {
   resolveContentChannel,
-  visibleContentChannels,
   contentFilesForChannel,
   contentChannelReadOnly,
   contentDefaultTab,
@@ -42,7 +41,6 @@ import {
   canSeeDepartment,
   canSeeWorkspace,
   canSeeWorkspaceChannel,
-  workspaceChannels,
   visibleWorkspaceChannels,
 } from "../teams/visibility";
 import AccessBoundary from "../access/AccessBoundary";
@@ -79,28 +77,26 @@ export default function TeamsPreview() {
   const workspace =
     workspaces.find((item) => item.id === requestedWorkspace) ||
     workspaces.find(
-      (item) => item.id === (defaultContext.workspaceId || person.workspace),
+      (item) => item.id === (defaultContext.workspaceId || "planning"),
     )!;
   const department =
     resolveDepartment(params.get("department") || params.get("division")) ||
     (!requestedWorkspace
       ? resolveDepartment(defaultContext.departmentId || null)
       : undefined);
+  const companyFallback =
+    !requestedWorkspace && !department
+      ? defaultContext.companyChannelId
+      : undefined;
   const workspaceUnavailable = !department && !hasWorkspaceTeams(workspace.id);
-  const requested = params.get("channel") || "General";
-  const contentChannelName = (value: string) => {
-    const resolved = resolveContentChannel(value);
-    if (
-      value === "General" &&
-      !visibleContentChannels(person.id).some(
-        (item) => item.id === resolved?.id,
-      )
-    )
-      return (
-        visibleContentChannels(person.id)[0]?.name || "Production Coordination"
-      );
-    return resolved?.name || value;
-  };
+  const requested =
+    params.get("channel") ||
+    (!requestedWorkspace || requestedWorkspace === defaultContext.workspaceId
+      ? defaultContext.channel
+      : undefined) ||
+    "General";
+  const contentChannelName = (value: string) =>
+    resolveContentChannel(value)?.name || value;
   const initialChannel =
     workspace.id === "logistics"
       ? logisticsChannels.find(
@@ -108,9 +104,7 @@ export default function TeamsPreview() {
         )?.name || requested
       : workspace.id === "content"
         ? contentChannelName(requested)
-        : (workspaceChannels[workspace.id] || ["General"]).includes(requested)
-          ? requested
-          : "General";
+        : requested;
   const [channel, setChannel] = useState(initialChannel);
   const [tab, setTab] = useState(
     params.get("tab") === "Shared" || params.get("tab") === "Files"
@@ -127,6 +121,16 @@ export default function TeamsPreview() {
   );
   useEffect(() => {
     rememberStaff(person.id);
+    if (companyFallback) {
+      location.replace(
+        `/logistics/teams?${new URLSearchParams({
+          staff: person.id,
+          channel: companyFallback,
+          tab: "Posts",
+        })}`,
+      );
+      return;
+    }
     if (workspaceUnavailable) {
       location.replace(
         sharepointDestination(
@@ -143,10 +147,13 @@ export default function TeamsPreview() {
             channel.name === initialChannel || channel.id === initialChannel,
         )?.id ||
         logisticsChannel[initialChannel] ||
-        "general";
-      location.replace(
-        `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: targetChannel, tab })}`,
-      );
+        initialChannel;
+      const query = new URLSearchParams(location.search);
+      query.delete("workspace");
+      query.set("staff", person.id);
+      query.set("channel", targetChannel);
+      query.set("tab", tab);
+      location.replace(`/logistics/teams?${query}`);
     }
   }, [
     person.id,
@@ -155,6 +162,7 @@ export default function TeamsPreview() {
     initialChannel,
     tab,
     workspaceUnavailable,
+    companyFallback,
   ]);
   function chooseChannel(workspaceId: string, name: string) {
     const query = new URLSearchParams({
@@ -183,20 +191,18 @@ export default function TeamsPreview() {
   useEffect(() => {
     const back = () => {
       const query = new URLSearchParams(location.search);
-      const name = query.get("channel") || "General";
+      const name =
+        query.get("channel") ||
+        (!query.get("workspace") ||
+        query.get("workspace") === defaultContext.workspaceId
+          ? defaultContext.channel
+          : undefined) ||
+        "General";
       const restoredContentChannel = resolveContentChannel(name);
       setChannel(
         workspace.id === "content"
-          ? name === "General"
-            ? visibleContentChannels(person.id).find(
-                (item) => item.id === restoredContentChannel?.id,
-              )?.name ||
-              visibleContentChannels(person.id)[0]?.name ||
-              "Production Coordination"
-            : restoredContentChannel?.name || name
-          : (workspaceChannels[workspace.id] || ["General"]).includes(name)
-            ? name
-            : "General",
+          ? restoredContentChannel?.name || name
+          : name,
       );
       setTab(
         ["Files", "Shared"].includes(query.get("tab") || "")
@@ -212,7 +218,12 @@ export default function TeamsPreview() {
     };
     window.addEventListener("popstate", back);
     return () => window.removeEventListener("popstate", back);
-  }, [workspace.id, person.id]);
+  }, [
+    workspace.id,
+    person.id,
+    defaultContext.workspaceId,
+    defaultContext.channel,
+  ]);
   const groups = teamsGroups(person).map((group) => ({
     ...group,
     channels: group.channels.map((item) => ({
@@ -347,6 +358,7 @@ export default function TeamsPreview() {
       ),
     );
   }
+  if (companyFallback) return <div role="status">Opening Teams…</div>;
   if (workspaceUnavailable) return <div role="status">Opening SharePoint…</div>;
   if (!department && workspace.id === "logistics")
     return <div role="status">Opening Teams…</div>;
@@ -387,6 +399,18 @@ export default function TeamsPreview() {
         <AccessBoundary
           workspaceId={workspace.id}
           department={department?.id}
+          resource={
+            department
+              ? undefined
+              : {
+                  kind: "channel",
+                  workspaceId: workspace.id,
+                  channelId:
+                    workspace.id === "content"
+                      ? resolveContentChannel(channel)?.id || channel
+                      : channel,
+                }
+          }
           personId={person.id}
           area={department ? `${department.name} / General` : channel}
           location={`${department?.name || workspace.title} / ${department ? "General" : channel}`}

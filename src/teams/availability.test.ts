@@ -41,7 +41,7 @@ describe("Teams is available only where the work needs live coordination", () =>
       }
     }
   });
-  it("opens a colleague's department when their functional SharePoint site has no Team", () => {
+  it("uses deterministic central role landings rather than functional SharePoint visibility", () => {
     for (const id of ["taylor", "jamie", "robin"]) {
       const member = person(id);
       expect(defaultTeamsContext(member)).toEqual({
@@ -52,8 +52,23 @@ describe("Teams is available only where the work needs live coordination", () =>
         teamsGroups(member).some((group) => group.id === member.departmentId),
       ).toBe(true);
     }
-    expect(defaultTeamsContext(person("devon")).workspaceId).toBe("digital");
-    expect(defaultTeamsContext(person("maya")).workspaceId).toBe("logistics");
+    expect(defaultTeamsContext(person("devon"))).toEqual({
+      workspaceId: "digital",
+      departmentId: undefined,
+      channel: "Engineering",
+    });
+    expect(defaultTeamsContext(person("maya"))).toEqual({
+      workspaceId: "logistics",
+      departmentId: undefined,
+      channel: "general",
+    });
+    // Editing a SharePoint-oriented context cannot silently join an unrelated Team.
+    expect(
+      defaultTeamsContext({ ...person("taylor"), workspace: "logistics" }),
+    ).toEqual({
+      workspaceId: undefined,
+      departmentId: "marketing-growth",
+    });
   });
   it("retains active project, department and emergency teams independently from the central Projects site", () => {
     expect(

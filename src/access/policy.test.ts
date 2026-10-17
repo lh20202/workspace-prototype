@@ -88,6 +88,41 @@ describe("the five role access matrix", () => {
     for (const role of previewRoles.filter((role) => role.id !== "maya"))
       expect(canAccessPortal(role)).toBe(false);
   });
+  it("keeps functional Teams participation separate from ordinary SharePoint readership", () => {
+    const companyChannels = [
+      "important",
+      "bulletin",
+      "office",
+      "pets",
+      "learning",
+      "socials",
+    ];
+    const mayaLogistics = ["general", "street", "central-city", "telephone"];
+    for (const role of previewRoles) {
+      expect(canAccessWorkspace(role, "logistics")).toBe(true);
+      for (const channel of companyChannels)
+        expect(canAccessChannel(role, "company", channel)).toBe(true);
+      for (const channel of mayaLogistics)
+        expect(canAccessChannel(role, "logistics", channel)).toBe(
+          role.id === "maya",
+        );
+      for (const channel of ["north-city", "travel", "coaches", "unknown"])
+        expect(canAccessChannel(role, "logistics", channel)).toBe(false);
+      expect(canAccessChannel(role, "content", "editorial")).toBe(false);
+      expect(canAccessChannel(role, "digital", "Engineering")).toBe(
+        role.id === "devon",
+      );
+      expect(canAccessChannel(role, "publishing", "Wiki Moderation")).toBe(
+        role.id === "devon",
+      );
+      expect(canAccessChannel(role, "planning", "Planning coordination")).toBe(
+        role.id === "robin",
+      );
+      expect(canAccessChannel(role, "employment", "General")).toBe(false);
+    }
+    expect(canAccessWorkspace("taylor", "content")).toBe(true);
+    expect(canAccessWorkspace("robin", "content")).toBe(true);
+  });
   it("gives executive, personnel and technology roles their own controlled work, never universal access", () => {
     expect(canAccessWorkspace("robin", "executive")).toBe(true);
     expect(canAccessArea("robin", "executive", "leadership")).toBe(true);
