@@ -3,15 +3,14 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import PrototypeNavigator from "./PrototypeNavigator";
 import { PreviewRoleProvider } from "./PreviewRoleContext";
-import type { AccessResource } from "../access/policy";
 import { germanAccessUpdate } from "../i18n/de-access-update";
 import { translateText } from "../i18n/translate";
 
 const hint = vi.hoisted(() => ({
   value: null as null | {
-    deniedArea: { owner: string; resource: AccessResource };
-    helperDismissed: boolean;
-    dismissHelper: () => void;
+    roleSelectorRef: { current: HTMLSelectElement | null };
+    roleSelectorHighlighted: boolean;
+    focusRoleSelector: () => void;
   },
 }));
 vi.mock("./PreviewRoleContext", async (importOriginal) => ({
@@ -67,51 +66,24 @@ describe("external role-preview controls", () => {
     expect(html).toContain('href="/architecture?staff=jamie"');
   });
 
-  it("shows the external role hint only for a genuinely available alternative", () => {
+  it("highlights the selector when an access-page prompt points to it", () => {
     vi.stubGlobal(
       "location",
       new URL("/executive?staff=taylor", "https://example.test"),
     );
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     hint.value = {
-      deniedArea: {
-        owner: "boundary",
-        resource: { kind: "workspace", workspaceId: "executive" },
-      },
-      helperDismissed: false,
-      dismissHelper: vi.fn(),
+      roleSelectorRef: { current: null },
+      roleSelectorHighlighted: true,
+      focusRoleSelector: vi.fn(),
     };
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
-    expect(html).toContain("Try another preview role to see authorised access");
-    expect(html).toContain('aria-label="Dismiss preview role hint"');
-    hint.value.helperDismissed = true;
+    expect(html).toContain('class="preview-role-highlighted"');
+    expect(html).not.toContain("Try another preview role");
+    hint.value.roleSelectorHighlighted = false;
     expect(
       renderToStaticMarkup(createElement(PrototypeNavigator)),
-    ).not.toContain("Try another preview role");
-  });
-
-  it.each<AccessResource>([
-    { kind: "area", workspaceId: "welfare", areaId: "employee-representation" },
-    {
-      kind: "area",
-      workspaceId: "digital",
-      areaId: "nonexistent-private-area",
-    },
-    { kind: "department", departmentId: "people-culture" },
-  ])("does not imply alternative entitlement for $kind $areaId", (resource) => {
-    vi.stubGlobal(
-      "location",
-      new URL("/welfare-representation?staff=taylor", "https://example.test"),
-    );
-    vi.stubGlobal("sessionStorage", { getItem: () => null });
-    hint.value = {
-      deniedArea: { owner: "boundary", resource },
-      helperDismissed: false,
-      dismissHelper: vi.fn(),
-    };
-    expect(
-      renderToStaticMarkup(createElement(PrototypeNavigator)),
-    ).not.toContain("Try another preview role");
+    ).not.toContain('class="preview-role-highlighted"');
   });
 
   it("provides professional German for the new external and access-control labels", () => {
@@ -122,8 +94,7 @@ describe("external role-preview controls", () => {
       "Executive Director",
       "Personnel Administrator",
       "Technology & Engineering Administrator",
-      "Try another preview role to see authorised access",
-      "Dismiss preview role hint",
+      "Change your role to change your access permissions",
       "Are you frontline sales staff?",
       "Frontline sales focal point",
       "Contact workspace focal point",

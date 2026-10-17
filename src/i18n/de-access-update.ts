@@ -20,9 +20,8 @@ export const germanAccessUpdate: Record<string, string> = {
     "Personaladministratorin — Jamie Ellis",
   "Technology & Engineering Administrator — Devon Park":
     "Administrator für Technologie und Engineering — Devon Park",
-  "Try another preview role to see authorised access":
-    "Wählen Sie eine andere Vorschaurolle, um berechtigten Zugriff zu sehen",
-  "Dismiss preview role hint": "Hinweis zur Vorschaurolle schließen",
+  "Change your role to change your access permissions":
+    "Ändern Sie die Vorschaurolle, um andere Zugriffsberechtigungen zu sehen",
   "Are you frontline sales staff?": "Arbeiten Sie im direkten Kundenvertrieb?",
   "Go to the Frontline Sales Portal for the information and tools used in day-to-day frontline work.":
     "Im Frontline Sales Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",

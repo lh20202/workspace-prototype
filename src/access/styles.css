@@ -8,6 +8,33 @@
 .access-boundary-layout {
   max-width: 720px;
 }
+.access-boundary-main {
+  min-width: 0;
+}
+.access-preview-role {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+.access-preview-role button {
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #0f6cbd;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.access-preview-role button:hover {
+  color: #0c3b5e;
+}
+.access-preview-role button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 .access-boundary-layout.access-boundary-sales {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(260px, 1fr);

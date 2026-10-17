@@ -14,60 +14,12 @@
   outline: 2px solid #fff;
   outline-offset: 3px;
 }
-.preview-role-helper {
-  display: flex;
-  align-items: center;
-  justify-self: end;
-  gap: 5px;
-  max-width: 330px;
-  color: #f3e1b0;
-  font-size: 12px;
-  line-height: 16px;
-}
-.preview-role-helper > svg {
-  flex: none;
-  width: 32px;
-  height: 26px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transform: rotate(-8deg);
-}
-.preview-role-helper > button {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 2px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-}
-.preview-role-helper > button:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .preview-role-helper > svg {
-    animation: preview-role-cue 900ms ease-out 3;
-  }
-}
-@keyframes preview-role-cue {
-  0%,
-  100% {
-    transform: rotate(-8deg) translateY(0);
-  }
-  50% {
-    transform: rotate(-8deg) translateY(-2px);
-  }
+:root .poc-controls .preview-role-control select.preview-role-highlighted {
+  outline: 3px solid #f3ce65;
+  outline-offset: 3px;
+  border-color: #f3ce65;
+  background-color: #494333;
+  box-shadow: 0 0 0 7px rgb(243 206 101 / 16%);
 }
 @media (max-width: 1100px) {
   :root .poc-controls .preview-role-control {
@@ -98,17 +50,7 @@
   }
 }
 
-/* Scoped feedback: preserve the resting geometry and the finite helper cue. */
-.preview-role-helper > button:active {
-  background-color: rgb(255 255 255 / 12%);
-}
-@media (hover: hover) and (pointer: fine) {
-  .preview-role-helper > button:hover {
-    background-color: rgb(255 255 255 / 8%);
-  }
-}
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .preview-role-helper > button,
   :root .poc-controls .preview-role-control select {
     transition:
       background-color 130ms ease-out,

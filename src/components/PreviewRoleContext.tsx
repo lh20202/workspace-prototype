@@ -3,58 +3,48 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useId,
+  useRef,
   useState,
   type ReactNode,
+  type RefObject,
 } from "react";
-import type { AccessResource } from "../access/policy";
 
-const dismissedKey = "workspace-preview-role-helper-dismissed";
-type DeniedPreviewArea = { owner: string; resource: AccessResource };
 type PreviewRoleContextValue = {
-  deniedArea: DeniedPreviewArea | null;
-  helperDismissed: boolean;
-  dismissHelper: () => void;
-  registerDeniedArea: (owner: string, resource: AccessResource) => () => void;
+  roleSelectorRef: RefObject<HTMLSelectElement | null>;
+  roleSelectorHighlighted: boolean;
+  focusRoleSelector: () => void;
 };
 const PreviewRoleContext = createContext<PreviewRoleContextValue | null>(null);
 
-function storedDismissal() {
-  try {
-    return sessionStorage.getItem(dismissedKey) === "true";
-  } catch {
-    return false;
-  }
-}
-
 /** External demonstration context. Product access remains in the access policy. */
 export function PreviewRoleProvider({ children }: { children: ReactNode }) {
-  const [deniedArea, setDeniedArea] = useState<DeniedPreviewArea | null>(null);
-  const [helperDismissed, setHelperDismissed] = useState(storedDismissal);
-  const registerDeniedArea = useCallback(
-    (owner: string, resource: AccessResource) => {
-      setDeniedArea({ owner, resource });
-      return () => {
-        setDeniedArea((active) => (active?.owner === owner ? null : active));
-      };
+  const roleSelectorRef = useRef<HTMLSelectElement>(null);
+  const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [roleSelectorHighlighted, setRoleSelectorHighlighted] = useState(false);
+  const focusRoleSelector = useCallback(() => {
+    const selector = roleSelectorRef.current;
+    if (!selector) return;
+    selector.focus({ preventScroll: true });
+    selector.scrollIntoView({ block: "center", behavior: "auto" });
+    setRoleSelectorHighlighted(true);
+    if (highlightTimeout.current) clearTimeout(highlightTimeout.current);
+    highlightTimeout.current = setTimeout(() => {
+      setRoleSelectorHighlighted(false);
+      highlightTimeout.current = null;
+    }, 2500);
+  }, []);
+  useEffect(
+    () => () => {
+      if (highlightTimeout.current) clearTimeout(highlightTimeout.current);
     },
     [],
   );
-  const dismissHelper = useCallback(() => {
-    setHelperDismissed(true);
-    try {
-      sessionStorage.setItem(dismissedKey, "true");
-    } catch {
-      // The cue still dismisses for this page when browser storage is disabled.
-    }
-  }, []);
   return (
     <PreviewRoleContext.Provider
       value={{
-        deniedArea,
-        helperDismissed,
-        dismissHelper,
-        registerDeniedArea,
+        roleSelectorRef,
+        roleSelectorHighlighted,
+        focusRoleSelector,
       }}
     >
       {children}
@@ -64,15 +54,4 @@ export function PreviewRoleProvider({ children }: { children: ReactNode }) {
 
 export function usePreviewRoleContext() {
   return useContext(PreviewRoleContext);
-}
-
-/** Only exact, policy-backed denied destinations opt into the external cue. */
-export function useDeniedPreviewResource(resource?: AccessResource) {
-  const owner = useId();
-  const register = usePreviewRoleContext()?.registerDeniedArea;
-  const serialized = resource ? JSON.stringify(resource) : null;
-  useEffect(() => {
-    if (!register || !serialized) return;
-    return register(owner, JSON.parse(serialized) as AccessResource);
-  }, [register, owner, serialized]);
 }

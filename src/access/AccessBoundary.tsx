@@ -10,8 +10,8 @@ import { Dismiss20Regular, LockClosed24Regular } from "@fluentui/react-icons";
 import { selectedStaffId } from "../intranet/catalog";
 import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
-import { useDeniedPreviewResource } from "../components/PreviewRoleContext";
-import type { AccessResource } from "./policy";
+import { usePreviewRoleContext } from "../components/PreviewRoleContext";
+import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
 import {
   accessFocalPoint,
   accessWorkspace,
@@ -50,7 +50,12 @@ export default function AccessBoundary({
   const workspace = accessWorkspace(context);
   const focal = accessFocalPoint(context);
   const sales = isSalesAccessContext(context);
-  useDeniedPreviewResource(resource);
+  const preview = usePreviewRoleContext();
+  const showRoleHelper = !!(
+    preview &&
+    resource &&
+    hasAlternativePreviewAccess(resource, context.personId)
+  );
   const [contactOpen, setContactOpen] = useState(false);
   const [contact, setContact] = useState<AccessFocalPoint>(focal);
   const [message, setMessage] = useState(`I need access to ${context.area}. `);
@@ -101,31 +106,44 @@ export default function AccessBoundary({
             : "access-boundary-layout"
         }
       >
-        <section
-          className={`access-boundary${strict ? " access-boundary-strict" : ""}${compact ? " access-boundary-compact" : ""}`}
-        >
-          <LockClosed24Regular className="access-boundary-lock" />
-          {strict && (
-            <span className="access-boundary-sensitivity">
-              Strictly confidential
-            </span>
-          )}
-          <Heading>Access required</Heading>
-          <p className="access-boundary-area">{context.area}</p>
-          <p>This area is limited to authorised participants.</p>
-          {!sales && (
-            <>
-              {workspaceContact}
-              {urgent}
-            </>
-          )}
-          <a
-            className="access-boundary-return"
-            href={withExplicitStaff(context.returnHref || workspace.href)}
+        <div className="access-boundary-main">
+          <section
+            className={`access-boundary${strict ? " access-boundary-strict" : ""}${compact ? " access-boundary-compact" : ""}`}
           >
-            {returnLabel}
-          </a>
-        </section>
+            <LockClosed24Regular className="access-boundary-lock" />
+            {strict && (
+              <span className="access-boundary-sensitivity">
+                Strictly confidential
+              </span>
+            )}
+            <Heading>Access required</Heading>
+            <p className="access-boundary-area">{context.area}</p>
+            <p>This area is limited to authorised participants.</p>
+            {!sales && (
+              <>
+                {workspaceContact}
+                {urgent}
+              </>
+            )}
+            <a
+              className="access-boundary-return"
+              href={withExplicitStaff(context.returnHref || workspace.href)}
+            >
+              {returnLabel}
+            </a>
+          </section>
+          {showRoleHelper && (
+            <p className="access-preview-role">
+              <button
+                type="button"
+                aria-controls="preview-role"
+                onClick={preview!.focusRoleSelector}
+              >
+                {t("Change your role to change your access permissions")}
+              </button>
+            </p>
+          )}
+        </div>
         {sales && (
           <aside
             className="access-sales-alternative"

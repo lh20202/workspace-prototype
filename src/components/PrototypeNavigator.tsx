@@ -2,7 +2,6 @@ import PocAnnotation from "./PocAnnotation";
 import { LanguageToggle } from "../i18n/Language";
 import { staff, resolveStaffPerson, rememberStaff } from "../intranet/catalog";
 import { teamsPreviewHrefForStaff } from "../teams/navigation";
-import { hasAlternativePreviewAccess } from "../access/policy";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
@@ -14,11 +13,6 @@ export default function PrototypeNavigator() {
   );
   const emergency = location.pathname.startsWith("/emergency-response");
   const preview = usePreviewRoleContext();
-  const showRoleHelper = !!(
-    preview?.deniedArea &&
-    !preview.helperDismissed &&
-    hasAlternativePreviewAccess(preview.deniedArea.resource, person.id)
-  );
   return (
     <div className="demo-control-frame">
       <nav
@@ -47,11 +41,16 @@ export default function PrototypeNavigator() {
               Preview role
               <select
                 id="preview-role"
+                ref={preview?.roleSelectorRef}
+                className={
+                  preview?.roleSelectorHighlighted
+                    ? "preview-role-highlighted"
+                    : undefined
+                }
                 aria-label="Preview role"
                 title={`${person.role} — ${person.name}`}
                 value={person.id}
                 onChange={(e) => {
-                  if (showRoleHelper) preview?.dismissHelper();
                   rememberStaff(e.target.value);
                   const nextPerson = staff.find(
                     (member) => member.id === e.target.value,
@@ -82,21 +81,6 @@ export default function PrototypeNavigator() {
                 ))}
               </select>
             </label>
-            {showRoleHelper && (
-              <div className="preview-role-helper" role="note">
-                <span>Try another preview role to see authorised access</span>
-                <svg viewBox="0 0 38 30" aria-hidden="true">
-                  <path d="M3 25C17 27 29 19 28 5M22 10L28 4L34 10" />
-                </svg>
-                <button
-                  type="button"
-                  aria-label="Dismiss preview role hint"
-                  onClick={preview!.dismissHelper}
-                >
-                  ×
-                </button>
-              </div>
-            )}
           </div>
           {emergency && (
             <div className="response-preview">

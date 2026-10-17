@@ -3,18 +3,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import FunctionalApp from "../workspaces/FunctionalApp";
 import AudienceApp from "../audience/AudienceApp";
 import ContentApp from "../content/ContentApp";
-import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
+import AccessBoundary from "./AccessBoundary";
+import { PreviewRoleProvider } from "../components/PreviewRoleContext";
+import type { AccessResource } from "./policy";
 
-const captured = vi.hoisted(() => ({ resources: [] as AccessResource[] }));
-vi.mock("../components/PreviewRoleContext", () => ({
-  useDeniedPreviewResource: (resource?: AccessResource) => {
-    if (resource) captured.resources.push(resource);
-  },
-}));
-afterEach(() => {
-  captured.resources.length = 0;
-  vi.unstubAllGlobals();
-});
+afterEach(() => vi.unstubAllGlobals());
+const prompt = "Change your role to change your access permissions";
 
 /** Whole-site membership must not advertise access to a narrower closed subject. */
 describe("the role signpost uses the actual denied destination", () => {
@@ -45,18 +39,16 @@ describe("the role signpost uses the actual denied destination", () => {
     ],
   ] as const)(
     "checks the precise protected subject at %s",
-    (path, workspaceId, areaId, alternative) => {
+    (path, _workspaceId, _areaId, alternative) => {
       vi.stubGlobal("location", new URL(path, "https://example.test"));
       vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
-      expect(renderToStaticMarkup(<FunctionalApp />)).toContain(
-        "Access required",
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <FunctionalApp />
+        </PreviewRoleProvider>,
       );
-      expect(captured.resources).toEqual([
-        { kind: "area", workspaceId, areaId },
-      ]);
-      expect(hasAlternativePreviewAccess(captured.resources[0], "taylor")).toBe(
-        alternative,
-      );
+      expect(html).toContain("Access required");
+      expect(html.includes(prompt)).toBe(alternative);
     },
   );
   it.each([
@@ -72,16 +64,57 @@ describe("the role signpost uses the actual denied destination", () => {
     ],
   ] as const)(
     "does not offer specialist-workspace membership as access to closed participant administration",
-    (path, workspaceId, App) => {
+    (path, _workspaceId, App) => {
       vi.stubGlobal("location", new URL(path, "https://example.test"));
       vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
-      expect(renderToStaticMarkup(<App />)).toContain("Access required");
-      expect(captured.resources).toEqual([
-        { kind: "area", workspaceId, areaId: "participant-administration" },
-      ]);
-      expect(hasAlternativePreviewAccess(captured.resources[0], "maya")).toBe(
-        false,
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <App />
+        </PreviewRoleProvider>,
       );
+      expect(html).toContain("Access required");
+      expect(html).not.toContain(prompt);
+    },
+  );
+
+  it("places the action directly after the access box, before the sales alternative", () => {
+    vi.stubGlobal(
+      "location",
+      new URL("/content-delivery?staff=maya", "https://example.test"),
+    );
+    vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
+    const html = renderToStaticMarkup(
+      <PreviewRoleProvider>
+        <ContentApp />
+      </PreviewRoleProvider>,
+    );
+    expect(html).toContain('aria-controls="preview-role"');
+    expect(html.indexOf("</section>")).toBeLessThan(html.indexOf(prompt));
+    expect(html.indexOf(prompt)).toBeLessThan(html.indexOf("<aside"));
+  });
+
+  it.each<AccessResource>([
+    { kind: "area", workspaceId: "welfare", areaId: "employee-representation" },
+    {
+      kind: "area",
+      workspaceId: "digital",
+      areaId: "nonexistent-private-area",
+    },
+    { kind: "department", departmentId: "people-culture" },
+  ])(
+    "does not suggest role access when no role can open the destination",
+    (resource) => {
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <AccessBoundary
+            workspaceId="welfare"
+            area="Protected area"
+            personId="taylor"
+            resource={resource}
+          />
+        </PreviewRoleProvider>,
+      );
+      expect(html).not.toContain(prompt);
     },
   );
 });
