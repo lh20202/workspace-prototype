@@ -13,7 +13,6 @@ import WorkspaceFAQExample from "./WorkspaceFAQExample";
 import {
   workspaceFAQQuestions,
   workspaceFAQExampleHref,
-  workspaceFAQAutomationNote,
 } from "./workspaceFAQContent";
 import "./workspace-faq.css";
 
@@ -25,13 +24,7 @@ export function WorkspaceFAQContent() {
           <h3>{question}</h3>
           <p>{answer}</p>
           {index === 1 && (
-            <>
-              <WorkspaceFAQExample href={workspaceFAQExampleHref} />
-              <details className="workspace-faq-automation">
-                <summary>Could this be automated?</summary>
-                <p>{workspaceFAQAutomationNote}</p>
-              </details>
-            </>
+            <WorkspaceFAQExample href={workspaceFAQExampleHref} />
           )}
         </section>
       ))}

@@ -18,5 +18,3 @@ export const workspaceFAQQuestions = [
 /** Ordinary explicit Preview Role routing opens an existing authorised conversation. */
 export const workspaceFAQExampleHref =
   "/teams?staff=devon&workspace=digital&channel=M365%20%26%20SPFx&tab=Posts&post=digital-onedrive-review";
-export const workspaceFAQAutomationNote =
-  "Not as a simple built-in pre-send warning. Teams apps can monitor channel messages after posting, and Microsoft Purview can enforce configured compliance rules; this demo uses focal-point moderation.";

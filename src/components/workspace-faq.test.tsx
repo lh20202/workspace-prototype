@@ -6,7 +6,6 @@ import {
   creationExplanation,
   workspaceFAQQuestions,
   workspaceFAQExampleHref,
-  workspaceFAQAutomationNote,
 } from "./workspaceFAQContent";
 import { technicalPosts } from "../workspaces/technicalTeams";
 import { canAccessChannel } from "../access/policy";
@@ -35,7 +34,7 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(trigger).toContain("Workspace FAQ");
     expect(trigger).not.toContain(workspaceFAQQuestions[0].question);
   });
-  it("keeps answers short and staff-focused, with automation explanation collapsed", () => {
+  it("keeps answers short and staff-focused without an automation section", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
     for (const entry of workspaceFAQQuestions) {
       expect(
@@ -43,11 +42,8 @@ describe("shared staff-facing Workspace FAQ", () => {
       ).toHaveLength(2);
       expect(html).toContain(entry.question);
     }
-    expect(html).toContain('<details class="workspace-faq-automation">');
-    expect(html).not.toMatch(/<details[^>]* open/);
-    expect(workspaceFAQAutomationNote).not.toMatch(
-      /Graph|RSC|application permissions/,
-    );
+    expect(html).not.toContain("Could this be automated?");
+    expect(html).not.toContain("<details");
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
     expect(creationExplanation).toBe(
       "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.",

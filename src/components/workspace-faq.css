@@ -87,24 +87,9 @@
   transform: rotate(180deg);
 }
 .workspace-faq-example:focus-visible,
-.workspace-faq-full-demo:focus-visible,
-.workspace-faq-automation summary:focus-visible {
+.workspace-faq-full-demo:focus-visible {
   outline: 2px solid #0078d4;
   outline-offset: 3px;
-}
-.workspace-faq-automation {
-  margin-top: 20px;
-  color: #5b6168;
-  font-size: 12px;
-  line-height: 1.5;
-}
-.workspace-faq-automation summary {
-  width: fit-content;
-  cursor: pointer;
-}
-.workspace-faq-automation p {
-  margin-top: 10px;
-  font-size: 12px;
 }
 .workspace-faq-thread {
   margin-top: 16px;

@@ -17,9 +17,6 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
   "Teams exchange": "Unterhaltung in Teams",
   "Loading Teams exchange…": "Unterhaltung in Teams wird geladen…",
   "Go to full Teams demo": "Vollständige Teams-Demo öffnen",
-  "Could this be automated?": "Lässt sich das automatisieren?",
-  "Not as a simple built-in pre-send warning. Teams apps can monitor channel messages after posting, and Microsoft Purview can enforce configured compliance rules; this demo uses focal-point moderation.":
-    "Nicht als einfache, standardmäßig integrierte Warnung vor dem Senden. Teams-Apps können Kanalnachrichten nach dem Veröffentlichen überwachen, und Microsoft Purview kann entsprechend konfigurierte Compliance-Regeln durchsetzen; diese Demo setzt auf die Moderation durch Ansprechpersonen.",
   "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.":
     "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche.",
   "Back to all workspaces": "Zurück zu allen Arbeitsbereichen",

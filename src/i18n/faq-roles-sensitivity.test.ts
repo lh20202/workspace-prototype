@@ -4,7 +4,6 @@ import { translateText } from "./translate";
 import {
   creationExplanation,
   workspaceFAQQuestions,
-  workspaceFAQAutomationNote,
   workspaceFAQExampleHref,
 } from "../components/workspaceFAQContent";
 import { proofOfConceptInfoText } from "../components/DemoInfo";
@@ -51,15 +50,6 @@ describe("final staff-facing German interpretation", () => {
     );
     expect(german(workspaceFAQQuestions[1].answer)).toContain(
       "beim Verschieben der Arbeitsfassung",
-    );
-    expect(german(workspaceFAQAutomationNote)).toContain(
-      "nach dem Veröffentlichen",
-    );
-    expect(german(workspaceFAQAutomationNote)).toContain(
-      "entsprechend konfigurierte Compliance-Regeln",
-    );
-    expect(german(workspaceFAQAutomationNote)).toContain(
-      "Moderation durch Ansprechpersonen",
     );
     expect(german("See an example in Teams")).toBe("Beispiel in Teams ansehen");
     expect(
