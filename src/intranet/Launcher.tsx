@@ -1,7 +1,5 @@
 import {
   ArrowRight24Regular,
-  Folder24Regular,
-  PeopleTeam24Regular,
   Organization24Regular,
 } from "@fluentui/react-icons";
 import {
@@ -19,18 +17,18 @@ import { LanguageToggle } from "../i18n/Language";
 import { DemoInfo, proofOfConceptInfoText } from "../components/DemoInfo";
 import { BetaBadge } from "../components/BetaBadge";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import WorkspaceIcon from "../components/WorkspaceIcon";
+import { markWelcomeEntry } from "../components/demoControls";
 const choices = [
   {
     title: "Organisational Planning & Reporting",
     href: "/planning",
-    action: "Explore this workspace",
-    Icon: Folder24Regular,
+    action: "Explore workspace",
   },
   {
     title: "Acquisition & Activation Logistics",
     href: "/logistics",
-    action: "Explore this workspace",
-    Icon: PeopleTeam24Regular,
+    action: "Explore workspace",
   },
 ];
 export default function Launcher() {
@@ -41,9 +39,16 @@ export default function Launcher() {
       </div>
       <div className="launcher-content">
         <h1>Welcome to the Digital Workspace demo site!</h1>
+        <img
+          className="launcher-sharepoint-cue"
+          src="/images/sharepoint-logo.svg"
+          alt="SharePoint"
+          width="24"
+          height="24"
+        />
         <p className="launcher-intro">
-          Explore what your new Digital Workspaces could look and feel like. Try
-          the examples below, switch roles and see how access changes.
+          Explore what your new workspaces could look and feel like. Switch
+          roles to see how the experience changes.
         </p>
         <div className="launcher-explanation">
           <DemoInfo label="Proof of concept" buttonText="Proof of concept">
@@ -64,15 +69,11 @@ export default function Launcher() {
               <DialogTitle>How was this created?</DialogTitle>
               <DialogContent>
                 <p>
-                  This demo was built with AI-assisted coding and standard web
-                  technology. The AI was given generic descriptions of how an
-                  organisation might work and used fictional names, files,
-                  conversations and workflows to make the examples feel
-                  realistic. No company data was used.
-                </p>
-                <p>
-                  The Microsoft-style screens are simulations — they aren&apos;t
-                  connected to live SharePoint, Teams or business systems.
+                  This demo was built with AI-assisted coding. The AI was given
+                  generic descriptions of typical work and asked to create
+                  fictional files, conversations and workflows that feel
+                  realistic. No company data was used, and nothing is connected
+                  to live Microsoft 365 or business systems.
                 </p>
               </DialogContent>
               <DialogActions>
@@ -84,13 +85,14 @@ export default function Launcher() {
           </DialogSurface>
         </Dialog>
         <div className="launcher-choices">
-          {choices.map(({ title, href, action, Icon }) => (
+          {choices.map(({ title, href, action }) => (
             <a
               href={withExplicitStaff(href)}
               key={href}
               className="launcher-choice"
+              onClick={markWelcomeEntry}
             >
-              <Icon aria-hidden="true" />
+              <WorkspaceIcon />
               <div>
                 <div className="launcher-choice-title">
                   <h2>{title}</h2>
@@ -108,6 +110,7 @@ export default function Launcher() {
                   <a
                     href={withExplicitStaff("/architecture")}
                     className="launcher-complete-link"
+                    onClick={markWelcomeEntry}
                   >
                     Explore all workspaces &amp; wikis
                   </a>
@@ -115,8 +118,7 @@ export default function Launcher() {
                 <BetaBadge />
               </div>
               <span className="launcher-action">
-                Browse the complete demo, including workspaces, Wikis, portals
-                and role-based access.
+                Browse all company workspaces and wikis.
               </span>
             </div>
             <ArrowRight24Regular aria-hidden="true" />

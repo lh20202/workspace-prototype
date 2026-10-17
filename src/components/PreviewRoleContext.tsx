@@ -8,6 +8,8 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import { flushSync } from "react-dom";
+import { revealDemoControlsEvent } from "./demoControls";
 
 type PreviewRoleContextValue = {
   roleSelectorRef: RefObject<HTMLSelectElement | null>;
@@ -24,6 +26,8 @@ export function PreviewRoleProvider({ children }: { children: ReactNode }) {
   const focusRoleSelector = useCallback(() => {
     const selector = roleSelectorRef.current;
     if (!selector) return;
+    if (typeof window !== "undefined")
+      flushSync(() => window.dispatchEvent(new Event(revealDemoControlsEvent)));
     selector.focus({ preventScroll: true });
     selector.scrollIntoView({ block: "center", behavior: "auto" });
     setRoleSelectorHighlighted(true);

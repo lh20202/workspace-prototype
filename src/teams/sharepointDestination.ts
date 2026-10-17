@@ -30,6 +30,12 @@ export function sharepointDestination(
   workspaceId: string,
   fileId?: string | null,
 ) {
+  if (workspaceId === "publishing") {
+    const digital = configById.get("digital")!;
+    return fileId && digital.files.some((file) => file.id === fileId)
+      ? functionalFileHref(digital, fileId)
+      : "/digital-tech/information-architecture";
+  }
   const workspace = workspaceById.get(workspaceId);
   if (!workspace) return "/architecture";
   if (!fileId) return workspace.href;

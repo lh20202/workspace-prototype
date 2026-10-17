@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { peopleDirectory } from "../intranet/catalog";
 import { initialIncidents } from "../executive/incidentData";
+import { germanAdvisory } from "../i18n/de-advisory";
 import { germanTeamsTechnical } from "../i18n/de-teams-technical";
 import { technicalPosts, gitHref } from "./technicalTeams";
 import { publishingPosts } from "./publishingTeams";
@@ -15,10 +16,16 @@ describe("technical and moderation conversation integrity", () => {
     const colleagues = new Set(peopleDirectory.map((person) => person.name));
     for (const post of conversations) {
       expect(colleagues.has(post.author)).toBe(true);
-      expect(germanTeamsTechnical[post.text]).toBeTruthy();
+      expect(
+        { ...germanTeamsTechnical, ...germanAdvisory }[
+          post.text.replace(/\s+/g, " ")
+        ],
+      ).toBeTruthy();
       for (const reply of post.replies || []) {
         expect(colleagues.has(reply.author)).toBe(true);
-        expect(germanTeamsTechnical[reply.text]).toBeTruthy();
+        expect(
+          { ...germanTeamsTechnical, ...germanAdvisory }[reply.text],
+        ).toBeTruthy();
       }
     }
   });
@@ -55,7 +62,7 @@ describe("technical and moderation conversation integrity", () => {
   it("renders varied existing reply stacks without inventing a default reaction count", () => {
     expect(
       new Set(conversations.map((post) => post.replies?.length || 0)),
-    ).toEqual(new Set([0, 1, 2]));
+    ).toEqual(new Set([0, 1, 2, 3]));
     const general = renderToStaticMarkup(
       createElement(TechnicalConversation, { channel: "General" }),
     );
@@ -76,7 +83,11 @@ describe("technical and moderation conversation integrity", () => {
       );
       for (const post of incident.posts) {
         expect(participants.has(post.author)).toBe(true);
-        expect(germanTeamsTechnical[post.text]).toBeTruthy();
+        expect(
+          { ...germanTeamsTechnical, ...germanAdvisory }[
+            post.text.replace(/\s+/g, " ")
+          ],
+        ).toBeTruthy();
       }
       expect(
         incident.files.every((file) => file.incidentId === incident.id),

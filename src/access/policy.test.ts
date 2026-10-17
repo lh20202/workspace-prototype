@@ -23,14 +23,52 @@ import { functionalConfigs } from "../workspaces/config";
 import { protectedTopics } from "../content/data";
 import { protectedSubjects } from "../finance/data";
 
-describe("the five role access matrix", () => {
-  it("has exactly five distinct access archetypes and retains authors without hidden preview identities", () => {
+describe("the six role access matrix", () => {
+  it("gives the information adviser normal readership and a small relevant Team scope", () => {
+    for (const workspace of [
+      "digital",
+      "planning",
+      "archives",
+      "people",
+      "audience",
+      "content",
+    ])
+      expect(canAccessWorkspace("leonie", workspace)).toBe(true);
+    for (const workspace of [
+      "executive",
+      "employment",
+      "welfare",
+      "publishing",
+      "governance",
+    ])
+      expect(canAccessWorkspace("leonie", workspace)).toBe(false);
+    expect(canAccessDepartment("leonie", "strategy-technology")).toBe(true);
+    expect(canAccessArea("leonie", "digital", "information-architecture")).toBe(
+      true,
+    );
+    for (const [workspace, area] of [
+      ["digital", "security"],
+      ["finance", "high-value-payment"],
+      ["people", "network-membership"],
+      ["planning", "restricted"],
+    ])
+      expect(canAccessArea("leonie", workspace, area)).toBe(false);
+    expect(
+      previewRoles.find((role) => role.id === "leonie")?.projectMemberships,
+    ).toEqual([]);
+    expect(
+      previewRoles.find((role) => role.id === "leonie")?.emergencyMemberships,
+    ).toEqual([]);
+  });
+
+  it("has exactly six distinct access archetypes and retains authors without hidden preview identities", () => {
     expect(staff.map((role) => role.id)).toEqual([
       "taylor",
       "maya",
       "robin",
       "jamie",
       "devon",
+      "leonie",
     ]);
     expect(defaultPreviewRoleId).toBe("taylor");
     expect(
@@ -39,7 +77,7 @@ describe("the five role access matrix", () => {
           JSON.stringify([role.workspaceMemberships, role.restrictedAreas]),
         ),
       ).size,
-    ).toBe(5);
+    ).toBe(6);
     expect(peopleDirectory.some((person) => person.id === "alex")).toBe(true);
     expect(staff.some((person) => person.id === "alex")).toBe(false);
     expect(resolveStaffPerson("alex").id).toBe("taylor");
@@ -113,8 +151,11 @@ describe("the five role access matrix", () => {
         role.id === "devon",
       );
       expect(canAccessChannel(role, "publishing", "Wiki Moderation")).toBe(
-        role.id === "devon",
+        false,
       );
+      expect(
+        canAccessChannel(role, "digital", "Workspace & Wiki Moderators"),
+      ).toBe(["devon", "leonie"].includes(role.id));
       expect(canAccessChannel(role, "planning", "Planning coordination")).toBe(
         role.id === "robin",
       );
@@ -142,14 +183,14 @@ describe("the five role access matrix", () => {
     expect(canAccessArea("jamie", "welfare", "welfare-support")).toBe(true);
     expect(canAccessWorkspace("jamie", "executive")).toBe(false);
     expect(canAccessWorkspace("devon", "digital")).toBe(true);
-    expect(canAccessWorkspace("devon", "publishing")).toBe(true);
+    expect(canAccessWorkspace("devon", "publishing")).toBe(false);
     expect(canAccessArea("devon", "digital", "security")).toBe(true);
     expect(canAccessChannel("devon", "digital", "Security Engineering")).toBe(
       true,
     );
-    expect(canAccessChannel("devon", "publishing", "Wiki Moderation")).toBe(
-      true,
-    );
+    expect(
+      canAccessChannel("devon", "digital", "Workspace & Wiki Moderators"),
+    ).toBe(true);
     for (const workspace of [
       "executive",
       "employment",
@@ -266,6 +307,7 @@ describe("truthful access demonstration signposts", () => {
     expect(hasAlternativePreviewAccess(research, "maya")).toBe(true);
     expect(allowedPreviewRoles(research).map((role) => role.id)).toEqual([
       "taylor",
+      "leonie",
     ]);
     expect(canAccessWorkspace("maya", "audience")).toBe(false);
     expect(canAccessPortal("maya")).toBe(true);

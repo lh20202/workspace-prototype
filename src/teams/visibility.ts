@@ -2,7 +2,6 @@ import { hasWorkspaceTeams } from "../workspaces/registry";
 import type { StaffPerson } from "../intranet/catalog";
 import { contentChannels, resolveContentChannel } from "../content/channels";
 import { technicalChannels } from "../workspaces/technicalTeams";
-import { publishingChannels } from "../workspaces/publishingTeams";
 import { channels as logisticsChannels } from "../logistics/data";
 import {
   previewRoles,
@@ -41,7 +40,6 @@ export const workspaceChannels: Record<string, string[]> = {
   planning: ["General", "Planning coordination"],
   content: contentChannels.map((channel) => channel.name),
   digital: technicalChannels,
-  publishing: publishingChannels,
 };
 function channelKey(workspaceId: string, value: string) {
   if (workspaceId === "content") return resolveContentChannel(value)?.id;

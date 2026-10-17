@@ -1,0 +1,81 @@
+/* A small external reveal edge; the simulated product keeps its own navigation. */
+:root .demo-control-frame.demo-controls-reveal {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  flex: 0 0 6px;
+  height: 6px;
+  min-height: 6px;
+  max-height: 6px;
+  padding: 0;
+  background: #242424;
+}
+.demo-controls-reveal .demo-controls-handle {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 0 0 5px 5px;
+  background: #242424;
+  color: #fff;
+  cursor: pointer;
+}
+.demo-controls-reveal .demo-controls-handle:hover {
+  background: #3d3d3d;
+}
+.demo-controls-reveal .demo-controls-handle:focus-visible {
+  outline: 2px solid #8ec8ea;
+  outline-offset: 2px;
+}
+.demo-controls-reveal.demo-controls-intro .demo-controls-handle {
+  box-shadow: 0 2px 0 2px #9e3564;
+}
+.demo-controls-reveal .demo-controls-panel {
+  position: absolute;
+  inset: 6px 0 auto;
+  padding: 14px 12px 0;
+  filter: drop-shadow(0 4px 5px rgb(0 0 0 / 14%));
+}
+.demo-controls-reveal .demo-controls-panel[hidden] {
+  display: none;
+}
+:root .demo-controls-panel > .demo-fictional-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  min-height: 26px;
+  padding: 3px 14px;
+  border: 1px solid #bdd4df;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
+  background: #eaf3f8;
+  color: #31566a;
+  font:
+    12px/18px "Inter Variable",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+@media (max-width: 800px) {
+  .demo-controls-reveal .demo-controls-panel {
+    padding-inline: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-controls-reveal *,
+  .demo-controls-reveal *::before,
+  .demo-controls-reveal *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

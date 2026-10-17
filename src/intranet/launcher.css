@@ -31,6 +31,15 @@
   color: #424242;
   margin: 0;
 }
+:root .prototype-launcher .launcher-sharepoint-cue {
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 1px 10px 0 0;
+}
+:root .prototype-launcher .launcher-explanation {
+  clear: both;
+}
 :root .prototype-launcher .launcher-explanation {
   margin-top: 12px;
 }

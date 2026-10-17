@@ -244,7 +244,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       destination: "/audience-innovation/analytics",
       destinationName:
-        "Audience Research & Marketing Insight → Measurement & Analytics",
+        "Research & Insight → Measurement & Analytics",
     },
     reply:
       "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.",
@@ -257,7 +257,7 @@ const misfiled: Record<
       name: "Service Explainer — Storyboard.pptx",
       kind: "Misplaced business upload",
       destination: "/content-delivery/creative",
-      destinationName: "Creative & Editorial Studio → Creative & Multimedia",
+      destinationName: "Creative Studio → Creative & Multimedia",
       removed: true,
     },
     reply:
@@ -284,7 +284,7 @@ const misfiled: Record<
       name: "Supplier Onboarding Checklist.docx",
       kind: "Misplaced business upload",
       destination: "/services/purchasing",
-      destinationName: "Staff Service Operations → Purchasing & Suppliers",
+      destinationName: "Purchasing & Office → Purchasing & Suppliers",
       removed: true,
     },
     reply:
@@ -697,7 +697,7 @@ export const departments: Department[] = definitions.map(
           name: "HR Platform Interface — Technical Review.docx",
           kind: "Misplaced business upload",
           destination: "/digital-tech/systems-engineering",
-          destinationName: "Digital & Technology → Engineering Delivery",
+          destinationName: "Tech & Digital → Engineering Delivery",
         },
         moderatorReply:
           "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Employment & Hiring Administration.",

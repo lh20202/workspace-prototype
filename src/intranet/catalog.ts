@@ -80,6 +80,14 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
 };
 export const peopleDirectory = [
   {
+    id: "leonie",
+    name: "Leonie Fischer",
+    role: "Information Advisory Specialist",
+    workspace: "digital",
+    departmentId: "strategy-technology",
+    unitId: "it-services",
+  },
+  {
     id: "riley",
     name: "Riley Quinn",
     role: "Staff Welfare Coordinator",

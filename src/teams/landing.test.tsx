@@ -13,7 +13,7 @@ describe("role-specific Teams landing and shell", () => {
       ["taylor", "MCG Department", "General"],
       ["robin", "EAO Department", "General"],
       ["jamie", "PAC Department", "General"],
-      ["devon", "Digital &amp; Technology", "Engineering"],
+      ["devon", "Tech &amp; Digital", "Engineering"],
     ]) {
       vi.stubGlobal(
         "location",

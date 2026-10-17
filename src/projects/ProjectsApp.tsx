@@ -95,7 +95,7 @@ export default function ProjectsApp() {
     window.addEventListener("popstate", restoreTeamsLocation);
     return () => window.removeEventListener("popstate", restoreTeamsLocation);
   }, []);
-  const title = project ? projectTitle(project) : "Projects";
+  const title = project ? projectTitle(project) : "Project Centre";
   const root = project ? projectHref(project) : "/projects";
   const readOnly = !!project?.archived;
   const mode = project ? projectNav : centralNav;
@@ -698,7 +698,7 @@ export default function ProjectsApp() {
       );
     return (
       <>
-        <h1>Projects</h1>
+        <h1>Project Centre</h1>
         <p>
           Shared workspace for project control, delivery support and access to
           current and completed project workspaces.

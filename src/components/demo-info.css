@@ -56,10 +56,10 @@
   flex: none;
   gap: 3px;
   padding: 1px 3px 1px 8px;
-  border: 1px solid #d95c32;
-  border-radius: 4px;
-  background: #d95c32;
-  color: #151515;
+  border: 1px solid #9e3564;
+  border-radius: 999px;
+  background: #9e3564;
+  color: #fff;
   font:
     650 11px/18px "Inter Variable",
     Inter,
@@ -71,7 +71,7 @@
 }
 .beta-badge .demo-info-trigger {
   border-radius: 2px;
-  color: #151515;
+  color: #fff;
 }
 .beta-badge-compact {
   padding-left: 6px;

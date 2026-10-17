@@ -11,7 +11,6 @@ import { initialIncidents } from "../executive/incidentData";
 import { currentProjects } from "../projects/data";
 import { departments } from "../coordination/data";
 import { technicalChannels } from "../workspaces/technicalTeams";
-import { publishingChannels } from "../workspaces/publishingTeams";
 import {
   canAccessEmergency,
   canAccessProjectTeam,
@@ -35,7 +34,7 @@ import {
 const person = (id: string) => staff.find((s) => s.id === id)!;
 afterEach(() => vi.unstubAllGlobals());
 
-describe("all Teams surfaces follow the central five-role policy", () => {
+describe("all Teams surfaces follow the central six-role policy", () => {
   it("falls stale personas back to the ordinary default instead of retaining stored privilege", () => {
     expect(staff.map((member) => member.id)).toEqual([
       "taylor",
@@ -43,6 +42,7 @@ describe("all Teams surfaces follow the central five-role policy", () => {
       "robin",
       "jamie",
       "devon",
+      "leonie",
     ]);
     vi.stubGlobal("sessionStorage", { getItem: () => "devon" });
     for (const stale of [
@@ -112,7 +112,7 @@ describe("all Teams surfaces follow the central five-role policy", () => {
           .map((c) => c.id),
       ).toEqual([]);
   });
-  it("keeps the five-role Team matrix explicit and independent of SharePoint visibility", () => {
+  it("keeps the six-role Team matrix explicit and independent of SharePoint visibility", () => {
     const expected = {
       taylor: ["company", "marketing-growth"],
       maya: ["company", "logistics", "marketing-growth", "PRJ-2026-014"],
@@ -127,12 +127,12 @@ describe("all Teams surfaces follow the central five-role policy", () => {
       devon: [
         "company",
         "digital",
-        "publishing",
         "strategy-technology",
         "PRJ-2026-014",
         "PRJ-2026-042",
         "emergency",
       ],
+      leonie: ["company", "digital", "strategy-technology"],
     };
     for (const member of staff) {
       expect(teamsGroups(member).map((group) => group.id)).toEqual(
@@ -151,11 +151,17 @@ describe("all Teams surfaces follow the central five-role policy", () => {
         member.id === "robin" ? ["General", "Planning coordination"] : [],
       );
       expect(visibleWorkspaceChannels(member, "digital")).toEqual(
-        member.id === "devon" ? technicalChannels : [],
+        member.id === "devon"
+          ? technicalChannels
+          : member.id === "leonie"
+            ? [
+                "M365 & SPFx",
+                "Architecture & Governance",
+                "Workspace & Wiki Moderators",
+              ]
+            : [],
       );
-      expect(visibleWorkspaceChannels(member, "publishing")).toEqual(
-        member.id === "devon" ? publishingChannels : [],
-      );
+      expect(visibleWorkspaceChannels(member, "publishing")).toEqual([]);
     }
     // Ordinary SharePoint readers still have no live Studio or project Team membership.
     expect(canAccessWorkspace("taylor", "content")).toBe(true);
@@ -189,7 +195,7 @@ describe("all Teams surfaces follow the central five-role policy", () => {
       ).toBe(member.id === "devon");
       expect(
         canSeeWorkspaceChannel(member, "publishing", "Wiki Moderation"),
-      ).toBe(member.id === "devon");
+      ).toBe(false);
     }
     expect(canSeeWorkspace(person("maya"), "content")).toBe(false);
     expect(canSeeWorkspace(person("taylor"), "publishing")).toBe(false);

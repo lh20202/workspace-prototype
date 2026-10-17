@@ -36,9 +36,7 @@ describe("employment administration has a separate business owner", () => {
     ])
       expect(prototypeForPath(`/employment-admin${page}`)).toBe("functional");
     expect(workspaceById.get("people")?.title).toBe("People & Culture");
-    expect(workspaceById.get("content")?.title).toBe(
-      "Creative & Editorial Studio",
-    );
+    expect(workspaceById.get("content")?.title).toBe("Creative Studio");
   });
 
   it("keeps programme and framework design in People and moves administrative activities out", () => {
@@ -381,6 +379,6 @@ describe("employment administration has a separate business owner", () => {
       uploads.find((upload) =>
         upload.destination.startsWith("/content-delivery"),
       )?.destinationName,
-    ).toContain("Creative & Editorial Studio");
+    ).toContain("Creative Studio");
   });
 });

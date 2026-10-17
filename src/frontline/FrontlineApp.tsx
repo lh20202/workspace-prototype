@@ -39,7 +39,7 @@ export default function FrontlineApp() {
           <div className="frontline-identity">
             <img src="/images/company-mark.png" alt="" width="36" height="36" />
             <div>
-              <span>Frontline Sales Portal</span>
+              <span>Frontline Crew Portal</span>
               <h1>Ready for today</h1>
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function FrontlineApp() {
             </p>
             <AccessBoundary
               workspaceId="frontline-sales"
-              area="Frontline Sales Portal"
+              area="Frontline Crew Portal"
               personId={person.id}
               resource={{ kind: "portal" }}
               returnHref="/architecture"

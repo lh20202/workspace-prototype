@@ -73,7 +73,7 @@ export default function TechnicalConversation({
                 </small>
               </div>
             </header>
-            <p>{p.text}</p>
+            <p style={{ whiteSpace: "pre-line" }}>{p.text}</p>
             {p.repo && (
               <a
                 className="m365-teams-attachment"

@@ -1,0 +1,12 @@
+.workspace-icon {
+  display: inline-flex;
+  flex: 0 0 var(--workspace-icon-size, 28px);
+  width: var(--workspace-icon-size, 28px);
+  height: var(--workspace-icon-size, 28px);
+  color: #28717b;
+}
+.workspace-icon > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

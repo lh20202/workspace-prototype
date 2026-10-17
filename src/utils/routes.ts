@@ -95,7 +95,7 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
   if (pathname.startsWith("/logistics/teams"))
-    return "Acquisition & Activation Logistics | Teams";
+    return "Acquisition Logistics | Teams";
   const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
   );
@@ -126,7 +126,7 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/service-desk/"))
     return "Access request | Service Desk";
   if (pathname.startsWith("/logistics/teams"))
-    return "Acquisition & Activation Logistics | Teams";
+    return "Acquisition Logistics | Teams";
   if (pathname.startsWith("/logistics"))
     return "Acquisition & Activation Logistics";
   return pathname === "/"

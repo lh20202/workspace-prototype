@@ -1,3 +1,5 @@
+import { publishingPosts } from "./publishingTeams";
+
 export interface ConversationReply {
   author: string;
   text: string;
@@ -24,8 +26,36 @@ export const technicalChannels = [
   "Architecture & Governance",
   "Platform Operations",
   "Security Engineering",
+  "Workspace & Wiki Moderators",
 ];
 export const technicalPosts: ConversationMessage[] = [
+  {
+    channel: "Workspace & Wiki Moderators",
+    author: "Leonie Fischer",
+    time: "09:12",
+    text: "Quick heads-up: the new Policy content type is rolling out Thursday. It now includes Approval status, and the retention flow starts once a policy is approved.\n\n@Jordan @Elena — could you update the policy libraries you look after once it's live? Give me a shout if you want a hand.",
+    replies: [
+      {
+        author: "Jordan Lee",
+        time: "09:24",
+        text: "Yep, will do. Does that apply to the archived policy library too?",
+      },
+      {
+        author: "Leonie Fischer",
+        time: "09:28",
+        text: "No, just active libraries for now — archive stays as-is.",
+      },
+      {
+        author: "Elena Rossi",
+        time: "09:33",
+        text: "Thanks, I'll update ours on Thursday.",
+      },
+    ],
+  },
+  ...publishingPosts.map((post) => ({
+    ...post,
+    channel: "Workspace & Wiki Moderators",
+  })),
   {
     channel: "Security Engineering",
     author: "Devon Park",

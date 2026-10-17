@@ -474,7 +474,7 @@ export default function App() {
       <div className="site-header">
         <CompanyMark />
         <div className="site-title">
-          <h1>Organisational Planning & Reporting</h1>
+          <h1>Planning Cycle</h1>
           {visibleWorkspaceChannels(person, "planning").length > 0 && (
             <button
               className="teams-button"
@@ -564,7 +564,7 @@ export default function App() {
             <div className="home-layout">
               <div className="home-main">
                 <div className="page-heading">
-                  <h2>Organisational Planning & Reporting</h2>
+                  <h2>Planning Cycle</h2>
                   <p>
                     Shared workspace for organisation-wide strategy, planning,
                     review and performance reporting.

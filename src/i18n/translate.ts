@@ -11,6 +11,9 @@ import { germanTeamsStudio } from "./de-teams-studio";
 import { germanTeamsTechnical } from "./de-teams-technical";
 import { germanTeamsDepartments } from "./de-teams-departments";
 import { germanOrientation } from "./de-orientation";
+import { germanSimplifiedNames } from "./de-simplified-names";
+import { germanDirectoryRedesign } from "./de-directory-redesign";
+import { germanAdvisory } from "./de-advisory";
 
 export type Language = "en" | "de";
 const messages = {
@@ -27,6 +30,9 @@ const messages = {
   ...germanTeamsTechnical,
   ...germanTeamsDepartments,
   ...germanOrientation,
+  ...germanSimplifiedNames,
+  ...germanDirectoryRedesign,
+  ...germanAdvisory,
 };
 const englishMonths = [
   "January",

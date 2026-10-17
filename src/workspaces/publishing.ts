@@ -1,4 +1,4 @@
-import type { FunctionalConfig, WorkingFile } from "./types";
+import type { WorkingFile } from "./types";
 
 export const publishingPurpose =
   "Coordinate the people, publishing decisions and ongoing maintenance that keep workspaces, intranet content and shared knowledge environments usable and current.";
@@ -155,18 +155,18 @@ const fileSeeds = [
   ],
 ] as const;
 
-const files: WorkingFile[] = fileSeeds.map(
-  ([id, area, name, folder, documentLibrary, owner, status, modified]) => ({
+export const migratedPublishingFiles: WorkingFile[] = fileSeeds.map(
+  ([id, area, name, folder, , owner, status, modified]) => ({
     id,
-    area,
+    area: "information-architecture",
     name,
     folder,
     folderPath: folder,
-    documentLibrary,
+    documentLibrary: "architecture-documents",
     library: "operations",
-    campaign: "Workspace, Intranet & Wiki Coordination",
+    campaign: "Tech & Digital",
     operation: "Shared operations",
-    location: "Workspace, Intranet & Wiki Coordination",
+    location: "Tech & Digital",
     type: "docx",
     status,
     owner,
@@ -185,85 +185,8 @@ const files: WorkingFile[] = fileSeeds.map(
             ? "Company intranet"
             : "Digital workspaces",
       "Review date": "2026-10-30",
+      Platform: "Microsoft 365",
+      "Decision scope": "Workspace & Wiki coordination",
     },
   }),
 );
-
-export const publishingConfig: FunctionalConfig = {
-  id: "publishing",
-  areas: [
-    {
-      id: "workspace-reviews",
-      name: "Workspace reviews",
-      summary: "Review ownership, active views and workspace upkeep.",
-    },
-    {
-      id: "workspace-changes",
-      name: "Changes & access questions",
-      summary:
-        "Clarify business requirements before implementation or provisioning.",
-    },
-    {
-      id: "navigation",
-      name: "Navigation & Findability",
-      summary:
-        "Review user feedback, routes and duplicated content with the owners.",
-    },
-    {
-      id: "improvement",
-      name: "Review & Improvement",
-      summary:
-        "Agree and follow through on small cross-environment improvements.",
-    },
-    {
-      id: "intranet-publishing",
-      name: "Intranet publishing",
-      summary: "Coordinate editorial handoffs and publication decisions.",
-    },
-    {
-      id: "wiki-publishing",
-      name: "Wiki publishing",
-      summary: "Keep knowledge pages current with their business owners.",
-    },
-    {
-      id: "page-ownership",
-      name: "Page ownership",
-      summary: "Confirm publishing responsibility and review schedules.",
-    },
-  ],
-  items: [
-    {
-      id: "PUB-W1",
-      area: "workspace-reviews",
-      name: "Planning reporting link",
-      owner: "Jordan Lee",
-      status: "Needs review",
-      due: "2026-10-20",
-      nextAction: "Confirm the intranet points to the current approved view",
-      kind: "Moderation review",
-    },
-    {
-      id: "PUB-W2",
-      area: "wiki-publishing",
-      name: "Wiki page review owners",
-      owner: "Elena Rossi",
-      status: "Awaiting input",
-      due: "2026-10-22",
-      nextAction: "Agree owners for three October reviews",
-      kind: "Publishing review",
-    },
-    {
-      id: "PUB-W3",
-      area: "workspace-changes",
-      name: "Customer Care library request",
-      owner: "Jordan Lee",
-      status: "In progress",
-      due: "2026-10-23",
-      nextAction: "Clarify the requirement before requesting technical setup",
-      kind: "Business clarification",
-    },
-  ],
-  files,
-  protected: [],
-  tools: [],
-};

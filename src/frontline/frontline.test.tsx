@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import FrontlineApp from "./FrontlineApp";
 import { germanFrontline } from "../i18n/de-frontline";
+import { germanSimplifiedNames } from "../i18n/de-simplified-names";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -15,11 +16,11 @@ function render(query = "", sessionPerson = "maya") {
   return renderToStaticMarkup(createElement(FrontlineApp));
 }
 
-describe("Frontline Sales Portal stays focused on immediate execution", () => {
+describe("Frontline Crew Portal stays focused on immediate execution", () => {
   it("presents briefing, shift, conversation and handover tasks without workspace or wiki chrome", () => {
     const html = render();
     for (const text of [
-      "Frontline Sales Portal",
+      "Frontline Crew Portal",
       "Today's briefing",
       "Check in for this shift",
       "Current welcome offer",
@@ -61,7 +62,7 @@ describe("Frontline Sales Portal stays focused on immediate execution", () => {
       expect(html).not.toContain("Check in for this shift");
       expect(html).not.toContain("Add a handover note");
       expect(html).not.toContain("Are you frontline sales staff?");
-      expect(html).not.toContain("Open Frontline Sales Portal");
+      expect(html).not.toContain("Open Frontline Crew Portal");
     },
   );
 
@@ -72,8 +73,8 @@ describe("Frontline Sales Portal stays focused on immediate execution", () => {
   });
 
   it("provides professional German for every portal label and transient task outcome", () => {
-    expect(germanFrontline["Frontline Sales Portal"]).toBe(
-      "Frontline Sales Portal",
+    expect(germanSimplifiedNames["Frontline Crew Portal"]).toBe(
+      "Frontline Crew Portal",
     );
     expect(germanFrontline["Current welcome offer"]).toBe(
       "Aktuelles Einstiegsangebot",

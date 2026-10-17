@@ -130,11 +130,12 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
     );
   });
   it("denies direct technical and moderator Posts and Shared routes to all unjoined roles", () => {
-    for (const person of staff.filter((member) => member.id !== "devon")) {
+    for (const person of staff) {
       for (const [workspace, channel] of [
         ["digital", "AI Lab"],
-        ["publishing", "Wiki Moderation"],
+        ["digital", "Workspace & Wiki Moderators"],
       ]) {
+        if (canSeeWorkspaceChannel(person, workspace, channel)) continue;
         for (const tab of ["Posts", "Shared"]) {
           at(
             `/teams?${new URLSearchParams({ staff: person.id, workspace, channel, tab, file: "digital-F1" })}`,
@@ -270,15 +271,12 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
     );
     expect(unrelated).toHaveLength(0);
     for (const person of staff) {
-      for (const [path, workspace] of [
-        ["/digital-tech", "digital"],
-        ["/workspace-publishing", "publishing"],
-      ]) {
+      for (const [path, workspace] of [["/digital-tech", "digital"]]) {
         at(`${path}?staff=${person.id}`, person.id);
         const links = panelLinks(
           renderToStaticMarkup(createElement(FunctionalApp)),
         );
-        expect(links.length > 0).toBe(person.id === "devon");
+        expect(links.length > 0).toBe(["devon", "leonie"].includes(person.id));
         for (const link of links) {
           expect(link.searchParams.get("staff")).toBe(person.id);
           expect(

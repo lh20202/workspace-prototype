@@ -22,7 +22,7 @@ export interface HubDefinition {
 export const hubDefinitions: HubDefinition[] = [
   {
     id: "sales-marketing",
-    name: "Sales & Marketing",
+    name: "Sales",
     icon: "organisation",
     description: "",
     workspaceIds: ["audience", "content", "logistics", "customer"],
@@ -31,7 +31,7 @@ export const hubDefinitions: HubDefinition[] = [
   },
   {
     id: "infrastructure",
-    name: "Infrastructure",
+    name: "Org Central",
     icon: "infrastructure",
     description: "",
     workspaceIds: [
@@ -42,7 +42,6 @@ export const hubDefinitions: HubDefinition[] = [
       "legal",
       "services",
       "digital",
-      "publishing",
       "archives",
     ],
   },
@@ -60,22 +59,21 @@ export const architectureSections: (
 )[] = [
   { type: "hub", id: "sales-marketing" },
   { type: "hub", id: "infrastructure" },
-  { type: "workspace", id: "finance" },
   { type: "hub", id: "personnel" },
+  { type: "workspace", id: "finance" },
 ];
 const hubLabels: Record<string, string> = {
   audience: "Research & Insight",
-  content: "Creative & Editorial",
-  logistics: "Acquisition",
-  customer: "Customer Care",
-  executive: "CEO",
-  planning: "Planning",
-  projects: "Projects",
+  content: "Creative Studio",
+  logistics: "Acquisition Logistics",
+  customer: "Customer Relations",
+  executive: "Executive & CEO",
+  planning: "Planning Cycle",
+  projects: "Project Centre",
   quality: "Quality & Monitoring",
-  legal: "Legal",
-  services: "Staff Service Operations",
-  digital: "Digital & Technology",
-  publishing: "Workspace & Publishing",
+  legal: "Legal & Risk",
+  services: "Purchasing & Office",
+  digital: "Tech & Digital",
   archives: "Company Archives",
   employment: "Employment & Hiring",
 };
@@ -104,7 +102,7 @@ export interface WorkspaceDefinition {
 const seed: [string, string, string, string, string, string, boolean][] = [
   [
     "projects",
-    "Projects",
+    "Project Centre",
     "/projects",
     "Coordinate project governance and support, and access current and completed project workspaces.",
     "Project delivery",
@@ -113,7 +111,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "planning",
-    "Organisational Planning & Reporting",
+    "Planning Cycle",
     "/planning",
     "Organisation-wide strategy, planning and formal performance reporting.",
     "Strategy & planning",
@@ -122,7 +120,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "logistics",
-    "Acquisition & Activation Logistics",
+    "Acquisition Logistics",
     "/logistics",
     "Operational deployment, rotas, locations, staffing coordination and direct-delivery logistics.",
     "Campaign operations",
@@ -131,7 +129,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "audience",
-    "Audience Research & Marketing Insight",
+    "Research & Insight",
     "/audience-innovation",
     "Audience research, segmentation, journeys, behavioural insight, analysis, experimentation and marketing-automation ideation.",
     "Audience & experience",
@@ -140,7 +138,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "content",
-    "Creative & Editorial Studio",
+    "Creative Studio",
     "/content-delivery",
     "Shared production space where channel teams and topic specialists plan, create, review and release public-facing work.",
     "Audience & experience",
@@ -149,7 +147,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "customer",
-    "Customer Care & Relations",
+    "Customer Relations",
     "/customer-relations",
     "Customer care, relationship continuity, account stewardship, partnerships and frontline interaction quality.",
     "Customer relationships",
@@ -167,7 +165,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "services",
-    "Staff Service Operations",
+    "Purchasing & Office",
     "/services",
     "Office maintenance and equipment, purchasing and suppliers, travel services and reception.",
     "Workplace operations",
@@ -176,7 +174,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "quality",
-    "Quality, Monitoring & Improvement",
+    "Quality & Monitoring",
     "/quality-monitoring",
     "Shared workspace for monitoring quality, improving processes, coordinating process improvement work and developing more effective and environmentally responsible ways of working.",
     "Improvement",
@@ -185,7 +183,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "digital",
-    "Digital & Technology",
+    "Tech & Digital",
     "/digital-tech",
     "Shared engineering and technology workspace for building, operating and governing digital platforms, business systems, automation and emerging technology.",
     "Engineering & platforms",
@@ -193,17 +191,8 @@ const seed: [string, string, string, string, string, string, boolean][] = [
     true,
   ],
   [
-    "publishing",
-    "Workspace, Intranet & Wiki Coordination",
-    "/workspace-publishing",
-    "Coordinate the people, publishing decisions and ongoing maintenance that keep workspaces, intranet content and shared knowledge environments usable and current.",
-    "Environment coordination",
-    "publishing",
-    true,
-  ],
-  [
     "legal",
-    "Legal, Privacy & Compliance",
+    "Legal & Risk",
     "/legal-compliance",
     "Shared workspace for legal review, privacy, compliance, organisational risk and assurance activity.",
     "Advice & assurance",
@@ -239,7 +228,7 @@ const seed: [string, string, string, string, string, string, boolean][] = [
   ],
   [
     "executive",
-    "CEO & Executive Committee",
+    "Executive & CEO",
     "/executive",
     "Executive coordination, restricted leadership work, governance liaison and strategic initiatives.",
     "Leadership & governance",
@@ -304,7 +293,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
   },
   {
     id: "frontline-sales",
-    title: "Frontline Sales Portal",
+    title: "Frontline Crew Portal",
     href: "/frontline-sales",
     description:
       "Today's frontline briefing, shift context and immediate customer actions.",
@@ -316,7 +305,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
       "Internal task simulation; customer systems retain their own access controls",
     departmentRelationships: [],
     hubId: "sales-marketing",
-    hubLabel: "Frontline Sales Portal",
+    hubLabel: "Frontline Crew Portal",
     accessLevel: "internal",
     environmentType: "portal",
   },

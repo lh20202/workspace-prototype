@@ -20,7 +20,7 @@ export interface OperationalFile {
   sensitivity: "Internal" | "Strictly confidential";
   recordState: "Working information" | "Current standard" | "Final record";
 }
-export const workspaceTitle = "Acquisition & Activation Logistics";
+export const workspaceTitle = "Acquisition Logistics";
 export const workspacePurpose =
   "Shared workspace for coordinating active in-person, travelling and calling campaigns.";
 export const demoToday = "2026-10-14";

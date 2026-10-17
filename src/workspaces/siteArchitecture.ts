@@ -57,22 +57,6 @@ function library(
   };
 }
 export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
-  publishing: [
-    library(
-      "workspace-coordination",
-      "Workspace Coordination",
-      ["workspace-reviews", "workspace-changes", "navigation", "improvement"],
-      "Coordinate workspace reviews, business changes and navigation improvements.",
-      [column("Environment"), column("Review date", "Review date", "date")],
-    ),
-    library(
-      "publishing-ownership",
-      "Publishing & Ownership",
-      ["intranet-publishing", "wiki-publishing", "page-ownership"],
-      "Prepare publishing handoffs and confirm page ownership and review responsibilities.",
-      [column("Environment"), column("Review date", "Review date", "date")],
-    ),
-  ],
   welfare: [
     library(
       "welfare-support",
@@ -672,23 +656,6 @@ export interface FunctionalHome {
   teams?: { heading: string; cue: string; channels: string[] };
 }
 export const functionalHomes: Record<string, FunctionalHome> = {
-  publishing: {
-    heading: "Current moderation",
-    context: "Confirm ownership and the intended audience before changing an environment.",
-    areas: ["workspace-reviews", "wiki-publishing", "workspace-changes"],
-    recentHeading: "Recent working files",
-    handoffsHeading: "Review & implementation",
-    handoffs: [
-      { label: "Environment Review Register", href: "/workspace-publishing/reviews" },
-      { label: "M365 implementation", href: "/digital-tech/m365" },
-      { label: "Search & platform engineering", href: "/digital-tech/information-architecture" },
-    ],
-    teams: {
-      heading: "Moderator coordination in Teams",
-      cue: "Discuss publishing decisions, page ownership and environment upkeep.",
-      channels: ["Workspace Moderation", "Wiki Moderation", "Publishing & Ownership"],
-    },
-  },
   services: {
     heading: "Office & booking readiness",
     context:
@@ -740,7 +707,12 @@ export const functionalHomes: Record<string, FunctionalHome> = {
     teams: {
       heading: "Technical coordination in Teams",
       cue: "Discuss the current design and release reviews.",
-      channels: ["Engineering", "AI Lab", "M365 & SPFx"],
+      channels: [
+        "Engineering",
+        "AI Lab",
+        "M365 & SPFx",
+        "Workspace & Wiki Moderators",
+      ],
     },
   },
   legal: {

@@ -1,6 +1,5 @@
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { canAccessArea } from "../access/policy";
-import { publishingPosts } from "../workspaces/publishingTeams";
 import { useState, useEffect } from "react";
 import { functionalConfigs } from "../workspaces/config";
 import {
@@ -68,6 +67,7 @@ const digitalArea: Record<string, string> = {
   "M365 & SPFx": "m365",
   "Architecture & Governance": "architecture",
   "Platform Operations": "operations",
+  "Workspace & Wiki Moderators": "information-architecture",
 };
 export default function TeamsPreview() {
   const params = new URLSearchParams(location.search);
@@ -311,6 +311,7 @@ export default function TeamsPreview() {
         ]
       : config
         ? libraryForFile(config, selectedFileId || "") ||
+          libraryForFile(config, files[0]?.id || "") ||
           functionalLibraries[config.id][0]
         : undefined;
   const availableLibraries =
@@ -505,14 +506,6 @@ export default function TeamsPreview() {
             query.delete("view");
             history.replaceState({}, "", `/teams?${query}`);
           }}
-        />
-      ) : workspace.id === "publishing" ? (
-        <TechnicalConversation
-          key={channel}
-          channel={channel}
-          userName={person.name}
-          searchQuery={search}
-          messages={publishingPosts}
         />
       ) : workspace.id === "digital" ? (
         <TechnicalConversation

@@ -156,7 +156,7 @@ export const previewRoles: PreviewRole[] = [
     workspace: "digital",
     departmentId: "strategy-technology",
     unitId: "it-services",
-    workspaceMemberships: [...ordinaryWorkspaces, "digital", "publishing"],
+    workspaceMemberships: [...ordinaryWorkspaces, "digital"],
     restrictedAreas: {
       digital: ["security", "privileged-access", "production", "recovery"],
     },
@@ -171,14 +171,7 @@ export const previewRoles: PreviewRole[] = [
         "Architecture & Governance",
         "Platform Operations",
         "Security Engineering",
-      ],
-      publishing: [
-        "General",
-        "Workspace Moderation",
-        "Intranet Moderation",
-        "Wiki Moderation",
-        "Publishing & Ownership",
-        "Navigation & Findability",
+        "Workspace & Wiki Moderators",
       ],
     },
     teamsLanding: {
@@ -190,6 +183,37 @@ export const previewRoles: PreviewRole[] = [
     projectTeamMemberships: ["PRJ-2026-014", "PRJ-2026-042"],
     temporaryTeamMemberships: [],
     emergencyMemberships: ["INC-104"],
+  },
+  {
+    id: "leonie",
+    name: "Leonie Fischer",
+    role: "Information Advisory Specialist",
+    workspace: "digital",
+    departmentId: "strategy-technology",
+    unitId: "it-services",
+    workspaceMemberships: [
+      ...ordinaryWorkspaces,
+      "audience",
+      "content",
+      "digital",
+    ],
+    restrictedAreas: {},
+    teamChannels: {
+      digital: [
+        "M365 & SPFx",
+        "Architecture & Governance",
+        "Workspace & Wiki Moderators",
+      ],
+    },
+    teamsLanding: {
+      kind: "workspace",
+      workspaceId: "digital",
+      channelId: "Workspace & Wiki Moderators",
+    },
+    projectMemberships: [],
+    projectTeamMemberships: [],
+    temporaryTeamMemberships: [],
+    emergencyMemberships: [],
   },
 ];
 
@@ -412,15 +436,6 @@ const ordinaryAreas: Record<string, string[]> = {
     "rota",
   ],
   projects: ["home", "control", "support", "reviews"],
-  publishing: [
-    "workspace-reviews",
-    "workspace-changes",
-    "navigation",
-    "improvement",
-    "intranet-publishing",
-    "wiki-publishing",
-    "page-ownership",
-  ],
 };
 
 export function canAccessArea(

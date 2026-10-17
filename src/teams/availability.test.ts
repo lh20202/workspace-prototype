@@ -26,7 +26,7 @@ describe("Teams is available only where the work needs live coordination", () =>
       workspaceRegistry
         .filter((workspace) => workspace.teams)
         .map((workspace) => workspace.id),
-    ).toEqual(["planning", "logistics", "content", "digital", "publishing"]);
+    ).toEqual(["planning", "logistics", "content", "digital"]);
     expect(hasWorkspaceTeams("unknown")).toBe(false);
     expect(hasWorkspaceTeams("projects")).toBe(false);
   });
@@ -56,6 +56,11 @@ describe("Teams is available only where the work needs live coordination", () =>
       workspaceId: "digital",
       departmentId: undefined,
       channel: "Engineering",
+    });
+    expect(defaultTeamsContext(person("leonie"))).toEqual({
+      workspaceId: "digital",
+      departmentId: undefined,
+      channel: "Workspace & Wiki Moderators",
     });
     expect(defaultTeamsContext(person("maya"))).toEqual({
       workspaceId: "logistics",

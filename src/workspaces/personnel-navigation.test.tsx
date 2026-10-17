@@ -88,7 +88,7 @@ describe("People & Culture keeps functional entrances in one existing workspace"
     expect(markup).toContain("Leadership Programme — Design Review.docx");
   });
 
-  it("keeps ordinary Personnel entrances available for all five roles without opening private areas", () => {
+  it("keeps ordinary Personnel entrances available for all six roles without opening private areas", () => {
     for (const role of previewRoles) {
       for (const destination of personnelDestinations.normal)
         expect(render(destination.href, role.id)).not.toContain(
@@ -126,18 +126,15 @@ describe("People & Culture keeps functional entrances in one existing workspace"
     ).toBe(true);
   });
 
-  it("translates the six entrances and grouping labels without changing routes or canonical data", () => {
+  it("translates the three entrances and grouping labels without changing routes or canonical data", () => {
     expect(
       personnelDestinations.normal.map(({ label }) =>
         translateText(label, "de"),
       ),
     ).toEqual([
-      "Personalplanung & Organisation",
-      "Führung, Kultur & Inklusion",
-      "Lernen & Kompetenzentwicklung",
-      "Interne Kommunikation & Mitarbeiterengagement",
-      "Vergütung & Arbeitsbedingungen",
-      "Netzwerke & Veranstaltungen",
+      "Kultur & Inklusion",
+      "Lernmanagement",
+      "Interne Veranstaltungen & Netzwerke",
     ]);
     expect(translateText("Controlled environments", "de")).toBe(
       "Zugriffsbeschränkte Bereiche",

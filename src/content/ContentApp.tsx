@@ -509,7 +509,7 @@ export default function ContentApp() {
                       Audience evidence <ArrowRight20Regular />
                     </StaffLink>
                     <StaffLink href="/digital-tech/web-crm">
-                      CMS engineering in Digital & Technology{" "}
+                      CMS engineering in Tech & Digital{" "}
                       <ArrowRight20Regular />
                     </StaffLink>
                   </div>
@@ -597,7 +597,7 @@ export default function ContentApp() {
               </div>
             </section>
           ) : page === "teams" ? (
-            <p role="status">Opening Creative & Editorial Studio in Teams…</p>
+            <p role="status">Opening Creative Studio in Teams…</p>
           ) : page === "calendar" ? (
             <>
               <h2>Production Calendar</h2>
@@ -629,7 +629,7 @@ export default function ContentApp() {
                 </StaffLink>
                 {page === "digital" && (
                   <StaffLink href="/digital-tech/web-crm">
-                    Digital & Technology
+                    Tech & Digital
                   </StaffLink>
                 )}
                 {packageContext &&
@@ -780,8 +780,7 @@ export default function ContentApp() {
               </StaffLink>
               <p>
                 <StaffLink href="/audience-innovation/analytics">
-                  Return performance evidence to Audience Research & Marketing
-                  Insight
+                  Return performance evidence to Research & Insight
                 </StaffLink>
               </p>
               {selected.id === "PKG-102" && (

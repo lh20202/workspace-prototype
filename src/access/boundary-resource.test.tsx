@@ -124,8 +124,8 @@ describe("the role signpost uses the actual denied destination", () => {
     [
       {
         kind: "channel",
-        workspaceId: "publishing",
-        channelId: "Wiki Moderation",
+        workspaceId: "digital",
+        channelId: "Workspace & Wiki Moderators",
       },
       true,
     ],

@@ -1,14 +1,6 @@
 import type { ConversationMessage } from "./technicalTeams";
 
-export const publishingChannels = [
-  "General",
-  "Workspace Moderation",
-  "Intranet Moderation",
-  "Wiki Moderation",
-  "Publishing & Ownership",
-  "Navigation & Findability",
-];
-
+/** Historical exchanges are rendered only in Tech & Digital’s moderator channel. */
 export const publishingPosts: ConversationMessage[] = [
   {
     channel: "General",

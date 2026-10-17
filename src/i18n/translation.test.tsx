@@ -62,21 +62,29 @@ describe("English and German display language", () => {
   });
   it("translates hub headings and short workspace labels consistently", () => {
     const hubLabels = {
-      "Sales & Marketing": "Vertrieb und Marketing",
-      Infrastructure: "Infrastruktur",
+      Sales: "Vertrieb",
+      "Org Central": "Unternehmenszentrale",
       Personnel: "Personal",
-      "Research & Insight": "Recherche & Analyse",
-      "Creative & Editorial": "Kreation und Redaktion",
-      Acquisition: "Akquise",
-      "Customer Care": "Kundenbetreuung",
-      CEO: "Geschäftsleitung",
-      Planning: "Planung",
-      Projects: "Projekte",
-      "Quality & Monitoring": "Qualität und Monitoring",
-      Legal: "Recht",
-      "Staff Service Operations": "Interne Serviceprozesse",
-      "Digital & Technology": "Digitales und Technologie",
+      "Research & Insight": "Forschung & Analyse",
+      "Creative Studio": "Kreativstudio",
+      "Acquisition Logistics": "Akquiselogistik",
+      "Customer Relations": "Kundenbeziehungen",
+      "Executive & CEO": "Geschäftsführung & CEO",
+      "Planning Cycle": "Planungszyklus",
+      "Project Centre": "Projektzentrale",
+      "Quality & Monitoring": "Qualität & Monitoring",
+      "Legal & Risk": "Recht & Risiko",
+      "Purchasing & Office": "Einkauf & Büroorganisation",
+      "Tech & Digital": "Technik & Digitales",
       "Company Archives": "Unternehmensarchiv",
+      "Culture & Inclusion": "Kultur & Inklusion",
+      "Learning Management": "Lernmanagement",
+      "Internal Events & Networking": "Interne Veranstaltungen & Netzwerke",
+      "Personnel Admin": "Personaladministration",
+      "Workers' Union": "Arbeitnehmervertretung",
+      "Welfare & Safeguarding": "Fürsorge & Schutz",
+      "Purse Strings": "Geldströme",
+      "Frontline Crew Portal": "Frontline Crew Portal",
     };
     for (const [english, german] of Object.entries(hubLabels)) {
       expect(translateText(english, "de")).toBe(german);
@@ -86,8 +94,8 @@ describe("English and German display language", () => {
       "Arbeitsbereich Interne Serviceprozesse",
     );
     expect(
-      translateText("Staff Service Operations → Purchasing & Suppliers", "de"),
-    ).toBe("Interne Serviceprozesse → Einkauf und Lieferanten");
+      translateText("Purchasing & Office → Purchasing & Suppliers", "de"),
+    ).toBe("Einkauf & Büroorganisation → Einkauf und Lieferanten");
   });
   it("translates confidential personnel work and independent representation clearly", () => {
     const protectedLabels = {

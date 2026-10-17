@@ -1,156 +1,172 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import {
-  publishingConfig,
-  publishingPurpose,
-  environmentReviews,
-} from "./publishing";
-import { publishingChannels, publishingPosts } from "./publishingTeams";
-import { configById } from "./config";
+import { migratedPublishingFiles } from "./publishing";
+import { configById, functionalConfigs } from "./config";
 import {
   functionalLibraries,
   functionalFileHref,
   libraryForFile,
 } from "./siteArchitecture";
-import { environmentsForHub, workspaceById } from "./registry";
-import { prototypeForPath } from "../utils/routes";
-import { germanPublishing } from "../i18n/de-publishing";
+import { workspaceById } from "./registry";
+import { moderatorChannel, publishingLegacyHref } from "./publishingRetirement";
+import { technicalChannels, technicalPosts } from "./technicalTeams";
+import { canAccessChannel } from "../access/policy";
 import { translateText } from "../i18n/translate";
-import PublishingReviewRegister from "./PublishingReviewRegister";
 import TechnicalConversation from "./TechnicalConversation";
 import FunctionalApp from "./FunctionalApp";
+import TeamsPreview from "../intranet/TeamsPreview";
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe("active workspace, intranet and wiki moderation", () => {
-  it("renders the controlled home and list for the technical role and denies ordinary staff", () => {
-    const render = (path: string) => {
-      vi.stubGlobal("location", new URL(path, "https://example.test"));
-      vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
-      return renderToStaticMarkup(createElement(FunctionalApp));
-    };
-    const denied = render("/workspace-publishing?staff=taylor");
-    expect(denied).toContain("Access required");
-    expect(denied).not.toContain("Current moderation");
-    expect(denied).not.toContain(publishingConfig.files[0].name);
-    const home = render("/workspace-publishing?staff=devon");
-    expect(home).toContain("Current moderation");
-    expect(home).toContain("Recent working files");
-    expect(home).toContain("Moderator coordination in Teams");
-    expect(home).toContain("Environment Review Register");
-    expect(home).not.toContain('class="access-boundary');
-    expect(home).toContain(
-      'href="/workspace-publishing/workspace-coordination?staff=devon"',
+describe("moderation belongs to Tech & Digital, with legacy content kept canonical", () => {
+  it("retires the separate site, config, libraries and Team", () => {
+    expect(workspaceById.has("publishing")).toBe(false);
+    expect(configById.has("publishing")).toBe(false);
+    expect(functionalLibraries.publishing).toBeUndefined();
+    expect(technicalChannels).toContain(moderatorChannel);
+    expect(canAccessChannel("devon", "publishing", "Wiki Moderation")).toBe(
+      false,
     );
-    const register = render("/workspace-publishing/reviews?staff=devon");
-    expect(register).toContain('aria-label="Environment Review Register"');
-    expect(register).toContain("Private library request");
-    expect(register).not.toContain('class="access-boundary');
-  });
-  it("adds one controlled operational workspace to Infrastructure without introducing a new Wiki", () => {
-    const workspace = workspaceById.get("publishing")!;
-    expect(workspace).toMatchObject({
-      href: "/workspace-publishing",
-      title: "Workspace, Intranet & Wiki Coordination",
-      hubId: "infrastructure",
-      hubLabel: "Workspace & Publishing",
-      accessLevel: "internal",
-      teams: true,
-      purpose: publishingPurpose,
-    });
-    const infrastructure = environmentsForHub("infrastructure");
-    expect(infrastructure.slice(-3).map((item) => item.id)).toEqual([
-      "digital",
-      "publishing",
-      "archives",
-    ]);
-    expect(
-      infrastructure.every((item) => item.environmentType === "workspace"),
-    ).toBe(true);
-    expect(prototypeForPath("/workspace-publishing/reviews")).toBe(
-      "functional",
-    );
+    expect(canAccessChannel("leonie", "digital", moderatorChannel)).toBe(true);
+    expect(canAccessChannel("taylor", "digital", moderatorChannel)).toBe(false);
   });
 
-  it("uses two folder-first libraries and one small structured review register", () => {
-    expect(configById.get("publishing")).toBe(publishingConfig);
-    expect(
-      functionalLibraries.publishing.map((library) => library.name),
-    ).toEqual(["Workspace Coordination", "Publishing & Ownership"]);
-    expect(environmentReviews).toHaveLength(5);
-    expect(publishingConfig.files).toHaveLength(7);
-    for (const file of publishingConfig.files) {
-      expect(file.folder.split("/")).toHaveLength(2);
-      const library = libraryForFile(publishingConfig, file.id)!;
-      expect(library.areas).toContain(file.area);
-      expect(functionalFileHref(publishingConfig, file.id)).toContain(
-        `/workspace-publishing/${library.id}?`,
-      );
+  it("moves each original file once into the existing Architecture & Decisions library", () => {
+    const digital = configById.get("digital")!;
+    expect(migratedPublishingFiles.map((file) => file.id)).toEqual(
+      Array.from({ length: 7 }, (_, index) => `publishing-F${index + 1}`),
+    );
+    for (const file of migratedPublishingFiles) {
+      expect(
+        functionalConfigs
+          .flatMap((config) => config.files)
+          .filter((candidate) => candidate.id === file.id),
+      ).toEqual([file]);
+      expect(file.area).toBe("information-architecture");
       expect(file.sensitivity).toBe("Internal");
+      expect(libraryForFile(digital, file.id)?.id).toBe(
+        "architecture-documents",
+      );
+      const target = new URL(
+        functionalFileHref(digital, file.id),
+        "https://example.test",
+      );
+      expect(target.pathname).toBe("/digital-tech/architecture-documents");
+      expect(target.searchParams.get("file")).toBe(file.id);
+      expect(target.searchParams.get("folder")).toBe(file.folder);
     }
-    expect(publishingConfig.tools).toEqual([]);
-    expect(
-      publishingConfig.files.some((file) =>
-        /credential|SPFx|provision|tenant|source code/i.test(file.name),
-      ),
-    ).toBe(false);
   });
 
-  it("uses six durable channels and the existing common Teams conversation grammar", () => {
-    expect(publishingChannels).toHaveLength(6);
-    for (const channel of publishingChannels) {
-      expect(publishingPosts.some((post) => post.channel === channel)).toBe(
-        true,
+  it("preserves role, file and useful query context from retired site and Team links", () => {
+    expect(publishingLegacyHref("/workspace-publishing", "?staff=leonie")).toBe(
+      "/digital-tech/architecture-documents?staff=leonie",
+    );
+    const file = migratedPublishingFiles[0];
+    for (const path of [
+      "/workspace-publishing/workspace-coordination",
+      "/workspace-publishing/workspace-reviews",
+      "/workspace-publishing/reviews/",
+    ]) {
+      const target = new URL(
+        publishingLegacyHref(
+          path,
+          `?staff=devon&file=${file.id}&view=review&lang=de`,
+        )!,
+        "https://example.test",
       );
-      const html = renderToStaticMarkup(
-        createElement(TechnicalConversation, {
-          channel,
-          userName: "Devon Park",
-          messages: publishingPosts,
-        }),
+      expect(target.pathname).toBe("/digital-tech/architecture-documents");
+      expect(target.searchParams.get("staff")).toBe("devon");
+      expect(target.searchParams.get("file")).toBe(file.id);
+      expect(target.searchParams.get("folder")).toBe(file.folder);
+      expect(target.searchParams.get("view")).toBe("review");
+      expect(target.searchParams.get("lang")).toBe("de");
+    }
+    for (const path of ["/teams", "/workspace-publishing/teams"]) {
+      const target = new URL(
+        publishingLegacyHref(
+          path,
+          `?staff=leonie&workspace=publishing&channel=Wiki+Moderation&file=${file.id}&tab=Shared`,
+        )!,
+        "https://example.test",
       );
-      expect(html).toContain('class="m365-teams-post"');
-      expect(html).toContain("Reply");
-      expect(html).toContain("Start a post");
+      expect(target.pathname).toBe("/teams");
+      expect(target.searchParams.get("workspace")).toBe("digital");
+      expect(target.searchParams.get("channel")).toBe(moderatorChannel);
+      expect(target.searchParams.get("staff")).toBe("leonie");
+      expect(target.searchParams.get("file")).toBe(file.id);
+      expect(target.searchParams.get("tab")).toBe("Shared");
     }
     expect(
-      publishingPosts.some((post) => post.text.includes("private library")),
-    ).toBe(true);
-    expect(
-      publishingPosts.some((post) => post.text.includes("closed projects")),
-    ).toBe(true);
+      publishingLegacyHref("/digital-tech", "?staff=leonie"),
+    ).toBeUndefined();
   });
 
-  it("keeps review context and owners in a real list with current-role navigation", () => {
+  it("shows the natural Policy rollout thread in the durable coordination channel", () => {
+    const html = renderToStaticMarkup(
+      createElement(TechnicalConversation, {
+        channel: moderatorChannel,
+        userName: "Leonie Fischer",
+      }),
+    );
+    expect(html).toContain("Leonie Fischer");
+    expect(html).toContain("Approval status");
+    expect(html).toContain("@Jordan @Elena");
+    expect(html).toContain("archived policy library");
+    expect(html).toContain("archive stays as-is");
+    expect(html).toContain('class="m365-teams-reply"');
+    expect(html).toContain("Reply");
+    expect(html).toContain("Start a post");
+  });
+
+  it("renders migrated canonical files with normal information-architecture access", () => {
     vi.stubGlobal(
       "location",
-      new URL("https://example.test/workspace-publishing/reviews?staff=devon"),
+      new URL(
+        "https://example.test/digital-tech/architecture-documents?staff=leonie",
+      ),
     );
-    const html = renderToStaticMarkup(createElement(PublishingReviewRegister));
-    expect(html).toContain('aria-label="Environment Review Register"');
-    expect(html).toContain("Moderator");
-    expect(html).toContain("Review due");
-    expect(html).toContain('href="/projects?staff=devon"');
-    expect(html).toContain("Harper Cole");
-    expect(html).not.toContain("Infrastructure Wiki");
+    vi.stubGlobal("sessionStorage", { getItem: () => "leonie" });
+    const html = renderToStaticMarkup(createElement(FunctionalApp));
+    expect(html).not.toContain('class="access-boundary');
+    expect(html).toContain("Workspace reviews");
   });
 
-  it("provides clear German for workspace, list and moderation content", () => {
-    expect(germanPublishing["Workspace & Publishing"]).toBe(
-      "Arbeitsbereiche & Veröffentlichung",
+  it("opens one migrated canonical file in moderator Shared, while unjoined roles stay denied", () => {
+    const file = migratedPublishingFiles[2];
+    const target = publishingLegacyHref(
+      "/teams",
+      `?staff=leonie&workspace=publishing&channel=Wiki+Moderation&tab=Shared&file=${file.id}`,
+    )!;
+    vi.stubGlobal("location", new URL(target, "https://example.test"));
+    vi.stubGlobal("sessionStorage", { getItem: () => "leonie" });
+    const allowed = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(allowed).toContain(file.name);
+    expect(allowed).toContain("Architecture &amp; Decisions");
+    expect(allowed).not.toContain('class="access-boundary');
+    vi.stubGlobal(
+      "location",
+      new URL(
+        target.replace("staff=leonie", "staff=taylor"),
+        "https://example.test",
+      ),
     );
-    expect(germanPublishing[publishingPurpose]).toContain("Zuständigkeiten");
-    for (const channel of publishingChannels.filter(
-      (name) => name !== "General",
-    ))
-      expect(germanPublishing[channel]).toBeTruthy();
-    for (const post of publishingPosts) {
-      expect(translateText(post.text, "de")).not.toBe(post.text);
-      for (const reply of post.replies || [])
-        expect(translateText(reply.text, "de")).not.toBe(reply.text);
-    }
-    for (const file of publishingConfig.files) {
+    const denied = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(denied).toContain("Access required");
+    expect(denied).not.toContain(file.name);
+    expect(denied).not.toContain('class="document-library');
+  });
+
+  it("translates the new channel, role and Policy conversation naturally", () => {
+    for (const text of ["Information Advisory Specialist", moderatorChannel])
+      expect(translateText(text, "de")).not.toBe(text);
+    const post = technicalPosts.find(
+      (message) => message.author === "Leonie Fischer",
+    )!;
+    expect(translateText(post.text, "de")).toContain("Genehmigungsstatus");
+    for (const reply of post.replies || [])
+      expect(translateText(reply.text, "de")).not.toBe(reply.text);
+    for (const file of migratedPublishingFiles) {
       expect(translateText(file.name, "de")).not.toBe(file.name);
       expect(translateText(file.folder, "de")).not.toBe(file.folder);
     }

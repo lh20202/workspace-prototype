@@ -227,8 +227,8 @@ article(
         "Halten Sie das Leistungsversprechen beim Wechsel zwischen Kontakt, Website und Service konsistent.",
       ],
       [
-        "Use Acquisition for deployment planning and the Frontline Sales Portal for the current daily briefing.",
-        "Nutzen Sie Akquise für die Einsatzplanung und das Frontline Sales Portal für das aktuelle Tagesbriefing.",
+        "Use Acquisition for deployment planning and the Frontline Crew Portal for the current daily briefing.",
+        "Nutzen Sie Akquise für die Einsatzplanung und das Frontline Crew Portal für das aktuelle Tagesbriefing.",
       ],
     ],
   ],
@@ -360,8 +360,8 @@ article(
         "Halten Sie häufige Fragen, passende Belege und den richtigen Weiterverweisungsweg zusammen.",
       ],
       [
-        "Daily conversation priorities appear in the Frontline Sales Portal; stable guidance stays here.",
-        "Tägliche Gesprächsschwerpunkte stehen im Frontline Sales Portal. Dauerhafte Hinweise bleiben hier.",
+        "Daily conversation priorities appear in the Frontline Crew Portal; stable guidance stays here.",
+        "Tägliche Gesprächsschwerpunkte stehen im Frontline Crew Portal. Dauerhafte Hinweise bleiben hier.",
       ],
     ],
   ],
@@ -953,8 +953,8 @@ article(
     [
       ["Before each shift", "Vor jedem Einsatz"],
       [
-        "Read the current briefing in the Frontline Sales Portal and confirm coverage with your team lead.",
-        "Lesen Sie das aktuelle Briefing im Frontline Sales Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
+        "Read the current briefing in the Frontline Crew Portal and confirm coverage with your team lead.",
+        "Lesen Sie das aktuelle Briefing im Frontline Crew Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
       ],
       [
         "Use the approved customer tool for activity records; keep personal notes out of shared training files.",

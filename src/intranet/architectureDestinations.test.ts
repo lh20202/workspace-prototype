@@ -3,30 +3,25 @@ import {
   architectureDestinationById,
   architectureDestinations,
   destinationsForHub,
+  financeJumpLinks,
+  orgCentralGroups,
   personnelDestinations,
 } from "./architectureDestinations";
 import {
   environmentsForHub,
-  hubById,
   workspaceById,
   workspaceRegistry,
 } from "../workspaces/registry";
 import { configById, filesForWorkspace } from "../workspaces/config";
 
 describe("task-oriented architecture destinations", () => {
-  it("signposts six canonical People & Culture sections within one existing workspace", () => {
+  it("signposts three canonical Personnel sections without duplicating their files", () => {
     expect(
       personnelDestinations.normal.map(({ label, href }) => [label, href]),
     ).toEqual([
-      ["Workforce & Organisation", "/people-culture/workforce"],
-      ["Leadership, Culture & Inclusion", "/people-culture/culture"],
-      ["Learning & Capability", "/people-culture/learning"],
-      [
-        "Internal Communications & Staff Engagement",
-        "/people-culture/communications",
-      ],
-      ["Reward & Working Conditions", "/people-culture/frameworks"],
-      ["Staff Communities & Events", "/people-culture/communities"],
+      ["Culture & Inclusion", "/people-culture/culture"],
+      ["Learning Management", "/people-culture/learning"],
+      ["Internal Events & Networking", "/people-culture/communities"],
     ]);
     const areas = configById.get("people")!.areas;
     for (const destination of personnelDestinations.normal) {
@@ -35,49 +30,40 @@ describe("task-oriented architecture destinations", () => {
         type: "workspace-section",
         accessLevel: "internal",
         parentWorkspaceId: "people",
+        icon: "workspace",
       });
       expect(
         areas.some((area) => destination.href === `/people-culture/${area.id}`),
       ).toBe(true);
+      expect(workspaceById.has(destination.id)).toBe(false);
     }
-    expect(
-      new Set(personnelDestinations.normal.map(({ icon }) => icon)).size,
-    ).toBe(6);
+    expect(filesForWorkspace("people")).toBe(configById.get("people")!.files);
     expect(architectureDestinationById.has("people")).toBe(false);
   });
 
-  it("keeps the two confidential personnel workspaces distinct and after normal destinations", () => {
+  it("keeps personnel administration, independent representation and welfare boundaries separate", () => {
     expect(
       personnelDestinations.controlled.map(({ label, href }) => [label, href]),
     ).toEqual([
-      ["Employment & Hiring Administration", "/employment-admin"],
-      ["Welfare & Employee Representation", "/welfare-representation"],
+      ["Personnel Admin", "/employment-admin"],
+      ["Workers' Union", "/welfare-representation/employee-representation"],
+      ["Welfare & Safeguarding", "/welfare-representation/welfare-support"],
     ]);
-    for (const destination of personnelDestinations.controlled) {
-      expect(destination.type).toBe("workspace");
-      expect(destination.accessLevel).toBe("strictly-confidential");
-      expect(destination.parentWorkspaceId).toBeUndefined();
-    }
+    expect(
+      personnelDestinations.controlled.every(
+        ({ accessLevel }) => accessLevel === "strictly-confidential",
+      ),
+    ).toBe(true);
     expect(destinationsForHub("personnel")).toEqual([
       ...personnelDestinations.normal,
       ...personnelDestinations.controlled,
     ]);
   });
 
-  it("keeps actual workspaces, canonical content and environment-level hub navigation intact", () => {
-    expect(workspaceRegistry).toHaveLength(17);
-    expect(workspaceRegistry.filter(({ id }) => id === "people")).toHaveLength(
-      1,
-    );
-    expect(workspaceById.get("people")?.href).toBe("/people-culture");
-    expect(hubById.get("personnel")?.workspaceIds).toEqual([
-      "people",
-      "employment",
-      "welfare",
-    ]);
-    expect(filesForWorkspace("people")).toBe(configById.get("people")!.files);
-    for (const destination of personnelDestinations.normal)
-      expect(workspaceById.has(destination.id)).toBe(false);
+  it("retires the publishing site and keeps canonical environment identifiers unique", () => {
+    expect(workspaceRegistry).toHaveLength(16);
+    expect(workspaceById.has("publishing")).toBe(false);
+    expect(architectureDestinationById.has("publishing")).toBe(false);
     expect(new Set(architectureDestinations.map(({ id }) => id)).size).toBe(
       architectureDestinations.length,
     );
@@ -86,7 +72,14 @@ describe("task-oriented architecture destinations", () => {
     );
   });
 
-  it("leaves other hub destinations and the single finance environment unchanged", () => {
+  it("groups Org Central and uses one finance site for every jump link", () => {
+    expect(orgCentralGroups).toEqual([
+      {
+        label: "Direction & assurance",
+        ids: ["executive", "planning", "projects", "quality", "legal"],
+      },
+      { label: "Shared services", ids: ["digital", "services", "archives"] },
+    ]);
     for (const id of ["sales-marketing", "infrastructure"] as const) {
       expect(
         destinationsForHub(id).map(({ id, label, href }) => [id, label, href]),
@@ -99,10 +92,21 @@ describe("task-oriented architecture destinations", () => {
       );
     }
     expect(architectureDestinationById.get("finance")).toMatchObject({
-      label: "Income & Financial Operations",
+      label: "Purse Strings",
       href: "/financial-operations",
       type: "workspace",
     });
-    expect(architectureDestinationById.get("finance")?.hub).toBeUndefined();
+    expect(financeJumpLinks).toEqual([
+      { label: "Income & Booking", href: "/financial-operations/income" },
+      {
+        label: "Payments & Close",
+        href: "/financial-operations/reconciliation",
+      },
+      { label: "Planning & Reporting", href: "/financial-operations/planning" },
+      { label: "Treasury", href: "/financial-operations/treasury" },
+    ]);
+    expect(workspaceRegistry.filter(({ id }) => id === "finance")).toHaveLength(
+      1,
+    );
   });
 });

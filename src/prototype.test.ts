@@ -26,9 +26,7 @@ describe("launcher and service desk routes", () => {
       "All workspaces | Digital Workspace demo site",
     );
     expect(prototypeForPath("/architecture")).toBe("architecture");
-    expect(pageTitle("/logistics/teams")).toBe(
-      "Acquisition & Activation Logistics | Teams",
-    );
+    expect(pageTitle("/logistics/teams")).toBe("Acquisition Logistics | Teams");
     expect(pageTitle("/service-desk/access-request")).toBe(
       "Access request | Service Desk",
     );
@@ -39,13 +37,13 @@ describe("launcher and service desk routes", () => {
       "<h1>Welcome to the Digital Workspace demo site!</h1>",
     );
     expect(launcher).toContain(
-      "Explore what your new Digital Workspaces could look and feel like. Try the examples below, switch roles and see how access changes.",
+      "Explore what your new workspaces could look and feel like. Switch roles to see how the experience changes.",
     );
-    expect(launcher.match(/Explore this workspace/g)).toHaveLength(2);
+    expect(launcher.match(/Explore workspace/g)).toHaveLength(2);
+    expect(launcher.match(/class="workspace-icon"/g)).toHaveLength(2);
+    expect(launcher).toContain('alt="SharePoint"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
-    expect(launcher).toContain(
-      "Browse the complete demo, including workspaces, Wikis, portals and role-based access.",
-    );
+    expect(launcher).toContain("Browse all company workspaces and wikis.");
     expect(launcher).toContain("BETA TEST");
     expect(launcher).toContain('aria-label="About beta test"');
     expect(launcher).toContain('aria-label="Proof of concept"');

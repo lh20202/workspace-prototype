@@ -20,8 +20,8 @@ import {
 } from "../content/data";
 import { prototypeForPath } from "../utils/routes";
 describe("canonical functional ownership", () => {
-  it("registers 17 business purposes with separate confidential welfare ownership", () => {
-    expect(workspaceRegistry).toHaveLength(17);
+  it("registers 16 business purposes with separate confidential welfare ownership", () => {
+    expect(workspaceRegistry).toHaveLength(16);
     expect(new Set(workspaceRegistry.map((w) => w.href)).size).toBe(
       workspaceRegistry.length,
     );

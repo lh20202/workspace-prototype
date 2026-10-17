@@ -1,112 +1,214 @@
-import { Info16Regular } from "@fluentui/react-icons";
+import { useEffect, useRef, useState } from "react";
+import {
+  ChevronDown16Regular,
+  ChevronUp16Regular,
+  Info16Regular,
+} from "@fluentui/react-icons";
 import PocAnnotation from "./PocAnnotation";
 import BetaBadge from "./BetaBadge";
 import DemoInfo, { roleAccessInfoText } from "./DemoInfo";
 import { LanguageToggle, useTranslation } from "../i18n/Language";
-import { staff, resolveStaffPerson, rememberStaff } from "../intranet/catalog";
-import { teamsPreviewHrefForStaff } from "../teams/navigation";
+import { staff, resolveStaffPerson } from "../intranet/catalog";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
+import {
+  changePreviewRole,
+  consumeWelcomeEntry,
+  revealDemoControlsEvent,
+} from "./demoControls";
+import "./demo-controls.css";
 export default function PrototypeNavigator() {
   const { t } = useTranslation();
   const emergency = location.pathname.startsWith("/emergency-response");
-  const teams =
-    location.pathname === "/teams" ||
-    location.pathname.includes("/teams") ||
-    emergency;
   const person = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
   );
   const preview = usePreviewRoleContext();
+  const [expanded, setExpanded] = useState(false);
+  const [intro, setIntro] = useState(false);
+  const frame = useRef<HTMLDivElement>(null);
+  const hovered = useRef(false);
+  const openedByHover = useRef(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const pointerExpanded = useRef<boolean | undefined>(undefined);
+  const invited = useRef(false);
+  function cancelClose() {
+    clearTimeout(closeTimer.current);
+  }
+  function scheduleClose() {
+    cancelClose();
+    closeTimer.current = setTimeout(() => {
+      if (
+        !hovered.current &&
+        !frame.current?.contains(document.activeElement)
+      ) {
+        setExpanded(false);
+        openedByHover.current = false;
+        setIntro(false);
+      }
+    }, 450);
+  }
+  useEffect(() => {
+    const reveal = () => setExpanded(true);
+    window.addEventListener(revealDemoControlsEvent, reveal);
+    let invitation: ReturnType<typeof setTimeout> | undefined;
+    if (!invited.current) invited.current = consumeWelcomeEntry();
+    if (invited.current) {
+      // This is a session invitation, not a product onboarding tour.
+      invitation = setTimeout(() => {
+        setIntro(true);
+        setExpanded(true);
+        closeTimer.current = setTimeout(() => {
+          if (
+            !hovered.current &&
+            !frame.current?.contains(document.activeElement)
+          )
+            setExpanded(false);
+          setIntro(false);
+        }, 4200);
+      }, 0);
+    }
+    return () => {
+      clearTimeout(invitation);
+      clearTimeout(closeTimer.current);
+      window.removeEventListener(revealDemoControlsEvent, reveal);
+    };
+  }, []);
   return (
-    <div className="demo-control-frame">
-      <nav
-        className="prototype-navigator poc-controls"
-        aria-label="Proof of concept navigation"
+    <div
+      ref={frame}
+      className={`demo-control-frame demo-controls-reveal${intro ? " demo-controls-intro" : ""}`}
+      data-expanded={expanded}
+      onPointerEnter={(event) => {
+        if (event.pointerType !== "mouse") return;
+        hovered.current = true;
+        cancelClose();
+        if (!expanded) openedByHover.current = true;
+        setExpanded(true);
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType !== "mouse") return;
+        hovered.current = false;
+        scheduleClose();
+      }}
+      onFocusCapture={() => {
+        cancelClose();
+        setExpanded(true);
+      }}
+      onBlurCapture={scheduleClose}
+    >
+      <button
+        type="button"
+        className="demo-controls-handle"
+        aria-label={t("Demo controls")}
+        title={t("Demo controls")}
+        aria-expanded={expanded}
+        aria-controls="demo-controls-panel"
+        onPointerDown={() => {
+          pointerExpanded.current = expanded;
+        }}
+        onClick={() => {
+          setExpanded(
+            openedByHover.current || !(pointerExpanded.current ?? expanded),
+          );
+          openedByHover.current = false;
+          pointerExpanded.current = undefined;
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            setExpanded(false);
+            event.stopPropagation();
+          }
+        }}
       >
-        <div className="prototype-links">
-          <a href={withExplicitStaff("/")}>← Welcome</a>
-          <span className="prototype-workspaces-link">
-            <a
-              href={withExplicitStaff("/architecture")}
-              aria-current={
-                location.pathname.replace(/\/+$/, "") === "/architecture"
-                  ? "page"
-                  : undefined
-              }
-            >
-              All workspaces
-            </a>
-            <BetaBadge compact />
-          </span>
-        </div>
-        <div className="prototype-utilities">
-          <div className="preview-role-control">
-            <div className="preview-role-heading">
-              <label htmlFor="preview-role">Explore as</label>
-              <span className="preview-role-cue">
-                Switch roles to explore access
-              </span>
-              <DemoInfo label="About role access">
-                {roleAccessInfoText}
-              </DemoInfo>
-            </div>
-            <select
-              id="preview-role"
-              ref={preview?.roleSelectorRef}
-              className={
-                preview?.roleSelectorHighlighted
-                  ? "preview-role-highlighted"
-                  : undefined
-              }
-              aria-label="Preview role"
-              title={`${t(person.role)} — ${person.name}`}
-              value={person.id}
-              onChange={(e) => {
-                rememberStaff(e.target.value);
-                const nextPerson = staff.find(
-                  (member) => member.id === e.target.value,
-                )!;
-                if (teams) {
-                  location.assign(
-                    teamsPreviewHrefForStaff(
-                      nextPerson,
-                      location.pathname,
-                      location.search,
-                    ),
-                  );
-                } else {
-                  const next = new URL(location.href);
-                  next.searchParams.set("staff", nextPerson.id);
-                  // Historical per-product role previews cannot override the selected role.
-                  next.searchParams.delete("preview");
-                  location.assign(`${next.pathname}${next.search}${next.hash}`);
+        {expanded ? <ChevronUp16Regular /> : <ChevronDown16Regular />}
+      </button>
+      <div
+        id="demo-controls-panel"
+        className="demo-controls-panel"
+        hidden={!expanded}
+        onKeyDown={(event) => {
+          if (
+            event.key === "Escape" &&
+            !(event.target as Element).closest("select")
+          ) {
+            frame.current
+              ?.querySelector<HTMLButtonElement>(".demo-controls-handle")
+              ?.focus();
+            setExpanded(false);
+          }
+        }}
+      >
+        <nav
+          className="prototype-navigator poc-controls"
+          aria-label="Proof of concept navigation"
+        >
+          <div className="prototype-links">
+            <a href={withExplicitStaff("/")}>← Welcome</a>
+            <span className="prototype-workspaces-link">
+              <a
+                href={withExplicitStaff("/architecture")}
+                aria-current={
+                  location.pathname.replace(/\/+$/, "") === "/architecture"
+                    ? "page"
+                    : undefined
                 }
-              }}
-            >
-              {staff.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {t(s.role)}
-                </option>
-              ))}
-            </select>
+              >
+                All workspaces
+              </a>
+              <BetaBadge compact />
+            </span>
           </div>
-          {emergency && (
-            <div className="response-preview">
-              <a href={withExplicitStaff("/executive")}>Leave response</a>
-              <PocAnnotation title="Response preview" variant="inline">
-                Selected response lead
-              </PocAnnotation>
+          <div className="prototype-utilities">
+            <div className="preview-role-control">
+              <div className="preview-role-heading">
+                <label htmlFor="preview-role">Preview role</label>
+                <span className="preview-role-cue">
+                  Switch roles to explore access
+                </span>
+                <DemoInfo label="About role access">
+                  {roleAccessInfoText}
+                </DemoInfo>
+              </div>
+              <select
+                id="preview-role"
+                ref={preview?.roleSelectorRef}
+                className={
+                  preview?.roleSelectorHighlighted
+                    ? "preview-role-highlighted"
+                    : undefined
+                }
+                aria-label="Preview role"
+                title={`${t(person.role)} — ${person.name}`}
+                value={person.id}
+                onChange={(e) => changePreviewRole(e.target.value)}
+              >
+                {staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {t(s.role)}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
-          <LanguageToggle />
+            {emergency && (
+              <div className="response-preview">
+                <a href={withExplicitStaff("/executive")}>Leave response</a>
+                <PocAnnotation title="Response preview" variant="inline">
+                  Selected response lead
+                </PocAnnotation>
+              </div>
+            )}
+            <LanguageToggle />
+          </div>
+        </nav>
+        <div className="demo-fictional-status" role="note">
+          <Info16Regular aria-hidden="true" />
+          <span>Fictional names &amp; content</span>
+          <span className="demo-fictional-support">No company data used</span>
         </div>
-      </nav>
-      <div className="demo-fictional-status" role="note">
-        <Info16Regular aria-hidden="true" />
-        <span>Fictional names &amp; content</span>
-        <span className="demo-fictional-support">No company data used</span>
       </div>
     </div>
   );

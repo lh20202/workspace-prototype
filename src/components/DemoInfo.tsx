@@ -8,9 +8,9 @@ import { Info16Regular } from "@fluentui/react-icons";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
-  "A proof of concept tests whether an approach works and feels useful. A prototype usually tests a more defined design. Here, we're testing the workspace approach and interactions; the names and content are fictional.";
+  "A proof of concept tests whether an idea works. A prototype usually tests a more defined design. This site is exploring the workspace approach rather than showing a finished design.";
 export const roleAccessInfoText =
-  "Access follows the role. Switch roles and the demo automatically updates the workspaces, Teams channels and restricted areas that role can use.";
+  "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.";
 
 /** Small, non-interactive guidance, available on hover, keyboard focus and tap. */
 export function DemoInfo({

@@ -11,6 +11,7 @@ import { pageTitle, prototypeForPath } from "./utils/routes";
 import Directory from "./intranet/Directory";
 import Launcher from "./intranet/Launcher";
 import { resolveLegacy } from "./workspaces/registry";
+import { publishingLegacyHref } from "./workspaces/publishingRetirement";
 const FunctionalApp = lazy(() => import("./workspaces/FunctionalApp"));
 const FinanceApp = lazy(() => import("./finance/FinanceApp"));
 const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
@@ -21,9 +22,12 @@ const WikiApp = lazy(() => import("./wiki/WikiApp"));
 const FrontlineApp = lazy(() => import("./frontline/FrontlineApp"));
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
-  const redirect = resolveLegacy(location.pathname);
+  const oldRoute = resolveLegacy(location.pathname);
+  const redirect =
+    publishingLegacyHref(location.pathname, location.search) ||
+    (oldRoute ? oldRoute + location.search : undefined);
   useEffect(() => {
-    if (redirect) location.replace(redirect + location.search);
+    if (redirect) location.replace(redirect);
   }, [redirect]);
   useEffect(() => {
     document.title = pageTitle(location.pathname);

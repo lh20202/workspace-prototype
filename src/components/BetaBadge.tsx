@@ -2,7 +2,7 @@ import DemoInfo from "./DemoInfo";
 import "./demo-info.css";
 
 export const betaInfoText =
-  "Ready to explore, but still being refined. Some labels, layouts or interactions may change.";
+  "Still being tested. You may spot rough edges or things that change.";
 
 /** State belongs to the complete demo, independently of the simulated products. */
 export function BetaBadge({ compact = false }: { compact?: boolean }) {

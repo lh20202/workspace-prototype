@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createElement, isValidElement, type ReactNode } from "react";
+import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import PrototypeNavigator from "./PrototypeNavigator";
 import { PreviewRoleProvider } from "./PreviewRoleContext";
 import { germanAccessUpdate } from "../i18n/de-access-update";
 import { translateText } from "../i18n/translate";
 import * as teamsNavigation from "../teams/navigation";
+import { changePreviewRole } from "./demoControls";
 
 const hint = vi.hoisted(() => ({
   value: null as null | {
@@ -30,22 +31,6 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function findRoleSelector(node: ReactNode):
-  | {
-      onChange: (event: { target: { value: string } }) => void;
-    }
-  | undefined {
-  if (!isValidElement<{ id?: string; children?: ReactNode }>(node))
-    return undefined;
-  if (node.props.id === "preview-role")
-    return node.props as ReturnType<typeof findRoleSelector>;
-  for (const child of [node.props.children].flat()) {
-    const match = findRoleSelector(child);
-    if (match) return match;
-  }
-  return undefined;
-}
-
 describe("external role-preview controls", () => {
   it.each([
     "/planning",
@@ -54,7 +39,7 @@ describe("external role-preview controls", () => {
     "/frontline-sales",
     "/architecture",
     "/emergency-response/incidents/INC-104",
-  ])("offers the same five role-first choices on %s", (pathname) => {
+  ])("offers the same six role-first choices on %s", (pathname) => {
     vi.stubGlobal("location", new URL(pathname, "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderToStaticMarkup(
@@ -66,7 +51,7 @@ describe("external role-preview controls", () => {
     );
     expect(html).toContain('aria-label="Proof of concept navigation"');
     expect(html).toContain('aria-label="Preview role"');
-    expect(html.match(/<option\b/g)).toHaveLength(5);
+    expect(html.match(/<option\b/g)).toHaveLength(6);
     expect(html).toContain('title="General Staff Member — Taylor Brooks"');
     const options = [...html.matchAll(/<option\b[^>]*>(.*?)<\/option>/g)].map(
       (match) => match[1],
@@ -77,8 +62,9 @@ describe("external role-preview controls", () => {
       "Executive Director",
       "Personnel Administrator",
       "Technology &amp; Engineering Administrator",
+      "Information Advisory Specialist",
     ]);
-    expect(html).toContain("Explore as");
+    expect(html).toContain("Preview role");
     expect(html).toContain("Switch roles to explore access");
     expect(html).toContain('aria-label="About role access"');
     expect(html).not.toContain("Teams staff preview");
@@ -164,9 +150,7 @@ describe("external role-preview controls", () => {
       .spyOn(teamsNavigation, "teamsPreviewHrefForStaff")
       .mockReturnValue("/teams?staff=jamie");
 
-    findRoleSelector(PrototypeNavigator())!.onChange({
-      target: { value: "jamie" },
-    });
+    changePreviewRole("jamie");
 
     expect(destination).toHaveBeenCalledWith(
       expect.objectContaining({ id: "jamie" }),

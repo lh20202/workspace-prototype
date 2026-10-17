@@ -1,5 +1,4 @@
 import { canAccessWorkspace, canAccessArea } from "../access/policy";
-import PublishingReviewRegister from "./PublishingReviewRegister";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -102,8 +101,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   );
   const home = functionalHomes[workspace.id];
   const isList =
-    page === "actions" ||
-    (["quality", "publishing"].includes(workspace.id) && page === "reviews");
+    page === "actions" || (workspace.id === "quality" && page === "reviews");
   const isCommunityPage = workspace.id === "people" && page === "communities";
   const peopleDestination =
     workspace.id === "people"
@@ -208,11 +206,16 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         )?.area ||
         library?.areas[0]
       : undefined;
-  const activePeopleSection = ["analytics", "wellbeing"].includes(
-    peopleArea || "",
-  )
-    ? "workforce"
-    : peopleArea;
+  const activePeopleSection = [
+    "workforce",
+    "analytics",
+    "wellbeing",
+    "frameworks",
+  ].includes(peopleArea || "")
+    ? "culture"
+    : peopleArea === "communications"
+      ? "communities"
+      : peopleArea;
   const requestedLibraryTitle = new URLSearchParams(location.search).get(
     "library",
   );
@@ -527,11 +530,9 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     page === "protected" ||
     isList;
   const heading = isList
-    ? workspace.id === "publishing"
-      ? "Environment Review Register"
-      : workspace.id === "quality"
-        ? "Actions & Reviews"
-        : "Follow-up"
+    ? workspace.id === "quality"
+      ? "Actions & Reviews"
+      : "Follow-up"
     : peopleDestination?.label ||
       (isCommunityPage
         ? "Staff Communities & Events"
@@ -627,15 +628,6 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               >
                 <NavigationIcon kind="library" />
                 Archive Practice & Transfers
-              </StaffLink>
-            )}
-            {workspace.id === "publishing" && (
-              <StaffLink
-                href={href("reviews")}
-                aria-current={isList ? "page" : undefined}
-              >
-                <NavigationIcon kind="list" />
-                Environment Review Register
               </StaffLink>
             )}
             {workspace.id === "quality" && (
@@ -874,9 +866,6 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                       openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel: teamChannels[0] })}`}
                     />
                   )}
-                  {workspace.id === "publishing" && (
-                    <PublishingReviewRegister compact />
-                  )}
                   <section>
                     <h2>{home.handoffsHeading || "Frequent tasks"}</h2>
                     <div className="functional-home-handoffs">
@@ -897,15 +886,16 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           ) : isList ? (
             <>
               <h1>{heading}</h1>
-              {workspace.id === "publishing" ? (
-                <PublishingReviewRegister />
-              ) : (
-                actionList()
-              )}
+              {actionList()}
             </>
           ) : isCommunityPage ? (
             <>
               <h1>{heading}</h1>
+              <p>
+                <StaffLink href={href("communications")}>
+                  Internal communications
+                </StaffLink>
+              </p>
               <p>
                 Open events and announcements. Contact a network coordinator to
                 join.
@@ -956,13 +946,30 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                 headingLevel={peopleDestination ? 2 : 1}
               />
               {workspace.id === "people" &&
-                activePeopleSection === "workforce" && (
+                activePeopleSection === "culture" && (
                   <div className="functional-context-links">
+                    <StaffLink href={href("workforce")}>
+                      Workforce planning & organisation
+                    </StaffLink>
+                    <StaffLink href={href("frameworks")}>
+                      Reward frameworks
+                    </StaffLink>
                     <StaffLink href={href("analytics")}>
                       People Analytics
                     </StaffLink>
                     <StaffLink href={href("wellbeing")}>
                       Wellbeing Programmes
+                    </StaffLink>
+                  </div>
+                )}
+              {workspace.id === "people" &&
+                activePeopleSection === "communities" && (
+                  <div className="functional-context-links">
+                    <StaffLink href={href("communications")}>
+                      Internal communications
+                    </StaffLink>
+                    <StaffLink href={href("communities")}>
+                      Internal Events & Networking
                     </StaffLink>
                   </div>
                 )}

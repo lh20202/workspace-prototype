@@ -14,7 +14,6 @@ import {
 } from "./registry";
 import Directory from "../intranet/Directory";
 import {
-  architectureDestinations,
   personnelDestinations,
 } from "../intranet/architectureDestinations";
 import HubNavigation from "../components/HubNavigation";
@@ -46,9 +45,9 @@ afterEach(() => vi.unstubAllGlobals());
 describe("hub families retain one canonical owner for every environment", () => {
   it("defines the three hub families and keeps finance outside a multi-site hub", () => {
     expect(hubDefinitions.map((hub) => [hub.name, hub.workspaceIds])).toEqual([
-      ["Sales & Marketing", ["audience", "content", "logistics", "customer"]],
+      ["Sales", ["audience", "content", "logistics", "customer"]],
       [
-        "Infrastructure",
+        "Org Central",
         [
           "executive",
           "planning",
@@ -57,7 +56,6 @@ describe("hub families retain one canonical owner for every environment", () => 
           "legal",
           "services",
           "digital",
-          "publishing",
           "archives",
         ],
       ],
@@ -66,8 +64,8 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(architectureSections).toEqual([
       { type: "hub", id: "sales-marketing" },
       { type: "hub", id: "infrastructure" },
-      { type: "workspace", id: "finance" },
       { type: "hub", id: "personnel" },
+      { type: "workspace", id: "finance" },
     ]);
     expect(workspaceById.get("finance")?.hubId).toBeUndefined();
     expect(
@@ -92,14 +90,14 @@ describe("hub families retain one canonical owner for every environment", () => 
       environmentsForHub("sales-marketing").map((item) => item.hubLabel),
     ).toEqual([
       "Research & Insight",
-      "Creative & Editorial",
-      "Acquisition",
-      "Customer Care",
+      "Creative Studio",
+      "Acquisition Logistics",
+      "Customer Relations",
       "Sales & Marketing Wiki",
-      "Frontline Sales Portal",
+      "Frontline Crew Portal",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
-      title: "Staff Service Operations",
+      title: "Purchasing & Office",
       href: "/services",
     });
     expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");
@@ -144,59 +142,50 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
     );
   });
-  it("renders hub sections, a separate finance link and exactly three quiet confidentiality locks", () => {
+  it("renders four distinct hub bands, one workspace mark and a separate Department Teams rail", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
     for (const hub of hubDefinitions)
       expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
-    expect(html).toContain('class="directory-functional-area"');
+    expect(html).toContain('aria-labelledby="hub-finance"');
     expect(html).toContain('aria-label="Department Teams"');
-    expect(html.match(/title="Strictly confidential"/g)).toHaveLength(3);
+    expect(html).not.toContain('class="directory-teams"');
+    expect(html).toContain("Open my Teams");
+    expect(html).toContain("Direction &amp; assurance");
+    expect(html).toContain("Shared services");
+    expect(html.match(/class="workspace-icon"/g)).toHaveLength(16);
+    expect(html.match(/data-environment="workspace"/g)).toHaveLength(16);
+    expect(html.match(/title="Controlled access"/g)).toHaveLength(5);
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
       "executive",
       "welfare",
     ]);
-    for (const destination of architectureDestinations.filter(
-      ({ type }) => type !== "wiki" && type !== "portal",
-    )) {
-      const tile = directoryTile(html, destination.href);
-      expect(tile).toBeDefined();
-      expect(tile!.includes('aria-label="Strictly confidential"')).toBe(
-        destination.accessLevel === "strictly-confidential",
-      );
-    }
     expect(html).not.toMatch(
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
   });
-  it("renders six ordinary Personnel entrances and two full-label controlled workspaces", () => {
+  it("renders three ordinary Personnel entrances followed by quiet protected text links", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
-    expect(html).toContain('aria-labelledby="personnel-normal"');
-    expect(html).toContain('aria-labelledby="personnel-controlled"');
-    expect(html).toContain(
-      'id="personnel-normal">People &amp; organisation</h3>',
-    );
-    expect(html).toContain(
-      'id="personnel-controlled">Controlled environments</h3>',
-    );
+    expect(html).not.toContain("Controlled environments");
+    expect(html).not.toContain("People &amp; organisation</h3>");
     for (const destination of personnelDestinations.normal) {
       const tile = directoryTile(html, destination.href);
       expect(tile).toBeDefined();
       expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
-      expect(tile).not.toContain("Strictly confidential");
+      expect(tile).toContain('class="workspace-icon"');
+      expect(tile).not.toContain("Controlled access");
     }
     expect(directoryTile(html, "/people-culture")).toBeUndefined();
-    expect(personnelDestinations.controlled).toHaveLength(2);
     for (const destination of personnelDestinations.controlled) {
-      const tile = directoryTile(html, destination.href);
-      expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
-      expect(tile?.match(/title="Strictly confidential"/g)).toHaveLength(1);
+      expect(directoryTile(html, destination.href)).toBeUndefined();
+      expect(html).toContain(`href="${destination.href}"`);
     }
-    expect(directoryTile(html, "/employment-admin")).toContain(
-      "Employment &amp; Hiring Administration",
-    );
+    expect(personnelDestinations.controlled).toHaveLength(3);
+    expect(html).toContain("Personnel Admin");
+    expect(html).toContain("Workers&#x27; Union");
+    expect(html).toContain("Welfare &amp; Safeguarding");
   });
   it("keeps the Personnel hub at environment level for every functional entrance", () => {
     at("/people-culture/workforce?staff=jamie", "jamie");

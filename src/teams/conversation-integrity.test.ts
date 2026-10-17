@@ -3,7 +3,6 @@ import { peopleDirectory, staff } from "../intranet/catalog";
 import { posts, filesById } from "../logistics/data";
 import { studioPosts } from "../content/conversations";
 import { technicalPosts } from "../workspaces/technicalTeams";
-import { publishingPosts } from "../workspaces/publishingTeams";
 import { departments } from "../coordination/data";
 import { currentProjects, archivedProjects } from "../projects/data";
 import { projectConversation } from "../projects/conversations";
@@ -15,7 +14,7 @@ const previewByName = new Map(staff.map((person) => [person.name, person]));
 
 describe("Teams editorial fixture integrity", () => {
   it("retains ordinary colleagues without expanding selectable identities", () => {
-    expect(staff).toHaveLength(5);
+    expect(staff).toHaveLength(6);
     const authors = [
       ...posts.flatMap((post) => [
         post.author,
@@ -27,7 +26,7 @@ describe("Teams editorial fixture integrity", () => {
           ...(post.reply ? [post.reply.author] : []),
         ]),
       ),
-      ...[...technicalPosts, ...publishingPosts].flatMap((post) => [
+      ...technicalPosts.flatMap((post) => [
         post.author,
         ...(post.replies || []).map((reply) => reply.author),
       ]),
@@ -81,7 +80,6 @@ describe("Teams editorial fixture integrity", () => {
     }
     for (const [workspace, messages] of [
       ["digital", technicalPosts],
-      ["publishing", publishingPosts],
     ] as const) {
       for (const post of messages)
         for (const name of [
