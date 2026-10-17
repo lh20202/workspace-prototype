@@ -66,8 +66,8 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Ich nutze viele verschiedene Tools und Plattformen — wie passen sie dazu?",
   "Workspaces bring the shared documents and collaboration around the work together. Specialist systems still do the jobs they're designed for, and the workspace links you to them instead of trying to duplicate everything.":
     "Arbeitsbereiche bündeln die gemeinsamen Dokumente und die Zusammenarbeit rund um eine Aufgabe. Fachsysteme erfüllen weiterhin ihre jeweiligen Aufgaben; der Arbeitsbereich verlinkt dorthin, statt ihre Funktionen nachzubauen.",
-  "I already work in lots of sites and Teams channels — will this add even more?":
-    "Ich arbeite schon in vielen Websites und Teams-Kanälen — werden es dadurch noch mehr?",
+  "I already work in lots of sites and channels — will this add even more?":
+    "Ich arbeite schon auf vielen Websites und in vielen Kanälen — werden es dadurch noch mehr?",
   "The aim is the opposite: fewer, clearer places to work. Not every workspace needs its own Team, and your normal Teams view should only show the conversations that are useful for your role.":
     "Das Ziel ist das Gegenteil: weniger und klarer zugeordnete Arbeitsorte. Nicht jeder Arbeitsbereich braucht ein eigenes Team, und Ihre übliche Teams-Ansicht sollte nur die für Ihre Rolle hilfreichen Unterhaltungen zeigen.",
   "What if I don't know which workspace something belongs in?":

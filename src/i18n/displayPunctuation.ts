@@ -4,8 +4,8 @@ import { germanDisplayPunctuation } from "./germanDisplayPunctuation";
 const englishPhraseRewrites: Record<string, string> = {
   "I work with lots of different tools and platforms — how do they fit in?":
     "I work with lots of different tools and platforms. How do they fit in?",
-  "I already work in lots of sites and Teams channels — will this add even more?":
-    "I already work in lots of sites and Teams channels. Will this add even more?",
+  "I already work in lots of sites and channels — will this add even more?":
+    "I already work in lots of sites and channels. Will this add even more?",
   "If you're unsure, speak to your focal point — they may be able to solve the need within an existing workspace":
     "If you're unsure, speak to your focal point. They may be able to solve the need within an existing workspace",
 };

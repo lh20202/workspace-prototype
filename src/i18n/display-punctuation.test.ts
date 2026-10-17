@@ -14,11 +14,11 @@ describe("display punctuation keeps readable copy separate from canonical values
     );
     expect(
       formatDisplayPunctuation(
-        "I already work in lots of sites and Teams channels — will this add even more?",
+        "I already work in lots of sites and channels — will this add even more?",
         "en",
       ),
     ).toBe(
-      "I already work in lots of sites and Teams channels. Will this add even more?",
+      "I already work in lots of sites and channels. Will this add even more?",
     );
   });
   it("removes visual word dashes without joining words or flattening asides", () => {
@@ -112,7 +112,7 @@ describe("display punctuation keeps readable copy separate from canonical values
   });
   it("runs after translation without changing canonical source strings or dictionaries", () => {
     const source =
-      "I already work in lots of sites and Teams channels — will this add even more?";
+      "I already work in lots of sites and channels — will this add even more?";
     const translated = translateText(source, "de");
     const rendered = formatDisplayPunctuation(translated, "de");
     expect(rendered).not.toMatch(/[—–-]/);

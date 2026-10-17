@@ -6,8 +6,8 @@
 export const germanDisplayPhraseRewrites: Readonly<Record<string, string>> = {
   "Ich nutze viele verschiedene Tools und Plattformen — wie passen sie dazu?":
     "Ich nutze viele verschiedene Tools und Plattformen. Wie passen sie dazu?",
-  "Ich arbeite schon in vielen Websites und Teams-Kanälen — werden es dadurch noch mehr?":
-    "Ich arbeite schon in vielen Websites und Kanälen in Teams. Werden es dadurch noch mehr?",
+  "Ich arbeite schon auf vielen Websites und in vielen Kanälen — werden es dadurch noch mehr?":
+    "Ich arbeite schon auf vielen Websites und in vielen Kanälen. Werden es dadurch noch mehr?",
   "API-, Authentifizierungs- und Integrationsarbeiten":
     "Arbeiten an APIs, Authentifizierung und Integrationen",
   "Personal-, Kunden- oder Transaktionsunterlagen":

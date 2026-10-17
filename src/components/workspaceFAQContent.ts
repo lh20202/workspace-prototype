@@ -129,7 +129,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
       {
         id: "fewer-places",
         question:
-          "I already work in lots of sites and Teams channels — will this add even more?",
+          "I already work in lots of sites and channels — will this add even more?",
         answer:
           "The aim is the opposite: fewer, clearer places to work. Not every workspace needs its own Team, and your normal Teams view should only show the conversations that are useful for your role.",
       },
