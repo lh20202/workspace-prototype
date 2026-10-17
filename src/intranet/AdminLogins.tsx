@@ -25,7 +25,7 @@ export default function AdminLogins({ hubId }: { hubId: AdminHubId }) {
             title={entry.category}
             data-brand={entry.id}
           >
-            <ExternalBrandMark id={entry.id} />
+            <ExternalBrandMark id={entry.id} size={20} />
             <span data-no-translate>{entry.name}</span>
             <Open16Regular aria-hidden="true" />
           </StaffLink>

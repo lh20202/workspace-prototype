@@ -1,4 +1,7 @@
 /* Compact, content-led hub panels share one restrained link language. */
+:root .architecture-poc-page {
+  --directory-destination-icon-size: 20px;
+}
 :root
   .architecture-poc-page
   .intranet-directory
@@ -131,7 +134,7 @@
 :root .architecture-poc-page .directory-workspace-link .workspace-icon,
 :root .architecture-poc-page .directory-knowledge .environment-icon {
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 0;
 }
 :root .architecture-poc-page .directory-workspace-link h3 {
   margin: 0;
@@ -189,7 +192,7 @@
 :root .architecture-poc-page .directory-controlled-links a {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   color: #5e5266;
   font-size: 13px;
   line-height: 21px;
@@ -212,7 +215,7 @@
 }
 :root .architecture-poc-page .directory-finance-title {
   display: flex;
-  gap: 9px;
+  gap: 8px;
   align-items: center;
   color: var(--hub-accent);
   text-decoration: none;
@@ -325,6 +328,43 @@
   outline: 2px solid #0078d4;
   outline-offset: 3px;
   border-radius: 2px;
+}
+/* Every destination-leading mark occupies the same box; access badges stay secondary. */
+:root
+  .architecture-poc-page
+  :is(
+    .directory-workspace-link > .workspace-icon,
+    .directory-knowledge a > .environment-icon,
+    .directory-admin-list a > .external-brand-mark,
+    .directory-controlled-links a > .access-lock,
+    .directory-finance-title > .workspace-icon
+  ) {
+  width: var(--directory-destination-icon-size);
+  height: var(--directory-destination-icon-size);
+  flex: 0 0 var(--directory-destination-icon-size);
+  object-fit: contain;
+  margin: 0;
+}
+:root
+  .architecture-poc-page
+  .directory-controlled-links
+  a
+  > .access-lock
+  > svg {
+  width: var(--directory-destination-icon-size);
+  height: var(--directory-destination-icon-size);
+}
+:root
+  .architecture-poc-page
+  :is(
+    .directory-workspace-link,
+    .directory-knowledge a,
+    .directory-admin-list a,
+    .directory-controlled-links a,
+    .directory-finance-title
+  ) {
+  align-items: center;
+  gap: 8px;
 }
 @media (max-width: 1100px) {
   :root .architecture-poc-page .intranet-directory .directory-content {

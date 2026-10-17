@@ -124,7 +124,7 @@ export default function Directory() {
                           href={destination.href}
                           data-environment="workspace"
                         >
-                          <WorkspaceIcon size={24} />
+                          <WorkspaceIcon size={20} />
                           <h2 id="hub-finance">{destination.label}</h2>
                           <AccessLock className="directory-confidential" />
                         </StaffLink>
@@ -188,7 +188,10 @@ export default function Directory() {
                                     href={destination.href}
                                     key={destination.id}
                                   >
-                                    <AccessLock className="directory-confidential" />
+                                    <AccessLock
+                                      size={20}
+                                      className="directory-confidential"
+                                    />
                                     <span>{destination.label}</span>
                                     <ChevronRight16Regular aria-hidden="true" />
                                   </StaffLink>
