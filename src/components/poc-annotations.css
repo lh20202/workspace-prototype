@@ -39,14 +39,15 @@
   padding: 8px 12px;
   background: #f3f2f1;
 }
+/* Equal outer columns keep the fictional-content note centered. */
 :root .prototype-navigator.poc-controls {
   position: relative;
   top: auto;
   z-index: auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 8px 12px;
-  flex-wrap: wrap;
   min-height: 48px;
   padding: 8px 14px;
   border: 1px solid #333;
@@ -61,22 +62,15 @@
     system-ui,
     sans-serif;
 }
-:root .poc-controls .poc-controls-label {
-  flex: none;
-  width: auto;
-  padding: 0 12px 0 0;
-  border: 0;
-  border-right: 1px solid #616161;
-  color: #fff;
-  font:
-    600 12px/18px "Inter Variable",
-    Inter,
-    "Segoe UI",
-    system-ui,
-    sans-serif;
-  letter-spacing: 0;
+:root .poc-controls .prototype-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-width: 0;
 }
-:root .poc-controls > a {
+:root .poc-controls .prototype-links > a,
+:root .poc-controls .response-preview > a {
   min-height: 32px;
   padding: 5px 8px;
   border: 1px solid transparent;
@@ -89,19 +83,23 @@
     system-ui,
     sans-serif;
   text-decoration: none;
+  white-space: nowrap;
 }
-:root .poc-controls > a:hover,
-:root .poc-controls > a[aria-current="page"] {
+:root .poc-controls .prototype-links > a:hover,
+:root .poc-controls .prototype-links > a[aria-current="page"],
+:root .poc-controls .response-preview > a:hover {
   border-color: #747474;
   background: #3d3d3d;
 }
-:root .poc-controls > a:focus-visible {
+:root .poc-controls .prototype-links > a:focus-visible,
+:root .poc-controls .response-preview > a:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
 :root .poc-controls .poc-control-caveat {
-  margin-left: auto;
-  flex-shrink: 0;
+  justify-self: center;
+  width: max-content;
+  margin: 0;
   padding: 4px 8px;
   border: 1px solid #616161;
   border-radius: 2px;
@@ -116,14 +114,44 @@
   letter-spacing: 0;
   white-space: normal;
 }
+:root .poc-controls .prototype-utilities {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  min-width: 0;
+}
+:root .poc-controls .prototype-utilities > .language-toggle {
+  flex: none;
+}
+:root .poc-controls .language-toggle button:hover,
+:root .poc-controls .language-toggle button:active {
+  background: #3d3d3d;
+  color: #fff;
+}
 :root .poc-controls .demo-persona {
-  margin-left: auto;
+  min-width: 0;
+  margin: 0;
   font-size: 12px;
+  white-space: nowrap;
 }
 :root .poc-controls .demo-persona select {
-  max-width: min(360px, 70vw);
+  width: min(280px, 22vw);
+  min-width: 0;
+  max-width: 100%;
   border-radius: 2px;
   font-family: "Inter Variable", Inter, "Segoe UI", system-ui, sans-serif;
+}
+:root .poc-controls .response-preview {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-width: 0;
+}
+:root .poc-controls .response-preview .poc-annotation {
+  color: #ddd;
 }
 
 :root .poc-preview-controls {
@@ -413,10 +441,39 @@
   }
 }
 
-@media (max-width: 800px) {
-  :root .poc-controls .poc-control-caveat,
+@media (max-width: 1100px) {
+  :root .prototype-navigator.poc-controls {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  :root .poc-controls .prototype-links {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  :root .poc-controls .poc-control-caveat {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  :root .poc-controls .prototype-utilities {
+    display: contents;
+  }
+  :root .poc-controls .prototype-utilities > .language-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+  }
   :root .poc-controls .demo-persona {
-    margin-left: 0;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: center;
+    max-width: 100%;
+  }
+  :root .poc-controls .demo-persona select {
+    width: min(480px, 68vw);
+  }
+  :root .poc-controls .response-preview {
+    grid-column: 1 / -1;
+    justify-self: center;
   }
 }
 @media (max-width: 600px) {

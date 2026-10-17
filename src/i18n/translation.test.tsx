@@ -1,15 +1,50 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import { LanguageToggle } from "./Language";
+import { LanguageProvider, LanguageToggle } from "./Language";
 import { translateText } from "./translate";
 
 describe("English and German display language", () => {
   it("uses a standard language toggle with clear language names", () => {
     const markup = renderToStaticMarkup(<LanguageToggle />);
-    expect(markup).toContain('lang="en" aria-pressed="true"');
-    expect(markup).toContain('lang="de" aria-pressed="false"');
-    expect(markup).toContain("English");
-    expect(markup).toContain("Deutsch");
+    expect(markup).toMatch(/lang="en"[^>]*aria-pressed="true"/);
+    expect(markup).toMatch(/lang="de"[^>]*aria-pressed="false"/);
+    expect(markup).toContain('aria-label="English"');
+    expect(markup).toContain('aria-label="Deutsch"');
+    expect(markup).toContain(">ENG</button>");
+    expect(markup).toContain(">DE</button>");
+  });
+  it("starts a fresh session in English regardless of an old saved German preference", () => {
+    const oldPreference = vi.fn(() => "de");
+    const sessionPreference = vi.fn(() => null);
+    vi.stubGlobal("localStorage", { getItem: oldPreference });
+    vi.stubGlobal("sessionStorage", { getItem: sessionPreference });
+    try {
+      const markup = renderToStaticMarkup(
+        <LanguageProvider>
+          <LanguageToggle />
+        </LanguageProvider>,
+      );
+      expect(markup).toMatch(/lang="en"[^>]*aria-pressed="true"/);
+      expect(oldPreference).not.toHaveBeenCalled();
+      expect(sessionPreference).toHaveBeenCalledWith(
+        "workspace-language-session",
+      );
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+  it("retains a deliberate German selection during the same session", () => {
+    vi.stubGlobal("sessionStorage", { getItem: () => "de" });
+    try {
+      const markup = renderToStaticMarkup(
+        <LanguageProvider>
+          <LanguageToggle />
+        </LanguageProvider>,
+      );
+      expect(markup).toMatch(/lang="de"[^>]*aria-pressed="true"/);
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
   it("translates product navigation and professional business copy", () => {
     expect(translateText("Digital Workspaces", "de")).toBe(

@@ -13,60 +13,63 @@ export default function PrototypeNavigator() {
     <div className="demo-control-frame">
       <nav
         className="prototype-navigator poc-controls"
-        aria-label="Preview controls"
+        aria-label="Proof of concept navigation"
       >
-        <span className="poc-controls-label">Preview controls</span>
-        <a href="/">← All workspaces</a>
-        <a
-          href="/architecture"
-          aria-current={
-            location.pathname === "/architecture" ? "page" : undefined
-          }
-        >
-          Architecture
-        </a>
-        <LanguageToggle />
-        {teams && (
-          <label className="demo-persona">
-            Preview as
-            <select
-              aria-label="Teams staff preview"
-              value={person.id}
-              onChange={(e) => {
-                rememberStaff(e.target.value);
-                const nextPerson = staff.find(
-                  (member) => member.id === e.target.value,
-                )!;
-                location.assign(
-                  teamsPreviewHrefForStaff(
-                    nextPerson,
-                    location.pathname,
-                    location.search,
-                  ),
-                );
-              }}
-            >
-              {staff.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name} · {s.role}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        {emergency && (
-          <>
-            <a href="/executive">Leave response</a>
-            <PocAnnotation title="Response preview" variant="inline">
-              Selected response lead
-            </PocAnnotation>
-          </>
-        )}
+        <div className="prototype-links">
+          <a href="/">← All workspaces</a>
+          <a
+            href="/architecture"
+            aria-current={
+              location.pathname === "/architecture" ? "page" : undefined
+            }
+          >
+            Architecture
+          </a>
+        </div>
         <PocAnnotation
           title="Fictional names and content"
           className="poc-control-caveat"
           label="Proof of concept: fictional names and data"
         />
+        <div className="prototype-utilities">
+          {teams && (
+            <label className="demo-persona">
+              Preview as
+              <select
+                aria-label="Teams staff preview"
+                value={person.id}
+                onChange={(e) => {
+                  rememberStaff(e.target.value);
+                  const nextPerson = staff.find(
+                    (member) => member.id === e.target.value,
+                  )!;
+                  location.assign(
+                    teamsPreviewHrefForStaff(
+                      nextPerson,
+                      location.pathname,
+                      location.search,
+                    ),
+                  );
+                }}
+              >
+                {staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} · {s.role}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          {emergency && (
+            <div className="response-preview">
+              <a href="/executive">Leave response</a>
+              <PocAnnotation title="Response preview" variant="inline">
+                Selected response lead
+              </PocAnnotation>
+            </div>
+          )}
+          <LanguageToggle />
+        </div>
       </nav>
     </div>
   );

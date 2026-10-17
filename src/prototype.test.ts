@@ -54,7 +54,7 @@ describe("launcher and service desk routes", () => {
       const directory = renderToStaticMarkup(createElement(Directory));
       const controls =
         directory.match(
-          /<nav[^>]*aria-label="Preview controls"[\s\S]*?<\/nav>/,
+          /<nav[^>]*aria-label="Proof of concept navigation"[\s\S]*?<\/nav>/,
         )?.[0] || "";
       const intranet =
         directory.match(
@@ -63,6 +63,8 @@ describe("launcher and service desk routes", () => {
       expect(controls).toContain("← All workspaces");
       expect(controls).toContain("Architecture");
       expect(controls).toContain("Fictional names and content");
+      expect(controls).not.toContain("Preview controls");
+      expect(controls).toContain('class="prototype-utilities"');
       expect(intranet.match(/<button[^>]*disabled=""/g)).toHaveLength(4);
       expect(intranet).toContain('href="/architecture" aria-current="page"');
       expect(intranet).not.toContain("aria-haspopup");

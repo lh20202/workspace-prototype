@@ -12,14 +12,14 @@ const LanguageContext = createContext<{
   language: Language;
   setLanguage: (language: Language) => void;
 }>({ language: "en", setLanguage: () => {} });
-const storageKey = "workspace-language";
+const storageKey = "workspace-language-session";
 export function useTranslation() {
   const { language } = useContext(LanguageContext);
   return { language, t: (source: string) => translateText(source, language) };
 }
 function storedLanguage(): Language {
   try {
-    return localStorage.getItem(storageKey) === "de" ? "de" : "en";
+    return sessionStorage.getItem(storageKey) === "de" ? "de" : "en";
   } catch {
     return "en";
   }
@@ -42,7 +42,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     document.documentElement.lang = language;
     try {
-      localStorage.setItem(storageKey, language);
+      sessionStorage.setItem(storageKey, language);
     } catch {
       /* Storage can be disabled. */
     }
@@ -152,19 +152,21 @@ export function LanguageToggle() {
       <button
         type="button"
         lang="en"
+        aria-label="English"
         aria-pressed={language === "en"}
         onClick={() => setLanguage("en")}
       >
-        English
+        ENG
       </button>
       <span aria-hidden="true">/</span>
       <button
         type="button"
         lang="de"
+        aria-label="Deutsch"
         aria-pressed={language === "de"}
         onClick={() => setLanguage("de")}
       >
-        Deutsch
+        DE
       </button>
     </div>
   );

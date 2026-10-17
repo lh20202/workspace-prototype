@@ -1,16 +1,17 @@
 .language-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 2px;
   flex-shrink: 0;
   font:
-    12px/20px "Inter Variable",
+    11px/16px "Inter Variable",
     Inter,
     "Segoe UI",
     sans-serif;
 }
 .language-toggle button {
-  padding: 4px 5px;
+  min-height: 24px;
+  padding: 4px;
   border: 0;
   border-radius: 2px;
   background: transparent;
@@ -20,12 +21,14 @@
   opacity: 0.72;
 }
 .language-toggle button[aria-pressed="true"] {
-  font-weight: 600;
+  font-weight: 500;
   opacity: 1;
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
 }
-.language-toggle button:hover {
+.language-toggle button:hover,
+.language-toggle button:active {
+  background: transparent;
   opacity: 1;
 }
 .language-toggle button:focus-visible {
