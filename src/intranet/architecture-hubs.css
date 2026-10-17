@@ -73,15 +73,6 @@
   letter-spacing: -0.25px;
   color: var(--hub-accent);
 }
-:root .architecture-poc-page .directory-hub-icon {
-  display: inline-flex;
-  align-items: center;
-  color: var(--hub-accent);
-}
-:root .architecture-poc-page .directory-hub-icon svg {
-  width: 22px;
-  height: 22px;
-}
 :root .architecture-poc-page .directory-subheading {
   margin: 0 0 5px;
   color: var(--hub-accent);
@@ -220,13 +211,6 @@
   color: var(--hub-accent);
   text-decoration: none;
 }
-:root .architecture-poc-page .directory-finance-title .directory-confidential {
-  margin: 0;
-  color: var(--hub-accent);
-}
-:root .architecture-poc-page .directory-finance-title .workspace-icon {
-  color: var(--hub-accent);
-}
 :root .architecture-poc-page .directory-finance-title:hover h2 {
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -336,8 +320,7 @@
     .directory-workspace-link > .workspace-icon,
     .directory-knowledge a > .environment-icon,
     .directory-admin-list a > .external-brand-mark,
-    .directory-controlled-links a > .access-lock,
-    .directory-finance-title > .workspace-icon
+    .directory-controlled-links a > .access-lock
   ) {
   width: var(--directory-destination-icon-size);
   height: var(--directory-destination-icon-size);

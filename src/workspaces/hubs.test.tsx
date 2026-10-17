@@ -152,9 +152,9 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");
     expect(html).not.toContain("Shared services");
-    expect(html.match(/class="workspace-icon"/g)).toHaveLength(16);
+    expect(html.match(/class="workspace-icon"/g)).toHaveLength(15);
     expect(html.match(/data-environment="workspace"/g)).toHaveLength(16);
-    expect(html.match(/title="Controlled access"/g)).toHaveLength(5);
+    expect(html.match(/title="Controlled access"/g)).toHaveLength(4);
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
       "executive",

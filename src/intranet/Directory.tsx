@@ -7,7 +7,6 @@ import StaffLink from "../components/StaffLink";
 import {
   GridDots24Regular,
   ChevronRight16Regular,
-  Organization24Regular,
 } from "@fluentui/react-icons";
 import { architectureSections, hubById } from "../workspaces/registry";
 import {
@@ -124,9 +123,7 @@ export default function Directory() {
                           href={destination.href}
                           data-environment="workspace"
                         >
-                          <WorkspaceIcon size={20} />
                           <h2 id="hub-finance">{destination.label}</h2>
-                          <AccessLock className="directory-confidential" />
                         </StaffLink>
                       </header>
                       <div className="directory-finance-jumps">
@@ -153,9 +150,6 @@ export default function Directory() {
                     key={hub.id}
                   >
                     <header className="directory-hub-heading">
-                      <span className="directory-hub-icon" aria-hidden="true">
-                        <Organization24Regular />
-                      </span>
                       <h2 id={`hub-${hub.id}`}>{hub.name}</h2>
                     </header>
                     <div className="directory-hub-body">
@@ -249,10 +243,7 @@ export default function Directory() {
               className="directory-coordination"
               aria-label="Department Teams"
             >
-              <h2>
-                <TeamsMark size={26} />
-                Department Teams
-              </h2>
+              <h2>Department Teams</h2>
               <p>Local meetings, planning and team coordination.</p>
               {departments.map((department) => (
                 <StaffLink
