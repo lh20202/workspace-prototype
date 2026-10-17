@@ -93,7 +93,7 @@ export const adminPlatforms: AdminPlatform[] = [
   {
     id: "velora",
     name: "Velora",
-    logo: "/images/admin-logins/velora.svg",
+    logo: "/images/admin-logins/velora-dollar.svg",
     category: "Financial administration",
     purpose: "Manage accounting, financial planning and treasury records.",
     hubs: ["finance"],
