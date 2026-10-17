@@ -1,6 +1,6 @@
 /** Concise environment labels; canonical routes, records and library names stay stable. */
 export const germanSimplifiedNames: Record<string, string> = {
-  Sales: "Vertrieb",
+  "Marketing & Sales": "Marketing & Vertrieb",
   "Org Central": "Unternehmenszentrale",
   Personnel: "Personal",
   "Research & Insight": "Forschung & Analyse",

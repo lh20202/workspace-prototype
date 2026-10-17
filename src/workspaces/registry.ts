@@ -24,7 +24,7 @@ export interface HubDefinition {
 export const hubDefinitions: HubDefinition[] = [
   {
     id: "sales-marketing",
-    name: "Sales",
+    name: "Marketing & Sales",
     icon: "organisation",
     description: "",
     workspaceIds: ["audience", "content", "logistics", "customer"],
