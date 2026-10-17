@@ -14,6 +14,7 @@ import { germanOrientation } from "./de-orientation";
 import { germanSimplifiedNames } from "./de-simplified-names";
 import { germanDirectoryRedesign } from "./de-directory-redesign";
 import { germanAdvisory } from "./de-advisory";
+import { germanOneDrive } from "./de-onedrive";
 
 export type Language = "en" | "de";
 const messages = {
@@ -33,6 +34,7 @@ const messages = {
   ...germanSimplifiedNames,
   ...germanDirectoryRedesign,
   ...germanAdvisory,
+  ...germanOneDrive,
 };
 const englishMonths = [
   "January",

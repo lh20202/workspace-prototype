@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Code20Regular } from "@fluentui/react-icons";
+import DocumentIcon from "../components/DocumentIcon";
+import StaffLink from "../components/StaffLink";
+import OneDriveSourceNote from "../components/OneDriveSourceNote";
+import { configById } from "./config";
 import { TeamsComposer } from "../teams/TeamsShell";
 import {
   technicalPosts,
@@ -50,6 +54,8 @@ export default function TechnicalConversation({
       p.text,
       p.replies?.map((reply) => `${reply.author} ${reply.text}`).join(" "),
       p.repo,
+      p.attachment?.fileId,
+      p.replies?.map((reply) => reply.link?.label).join(" "),
     ]
       .join(" ")
       .toLowerCase()
@@ -61,6 +67,11 @@ export default function TechnicalConversation({
         <p className="m365-teams-empty">No messages found.</p>
       )}
       {currentPosts.map((p) => {
+        const attachment = p.attachment
+          ? configById
+              .get("digital")
+              ?.files.find((file) => file.id === p.attachment!.fileId)
+          : undefined;
         const likeCount = (p.likes || 0) + Number(likes.includes(p.id));
         return (
           <article className="m365-teams-post" key={p.id}>
@@ -74,6 +85,18 @@ export default function TechnicalConversation({
               </div>
             </header>
             <p style={{ whiteSpace: "pre-line" }}>{p.text}</p>
+            {attachment && (
+              <div className="technical-attachment-history">
+                <div className="m365-teams-attachment teams-attachment-removed">
+                  <DocumentIcon name={attachment.name} />
+                  <span>
+                    <s>{attachment.name}</s>
+                    <small>Attachment removed</small>
+                  </span>
+                </div>
+                <OneDriveSourceNote />
+              </div>
+            )}
             {p.repo && (
               <a
                 className="m365-teams-attachment"
@@ -96,16 +119,32 @@ export default function TechnicalConversation({
               </a>
             )}
             {p.replies?.map((reply, index) => (
-              <article className="m365-teams-reply" key={index}>
+              <article
+                className="m365-teams-reply"
+                key={index}
+                aria-label={
+                  reply.moderator
+                    ? `Moderator reply from ${reply.author}`
+                    : undefined
+                }
+              >
                 <span className="m365-teams-avatar">
                   {initials(reply.author)}
                 </span>
                 <div>
                   <header>
                     <strong>{reply.author}</strong>
+                    {reply.moderator && (
+                      <span className="teams-moderator-badge">MODERATOR</span>
+                    )}
                     <time>{reply.time}</time>
                   </header>
                   <p>{reply.text}</p>
+                  {reply.link && (
+                    <StaffLink href={reply.link.href}>
+                      {reply.link.label}
+                    </StaffLink>
+                  )}
                 </div>
               </article>
             ))}

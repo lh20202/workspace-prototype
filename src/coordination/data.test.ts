@@ -11,6 +11,7 @@ import {
 } from "./data";
 import { staff, peopleDirectory, workspaces } from "../intranet/catalog";
 import { germanTeamsDepartments } from "../i18n/de-teams-departments";
+import { germanOneDriveDepartment } from "../i18n/de-onedrive-department";
 import { configById, functionalConfigs } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
 import { files as contentFiles, filesById } from "../content/data";
@@ -140,6 +141,7 @@ describe("department coordination architecture", () => {
   });
   it("keeps conversation authors in the department and provides German for seeded messages", () => {
     const colleagues = [...peopleDirectory, ...staff];
+    const german = { ...germanTeamsDepartments, ...germanOneDriveDepartment };
     for (const department of departments) {
       for (const post of department.posts) {
         expect(
@@ -149,9 +151,9 @@ describe("department coordination architecture", () => {
               person.departmentId === department.id,
           ),
         ).toBe(true);
-        expect(germanTeamsDepartments[post.text]).toBeTruthy();
+        expect(german[post.text]).toBeTruthy();
         if (post.moderatorReply)
-          expect(germanTeamsDepartments[post.moderatorReply]).toBeTruthy();
+          expect(german[post.moderatorReply]).toBeTruthy();
         for (const reply of post.replies || []) {
           expect(
             colleagues.some(
@@ -160,7 +162,7 @@ describe("department coordination architecture", () => {
                 person.departmentId === department.id,
             ),
           ).toBe(true);
-          expect(germanTeamsDepartments[reply.text]).toBeTruthy();
+          expect(german[reply.text]).toBeTruthy();
         }
       }
     }
@@ -172,6 +174,7 @@ describe("department coordination architecture", () => {
       ),
     ).toEqual([
       "/audience-innovation/analytics",
+      "/audience-innovation/research?file=seg-model",
       "/content-delivery/creative",
       "/financial-operations/planning",
       "/services/purchasing",

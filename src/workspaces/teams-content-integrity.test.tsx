@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { peopleDirectory } from "../intranet/catalog";
 import { initialIncidents } from "../executive/incidentData";
+import { germanOneDriveTechnical } from "../i18n/de-onedrive-technical";
 import { germanAdvisory } from "../i18n/de-advisory";
 import { germanTeamsTechnical } from "../i18n/de-teams-technical";
 import { technicalPosts, gitHref } from "./technicalTeams";
@@ -17,14 +18,20 @@ describe("technical and moderation conversation integrity", () => {
     for (const post of conversations) {
       expect(colleagues.has(post.author)).toBe(true);
       expect(
-        { ...germanTeamsTechnical, ...germanAdvisory }[
-          post.text.replace(/\s+/g, " ")
-        ],
+        {
+          ...germanTeamsTechnical,
+          ...germanAdvisory,
+          ...germanOneDriveTechnical,
+        }[post.text.replace(/\s+/g, " ")],
       ).toBeTruthy();
       for (const reply of post.replies || []) {
         expect(colleagues.has(reply.author)).toBe(true);
         expect(
-          { ...germanTeamsTechnical, ...germanAdvisory }[reply.text],
+          {
+            ...germanTeamsTechnical,
+            ...germanAdvisory,
+            ...germanOneDriveTechnical,
+          }[reply.text],
         ).toBeTruthy();
       }
     }
@@ -84,9 +91,11 @@ describe("technical and moderation conversation integrity", () => {
       for (const post of incident.posts) {
         expect(participants.has(post.author)).toBe(true);
         expect(
-          { ...germanTeamsTechnical, ...germanAdvisory }[
-            post.text.replace(/\s+/g, " ")
-          ],
+          {
+            ...germanTeamsTechnical,
+            ...germanAdvisory,
+            ...germanOneDriveTechnical,
+          }[post.text.replace(/\s+/g, " ")],
         ).toBeTruthy();
       }
       expect(

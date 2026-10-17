@@ -22,6 +22,7 @@ import {
   Dismiss20Regular,
 } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
+import OneDriveSourceNote from "../components/OneDriveSourceNote";
 import { useTranslation } from "../i18n/Language";
 import { TeamsComposer } from "../teams/TeamsShell";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
@@ -312,6 +313,9 @@ export default function DepartmentChannel({
                           <span>{original.upload.name}</span>
                         </button>
                       ))}
+                    {original?.upload?.source === "onedrive" && (
+                      <OneDriveSourceNote />
+                    )}
                     {original?.moderatorReply && (
                       <article
                         className="m365-teams-reply coord-moderator"

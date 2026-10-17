@@ -1,9 +1,13 @@
 import { publishingPosts } from "./publishingTeams";
+import { configById } from "./config";
+import { functionalFileHref } from "./siteArchitecture";
 
 export interface ConversationReply {
   author: string;
   text: string;
   time: string;
+  moderator?: boolean;
+  link?: { href: string; label: string };
 }
 export interface ConversationMessage {
   channel: string;
@@ -15,6 +19,7 @@ export interface ConversationMessage {
   repo?: string;
   kind?: string;
   ref?: string;
+  attachment?: { fileId: string; source: "onedrive"; removed: true };
 }
 export const technicalChannels = [
   "General",
@@ -28,7 +33,52 @@ export const technicalChannels = [
   "Security Engineering",
   "Workspace & Wiki Moderators",
 ];
+const provisioningFileHref = functionalFileHref(
+  configById.get("digital")!,
+  "digital-F17",
+);
+const provisioningFolderHref = (() => {
+  const [path, search] = provisioningFileHref.split("?");
+  const params = new URLSearchParams(search);
+  params.delete("file");
+  return `${path}?${params}`;
+})();
+
 export const technicalPosts: ConversationMessage[] = [
+  {
+    channel: "M365 & SPFx",
+    author: "Ari Morgan",
+    time: "10:18",
+    text: "I've put the provisioning review in OneDrive because I needed to give Leonie access. Could we take a quick look before Thursday?",
+    attachment: { fileId: "digital-F17", source: "onedrive", removed: true },
+    replies: [
+      {
+        author: "Devon Park",
+        time: "10:26",
+        moderator: true,
+        text: "No need — Leonie already has access to the M365 & SPFx folder in Tech & Digital. Save the working copy there and share that link.",
+        link: {
+          href: provisioningFolderHref,
+          label: "Open M365 & SPFx working folder",
+        },
+      },
+      {
+        author: "Ari Morgan",
+        time: "10:34",
+        text: "Really? I didn't realise. Perfect — I've moved it there. Here's the working copy.",
+        link: {
+          href: provisioningFileHref,
+          label: "Provisioning Script Review.docx",
+        },
+      },
+      {
+        author: "Devon Park",
+        time: "10:37",
+        moderator: true,
+        text: "Thanks! Please update your original post to use that link. I've removed the old OneDrive attachment here.",
+      },
+    ],
+  },
   {
     channel: "Workspace & Wiki Moderators",
     author: "Leonie Fischer",
