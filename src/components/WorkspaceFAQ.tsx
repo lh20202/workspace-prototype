@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@fluentui/react-components";
 import { QuestionCircle16Regular } from "@fluentui/react-icons";
-import StaffLink from "./StaffLink";
+import WorkspaceFAQExample from "./WorkspaceFAQExample";
 import {
   workspaceFAQQuestions,
   workspaceFAQExampleHref,
@@ -26,12 +26,7 @@ export function WorkspaceFAQContent() {
           <p>{answer}</p>
           {index === 1 && (
             <>
-              <StaffLink
-                className="workspace-faq-example"
-                href={workspaceFAQExampleHref}
-              >
-                See an example in Teams <span aria-hidden="true">→</span>
-              </StaffLink>
+              <WorkspaceFAQExample href={workspaceFAQExampleHref} />
               <details className="workspace-faq-automation">
                 <summary>Could this be automated?</summary>
                 <p>{workspaceFAQAutomationNote}</p>
@@ -59,7 +54,7 @@ export default function WorkspaceFAQ() {
         </button>
       </DialogTrigger>
       <DialogSurface className="workspace-faq-dialog">
-        <DialogBody>
+        <DialogBody className="workspace-faq-dialog-body">
           <DialogTitle>Workspace FAQ</DialogTitle>
           <DialogContent>
             <WorkspaceFAQContent />
