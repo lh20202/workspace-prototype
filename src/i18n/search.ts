@@ -1,4 +1,5 @@
 import { translateText } from "./translate";
+import { formatDisplayPunctuation } from "./displayPunctuation";
 
 const normalize = (value: string) =>
   value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
@@ -10,12 +11,24 @@ export function matchesDisplayText(source: string, query: string): boolean {
   const needle = normalize(query);
   if (!needle || normalize(source).includes(needle)) return true;
   const fields = source.split(/[\r\n\t]+/);
-  const displayed = fields.map((field) => translateText(field, "de")).join(" ");
-  if (normalize(displayed).includes(needle)) return true;
+  for (const language of ["en", "de"] as const) {
+    const displayed = fields
+      .map((field) =>
+        formatDisplayPunctuation(translateText(field, language), language),
+      )
+      .join(" ");
+    if (normalize(displayed).includes(needle)) return true;
+  }
   // Folder paths and compound bylines contain separately displayed named chunks.
   return fields.some((field) =>
     field
       .split(/\s*[|/→]\s*|\s+[·—]\s+/)
-      .some((part) => normalize(translateText(part, "de")).includes(needle)),
+      .some((part) =>
+        (["en", "de"] as const).some((language) =>
+          normalize(
+            formatDisplayPunctuation(translateText(part, language), language),
+          ).includes(needle),
+        ),
+      ),
   );
 }

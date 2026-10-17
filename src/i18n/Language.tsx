@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { translateText, type Language } from "./translate";
+import { formatDisplayPunctuation } from "./displayPunctuation";
 import "./language.css";
 
 const LanguageContext = createContext<{
@@ -15,7 +16,11 @@ const LanguageContext = createContext<{
 const storageKey = "workspace-language-session";
 export function useTranslation() {
   const { language } = useContext(LanguageContext);
-  return { language, t: (source: string) => translateText(source, language) };
+  return {
+    language,
+    t: (source: string) =>
+      formatDisplayPunctuation(translateText(source, language), language),
+  };
 }
 function storedLanguage(): Language {
   try {
@@ -31,6 +36,7 @@ const attributes = [
   "placeholder",
   "title",
   "alt",
+  "label",
 ] as const;
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -58,7 +64,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       let original = textSources.get(node);
       if (!original || current !== original.rendered)
         original = { source: current, rendered: current };
-      const rendered = translateText(original.source, language);
+      const rendered = formatDisplayPunctuation(
+        translateText(original.source, language),
+        language,
+      );
       original.rendered = rendered;
       textSources.set(node, original);
       if (current !== rendered) node.data = rendered;
@@ -83,7 +92,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         let original = originals.get(attribute);
         if (!original || current !== original.rendered)
           original = { source: current, rendered: current };
-        const rendered = translateText(original.source, language);
+        const rendered = formatDisplayPunctuation(
+          translateText(original.source, language),
+          language,
+        );
         original.rendered = rendered;
         originals.set(attribute, original);
         if (current !== rendered) element.setAttribute(attribute, rendered);

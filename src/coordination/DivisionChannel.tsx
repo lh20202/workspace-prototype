@@ -22,6 +22,7 @@ import {
 import { Folder20Regular, Dismiss20Regular } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import { useTranslation } from "../i18n/Language";
+import { matchesDisplayText } from "../i18n/search";
 import { TeamsComposer } from "../teams/TeamsShell";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
@@ -137,9 +138,7 @@ export default function DepartmentChannel({
       ...seededResults.posts,
       ...(entitled
         ? extraPosts.filter((p) =>
-            `${p.author} ${p.text}`
-              .toLowerCase()
-              .includes(query.trim().toLowerCase()),
+            matchesDisplayText(`${p.author}\n${p.text}`, query),
           )
         : []),
     ],

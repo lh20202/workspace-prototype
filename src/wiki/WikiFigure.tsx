@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { useTranslation } from "../i18n/Language";
 import { germanWikiFigureLabels } from "../i18n/de-wiki-refinement";
+import { formatDisplayPunctuation } from "../i18n/displayPunctuation";
 
 export const wikiFigures = {
   "working-with-creative-studio": {
@@ -56,8 +57,10 @@ export const wikiFigureCopy = Object.values(wikiFigures).flatMap((figure) => [
 
 function StageLabel({ x, y, label }: { x: number; y: number; label: string }) {
   const { language } = useTranslation();
-  const translated =
-    language === "de" ? germanWikiFigureLabels[label] || label : label;
+  const translated = formatDisplayPunctuation(
+    language === "de" ? germanWikiFigureLabels[label] || label : label,
+    language,
+  );
   const words = translated.split(" ");
   const middle = Math.ceil(words.length / 2);
   const lines =

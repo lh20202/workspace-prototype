@@ -23,6 +23,24 @@ import {
 import { staff } from "../intranet/catalog";
 
 describe("search matches the same canonical records in English and German", () => {
+  it("finds a copied filename after display hyphens are removed without changing its identity", () => {
+    const files: LibraryDocument[] = [
+      {
+        id: "OPS-F17",
+        name: "On-call rota.xlsx",
+        sensitivity: "Internal",
+        folder: "Operations/Current",
+      },
+    ];
+    expect(
+      queryLibrary(files, { folder: "", search: "On call rota.xlsx" }).map(
+        (file) => file.id,
+      ),
+    ).toEqual(["OPS-F17"]);
+    expect(files[0].name).toBe("On-call rota.xlsx");
+    expect(matchesDisplayText(files[0].name, "On-call rota.xlsx")).toBe(true);
+  });
+
   it("matches translated filenames, statuses, workspace labels and named folder chunks", () => {
     expect(
       matchesDisplayText(

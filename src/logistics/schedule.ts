@@ -6,6 +6,7 @@ import {
   weekEnd,
   type OperationalFile,
 } from "./data";
+import { matchesDisplayText } from "../i18n/search";
 export type RotaType = "street" | "telephone";
 export interface Duty {
   id: string;
@@ -225,8 +226,6 @@ export function queryCalendar(period: string, kind: string, search: string) {
     (e) =>
       inPeriod(e.date, period) &&
       (!kind || e.kind === kind) &&
-      `${e.title} ${e.campaign} ${e.owner}`
-        .toLowerCase()
-        .includes(search.trim().toLowerCase()),
+      matchesDisplayText([e.title, e.campaign, e.owner].join("\n"), search),
   );
 }

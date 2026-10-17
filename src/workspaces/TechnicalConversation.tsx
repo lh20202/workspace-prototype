@@ -4,6 +4,7 @@ import StaffLink from "../components/StaffLink";
 import { configById } from "./config";
 import { functionalFileHref } from "./siteArchitecture";
 import { TeamsComposer } from "../teams/TeamsShell";
+import { matchesDisplayText } from "../i18n/search";
 import {
   technicalPosts,
   gitHref,
@@ -48,17 +49,17 @@ export default function TechnicalConversation({
       })),
     ...posts.filter((p) => p.channel === channel),
   ].filter((p) =>
-    [
-      p.author,
-      p.text,
-      p.replies?.map((reply) => `${reply.author} ${reply.text}`).join(" "),
-      p.repo,
-      p.fileLink?.fileId,
-      p.replies?.map((reply) => reply.link?.label).join(" "),
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(searchQuery.trim().toLowerCase()),
+    matchesDisplayText(
+      [
+        p.author,
+        p.text,
+        p.replies?.map((reply) => `${reply.author}\n${reply.text}`).join("\n"),
+        p.repo,
+        p.fileLink?.fileId,
+        p.replies?.map((reply) => reply.link?.label).join("\n"),
+      ].join("\n"),
+      searchQuery,
+    ),
   );
   return (
     <div className="m365-teams-feed technical-conversation">
@@ -89,7 +90,12 @@ export default function TechnicalConversation({
                 </small>
               </div>
             </header>
-            <p style={{ whiteSpace: "pre-line" }}>{p.text}</p>
+            <p
+              style={{ whiteSpace: "pre-line" }}
+              data-no-translate={p.id.startsWith("local-") || undefined}
+            >
+              {p.text}
+            </p>
             {linkedFile && (
               <p>
                 <StaffLink
@@ -109,7 +115,7 @@ export default function TechnicalConversation({
               >
                 <Code20Regular />
                 <span>
-                  {p.repo}
+                  <span data-no-translate>{p.repo}</span>
                   {p.ref ? ` #${p.ref}` : ""}
                   <small>
                     {p.kind === "pr"
@@ -161,7 +167,7 @@ export default function TechnicalConversation({
                     <strong>{userName}</strong>
                     <time>Now</time>
                   </header>
-                  <p>{text}</p>
+                  <p data-no-translate>{text}</p>
                 </div>
               </article>
             ))}

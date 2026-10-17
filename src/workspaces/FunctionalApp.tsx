@@ -27,6 +27,7 @@ import TeamsHomePanel from "../components/TeamsHomePanel";
 import SimulationMessage from "../components/SimulationMessage";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { matchesDisplayText } from "../i18n/search";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import {
   canSeeWorkspaceChannel,
@@ -364,7 +365,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         (view !== "Needs review" || x.status === "Needs review") &&
         (view !== "Complete" || x.status === "Complete") &&
         (view !== "Current" || x.status !== "Complete") &&
-        `${x.name} ${x.owner}`.toLowerCase().includes(filter.toLowerCase()),
+        matchesDisplayText(`${x.name}\n${x.owner}`, filter),
     );
     return (
       <>

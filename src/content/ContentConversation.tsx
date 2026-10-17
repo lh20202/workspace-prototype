@@ -9,6 +9,7 @@ import {
   canSeeContentChannel,
 } from "./channels";
 import { studioPosts, type StudioPost } from "./conversations";
+import { matchesDisplayText } from "../i18n/search";
 import "./styles.css";
 
 export default function ContentConversation({
@@ -35,9 +36,15 @@ export default function ContentConversation({
   const [replyDraft, setReplyDraft] = useState("");
   const [replies, setReplies] = useState<Record<string, string[]>>({});
   const matching = posts.filter((post) =>
-    `${post.author} ${post.text} ${post.reply?.text || ""} ${(replies[post.id] || []).join(" ")}`
-      .toLowerCase()
-      .includes(query.trim().toLowerCase()),
+    matchesDisplayText(
+      [
+        post.author,
+        post.text,
+        post.reply?.text || "",
+        ...(replies[post.id] || []),
+      ].join("\n"),
+      query,
+    ),
   );
   const attachments = contentFilesForChannel(channel);
   return (

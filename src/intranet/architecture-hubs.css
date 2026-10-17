@@ -388,7 +388,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
-/* German compound nouns retain natural breaks in compact navigation links. */
+/* Keep browser-generated hyphens out of compact German navigation labels. */
 :root:lang(de) .architecture-poc-page .directory-workspace-link h3 {
-  hyphens: auto;
+  hyphens: none;
 }

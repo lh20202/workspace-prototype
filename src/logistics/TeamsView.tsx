@@ -35,6 +35,7 @@ import "../teams/integrations.css";
 import DocumentIcon from "../components/DocumentIcon";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { matchesDisplayText } from "../i18n/search";
 export default function TeamsView({
   channelId,
   activeTab,
@@ -83,11 +84,11 @@ export default function TeamsView({
     : [];
   const channelFiles = allowed ? filesForChannel(channel) : [];
   const searchChannels = permittedChannels.filter((c) =>
-    c.name.toLowerCase().includes(search.trim().toLowerCase()),
+    matchesDisplayText(c.name, search),
   );
   const searchFiles = files
     .filter((f) => permittedFileIds.has(f.id))
-    .filter((f) => f.name.toLowerCase().includes(search.trim().toLowerCase()));
+    .filter((f) => matchesDisplayText(f.name, search));
   function selectChannel(id: string) {
     onNavigate(id, "Posts");
     setSearch("");

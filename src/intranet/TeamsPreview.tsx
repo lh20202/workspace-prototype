@@ -1,4 +1,5 @@
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { matchesDisplayText } from "../i18n/search";
 import { canAccessArea } from "../access/policy";
 import { useState, useEffect } from "react";
 import { functionalConfigs } from "../workspaces/config";
@@ -361,9 +362,15 @@ export default function TeamsPreview() {
       : documents;
   const visibleDocuments = search.trim()
     ? documentsForLibrary.filter((file) =>
-        `${file.name} ${file.folder} ${file.contentType || ""} ${Object.values(file.metadata || {}).join(" ")}`
-          .toLowerCase()
-          .includes(search.toLowerCase()),
+        matchesDisplayText(
+          [
+            file.name,
+            file.folder,
+            file.contentType || "",
+            ...Object.values(file.metadata || {}),
+          ].join("\n"),
+          search,
+        ),
       )
     : documentsForLibrary;
   function openSharePoint() {
@@ -576,10 +583,7 @@ function CoordinationFeed({
   const [replies, setReplies] = useState<string[]>([]);
   return (
     <div className="m365-teams-feed">
-      {(!query ||
-        `${update.text} ${update.author}`
-          .toLowerCase()
-          .includes(query.toLowerCase())) && (
+      {matchesDisplayText(`${update.text}\n${update.author}`, query) && (
         <article className="m365-teams-post">
           <div className="m365-teams-post-header">
             <span className="m365-teams-avatar">{initials(update.author)}</span>
@@ -621,9 +625,7 @@ function CoordinationFeed({
         </article>
       )}
       {posts
-        .filter(
-          (text) => !query || text.toLowerCase().includes(query.toLowerCase()),
-        )
+        .filter((text) => matchesDisplayText(text, query))
         .map((text, i) => (
           <article className="m365-teams-post" key={i}>
             <div className="m365-teams-post-header">
@@ -633,7 +635,7 @@ function CoordinationFeed({
                 <small>Now</small>
               </div>
             </div>
-            <p>{text}</p>
+            <p data-no-translate>{text}</p>
           </article>
         ))}
       {!query && (
@@ -647,12 +649,10 @@ function CoordinationFeed({
         />
       )}
       {query &&
-        !`${update.text} ${update.author}`
-          .toLowerCase()
-          .includes(query.toLowerCase()) &&
-        !posts.some((text) =>
-          text.toLowerCase().includes(query.toLowerCase()),
-        ) && <p className="m365-teams-empty">No messages found.</p>}
+        !matchesDisplayText(`${update.text}\n${update.author}`, query) &&
+        !posts.some((text) => matchesDisplayText(text, query)) && (
+          <p className="m365-teams-empty">No messages found.</p>
+        )}
     </div>
   );
 }

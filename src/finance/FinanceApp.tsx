@@ -6,6 +6,7 @@ import {
 } from "../environments/catalog";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { matchesDisplayText } from "../i18n/search";
 import { useState } from "react";
 import SimulationMessage from "../components/SimulationMessage";
 import { canAccessArea } from "../access/policy";
@@ -100,7 +101,7 @@ export default function FinanceApp() {
       (x) =>
         (x.area === "income" || x.area === "reconciliation") &&
         (view !== "Open issues" || !/Complete|Approved/.test(x.status)) &&
-        `${x.name} ${x.owner}`.toLowerCase().includes(query.toLowerCase()),
+        matchesDisplayText(`${x.name}\n${x.owner}`, query),
     );
     return (
       <>
