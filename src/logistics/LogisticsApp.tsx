@@ -419,6 +419,7 @@ export default function LogisticsApp() {
                               <DocumentIcon name={f.name} />
                               <span className="recent-name">
                                 {f.name}
+                                <SensitivityBadge value={f.sensitivity} />
                                 <small>
                                   {
                                     libraries.find((l) => l.id === f.library)
