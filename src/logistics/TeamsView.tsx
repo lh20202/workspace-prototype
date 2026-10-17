@@ -31,6 +31,8 @@ import { teamsGroups } from "../teams/navigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
 import "../teams/integrations.css";
 import DocumentIcon from "../components/DocumentIcon";
+import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 export default function TeamsView({
   channelId,
   activeTab,
@@ -126,7 +128,7 @@ export default function TeamsView({
                 (f) => f.id === params.get("file"),
               );
               if (selectedFile) {
-                location.assign(fileHref(selectedFile));
+                location.assign(withExplicitStaff(fileHref(selectedFile)));
                 return;
               }
               const source =
@@ -140,7 +142,9 @@ export default function TeamsView({
                 source.folder ? { folder: source.folder } : {},
               );
               location.assign(
-                `/logistics/${source.library}${folder.size ? "?" + folder : ""}`,
+                withExplicitStaff(
+                  `/logistics/${source.library}${folder.size ? "?" + folder : ""}`,
+                ),
               );
             }
           : undefined
@@ -300,9 +304,12 @@ export default function TeamsView({
                   </div>
                 )}
                 {p.locationLink && (
-                  <a className="post-tracker-link" href="/logistics/locations">
+                  <StaffLink
+                    className="post-tracker-link"
+                    href="/logistics/locations"
+                  >
                     Open Locations & Permits
-                  </a>
+                  </StaffLink>
                 )}
                 {p.reply && (
                   <ThreadReply

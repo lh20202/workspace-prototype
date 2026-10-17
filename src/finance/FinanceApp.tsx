@@ -263,6 +263,11 @@ export default function FinanceApp() {
           {protectedName || unknown ? (
             <AccessBoundary
               workspaceId="finance"
+              resource={
+                protectedName
+                  ? { kind: "area", workspaceId: "finance", areaId: subject }
+                  : undefined
+              }
               area={protectedName || "Unavailable location"}
               location={[title, area?.name, protectedName]
                 .filter(Boolean)

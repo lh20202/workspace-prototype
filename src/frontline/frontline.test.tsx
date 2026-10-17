@@ -36,20 +36,39 @@ describe("Frontline Sales Portal stays focused on immediate execution", () => {
     );
   });
 
-  it("links to the actual operational and reference owners with the explicit colleague intact", () => {
-    const html = render("?staff=jordan");
-    expect(html).toContain("Jordan Lee");
-    expect(html).toContain('href="/logistics?staff=jordan"');
-    expect(html).toContain('href="/customer-relations?staff=jordan"');
-    expect(html).toContain('href="/sales-marketing/wiki?staff=jordan"');
+  it("links to the actual operational and reference owners with the explicit frontline role intact", () => {
+    const html = render("?staff=maya");
+    expect(html).toContain("Maya Chen");
+    expect(html).toContain('href="/logistics?staff=maya"');
+    expect(html).toContain('href="/customer-relations?staff=maya"');
+    expect(html).toContain('href="/sales-marketing/wiki?staff=maya"');
     expect(html).not.toContain("/employment-admin");
     expect(html).not.toContain("/infrastructure/wiki");
   });
 
-  it("uses the remembered colleague when no explicit staff parameter was provided", () => {
-    const html = render("", "taylor");
+  it("uses the remembered frontline role when no explicit staff parameter was provided", () => {
+    const html = render("", "maya");
+    expect(html).toContain("Maya Chen");
+    expect(html).toContain('href="/logistics?staff=maya"');
+  });
+
+  it.each(["taylor", "robin", "jamie", "devon", "jordan", "unknown"])(
+    "keeps day-to-day frontline tasks protected from %s",
+    (id) => {
+      const html = render(`?staff=${id}`);
+      expect(html).toContain("Frontline role required");
+      expect(html).toContain("Access required");
+      expect(html).not.toContain("Check in for this shift");
+      expect(html).not.toContain("Add a handover note");
+      expect(html).not.toContain("Are you frontline sales staff?");
+      expect(html).not.toContain("Open Frontline Sales Portal");
+    },
+  );
+
+  it("does not treat an obsolete explicit identity as the remembered frontline role", () => {
+    const html = render("?staff=alex", "maya");
     expect(html).toContain("Taylor Brooks");
-    expect(html).toContain('href="/logistics?staff=taylor"');
+    expect(html).toContain("Frontline role required");
   });
 
   it("provides professional German for every portal label and transient task outcome", () => {

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import WelfareWorkspace from "./WelfareWorkspace";
-import { staff } from "../intranet/catalog";
+import { staff, peopleDirectory } from "../intranet/catalog";
 import { accessFocalPoint, accessWorkspace } from "../access/model";
 import { configById, filesForWorkspace, functionalConfigs } from "./config";
 import {
@@ -28,7 +28,7 @@ function render(path: string, personId: string) {
 }
 
 describe("Welfare & Employee Representation has one protected owner", () => {
-  it("registers one current site and two minimal independent demonstration roles", () => {
+  it("registers one controlled site while retaining independent focal points outside preview roles", () => {
     expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");
     expect(workspaceById.get("welfare")?.teams).toBe(false);
     expect(
@@ -37,37 +37,36 @@ describe("Welfare & Employee Representation has one protected owner", () => {
     expect(
       functionalConfigs.filter((config) => config.id === "welfare"),
     ).toEqual([welfareConfig]);
-    expect(
-      staff
-        .filter((person) => person.workspace === "welfare")
-        .map((person) => person.id)
-        .sort(),
-    ).toEqual(["riley", "skyler"]);
-    expect(staff.find((person) => person.id === "skyler")?.departmentId).toBe(
-      "",
+    expect(staff.filter((person) => person.workspace === "welfare")).toEqual(
+      [],
     );
+    expect(
+      peopleDirectory.find((person) => person.id === "skyler")?.departmentId,
+    ).toBe("");
+    expect(
+      staff.some((person) => ["riley", "skyler"].includes(person.id)),
+    ).toBe(false);
   });
 
-  it("separates welfare and independent representation membership, including direct area routes", () => {
-    expect(visibleWelfareAreas("riley").map((area) => area.id)).toEqual([
+  it("gives Personnel selected support but preserves safeguarding and representation independence", () => {
+    expect(visibleWelfareAreas("jamie").map((area) => area.id)).toEqual([
       "welfare-support",
-      "safeguarding-complaints",
     ]);
-    expect(visibleWelfareAreas("skyler").map((area) => area.id)).toEqual([
-      "employee-representation",
-    ]);
-    for (const person of staff.filter(
-      (person) => !["riley", "skyler"].includes(person.id),
-    )) {
-      expect(canSeeWelfareWorkspace(person.id)).toBe(false);
-      expect(welfareFilesForPerson(person.id)).toEqual([]);
+    expect(canSeeWelfareArea("jamie", "approved-consultation")).toBe(true);
+    for (const person of staff) {
+      expect(canSeeWelfareArea(person.id, "employee-representation")).toBe(
+        false,
+      );
+      expect(canSeeWelfareArea(person.id, "safeguarding-complaints")).toBe(
+        false,
+      );
+      if (person.id !== "jamie") {
+        expect(canSeeWelfareWorkspace(person.id)).toBe(false);
+        expect(welfareFilesForPerson(person.id)).toEqual([]);
+      }
     }
-    expect(canSeeWelfareArea("riley", "employee-representation")).toBe(false);
-    expect(canSeeWelfareArea("skyler", "welfare-support")).toBe(false);
-    expect(canSeeWelfareArea("skyler", "safeguarding-complaints")).toBe(false);
-    expect(canSeeWelfareArea("jamie", "welfare-support")).toBe(false);
-    expect(canSeeWelfareArea("riley", "approved-consultation")).toBe(true);
-    expect(canSeeWelfareArea("skyler", "approved-consultation")).toBe(true);
+    for (const stale of ["riley", "skyler"])
+      expect(canSeeWelfareWorkspace(stale)).toBe(false);
   });
 
   it("keeps method files and aggregate coordination behind both whole-site and area gates", () => {
@@ -92,7 +91,7 @@ describe("Welfare & Employee Representation has one protected owner", () => {
     expect(
       render(
         "/welfare-representation/employee-representation?file=representation-methods",
-        "riley",
+        "jamie",
       ),
     ).toContain("Access required");
     expect(
@@ -103,19 +102,20 @@ describe("Welfare & Employee Representation has one protected owner", () => {
     ).toContain("Access required");
     const guessedFile = render(
       "/welfare-representation/welfare-support?file=representation-methods",
-      "riley",
+      "jamie",
     );
     expect(guessedFile).toContain("Access required");
     expect(guessedFile).not.toContain(
       "Independent Consultation — Preparation Method.docx",
     );
-    expect(
-      render("/welfare-representation/employee-representation", "skyler"),
-    ).toContain("Independent employee representatives control this area");
+    for (const person of staff)
+      expect(
+        render("/welfare-representation/employee-representation", person.id),
+      ).toContain("Access required");
     expect(
       render(
         "/welfare-representation/welfare-support?file=welfare-methods",
-        "riley",
+        "jamie",
       ),
     ).toContain("Support Pathways — Working Method.docx");
   });
@@ -126,7 +126,7 @@ describe("Welfare & Employee Representation has one protected owner", () => {
     const migratedCouncilRoute = resolveLegacy(
       "/employee-council/internal/former-record",
     )!;
-    for (const personId of ["maya", "riley"]) {
+    for (const personId of ["maya", "jamie"]) {
       for (const route of [representationRoute, migratedCouncilRoute]) {
         const html = render(route, personId);
         expect(html).toContain("Access required");
@@ -144,7 +144,7 @@ describe("Welfare & Employee Representation has one protected owner", () => {
       "/welfare-representation/welfare-support?file=representation-methods",
       "/welfare-representation/employee-representation/unknown?file=representation-methods",
     ]) {
-      const html = render(route, "riley");
+      const html = render(route, "jamie");
       expect(html).toContain("Access required");
       expect(html).toContain("<strong>Skyler Lane</strong>");
       expect(html).not.toContain(
@@ -166,19 +166,15 @@ describe("Welfare & Employee Representation has one protected owner", () => {
 
   it("does not aggregate protected methods into ordinary discovery collections", () => {
     expect(filesForWorkspace("welfare")).toEqual([]);
-    expect(filesForWorkspace("welfare", "jamie")).toEqual([]);
+    expect(filesForWorkspace("welfare", "taylor")).toEqual([]);
     for (const library of functionalLibraries.welfare)
       expect(functionalLibraryDocuments(welfareConfig, library)).toEqual([]);
     expect(
-      filesForWorkspace("welfare", "riley").map((file) => file.id),
-    ).toEqual([
-      "welfare-methods",
-      "safeguarding-methods",
-      "consultation-output",
-    ]);
+      filesForWorkspace("welfare", "jamie").map((file) => file.id),
+    ).toEqual(["welfare-methods", "consultation-output"]);
     expect(
       filesForWorkspace("welfare", "skyler").map((file) => file.id),
-    ).toEqual(["representation-methods", "consultation-output"]);
+    ).toEqual([]);
     expect(
       welfareConfig.files.every(
         (file) => file.sensitivity === "Strictly confidential",

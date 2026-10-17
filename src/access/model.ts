@@ -1,6 +1,6 @@
-import { staff, recordContacts } from "../intranet/catalog";
+import { peopleDirectory, recordContacts } from "../intranet/catalog";
 import { departments } from "../coordination/data";
-import { workspaceById, workspaceRegistry } from "../workspaces/registry";
+import { environmentById, environmentRegistry } from "../workspaces/registry";
 
 export interface AccessContext {
   workspaceId: string;
@@ -33,8 +33,26 @@ const focalPeople: Record<string, string> = {
   archives: "morgan",
   projects: "casey",
   governance: "robin",
+  publishing: "devon",
+  "sales-wiki": "taylor",
 };
+/** A business contact, deliberately not an additional selectable preview identity. */
+export const frontlineSalesFocalPoint: AccessFocalPoint = {
+  id: "frontline-coordinator",
+  name: "Noor Bennett",
+  role: "Frontline Sales Coordinator",
+};
+export function isSalesAccessContext(
+  context: Pick<AccessContext, "workspaceId">,
+) {
+  const destination = environmentById.get(context.workspaceId);
+  return (
+    destination?.hubId === "sales-marketing" &&
+    destination.environmentType !== "portal"
+  );
+}
 const specialContacts: Record<string, AccessFocalPoint> = {
+  "frontline-sales": frontlineSalesFocalPoint,
   planning: {
     id: "planning-coordinator",
     name: "Jordan Ellis",
@@ -65,7 +83,7 @@ export function accessWorkspace(
       href: `/teams?department=${department.id}`,
     };
   return (
-    workspaceById.get(
+    environmentById.get(
       context.workspaceId === "council" ? "welfare" : context.workspaceId,
     ) ||
     specialWorkspaces[context.workspaceId] || {
@@ -95,7 +113,9 @@ export function accessFocalPoint(
   const special = specialContacts[context.workspaceId];
   if (special) return special;
   const person =
-    staff.find((item) => item.id === focalPeople[context.workspaceId]) ||
+    peopleDirectory.find(
+      (item) => item.id === focalPeople[context.workspaceId],
+    ) ||
     recordContacts.find(
       (item) => item.id === focalPeople[context.workspaceId],
     ) ||
@@ -139,12 +159,12 @@ export function accessWorkspaceId(
     return "services";
   if (
     explicit &&
-    (workspaceById.has(explicit) ||
+    (environmentById.has(explicit) ||
       specialWorkspaces[explicit] ||
       explicit === "department")
   )
     return explicit;
-  const workspace = workspaceRegistry.find(
+  const workspace = environmentRegistry.find(
     (item) => item.id === value || item.title === value,
   );
   if (workspace) return workspace.id;

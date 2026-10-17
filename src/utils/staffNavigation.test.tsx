@@ -69,13 +69,13 @@ describe("explicit staff identity follows internal site navigation", () => {
   });
 
   it("keeps explicit site identity in local navigation and related workspace links", () => {
-    for (const [path, App] of [
-      ["/content-delivery", ContentApp],
-      ["/digital-tech", FunctionalApp],
+    for (const [path, App, personId] of [
+      ["/content-delivery", ContentApp, "taylor"],
+      ["/digital-tech", FunctionalApp, "devon"],
     ] as const) {
       vi.stubGlobal(
         "location",
-        new URL(`https://example.test${path}?staff=devon`),
+        new URL(`https://example.test${path}?staff=${personId}`),
       );
       vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
       const html = renderToStaticMarkup(<App />);
@@ -94,7 +94,7 @@ describe("explicit staff identity follows internal site navigation", () => {
       );
       for (const destination of destinations)
         expect(destination.searchParams.get("staff"), destination.href).toBe(
-          "devon",
+          personId,
         );
     }
   });

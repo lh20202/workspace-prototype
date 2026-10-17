@@ -1,4 +1,5 @@
 import { files, type ContentFile } from "./data";
+import { canAccessChannel, previewRoles } from "../access/policy";
 
 export interface ContentChannel {
   id: string;
@@ -169,7 +170,14 @@ export const contentChannels: ContentChannel[] = [
     purpose:
       "Coverage closed on 30 September. The conversation is read-only; final outputs and delivery evidence remain in SharePoint.",
   },
-];
+].map((channel) => ({
+  ...channel,
+  // Fictional collaborators remain in the post history, but selectable-role
+  // membership is always derived from the central policy.
+  members: previewRoles
+    .filter((role) => canAccessChannel(role, "content", channel.id))
+    .map((role) => role.id),
+})) as ContentChannel[];
 
 const aliases: Record<string, string> = {
   General: "coordination",
@@ -193,10 +201,12 @@ export function resolveContentChannel(value: string) {
   );
 }
 export const visibleContentChannels = (personId: string) =>
-  contentChannels.filter((channel) => channel.members.includes(personId));
+  contentChannels.filter((channel) =>
+    canAccessChannel(personId, "content", channel.id),
+  );
 export const canSeeContentChannel = (personId: string, value: string) => {
   const channel = resolveContentChannel(value);
-  return !!channel && channel.members.includes(personId);
+  return !!channel && canAccessChannel(personId, "content", channel.id);
 };
 export const contentChannelReadOnly = (value: string) =>
   resolveContentChannel(value)?.lifecycle === "Archived";

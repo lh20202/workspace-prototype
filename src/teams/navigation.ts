@@ -12,6 +12,7 @@ import {
 } from "../coordination/data";
 import { currentProjects, projectHref, projectTitle } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
+import { canAccessEmergency } from "../access/policy";
 import { hasWorkspaceTeams } from "../workspaces/registry";
 import { resolveContentChannel, contentDefaultTab } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
@@ -117,9 +118,7 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
         })),
       })),
     ...(initialIncidents.some((incident) =>
-      incident.participants.some(
-        (participant) => participant.name === person.name,
-      ),
+      canAccessEmergency(person, incident.id),
     )
       ? [
           {
@@ -127,11 +126,7 @@ export function teamsGroups(person: StaffPerson): TeamsGroup[] {
             label: "Emergency Response",
             initials: "ER",
             channels: initialIncidents
-              .filter((incident) =>
-                incident.participants.some(
-                  (participant) => participant.name === person.name,
-                ),
-              )
+              .filter((incident) => canAccessEmergency(person, incident.id))
               .map((incident) => ({
                 id: `emergency:${incident.id}`,
                 label: `${incident.id} · ${incident.title}`,
@@ -201,10 +196,7 @@ export function teamsPreviewHrefForStaff(
     if (
       !initialIncidents.some(
         (incident) =>
-          incident.id === incidentId &&
-          incident.participants.some(
-            (participant) => participant.name === person.name,
-          ),
+          incident.id === incidentId && canAccessEmergency(person, incident.id),
       )
     )
       return ownTeams;

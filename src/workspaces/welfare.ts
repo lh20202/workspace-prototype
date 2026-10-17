@@ -1,4 +1,9 @@
 import type { FunctionalConfig, WorkingFile } from "./types";
+import {
+  canAccessArea,
+  canAccessWorkspace,
+  previewRoles,
+} from "../access/policy";
 
 export const welfareTitle = "Welfare & Employee Representation";
 export const welfareHref = "/welfare-representation";
@@ -7,7 +12,7 @@ export const welfareAreas = [
     id: "welfare-support",
     name: "Welfare & Psychosocial Support",
     summary: "Working methods and non-identifiable support-path coordination.",
-    participants: ["riley"],
+    participants: ["jamie"],
     contact: "riley",
   },
   {
@@ -15,7 +20,7 @@ export const welfareAreas = [
     name: "Safeguarding & Complaints",
     summary:
       "Reporting routes, referral responsibilities and aggregate process review.",
-    participants: ["riley"],
+    participants: [],
     contact: "riley",
   },
   {
@@ -23,7 +28,7 @@ export const welfareAreas = [
     name: "Employee Representation",
     summary:
       "Independent representative working methods and consultation preparation.",
-    participants: ["skyler"],
+    participants: [],
     contact: "skyler",
   },
 ];
@@ -33,15 +38,13 @@ export const consultationArea = {
   summary:
     "Agreed, non-identifiable outputs shared across the protected areas.",
 };
-export const welfareParticipants = ["riley", "skyler"];
+export const welfareParticipants = previewRoles
+  .filter((role) => canAccessWorkspace(role, "welfare"))
+  .map((role) => role.id);
 export const canSeeWelfareWorkspace = (personId: string) =>
-  welfareParticipants.includes(personId);
+  canAccessWorkspace(personId, "welfare");
 export const canSeeWelfareArea = (personId: string, areaId: string) =>
-  canSeeWelfareWorkspace(personId) &&
-  (areaId === consultationArea.id ||
-    !!welfareAreas
-      .find((area) => area.id === areaId)
-      ?.participants.includes(personId));
+  canAccessArea(personId, "welfare", areaId);
 export const visibleWelfareAreas = (personId: string) =>
   welfareAreas.filter((area) => canSeeWelfareArea(personId, area.id));
 

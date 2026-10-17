@@ -1,13 +1,18 @@
+import StaffLink from "../components/StaffLink";
+import { canAccessArea } from "../access/policy";
+import { resolveStaffPerson } from "../intranet/catalog";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import NavigationIcon from "../components/NavigationIcon";
-import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
+import PocAnnotation from "../components/PocAnnotation";
 import {
   LockClosed20Regular,
   ShieldCheckmark24Regular,
 } from "@fluentui/react-icons";
 import "./styles.css";
 const links = [
+  { id: "approved", name: "Approved governance outcomes" },
   { id: "oversight", name: "Oversight Committee" },
   { id: "members", name: "Members Assembly" },
   { id: "calendar", name: "Governance Calendar" },
@@ -17,17 +22,18 @@ const links = [
   { id: "information", name: "Member Information" },
   { id: "records", name: "Governance Records" },
 ];
-import { governanceVisible } from "./governanceData";
+import { governanceRecords } from "./governanceData";
 export default function GovernanceApp() {
-  const page = location.pathname.split("/")[2] || "home",
-    role = new URLSearchParams(location.search).get("preview") || "none";
-  const authorised = role === "committee" || role === "members";
-  const permitted =
-    authorised &&
-    !(page === "oversight" && role !== "committee") &&
-    !(page === "members" && role !== "members");
+  const page = location.pathname.split("/")[2] || "home";
+  const person = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
+  const permitted = canAccessArea(person, "governance", page);
+  const role: string = "liaison";
   const [record, setRecord] = useState("");
-  const visible = governanceVisible(role);
+  const visible = permitted
+    ? governanceRecords.filter((record) => record.id === "GOV-2026-04")
+    : [];
   return (
     <div className="governance-app">
       <header className="governance-header">
@@ -36,44 +42,25 @@ export default function GovernanceApp() {
           <strong>Governance & Members Portal</strong>
           <span>Formal governance · Separate controlled environment</span>
         </div>
-        <a href="/executive">Return to executive workspace ↗</a>
+        <StaffLink href={withExplicitStaff("/executive")}>
+          Return to executive workspace ↗
+        </StaffLink>
       </header>
-      <PocPreviewControls
-        title="Governance access preview"
-        className="governance-preview"
-      >
-        <label>
-          Preview role
-          <select
-            aria-label="Governance preview role"
-            value={authorised ? role : "none"}
-            onChange={(e) =>
-              location.assign(
-                `/governance/${page === "home" ? "" : page}?preview=${e.target.value}`,
-              )
-            }
-          >
-            <option value="none">No governance membership</option>
-            <option value="committee">Rowan Blake · Committee Member</option>
-            <option value="members">Skyler Lane · Member Representative</option>
-          </select>
-        </label>
-      </PocPreviewControls>
       <div className="governance-layout">
         <nav aria-label="Governance navigation">
-          <a href={`/governance?preview=${role}`}>
+          <StaffLink href={withExplicitStaff("/governance")}>
             <NavigationIcon kind="home" />
             Portal home
-          </a>
+          </StaffLink>
           {links.map((l) => (
-            <a
+            <StaffLink
               key={l.id}
               aria-current={page === l.id ? "page" : undefined}
-              href={`/governance/${l.id}?preview=${role}`}
+              href={withExplicitStaff(`/governance/${l.id}`)}
             >
               <LockClosed20Regular />
               {l.name}
-            </a>
+            </StaffLink>
           ))}
         </nav>
         <main>
@@ -92,6 +79,12 @@ export default function GovernanceApp() {
           {!permitted ? (
             <AccessBoundary
               workspaceId="governance"
+              personId={person.id}
+              resource={{
+                kind: "area",
+                workspaceId: "governance",
+                areaId: page,
+              }}
               area={
                 links.find((link) => link.id === page)?.name ||
                 "Governance participation"
@@ -104,10 +97,7 @@ export default function GovernanceApp() {
           ) : (
             <>
               <PocAnnotation title="Fictional participation" variant="inline">
-                {role === "committee"
-                  ? "Rowan Blake · Committee Member"
-                  : "Skyler Lane · Member Representative"}
-                . No personal member records.
+                {person.name}. No personal member records.
               </PocAnnotation>
               {page === "calendar" ? (
                 <section>
@@ -171,9 +161,9 @@ export default function GovernanceApp() {
               references. Formal minutes, resolutions and committee/member
               records stay in this portal.
             </p>
-            <a href="/executive/oversight">
+            <StaffLink href="/executive/oversight">
               Executive-side preparation and follow-up ↗
-            </a>
+            </StaffLink>
           </section>
         </main>
       </div>

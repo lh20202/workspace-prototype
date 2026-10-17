@@ -601,3 +601,13 @@
     max-width: none;
   }
 }
+
+/* Publishing moderation reuses the workspace's existing hover endpoints. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .functional-app[data-workspace="publishing"]
+    :is(.functional-work-row, .functional-recent-file) {
+    transition:
+      background-color 140ms ease-out,
+      color 140ms ease-out;
+  }
+}

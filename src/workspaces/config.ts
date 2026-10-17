@@ -2,6 +2,7 @@ import { workspaceById } from "./registry";
 import { enrichFunctionalFiles } from "./contentRealism";
 import { employmentProtectedSubjects } from "./employmentSubjects";
 import { welfareConfig, welfareFilesForPerson } from "./welfare";
+import { publishingConfig } from "./publishing";
 import type { FunctionalConfig, WorkingFile } from "./types";
 // Explicit IDs preserve established links when a fixture moves to another owner.
 // The seed itself belongs only to its current business workspace.
@@ -1068,6 +1069,7 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
   }),
 );
 functionalConfigs.push(welfareConfig);
+functionalConfigs.push(publishingConfig);
 export const configById = new Map(functionalConfigs.map((c) => [c.id, c]));
 export const filesForWorkspace = (id: string, personId?: string) =>
   id === "welfare"

@@ -3,6 +3,8 @@ import { germanContent } from "./de-content";
 import { germanFiles } from "./de-files";
 import { germanFrontline } from "./de-frontline";
 import { germanWiki } from "./de-wiki";
+import { germanAccessUpdate } from "./de-access-update";
+import { germanPublishing } from "./de-publishing";
 
 export type Language = "en" | "de";
 const messages = {
@@ -11,6 +13,8 @@ const messages = {
   ...germanFiles,
   ...germanFrontline,
   ...germanWiki,
+  ...germanAccessUpdate,
+  ...germanPublishing,
 };
 const englishMonths = [
   "January",

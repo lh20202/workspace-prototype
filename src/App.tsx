@@ -1,3 +1,4 @@
+import { canAccessArea } from "./access/policy";
 import { documentVersions } from "./sharepoint/library";
 import FileIcon from "./components/DocumentIcon";
 import CompanyMark from "./components/CompanyMark";
@@ -54,7 +55,6 @@ import {
 import {
   documents,
   libraries,
-  currentUser,
   departments,
   quickLinks,
   currentCycle,
@@ -67,7 +67,6 @@ import {
 import {
   queryDocuments,
   emptyFilters,
-  canAccessRestricted,
   type Filters,
   filtersFromParams,
   childFolders,
@@ -121,7 +120,7 @@ export default function App() {
   );
   const [locationState, setLocationState] = useState(route);
   const { page, folder, view } = locationState;
-  const role = currentUser.role;
+  const restrictedAllowed = canAccessArea(person, "planning", "restricted");
   const [workspaceSearch, setWorkspaceSearch] = useState("");
   const [favorite, setFavorite] = useState(true);
   const [search, setSearch] = useState("");
@@ -138,7 +137,7 @@ export default function App() {
         (d) =>
           d.id === id &&
           d.library === page &&
-          (d.library !== "restricted" || canAccessRestricted(role)),
+          (d.library !== "restricted" || restrictedAllowed),
       ) ?? null
     );
   });
@@ -211,7 +210,7 @@ export default function App() {
     setWorkspaceSearch("");
   }
   const library = libraries.find((l) => l.id === page);
-  const allowed = page !== "restricted" || canAccessRestricted(role);
+  const allowed = page !== "restricted" || restrictedAllowed;
   const scoped = allowed ? documents.filter((d) => d.library === page) : [];
   const rows = queryDocuments(
     scoped,
@@ -747,7 +746,12 @@ export default function App() {
                     ]
                       .filter(Boolean)
                       .join(" / ")}
-                    personId="maya"
+                    personId={person.id}
+                    resource={{
+                      kind: "area",
+                      workspaceId: "planning",
+                      areaId: "restricted",
+                    }}
                     headingLevel={2}
                     returnHref="/planning/cycles"
                     returnLabel="Return to Planning Cycles"

@@ -2,7 +2,6 @@ import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
-import { PocPreviewControls } from "../components/PocAnnotation";
 import {
   LockClosed16Regular,
   PeopleTeam20Regular,
@@ -17,7 +16,7 @@ import NavigationIcon from "../components/NavigationIcon";
 import "../teams/integrations.css";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import type { LibraryDocument } from "../sharepoint/library";
-import { staff, rememberStaff, resolveStaffPerson } from "../intranet/catalog";
+import { resolveStaffPerson } from "../intranet/catalog";
 import {
   allProjects,
   currentProjects,
@@ -53,7 +52,7 @@ export default function ProjectsApp() {
   const archived = parts[1] === "archive";
   const project = allProjects.find((p) => p.code === parts[archived ? 2 : 1]);
   const page = project ? parts[archived ? 3 : 2] || "home" : parts[1] || "home";
-  const [personId, setPersonId] = useState(
+  const [personId] = useState(
     () =>
       new URLSearchParams(location.search).get("staff") || activePerson().id,
   );
@@ -276,25 +275,28 @@ export default function ProjectsApp() {
           currentProjects[3],
           currentProjects[4],
           currentProjects[6],
-        ].map((p, i) => ({
-          id: `PRJ-SUPPORT-${p.code}`,
-          name: [
-            "Risk Workshop Agenda.docx",
-            "Delivery Plan Review.docx",
-            "Stage Review Notes.docx",
-            "Closure Approach.docx",
-          ][i],
-          folder: projectTitle(p) + "/Current support",
-          owner: "Casey Blake",
-          modified: "16 Oct 2026",
-          status: "In progress",
-          summary: [
-            "Facilitate the project risk workshop.",
-            "Review the delivery plan with the project lead.",
-            "Prepare the next stage review.",
-            "Agree the closure approach and final records.",
-          ][i],
-        }));
+        ]
+          .map((p, i) => ({ project: p, index: i }))
+          .filter(({ project }) => canOpenProject(project, person.id))
+          .map(({ project: p, index: i }) => ({
+            id: `PRJ-SUPPORT-${p.code}`,
+            name: [
+              "Risk Workshop Agenda.docx",
+              "Delivery Plan Review.docx",
+              "Stage Review Notes.docx",
+              "Closure Approach.docx",
+            ][i],
+            folder: projectTitle(p) + "/Current support",
+            owner: "Casey Blake",
+            modified: "16 Oct 2026",
+            status: "In progress",
+            summary: [
+              "Facilitate the project risk workshop.",
+              "Review the delivery plan with the project lead.",
+              "Prepare the next stage review.",
+              "Agree the closure approach and final records.",
+            ][i],
+          }));
   const reviews = () =>
     table(
       [
@@ -329,6 +331,11 @@ export default function ProjectsApp() {
       area={project ? title : "Project control & support"}
       location={`Projects / ${title} / ${page}`}
       project={project?.code}
+      resource={
+        project
+          ? { kind: "project", projectId: project.code }
+          : { kind: "area", workspaceId: "projects", areaId: page }
+      }
       personId={person.id}
       returnHref={withExplicitStaff("/projects")}
       returnLabel="Back to Projects"
@@ -951,32 +958,6 @@ export default function ProjectsApp() {
       />
       <div className="projects-layout">
         <aside className="projects-nav">
-          <PocPreviewControls
-            title="Preview as"
-            className="project-persona-preview"
-          >
-            <select
-              aria-label="Project staff preview"
-              value={person.id}
-              onChange={(e) => {
-                rememberStaff(e.target.value);
-                const params = new URLSearchParams(location.search);
-                params.set("staff", e.target.value);
-                history.replaceState(
-                  {},
-                  "",
-                  `${location.pathname}?${params}${location.hash}`,
-                );
-                setPersonId(e.target.value);
-              }}
-            >
-              {staff.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </PocPreviewControls>
           <nav aria-label="Projects navigation">
             {project && (
               <StaffLink href="/projects">← Back to Projects</StaffLink>

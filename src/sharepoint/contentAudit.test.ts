@@ -22,6 +22,7 @@ import {
   libraryContentAuditMarkdown,
   ordinaryLibraryAuditSources,
 } from "./contentAudit";
+import { canAccessArea, previewRoles } from "../access/policy";
 
 const sources = ordinaryLibraryAuditSources();
 const configured = sources.filter((source) => !!source.definition);
@@ -143,13 +144,17 @@ describe("Configured SharePoint libraries", () => {
         );
         expect(owners, `${config.id}: ${file.id}`).toHaveLength(1);
         expect(owners[0].areas).toContain(file.area);
-        expect(
-          functionalLibraryDocuments(
-            config,
-            owners[0],
-            file.area === "employee-representation" ? "skyler" : "riley",
-          ),
-        ).toContain(file);
+        const permitted = previewRoles.find((role) =>
+          canAccessArea(role, config.id, file.area),
+        );
+        const visible = functionalLibraryDocuments(
+          config,
+          owners[0],
+          permitted?.id,
+        );
+        if (config.id === "welfare" && !permitted)
+          expect(visible).not.toContain(file);
+        else expect(visible).toContain(file);
         expect(file.folder).toBe(file.folderPath);
       }
     }

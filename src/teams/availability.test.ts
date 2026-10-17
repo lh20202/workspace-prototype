@@ -26,7 +26,7 @@ describe("Teams is available only where the work needs live coordination", () =>
       workspaceRegistry
         .filter((workspace) => workspace.teams)
         .map((workspace) => workspace.id),
-    ).toEqual(["planning", "logistics", "content", "digital"]);
+    ).toEqual(["planning", "logistics", "content", "digital", "publishing"]);
     expect(hasWorkspaceTeams("unknown")).toBe(false);
     expect(hasWorkspaceTeams("projects")).toBe(false);
   });
@@ -42,7 +42,7 @@ describe("Teams is available only where the work needs live coordination", () =>
     }
   });
   it("opens a colleague's department when their functional SharePoint site has no Team", () => {
-    for (const id of ["jamie", "sam", "elena", "harper", "jordan", "robin"]) {
+    for (const id of ["taylor", "jamie", "robin"]) {
       const member = person(id);
       expect(defaultTeamsContext(member)).toEqual({
         workspaceId: undefined,
@@ -53,22 +53,20 @@ describe("Teams is available only where the work needs live coordination", () =>
       ).toBe(true);
     }
     expect(defaultTeamsContext(person("devon")).workspaceId).toBe("digital");
-    expect(defaultTeamsContext(person("alex")).workspaceId).toBe("content");
+    expect(defaultTeamsContext(person("maya")).workspaceId).toBe("logistics");
   });
   it("retains active project, department and emergency teams independently from the central Projects site", () => {
     expect(
-      teamsGroups(person("jordan")).some(
-        (group) => group.id === "PRJ-2026-021",
-      ),
+      teamsGroups(person("jamie")).some((group) => group.id === "PRJ-2026-034"),
     ).toBe(true);
-    const participant = teamsGroups(person("harper"));
+    const participant = teamsGroups(person("devon"));
     expect(
       participant
         .find((group) => group.id === "emergency")!
         .channels.map((channel) => channel.id),
     ).toEqual(["emergency:INC-104"]);
     expect(
-      participant.some((group) => group.id === person("harper").departmentId),
+      participant.some((group) => group.id === person("devon").departmentId),
     ).toBe(true);
   });
 });

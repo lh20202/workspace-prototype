@@ -1,5 +1,10 @@
 import type { LibraryDefinition } from "../sharepoint/library";
-import { staff, selectedStaffId } from "../intranet/catalog";
+import { resolveStaffPerson } from "../intranet/catalog";
+import {
+  canAccessProject,
+  canAccessArea,
+  previewRoles,
+} from "../access/policy";
 export type Project = {
   code: string;
   name: string;
@@ -116,18 +121,9 @@ export const currentProjects: Project[] = seeds.map((s, i) => ({
   status: s[6],
   end: s[7],
   access: s[8] as Project["access"],
-  members:
-    i === 0
-      ? ["devon"]
-      : i === 1
-        ? ["jordan"]
-        : i === 2
-          ? ["robin"]
-          : i === 5
-            ? ["sam", "robin"]
-            : i === 7
-              ? ["jordan", "robin"]
-              : [],
+  members: previewRoles
+    .filter((role) => role.projectMemberships.includes(`PRJ-2026-${s[0]}`))
+    .map((role) => role.id),
   sponsor: "Robin Avery",
   lead:
     i === 0
@@ -175,19 +171,15 @@ export const allProjects = [...currentProjects, ...archivedProjects];
 export const projectTitle = (p: Project) => `${p.code} · ${p.name}`;
 export const projectHref = (p: Project) =>
   `/projects/${p.archived ? "archive/" : ""}${p.code}`;
-export const activePerson = () =>
-  staff.find((s) => s.id === selectedStaffId()) || staff[1];
+export const activePerson = () => resolveStaffPerson();
 export const canOpenProject = (p: Project, staffId: string) =>
-  p.access === "Open Internal" || p.members.includes(staffId);
-export const controlRoles = ["robin", "casey"];
-export const supportRoles = [
-  "robin",
-  "casey",
-  "jordan",
-  "devon",
-  "sam",
-  "elena",
-];
+  canAccessProject(staffId, p.code);
+export const controlRoles = previewRoles
+  .filter((role) => canAccessArea(role, "projects", "control"))
+  .map((role) => role.id);
+export const supportRoles = previewRoles
+  .filter((role) => canAccessArea(role, "projects", "support"))
+  .map((role) => role.id);
 export const documentNames = [
   "Project Brief.docx",
   "Delivery Plan.xlsx",

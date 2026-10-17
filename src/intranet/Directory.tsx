@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import { PocPreviewControls } from "../components/PocAnnotation";
 import EnvironmentIcon from "../components/EnvironmentIcon";
@@ -25,7 +24,7 @@ import {
   Heart24Regular,
   LockClosed16Regular,
 } from "@fluentui/react-icons";
-import { staff, resolveStaffPerson, rememberStaff } from "./catalog";
+import { resolveStaffPerson } from "./catalog";
 import {
   architectureSections,
   environmentsForHub,
@@ -57,6 +56,7 @@ const workspaceIcons: Record<string, typeof Code24Regular> = {
   customer: Headset24Regular,
   employment: PersonBriefcase24Regular,
   welfare: Heart24Regular,
+  publishing: DesignIdeas24Regular,
 };
 const hubIcons: Record<string, typeof Code24Regular> = {
   organisation: Organization24Regular,
@@ -102,9 +102,8 @@ function WorkspaceTile({
   );
 }
 export default function Directory() {
-  const [person, setPerson] = useState(
-    () =>
-      resolveStaffPerson(new URLSearchParams(location.search).get("staff")).id,
+  const person = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
   );
   return (
     <div className="architecture-poc-page">
@@ -235,7 +234,7 @@ export default function Directory() {
                   <StaffLink
                     className="department-quick-link"
                     key={d.id}
-                    href={departmentHref(person, d.id)}
+                    href={departmentHref(person.id, d.id)}
                   >
                     <Icon />
                     <span>
@@ -257,26 +256,10 @@ export default function Directory() {
       </div>
       <PocPreviewControls title="Teams preview" className="directory-teams">
         <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
-        <label>
-          Preview as
-          <select
-            value={person}
-            onChange={(e) => {
-              setPerson(e.target.value);
-              rememberStaff(e.target.value);
-              const params = new URLSearchParams(location.search);
-              params.set("staff", e.target.value);
-              history.replaceState(null, "", `${location.pathname}?${params}`);
-            }}
-          >
-            {staff.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name} · {s.role}
-              </option>
-            ))}
-          </select>
-        </label>
-        <StaffLink href={`/teams?staff=${person}`}>
+        <span className="directory-teams-context">
+          Your work, connected in Teams
+        </span>
+        <StaffLink href={`/teams?staff=${person.id}`}>
           Open Teams view <ArrowRight20Regular />
         </StaffLink>
       </PocPreviewControls>

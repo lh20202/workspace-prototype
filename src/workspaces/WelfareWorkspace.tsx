@@ -115,6 +115,17 @@ export default function WelfareWorkspace() {
           {!member || !authorisedPage || deniedFile ? (
             <AccessBoundary
               workspaceId="welfare"
+              resource={
+                routeParts.length > 2
+                  ? undefined
+                  : page === "home" && !deniedFile
+                    ? { kind: "workspace", workspaceId: "welfare" }
+                    : {
+                        kind: "area",
+                        workspaceId: "welfare",
+                        areaId: deniedArea?.id || page,
+                      }
+              }
               area={boundaryArea}
               personId={person.id}
               strict

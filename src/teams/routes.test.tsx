@@ -98,17 +98,17 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
       "Access required",
     );
     // Even organisation-wide SharePoint coordination does not join an unrelated Teams department.
-    at("/teams?staff=sam&department=mcg&tab=Shared");
+    at("/teams?staff=jamie&department=mcg&tab=Shared");
     const department = renderToStaticMarkup(
       createElement(DepartmentChannel, {
         department: departments[0],
-        person: staff.find((person) => person.id === "sam")!,
+        person: staff.find((person) => person.id === "jamie")!,
         tab: "Shared",
         onTabChange: () => {},
       }),
     );
     expect(department).toContain("Access required");
-    at("/projects/PRJ-2026-014/teams?staff=maya&tab=Shared");
+    at("/projects/PRJ-2026-027/teams?staff=maya&tab=Shared");
     expect(renderToStaticMarkup(createElement(ProjectsApp))).toContain(
       "Access required",
     );
@@ -118,22 +118,22 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
     expect(emergency).not.toContain("Critical Service Disruption");
     expect(emergency).not.toContain("Initial Situation Brief.docx");
   });
-  it("falls back stale Morgan URLs to Maya even if the stored persona has broader access", () => {
+  it("falls back stale Morgan URLs to ordinary Taylor even if the stored persona has broader access", () => {
     at(
       "/teams?staff=morgan&workspace=digital&channel=Security+Engineering&tab=Shared",
       "devon",
     );
     const generic = renderToStaticMarkup(createElement(TeamsPreview));
-    expect(generic).toContain("Signed in as Maya Chen");
+    expect(generic).toContain("Signed in as Taylor Brooks");
     expect(generic).toContain("Access required");
     expect(generic).not.toContain("Manage teams");
     at("/projects/PRJ-2026-014/teams?staff=morgan&tab=Shared", "devon");
     const project = renderToStaticMarkup(createElement(ProjectsApp));
-    expect(project).toContain("Signed in as Maya Chen");
+    expect(project).toContain("Signed in as Taylor Brooks");
     expect(project).toContain("Access required");
     at("/emergency-response/incidents/INC-104?staff=morgan", "harper");
     const emergency = renderToStaticMarkup(createElement(EmergencyApp));
-    expect(emergency).toContain("Signed in as Maya Chen");
+    expect(emergency).toContain("Signed in as Taylor Brooks");
     expect(emergency).toContain("Access required");
     expect(emergency).not.toContain("Critical Service Disruption");
   });
@@ -160,7 +160,7 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
         renderToStaticMarkup(createElement(ContentApp)),
       );
       if (!visibleContentChannels(person.id).length)
-        expect(studio).toHaveLength(1);
+        expect(studio).toHaveLength(0);
       for (const link of studio) {
         const linkedPerson = staff.find(
           (member) => member.id === link.searchParams.get("staff"),
@@ -192,7 +192,6 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
     const unrelated = panelLinks(
       renderToStaticMarkup(createElement(FunctionalApp)),
     );
-    expect(unrelated).toHaveLength(1);
-    expect(unrelated[0].searchParams.get("staff")).toBe("sam");
+    expect(unrelated).toHaveLength(0);
   });
 });

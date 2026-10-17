@@ -1,3 +1,5 @@
+import { canAccessWorkspace, canAccessArea } from "../access/policy";
+import PublishingReviewRegister from "./PublishingReviewRegister";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -96,7 +98,8 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   );
   const home = functionalHomes[workspace.id];
   const isList =
-    page === "actions" || (workspace.id === "quality" && page === "reviews");
+    page === "actions" ||
+    (["quality", "publishing"].includes(workspace.id) && page === "reviews");
   const isCommunityPage = workspace.id === "people" && page === "communities";
   const [items, setItems] = useState(config.items);
   const [selected, setSelected] = useState<WorkingItem>();
@@ -119,8 +122,35 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   );
   const contextStaff = staff.find((person) => person.id === contextStaffId)!;
   const actor = contextStaff.name;
-  const employmentAllowed =
-    workspace.id !== "employment" || contextStaffId === "jamie";
+  const workspaceAllowed = canAccessWorkspace(contextStaff, workspace.id);
+  const subjectAllowed =
+    !!subject && canAccessArea(contextStaff, workspace.id, subject.id);
+  const safeItems = items.filter((item) =>
+    canAccessArea(contextStaff, workspace.id, item.area),
+  );
+  const safeFiles = config.files.filter((file) =>
+    canAccessArea(contextStaff, workspace.id, file.area),
+  );
+  const deniedWorkingArea =
+    !subject &&
+    (area && !canAccessArea(contextStaff, workspace.id, area.id)
+      ? area.id
+      : requestedFileArea());
+  function requestedFileArea() {
+    const id = new URLSearchParams(location.search).get("file");
+    const file = config.files.find((candidate) => candidate.id === id);
+    if (file && !canAccessArea(contextStaff, workspace.id, file.area))
+      return file.area;
+    if (
+      library &&
+      library.areas.every(
+        (id) => !canAccessArea(contextStaff, workspace.id, id),
+      )
+    )
+      return library.areas[0];
+    return undefined;
+  }
+
   // An explicit preview colleague must survive internal links without changing
   // the identity selected for other workspaces in this browser session.
   function preserveEmploymentPerson(destination: string) {
@@ -134,7 +164,9 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   const href = (destination: string) =>
     preserveEmploymentPerson(`${workspace.href}/${destination}`);
   const libraryFiles = (library: FunctionalLibrary) =>
-    functionalLibraryDocuments(config, library);
+    functionalLibraryDocuments(config, library).filter((file) =>
+      safeFiles.some((candidate) => candidate.id === file.id),
+    );
   const initialLibraryFolder =
     area && library
       ? config.files
@@ -276,7 +308,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     ) : null;
   }
   function actionList() {
-    const rows = items.filter(
+    const rows = safeItems.filter(
       (x) =>
         (workspace.id === "quality"
           ? ["monitoring", "reviews"].includes(x.area)
@@ -361,7 +393,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       </>
     );
   }
-  if (!employmentAllowed)
+  if (!workspaceAllowed)
     return (
       <div className="app-shell services-app functional-app">
         <StaffLink className="skip-link" href="#functional-main">
@@ -384,10 +416,30 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             </p>
           )}
           <AccessBoundary
-            workspaceId="employment"
-            area={workspace.title}
+            workspaceId={workspace.id}
+            resource={
+              subject
+                ? {
+                    kind: "area",
+                    workspaceId: workspace.id,
+                    areaId: subject.id,
+                  }
+                : deniedWorkingArea
+                  ? {
+                      kind: "area",
+                      workspaceId: workspace.id,
+                      areaId: deniedWorkingArea,
+                    }
+                  : page === "home" || library || area || tool || isList
+                    ? { kind: "workspace", workspaceId: workspace.id }
+                    : undefined
+            }
+            area={subject?.name || workspace.title}
             personId={contextStaffId}
-            strict
+            strict={
+              subject?.strict ||
+              workspace.accessLevel === "strictly-confidential"
+            }
             returnHref="/architecture"
             returnLabel="Back to all workspaces"
           />
@@ -446,15 +498,18 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     page === "protected" ||
     isList;
   const heading = isList
-    ? workspace.id === "quality"
-      ? "Actions & Reviews"
-      : "Follow-up"
+    ? workspace.id === "publishing"
+      ? "Environment Review Register"
+      : workspace.id === "quality"
+        ? "Actions & Reviews"
+        : "Follow-up"
     : isCommunityPage
       ? "Staff communities"
       : library?.name || area?.name;
   return (
     <div
       className={`app-shell services-app functional-app ${workspace.id === "archives" ? "archives-app" : ""}`}
+      data-workspace={workspace.id}
     >
       <StaffLink className="skip-link" href="#functional-main">
         Skip to workspace
@@ -463,7 +518,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         title={workspace.title}
         userName={actor}
         userRole={contextStaff.role}
-        searchFiles={config.files}
+        searchFiles={safeFiles}
         onOpen={(f) => openSearchFile(f.id)}
         onTeams={
           workspace.teams
@@ -522,6 +577,15 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               >
                 <NavigationIcon kind="library" />
                 Archive Practice & Transfers
+              </StaffLink>
+            )}
+            {workspace.id === "publishing" && (
+              <StaffLink
+                href={href("reviews")}
+                aria-current={isList ? "page" : undefined}
+              >
+                <NavigationIcon kind="list" />
+                Environment Review Register
               </StaffLink>
             )}
             {workspace.id === "quality" && (
@@ -589,7 +653,9 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           <div className="functional-breadcrumb">
             <StaffLink href={homeHref}>Workspace</StaffLink> /{" "}
             {subject
-              ? "Access required"
+              ? subjectAllowed
+                ? subject.name
+                : "Access required"
               : tool?.name || (page === "home" ? "Home" : heading)}
           </div>
           {notice && (
@@ -598,14 +664,60 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               <button onClick={() => setNotice("")}>Dismiss</button>
             </p>
           )}
-          {subject || !known ? (
+          {(subject && !subjectAllowed) || deniedWorkingArea || !known ? (
             <AccessBoundary
               workspaceId={workspace.id}
-              area={subject?.name || "Unavailable location"}
+              area={
+                subject?.name ||
+                config.areas.find((a) => a.id === deniedWorkingArea)?.name ||
+                "Unavailable location"
+              }
+              resource={
+                subject || deniedWorkingArea
+                  ? {
+                      kind: "area",
+                      workspaceId: workspace.id,
+                      areaId: subject?.id || deniedWorkingArea || "",
+                    }
+                  : undefined
+              }
               strict={subject?.strict}
               personId={contextStaffId}
               returnHref={homeHref}
             />
+          ) : subject && subjectAllowed ? (
+            <section>
+              <h1>{subject.name}</h1>
+              <p className="functional-intro">
+                Controlled working methods for authorised participants.
+              </p>
+              <p>
+                Individual records, credentials and live system data are not
+                held in this demonstration.
+              </p>
+              <DocumentLibrary
+                title="Administration working methods"
+                headingLevel={2}
+                readOnly
+                files={config.files
+                  .filter((file) =>
+                    subject.area === "protected"
+                      ? workspace.id === "digital"
+                        ? ["operations", "m365"].includes(file.area)
+                        : ["employment", "hiring"].includes(file.area)
+                      : file.area === subject.area,
+                  )
+                  .slice(0, 2)
+                  .map((file) => ({
+                    id: file.id,
+                    name: file.name,
+                    folder: "Working methods",
+                    modified: file.modified,
+                    owner: file.owner,
+                    status: file.status,
+                  }))}
+              />
+            </section>
           ) : tool ? (
             <section className="functional-system">
               <h1>{tool.name}</h1>
@@ -652,7 +764,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     <p>{home.context}</p>
                     {home.areas
                       .map((areaId) =>
-                        items.find((item) => item.area === areaId),
+                        safeItems.find((item) => item.area === areaId),
                       )
                       .filter((item): item is WorkingItem => !!item)
                       .map((item) => (
@@ -671,7 +783,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     aria-labelledby="recent-documents-title"
                   >
                     <h2 id="recent-documents-title">{home.recentHeading}</h2>
-                    {config.files
+                    {safeFiles
                       .filter((file) => home.areas.includes(file.area))
                       .sort((a, b) => b.modified.localeCompare(a.modified))
                       .slice(0, 4)
@@ -721,6 +833,9 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                       openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`}
                     />
                   )}
+                  {workspace.id === "publishing" && (
+                    <PublishingReviewRegister compact />
+                  )}
                   <section>
                     <h2>{home.handoffsHeading || "Frequent tasks"}</h2>
                     <div className="functional-home-handoffs">
@@ -741,7 +856,11 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           ) : isList ? (
             <>
               <h1>{heading}</h1>
-              {actionList()}
+              {workspace.id === "publishing" ? (
+                <PublishingReviewRegister />
+              ) : (
+                actionList()
+              )}
             </>
           ) : isCommunityPage ? (
             <>

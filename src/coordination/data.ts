@@ -1,4 +1,5 @@
 import { matchesDisplayText } from "../i18n/search";
+import { canAccessDepartment, canAccessUnit } from "../access/policy";
 
 export interface CoordinationPerson {
   id: string;
@@ -501,20 +502,18 @@ export function canOpenDepartment(
   department: Department,
   person: CoordinationPerson,
 ) {
-  return (
-    department.channelAccess === "Organisation-wide" ||
-    person.departmentId === department.id
-  );
+  return canAccessDepartment(person, department.id);
 }
 export function canOpenUnit(
   department: Department,
   unit: Unit,
   person: CoordinationPerson,
 ) {
-  return (
-    canOpenDepartment(department, person) &&
-    person.departmentId === department.id &&
-    (unit.access === "Department-wide" || person.unitId === unit.id)
+  return canAccessUnit(
+    person,
+    department.id,
+    unit.id,
+    unit.access === "Unit-only",
   );
 }
 export function accessibleFiles(

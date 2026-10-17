@@ -9,6 +9,7 @@ import {
   auditLibraryDefinition,
   auditLibraryFolders,
 } from "../sharepoint/library";
+import { canAccessArea, previewRoles } from "../access/policy";
 
 describe("purposeful functional SharePoint information architecture", () => {
   it("separates service operations, supplier decisions and booking coordination without a primary Documents library", () => {
@@ -36,17 +37,47 @@ describe("purposeful functional SharePoint information architecture", () => {
       for (const file of config.files) {
         const library = libraryForFile(config, file.id)!;
         expect(library, `${config.id}: ${file.name}`).toBeDefined();
-        expect(
-          functionalLibraryDocuments(
-            config,
-            library,
-            file.area === "employee-representation" ? "skyler" : "riley",
-          ).find((item) => item.id === file.id),
-        ).toBe(file);
+        const permitted = previewRoles.find((person) =>
+          canAccessArea(person, config.id, file.area),
+        );
+        const visible = functionalLibraryDocuments(
+          config,
+          library,
+          permitted?.id,
+        ).find((item) => item.id === file.id);
+        if (config.id === "welfare" && !permitted)
+          expect(visible).toBeUndefined();
+        else expect(visible).toBe(file);
         expect(file.folder.split("/")).toHaveLength(2);
         expect(file.folder).toBe(file.folderPath);
         expect(library.areas).toContain(file.area);
       }
+    }
+  });
+  it("keeps Jamie's welfare support separate from independent representation and safeguarding", () => {
+    const config = configById.get("welfare")!;
+    expect(
+      functionalLibraryDocuments(
+        config,
+        functionalLibraries.welfare[0],
+        "jamie",
+      ),
+    ).toHaveLength(1);
+    for (const role of previewRoles) {
+      expect(
+        functionalLibraryDocuments(
+          config,
+          functionalLibraries.welfare[1],
+          role.id,
+        ),
+      ).toEqual([]);
+      expect(
+        functionalLibraryDocuments(
+          config,
+          functionalLibraries.welfare[2],
+          role.id,
+        ),
+      ).toEqual([]);
     }
   });
   it("uses valid library-specific columns, views and meaningful content types", () => {

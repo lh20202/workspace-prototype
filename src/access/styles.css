@@ -5,6 +5,60 @@
   background: #faf9f8;
   color: #242424;
 }
+.access-boundary-layout {
+  max-width: 720px;
+}
+.access-boundary-layout.access-boundary-sales {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 1fr);
+  align-items: start;
+  gap: 24px;
+  max-width: 1080px;
+}
+.access-boundary-sales .access-boundary {
+  max-width: none;
+  min-width: 0;
+}
+.access-boundary-sales .access-boundary-return {
+  margin-top: 24px;
+}
+.access-sales-alternative {
+  padding-left: 24px;
+  border-left: 1px solid #e0e0e0;
+  color: #242424;
+  font-size: 14px;
+  line-height: 20px;
+}
+.access-sales-alternative h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+}
+.access-sales-alternative p {
+  margin: 8px 0 12px;
+}
+.access-sales-portal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-weight: 600;
+}
+.access-sales-contact {
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid #e0e0e0;
+}
+.access-sales-contact h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.access-sales-alternative .access-boundary-urgent {
+  margin-bottom: 0;
+}
 .access-boundary-strict {
   border-left-color: #79404a;
   background: #fbf7f8;
@@ -92,5 +146,29 @@
 @media (max-width: 600px) {
   .access-boundary {
     padding: 20px;
+  }
+}
+@media (max-width: 900px) {
+  .access-boundary-layout.access-boundary-sales {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .access-sales-alternative {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px solid #e0e0e0;
+  }
+}
+
+/* New Sales access actions retain native link behaviour and immediate focus. */
+.access-sales-alternative a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .access-sales-alternative a {
+    transition: color 130ms ease-out;
   }
 }

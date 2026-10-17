@@ -9,13 +9,13 @@ import {
   searchCoordination,
   departmentHref,
 } from "./data";
-import { staff, workspaces } from "../intranet/catalog";
+import { staff, peopleDirectory, workspaces } from "../intranet/catalog";
 import {
   documents,
   departments as planningDepartments,
 } from "../data/workspace";
 const maya = staff.find((p) => p.id === "maya")!,
-  sam = staff.find((p) => p.id === "sam")!,
+  jamie = staff.find((p) => p.id === "jamie")!,
   robin = staff.find((p) => p.id === "robin")!;
 const marketing = departments[0],
   finance = departments[2];
@@ -44,19 +44,22 @@ describe("department coordination architecture", () => {
     expect(JSON.stringify(documents)).not.toMatch(/division/i);
   });
   it("maps organisational staff to a department and keeps the representative independent", () => {
-    const representative = staff.find((person) => person.id === "skyler")!;
+    const representative = peopleDirectory.find(
+      (person) => person.id === "skyler",
+    )!;
     expect(representative.departmentId).toBe("");
     expect(representative.unitId).toBe("");
-    for (const p of staff.filter((person) => person.id !== "skyler")) {
+    for (const p of staff) {
       const d = departments.find((d) => d.id === p.departmentId)!;
       expect(d).toBeDefined();
       expect(d.units.some((u) => u.id === p.unitId)).toBe(true);
     }
   });
   it("distinguishes organisation-wide and department-only channel access", () => {
-    expect(canOpenDepartment(marketing, sam)).toBe(true);
+    expect(canOpenDepartment(marketing, jamie)).toBe(false);
     expect(canOpenDepartment(finance, maya)).toBe(false);
-    expect(canOpenDepartment(finance, sam)).toBe(true);
+    expect(canOpenDepartment(finance, jamie)).toBe(false);
+    expect(canOpenDepartment(departments[4], jamie)).toBe(true);
     expect(canOpenDepartment(departments[5], robin)).toBe(true);
     expect(canOpenDepartment(departments[4], maya)).toBe(false);
   });
@@ -93,7 +96,7 @@ describe("department coordination architecture", () => {
       )!,
       income = marketing.units.find((u) => u.name === "Income Administration")!;
     expect(canOpenUnit(marketing, insight, maya)).toBe(true);
-    expect(canOpenUnit(marketing, insight, sam)).toBe(false);
+    expect(canOpenUnit(marketing, insight, jamie)).toBe(false);
     expect(canOpenUnit(marketing, income, maya)).toBe(false);
     expect(
       accessibleFiles(marketing, maya).some((f) => f.unitId === income.id),

@@ -1,3 +1,5 @@
+import { canAccessWorkspace } from "../access/policy";
+import WorkspaceDenied from "../access/WorkspaceDenied";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
 import StaffLink from "../components/StaffLink";
@@ -254,6 +256,18 @@ export default function ContentApp() {
   const homeChannels = visibleContentChannels(teamsPerson)
     .filter((channel) => channel.lifecycle === "Active")
     .slice(0, 4);
+  if (!canAccessWorkspace(resolveStaffPerson(teamsPerson), "content"))
+    return (
+      <WorkspaceDenied
+        workspaceId="content"
+        known={!!valid}
+        resource={
+          topic
+            ? { kind: "area", workspaceId: "content", areaId: topic.id }
+            : undefined
+        }
+      />
+    );
   return (
     <div
       className={`app-shell services-app content-app ${share ? "content-partner-preview" : ""}`}
@@ -360,6 +374,12 @@ export default function ContentApp() {
             <AccessBoundary
               workspaceId="content"
               area={topic.name}
+              personId={teamsPerson}
+              resource={{
+                kind: "area",
+                workspaceId: "content",
+                areaId: topic.id,
+              }}
               location={`${title} / ${pkg(topic.packageId).name} / ${topic.name}`}
               strict={
                 topic.id === "participant-administration" ||

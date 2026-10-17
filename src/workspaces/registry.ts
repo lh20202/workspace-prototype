@@ -42,6 +42,7 @@ export const hubDefinitions: HubDefinition[] = [
       "legal",
       "services",
       "digital",
+      "publishing",
       "archives",
     ],
   },
@@ -74,6 +75,7 @@ const hubLabels: Record<string, string> = {
   legal: "Legal",
   services: "Staff Service Operations",
   digital: "Digital & Technology",
+  publishing: "Workspace & Publishing",
   archives: "Company Archives",
   employment: "Employment & Hiring",
 };
@@ -188,6 +190,15 @@ const seed: [string, string, string, string, string, string, boolean][] = [
     "Shared engineering and technology workspace for building, operating and governing digital platforms, business systems, automation and emerging technology.",
     "Engineering & platforms",
     "digital",
+    true,
+  ],
+  [
+    "publishing",
+    "Workspace, Intranet & Wiki Coordination",
+    "/workspace-publishing",
+    "Coordinate the people, publishing decisions and ongoing maintenance that keep workspaces, intranet content and shared knowledge environments usable and current.",
+    "Environment coordination",
+    "publishing",
     true,
   ],
   [

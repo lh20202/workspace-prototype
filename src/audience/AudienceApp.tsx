@@ -1,3 +1,5 @@
+import { canAccessWorkspace } from "../access/policy";
+import WorkspaceDenied from "../access/WorkspaceDenied";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState, type MouseEvent } from "react";
@@ -316,6 +318,22 @@ export default function AudienceApp() {
       </div>
     </section>
   );
+  if (!canAccessWorkspace(person, "audience"))
+    return (
+      <WorkspaceDenied
+        workspaceId="audience"
+        known={!!known}
+        resource={
+          protectedStudy
+            ? {
+                kind: "area",
+                workspaceId: "audience",
+                areaId: "participant-administration",
+              }
+            : undefined
+        }
+      />
+    );
   return (
     <div className="app-shell services-app audience-app" onClick={intercept}>
       <StaffLink className="skip-link" href="#audience-main">
@@ -390,6 +408,11 @@ export default function AudienceApp() {
           ) : protectedStudy ? (
             <AccessBoundary
               workspaceId="audience"
+              resource={{
+                kind: "area",
+                workspaceId: "audience",
+                areaId: "participant-administration",
+              }}
               area="Website Usability Study — Participant administration"
               location={`${title} / Website Usability Study / Participant administration`}
               headingLevel={2}

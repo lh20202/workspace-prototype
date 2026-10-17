@@ -1,3 +1,6 @@
+import { canAccessWikiArea } from "../access/policy";
+import { resolveStaffPerson } from "../intranet/catalog";
+import AccessBoundary from "../access/AccessBoundary";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import {
   ArrowLeft20Regular,
@@ -41,12 +44,36 @@ export default function WikiApp() {
   const main = useRef<HTMLElement>(null);
   const path = url.split("?")[0];
   const { area, article, valid } = resolveWikiPath(path);
-  const chapters = wikiArticles.filter((item) => item.areaId === area?.id);
+  const person = resolveStaffPerson(
+    new URLSearchParams(url.split("?")[1]).get("staff"),
+  );
+  const allowedArticles = wikiArticles.filter((item) =>
+    canAccessWikiArea(person, item.areaId),
+  );
+  const requestedSource = new URLSearchParams(url.split("?")[1]).get("file");
+  const sourceArticle = wikiArticles.find(
+    (item) => item.sourceId === requestedSource,
+  );
+  const deniedArea =
+    area && !canAccessWikiArea(person, area.id)
+      ? area
+      : sourceArticle && !canAccessWikiArea(person, sourceArticle.areaId)
+        ? wikiAreas.find((item) => item.id === sourceArticle.areaId)
+        : undefined;
+  const allowedFiles = wikiFiles.filter((file) =>
+    allowedArticles.some((item) => item.sourceId === file.id),
+  );
+  const allowedFolders = wikiFolders.filter((folder) =>
+    allowedFiles.some(
+      (file) => file.folder === folder || file.folder.startsWith(folder + "/"),
+    ),
+  );
+  const chapters = allowedArticles.filter((item) => item.areaId === area?.id);
   const index = article ? chapters.indexOf(article) : -1;
   const previous = chapters[index - 1];
   const next = chapters[index + 1];
   const searchResults = query.trim()
-    ? wikiArticles
+    ? allowedArticles
         .filter((item) =>
           matchesDisplayText(
             [
@@ -215,7 +242,7 @@ export default function WikiApp() {
                 >
                   All references
                 </StaffLink>
-                {wikiFolders.map((folder) => (
+                {allowedFolders.map((folder) => (
                   <StaffLink
                     key={folder}
                     href={folderHref(folder)}
@@ -263,7 +290,16 @@ export default function WikiApp() {
               </>
             )}
           </div>
-          {!valid ? (
+          {deniedArea ? (
+            <AccessBoundary
+              workspaceId="sales-wiki"
+              area={deniedArea.title}
+              personId={person.id}
+              resource={{ kind: "wiki", areaId: deniedArea.id }}
+              returnHref={wikiBase}
+              returnLabel="Return to Wiki"
+            />
+          ) : !valid ? (
             <section>
               <h1>Article not found</h1>
               <p>Choose a knowledge area to continue.</p>
@@ -276,8 +312,8 @@ export default function WikiApp() {
                 key={url}
                 title={wikiLibraryTitle}
                 definition={wikiLibrary}
-                files={wikiFiles}
-                folders={wikiFolders}
+                files={allowedFiles}
+                folders={allowedFolders}
                 readOnly
                 headingLevel={2}
               />

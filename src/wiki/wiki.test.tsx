@@ -30,6 +30,43 @@ function markup(pathname = wikiBase, search = "") {
 }
 
 describe("Sales & Marketing knowledge navigation", () => {
+  it("uses the same role for specialist articles, managed-source deep links and the A–Z library", () => {
+    const specialist = wikiArticles.find(
+      (article) => article.areaId === "insight",
+    )!;
+    for (const id of ["maya", "jamie", "devon"]) {
+      const denied = markup(wikiArticleHref(specialist), `?staff=${id}`);
+      expect(denied).toContain("Access required");
+      expect(denied).toContain("Are you frontline sales staff?");
+      expect(denied).toContain(`href="/frontline-sales?staff=${id}"`);
+      expect(denied).not.toContain('aria-label="Wiki article"');
+      expect(denied).not.toContain(specialist.introduction);
+      const source = markup(
+        `${wikiBase}/a-z`,
+        `?staff=${id}&file=${specialist.sourceId}`,
+      );
+      expect(source).toContain("Access required");
+      expect(source).not.toContain("Document preview");
+      const directory = markup(`${wikiBase}/a-z`, `?staff=${id}`);
+      expect(directory).toContain('class="sp-document-library"');
+      expect(directory).not.toContain(
+        wikiFiles.find((file) => file.id === specialist.sourceId)!.name,
+      );
+    }
+    for (const id of ["taylor", "robin"]) {
+      const permitted = markup(wikiArticleHref(specialist), `?staff=${id}`);
+      expect(permitted).toContain('aria-label="Wiki article"');
+      expect(permitted).not.toContain("Access required");
+    }
+  });
+
+  it("retains frontline knowledge for the frontline role", () => {
+    const article = wikiArticles.find((item) => item.areaId === "learning")!;
+    const html = markup(wikiArticleHref(article), "?staff=maya");
+    expect(html).toContain('aria-label="Wiki article"');
+    expect(html).not.toContain("Access required");
+  });
+
   it("has exactly the eight requested primary knowledge areas", () => {
     expect(wikiAreas.map((area) => area.title)).toEqual([
       "Foundations",

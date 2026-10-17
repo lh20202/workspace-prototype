@@ -1,3 +1,4 @@
+import StaffLink from "../components/StaffLink";
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import { canSeeDepartment } from "../teams/visibility";
@@ -280,10 +281,10 @@ export default function DepartmentChannel({
                             </span>
                           </header>
                           <p>{original.moderatorReply}</p>
-                          <a href={original.upload!.destination}>
+                          <StaffLink href={original.upload!.destination}>
                             Open destination: {original.upload!.destinationName}{" "}
                             →
-                          </a>
+                          </StaffLink>
                         </div>
                       </article>
                     )}
@@ -609,9 +610,9 @@ export default function DepartmentChannel({
             selectedUpload && (
               <>
                 <h2>{selectedUpload.name}</h2>
-                <a href={selectedUpload.destination}>
+                <StaffLink href={selectedUpload.destination}>
                   Open destination: {selectedUpload.destinationName} →
-                </a>
+                </StaffLink>
               </>
             )
           )}

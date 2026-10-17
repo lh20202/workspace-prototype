@@ -12,6 +12,8 @@ import {
   accessWorkspaceId,
   safeAccessReturn,
   urgentAccessHref,
+  isSalesAccessContext,
+  frontlineSalesFocalPoint,
 } from "./model";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -22,6 +24,63 @@ function renderRequest(path: string) {
 }
 
 describe("business focal point before technical access escalation", () => {
+  it("offers the frontline alternative only for Sales & Marketing destinations", () => {
+    for (const workspaceId of [
+      "audience",
+      "content",
+      "logistics",
+      "customer",
+      "sales-wiki",
+    ]) {
+      expect(isSalesAccessContext({ workspaceId })).toBe(true);
+      const html = renderToStaticMarkup(
+        createElement(AccessBoundary, {
+          workspaceId,
+          area: "Specialist working material",
+          personId: "maya",
+        }),
+      );
+      expect(html).toContain("Are you frontline sales staff?");
+      expect(html).toContain('href="/frontline-sales"');
+      expect(html.indexOf("Access required")).toBeLessThan(
+        html.indexOf("Are you frontline sales staff?"),
+      );
+      expect(html.indexOf("Open Frontline Sales Portal")).toBeLessThan(
+        html.indexOf("Frontline sales focal point"),
+      );
+      expect(html.indexOf("Frontline sales focal point")).toBeLessThan(
+        html.indexOf("Need access to this workspace instead?"),
+      );
+      expect(html.indexOf("Contact workspace focal point")).toBeLessThan(
+        html.indexOf("Raise urgent access request"),
+      );
+    }
+    for (const workspaceId of [
+      "employment",
+      "welfare",
+      "digital",
+      "finance",
+      "projects",
+      "planning",
+    ]) {
+      expect(isSalesAccessContext({ workspaceId })).toBe(false);
+      const html = renderToStaticMarkup(
+        createElement(AccessBoundary, {
+          workspaceId,
+          area: "Protected area",
+        }),
+      );
+      expect(html).not.toContain("Frontline Sales Portal");
+      expect(html).not.toContain("access-sales-alternative");
+    }
+    expect(
+      staff.some((person) => person.id === frontlineSalesFocalPoint.id),
+    ).toBe(false);
+    expect(accessFocalPoint({ workspaceId: "frontline-sales" })).toEqual(
+      frontlineSalesFocalPoint,
+    );
+  });
+
   it("gives every workspace one existing fictional contact and keeps special boundaries distinct", () => {
     for (const workspace of workspaceRegistry) {
       const focal = accessFocalPoint({ workspaceId: workspace.id });

@@ -43,19 +43,19 @@ describe("Projects ownership and access", () => {
     expect(
       canOpenProject(
         currentProjects.find((p) => p.code.endsWith("038"))!,
-        "sam",
+        "robin",
       ),
     ).toBe(true);
     expect(
       canOpenProject(
         currentProjects.find((p) => p.code.endsWith("027"))!,
-        "sam",
+        "jamie",
       ),
     ).toBe(false);
     expect(
       canOpenProject(
         currentProjects.find((p) => p.code.endsWith("031"))!,
-        "maya",
+        "taylor",
       ),
     ).toBe(true);
   });
@@ -112,14 +112,15 @@ describe("Department identity compatibility", () => {
   });
   it("retains department-only and unit-only boundaries", () => {
     const maya = staff.find((s) => s.id === "maya")!,
-      sam = staff.find((s) => s.id === "sam")!;
+      jamie = staff.find((s) => s.id === "jamie")!;
     expect(canOpenDepartment(departments[2], maya)).toBe(false);
-    expect(canOpenDepartment(departments[2], sam)).toBe(true);
+    expect(canOpenDepartment(departments[2], jamie)).toBe(false);
+    expect(canOpenDepartment(departments[4], jamie)).toBe(true);
     expect(
       canOpenUnit(
         departments[0],
         departments[0].units.find((u) => u.access === "Unit-only")!,
-        sam,
+        jamie,
       ),
     ).toBe(false);
   });

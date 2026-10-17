@@ -144,9 +144,9 @@ const first = createIncident(
   "Critical Service Disruption",
   "Drew Ellis",
   [
-    { name: "Riley Drew", role: "IT specialist" },
+    { name: "Devon Park", role: "IT specialist" },
     { name: "Harper Cole", role: "Legal adviser" },
-    { name: "Avery Quinn", role: "Executive lead" },
+    { name: "Robin Avery", role: "Executive lead" },
   ],
   "Major",
   "2026-10-16T09:05",
@@ -186,7 +186,7 @@ const second = createIncident(
   "Safety Response",
   "Alex Rowan",
   [
-    { name: "Taylor Lane", role: "People/welfare specialist" },
+    { name: "Jamie Ellis", role: "People/welfare specialist" },
     { name: "Cameron Bell", role: "Facilities lead" },
   ],
   "Significant",

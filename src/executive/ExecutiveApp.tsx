@@ -1,6 +1,7 @@
+import StaffLink from "../components/StaffLink";
+import { canAccessWorkspace, canAccessArea } from "../access/policy";
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
-import { PocPreviewControls } from "../components/PocAnnotation";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import NavigationIcon from "../components/NavigationIcon";
@@ -10,17 +11,14 @@ import DocumentLibrary, {
 import {
   title,
   description,
-  roles,
   navigation,
-  canAccess,
-  visibleFiles,
-  visibleDecisions,
+  files,
+  decisions,
+  initiatives,
   decisionView,
   views,
-  visibleInitiatives,
   initiativeStages,
   executiveCalendar,
-  type ExecutiveRole,
 } from "./data";
 import "../services/styles.css";
 import "../finance/styles.css";
@@ -29,22 +27,24 @@ import { resolveStaffPerson } from "../intranet/catalog";
 import { executiveDocument, executiveDefinition } from "./libraries";
 export default function ExecutiveApp() {
   const page = location.pathname.split("/")[2] || "home";
-  const requestedRole = new URLSearchParams(location.search).get("preview");
-  const staffId = new URLSearchParams(location.search).get("staff");
-  const staffPerson = resolveStaffPerson(staffId);
-  const staffRole = roles.find((item) => item.person === staffPerson.name);
-  const explicitRole =
-    !staffId && roles.find((item) => item.id === requestedRole);
-  const workspaceAllowed = !!staffRole || !!explicitRole;
-  const role: ExecutiveRole = (explicitRole || staffRole)?.id || "base";
-  const person = roles.find((r) => r.id === role)!;
-  const href = (area: string, as = role) =>
-    `/executive${area === "home" ? "" : `/${area}`}?preview=${as}`;
-  const sourceHref = (path: string) =>
-    path.startsWith("/executive/") ? `${path}?preview=${role}` : path;
+  const staffPerson = resolveStaffPerson(
+    new URLSearchParams(location.search).get("staff"),
+  );
+  const workspaceAllowed = canAccessWorkspace(staffPerson, "executive");
+  const href = (area: string) =>
+    `/executive${area === "home" ? "" : `/${area}`}?staff=${staffPerson.id}`;
+  const sourceHref = (path: string) => {
+    const target = new URL(path, location.href);
+    target.searchParams.set("staff", staffPerson.id);
+    return target.pathname + target.search;
+  };
   const area = navigation.find((a) => a.id === page);
-  const allowed = canAccess(page, role);
-  const safeFiles = visibleFiles(role);
+  const allowed = canAccessArea(staffPerson, "executive", page);
+  const safeFiles = files.filter(
+    (file) =>
+      workspaceAllowed &&
+      canAccessArea(staffPerson, "executive", file.activity),
+  );
   const [notice, setNotice] = useState("");
   const [view, setView] = useState("Upcoming Decisions");
   const [decisionStates, setDecisionStates] = useState<Record<string, string>>(
@@ -53,10 +53,12 @@ export default function ExecutiveApp() {
   const [initiativeStates, setInitiativeStates] = useState<
     Record<string, string>
   >({});
-  const rows = visibleDecisions(role).map((d) => ({
-    ...d,
-    status: decisionStates[d.id] || d.status,
-  }));
+  const rows = decisions
+    .filter((d) => canAccessArea(staffPerson, "executive", d.area))
+    .map((d) => ({
+      ...d,
+      status: decisionStates[d.id] || d.status,
+    }));
   const documents = (activity: string): LibraryDocument[] =>
     safeFiles
       .filter((f) =>
@@ -82,12 +84,13 @@ export default function ExecutiveApp() {
             {list.map((d) => (
               <tr key={d.id}>
                 <td>
-                  <a href={href(d.area)}>{d.name}</a>
+                  <StaffLink href={href(d.area)}>{d.name}</StaffLink>
                 </td>
                 <td>{d.date}</td>
                 <td>{d.sponsor}</td>
                 <td>
-                  {role === "leadership" && d.area === "leadership" ? (
+                  {canAccessArea(staffPerson, "executive", "leadership") &&
+                  d.area === "leadership" ? (
                     <select
                       aria-label={`Decision status ${d.id}`}
                       value={d.status}
@@ -115,7 +118,9 @@ export default function ExecutiveApp() {
                 </td>
                 <td>
                   {d.followup}
-                  <a href={sourceHref(d.source)}>Supporting work ↗</a>
+                  <StaffLink href={sourceHref(d.source)}>
+                    Supporting work ↗
+                  </StaffLink>
                 </td>
               </tr>
             ))}
@@ -151,6 +156,13 @@ export default function ExecutiveApp() {
           <AccessBoundary
             workspaceId="executive"
             area={title}
+            resource={
+              page === "home"
+                ? { kind: "workspace", workspaceId: "executive" }
+                : area
+                  ? { kind: "area", workspaceId: "executive", areaId: page }
+                  : undefined
+            }
             personId={staffPerson.id}
             strict
             returnHref="/architecture"
@@ -160,27 +172,27 @@ export default function ExecutiveApp() {
       </div>
     );
   const portal = (
-    <a href="/governance">
+    <StaffLink href="/governance/approved">
       <LockClosed20Regular />
       Governance & Members Portal ↗
-    </a>
+    </StaffLink>
   );
   const emergency = (
-    <a href="/emergency-response">
+    <StaffLink href="/emergency-response">
       <LockClosed20Regular />
       Emergency Response · Strictly confidential ↗
-    </a>
+    </StaffLink>
   );
   return (
     <div className="app-shell services-app executive-app">
-      <a className="skip-link" href="#executive-main">
+      <StaffLink className="skip-link" href="#executive-main">
         Skip to executive workspace
-      </a>
+      </StaffLink>
       <WorkspaceHeader
         title={title}
         searchFiles={safeFiles}
-        userName={person.person}
-        userRole={person.name}
+        userName={staffPerson.name}
+        userRole={staffPerson.role}
         memberCount={14}
         onOpen={(f) => {
           const original = safeFiles.find((x) => x.id === f.id)!;
@@ -191,40 +203,20 @@ export default function ExecutiveApp() {
         onMessage={setNotice}
         helpText="Executive coordination. Leadership, liaison and initiative access are separate."
       />
-      <PocPreviewControls
-        title="Participation preview"
-        className="executive-preview"
-      >
-        <label>
-          <select
-            aria-label="Preview executive participation"
-            value={role}
-            onChange={(e) =>
-              location.assign(href(page, e.target.value as ExecutiveRole))
-            }
-          >
-            {roles.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </PocPreviewControls>
       <div className="finance-layout">
         <aside className="sidebar services-sidebar">
           <nav aria-label="Executive workspace navigation">
-            <a
+            <StaffLink
               href={href("home")}
               aria-current={page === "home" ? "page" : undefined}
             >
               <NavigationIcon kind="home" />
               Home
-            </a>
+            </StaffLink>
             {navigation
               .filter((a) => a.id !== "calendar")
               .map((a) => (
-                <a
+                <StaffLink
                   key={a.id}
                   href={href(a.id)}
                   aria-current={page === a.id ? "page" : undefined}
@@ -239,7 +231,7 @@ export default function ExecutiveApp() {
                     }
                   />
                   {a.name}
-                </a>
+                </StaffLink>
               ))}
           </nav>
         </aside>
@@ -248,7 +240,8 @@ export default function ExecutiveApp() {
           className="services-main finance-main executive-main"
         >
           <div className="finance-breadcrumb">
-            <a href={href("home")}>Workspace</a> / {area?.name || "Home"}
+            <StaffLink href={href("home")}>Workspace</StaffLink> /{" "}
+            {area?.name || "Home"}
           </div>
           {notice && (
             <p role="status" className="finance-notice">
@@ -260,6 +253,12 @@ export default function ExecutiveApp() {
             <AccessBoundary
               workspaceId="executive"
               area={area?.name || "Executive work"}
+              personId={staffPerson.id}
+              resource={{
+                kind: "area",
+                workspaceId: "executive",
+                areaId: page,
+              }}
               returnHref={href("home")}
               strict
             />
@@ -300,8 +299,13 @@ export default function ExecutiveApp() {
                 files={documents("coordination")}
               />
               <p>
-                <a href={href("decisions")}>Decisions & Actions</a> ·{" "}
-                <a href={href("oversight")}>Oversight Committee Liaison</a>
+                <StaffLink href={href("decisions")}>
+                  Decisions & Actions
+                </StaffLink>{" "}
+                ·{" "}
+                <StaffLink href={href("oversight")}>
+                  Oversight Committee Liaison
+                </StaffLink>
               </p>
             </>
           ) : page === "leadership" ? (
@@ -318,7 +322,9 @@ export default function ExecutiveApp() {
                 </details>
               </section>
               <p>
-                <a href={href("oversight")}>Oversight Committee Liaison →</a>
+                <StaffLink href={href("oversight")}>
+                  Oversight Committee Liaison →
+                </StaffLink>
               </p>
             </>
           ) : page === "oversight" ? (
@@ -336,9 +342,9 @@ export default function ExecutiveApp() {
                 </details>
               </section>
               <p>
-                <a href="/governance/decisions?record=GOV-2026-04">
+                <StaffLink href="/governance/approved?record=GOV-2026-04">
                   Formal resolution · GOV-2026-04 ↗
-                </a>
+                </StaffLink>
               </p>
             </>
           ) : page === "initiatives" ? (
@@ -367,32 +373,42 @@ export default function ExecutiveApp() {
                         </tr>
                       </thead>
                       <tbody>
-                        {visibleInitiatives(role).map((i) => (
-                          <tr key={i.id}>
-                            <td>{i.name}</td>
-                            <td>{i.sponsor}</td>
-                            <td>
-                              <select
-                                aria-label={`Initiative stage ${i.id}`}
-                                value={initiativeStates[i.id] || i.stage}
-                                onChange={(e) =>
-                                  setInitiativeStates({
-                                    ...initiativeStates,
-                                    [i.id]: e.target.value,
-                                  })
-                                }
-                              >
-                                {initiativeStages.map((s) => (
-                                  <option key={s}>{s}</option>
-                                ))}
-                              </select>
-                            </td>
-                            <td>{i.review}</td>
-                            <td>
-                              <a href={i.delivery}>Delivery workspace ↗</a>
-                            </td>
-                          </tr>
-                        ))}
+                        {initiatives
+                          .filter((initiative) =>
+                            canAccessArea(
+                              staffPerson,
+                              "executive",
+                              initiative.id,
+                            ),
+                          )
+                          .map((i) => (
+                            <tr key={i.id}>
+                              <td>{i.name}</td>
+                              <td>{i.sponsor}</td>
+                              <td>
+                                <select
+                                  aria-label={`Initiative stage ${i.id}`}
+                                  value={initiativeStates[i.id] || i.stage}
+                                  onChange={(e) =>
+                                    setInitiativeStates({
+                                      ...initiativeStates,
+                                      [i.id]: e.target.value,
+                                    })
+                                  }
+                                >
+                                  {initiativeStages.map((s) => (
+                                    <option key={s}>{s}</option>
+                                  ))}
+                                </select>
+                              </td>
+                              <td>{i.review}</td>
+                              <td>
+                                <StaffLink href={i.delivery}>
+                                  Delivery workspace ↗
+                                </StaffLink>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>
@@ -433,9 +449,9 @@ export default function ExecutiveApp() {
                           {executiveCalendar
                             .filter((e) => e.day === day)
                             .map((e) => (
-                              <a key={e.name} href={sourceHref(e.href)}>
+                              <StaffLink key={e.name} href={sourceHref(e.href)}>
                                 {e.name}
-                              </a>
+                              </StaffLink>
                             ))}
                         </>
                       )}

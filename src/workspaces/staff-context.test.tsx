@@ -9,7 +9,7 @@ afterEach(() => vi.unstubAllGlobals());
 
 function render(Component: ComponentType, route: string) {
   vi.stubGlobal("location", new URL(route, "https://example.test"));
-  vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
+  vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
   return renderToStaticMarkup(createElement(Component));
 }
 
@@ -35,36 +35,36 @@ describe("workspace navigation retains the explicit preview colleague", () => {
     ).not.toContainEqual(expect.stringContaining("search=old"));
   });
 
-  it("keeps finance navigation, displayed identity and access returns aligned with Sam", () => {
-    const html = render(FinanceApp, "/financial-operations?staff=sam");
-    expect(html).toContain('aria-label="Signed in as Sam Patel"');
+  it("keeps finance navigation, displayed identity and access returns aligned with the selected role", () => {
+    const html = render(FinanceApp, "/financial-operations?staff=robin");
+    expect(html).toContain('aria-label="Signed in as Robin Avery"');
     expect(hrefs(html)).toContain(
-      "/financial-operations/planning-documents?staff=sam",
+      "/financial-operations/planning-documents?staff=robin",
     );
     const denied = render(
       FinanceApp,
-      "/financial-operations/planning/restricted-planning?staff=sam",
+      "/financial-operations/planning/restricted-planning?staff=robin",
     );
     expect(denied).toContain("Access required");
-    expect(hrefs(denied)).toContain("/financial-operations?staff=sam");
-    expect(hrefs(denied).some((href) => href.includes("person=sam"))).toBe(
+    expect(hrefs(denied)).toContain("/financial-operations?staff=robin");
+    expect(hrefs(denied).some((href) => href.includes("person=robin"))).toBe(
       true,
     );
   });
 
-  it("keeps Sam's restricted project membership when following a real project link", () => {
-    const list = render(ProjectsApp, "/projects/current?staff=sam");
+  it("keeps the Executive Director’s selected project oversight when following a real project link", () => {
+    const list = render(ProjectsApp, "/projects/current?staff=robin");
     const projectLink = hrefs(list).find((href) =>
       href.startsWith("/projects/PRJ-2026-038?"),
     );
-    expect(projectLink).toBe("/projects/PRJ-2026-038?staff=sam");
+    expect(projectLink).toBe("/projects/PRJ-2026-038?staff=robin");
     const project = render(ProjectsApp, projectLink!);
-    expect(project).toContain('aria-label="Signed in as Sam Patel"');
+    expect(project).toContain('aria-label="Signed in as Robin Avery"');
     expect(project).not.toContain('class="access-boundary');
     const documents = hrefs(project).find((href) =>
       href.startsWith("/projects/PRJ-2026-038/documents?"),
     );
-    expect(documents).toBe("/projects/PRJ-2026-038/documents?staff=sam");
+    expect(documents).toBe("/projects/PRJ-2026-038/documents?staff=robin");
     const files = render(ProjectsApp, documents!);
     expect(files).toContain("Project Documents");
     expect(files).not.toContain('class="access-boundary');

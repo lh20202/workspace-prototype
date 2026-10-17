@@ -11,6 +11,13 @@ export const technicalChannels = [
 ];
 export const technicalPosts = [
   {
+    channel: "Security Engineering",
+    author: "Devon Park",
+    text: "The privileged-access review is ready for peer review. Please confirm service owners against approved change references; credentials and vulnerability details remain in their separately controlled systems.",
+    reply:
+      "Ari Morgan: I’ll check the review checklist and the recorded approval references before the change window.",
+  },
+  {
     channel: "Innovators",
     author: "Devon Park",
     text: "For the Company Data API proof of concept, I’d keep the boundary explicit: TypeScript request validation at the edge, Python workers for the batch jobs. Anyone see a reason to put the whole pipeline behind one synchronous endpoint?",

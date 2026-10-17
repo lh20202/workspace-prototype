@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import FunctionalApp from "./FunctionalApp";
 import { staff } from "../intranet/catalog";
 import { configById } from "./config";
+import { canAccessArea } from "../access/policy";
 import { functionalFileHref } from "./siteArchitecture";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -48,7 +49,7 @@ describe("strict Employment workspace membership", () => {
     }
   });
 
-  it("allows Jamie's coordination methods while keeping narrower individual records denied", () => {
+  it("allows selected personnel administration while retaining narrower separate boundaries", () => {
     const { html: home } = render("/employment-admin?staff=jamie");
     expect(home).toContain("Recruitment Administration");
     expect(home).toContain("Employment Operations");
@@ -62,8 +63,15 @@ describe("strict Employment workspace membership", () => {
       const { html } = render(
         `/employment-admin/protected/${subject.id}?staff=jamie`,
       );
-      expect(html).toContain("Access required");
-      expect(html).toContain("Strictly confidential");
+      if (canAccessArea("jamie", "employment", subject.id)) {
+        expect(html).toContain(
+          "Controlled working methods for authorised participants.",
+        );
+        expect(html).not.toContain('class="access-boundary');
+      } else {
+        expect(html).toContain("Access required");
+        expect(html).toContain("Strictly confidential");
+      }
       expect(html).not.toContain("Document preview");
     }
   });

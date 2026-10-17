@@ -1,3 +1,4 @@
+import { canAccessEmergency } from "../access/policy";
 import { useState, useEffect } from "react";
 import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation from "../components/PocAnnotation";
@@ -13,7 +14,7 @@ import {
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
-import { staff, resolveStaffPerson } from "../intranet/catalog";
+import { resolveStaffPerson } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   initialIncidents,
@@ -28,9 +29,7 @@ import "./styles.css";
 import "./emergency-teams.css";
 export default function EmergencyApp() {
   const requestedStaff = new URLSearchParams(location.search).get("staff");
-  const requestedPerson = requestedStaff
-    ? resolveStaffPerson(requestedStaff)
-    : undefined;
+  const requestedPerson = resolveStaffPerson(requestedStaff);
   const [incidents, setIncidents] = useState(initialIncidents),
     [tab, setTab] = useState("Posts"),
     [post, setPost] = useState("");
@@ -39,21 +38,17 @@ export default function EmergencyApp() {
   const incident = incidents.find((i) => i.id === selectedId),
     archived = incident?.status === "Archived";
   const responseLead =
-    !requestedPerson || incident?.lead === requestedPerson.name;
-  const visibleIncidents = requestedPerson
-    ? incidents.filter((i) =>
-        i.participants.some((p) => p.name === requestedPerson.name),
-      )
-    : incidents;
-  const responseAccess =
-    !requestedPerson ||
-    (incident
-      ? visibleIncidents.includes(incident)
-      : !initialId && visibleIncidents.length > 0);
-  const baseGroups = teamsGroups(requestedPerson || staff[0]).filter(
-    (g) =>
-      g.id !== "emergency" &&
-      (requestedPerson || ["company", "logistics"].includes(g.id)),
+    !!incident &&
+    incident.lead === requestedPerson.name &&
+    canAccessEmergency(requestedPerson, incident.id);
+  const visibleIncidents = incidents.filter((item) =>
+    canAccessEmergency(requestedPerson, item.id),
+  );
+  const responseAccess = incident
+    ? visibleIncidents.includes(incident)
+    : !initialId && visibleIncidents.length > 0;
+  const baseGroups = teamsGroups(requestedPerson).filter(
+    (group) => group.id !== "emergency",
   );
   const groups = [
     ...baseGroups,
@@ -239,6 +234,11 @@ export default function EmergencyApp() {
               <AccessBoundary
                 workspaceId="emergency"
                 area="Private incident response"
+                resource={
+                  initialId
+                    ? { kind: "emergency", incidentId: initialId }
+                    : undefined
+                }
                 personId={requestedPerson.id}
                 headingLevel={2}
                 compact

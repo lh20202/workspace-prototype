@@ -4,6 +4,7 @@ import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import "@fontsource-variable/inter/standard.css";
 import "@fontsource-variable/inter/standard-italic.css";
 import AppRouter from "./AppRouter";
+import { PreviewRoleProvider } from "./components/PreviewRoleContext";
 import { LanguageProvider } from "./i18n/Language";
 import "./styles.css";
 import "./logistics/styles.css";
@@ -22,7 +23,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }}
     >
       <LanguageProvider>
-        <AppRouter />
+        <PreviewRoleProvider>
+          <AppRouter />
+        </PreviewRoleProvider>
       </LanguageProvider>
     </FluentProvider>
   </React.StrictMode>,

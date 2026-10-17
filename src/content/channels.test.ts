@@ -60,12 +60,12 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
   });
   it("limits cross-disciplinary collaborators to the coverage they joined", () => {
     expect(visibleContentChannels("maya").map((channel) => channel.id)).toEqual(
-      ["coastal-flooding"],
+      [],
     );
     expect(canSeeContentChannel("maya", "Production Coordination")).toBe(false);
     expect(canSeeContentChannel("maya", "Web Desk")).toBe(false);
     expect(canSeeContentChannel("sam", "coastal-flooding")).toBe(false);
-    expect(canSeeWorkspace({ id: "maya" }, "content")).toBe(true);
+    expect(canSeeWorkspace({ id: "maya" }, "content")).toBe(false);
     expect(canSeeWorkspaceChannel({ id: "maya" }, "content", "Web Desk")).toBe(
       false,
     );
@@ -86,19 +86,24 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     }
   });
   it("keeps safe company teams first and distinguishes temporary and archived channels", () => {
-    const alex = staff.find((person) => person.id === "alex")!;
-    const groups = teamsGroups(alex);
+    const taylor = staff.find((person) => person.id === "taylor")!;
+    const groups = teamsGroups(taylor);
     expect(groups.slice(0, 2).map((group) => group.id)).toEqual([
       "company",
       "logistics",
     ]);
     const room = groups.find((group) => group.id === "content")!;
     expect(room.label).toBe("Creative & Editorial Studio");
-    const maya = staff.find((person) => person.id === "maya")!;
     expect(
-      teamsGroups(maya).find((group) => group.id === "content")!.channels[0]
-        .cue,
+      room.channels.find((channel) =>
+        channel.label.includes("City Innovation Summit"),
+      )?.cue,
     ).toBe("Temporary");
+    expect(
+      teamsGroups(staff.find((person) => person.id === "maya")!).some(
+        (group) => group.id === "content",
+      ),
+    ).toBe(false);
     expect(
       room.channels.some((channel) =>
         channel.label.includes("Major Transport Disruption"),
@@ -108,7 +113,7 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
       room.channels.find((channel) =>
         channel.label.includes("Future Skills Week"),
       )?.cue,
-    ).toBe("Archived");
+    ).toBeUndefined();
   });
   it("keeps old entry names compatible without creating duplicate channels", () => {
     expect(resolveContentChannel("General")?.name).toBe(
@@ -117,7 +122,7 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     expect(resolveContentChannel("Digital Content & Experience")?.name).toBe(
       "Web Desk",
     );
-    expect(contentTeamsHref("alex", "editorial")).toContain(
+    expect(contentTeamsHref("taylor", "editorial")).toContain(
       "channel=Editorial+Desk",
     );
     expect(new Set(contentChannels.map((channel) => channel.id)).size).toBe(
@@ -231,7 +236,7 @@ describe("Studio topic expertise and different working patterns", () => {
   });
   it("opens Publications & Email in Shared while chat-heavy and handoff desks retain Posts", () => {
     expect(contentDefaultTab("publications")).toBe("Shared");
-    expect(contentTeamsHref("alex", "publications")).toContain("tab=Shared");
+    expect(contentTeamsHref("taylor", "publications")).toContain("tab=Shared");
     for (const id of ["web", "social", "media"]) {
       expect(contentDefaultTab(id)).toBe("Posts");
       expect(studioPosts[id].length).toBeGreaterThan(

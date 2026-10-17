@@ -11,6 +11,11 @@ import { initialIncidents } from "../executive/incidentData";
 import { currentProjects } from "../projects/data";
 import { departments } from "../coordination/data";
 import {
+  canAccessEmergency,
+  canAccessProjectTeam,
+  canAccessChannel,
+} from "../access/policy";
+import {
   teamsGroups,
   teamsPreviewHrefForStaff,
   teamsStaffForWorkspace,
@@ -22,43 +27,47 @@ import {
   canSeeWorkspace,
   canSeeWorkspaceChannel,
   visibleWorkspaceChannels,
-  workspaceMemberships,
 } from "./visibility";
 
 const person = (id: string) => staff.find((s) => s.id === id)!;
 afterEach(() => vi.unstubAllGlobals());
 
-describe("Teams membership follows the selected staff context", () => {
-  it("removes the information-manager preview and safely resolves stale links and stored selection to Maya", () => {
-    expect(staff.some((member) => member.id === "morgan")).toBe(false);
-    expect(
-      staff.some((member) =>
-        /Information Management Specialist|administrator/i.test(member.role),
-      ),
-    ).toBe(false);
+describe("all Teams surfaces follow the central five-role policy", () => {
+  it("falls stale personas back to the ordinary default instead of retaining stored privilege", () => {
+    expect(staff.map((member) => member.id)).toEqual([
+      "taylor",
+      "maya",
+      "robin",
+      "jamie",
+      "devon",
+    ]);
     vi.stubGlobal("sessionStorage", { getItem: () => "devon" });
-    expect(resolveStaffPerson("morgan").id).toBe("maya");
-    expect(resolveStaffPerson("unknown").id).toBe("maya");
-    vi.stubGlobal("sessionStorage", { getItem: () => "morgan" });
-    expect(selectedStaffId()).toBe("maya");
-    expect(resolveStaffPerson().id).toBe("maya");
-    expect(teamsStaffForWorkspace("archives", "morgan")).toBe("maya");
+    for (const stale of [
+      "morgan",
+      "unknown",
+      "alex",
+      "sam",
+      "riley",
+      "skyler",
+    ]) {
+      expect(resolveStaffPerson(stale).id).toBe("taylor");
+      expect(teamsStaffForWorkspace("digital", stale)).toBe("taylor");
+      expect(visibleContentChannels(stale)).toEqual([]);
+      expect(
+        canSeeWorkspaceChannel(
+          { id: stale },
+          "digital",
+          "Security Engineering",
+        ),
+      ).toBe(false);
+      expect(canSeeProject({ id: stale }, "PRJ-2026-014")).toBe(false);
+    }
+    vi.stubGlobal("sessionStorage", { getItem: () => "alex" });
+    expect(selectedStaffId()).toBe("taylor");
+    expect(resolveStaffPerson().id).toBe("taylor");
     expect(teamsStaffForWorkspace("content", "maya")).toBe("maya");
-    expect(teamsStaffForWorkspace("digital", "sam")).toBe("sam");
-    vi.stubGlobal("sessionStorage", { getItem: () => "sam" });
-    expect(teamsStaffForWorkspace("digital")).toBe("sam");
-    expect(teamsStaffForWorkspace("content")).toBe("sam");
-    expect(visibleContentChannels("morgan")).toEqual([]);
-    expect(
-      canSeeWorkspaceChannel(
-        { id: "morgan" },
-        "digital",
-        "Security Engineering",
-      ),
-    ).toBe(false);
-    expect(canSeeProject({ id: "morgan" }, "PRJ-2026-014")).toBe(false);
   });
-  it("puts company channels and logistics General first in every staff view", () => {
+  it("puts company conversations and logistics General first for all five roles", () => {
     for (const member of staff) {
       const groups = teamsGroups(member);
       expect(groups.slice(0, 2).map((g) => g.id)).toEqual([
@@ -67,29 +76,17 @@ describe("Teams membership follows the selected staff context", () => {
       ]);
       expect(groups[0].channels.map((c) => c.id)).toEqual(
         channels
-          .filter((channel) => channel.team === "company")
-          .map((channel) => `company:${channel.id}`),
+          .filter((c) => c.team === "company")
+          .map((c) => `company:${c.id}`),
       );
       expect(groups[1].channels.map((c) => c.id)).toContain(
         "logistics:general",
       );
-      expect(
-        new Set(
-          groups.flatMap((group) =>
-            group.channels.map((channel) => channel.id),
-          ),
-        ).size,
-      ).toBe(groups.flatMap((group) => group.channels).length);
+      const ids = groups.flatMap((g) => g.channels.map((c) => c.id));
+      expect(new Set(ids).size).toBe(ids.length);
     }
   });
-  it("keeps ordinary memberships to one or two workspaces and one engineering role broader", () => {
-    for (const member of staff.filter((s) => s.id !== "devon")) {
-      expect(workspaceMemberships[member.id].length).toBeGreaterThanOrEqual(1);
-      expect(workspaceMemberships[member.id].length).toBeLessThanOrEqual(2);
-    }
-    expect(workspaceMemberships.devon.length).toBe(4);
-  });
-  it("grants each logistics colleague a relevant subset rather than every operational channel", () => {
+  it("never shows every operational channel and gives the frontline role its actual subset", () => {
     const operational = channels.filter(
       (channel) => channel.team === "logistics",
     );
@@ -104,30 +101,21 @@ describe("Teams membership follows the selected staff context", () => {
     }
     expect(
       operational
-        .filter((channel) => canSeeLogisticsChannel(person("maya"), channel))
-        .map((channel) => channel.id),
+        .filter((c) => canSeeLogisticsChannel(person("maya"), c))
+        .map((c) => c.id),
     ).toEqual(["general", "street", "central-city", "telephone"]);
-    expect(
-      operational
-        .filter((channel) => canSeeLogisticsChannel(person("sam"), channel))
-        .map((channel) => channel.id),
-    ).toEqual(["general"]);
-    expect(
-      operational
-        .filter((channel) => canSeeLogisticsChannel(person("jordan"), channel))
-        .map((channel) => channel.id),
-    ).toEqual(["general", "travel"]);
-    expect(
-      operational
-        .filter((channel) => canSeeLogisticsChannel(person("elena"), channel))
-        .map((channel) => channel.id),
-    ).toEqual(["general", "onboarding"]);
+    for (const id of ["taylor", "robin", "jamie", "devon"])
+      expect(
+        operational
+          .filter((c) => canSeeLogisticsChannel(person(id), c))
+          .map((c) => c.id),
+      ).toEqual(["general"]);
   });
-  it("uses the same grants for every sidebar, direct workspace/channel URL and department", () => {
+  it("uses identical grants in sidebars, direct channels, temporary rooms and moderator Teams", () => {
     for (const member of staff) {
       const groups = teamsGroups(member);
       for (const workspace of workspaces.filter(
-        (workspace) => workspace.teams && workspace.id !== "logistics",
+        (w) => w.teams && w.id !== "logistics",
       )) {
         const group = groups.find((item) => item.id === workspace.id);
         expect(group?.channels.map((channel) => channel.label) || []).toEqual(
@@ -144,34 +132,27 @@ describe("Teams membership follows the selected staff context", () => {
         );
       for (const channel of contentChannels)
         expect(canSeeWorkspaceChannel(member, "content", channel.name)).toBe(
-          channel.members.includes(member.id),
+          canAccessChannel(member, "content", channel.id),
         );
       expect(
         canSeeWorkspaceChannel(member, "digital", "Security Engineering"),
-      ).toBe(false);
+      ).toBe(member.id === "devon");
+      expect(
+        canSeeWorkspaceChannel(member, "publishing", "Wiki Moderation"),
+      ).toBe(member.id === "devon");
     }
-    expect(canSeeWorkspace(person("maya"), "finance")).toBe(false);
+    expect(canSeeWorkspace(person("maya"), "content")).toBe(false);
+    expect(canSeeWorkspace(person("taylor"), "publishing")).toBe(false);
     expect(
       canSeeWorkspaceChannel(person("devon"), "digital", "Web & CRM DevOps"),
-    ).toBe(false);
-    expect(
-      canSeeWorkspaceChannel(person("devon"), "digital", "Platform Operations"),
     ).toBe(true);
-    expect(canSeeDepartment(person("maya"), "finance-services")).toBe(false);
   });
-  it("shows project and incident channels only to their assigned participants", () => {
-    const projectMembers = staff.filter((member) =>
-      currentProjects.some((project) => canSeeProject(member, project.code)),
-    );
-    expect(projectMembers.map((member) => member.id).sort()).toEqual([
-      "devon",
-      "jordan",
-    ]);
+  it("shows only assigned project conversations and incident-specific responses", () => {
     for (const member of staff) {
       const groups = teamsGroups(member);
       for (const project of currentProjects)
         expect(groups.some((group) => group.id === project.code)).toBe(
-          canSeeProject(member, project.code),
+          canAccessProjectTeam(member, project.code),
         );
       expect(
         groups
@@ -179,35 +160,37 @@ describe("Teams membership follows the selected staff context", () => {
           ?.channels.map((channel) => channel.id) || [],
       ).toEqual(
         initialIncidents
-          .filter((incident) =>
-            incident.participants.some(
-              (participant) => participant.name === member.name,
-            ),
-          )
+          .filter((incident) => canAccessEmergency(member, incident.id))
           .map((incident) => `emergency:${incident.id}`),
       );
+      for (const incident of initialIncidents)
+        expect(
+          incident.participants.some(
+            (participant) => participant.name === member.name,
+          ),
+        ).toBe(canAccessEmergency(member, incident.id));
     }
   });
-  it("switches personas without retaining someone else's channel, file or unit context", () => {
+  it("switches preview roles without retaining another role's channel, file or private unit", () => {
     expect(
       teamsPreviewHrefForStaff(
-        person("sam"),
+        person("jamie"),
         "/logistics/teams",
         "?staff=maya&channel=central-city&document=central-schedule&tab=Shared",
       ),
-    ).toBe("/logistics/teams?staff=sam&channel=important&tab=Posts");
+    ).toBe("/logistics/teams?staff=jamie&channel=important&tab=Posts");
     expect(
       teamsPreviewHrefForStaff(
-        person("sam"),
+        person("jamie"),
         "/teams",
-        "?staff=alex&workspace=content&channel=Web+Desk&file=landing-copy",
+        "?staff=taylor&workspace=content&channel=Editorial+Desk&file=landing-copy",
       ),
-    ).toBe("/teams?staff=sam");
+    ).toBe("/teams?staff=jamie");
     const next = new URL(
       teamsPreviewHrefForStaff(
         person("jamie"),
         "/teams",
-        "?staff=elena&department=pac&unit=learning-and-capability&folder=Unit+Meetings&file=private-unit&tab=Shared",
+        "?staff=taylor&department=pac&unit=learning-and-capability&folder=Unit+Meetings&file=private-unit&tab=Shared",
       ),
       "https://example.test",
     );
@@ -216,16 +199,16 @@ describe("Teams membership follows the selected staff context", () => {
       expect(next.searchParams.has(key)).toBe(false);
     expect(
       teamsPreviewHrefForStaff(
-        person("maya"),
+        person("taylor"),
         "/projects/PRJ-2026-014/teams",
         "?staff=devon&tab=Shared",
       ),
-    ).toBe("/teams?staff=maya");
+    ).toBe("/teams?staff=taylor");
     expect(
       teamsPreviewHrefForStaff(
         person("maya"),
         "/emergency-response/incidents/INC-104",
-        "?staff=harper",
+        "?staff=devon",
       ),
     ).toBe("/teams?staff=maya");
   });

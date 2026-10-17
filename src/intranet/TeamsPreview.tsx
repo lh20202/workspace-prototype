@@ -1,3 +1,6 @@
+import { withExplicitStaff } from "../utils/staffNavigation";
+import { canAccessArea } from "../access/policy";
+import { publishingPosts } from "../workspaces/publishingTeams";
 import { useState, useEffect } from "react";
 import { functionalConfigs } from "../workspaces/config";
 import {
@@ -226,7 +229,9 @@ export default function TeamsPreview() {
   const channelDenied =
     !department && !canSeeWorkspaceChannel(person, workspace.id, channel);
   const securityDenied =
-    workspace.id === "digital" && channel === "Security Engineering";
+    workspace.id === "digital" &&
+    channel === "Security Engineering" &&
+    !canAccessArea(person, "digital", "security");
   const files = (sharedFiles[workspace.id] || []).filter((file) => {
     if (securityDenied || workspaceDenied || channelDenied) return false;
     if (workspace.id === "content")
@@ -235,6 +240,8 @@ export default function TeamsPreview() {
       );
     if (workspace.id === "digital") {
       const area = (file as OperationalFile & { area: string }).area;
+      if (channel === "Security Engineering")
+        return ["operations", "m365"].includes(area);
       return channel === "General"
         ? visibleWorkspaceChannels(person, "digital").some(
             (name) => digitalArea[name] === area,
@@ -332,9 +339,11 @@ export default function TeamsPreview() {
     : documentsForLibrary;
   function openSharePoint() {
     location.assign(
-      sharepointDestination(
-        workspace.id,
-        new URLSearchParams(location.search).get("file"),
+      withExplicitStaff(
+        sharepointDestination(
+          workspace.id,
+          new URLSearchParams(location.search).get("file"),
+        ),
       ),
     );
   }
@@ -353,7 +362,8 @@ export default function TeamsPreview() {
       activeTab={tab}
       onTabChange={chooseTab}
       privateChannel={
-        department?.channelAccess === "Department-only" || securityDenied
+        department?.channelAccess === "Department-only" ||
+        (workspace.id === "digital" && channel === "Security Engineering")
       }
       onOpenSharePoint={
         department || workspaceDenied || channelDenied || securityDenied
@@ -398,6 +408,11 @@ export default function TeamsPreview() {
         <AccessBoundary
           workspaceId="digital"
           area="Security Engineering"
+          resource={{
+            kind: "area",
+            workspaceId: "digital",
+            areaId: "security",
+          }}
           personId={person.id}
           location="Digital & Technology / Security Engineering"
           strict
@@ -466,6 +481,14 @@ export default function TeamsPreview() {
             query.delete("view");
             history.replaceState({}, "", `/teams?${query}`);
           }}
+        />
+      ) : workspace.id === "publishing" ? (
+        <TechnicalConversation
+          key={channel}
+          channel={channel}
+          userName={person.name}
+          searchQuery={search}
+          messages={publishingPosts}
         />
       ) : workspace.id === "digital" ? (
         <TechnicalConversation

@@ -20,8 +20,8 @@ import {
 } from "../content/data";
 import { prototypeForPath } from "../utils/routes";
 describe("canonical functional ownership", () => {
-  it("registers 16 business purposes with separate confidential welfare ownership", () => {
-    expect(workspaceRegistry).toHaveLength(16);
+  it("registers 17 business purposes with separate confidential welfare ownership", () => {
+    expect(workspaceRegistry).toHaveLength(17);
     expect(new Set(workspaceRegistry.map((w) => w.href)).size).toBe(
       workspaceRegistry.length,
     );
@@ -147,8 +147,8 @@ describe("archive discovery and technical engineering are distinct", () => {
       technicalPosts.filter((p) => p.channel === "Innovators").length,
     ).toBeGreaterThan(1);
     expect(technicalPosts.some((p) => p.text.includes("Qwen3"))).toBe(true);
-    for (const p of technicalPosts)
-      expect(gitHref(p.repo, p.kind, p.ref)).toMatch(
+    for (const p of technicalPosts.filter((post) => !!post.repo))
+      expect(gitHref(p.repo!, p.kind, p.ref)).toMatch(
         /^\/digital-tech\/systems\/github\?/,
       );
   });

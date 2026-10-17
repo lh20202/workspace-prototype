@@ -12,6 +12,15 @@ interface ConversationPost {
   kind?: string;
   ref?: string;
 }
+interface ConversationMessage {
+  channel: string;
+  author: string;
+  text: string;
+  reply?: string;
+  repo?: string;
+  kind?: string;
+  ref?: string;
+}
 const initials = (name: string) =>
   name
     .split(" ")
@@ -22,10 +31,12 @@ export default function TechnicalConversation({
   channel,
   userName = "Devon Park",
   searchQuery = "",
+  messages = technicalPosts,
 }: {
   channel: string;
   userName?: string;
   searchQuery?: string;
+  messages?: ConversationMessage[];
 }) {
   const [draft, setDraft] = useState("");
   const [posts, setPosts] = useState<
@@ -36,7 +47,7 @@ export default function TechnicalConversation({
   const [replyDraft, setReplyDraft] = useState("");
   const [replies, setReplies] = useState<Record<string, string[]>>({});
   const currentPosts: ConversationPost[] = [
-    ...technicalPosts
+    ...messages
       .filter((p) => p.channel === channel)
       .map((p, i) => ({
         ...p,

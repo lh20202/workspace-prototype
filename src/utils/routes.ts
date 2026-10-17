@@ -49,6 +49,7 @@ export function prototypeForPath(
     [
       "/quality-monitoring",
       "/digital-tech",
+      "/workspace-publishing",
       "/archives",
       "/legal-compliance",
       "/people-culture",

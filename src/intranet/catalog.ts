@@ -1,4 +1,9 @@
 import { workspaceRegistry } from "../workspaces/registry";
+import {
+  previewRoles,
+  defaultPreviewRoleId,
+  type PreviewRole,
+} from "../access/policy";
 export const workspaces = workspaceRegistry;
 const baseStaff = [
   {
@@ -73,7 +78,7 @@ const memberships: Record<string, { departmentId: string; unitId: string }> = {
   skyler: { departmentId: "", unitId: "" },
   harper: { departmentId: "finance-services", unitId: "legal-and-assurance" },
 };
-export const staff = [
+export const peopleDirectory = [
   {
     id: "riley",
     name: "Riley Quinn",
@@ -112,7 +117,9 @@ export const staff = [
     workspace: "legal",
   },
 ].map((s) => ({ ...s, ...memberships[s.id] }));
-export type StaffPerson = (typeof staff)[number];
+/** The company directory retains authors and focal points without making them preview identities. */
+export const staff = previewRoles;
+export type StaffPerson = PreviewRole;
 /** A record owner/contact is not a selectable or privileged Teams identity. */
 export const recordContacts = [
   { id: "morgan", name: "Morgan Reed", role: "Records Adviser" },
@@ -120,7 +127,7 @@ export const recordContacts = [
 export function resolveStaffPerson(id?: string | null): StaffPerson {
   return (
     staff.find((person) => person.id === (id || selectedStaffId())) ||
-    staff.find((person) => person.id === "maya")!
+    staff.find((person) => person.id === defaultPreviewRoleId)!
   );
 }
 export function selectedStaffId() {
@@ -128,7 +135,7 @@ export function selectedStaffId() {
     typeof sessionStorage === "undefined"
       ? null
       : sessionStorage.getItem("workspace-preview-staff");
-  return staff.some((s) => s.id === id) ? id! : "maya";
+  return staff.some((s) => s.id === id) ? id! : defaultPreviewRoleId;
 }
 export function rememberStaff(id: string) {
   if (staff.some((s) => s.id === id))

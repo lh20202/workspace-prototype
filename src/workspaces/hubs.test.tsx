@@ -15,7 +15,11 @@ import {
 import Directory from "../intranet/Directory";
 import ExecutiveApp from "../executive/ExecutiveApp";
 import TeamsPreview from "../intranet/TeamsPreview";
-import { staff } from "../intranet/catalog";
+import {
+  staff,
+  peopleDirectory,
+  resolveStaffPerson,
+} from "../intranet/catalog";
 import { defaultTeamsContext, teamsGroups } from "../teams/navigation";
 import { prototypeForPath, pageTitle } from "../utils/routes";
 import { accessFocalPoint, accessWorkspaceId } from "../access/model";
@@ -40,6 +44,7 @@ describe("hub families retain one canonical owner for every environment", () => 
           "legal",
           "services",
           "digital",
+          "publishing",
           "archives",
         ],
       ],
@@ -181,23 +186,31 @@ describe("confidential membership remains separate from hub association", () => 
     );
     at("/executive/leadership?preview=leadership");
     const leadership = renderToStaticMarkup(createElement(ExecutiveApp));
-    expect(leadership).toContain('aria-label="Signed in as Avery Quinn"');
-    expect(leadership).not.toContain("Access required");
+    expect(leadership).toContain("Access required");
+    expect(leadership).not.toContain('aria-label="Signed in as Avery Quinn"');
+    at("/executive/leadership?staff=robin", "robin");
+    expect(renderToStaticMarkup(createElement(ExecutiveApp))).not.toContain(
+      'class="access-boundary',
+    );
   });
-  it("keeps the independent representative in company conversations without inventing HR or welfare Teams", () => {
-    const representative = staff.find((person) => person.id === "skyler")!;
-    expect(defaultTeamsContext(representative)).toEqual({
-      workspaceId: "logistics",
-      departmentId: undefined,
-    });
-    expect(teamsGroups(representative).map((group) => group.id)).toEqual([
-      "company",
-      "logistics",
-    ]);
+  it("retains the independent representative as a contact without a hidden preview identity", () => {
+    expect(peopleDirectory.find((person) => person.id === "skyler")?.role).toBe(
+      "Independent Employee Representative",
+    );
+    expect(staff.some((person) => person.id === "skyler")).toBe(false);
+    const fallback = resolveStaffPerson("skyler");
+    expect(fallback.id).toBe("taylor");
+    expect(defaultTeamsContext(fallback).departmentId).toBe(
+      fallback.departmentId,
+    );
+    const groups = teamsGroups(fallback).map((group) => group.id);
+    expect(groups).toContain("company");
+    expect(groups).toContain("logistics");
+    expect(groups).not.toContain("welfare");
+    expect(groups).not.toContain("publishing");
     at("/teams?staff=skyler", "skyler");
     const html = renderToStaticMarkup(createElement(TeamsPreview));
-    expect(html).toContain("Opening Teams");
-    expect(html).not.toContain("MCG Department");
+    expect(html).toContain("Signed in as Taylor Brooks");
     expect(html).not.toContain("PAC Department");
     expect(html).not.toContain("Manage teams");
   });
