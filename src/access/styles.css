@@ -12,26 +12,42 @@
   min-width: 0;
 }
 .access-preview-role {
-  margin: 14px 0 0;
-  font-size: 13px;
-  line-height: 20px;
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 20px;
+  border: 1px solid #b4d6fa;
+  border-left: 4px solid #0f6cbd;
+  border-radius: 4px;
+  background: #eaf4ff;
+  font-size: 14px;
+  line-height: 22px;
 }
 .access-preview-role button {
-  padding: 4px 0;
-  border: 0;
-  background: transparent;
-  color: #0f6cbd;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 10px 18px;
+  border: 1px solid #0f6cbd;
+  border-radius: 4px;
+  background: #0f6cbd;
+  color: #fff;
   font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
   text-align: left;
-  text-decoration: underline;
-  text-underline-offset: 3px;
   cursor: pointer;
 }
 .access-preview-role button:hover {
-  color: #0c3b5e;
+  border-color: #0f548c;
+  background: #0f548c;
+}
+.access-preview-role button:active {
+  background: #0c3b5e;
 }
 .access-preview-role button:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid #0c3b5e;
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -200,13 +216,6 @@
   }
 }
 
-.access-preview-role {
-  display: grid;
-  justify-items: start;
-  gap: 5px;
-}
 .access-preview-role span {
-  color: #616161;
-  font-size: 12px;
-  line-height: 18px;
+  color: #24445e;
 }
