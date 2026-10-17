@@ -121,6 +121,9 @@ export function destinationsForHub(id: HubId): ArchitectureDestination[] {
     return [
       ...personnelDestinations.normal,
       ...personnelDestinations.controlled,
+      ...environmentsForHub(id)
+        .filter((environment) => environment.environmentType !== "workspace")
+        .map((environment) => architectureDestinationById.get(environment.id)!),
     ];
   return environmentsForHub(id).map((environment) =>
     architectureDestinationById.get(environment.id)!,

@@ -1,3 +1,4 @@
+import AccessLock from "../components/AccessLock";
 import { canAccessWorkspace } from "../access/policy";
 import WorkspaceDenied from "../access/WorkspaceDenied";
 import StaffLink from "../components/StaffLink";
@@ -19,7 +20,6 @@ import {
   List24Regular,
   Dismiss20Regular,
   Search20Regular,
-  LockClosed20Regular,
   ArrowRight20Regular,
   ChevronLeft20Regular,
   ChevronRight20Regular,
@@ -582,7 +582,7 @@ export default function AudienceApp() {
                     className="rd-protected-link"
                     href={`${base}/research/website-usability/participant-administration`}
                   >
-                    <LockClosed20Regular />
+                    <AccessLock />
                     Participant administration
                   </StaffLink>
                 </p>

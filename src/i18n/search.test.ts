@@ -53,7 +53,10 @@ describe("search matches the same canonical records in English and German", () =
       ),
     ).toBe(true);
     expect(
-      matchesDisplayText("Staff Service Operations", "Interne Serviceprozesse"),
+      matchesDisplayText(
+        "Staff Service Operations",
+        "Einkauf & Büroorganisation",
+      ),
     ).toBe(true);
     expect(
       matchesDisplayText(

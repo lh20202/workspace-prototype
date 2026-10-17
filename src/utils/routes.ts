@@ -1,4 +1,5 @@
 import { environmentRegistry } from "../workspaces/registry";
+import { externalPreviewForPath } from "../environments/previewRoutes";
 export function planningPath(page: string) {
   return page === "home"
     ? "/planning"
@@ -91,6 +92,8 @@ export function prototypeForPath(
   return pathname.startsWith("/logistics") ? "logistics" : "planning";
 }
 export function pageTitle(pathname: string) {
+  const external = externalPreviewForPath(pathname);
+  if (external) return `${external.name} | Demo`;
   if (pathname === "/") return "Welcome | Digital Workspace demo site";
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
@@ -103,7 +106,7 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/employee-council"))
     return "Welfare & Employee Representation";
   if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
-  if (pathname.startsWith("/governance")) return "Governance & Members Portal";
+  if (pathname.startsWith("/governance")) return "Members Portal";
   if (pathname.startsWith("/emergency-response"))
     return "Emergency Response | Demo preview";
   if (pathname === "/teams") return "Digital workspaces | Teams";

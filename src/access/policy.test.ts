@@ -126,6 +126,24 @@ describe("the six role access matrix", () => {
     for (const role of previewRoles.filter((role) => role.id !== "maya"))
       expect(canAccessPortal(role)).toBe(false);
   });
+  it("keeps shared Wiki knowledge open beyond Sales roles, with a single frontline exception", () => {
+    const areas = [
+      "foundations",
+      "messaging",
+      "insight",
+      "standards",
+      "learning",
+      "tools",
+      "contacts",
+      "a-z",
+    ];
+    for (const role of previewRoles)
+      for (const area of areas)
+        expect(canAccessWikiArea(role, area)).toBe(
+          role.id !== "maya" || area !== "insight",
+        );
+    expect(canAccessWikiArea("devon", "not-a-knowledge-area")).toBe(false);
+  });
   it("keeps functional Teams participation separate from ordinary SharePoint readership", () => {
     const companyChannels = [
       "important",

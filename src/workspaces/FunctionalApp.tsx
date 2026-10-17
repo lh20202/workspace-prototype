@@ -1,3 +1,9 @@
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import AccessLock from "../components/AccessLock";
+import {
+  externalEnvironmentForTool,
+  externalPreviewHref,
+} from "../environments/catalog";
 import { canAccessWorkspace, canAccessArea } from "../access/policy";
 import { useEffect, useState } from "react";
 import {
@@ -7,7 +13,7 @@ import {
   DrawerHeaderTitle,
   DrawerBody,
 } from "@fluentui/react-components";
-import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
+import { Dismiss20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
@@ -276,11 +282,20 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               <StaffLink
                 key={id}
                 href={
-                  id === "freshservice"
-                    ? "/service-desk/it-support"
+                  externalEnvironmentForTool(id)
+                    ? externalPreviewHref(
+                        externalEnvironmentForTool(id)!.id,
+                        href(l?.id || ""),
+                      )
                     : href(`systems/${id}`)
                 }
               >
+                {externalEnvironmentForTool(id) && (
+                  <ExternalBrandMark
+                    id={externalEnvironmentForTool(id)!.id}
+                    size={24}
+                  />
+                )}{" "}
                 Open in {t.name} ↗
               </StaffLink>
             );
@@ -331,7 +346,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           )}
           {protectedLinks.map((s) => (
             <StaffLink key={s.id} href={href(`${s.area}/${s.id}`)}>
-              <LockClosed20Regular />
+              <AccessLock size={20} labelled={false} />
               {s.name}
             </StaffLink>
           ))}
@@ -655,7 +670,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                   subject?.id === "employee-records" ? "page" : undefined
                 }
               >
-                <LockClosed20Regular />
+                <AccessLock size={20} labelled={false} />
                 Employment Records & Contracts
               </StaffLink>
             )}
@@ -676,7 +691,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                       : undefined
                 }
               >
-                <LockClosed20Regular />
+                <AccessLock size={20} labelled={false} />
                 {protectedNavigation[workspace.id]}
               </StaffLink>
             )}
@@ -905,7 +920,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               ))}
               <p>
                 <StaffLink href={href("communities/network-membership")}>
-                  <LockClosed20Regular />
+                  <AccessLock size={20} labelled={false} />
                   Private community collaboration
                 </StaffLink>
               </p>
@@ -923,7 +938,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               <div className="functional-protected-links">
                 {config.protected.map((s) => (
                   <StaffLink key={s.id} href={href(`${s.area}/${s.id}`)}>
-                    <LockClosed20Regular />
+                    <AccessLock size={20} labelled={false} />
                     {s.name}
                   </StaffLink>
                 ))}

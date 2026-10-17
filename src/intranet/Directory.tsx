@@ -1,13 +1,14 @@
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import WorkspaceIcon from "../components/WorkspaceIcon";
+import AccessLock from "../components/AccessLock";
+import TeamsMark from "../components/TeamsMark";
 import StaffLink from "../components/StaffLink";
 import {
   ArrowRight20Regular,
   GridDots24Regular,
   ChevronRight16Regular,
   Organization24Regular,
-  LockClosed16Regular,
 } from "@fluentui/react-icons";
 import { resolveStaffPerson } from "./catalog";
 import { architectureSections, hubById } from "../workspaces/registry";
@@ -28,19 +29,6 @@ import "../executive/styles.css";
 import "../workspaces/styles.css";
 import "./architecture-hubs.css";
 
-function AccessLock() {
-  return (
-    <span
-      className="directory-confidential"
-      role="img"
-      aria-label="Controlled access"
-      title="Controlled access"
-    >
-      <LockClosed16Regular aria-hidden="true" />
-    </span>
-  );
-}
-
 function DestinationTile({
   destination,
 }: {
@@ -55,7 +43,9 @@ function DestinationTile({
       <WorkspaceIcon />
       <h3>
         {destination.label}
-        {destination.accessLevel === "strictly-confidential" && <AccessLock />}
+        {destination.accessLevel === "strictly-confidential" && (
+          <AccessLock className="directory-confidential" />
+        )}
       </h3>
       <ArrowRight20Regular className="directory-row-arrow" aria-hidden="true" />
     </StaffLink>
@@ -141,7 +131,7 @@ export default function Directory() {
                         >
                           <WorkspaceIcon size={32} />
                           <h2 id="hub-finance">{destination.label}</h2>
-                          <AccessLock />
+                          <AccessLock className="directory-confidential" />
                           <ArrowRight20Regular aria-hidden="true" />
                         </StaffLink>
                       </header>
@@ -156,6 +146,7 @@ export default function Directory() {
                           ))}
                         </div>
                       </div>
+                      <AdminLogins hubId="finance" />
                     </section>
                   );
                 }
@@ -200,7 +191,7 @@ export default function Directory() {
                                 href={destination.href}
                                 key={destination.id}
                               >
-                                <AccessLock />
+                                <AccessLock className="directory-confidential" />
                                 <span>{destination.label}</span>
                                 <ChevronRight16Regular aria-hidden="true" />
                               </StaffLink>
@@ -223,7 +214,7 @@ export default function Directory() {
                     ) && (
                       <div
                         className="directory-knowledge"
-                        aria-label="Knowledge & frontline"
+                        aria-label="Knowledge & external environments"
                       >
                         {environments
                           .filter((environment) =>
@@ -245,22 +236,17 @@ export default function Directory() {
                           ))}
                       </div>
                     )}
+                    <AdminLogins hubId={hub.id} />
                   </section>
                 );
               })}
-              <AdminLogins />
             </div>
             <aside
               className="directory-coordination"
               aria-label="Department Teams"
             >
               <h2>
-                <img
-                  src="/images/teams-logo.svg"
-                  alt=""
-                  width="26"
-                  height="26"
-                />
+                <TeamsMark size={26} />
                 Department Teams
               </h2>
               <p>Local meetings, planning and team coordination.</p>
@@ -274,7 +260,7 @@ export default function Directory() {
                     {department.name}
                     <small>
                       <span className="department-open-label">
-                        Open in Teams
+                        <TeamsMark size={12} /> Open in Teams
                       </span>
                     </small>
                   </span>
@@ -285,12 +271,7 @@ export default function Directory() {
                 className="directory-my-teams"
                 href={`/teams?staff=${person.id}`}
               >
-                <img
-                  src="/images/teams-logo.svg"
-                  alt=""
-                  width="19"
-                  height="19"
-                />
+                <TeamsMark size={19} />
                 Open my Teams
                 <ArrowRight20Regular aria-hidden="true" />
               </StaffLink>

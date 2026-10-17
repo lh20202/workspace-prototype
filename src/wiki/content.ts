@@ -95,8 +95,8 @@ article(
         "Beginnen Sie ein Briefing mit dem Bedarf der Zielgruppe, dem gewünschten Ergebnis und einer zentralen Botschaft.",
       ],
       [
-        "Use the approved identity assets. Creative production and review stay in the Creative & Editorial workspace.",
-        "Verwenden Sie die freigegebenen Gestaltungselemente. Produktion und Abstimmung finden im Arbeitsbereich Kreation & Redaktion statt.",
+        "Use the approved identity assets. Creative production and review stay in the Creative Studio workspace.",
+        "Verwenden Sie die freigegebenen Gestaltungselemente. Produktion und Abstimmung finden im Arbeitsbereich Kreativstudio statt.",
       ],
     ],
   ],
@@ -162,7 +162,7 @@ article(
       ],
       [
         "Take new research questions to Research & Insight; retain the source and its limitations.",
-        "Neue Forschungsfragen gehen an Recherche & Analyse. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
+        "Neue Forschungsfragen gehen an Forschung & Analyse. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
       ],
     ],
   ],
@@ -294,8 +294,8 @@ article(
         "Prüfen Sie vor der Wiederverwendung Zielgruppe, Kanal, Prüfdatum und mögliche Einschränkungen.",
       ],
       [
-        "Bring proposed changes back to Creative & Editorial rather than editing a local copy.",
-        "Bringen Sie Änderungsvorschläge in Kreation & Redaktion ein, statt eine lokale Kopie anzupassen.",
+        "Bring proposed changes back to Creative Studio rather than editing a local copy.",
+        "Bringen Sie Änderungsvorschläge in Kreativstudio ein, statt eine lokale Kopie anzupassen.",
       ],
     ],
   ],
@@ -459,8 +459,64 @@ article(
         "Prüfen Sie die aktuelle Fassung im vereinbarten Produktionsablauf.",
       ],
       [
-        "Creative & Editorial holds working assets and approvals; this page explains the method.",
-        "Kreation & Redaktion verwaltet Arbeitsdateien und Freigaben. Diese Seite erläutert das Vorgehen.",
+        "Creative Studio holds working assets and approvals; this page explains the method.",
+        "Kreativstudio verwaltet Arbeitsdateien und Freigaben. Diese Seite erläutert das Vorgehen.",
+      ],
+    ],
+  ],
+);
+
+article(
+  "messaging",
+  "working-with-creative-studio",
+  ["Working with the Creative Studio", "Zusammenarbeit mit dem Kreativstudio"],
+  [
+    "Bring topic expertise and channel craft together, from a clear brief to a release people can use.",
+    "Fachwissen und Kanalexpertise verbinden – von einem klaren Briefing bis zur Veröffentlichung.",
+  ],
+  [
+    [
+      ["What the Studio does", "Die Aufgaben des Kreativstudios"],
+      [
+        "The Studio brings messaging, design, digital production and channel desks together around a shared piece of work.",
+        "Im Kreativstudio arbeiten Redaktion, Gestaltung, digitale Produktion und Kanalteams gemeinsam an Inhalten.",
+      ],
+      [
+        "Topic specialists contribute evidence, context and factual checks. Channel desks adapt the work for the places it will appear.",
+        "Fachverantwortliche liefern Belege und Hintergrundwissen und prüfen die Fakten. Kanalteams bereiten die Inhalte für den jeweiligen Veröffentlichungsort auf.",
+      ],
+    ],
+    [
+      ["From brief to release", "Vom Briefing zur Veröffentlichung"],
+      [
+        "Start with the audience need, intended outcome, main message, formats and delivery date. Agree a production lead before work begins.",
+        "Zielgruppenbedarf, gewünschtes Ergebnis, Kernbotschaft, Formate und Liefertermin im Briefing festhalten. Vor dem Start die Produktionsleitung festlegen.",
+      ],
+      [
+        "The lead coordinates the creative or channel desk, gathers specialist feedback and keeps review decisions with the current version.",
+        "Die Produktionsleitung stimmt die Arbeit mit Kreativ- und Kanalteams ab, bündelt fachliches Feedback und dokumentiert Prüfentscheidungen bei der aktuellen Fassung.",
+      ],
+    ],
+    [
+      ["Working files and conversation", "Arbeitsdateien und Abstimmung"],
+      [
+        "Keep shared drafts, review files and release records in the Creative Studio workspace, with one current link for each working file.",
+        "Gemeinsame Entwürfe, Abstimmungsdateien und Freigaben im Arbeitsbereich Kreativstudio ablegen. Jede Arbeitsdatei hat einen gemeinsamen Link zur aktuellen Fassung.",
+      ],
+      [
+        "Use the relevant Teams channel for questions, coordination and quick feedback. Link to the workspace file rather than uploading another copy.",
+        "Fragen, Abstimmungen und kurze Rückmeldungen gehören in den passenden Teams-Kanal. Dort die Arbeitsdatei verlinken, statt eine weitere Kopie hochzuladen.",
+      ],
+    ],
+    [
+      ["Review, handoff and help", "Prüfung, Übergabe und Unterstützung"],
+      [
+        "Agree who checks facts, accessibility and the final release. Hand over the approved version, destination and any usage limits together.",
+        "Festlegen, wer Fakten und Barrierefreiheit prüft und die endgültige Freigabe erteilt. Die freigegebene Fassung zusammen mit Zielkanal und möglichen Nutzungsbeschränkungen übergeben.",
+      ],
+      [
+        "Ask Alex Morgan, the Studio focal point, to connect a new brief with the right topic specialist or channel desk.",
+        "Alex Morgan ist die Ansprechperson des Kreativstudios und bringt ein neues Briefing mit den passenden Fachverantwortlichen oder Kanalteams zusammen.",
       ],
     ],
   ],
@@ -494,7 +550,7 @@ article(
       ],
       [
         "Current reporting and analysis remain in Research & Insight and approved dashboards.",
-        "Aktuelle Berichte und Analysen verbleiben in Recherche & Analyse und den freigegebenen Dashboards.",
+        "Aktuelle Berichte und Analysen verbleiben in Forschung & Analyse und den freigegebenen Dashboards.",
       ],
     ],
   ],
@@ -527,7 +583,7 @@ article(
       ],
       [
         "Ask Research & Insight before changing a definition or combining small groups.",
-        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit Recherche & Analyse ab.",
+        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit Forschung & Analyse ab.",
       ],
     ],
   ],
@@ -560,7 +616,7 @@ article(
       ],
       [
         "Commission or update competitor research through Research & Insight.",
-        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über Recherche & Analyse.",
+        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über Forschung & Analyse.",
       ],
     ],
   ],
@@ -626,7 +682,7 @@ article(
       ],
       [
         "Digital & Technology manages tracking implementation; Research & Insight manages interpretation.",
-        "Digital & Technologie betreut die technische Messung. Recherche & Analyse verantwortet die Auswertung.",
+        "Technik & Digitales betreut die technische Messung. Forschung & Analyse verantwortet die Auswertung.",
       ],
     ],
   ],
@@ -659,7 +715,7 @@ article(
       ],
       [
         "Keep the live evaluation in Research & Insight and link to its approved conclusion.",
-        "Führen Sie die laufende Auswertung in Recherche & Analyse und verlinken Sie ihr freigegebenes Fazit.",
+        "Führen Sie die laufende Auswertung in Forschung & Analyse und verlinken Sie ihr freigegebenes Fazit.",
       ],
     ],
   ],
@@ -692,7 +748,7 @@ article(
       ],
       [
         "Ask Research & Insight to review the method before participant contact.",
-        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch Recherche & Analyse prüfen.",
+        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch Forschung & Analyse prüfen.",
       ],
     ],
   ],
@@ -754,8 +810,8 @@ article(
     [
       ["If use changes", "Bei geänderter Verwendung"],
       [
-        "Ask Creative & Editorial to confirm whether the existing approval covers the proposed use.",
-        "Lassen Sie durch Kreation & Redaktion prüfen, ob die bestehende Freigabe die geplante Nutzung abdeckt.",
+        "Ask Creative Studio to confirm whether the existing approval covers the proposed use.",
+        "Lassen Sie durch Kreativstudio prüfen, ob die bestehende Freigabe die geplante Nutzung abdeckt.",
       ],
       [
         "Legal handles interpretation and clearance questions; do not copy licence records into this Wiki.",
@@ -857,8 +913,8 @@ article(
         "Prüfen Sie Hinweise in der Größe und im Kanal, in denen Kundinnen und Kunden sie sehen werden.",
       ],
       [
-        "Route new or changed claims through Creative & Editorial and Legal before publication.",
-        "Lassen Sie neue oder geänderte Aussagen vor Veröffentlichung durch Kreation & Redaktion und Recht prüfen.",
+        "Route new or changed claims through Creative Studio and Legal before publication.",
+        "Lassen Sie neue oder geänderte Aussagen vor Veröffentlichung durch Kreativstudio und Recht prüfen.",
       ],
     ],
   ],
@@ -1027,7 +1083,7 @@ article(
       ],
       [
         "Ask Research & Insight for a method review before recruiting participants.",
-        "Bitten Sie Recherche & Analyse vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
+        "Bitten Sie Forschung & Analyse vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
       ],
     ],
   ],
@@ -1093,7 +1149,7 @@ article(
       ],
       [
         "Check the proposed change with Customer Care and Research & Insight before broader rollout.",
-        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und Recherche & Analyse.",
+        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und Forschung & Analyse.",
       ],
     ],
   ],
@@ -1127,7 +1183,7 @@ article(
       ],
       [
         "Send platform faults to Digital & Technology; ask Customer Care about record-handling questions.",
-        "Melden Sie Plattformfehler an Digital & Technologie. Fragen zur Datensatzbearbeitung gehen an die Kundenbetreuung.",
+        "Melden Sie Plattformfehler an Technik & Digitales. Fragen zur Datensatzbearbeitung gehen an die Kundenbetreuung.",
       ],
     ],
   ],
@@ -1188,8 +1244,8 @@ article(
     [
       ["Coordinate delivery", "Die Umsetzung koordinieren"],
       [
-        "Track commissioning, review and publication in Creative & Editorial.",
-        "Steuern Sie Beauftragung, Abstimmung und Veröffentlichung in Kreation & Redaktion.",
+        "Track commissioning, review and publication in Creative Studio.",
+        "Steuern Sie Beauftragung, Abstimmung und Veröffentlichung in Kreativstudio.",
       ],
       [
         "Keep one link to the current asset and record decisions in the production workflow.",
@@ -1226,7 +1282,7 @@ article(
       ],
       [
         "Take unexplained movement to Research & Insight with the same filters and reporting period.",
-        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zu Recherche & Analyse.",
+        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zu Forschung & Analyse.",
       ],
     ],
   ],
@@ -1255,7 +1311,7 @@ article(
       ["Review and report", "Prüfen und berichten"],
       [
         "Ask Research & Insight to check the design and the approved contact route.",
-        "Lassen Sie Design und freigegebenen Kontaktweg durch Recherche & Analyse prüfen.",
+        "Lassen Sie Design und freigegebenen Kontaktweg durch Forschung & Analyse prüfen.",
       ],
       [
         "Report the response base and limitations; keep participant data in the approved research system.",

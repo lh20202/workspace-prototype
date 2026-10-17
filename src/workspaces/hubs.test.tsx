@@ -13,9 +13,7 @@ import {
   resolveLegacy,
 } from "./registry";
 import Directory from "../intranet/Directory";
-import {
-  personnelDestinations,
-} from "../intranet/architectureDestinations";
+import { personnelDestinations } from "../intranet/architectureDestinations";
 import HubNavigation from "../components/HubNavigation";
 import { getHubNavigationModel } from "../components/hubNavigationModel";
 import ExecutiveApp from "../executive/ExecutiveApp";
@@ -83,7 +81,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     for (const hub of hubDefinitions)
       for (const environment of environmentsForHub(hub.id)) {
         expect(environment.hubId).toBe(hub.id);
-        if (environment.environmentType !== "workspace")
+        if (environment.environmentType === "wiki")
           expect(hub.id).toBe("sales-marketing");
       }
     expect(
@@ -95,6 +93,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       "Customer Relations",
       "Sales & Marketing Wiki",
       "Frontline Crew Portal",
+      "Global Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
       title: "Purchasing & Office",
@@ -213,7 +212,7 @@ describe("hub families retain one canonical owner for every environment", () => 
           .filter(({ isCurrent }) => isCurrent)
           .map(({ destinationHref }) => destinationHref),
       ).toEqual(["/people-culture?staff=jamie"]);
-      expect(model.related).toEqual([]);
+      expect(model.related.map(({ id }) => id)).toEqual(["taskforce"]);
       for (const normal of personnelDestinations.normal)
         expect(model.workspaces.some(({ href }) => href === normal.href)).toBe(
           false,

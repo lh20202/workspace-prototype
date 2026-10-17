@@ -1,82 +1,36 @@
-import { useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogBody,
-  DialogContent,
-  DialogSurface,
-  DialogTitle,
-} from "@fluentui/react-components";
 import { Open16Regular } from "@fluentui/react-icons";
-import { adminLoginSystems, type AdminLoginSystem } from "./adminLoginPlatforms";
+import {
+  adminPlatformsForHub,
+  externalPreviewHref,
+  type AdminHubId,
+} from "../environments/catalog";
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import StaffLink from "../components/StaffLink";
 import "./admin-logins.css";
 
-/** Third-party products deliberately use their own brands, not workspace marks. */
-export default function AdminLogins() {
-  const [system, setSystem] = useState<AdminLoginSystem>();
+/** Product links remain subordinate to the functional environments in each hub. */
+export default function AdminLogins({ hubId }: { hubId: AdminHubId }) {
+  const entries = adminPlatformsForHub(hubId);
   return (
     <section
       className="directory-admin-logins"
-      aria-labelledby="admin-logins-heading"
+      aria-labelledby={`admin-logins-${hubId}`}
     >
-      <h2 id="admin-logins-heading">Admin logins</h2>
+      <h3 id={`admin-logins-${hubId}`}>Admin logins</h3>
       <div className="directory-admin-list">
-        {adminLoginSystems.map((entry) => (
-          <button
-            type="button"
+        {entries.map((entry) => (
+          <StaffLink
             key={entry.id}
-            onClick={() => setSystem(entry)}
-            aria-haspopup="dialog"
+            href={externalPreviewHref(entry.id)}
+            title={entry.category}
+            data-brand={entry.id}
           >
-            <img src={entry.logo} alt="" width="34" height="34" />
+            <ExternalBrandMark id={entry.id} />
             <span data-no-translate>{entry.name}</span>
             <Open16Regular aria-hidden="true" />
-          </button>
+          </StaffLink>
         ))}
       </div>
-      <Dialog
-        open={!!system}
-        onOpenChange={(_, data) => {
-          if (!data.open) setSystem(undefined);
-        }}
-      >
-        <DialogSurface className="admin-system-simulation">
-          {system && (
-            <DialogBody>
-              <DialogTitle>
-                <span className="admin-system-brand">
-                  <img src={system.logo} alt="" width="40" height="40" />
-                  <span data-no-translate>{system.name}</span>
-                </span>
-              </DialogTitle>
-              <DialogContent>
-                <p className="admin-system-purpose">{system.purpose}</p>
-                <div className="admin-system-demo-note">
-                  Fictional external system. No live connection or sign-in.
-                </div>
-                <h3>{system.queue}</h3>
-                <ul className="admin-system-queue">
-                  {system.items.map((item) => (
-                    <li key={item}>
-                      <span>{item}</span>
-                      <small>Demo item</small>
-                    </li>
-                  ))}
-                </ul>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  appearance="primary"
-                  onClick={() => setSystem(undefined)}
-                >
-                  Close
-                </Button>
-              </DialogActions>
-            </DialogBody>
-          )}
-        </DialogSurface>
-      </Dialog>
     </section>
   );
 }

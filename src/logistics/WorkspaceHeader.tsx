@@ -1,3 +1,4 @@
+import TeamsMark from "../components/TeamsMark";
 import { useState } from "react";
 import { Input } from "@fluentui/react-components";
 import {
@@ -178,7 +179,7 @@ export default function WorkspaceHeader({
               title="Microsoft Teams"
               onClick={onTeams}
             >
-              <img src="/images/teams-logo.svg" alt="" />
+              <TeamsMark />
             </button>
           )}
         </div>

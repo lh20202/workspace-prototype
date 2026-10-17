@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { AppFolder20Regular, Globe20Regular } from "@fluentui/react-icons";
+import { Open20Regular, Globe20Regular } from "@fluentui/react-icons";
 import "./EnvironmentIcon.css";
 
 /** A compact environment mark, used beside its visible Wiki or Portal name. */
@@ -24,7 +24,7 @@ export default function EnvironmentIcon({
           </span>
         </>
       ) : (
-        <AppFolder20Regular />
+        <Open20Regular />
       )}
     </span>
   );

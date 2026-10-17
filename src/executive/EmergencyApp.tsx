@@ -1,3 +1,4 @@
+import AccessLock from "../components/AccessLock";
 import { canAccessEmergency } from "../access/policy";
 import { useState, useEffect } from "react";
 import AccessBoundary from "../access/AccessBoundary";
@@ -11,7 +12,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@fluentui/react-components";
-import { LockClosed20Regular } from "@fluentui/react-icons";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
@@ -255,7 +255,7 @@ export default function EmergencyApp() {
                     key={i.id}
                     onClick={() => openIncident(i.id)}
                   >
-                    <LockClosed20Regular />
+                    <AccessLock />
                     <strong>
                       {i.id} · {i.title}
                     </strong>

@@ -18,7 +18,11 @@ import {
   revealDemoControlsEvent,
 } from "./demoControls";
 import "./demo-controls.css";
-export default function PrototypeNavigator() {
+export default function PrototypeNavigator({
+  allowWelcomeInvitation = true,
+}: {
+  allowWelcomeInvitation?: boolean;
+}) {
   const { t } = useTranslation();
   const emergency = location.pathname.startsWith("/emergency-response");
   const person = resolveStaffPerson(
@@ -55,7 +59,8 @@ export default function PrototypeNavigator() {
     const reveal = () => setExpanded(true);
     window.addEventListener(revealDemoControlsEvent, reveal);
     let invitation: ReturnType<typeof setTimeout> | undefined;
-    if (!invited.current) invited.current = consumeWelcomeEntry();
+    if (!invited.current)
+      invited.current = allowWelcomeInvitation && consumeWelcomeEntry();
     if (invited.current) {
       // This is a session invitation, not a product onboarding tour.
       invitation = setTimeout(() => {
@@ -76,7 +81,7 @@ export default function PrototypeNavigator() {
       clearTimeout(closeTimer.current);
       window.removeEventListener(revealDemoControlsEvent, reveal);
     };
-  }, []);
+  }, [allowWelcomeInvitation]);
   return (
     <div
       ref={frame}

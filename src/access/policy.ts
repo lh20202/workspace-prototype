@@ -459,17 +459,16 @@ export function canAccessArea(
 export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
   const role = previewRoleFor(person);
   if (!role) return false;
-  return areaId === "insight"
-    ? ["taylor", "robin"].includes(role.id)
-    : [
-        "foundations",
-        "messaging",
-        "standards",
-        "learning",
-        "tools",
-        "contacts",
-        "a-z",
-      ].includes(areaId);
+  if (areaId === "insight") return role.id !== "maya";
+  return [
+    "foundations",
+    "messaging",
+    "standards",
+    "learning",
+    "tools",
+    "contacts",
+    "a-z",
+  ].includes(areaId);
 }
 export const canAccessPortal = (person: PolicyPerson) =>
   previewRoleFor(person)?.id === "maya";

@@ -1,3 +1,5 @@
+import TeamsMark from "../components/TeamsMark";
+import AccessLock from "../components/AccessLock";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import {
@@ -14,7 +16,6 @@ import {
   ChevronDown16Regular,
   ChevronRight16Regular,
   NumberSymbol20Regular,
-  LockClosed16Regular,
   Info20Regular,
   ArrowUpRight20Regular,
   TextEditStyle20Regular,
@@ -133,7 +134,7 @@ function TeamsShellSession({
     >
       <header className="m365-teams-topbar">
         <div className="m365-teams-history">
-          <img src="/images/teams-logo.svg" alt="Microsoft Teams" />
+          <TeamsMark size={28} labelled />
           <button aria-label="Back" onClick={() => history.back()}>
             <ArrowLeft20Regular />
           </button>
@@ -354,7 +355,7 @@ function TeamsShellSession({
                         }}
                       >
                         {channel.private ? (
-                          <LockClosed16Regular />
+                          <AccessLock labelled={false} />
                         ) : (
                           <NumberSymbol20Regular />
                         )}
@@ -390,7 +391,7 @@ function TeamsShellSession({
             <div className="m365-teams-channel-identity">
               <span className="m365-teams-channel-mark">
                 {privateChannel ? (
-                  <LockClosed16Regular />
+                  <AccessLock labelled={false} />
                 ) : (
                   <NumberSymbol20Regular />
                 )}

@@ -10,11 +10,11 @@ import {
   MenuDivider,
 } from "@fluentui/react-components";
 import {
-  Folder20Regular,
   ChevronDown16Regular,
   Checkmark16Regular,
 } from "@fluentui/react-icons";
 import EnvironmentIcon from "./EnvironmentIcon";
+import WorkspaceIcon from "./WorkspaceIcon";
 import {
   getHubNavigationModel,
   type HubNavigationDestination,
@@ -40,7 +40,7 @@ function Destination({
       aria-current={environment.isCurrent ? "page" : undefined}
       icon={
         environment.environmentType === "workspace" ? (
-          <Folder20Regular />
+          <WorkspaceIcon size={20} />
         ) : (
           <EnvironmentIcon type={environment.environmentType} />
         )
@@ -77,7 +77,7 @@ export default function HubNavigation({
           <Button
             appearance="transparent"
             className="hub-workspaces-trigger"
-            icon={<Folder20Regular />}
+            icon={<WorkspaceIcon size={20} />}
           >
             Workspaces <ChevronDown16Regular aria-hidden="true" />
           </Button>
@@ -94,7 +94,9 @@ export default function HubNavigation({
               <>
                 <MenuDivider />
                 <MenuGroup>
-                  <MenuGroupHeader>Knowledge & frontline</MenuGroupHeader>
+                  <MenuGroupHeader>
+                    Knowledge & external environments
+                  </MenuGroupHeader>
                   {model.related.map((environment) => (
                     <Destination
                       key={environment.id}

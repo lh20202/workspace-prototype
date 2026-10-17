@@ -1,12 +1,9 @@
+import AccessLock from "../components/AccessLock";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
-import {
-  LockClosed16Regular,
-  PeopleTeam20Regular,
-  Chat20Regular,
-} from "@fluentui/react-icons";
+import { PeopleTeam20Regular, Chat20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsGroups } from "../teams/navigation";
@@ -33,7 +30,8 @@ import {
   reviewRows,
   type Project,
 } from "./data";
-import { projectConversation } from "./conversations";
+import { projectConversation, projectHistory } from "./conversations";
+import ProjectHistory from "./ProjectHistory";
 import "./styles.css";
 const centralNav = [
   ["home", "Home"],
@@ -127,11 +125,7 @@ export default function ProjectsApp() {
     );
   const access = (p: Project) => (
     <span className="project-access">
-      {p.access === "Restricted" ? (
-        <LockClosed16Regular />
-      ) : (
-        <PeopleTeam20Regular />
-      )}
+      {p.access === "Restricted" ? <AccessLock /> : <PeopleTeam20Regular />}
       {p.access}
     </span>
   );
@@ -607,7 +601,7 @@ export default function ProjectsApp() {
             </StaffLink>
             {!readOnly && (
               <StaffLink href={`${root}/security`}>
-                Production Security Review <LockClosed16Regular />
+                Production Security Review <AccessLock />
               </StaffLink>
             )}
           </div>
@@ -917,6 +911,9 @@ export default function ProjectsApp() {
                   />
                 )}
               </article>
+              <ProjectHistory
+                posts={projectHistory(project, selectedChannel)}
+              />
               {projectPosts
                 .filter((p) => p.channel === selectedChannel)
                 .map((p, i) => (

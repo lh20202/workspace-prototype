@@ -1,3 +1,4 @@
+import { germanExternalEnvironments } from "../i18n/de-external-environments";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -202,7 +203,9 @@ describe("external role-preview controls", () => {
       "Approved governance outcomes",
     ]) {
       expect(germanAccessUpdate[source]).toBeTruthy();
-      expect(translateText(source, "de")).toBe(germanAccessUpdate[source]);
+      expect(translateText(source, "de")).toBe(
+        germanExternalEnvironments[source] || germanAccessUpdate[source],
+      );
       expect(translateText(source, "en")).toBe(source);
     }
   });

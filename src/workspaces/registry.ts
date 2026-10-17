@@ -1,3 +1,4 @@
+import { externalEnvironmentById } from "../environments/catalog";
 import {
   employmentProtectedSubjects,
   legacyEmploymentBoundary,
@@ -17,6 +18,7 @@ export interface HubDefinition {
   /** References to registered environments, surfaced only once implemented. */
   wiki?: string;
   portal?: string;
+  externalIds?: string[];
 }
 
 export const hubDefinitions: HubDefinition[] = [
@@ -28,10 +30,12 @@ export const hubDefinitions: HubDefinition[] = [
     workspaceIds: ["audience", "content", "logistics", "customer"],
     wiki: "sales-wiki",
     portal: "frontline-sales",
+    externalIds: ["media-library"],
   },
   {
     id: "infrastructure",
     name: "Org Central",
+    externalIds: ["members", "city-health"],
     icon: "infrastructure",
     description: "",
     workspaceIds: [
@@ -48,6 +52,7 @@ export const hubDefinitions: HubDefinition[] = [
   {
     id: "personnel",
     name: "Personnel",
+    externalIds: ["taskforce"],
     icon: "personnel",
     description: "",
     workspaceIds: ["people", "employment", "welfare"],
@@ -291,24 +296,62 @@ export const environmentRegistry: WorkspaceDefinition[] = [
     accessLevel: "internal",
     environmentType: "wiki",
   },
-  {
-    id: "frontline-sales",
-    title: "Frontline Crew Portal",
-    href: "/frontline-sales",
-    description:
-      "Today's frontline briefing, shift context and immediate customer actions.",
-    purpose: "Day-to-day frontline sales execution",
-    group: "Sales & Marketing",
+  ...[
+    [
+      "frontline-sales",
+      "Frontline Crew Portal",
+      "/frontline-sales",
+      "sales-marketing",
+      "Day-to-day frontline information and tools",
+    ],
+    [
+      "media-library",
+      "Global Media Library",
+      "/external/media-library",
+      "sales-marketing",
+      "Global media and approved visual resources",
+    ],
+    [
+      "members",
+      "Members Portal",
+      "/governance",
+      "infrastructure",
+      "Formal member and governance environment",
+    ],
+    [
+      "city-health",
+      "City Health Unit",
+      "/external/city-health",
+      "infrastructure",
+      "City health information and services",
+    ],
+    [
+      "taskforce",
+      "International Taskforce Portal",
+      "/external/taskforce",
+      "personnel",
+      "International taskforce information and coordination",
+    ],
+  ].map(([id, , href, hubId, purpose]): WorkspaceDefinition => ({
+    id,
+    title: externalEnvironmentById.get(
+      id === "frontline-sales" ? "frontline" : id,
+    )!.name,
+    href,
+    hubId: hubId as HubId,
+    purpose,
+    description: purpose,
+    group: "External environments",
     icon: "portal",
     teams: false,
-    accessModel:
-      "Internal task simulation; customer systems retain their own access controls",
+    accessModel: "Linked environment; access is managed separately",
     departmentRelationships: [],
-    hubId: "sales-marketing",
-    hubLabel: "Frontline Crew Portal",
+    hubLabel: externalEnvironmentById.get(
+      id === "frontline-sales" ? "frontline" : id,
+    )!.name,
     accessLevel: "internal",
     environmentType: "portal",
-  },
+  })),
 ];
 export const environmentById = new Map(
   environmentRegistry.map((environment) => [environment.id, environment]),
@@ -316,7 +359,14 @@ export const environmentById = new Map(
 /** Hub association groups sites; each site retains its own access boundary. */
 export function environmentsForHub(id: HubId) {
   const hub = hubById.get(id)!;
-  return [...new Set([...hub.workspaceIds, hub.wiki, hub.portal])]
+  return [
+    ...new Set([
+      ...hub.workspaceIds,
+      hub.wiki,
+      hub.portal,
+      ...(hub.externalIds || []),
+    ]),
+  ]
     .map((environmentId) => environmentId && environmentById.get(environmentId))
     .filter((environment): environment is WorkspaceDefinition => !!environment);
 }

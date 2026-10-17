@@ -57,6 +57,7 @@ describe("task-oriented architecture destinations", () => {
     expect(destinationsForHub("personnel")).toEqual([
       ...personnelDestinations.normal,
       ...personnelDestinations.controlled,
+      architectureDestinationById.get("taskforce"),
     ]);
   });
 

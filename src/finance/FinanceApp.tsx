@@ -1,3 +1,9 @@
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import AccessLock from "../components/AccessLock";
+import {
+  externalEnvironmentForTool,
+  externalPreviewHref,
+} from "../environments/catalog";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState } from "react";
@@ -11,7 +17,7 @@ import {
   DrawerHeaderTitle,
   DrawerBody,
 } from "@fluentui/react-components";
-import { Dismiss20Regular, LockClosed20Regular } from "@fluentui/react-icons";
+import { Dismiss20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import { resolveStaffPerson } from "../intranet/catalog";
 import NavigationIcon from "../components/NavigationIcon";
@@ -70,7 +76,15 @@ export default function FinanceApp() {
   const systemLink = (id: string) => {
     const s = systems.find((s) => s.id === id)!;
     return (
-      <StaffLink href={`${base}/systems/${id}`}>Open in {s.name} ↗</StaffLink>
+      <StaffLink
+        href={externalPreviewHref(
+          externalEnvironmentForTool(id)!.id,
+          `${base}/${page === "home" ? "" : page}`,
+        )}
+      >
+        <ExternalBrandMark id={externalEnvironmentForTool(id)!.id} size={24} />{" "}
+        Open in {s.name} ↗
+      </StaffLink>
     );
   };
   const protectedAreas = library?.areas || [];
@@ -338,7 +352,7 @@ export default function FinanceApp() {
                       key={`${id}-${key}`}
                       href={`${base}/${id}/${key}`}
                     >
-                      <LockClosed20Regular />
+                      <AccessLock size={20} labelled={false} />
                       {name}
                     </StaffLink>
                   )),
@@ -524,7 +538,7 @@ export default function FinanceApp() {
                   <div className="finance-protected-links">
                     {subjects.map((s) => (
                       <StaffLink key={s.href} href={s.href}>
-                        <LockClosed20Regular />
+                        <AccessLock size={20} labelled={false} />
                         {s.name}
                       </StaffLink>
                     ))}

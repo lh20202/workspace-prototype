@@ -1,0 +1,108 @@
+/** Final semantic interpretation after the English environment structure was completed. */
+export const germanExternalEnvironments: Record<string, string> = {
+  "Explore what your new Digital Workspaces could look and feel like.":
+    "Entdecken Sie, wie Ihre neuen digitalen Arbeitsbereiche aussehen und funktionieren könnten.",
+  "Explore what your new workspaces could look and feel like.":
+    "Entdecken Sie, wie Ihre neuen Arbeitsbereiche aussehen und funktionieren könnten.",
+  "Browse all company workspaces and wikis.":
+    "Entdecken Sie alle Arbeitsbereiche und Wikis des Unternehmens.",
+  "No company data was used to create this demo site.":
+    "Für diese Demoseite wurden keine Unternehmensdaten verwendet.",
+  "Admin logins": "Admin-Zugänge",
+  "Knowledge & external environments": "Wissen und externe Angebote",
+  "External environments": "Externe Angebote",
+  "International Taskforce Portal": "Portal der internationalen Taskforce",
+  "Members Portal": "Mitgliederportal",
+  "Members Portal ↗": "Mitgliederportal ↗",
+  "Governance & Members Portal": "Mitgliederportal",
+  "Governance & Members Portal ↗": "Mitgliederportal ↗",
+  "City Health Unit": "Städtischer Gesundheitsdienst",
+  "Global Media Library": "Globale Medienbibliothek",
+  "Frontline Crew Portal": "Frontline Crew Portal",
+  "This linked environment is represented at a high level in this demo.":
+    "Dieses verknüpfte Angebot wird in der Demo nur im Überblick dargestellt.",
+  "COMING SOON": "IN VORBEREITUNG",
+  "In development — a separate experience for frontline crew with the information and tools they need for day-to-day operations.":
+    "In Entwicklung: ein eigenes Portal mit Informationen und Werkzeugen für den Arbeitsalltag der Teams im direkten Kundenkontakt.",
+  "Back to demo": "Zurück zur Demo",
+  "Media & photo editing": "Medien- und Bildbearbeitung",
+  "Social content scheduling": "Social-Media-Planung",
+  "Customer relationship management": "Kundenbeziehungsmanagement",
+  "IT & service support": "IT- und Servicesupport",
+  "Invoice & document workflow": "Rechnungs- und Dokumentenprozesse",
+  "Project management": "Projektmanagement",
+  "HR & people administration": "Personalverwaltung",
+  "Financial administration": "Finanzverwaltung",
+  "Create and edit production imagery and visual assets.":
+    "Bilder und visuelle Inhalte für die Produktion erstellen und bearbeiten.",
+  "Plan, review and schedule social content.":
+    "Social-Media-Inhalte planen, prüfen und zur Veröffentlichung terminieren.",
+  "Maintain customer relationships and account context.":
+    "Kundenbeziehungen und die zugehörigen Informationen pflegen.",
+  "Manage service requests, support and workplace technology.":
+    "Serviceanfragen, Support und Arbeitsplatztechnik verwalten.",
+  "Route documents and invoices through review and approval.":
+    "Dokumente und Rechnungen zur Prüfung und Freigabe weiterleiten.",
+  "Coordinate project tasks, milestones and delivery.":
+    "Projektaufgaben, Meilensteine und Umsetzung koordinieren.",
+  "Administer employee records and recruitment processes.":
+    "Personalakten und Bewerbungsprozesse verwalten.",
+  "Manage accounting, financial planning and treasury records.":
+    "Buchhaltung, Finanzplanung und Liquiditätsunterlagen verwalten.",
+  "Publishing approvals in Slotline": "Veröffentlichungsfreigaben in Slotline",
+  "Open in Slotline": "In Slotline öffnen",
+  "Open in Framevia": "In Framevia öffnen",
+  "Open in Relovia": "In Relovia öffnen",
+  "Open in Teralink": "In Teralink öffnen",
+  "Open in Recorda": "In Recorda öffnen",
+  "Open in Pathory": "In Pathory öffnen",
+  "Open in PeopleHarbour": "In PeopleHarbour öffnen",
+  "Open in Velora": "In Velora öffnen",
+  "Day-to-day frontline information and tools":
+    "Informationen und Werkzeuge für den direkten Kundenkontakt",
+  "Global media and approved visual resources":
+    "Weltweit verfügbare Medien und freigegebene Bildmaterialien",
+  "Formal member and governance environment":
+    "Formales Portal für Mitglieder und Gremienarbeit",
+  "City health information and services":
+    "Informationen und Angebote des städtischen Gesundheitsdienstes",
+  "International taskforce information and coordination":
+    "Informationen und Koordination für die internationale Taskforce",
+  "Linked environment; access is managed separately":
+    "Verknüpftes Angebot; Zugriffsrechte werden separat verwaltet",
+  "Purse Strings": "Geldströme",
+  "Org Central": "Zentrale Funktionen",
+  "Personnel Admin": "Personalverwaltung",
+  "Income & Booking": "Einnahmen & Verbuchung",
+  "Company Archives": "Unternehmensarchiv",
+  "Staff Service Operations": "Einkauf & Büroorganisation",
+  "Staff Service Operations workspace":
+    "Arbeitsbereich Einkauf & Büroorganisation",
+  "Purchasing & Suppliers": "Einkauf & Lieferanten",
+  "Controlled access": "Geschützter Zugriff",
+  "Workspace focal point": "Ansprechperson für den Arbeitsbereich",
+  "Wiki focal point": "Ansprechperson für das Wiki",
+  "Frontline sales focal point":
+    "Ansprechperson für den Vertrieb im direkten Kundenkontakt",
+  "Frontline sales alternative and access contacts":
+    "Portalalternative und Ansprechpersonen für den Zugriff",
+  "Are you frontline sales staff?":
+    "Arbeiten Sie im Vertrieb mit direktem Kundenkontakt?",
+  "Need access to this workspace instead?":
+    "Benötigen Sie Zugriff auf diesen Arbeitsbereich?",
+  "Change your role to change your access permissions":
+    "Vorschaurolle wechseln, um andere Zugriffsrechte zu erkunden",
+  "Workspace navigation": "Navigation der Arbeitsbereiche",
+  "Hub navigation": "Navigation der Funktionsgruppe",
+  "Proof of concept navigation": "Navigation der Demo",
+  Language: "Sprache",
+  "Preview role": "Vorschaurolle",
+  "Explore as": "Erkunden als",
+  "Risk & Assurance": "Risikomanagement & Kontrollprüfung",
+  "Reward & Employment Frameworks": "Vergütung & Beschäftigungsbedingungen",
+  "Recruitment Administration": "Bewerbungsmanagement",
+  "Global Archives": "Weltweite Archivbestände",
+  "Supplier sourcing": "Lieferantenauswahl",
+  "Prepare sourcing decisions, supplier onboarding and renewal reviews.":
+    "Beschaffungsentscheidungen, die Aufnahme neuer Lieferanten und Vertragsverlängerungen vorbereiten.",
+};

@@ -15,6 +15,13 @@ import { germanSimplifiedNames } from "./de-simplified-names";
 import { germanDirectoryRedesign } from "./de-directory-redesign";
 import { germanAdvisory } from "./de-advisory";
 import { germanOneDrive } from "./de-onedrive";
+import { canonicalBrandText } from "../environments/catalog";
+import { germanExternalEnvironments } from "./de-external-environments";
+import { germanWikiRefinement } from "./de-wiki-refinement";
+import { germanTeamsHistory } from "./de-teams-history";
+import { germanArchivesRefinement } from "./de-archives-refinement";
+import { germanPlanningPersonnelRefinement } from "./de-planning-personnel-refinement";
+import { germanFinanceRefinement } from "./de-finance-refinement";
 
 export type Language = "en" | "de";
 const messages = {
@@ -35,6 +42,12 @@ const messages = {
   ...germanDirectoryRedesign,
   ...germanAdvisory,
   ...germanOneDrive,
+  ...germanExternalEnvironments,
+  ...germanWikiRefinement,
+  ...germanTeamsHistory,
+  ...germanArchivesRefinement,
+  ...germanPlanningPersonnelRefinement,
+  ...germanFinanceRefinement,
 };
 const englishMonths = [
   "January",
@@ -94,6 +107,10 @@ const germanShortMonths = [
 ];
 
 function dateText(text: string): string | undefined {
+  const fullMonth = englishMonths.indexOf(text);
+  if (fullMonth >= 0) return germanMonths[fullMonth];
+  const shortMonth = shortMonths.indexOf(text);
+  if (shortMonth >= 0) return germanShortMonths[shortMonth];
   const date = text.match(/^(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?$/);
   if (date) {
     const month = englishMonths.indexOf(date[2]);
@@ -109,6 +126,10 @@ function dateText(text: string): string | undefined {
 
 /** Translate display strings only. Canonical routes, IDs, field values and records stay English. */
 export function translateText(source: string, language: Language): string {
+  return canonicalBrandText(interpretText(source, language));
+}
+
+function interpretText(source: string, language: Language): string {
   if (language === "en" || !source.trim()) return source;
   const leading = source.match(/^\s*/)?.[0] || "";
   const trailing = source.match(/\s*$/)?.[0] || "";
@@ -150,6 +171,23 @@ export function translateText(source: string, language: Language): string {
   const replyLabel = text.match(/^(Moderator reply from|Reply from) (.+)$/);
   if (replyLabel)
     return `${leading}${replyLabel[1].startsWith("Moderator") ? "Moderation: " : ""}Antwort von ${replyLabel[2]}${trailing}`;
+  const postOptions = text.match(/^Post options for (.+)$/);
+  if (postOptions)
+    return `${leading}Beitragsoptionen für ${postOptions[1]}${trailing}`;
+  const likePost = text.match(/^Like post by (.+)$/);
+  if (likePost)
+    return `${leading}Beitrag von ${likePost[1]} mit „Gefällt mir“ markieren${trailing}`;
+  const replyTo = text.match(/^Reply to (.+)$/);
+  if (replyTo) return `${leading}${replyTo[1]} antworten${trailing}`;
+  const reaction = text.match(/^(.+) reaction$/);
+  if (reaction)
+    return `${leading}Reaktion: ${translateText(reaction[1], language)}${trailing}`;
+  const navigation = text.match(/^(.+) navigation$/);
+  if (navigation)
+    return `${leading}${translateText(navigation[1], language)} – Navigation${trailing}`;
+  const folderGroup = text.match(/^(.+) folders$/);
+  if (folderGroup)
+    return `${leading}Ordner – ${translateText(folderGroup[1], language)}${trailing}`;
   const statusLabel = text.match(/^Status for (.+)$/);
   if (statusLabel)
     return `${leading}Status für ${translateText(statusLabel[1], language)}${trailing}`;

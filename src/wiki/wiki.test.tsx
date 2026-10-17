@@ -22,6 +22,12 @@ import {
 } from "../sharepoint/library";
 import { translateText } from "../i18n/translate";
 import { matchesDisplayText } from "../i18n/search";
+import { previewRoles, canAccessWikiArea } from "../access/policy";
+import WikiFigure, { wikiFigureCopy, wikiFigures } from "./WikiFigure";
+import {
+  germanWikiFigureLabels,
+  germanWikiRefinement,
+} from "../i18n/de-wiki-refinement";
 
 afterEach(() => vi.unstubAllGlobals());
 function markup(pathname = wikiBase, search = "") {
@@ -34,7 +40,7 @@ describe("Sales & Marketing knowledge navigation", () => {
     const specialist = wikiArticles.find(
       (article) => article.areaId === "insight",
     )!;
-    for (const id of ["maya", "jamie", "devon"]) {
+    for (const id of ["maya"]) {
       const denied = markup(wikiArticleHref(specialist), `?staff=${id}`);
       expect(denied).toContain("Access required");
       expect(denied).toContain("Are you frontline sales staff?");
@@ -53,11 +59,26 @@ describe("Sales & Marketing knowledge navigation", () => {
         wikiFiles.find((file) => file.id === specialist.sourceId)!.name,
       );
     }
-    for (const id of ["taylor", "robin"]) {
+    for (const id of ["taylor", "robin", "jamie", "devon", "leonie"]) {
       const permitted = markup(wikiArticleHref(specialist), `?staff=${id}`);
       expect(permitted).toContain('aria-label="Wiki article"');
       expect(permitted).not.toContain("Access required");
+      const directory = markup(`${wikiBase}/a-z`, `?staff=${id}`);
+      expect(directory).toContain(
+        wikiFiles.find((file) => file.id === specialist.sourceId)!.name,
+      );
     }
+  });
+
+  it("opens internal knowledge to every role, with only the frontline Insight subset restricted", () => {
+    for (const role of previewRoles) {
+      for (const area of wikiAreas)
+        expect(canAccessWikiArea(role, area.id)).toBe(
+          role.id !== "maya" || area.id !== "insight",
+        );
+      expect(canAccessWikiArea(role, "unknown-knowledge-area")).toBe(false);
+    }
+    expect(canAccessWikiArea("not-a-role", "foundations")).toBe(false);
   });
 
   it("retains frontline knowledge for the frontline role", () => {
@@ -81,7 +102,49 @@ describe("Sales & Marketing knowledge navigation", () => {
     expect(new Set(wikiArticles.map((article) => article.id)).size).toBe(
       wikiArticles.length,
     );
-    expect(wikiArticles.length).toBe(39);
+    expect(wikiArticles.length).toBe(40);
+  });
+  it("adds practical Creative Studio knowledge under Messaging & Creative, without a new working-file store", () => {
+    const article = wikiArticles.find(
+      (item) => item.id === "working-with-creative-studio",
+    )!;
+    expect(article.areaId).toBe("messaging");
+    expect(article.title).toBe("Working with the Creative Studio");
+    const html = markup(wikiArticleHref(article), "?staff=maya");
+    expect(html).toContain('aria-label="Wiki article"');
+    expect(html).toContain("Topic specialists contribute evidence");
+    expect(html).toContain("rather than uploading another copy");
+    expect(html).toContain('href="/content-delivery?staff=maya"');
+    expect(
+      wikiFiles.filter((file) => file.id === article.sourceId),
+    ).toHaveLength(1);
+    expect(
+      wikiFiles.filter((file) => file.id.startsWith("CONT-")),
+    ).toHaveLength(0);
+  });
+
+  it("uses exactly four article-width, captioned and accessible Wiki diagrams", () => {
+    expect(Object.keys(wikiFigures)).toEqual([
+      "working-with-creative-studio",
+      "know-customers",
+      "channel-landscape",
+      "conversion-metrics",
+    ]);
+    for (const [articleId, figure] of Object.entries(wikiFigures)) {
+      expect(wikiArticles.some((article) => article.id === articleId)).toBe(
+        true,
+      );
+      const html = renderToStaticMarkup(<WikiFigure articleId={articleId} />);
+      expect(html).toContain('role="img"');
+      expect(html).toContain("aria-labelledby=");
+      expect(html).toContain(
+        renderToStaticMarkup(<figcaption>{figure.caption}</figcaption>),
+      );
+      expect(html).toContain(`<desc`);
+    }
+    expect(renderToStaticMarkup(<WikiFigure articleId="brand-vision" />)).toBe(
+      "",
+    );
   });
   it("keeps primary and chapter context on direct article routes", () => {
     for (const article of wikiArticles) {
@@ -217,5 +280,38 @@ describe("Sales & Marketing knowledge navigation", () => {
       matchesDisplayText("Customer-facing Terms", "Kundenbedingungen"),
     ).toBe(true);
     expect(matchesDisplayText("Using Shared Templates", "Vorlagen")).toBe(true);
+  });
+  it("interprets the new knowledge and diagrams in German without changing technical terminology elsewhere", () => {
+    const studio = wikiArticles.find(
+      (article) => article.id === "working-with-creative-studio",
+    )!;
+    expect(wikiTranslations[studio.title]).toBe(
+      "Zusammenarbeit mit dem Kreativstudio",
+    );
+    const copy = [
+      studio.title,
+      studio.introduction,
+      ...studio.sections.flatMap((section) => [
+        section.heading,
+        ...section.points,
+      ]),
+    ];
+    for (const text of copy) expect(wikiTranslations[text]).not.toBe(text);
+    for (const text of wikiFigureCopy)
+      expect(
+        germanWikiFigureLabels[text] || germanWikiRefinement[text],
+        text,
+      ).toBeTruthy();
+    expect(germanWikiFigureLabels.Release).toBe("Veröffentlichung");
+    expect(germanWikiRefinement.Release).toBeUndefined();
+    expect(germanWikiRefinement.Welcome).toBeUndefined();
+    expect(
+      germanWikiRefinement[
+        "This knowledge area is outside the frontline view."
+      ],
+    ).toContain("Ansicht für den direkten Kundenvertrieb");
+    expect(germanWikiRefinement["Contact Wiki focal point"]).toBe(
+      "Wiki-Ansprechperson kontaktieren",
+    );
   });
 });

@@ -1,3 +1,4 @@
+import { externalEnvironmentForTool } from "../environments/catalog";
 import type { OperationalFile } from "../logistics/data";
 export const title = "Income & Financial Operations";
 export const description =
@@ -55,7 +56,10 @@ export const systems = [
     purpose: "Liquidity, cash, banking and treasury transactions",
     ref: "KY-881",
   },
-];
+].map((system) => ({
+  ...system,
+  name: externalEnvironmentForTool(system.id)?.name || system.name,
+}));
 export interface FinancialItem {
   id: string;
   name: string;

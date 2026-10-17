@@ -1,3 +1,4 @@
+import AccessLock from "../components/AccessLock";
 import StaffLink from "../components/StaffLink";
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
@@ -16,11 +17,7 @@ import {
   DrawerBody,
   Tooltip,
 } from "@fluentui/react-components";
-import {
-  Folder20Regular,
-  LockClosed16Regular,
-  Dismiss20Regular,
-} from "@fluentui/react-icons";
+import { Folder20Regular, Dismiss20Regular } from "@fluentui/react-icons";
 import DocumentIcon from "../components/DocumentIcon";
 import OneDriveSourceNote from "../components/OneDriveSourceNote";
 import { useTranslation } from "../i18n/Language";
@@ -515,7 +512,7 @@ export default function DepartmentChannel({
                           <small>{u.access}</small>
                         </span>
                         {u.access === "Unit-only" ? (
-                          <LockClosed16Regular />
+                          <AccessLock />
                         ) : (
                           <span>›</span>
                         )}

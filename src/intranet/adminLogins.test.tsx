@@ -1,13 +1,25 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import AdminLogins from "./AdminLogins";
+import Directory from "./Directory";
 import WorkspaceIcon from "../components/WorkspaceIcon";
-import { adminLoginSystems } from "./adminLoginPlatforms";
-import { germanDirectoryRedesign } from "../i18n/de-directory-redesign";
+import {
+  adminPlatforms,
+  adminPlatformsForHub,
+  externalEnvironmentForTool,
+  externalPreviewHref,
+  canonicalBrandText,
+} from "../environments/catalog";
+import {
+  architectureDestinationById,
+  destinationsForHub,
+} from "./architectureDestinations";
 
-describe("distinct workspace and fictional admin-system environment marks", () => {
+afterEach(() => vi.unstubAllGlobals());
+
+describe("canonical environment and vendor identities", () => {
   it("uses a single outlined workspace mark with a restrained S badge", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceIcon));
     expect(html).toContain('class="workspace-icon"');
@@ -16,27 +28,91 @@ describe("distinct workspace and fictional admin-system environment marks", () =
     expect(html).not.toContain("img");
   });
 
-  it("opens four lightweight fictional admin systems without external authentication links", () => {
-    const html = renderToStaticMarkup(createElement(AdminLogins));
-    expect(adminLoginSystems.map(({ name }) => name)).toEqual([
-      "Teralink",
-      "Velora",
-      "PeopleHarbour",
-      "Recorda",
-    ]);
-    expect(html.match(/aria-haspopup="dialog"/g)).toHaveLength(4);
-    for (const system of adminLoginSystems) {
-      expect(html).toContain(system.name);
-      expect(html).toContain(system.logo);
-      expect(system.items).toHaveLength(3);
-      const logo = readFileSync(`public${system.logo}`, "utf8");
-      expect(logo).toContain("linearGradient");
-      expect(logo).not.toMatch(/<image|https?:\/\/(?!www.w3.org)/);
-      expect(germanDirectoryRedesign[system.purpose]).toBeTruthy();
-      for (const item of system.items)
-        expect(germanDirectoryRedesign[item]).toBeTruthy();
+  it("keeps admin systems subordinate to each hub with the requested product counts", () => {
+    vi.stubGlobal("location", new URL("https://example.test/architecture"));
+    const counts = [
+      ["sales-marketing", 3],
+      ["infrastructure", 3],
+      ["personnel", 1],
+      ["finance", 2],
+    ] as const;
+    for (const [hubId, count] of counts) {
+      const platforms = adminPlatformsForHub(hubId);
+      expect(platforms).toHaveLength(count);
+      const html = renderToStaticMarkup(createElement(AdminLogins, { hubId }));
+      expect(html).toContain(`id="admin-logins-${hubId}"`);
+      expect(html.match(/data-brand=/g)).toHaveLength(count);
+      expect(html).not.toMatch(
+        /aria-haspopup|<button|<dialog|target="_blank"|workspace-icon/,
+      );
+      for (const system of platforms) {
+        expect(html).toContain(`href="${externalPreviewHref(system.id)}"`);
+        expect(html).toContain(system.logo);
+        expect(html).toContain(system.name);
+      }
     }
-    expect(html).not.toContain('href="http');
-    expect(html).not.toContain("workspace-icon");
+    expect(adminPlatforms).toHaveLength(8);
+    expect(new Set(adminPlatforms.map(({ id }) => id)).size).toBe(8);
+  });
+
+  it("reuses exactly one CRM identity across Sales, finance and customer references", () => {
+    const sales = adminPlatformsForHub("sales-marketing").find(
+      ({ id }) => id === "relovia",
+    );
+    const finance = adminPlatformsForHub("finance").find(
+      ({ id }) => id === "relovia",
+    );
+    expect(sales).toBe(finance);
+    for (const id of [
+      "salesforce",
+      "hubspot",
+      "gainsight",
+      "quorum",
+      "zendesk",
+    ])
+      expect(externalEnvironmentForTool(id)).toBe(sales);
+    expect(
+      canonicalBrandText("Salesforce → HubSpot CRM → Oracle NetSuite"),
+    ).toBe("Relovia → Relovia → Velora");
+  });
+
+  it("uses local category-specific transparent vector marks, including a document rather than money motif for Recorda", () => {
+    const logos = adminPlatforms.map((system) =>
+      readFileSync(`public${system.logo}`, "utf8"),
+    );
+    expect(new Set(logos).size).toBe(8);
+    for (const logo of logos) {
+      expect(logo).toContain("linearGradient");
+      expect(logo).toContain("feDropShadow");
+      expect(logo).not.toMatch(/<image|<text|https?:\/\/(?!www.w3.org)|[€$£]/);
+    }
+  });
+
+  it("places all new external environments in their correct hub without workspace marks", () => {
+    vi.stubGlobal("location", new URL("https://example.test/architecture"));
+    const html = renderToStaticMarkup(createElement(Directory));
+    const entries = [
+      ["sales-marketing", "media-library", "Global Media Library"],
+      ["infrastructure", "members", "Members Portal"],
+      ["infrastructure", "city-health", "City Health Unit"],
+      ["personnel", "taskforce", "International Taskforce Portal"],
+    ] as const;
+    for (const [hub, id, label] of entries) {
+      const destination = architectureDestinationById.get(id)!;
+      expect(destinationsForHub(hub)).toContainEqual(destination);
+      expect(destination).toMatchObject({ type: "portal", label });
+      const escapedHref = destination.href.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&",
+      );
+      const anchor = html.match(
+        new RegExp(`<a[^>]*href="${escapedHref}"[^>]*>[\\s\\S]*?<\\/a>`),
+      )?.[0];
+      expect(anchor).toBeTruthy();
+      expect(anchor).toContain("environment-icon-portal");
+      expect(anchor).not.toContain("workspace-icon");
+    }
+    expect(html).not.toContain('id="admin-logins-heading"');
+    expect(html.match(/class="directory-admin-logins"/g)).toHaveLength(4);
   });
 });

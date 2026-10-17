@@ -47,8 +47,7 @@ export default function Launcher() {
           height="24"
         />
         <p className="launcher-intro">
-          Explore what your new workspaces could look and feel like. Switch
-          roles to see how the experience changes.
+          Explore what your new Digital Workspaces could look and feel like.
         </p>
         <div className="launcher-explanation">
           <DemoInfo label="Proof of concept" buttonText="Proof of concept">

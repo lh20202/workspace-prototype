@@ -146,7 +146,7 @@ export function LanguageToggle() {
     <div
       className="language-toggle"
       role="group"
-      aria-label="Language"
+      aria-label={translateText("Language", language)}
       data-no-translate
     >
       <button

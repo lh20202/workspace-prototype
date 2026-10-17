@@ -1,3 +1,7 @@
+import {
+  externalEnvironmentForTool,
+  externalPreviewHref,
+} from "../environments/catalog";
 import type { OperationalFile } from "../logistics/data";
 import { matchesDisplayText } from "../i18n/search";
 export const title = "Creative Studio";
@@ -76,19 +80,24 @@ const allTools = [
     url: "https://www.netsuite.com/",
   },
 ];
-export const tools = allTools.filter(
-  (t) =>
-    ![
-      "github",
-      "datadog",
-      "staffbase",
-      "openproject",
-      "piwik",
-      "vwo",
-      "brandwatch",
-      "semrush",
-    ].includes(t.id),
-);
+export const tools = allTools
+  .filter(
+    (t) =>
+      ![
+        "github",
+        "datadog",
+        "staffbase",
+        "openproject",
+        "piwik",
+        "vwo",
+        "brandwatch",
+        "semrush",
+      ].includes(t.id),
+  )
+  .map((tool) => ({
+    ...tool,
+    name: externalEnvironmentForTool(tool.id)?.name || tool.name,
+  }));
 export const quickToolIds = ["planable", "contentful", "wistia"];
 export type Rights =
   | "Cleared"
@@ -832,11 +841,20 @@ export const packageHref = (id: string) =>
   `/content-delivery/pipeline?package=${id}`;
 export const fileHref = (f: ContentFile) =>
   `/content-delivery/${f.area}?file=${f.id}`;
-export const toolHref = (id: string, packageId = "", reference = "") =>
-  `/content-delivery/tools/${id}` +
-  (packageId || reference
-    ? "?" + new URLSearchParams({ package: packageId, reference })
-    : "");
+export const toolHref = (id: string, packageId = "", reference = "") => {
+  const platform = externalEnvironmentForTool(id);
+  if (platform)
+    return externalPreviewHref(
+      platform.id,
+      packageId ? packageHref(packageId) : "/content-delivery",
+    );
+  return (
+    `/content-delivery/tools/${id}` +
+    (packageId || reference
+      ? "?" + new URLSearchParams({ package: packageId, reference })
+      : "")
+  );
+};
 export const pipelineViews = [
   "All Packages",
   "In Production",

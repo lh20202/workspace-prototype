@@ -32,7 +32,7 @@ export function getHubNavigationModel({
             pathname.startsWith(`${environment.href}/`),
         )
         .sort((a, b) => b.href.length - a.href.length)[0];
-  if (!current) return null;
+  if (!current || current.environmentType === "portal") return null;
   const siblings = current.hubId
     ? environmentsForHub(current.hubId)
     : [current];

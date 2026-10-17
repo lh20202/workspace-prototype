@@ -6,6 +6,39 @@ export interface ProjectConversation {
   replies: { author: string; text: string; time: string }[];
 }
 
+export interface ProjectHistoricalPost extends ProjectConversation {
+  id: string;
+  author: string;
+}
+
+/** A little prior context in one active Team; archived projects stay unchanged. */
+export function projectHistory(
+  project: Project,
+  channel: string,
+): ProjectHistoricalPost[] {
+  if (
+    project.archived ||
+    project.code !== "PRJ-2026-014" ||
+    channel !== "General"
+  )
+    return [];
+  return [
+    {
+      id: "PRJ-2026-014-history-test-group",
+      author: "Devon Park",
+      time: "2 October 2026, 11:15",
+      text: "We've agreed to start acceptance testing with a small adviser group. Maya, could you check who can join? We'll confirm dates once we know the numbers.",
+      replies: [
+        {
+          author: "Maya Chen",
+          time: "2 October 2026, 11:32",
+          text: "Yes, I'll ask the team leads and bring a short list to the next check-in.",
+        },
+      ],
+    },
+  ];
+}
+
 // Keep channel copy beside its project context; attachments remain in ProjectsApp.
 const currentMessages: Record<string, [string, string, string]> = {
   "PRJ-2026-014": [

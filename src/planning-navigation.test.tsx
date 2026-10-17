@@ -41,7 +41,9 @@ describe("persistent Planning navigation", () => {
     expect(translateText("Department submissions", "de")).toBe(
       "Abteilungsbeiträge",
     );
-    expect(translateText("Hub navigation", "de")).toBe("Hub-Navigation");
+    expect(translateText("Hub navigation", "de")).toBe(
+      "Navigation der Funktionsgruppe",
+    );
     expect(translateText("Employment & Hiring", "de")).toBe(
       "Personal- und Einstellungsverwaltung",
     );

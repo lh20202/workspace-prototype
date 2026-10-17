@@ -1,3 +1,4 @@
+import { externalEnvironmentForTool } from "../environments/catalog";
 import { workspaceById } from "./registry";
 import { enrichFunctionalFiles } from "./contentRealism";
 import { employmentProtectedSubjects } from "./employmentSubjects";
@@ -1065,7 +1066,11 @@ export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
       area: String(area),
       strict: Boolean(strict),
     })),
-    tools: s.tools.map(([id, name, purpose]) => ({ id, name, purpose })),
+    tools: s.tools.map(([id, name, purpose]) => ({
+      id,
+      name: externalEnvironmentForTool(id)?.name || name,
+      purpose,
+    })),
   }),
 );
 functionalConfigs.push(welfareConfig);

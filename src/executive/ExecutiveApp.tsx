@@ -1,8 +1,9 @@
+import EnvironmentIcon from "../components/EnvironmentIcon";
+import AccessLock from "../components/AccessLock";
 import StaffLink from "../components/StaffLink";
 import { canAccessWorkspace, canAccessArea } from "../access/policy";
 import { useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
-import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import NavigationIcon from "../components/NavigationIcon";
 import DocumentLibrary, {
@@ -173,13 +174,13 @@ export default function ExecutiveApp() {
     );
   const portal = (
     <StaffLink href="/governance/approved">
-      <LockClosed20Regular />
-      Governance & Members Portal ↗
+      <EnvironmentIcon type="portal" />
+      Members Portal ↗
     </StaffLink>
   );
   const emergency = (
     <StaffLink href="/emergency-response">
-      <LockClosed20Regular />
+      <AccessLock size={20} />
       Emergency Response · Strictly confidential ↗
     </StaffLink>
   );

@@ -6,11 +6,13 @@ import {
   DrawerHeaderTitle,
   DrawerBody,
 } from "@fluentui/react-components";
-import { Dismiss20Regular, LockClosed24Regular } from "@fluentui/react-icons";
+import { Dismiss20Regular } from "@fluentui/react-icons";
 import { selectedStaffId } from "../intranet/catalog";
 import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "../components/PreviewRoleContext";
+import AccessLock from "../components/AccessLock";
+import EnvironmentIcon from "../components/EnvironmentIcon";
 import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
 import {
   accessFocalPoint,
@@ -50,6 +52,7 @@ export default function AccessBoundary({
   const workspace = accessWorkspace(context);
   const focal = accessFocalPoint(context);
   const sales = isSalesAccessContext(context);
+  const wiki = context.workspaceId === "sales-wiki";
   const preview = usePreviewRoleContext();
   const showRoleHelper = !!(
     preview &&
@@ -80,7 +83,11 @@ export default function AccessBoundary({
   );
   const workspaceContact = (
     <>
-      {language === "de" ? (
+      {wiki ? (
+        <p>
+          <strong>{focal.name}</strong> is the focal point for this Wiki.
+        </p>
+      ) : language === "de" ? (
         <p>
           Sie benötigen Zugriff? Wenden Sie sich an{" "}
           <strong>{focal.name}</strong>, Ihre Ansprechperson für den
@@ -93,7 +100,11 @@ export default function AccessBoundary({
         </p>
       )}
       <Button appearance="primary" onClick={() => openContact(focal)}>
-        {sales ? "Contact workspace focal point" : "Contact focal point"}
+        {wiki
+          ? "Contact Wiki focal point"
+          : sales
+            ? "Contact workspace focal point"
+            : "Contact focal point"}
       </Button>
     </>
   );
@@ -110,7 +121,11 @@ export default function AccessBoundary({
           <section
             className={`access-boundary${strict ? " access-boundary-strict" : ""}${compact ? " access-boundary-compact" : ""}`}
           >
-            <LockClosed24Regular className="access-boundary-lock" />
+            <AccessLock
+              size={28}
+              className="access-boundary-lock"
+              labelled={false}
+            />
             {strict && (
               <span className="access-boundary-sensitivity">
                 Strictly confidential
@@ -118,7 +133,11 @@ export default function AccessBoundary({
             )}
             <Heading>Access required</Heading>
             <p className="access-boundary-area">{context.area}</p>
-            <p>This area is limited to authorised participants.</p>
+            <p>
+              {wiki
+                ? "This knowledge area is outside the frontline view."
+                : "This area is limited to authorised participants."}
+            </p>
             {!sales && (
               <>
                 {workspaceContact}
@@ -151,13 +170,14 @@ export default function AccessBoundary({
           >
             <h2>Are you frontline sales staff?</h2>
             <p>
-              Go to the Frontline Crew Portal for the information and tools
-              used in day-to-day frontline work.
+              Go to the Frontline Crew Portal for the information and tools used
+              in day-to-day frontline work.
             </p>
             <a
               className="access-sales-portal-link"
               href={withExplicitStaff("/frontline-sales")}
             >
+              <EnvironmentIcon type="portal" size={18} />
               Open Frontline Crew Portal <span aria-hidden="true">→</span>
             </a>
             <div className="access-sales-contact">
@@ -175,7 +195,11 @@ export default function AccessBoundary({
               </Button>
             </div>
             <div className="access-sales-contact">
-              <h3>Need access to this workspace instead?</h3>
+              <h3>
+                {wiki
+                  ? "Need access to this Wiki area instead?"
+                  : "Need access to this workspace instead?"}
+              </h3>
               {workspaceContact}
               {urgent}
             </div>

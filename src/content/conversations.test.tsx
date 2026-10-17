@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import ContentConversation from "./ContentConversation";
 import { studioPosts } from "./conversations";
 import { canAccessChannel, previewRoles } from "../access/policy";
-import { germanTeamsStudio } from "../i18n/de-teams-studio";
+import { translateText } from "../i18n/translate";
 import { peopleDirectory } from "../intranet/catalog";
 import { resolveContentChannel } from "./channels";
 
@@ -23,8 +23,7 @@ describe("Studio conversation fixtures", () => {
     for (const posts of Object.values(studioPosts)) {
       for (const post of posts) {
         for (const text of [post.text, post.reply?.text].filter(Boolean)) {
-          expect(germanTeamsStudio[text!]).toBeTruthy();
-          expect(germanTeamsStudio[text!]).not.toBe(text);
+          expect(translateText(text!, "de")).not.toBe(text);
         }
       }
     }

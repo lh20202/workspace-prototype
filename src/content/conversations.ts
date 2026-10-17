@@ -55,6 +55,14 @@ export const studioPosts: Record<string, StudioPost[]> = {
       text: "@Inez can you finish the wording and accessibility check? Digital has the CMS changes and deploy covered; we just need to confirm the content order from our side.",
       reactions: [{ emoji: "✅", count: 2 }],
     },
+    {
+      id: "web-history-link-check",
+      author: "Inez Hart",
+      time: "30 September 2026, 15:10",
+      text: "The link check is finished. Two headings needed clearer wording; both are updated in the copy sheet. Thanks for catching them before the handoff.",
+      attachment: "landing-copy",
+      reactions: [{ emoji: "👍", count: 2 }],
+    },
   ],
   social: [
     {

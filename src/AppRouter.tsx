@@ -12,16 +12,17 @@ import Directory from "./intranet/Directory";
 import Launcher from "./intranet/Launcher";
 import { resolveLegacy } from "./workspaces/registry";
 import { publishingLegacyHref } from "./workspaces/publishingRetirement";
+import ExternalEnvironmentPreview from "./environments/ExternalEnvironmentPreview";
+import { externalPreviewForPath } from "./environments/previewRoutes";
 const FunctionalApp = lazy(() => import("./workspaces/FunctionalApp"));
 const FinanceApp = lazy(() => import("./finance/FinanceApp"));
 const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
 const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
-const GovernanceApp = lazy(() => import("./executive/GovernanceApp"));
 const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
 const WikiApp = lazy(() => import("./wiki/WikiApp"));
-const FrontlineApp = lazy(() => import("./frontline/FrontlineApp"));
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
+  const external = externalPreviewForPath(location.pathname);
   const oldRoute = resolveLegacy(location.pathname);
   const redirect =
     publishingLegacyHref(location.pathname, location.search) ||
@@ -40,6 +41,13 @@ export default function AppRouter() {
     );
   if (prototype === "launcher") return <Launcher />;
   if (prototype === "architecture") return <Directory />;
+  if (external)
+    return (
+      <div className="prototype-frame external-preview-frame">
+        <PrototypeNavigator allowWelcomeInvitation={false} />
+        <ExternalEnvironmentPreview environment={external} />
+      </div>
+    );
   return (
     <div className="prototype-frame">
       <PrototypeNavigator />
@@ -52,16 +60,12 @@ export default function AppRouter() {
       >
         {prototype === "wiki" ? (
           <WikiApp />
-        ) : prototype === "frontline" ? (
-          <FrontlineApp />
         ) : prototype === "projects" ? (
           <ProjectsApp />
         ) : prototype === "functional" ? (
           <FunctionalApp />
         ) : prototype === "executive" ? (
           <ExecutiveApp />
-        ) : prototype === "governance" ? (
-          <GovernanceApp />
         ) : prototype === "emergency" ? (
           <EmergencyApp />
         ) : prototype === "finance" ? (

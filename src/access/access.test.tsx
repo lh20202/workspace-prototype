@@ -45,15 +45,23 @@ describe("business focal point before technical access escalation", () => {
       expect(html.indexOf("Access required")).toBeLessThan(
         html.indexOf("Are you frontline sales staff?"),
       );
-      expect(html.indexOf("Open Frontline Sales Portal")).toBeLessThan(
+      expect(html.indexOf("Open Frontline Crew Portal")).toBeLessThan(
         html.indexOf("Frontline sales focal point"),
       );
       expect(html.indexOf("Frontline sales focal point")).toBeLessThan(
-        html.indexOf("Need access to this workspace instead?"),
+        html.indexOf(
+          workspaceId === "sales-wiki"
+            ? "Need access to this Wiki area instead?"
+            : "Need access to this workspace instead?",
+        ),
       );
-      expect(html.indexOf("Contact workspace focal point")).toBeLessThan(
-        html.indexOf("Raise urgent access request"),
-      );
+      expect(
+        html.indexOf(
+          workspaceId === "sales-wiki"
+            ? "Contact Wiki focal point"
+            : "Contact workspace focal point",
+        ),
+      ).toBeLessThan(html.indexOf("Raise urgent access request"));
     }
     for (const workspaceId of [
       "employment",
@@ -79,6 +87,30 @@ describe("business focal point before technical access escalation", () => {
     expect(accessFocalPoint({ workspaceId: "frontline-sales" })).toEqual(
       frontlineSalesFocalPoint,
     );
+  });
+
+  it("describes the curated frontline Wiki view without implying general confidentiality", () => {
+    const html = renderToStaticMarkup(
+      createElement(AccessBoundary, {
+        workspaceId: "sales-wiki",
+        area: "Insight & Performance",
+        personId: "maya",
+        resource: { kind: "wiki", areaId: "insight" },
+      }),
+    );
+    expect(html).toContain(
+      "This knowledge area is outside the frontline view.",
+    );
+    expect(html).toContain("Need access to this Wiki area instead?");
+    expect(html).toContain("is the focal point for this Wiki.");
+    expect(html).toContain("Contact Wiki focal point");
+    expect(html).toContain('class="environment-icon environment-icon-portal"');
+    expect(html).toContain("access-lock access-boundary-lock");
+    expect(html).not.toContain(
+      "This area is limited to authorised participants.",
+    );
+    expect(html).not.toContain("Strictly confidential");
+    expect(html).not.toContain("Need access to this workspace instead?");
   });
 
   it("gives every workspace one existing fictional contact and keeps special boundaries distinct", () => {

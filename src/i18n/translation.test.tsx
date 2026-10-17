@@ -63,7 +63,7 @@ describe("English and German display language", () => {
   it("translates hub headings and short workspace labels consistently", () => {
     const hubLabels = {
       Sales: "Vertrieb",
-      "Org Central": "Unternehmenszentrale",
+      "Org Central": "Zentrale Funktionen",
       Personnel: "Personal",
       "Research & Insight": "Forschung & Analyse",
       "Creative Studio": "Kreativstudio",
@@ -80,7 +80,7 @@ describe("English and German display language", () => {
       "Culture & Inclusion": "Kultur & Inklusion",
       "Learning Management": "Lernmanagement",
       "Internal Events & Networking": "Interne Veranstaltungen & Netzwerke",
-      "Personnel Admin": "Personaladministration",
+      "Personnel Admin": "Personalverwaltung",
       "Workers' Union": "Arbeitnehmervertretung",
       "Welfare & Safeguarding": "Fürsorge & Schutz",
       "Purse Strings": "Geldströme",
@@ -91,11 +91,11 @@ describe("English and German display language", () => {
       expect(translateText(english, "en")).toBe(english);
     }
     expect(translateText("Staff Service Operations workspace", "de")).toBe(
-      "Arbeitsbereich Interne Serviceprozesse",
+      "Arbeitsbereich Einkauf & Büroorganisation",
     );
     expect(
       translateText("Purchasing & Office → Purchasing & Suppliers", "de"),
-    ).toBe("Einkauf & Büroorganisation → Einkauf und Lieferanten");
+    ).toBe("Einkauf & Büroorganisation → Einkauf & Lieferanten");
   });
   it("translates confidential personnel work and independent representation clearly", () => {
     const protectedLabels = {

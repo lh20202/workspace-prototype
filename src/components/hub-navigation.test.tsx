@@ -36,8 +36,9 @@ describe("shared SharePoint hub navigation", () => {
     const related = [
       ["Sales & Marketing Wiki", "/sales-marketing/wiki"],
       ["Frontline Crew Portal", "/frontline-sales"],
+      ["Global Media Library", "/external/media-library"],
     ];
-    for (const [, pathname] of [...workspaces, ...related]) {
+    for (const [, pathname] of [...workspaces, related[0]]) {
       const model = getHubNavigationModel({ pathname })!;
       expect(
         model.workspaces.map(({ title, destinationHref }) => [
@@ -62,7 +63,9 @@ describe("shared SharePoint hub navigation", () => {
 
   it("renders one collapsed Workspaces control instead of a crowded row of destination links", () => {
     for (const hub of hubDefinitions) {
-      for (const environment of environmentsForHub(hub.id)) {
+      for (const environment of environmentsForHub(hub.id).filter(
+        (item) => item.environmentType !== "portal",
+      )) {
         const html = renderToStaticMarkup(
           <HubNavigation
             workspaceId={environment.id}
@@ -83,7 +86,9 @@ describe("shared SharePoint hub navigation", () => {
   it("keeps the same ordered environment destinations across every sibling", () => {
     for (const hub of hubDefinitions) {
       const environments = environmentsForHub(hub.id);
-      for (const environment of environments) {
+      for (const environment of environments.filter(
+        (item) => item.environmentType !== "portal",
+      )) {
         const model = getHubNavigationModel({
           workspaceId: environment.id,
           pathname: environment.href,
@@ -183,6 +188,8 @@ describe("shared SharePoint hub navigation", () => {
       "/content-delivery/teams",
       "/projects/PRJ-2026-014/teams",
       "/governance",
+      "/frontline-sales",
+      "/external/media-library",
       "/emergency-response",
       "/architecture",
     ]) {

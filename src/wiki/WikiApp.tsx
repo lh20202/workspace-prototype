@@ -13,6 +13,7 @@ import { withExplicitStaff } from "../utils/staffNavigation";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import NavigationIcon from "../components/NavigationIcon";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import WikiFigure from "./WikiFigure";
 import { matchesDisplayText } from "../i18n/search";
 import {
   resolveWikiPath,
@@ -352,6 +353,7 @@ export default function WikiApp() {
                     </StaffLink>
                   ))}
                 </nav>
+                <WikiFigure articleId={article.id} />
                 {article.sections.map((section, i) => (
                   <section key={section.heading} id={sectionId(i)}>
                     <h2>{section.heading}</h2>
@@ -365,6 +367,12 @@ export default function WikiApp() {
                 <section className="wiki-related">
                   <h2>Related reading</h2>
                   <div>
+                    {article.id === "working-with-creative-studio" && (
+                      <StaffLink href="/content-delivery">
+                        Open Creative Studio
+                        <ArrowRight20Regular aria-hidden="true" />
+                      </StaffLink>
+                    )}
                     {chapters
                       .filter((item) => item.id !== article.id)
                       .slice(0, 3)

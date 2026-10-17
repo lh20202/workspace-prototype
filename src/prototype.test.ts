@@ -37,8 +37,9 @@ describe("launcher and service desk routes", () => {
       "<h1>Welcome to the Digital Workspace demo site!</h1>",
     );
     expect(launcher).toContain(
-      "Explore what your new workspaces could look and feel like. Switch roles to see how the experience changes.",
+      "Explore what your new Digital Workspaces could look and feel like.",
     );
+    expect(launcher).not.toMatch(/Switch roles|role switching|change.*role/i);
     expect(launcher.match(/Explore workspace/g)).toHaveLength(2);
     expect(launcher.match(/class="workspace-icon"/g)).toHaveLength(2);
     expect(launcher).toContain('alt="SharePoint"');

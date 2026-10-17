@@ -306,6 +306,13 @@ export const technicalPosts: ConversationMessage[] = [
     kind: "issue",
     ref: "231",
   },
+  {
+    channel: "Engineering",
+    author: "Devon Park",
+    time: "1 October 2026, 16:10",
+    text: "The pagination check now covers an empty page between results as well as the last page. That was the awkward case from Tuesday's review. Thanks, Ari, for the small repro.",
+    likes: 2,
+  },
 ];
 export const gitHref = (repo: string, kind = "repository", ref = "") =>
   `/digital-tech/systems/github?${new URLSearchParams({ repo, kind, ref })}`;

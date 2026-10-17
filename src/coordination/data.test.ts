@@ -10,8 +10,7 @@ import {
   departmentHref,
 } from "./data";
 import { staff, peopleDirectory, workspaces } from "../intranet/catalog";
-import { germanTeamsDepartments } from "../i18n/de-teams-departments";
-import { germanOneDriveDepartment } from "../i18n/de-onedrive-department";
+import { translateText } from "../i18n/translate";
 import { configById, functionalConfigs } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
 import { files as contentFiles, filesById } from "../content/data";
@@ -141,7 +140,6 @@ describe("department coordination architecture", () => {
   });
   it("keeps conversation authors in the department and provides German for seeded messages", () => {
     const colleagues = [...peopleDirectory, ...staff];
-    const german = { ...germanTeamsDepartments, ...germanOneDriveDepartment };
     for (const department of departments) {
       for (const post of department.posts) {
         expect(
@@ -151,9 +149,11 @@ describe("department coordination architecture", () => {
               person.departmentId === department.id,
           ),
         ).toBe(true);
-        expect(german[post.text]).toBeTruthy();
+        expect(translateText(post.text, "de")).not.toBe(post.text);
         if (post.moderatorReply)
-          expect(german[post.moderatorReply]).toBeTruthy();
+          expect(translateText(post.moderatorReply, "de")).not.toBe(
+            post.moderatorReply,
+          );
         for (const reply of post.replies || []) {
           expect(
             colleagues.some(
@@ -162,7 +162,7 @@ describe("department coordination architecture", () => {
                 person.departmentId === department.id,
             ),
           ).toBe(true);
-          expect(german[reply.text]).toBeTruthy();
+          expect(translateText(reply.text, "de")).not.toBe(reply.text);
         }
       }
     }

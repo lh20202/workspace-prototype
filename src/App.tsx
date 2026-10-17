@@ -1,3 +1,4 @@
+import AccessLock from "./components/AccessLock";
 import { canAccessArea } from "./access/policy";
 import { documentVersions } from "./sharepoint/library";
 import FileIcon from "./components/DocumentIcon";
@@ -30,7 +31,6 @@ import {
   Folder24Regular,
   Folder24Filled,
   Document24Regular,
-  LockClosed24Regular,
   CheckmarkCircle24Regular,
   Search20Regular,
   Add20Regular,
@@ -79,7 +79,7 @@ const icons = {
   strategy: Folder24Regular,
   reporting: Folder24Regular,
   approved: Folder24Regular,
-  restricted: LockClosed24Regular,
+  restricted: AccessLock,
 };
 const views: View[] = [
   "All Documents",
@@ -725,7 +725,7 @@ export default function App() {
                     className={`library-label ${page === "approved" ? "final-label" : ""}`}
                   >
                     {page === "restricted" ? (
-                      <LockClosed24Regular />
+                      <AccessLock />
                     ) : page === "approved" ? (
                       <CheckmarkCircle24Regular />
                     ) : (
@@ -776,7 +776,7 @@ export default function App() {
                     )}
                     {page === "restricted" && (
                       <div className="record-banner">
-                        <LockClosed24Regular />
+                        <AccessLock />
                         <div>
                           <strong>Executive planning review group</strong>
                           <span>

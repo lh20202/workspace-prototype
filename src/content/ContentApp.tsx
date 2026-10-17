@@ -1,3 +1,10 @@
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import EnvironmentIcon from "../components/EnvironmentIcon";
+import AccessLock from "../components/AccessLock";
+import {
+  externalEnvironmentForTool,
+  externalPreviewHref,
+} from "../environments/catalog";
 import { canAccessWorkspace } from "../access/policy";
 import WorkspaceDenied from "../access/WorkspaceDenied";
 import { teamsStaffForWorkspace } from "../teams/navigation";
@@ -20,7 +27,6 @@ import {
   ArrowRight20Regular,
   ArrowUpRight20Regular,
   Dismiss20Regular,
-  LockClosed20Regular,
   Search20Regular,
   ChevronLeft20Regular,
   ChevronRight20Regular,
@@ -220,6 +226,12 @@ export default function ContentApp() {
           key={reference.tool + reference.id}
           href={toolHref(reference.tool, item.id, reference.id)}
         >
+          {externalEnvironmentForTool(reference.tool) && (
+            <ExternalBrandMark
+              id={externalEnvironmentForTool(reference.tool)!.id}
+              size={24}
+            />
+          )}
           {tools.find((tool) => tool.id === reference.tool)!.name} ·{" "}
           {reference.id}
           <ArrowUpRight20Regular />
@@ -502,15 +514,21 @@ export default function ContentApp() {
                     }
                   />
                   <div className="content-room-handoffs">
-                    <StaffLink href={`${base}/tools/planable`}>
-                      Publishing approvals in Planable <ArrowUpRight20Regular />
+                    <StaffLink href={toolHref("planable")}>
+                      <ExternalBrandMark id="slotline" size={24} /> Publishing
+                      approvals in Slotline <ArrowUpRight20Regular />
+                    </StaffLink>
+                    <StaffLink
+                      href={externalPreviewHref("media-library", base)}
+                    >
+                      <EnvironmentIcon type="portal" /> Global Media Library{" "}
+                      <ArrowUpRight20Regular />
                     </StaffLink>
                     <StaffLink href="/audience-innovation/research">
                       Audience evidence <ArrowRight20Regular />
                     </StaffLink>
                     <StaffLink href="/digital-tech/web-crm">
-                      CMS engineering in Tech & Digital{" "}
-                      <ArrowRight20Regular />
+                      CMS engineering in Tech & Digital <ArrowRight20Regular />
                     </StaffLink>
                   </div>
                 </div>
@@ -806,7 +824,7 @@ export default function ContentApp() {
                       className="content-protected-link"
                       href={protectedHref(t)}
                     >
-                      <LockClosed20Regular />
+                      <AccessLock size={20} labelled={false} />
                       {t.name} · narrower access group
                     </StaffLink>
                   </p>
@@ -920,7 +938,8 @@ function ProductionCalendar({
           })}
         </h3>
         <StaffLink href={toolHref("planable")}>
-          Open in Planable <ArrowUpRight20Regular />
+          <ExternalBrandMark id="slotline" size={24} /> Open in Slotline{" "}
+          <ArrowUpRight20Regular />
         </StaffLink>
       </div>
       <div className="sp-calendar-scroll">
@@ -1010,7 +1029,8 @@ function ProductionCalendar({
                     Open package
                   </Button>{" "}
                   <StaffLink href={toolHref("planable", p.id, ref?.id || "")}>
-                    Open in Planable {ref?.id}
+                    <ExternalBrandMark id="slotline" size={24} /> Open in
+                    Slotline {ref?.id}
                   </StaffLink>
                 </div>
               );

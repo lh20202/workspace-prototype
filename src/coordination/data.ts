@@ -758,6 +758,21 @@ export const departments: Department[] = definitions.map(
       )
         post.moderatorLikedBy = [post.author];
     }
+    if (id === "marketing-growth")
+      posts.push({
+        id: `${id}-history-cover`,
+        author: "Priya Shah",
+        time: "29 September 2026, 14:30",
+        text: "October cover is agreed now. Thanks for sorting the overlaps so quickly. If your dates change, update the capacity view and let the person covering know.",
+        attachmentId: byFolder("Workload & Capacity"),
+        replies: [
+          {
+            author: "Taylor Brooks",
+            time: "29 September 2026, 14:42",
+            text: "Mine are confirmed. I've sent Maya the handover for the Thursday check-in.",
+          },
+        ],
+      });
     return {
       id,
       name,

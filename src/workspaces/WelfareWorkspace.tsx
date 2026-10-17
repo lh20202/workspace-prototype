@@ -1,5 +1,5 @@
+import AccessLock from "../components/AccessLock";
 import { useState } from "react";
-import { LockClosed20Regular } from "@fluentui/react-icons";
 import AccessBoundary from "../access/AccessBoundary";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import NavigationIcon from "../components/NavigationIcon";
@@ -91,7 +91,7 @@ export default function WelfareWorkspace() {
                   href={href(item.id)}
                   aria-current={page === item.id ? "page" : undefined}
                 >
-                  <LockClosed20Regular />
+                  <AccessLock />
                   {item.name}
                 </a>
               ))}

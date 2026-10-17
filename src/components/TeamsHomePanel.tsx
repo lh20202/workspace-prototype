@@ -1,5 +1,6 @@
 import { ArrowRight20Regular } from "@fluentui/react-icons";
 import "./teams-home-panel.css";
+import TeamsMark from "./TeamsMark";
 
 export interface TeamsHomeChannel {
   name: string;
@@ -25,19 +26,14 @@ export default function TeamsHomePanel({
   return (
     <section className="teams-home-panel" aria-label={heading}>
       <h2>
-        <img
-          src="/images/teams-logo.svg"
-          alt="Microsoft Teams"
-          width="24"
-          height="24"
-        />
+        <TeamsMark size={24} labelled />
         {heading}
       </h2>
       <p>{description}</p>
       <div className="teams-home-channels">
         {channels.map((channel) => (
           <a href={channel.href} key={channel.href}>
-            <img src="/images/teams-logo.svg" alt="" width="18" height="18" />
+            <TeamsMark size={18} />
             <span>
               {channel.name}
               {channel.cue && <small>{channel.cue}</small>}

@@ -1,3 +1,5 @@
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import { adminPlatformById } from "../environments/catalog";
 import { useState } from "react";
 import { Button } from "@fluentui/react-components";
 import {
@@ -54,29 +56,15 @@ export default function AccessRequest() {
   const [submitted, setSubmitted] = useState(false);
   const [reasonEdited, setReasonEdited] = useState(false);
   const requestType = isSupport ? "IT request" : "Urgent access request";
-  const projectDesk = workspaceId === "projects";
   return (
     <div className="service-desk-app">
       <header className="service-desk-header">
         <div className="service-desk-brand">
-          <span
-            className={projectDesk ? "jira-mark" : "freshservice-mark"}
-            aria-hidden="true"
-          >
-            {projectDesk ? (
-              <>
-                <i />
-                <i />
-                <i />
-              </>
-            ) : (
-              <TicketDiagonal24Regular />
-            )}
-          </span>
+          <ExternalBrandMark id="teralink" size={40} />
           <div>
             <strong>Service Desk</strong>
-            <span>
-              {projectDesk ? "Jira Service Management" : "Freshservice"}
+            <span data-no-translate>
+              {adminPlatformById.get("teralink")!.name}
             </span>
           </div>
         </div>

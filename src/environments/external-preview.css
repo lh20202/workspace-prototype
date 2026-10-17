@@ -1,0 +1,286 @@
+.external-preview {
+  --external-accent: #163c67;
+  --external-deep: #0c2849;
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - 6px);
+  display: grid;
+  place-items: center;
+  padding: 64px 24px;
+  overflow: hidden;
+  background: #e5e8ea;
+  color: #202b35;
+}
+.external-preview-burgundy {
+  --external-accent: #85384e;
+  --external-deep: #582437;
+}
+.external-preview-teal {
+  --external-accent: #176569;
+  --external-deep: #104c50;
+}
+.external-preview-violet {
+  --external-accent: #5a4385;
+  --external-deep: #3e2b63;
+}
+.external-backdrop {
+  position: absolute;
+  inset: -24px;
+  z-index: -2;
+  filter: blur(14px);
+  transform: scale(1.035);
+  pointer-events: none;
+  user-select: none;
+  background: #fafafa;
+}
+.external-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(239 242 244 / 25%);
+}
+.external-backdrop-masthead {
+  height: 88px;
+  padding: 24px 7%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.external-backdrop-masthead > i {
+  width: 100px;
+  height: 28px;
+  background: var(--external-accent);
+}
+.external-backdrop-masthead > div {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+}
+.external-backdrop-masthead span {
+  width: 90px;
+  height: 11px;
+  background: #b5bdc4;
+}
+.external-backdrop-masthead b {
+  width: 88px;
+  height: 32px;
+  background: var(--external-accent);
+  border-radius: 3px;
+}
+.external-backdrop-hero {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  min-height: 430px;
+  height: 51vh;
+  background: var(--external-deep);
+}
+.external-backdrop-hero img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+.external-backdrop-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 12%;
+}
+.external-backdrop-hero-copy > span {
+  width: 85%;
+  height: 72px;
+  background: #f4f6f8;
+}
+.external-backdrop-hero-copy > i {
+  width: 92%;
+  height: 10px;
+  background: #c1cbd5;
+}
+.external-backdrop-hero-copy > i + i {
+  width: 70%;
+}
+.external-backdrop-hero-copy b {
+  margin-top: 16px;
+  width: 125px;
+  height: 38px;
+  background: #fff;
+}
+.external-backdrop-section {
+  height: 270px;
+  padding: 40px 8%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8%;
+  background: #fff;
+}
+.external-backdrop-section > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.external-backdrop-section i {
+  width: 70%;
+  height: 32px;
+  background: var(--external-accent);
+}
+.external-backdrop-section span {
+  width: 95%;
+  height: 10px;
+  background: #c7ced3;
+}
+.external-backdrop-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.external-backdrop-colour {
+  display: flex;
+  gap: 5%;
+  padding: 34px 8%;
+  background: var(--external-accent);
+  min-height: 160px;
+}
+.external-backdrop-colour i {
+  width: 28%;
+  height: 65px;
+  background: rgb(255 255 255 / 30%);
+}
+.external-preview-panel {
+  width: min(100%, 420px);
+  padding: 34px;
+  background: #fff;
+  border: 1px solid #d8dee2;
+  border-radius: 5px;
+  box-shadow:
+    0 16px 56px rgb(16 32 48 / 22%),
+    0 2px 8px rgb(16 32 48 / 8%);
+}
+.external-preview-panel > .environment-icon {
+  color: var(--external-accent);
+}
+.external-preview-logo {
+  display: block;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+.external-preview-panel h1 {
+  margin: 18px 0 14px;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.external-preview-panel p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 26px;
+  color: #52606a;
+}
+.external-return {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--external-accent);
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+.external-return:hover {
+  background: var(--external-deep);
+  color: #fff;
+  box-shadow: 0 2px 5px rgb(16 32 48 / 14%);
+  text-decoration: none;
+}
+.external-return:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--external-accent);
+}
+.external-coming-soon {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  letter-spacing: 1.1px;
+  font-weight: 650;
+  color: #75602d;
+  margin: 18px 0 14px;
+}
+.external-preview-frontline .external-backdrop-masthead {
+  height: 48px;
+  background: var(--external-accent);
+}
+.external-preview-frontline .external-backdrop-masthead > i,
+.external-preview-frontline .external-backdrop-masthead span {
+  background: #fff;
+}
+.external-preview-frontline .external-backdrop-hero {
+  margin: 80px 7% 28px;
+  height: 250px;
+  min-height: 250px;
+  grid-template-columns: 1fr 1fr;
+  background: #dce8e4;
+}
+.external-preview-frontline .external-backdrop-hero-copy > span {
+  background: var(--external-deep);
+  height: 34px;
+}
+.external-preview-frontline .external-backdrop-hero-copy i {
+  background: #a3b5b0;
+}
+.external-preview-frontline .external-backdrop-hero img {
+  content: url("/images/external/workplace-atrium.jpg");
+}
+.external-preview-frontline .external-backdrop-section {
+  margin: 0 7%;
+  padding: 32px;
+  height: 230px;
+  background: #f5f7f6;
+}
+.external-preview-frontline .external-backdrop-colour {
+  margin: 20px 7%;
+  background: #e7ecea;
+}
+.external-preview-frontline .external-backdrop-colour i {
+  background: #b3c8c0;
+}
+@media (max-width: 600px) {
+  .external-preview {
+    padding: 52px 20px;
+  }
+  .external-preview-panel {
+    padding: 28px 24px;
+  }
+  .external-preview-panel h1 {
+    font-size: 24px;
+  }
+  .external-backdrop-hero {
+    grid-template-columns: 35% 65%;
+  }
+  .external-backdrop-masthead > div {
+    gap: 12px;
+  }
+  .external-backdrop-masthead span {
+    width: 35px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .external-return {
+    transition: none;
+  }
+}
