@@ -1,11 +1,24 @@
 import {
-  environmentsForHub,
-  environmentById,
-  environmentRegistry,
-} from "../workspaces/registry";
+  Button,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuList,
+  MenuItemLink,
+  MenuGroup,
+  MenuGroupHeader,
+  MenuDivider,
+} from "@fluentui/react-components";
+import {
+  Folder20Regular,
+  ChevronDown16Regular,
+  Checkmark16Regular,
+} from "@fluentui/react-icons";
 import EnvironmentIcon from "./EnvironmentIcon";
-import { useEffect, useRef } from "react";
-import { withExplicitStaff } from "../utils/staffNavigation";
+import {
+  getHubNavigationModel,
+  type HubNavigationDestination,
+} from "./hubNavigationModel";
 import "./HubNavigation.css";
 
 export interface HubNavigationProps {
@@ -14,80 +27,87 @@ export interface HubNavigationProps {
   search?: string;
 }
 
-/** Site-level navigation is shared by a hub, independently of local site navigation. */
+function Destination({
+  environment,
+}: {
+  environment: HubNavigationDestination;
+}) {
+  return (
+    <MenuItemLink
+      className="hub-workspace-menu-item"
+      href={environment.destinationHref}
+      data-environment={environment.environmentType}
+      aria-current={environment.isCurrent ? "page" : undefined}
+      icon={
+        environment.environmentType === "workspace" ? (
+          <Folder20Regular />
+        ) : (
+          <EnvironmentIcon type={environment.environmentType} />
+        )
+      }
+      secondaryContent={
+        environment.isCurrent ? (
+          <Checkmark16Regular aria-hidden="true" />
+        ) : undefined
+      }
+    >
+      <span className="hub-navigation-label">{environment.title}</span>
+    </MenuItemLink>
+  );
+}
+
+/** One compact environment switcher; local functional navigation remains below it. */
 export default function HubNavigation({
   workspaceId,
   pathname = typeof location === "undefined" ? "" : location.pathname,
   search = typeof location === "undefined" ? "" : location.search,
 }: HubNavigationProps) {
-  const sitesRef = useRef<HTMLDivElement>(null);
-  // Teams keeps its own product navigation, including when opened through a site route.
-  const isTeams = pathname.split("/").includes("teams");
-  const current = workspaceId
-    ? environmentById.get(workspaceId)
-    : environmentRegistry
-        .filter(
-          (workspace) =>
-            pathname === workspace.href ||
-            pathname.startsWith(`${workspace.href}/`),
-        )
-        .sort((a, b) => b.href.length - a.href.length)[0];
-  useEffect(() => {
-    const sites = sitesRef.current;
-    const active = sites?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (!sites || !active) return;
-    const alignCurrent = () => {
-      const frame = sites.getBoundingClientRect();
-      const item = active.getBoundingClientRect();
-      if (item.width > frame.width) sites.scrollLeft += item.left - frame.left;
-      else if (item.right > frame.right)
-        sites.scrollLeft += item.right - frame.right;
-      else if (item.left < frame.left)
-        sites.scrollLeft -= frame.left - item.left;
-    };
-    alignCurrent();
-    if (typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver(alignCurrent);
-    observer.observe(sites);
-    observer.observe(active);
-    return () => observer.disconnect();
-  }, [current?.id, isTeams]);
-  if (isTeams || !current) return null;
-  const siblings = current.hubId
-    ? environmentsForHub(current.hubId)
-    : [current];
-  // Keep the explicitly chosen person, without carrying page-specific query state.
-  const destination = (href: string) => withExplicitStaff(href, search);
-
+  const model = getHubNavigationModel({ workspaceId, pathname, search });
+  if (!model) return null;
   return (
     <nav
       className="hub-navigation"
       aria-label="Hub navigation"
-      data-hub={current.hubId || "standalone"}
+      data-hub={model.current.hubId || "standalone"}
     >
-      {siblings.length > 0 && (
-        <div className="hub-navigation-sites" ref={sitesRef}>
-          {siblings.map((environment) => (
-            <a
-              key={environment.id}
-              href={destination(environment.href)}
-              data-environment={environment.environmentType}
-              aria-current={environment.id === current.id ? "page" : undefined}
-            >
-              {environment.environmentType !== "workspace" && (
-                <EnvironmentIcon type={environment.environmentType} />
-              )}
-              <span className="hub-navigation-label">
-                {environment.hubLabel}
-              </span>
-            </a>
-          ))}
-        </div>
-      )}
-      <a
-        className="hub-navigation-intranet"
-        href={destination("/architecture")}
+      <Menu
+        positioning={{ position: "below", align: "start", autoSize: "height" }}
       >
+        <MenuTrigger disableButtonEnhancement>
+          <Button
+            appearance="transparent"
+            className="hub-workspaces-trigger"
+            icon={<Folder20Regular />}
+          >
+            Workspaces <ChevronDown16Regular aria-hidden="true" />
+          </Button>
+        </MenuTrigger>
+        <MenuPopover className="hub-workspaces-popover">
+          <MenuList aria-label="Workspace navigation">
+            <MenuGroup>
+              <MenuGroupHeader>Workspaces</MenuGroupHeader>
+              {model.workspaces.map((environment) => (
+                <Destination key={environment.id} environment={environment} />
+              ))}
+            </MenuGroup>
+            {model.related.length > 0 && (
+              <>
+                <MenuDivider />
+                <MenuGroup>
+                  <MenuGroupHeader>Knowledge & frontline</MenuGroupHeader>
+                  {model.related.map((environment) => (
+                    <Destination
+                      key={environment.id}
+                      environment={environment}
+                    />
+                  ))}
+                </MenuGroup>
+              </>
+            )}
+          </MenuList>
+        </MenuPopover>
+      </Menu>
+      <a className="hub-navigation-intranet" href={model.intranetHref}>
         Company intranet
       </a>
     </nav>

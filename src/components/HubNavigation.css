@@ -1,7 +1,8 @@
-/* Shared SharePoint hub chrome; local site navigation remains separate below it. */
+/* Shared hub destinations use one compact switcher rather than a scrolling link row. */
 :root .hub-navigation {
   display: flex;
   align-items: stretch;
+  justify-content: space-between;
   gap: 24px;
   min-height: 44px;
   min-width: 0;
@@ -13,23 +14,34 @@
   font-family: "Segoe UI", system-ui, sans-serif;
   line-height: 20px;
 }
-:root .hub-navigation-sites {
-  display: flex;
-  flex: 1 1 0;
-  gap: 24px;
-  min-width: 0;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-width: none;
-}
-:root .hub-navigation-sites::-webkit-scrollbar {
-  display: none;
-}
-:root .hub-navigation a {
+:root .hub-navigation .hub-workspaces-trigger {
   display: inline-flex;
-  flex: 0 0 auto;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 2px 8px;
+  border: 0;
+  border-bottom: 2px solid #ee0000;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  background: transparent;
+  white-space: nowrap;
+}
+:root .hub-navigation .hub-workspaces-trigger:hover,
+:root .hub-navigation .hub-workspaces-trigger[aria-expanded="true"] {
+  color: #005a9e;
+  background: #f5f5f5;
+}
+:root .hub-navigation .hub-workspaces-trigger:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: -3px;
+}
+:root .hub-navigation-intranet {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  flex: 0 0 auto;
+  margin-left: auto;
   min-height: 44px;
   padding: 10px 0 8px;
   border-bottom: 2px solid transparent;
@@ -38,40 +50,60 @@
   text-decoration: none;
   white-space: nowrap;
 }
-:root .hub-navigation a:hover {
+:root .hub-navigation-intranet:hover {
   color: #005a9e;
   border-bottom-color: #c8c6c4;
 }
-:root .hub-navigation a[aria-current="page"] {
-  border-bottom-color: #ee0000;
-  font-weight: 600;
-}
-:root .hub-navigation a[data-environment="wiki"] .environment-icon {
-  color: #486857;
-}
-:root .hub-navigation a[data-environment="portal"] .environment-icon {
-  color: #216f86;
-}
-:root .hub-navigation a:focus-visible {
+:root .hub-navigation-intranet:focus-visible {
   outline: 2px solid #0078d4;
   outline-offset: -3px;
 }
-:root .hub-navigation-intranet {
-  margin-left: auto;
+:root .hub-workspaces-popover {
+  width: min(400px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+:root .hub-workspaces-popover .hub-workspace-menu-item {
+  min-height: 36px;
+  padding-block: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+:root .hub-workspaces-popover .hub-navigation-label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:root .hub-workspaces-popover .hub-workspace-menu-item[aria-current="page"] {
+  background: #f3f2f1;
+  font-weight: 600;
+}
+:root .hub-workspaces-popover [data-environment="wiki"] .environment-icon {
+  color: #486857;
+}
+:root .hub-workspaces-popover [data-environment="portal"] .environment-icon {
+  color: #216f86;
 }
 @media (max-width: 800px) {
   :root .hub-navigation {
-    gap: 20px;
+    gap: 16px;
     padding-inline: 16px;
-  }
-  :root .hub-navigation-sites {
-    gap: 20px;
   }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  :root .hub-navigation a {
+  :root .hub-navigation .hub-workspaces-trigger,
+  :root .hub-navigation-intranet {
     transition:
       color 130ms ease,
+      background-color 130ms ease,
       border-bottom-color 130ms ease;
+  }
+}
+
+@media (max-width: 420px) {
+  :root .hub-navigation {
+    flex-wrap: wrap;
+    gap: 0 16px;
   }
 }

@@ -18,6 +18,7 @@ import {
   personnelDestinations,
 } from "../intranet/architectureDestinations";
 import HubNavigation from "../components/HubNavigation";
+import { getHubNavigationModel } from "../components/hubNavigationModel";
 import ExecutiveApp from "../executive/ExecutiveApp";
 import TeamsPreview from "../intranet/TeamsPreview";
 import {
@@ -206,16 +207,28 @@ describe("hub families retain one canonical owner for every environment", () => 
           search: "?staff=jamie",
         }),
       );
-      expect(html.match(/<a\b/g)).toHaveLength(4);
-      expect(html).toContain(
-        'href="/people-culture?staff=jamie" data-environment="workspace" aria-current="page"',
-      );
-      expect(html).toContain("People &amp; Culture");
-      expect(html).toContain("Employment &amp; Hiring");
-      expect(html).toContain("Welfare &amp; Employee Representation");
+      const model = getHubNavigationModel({
+        pathname: destination.href,
+        search: "?staff=jamie",
+      })!;
+      expect(html.match(/<a\b/g)).toHaveLength(1);
+      expect(html).toContain("Workspaces");
       expect(html).toContain("Company intranet");
+      expect(model.workspaces.map(({ id }) => id)).toEqual([
+        "people",
+        "employment",
+        "welfare",
+      ]);
+      expect(
+        model.workspaces
+          .filter(({ isCurrent }) => isCurrent)
+          .map(({ destinationHref }) => destinationHref),
+      ).toEqual(["/people-culture?staff=jamie"]);
+      expect(model.related).toEqual([]);
       for (const normal of personnelDestinations.normal)
-        expect(html).not.toContain(`href="${normal.href}`);
+        expect(model.workspaces.some(({ href }) => href === normal.href)).toBe(
+          false,
+        );
     }
   });
 });

@@ -9,6 +9,7 @@ import {
 } from "./siteArchitecture";
 import { previewRoles } from "../access/policy";
 import { translateText } from "../i18n/translate";
+import { getHubNavigationModel } from "../components/hubNavigationModel";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -47,7 +48,14 @@ describe("People & Culture keeps functional entrances in one existing workspace"
         `<h1>${destination.label.replaceAll("&", "&amp;")}</h1>`,
       );
       expect(currentLinks(local)).toEqual([`${destination.href}?staff=taylor`]);
-      expect(currentLinks(markup)).toContain("/people-culture?staff=taylor");
+      expect(
+        getHubNavigationModel({
+          pathname: destination.href,
+          search: "?staff=taylor",
+        })!
+          .workspaces.filter(({ isCurrent }) => isCurrent)
+          .map(({ destinationHref }) => destinationHref),
+      ).toEqual(["/people-culture?staff=taylor"]);
       for (const sibling of personnelDestinations.normal)
         expect(local).toContain(`href="${sibling.href}?staff=taylor"`);
       expect(markup).not.toContain('class="access-boundary');

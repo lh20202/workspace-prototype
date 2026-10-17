@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import HubNavigation from "./HubNavigation";
 import EnvironmentIcon from "./EnvironmentIcon";
+import { getHubNavigationModel } from "./hubNavigationModel";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import {
   environmentsForHub,
@@ -25,107 +26,141 @@ function links(html: string) {
 }
 
 describe("shared SharePoint hub navigation", () => {
-  it("keeps the full Sales family in its agreed order on workspaces, Wiki and Portal", () => {
-    const expected = [
-      ["Research & Insight", "/audience-innovation"],
-      ["Creative & Editorial", "/content-delivery"],
-      ["Acquisition", "/logistics"],
-      ["Customer Care", "/customer-relations"],
+  it("keeps Sales workspaces separate from the Wiki and Portal in their agreed order", () => {
+    const workspaces = [
+      ["Audience Research & Marketing Insight", "/audience-innovation"],
+      ["Creative & Editorial Studio", "/content-delivery"],
+      ["Acquisition & Activation Logistics", "/logistics"],
+      ["Customer Care & Relations", "/customer-relations"],
+    ];
+    const related = [
       ["Sales & Marketing Wiki", "/sales-marketing/wiki"],
       ["Frontline Sales Portal", "/frontline-sales"],
-      ["Company intranet", "/architecture"],
     ];
-    for (const [, pathname] of expected.slice(0, -1)) {
-      const html = renderToStaticMarkup(<HubNavigation pathname={pathname} />);
-      const result = links(html);
-      expect(result.map(({ label, href }) => [label, href])).toEqual(expected);
+    for (const [, pathname] of [...workspaces, ...related]) {
+      const model = getHubNavigationModel({ pathname })!;
       expect(
-        result.filter((link) => link.current).map((link) => link.href),
+        model.workspaces.map(({ title, destinationHref }) => [
+          title,
+          destinationHref,
+        ]),
+      ).toEqual(workspaces);
+      expect(
+        model.related.map(({ title, destinationHref }) => [
+          title,
+          destinationHref,
+        ]),
+      ).toEqual(related);
+      expect(
+        [...model.workspaces, ...model.related]
+          .filter((item) => item.isCurrent)
+          .map((item) => item.href),
       ).toEqual([pathname]);
-      expect(html).toContain('data-environment="wiki"');
-      expect(html).toContain('data-environment="portal"');
+      expect(model.intranetHref).toBe("/architecture");
     }
   });
 
-  it("keeps the same ordered hub destinations and intranet link across every sibling", () => {
+  it("renders one collapsed Workspaces control instead of a crowded row of destination links", () => {
     for (const hub of hubDefinitions) {
-      const environments = environmentsForHub(hub.id);
-      const expected = [
-        ...environments.map(({ href, hubLabel }) => ({
-          href,
-          label: hubLabel,
-        })),
-        { href: "/architecture", label: "Company intranet" },
-      ];
-      for (const environment of environments) {
-        const result = links(
-          renderToStaticMarkup(
-            <HubNavigation
-              workspaceId={environment.id}
-              pathname={environment.href}
-            />,
-          ),
+      for (const environment of environmentsForHub(hub.id)) {
+        const html = renderToStaticMarkup(
+          <HubNavigation
+            workspaceId={environment.id}
+            pathname={environment.href}
+          />,
         );
-        expect(result.map(({ href, label }) => ({ href, label }))).toEqual(
-          expected,
-        );
-        expect(
-          result.filter((link) => link.current).map((link) => link.href),
-        ).toEqual([environment.href]);
+        expect(html).toContain("Workspaces");
+        expect(html).toContain('aria-haspopup="menu"');
+        expect(html).not.toContain('aria-expanded="true"');
+        expect(html).not.toContain('role="menu"');
+        expect(links(html)).toEqual([
+          { href: "/architecture", label: "Company intranet", current: false },
+        ]);
       }
     }
   });
 
-  it("resolves nested site routes while keeping local pages out of the hub bar", () => {
-    const result = links(
-      renderToStaticMarkup(
-        <HubNavigation pathname="/digital-tech/protected/privileged-access" />,
-      ),
+  it("keeps the same ordered environment destinations across every sibling", () => {
+    for (const hub of hubDefinitions) {
+      const environments = environmentsForHub(hub.id);
+      for (const environment of environments) {
+        const model = getHubNavigationModel({
+          workspaceId: environment.id,
+          pathname: environment.href,
+        })!;
+        expect(
+          [...model.workspaces, ...model.related].map(({ id }) => id),
+        ).toEqual(environments.map(({ id }) => id));
+        expect(
+          [...model.workspaces, ...model.related]
+            .filter((item) => item.isCurrent)
+            .map((item) => item.href),
+        ).toEqual([environment.href]);
+        expect(
+          model.workspaces.every(
+            (item) => item.environmentType === "workspace",
+          ),
+        ).toBe(true);
+        expect(
+          model.related.every((item) => item.environmentType !== "workspace"),
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("resolves nested site routes while keeping local pages out of the shared menu", () => {
+    const model = getHubNavigationModel({
+      pathname: "/digital-tech/protected/privileged-access",
+    })!;
+    expect(model.workspaces.find((item) => item.isCurrent)?.href).toBe(
+      "/digital-tech",
     );
-    expect(result.find((link) => link.current)?.href).toBe("/digital-tech");
-    expect(result.map((link) => link.href)).not.toContain(
+    expect(model.workspaces.map((item) => item.href)).not.toContain(
       "/digital-tech/protected/privileged-access",
     );
-    expect(result.at(-1)).toEqual({
-      href: "/architecture",
-      label: "Company intranet",
-      current: false,
-    });
+    expect(model.intranetHref).toBe("/architecture");
   });
 
   it("keeps standalone finance intentionally simple", () => {
     expect(workspaceById.get("finance")?.hubId).toBeUndefined();
+    const model = getHubNavigationModel({
+      pathname: "/financial-operations/treasury",
+    })!;
     expect(
-      links(
-        renderToStaticMarkup(
-          <HubNavigation pathname="/financial-operations/treasury" />,
-        ),
-      ),
+      model.workspaces.map(({ title, destinationHref, isCurrent }) => ({
+        title,
+        destinationHref,
+        isCurrent,
+      })),
     ).toEqual([
       {
-        href: "/financial-operations",
-        label: "Income & Financial Operations",
-        current: true,
+        title: "Income & Financial Operations",
+        destinationHref: "/financial-operations",
+        isCurrent: true,
       },
-      { href: "/architecture", label: "Company intranet", current: false },
     ]);
+    expect(model.related).toEqual([]);
+    expect(model.intranetHref).toBe("/architecture");
   });
 
-  it("preserves only the explicit staff identity across hub destinations", () => {
-    const result = links(
-      renderToStaticMarkup(
-        <HubNavigation
-          pathname="/logistics/operations"
-          search="?staff=maya&folder=Central&file=OP-004&tab=Files&preview=admin"
-        />,
-      ),
-    );
-    expect(result.length).toBeGreaterThan(1);
-    for (const { href } of result) {
-      const url = new URL(href!, "https://example.test");
+  it("preserves only the explicit staff identity across every menu destination and intranet link", () => {
+    const model = getHubNavigationModel({
+      pathname: "/logistics/operations",
+      search: "?staff=maya&folder=Central&file=OP-004&tab=Files&preview=admin",
+    })!;
+    for (const href of [...model.workspaces, ...model.related]
+      .map((item) => item.destinationHref)
+      .concat(model.intranetHref)) {
+      const url = new URL(href, "https://example.test");
       expect([...url.searchParams]).toEqual([["staff", "maya"]]);
     }
-    expect(result.at(-1)?.href).toBe("/architecture?staff=maya");
+    const html = renderToStaticMarkup(
+      <HubNavigation
+        pathname="/logistics/operations"
+        search="?staff=maya&file=OP-004"
+      />,
+    );
+    expect(links(html)[0]?.href).toBe("/architecture?staff=maya");
   });
 
   it("uses distinct compact marks for the Wiki and Portal environments", () => {
@@ -151,6 +186,7 @@ describe("shared SharePoint hub navigation", () => {
       "/emergency-response",
       "/architecture",
     ]) {
+      expect(getHubNavigationModel({ pathname })).toBeNull();
       expect(renderToStaticMarkup(<HubNavigation pathname={pathname} />)).toBe(
         "",
       );
@@ -171,6 +207,9 @@ describe("shared SharePoint hub navigation", () => {
     expect(html.indexOf('class="hub-navigation"')).toBeLessThan(
       html.indexOf('class="site-header"'),
     );
-    expect(links(html).find((link) => link.current)?.label).toBe("Acquisition");
+    expect(html).toContain("Workspaces");
+    expect(links(html)).toEqual([
+      { href: "/architecture", label: "Company intranet", current: false },
+    ]);
   });
 });

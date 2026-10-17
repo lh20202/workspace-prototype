@@ -1,5 +1,6 @@
 /** Professional German UI copy. Keys remain canonical English; routes, IDs and data are unchanged. */
 export const germanMessages: Record<string, string> = {
+  "Knowledge & frontline": "Wissen & Vertriebsalltag",
   "Article navigation": "Artikelnavigation",
   "Hub navigation": "Hub-Navigation",
   "Employment & Hiring": "Personal- und Einstellungsverwaltung",
