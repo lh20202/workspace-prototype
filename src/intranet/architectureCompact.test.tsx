@@ -1,7 +1,6 @@
-import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import Directory, { WorkspaceCard } from "./Directory";
+import Directory, { WorkspaceLink } from "./Directory";
 import {
   architectureDestinationById,
   personnelDestinations,
@@ -9,10 +8,6 @@ import {
 import { departments } from "../coordination/data";
 import { departmentPreviewHref } from "../teams/departmentPreview";
 
-const css = readFileSync(
-  new URL("./architecture-hubs.css", import.meta.url),
-  "utf8",
-);
 afterEach(() => vi.unstubAllGlobals());
 
 function renderDirectory() {
@@ -24,26 +19,25 @@ function renderDirectory() {
   return renderToStaticMarkup(<Directory />);
 }
 
-describe("compact Architecture workspace grammar", () => {
-  it("uses a repeatable icon-and-title card without a trailing arrow or Open label", () => {
+describe("compact Architecture destination links", () => {
+  it("uses a small icon-and-title link without a tile, trailing arrow or Open label", () => {
     const card = renderToStaticMarkup(
-      <WorkspaceCard
+      <WorkspaceLink
         destination={architectureDestinationById.get("audience")!}
       />,
     );
-    expect(card).toContain('class="directory-tile directory-workspace-card"');
+    expect(card).toContain('class="directory-workspace-link"');
     expect(card).toContain('class="workspace-icon"');
+    expect(card).toContain('--workspace-icon-size:20px');
     expect(card).toContain("Research &amp; Insight");
     expect(card).not.toContain("directory-row-arrow");
     expect(card).not.toContain("ArrowRight");
+    expect(card).not.toContain("directory-tile");
     expect(card).not.toMatch(/Open|sharepoint-logo|workspace<\/h3>/);
   });
 
-  it("keeps Sales, Org Central and Personnel on the same two-column card grid", () => {
+  it("keeps all workspace entrances within the four compact hub panels", () => {
     const html = renderDirectory();
-    expect(css).toMatch(
-      /\.directory-hub-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/,
-    );
     const sections = [
       ...html.matchAll(
         /<section class="directory-hub directory-hub-([^"]+)"[^>]*>([\s\S]*?)<\/section><\/div><\/div><\/section>/g,
@@ -52,12 +46,10 @@ describe("compact Architecture workspace grammar", () => {
     for (const id of ["sales-marketing", "infrastructure", "personnel"]) {
       const band = sections.find(([, hub]) => hub === id)?.[2];
       expect(band, id).toBeDefined();
-      expect(band).toContain("directory-workspace-card");
+      expect(band).toContain("directory-workspace-link");
       expect(band).toContain("directory-hub-grid");
     }
-    expect(
-      html.match(/class="directory-tile directory-workspace-card"/g),
-    ).toHaveLength(15);
+    expect(html.match(/class="directory-workspace-link"/g)).toHaveLength(15);
   });
 
   it("keeps other environment types, controlled links and finance jumps distinct", () => {
@@ -69,18 +61,18 @@ describe("compact Architecture workspace grammar", () => {
     ])
       expect(html).toMatch(
         new RegExp(
-          `<a(?![^>]*directory-workspace-card)[^>]*href="${href}\\?staff=robin"`,
+          `<a(?![^>]*directory-workspace-link)[^>]*href="${href}\\?staff=robin"`,
         ),
       );
     for (const destination of personnelDestinations.controlled)
       expect(html).toMatch(
         new RegExp(
-          `<a(?![^>]*directory-workspace-card)[^>]*href="${destination.href}\\?staff=robin"`,
+          `<a(?![^>]*directory-workspace-link)[^>]*href="${destination.href}\\?staff=robin"`,
         ),
       );
     expect(html).toContain('class="directory-finance-jumps"');
     expect(html).not.toMatch(
-      /directory-workspace-card[^>]*href="\/financial-operations/,
+      /directory-workspace-link[^>]*href="\/financial-operations/,
     );
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Open your Teams view");

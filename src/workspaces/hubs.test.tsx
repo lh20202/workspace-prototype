@@ -31,10 +31,10 @@ function at(path: string, person = "maya") {
   vi.stubGlobal("location", new URL(path, "https://example.test"));
   vi.stubGlobal("sessionStorage", { getItem: () => person });
 }
-function directoryTile(html: string, href: string) {
+function directoryWorkspaceLink(html: string, href: string) {
   return html.match(
     new RegExp(
-      `<a(?=[^>]*class="directory-tile[^"]*")(?=[^>]*href="${href}")[^>]*>[\\s\\S]*?<\\/a>`,
+      `<a(?=[^>]*class="directory-workspace-link[^"]*")(?=[^>]*href="${href}")[^>]*>[\\s\\S]*?<\\/a>`,
     ),
   )?.[0];
 }
@@ -131,7 +131,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       const environment = environmentById.get(id)!;
       expect(html).toContain(`href="${environment.href}"`);
       expect(html).not.toContain(
-        `class="directory-tile" href="${environment.href}"`,
+        `class="directory-workspace-link" href="${environment.href}"`,
       );
       expect(prototypeForPath(environment.href)).toBe(
         id === "sales-wiki" ? "wiki" : "frontline",
@@ -141,7 +141,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
     );
   });
-  it("renders four distinct hub bands, one workspace mark and a separate Department Teams rail", () => {
+  it("renders four distinct hub panels, one workspace mark and a separate Department Teams rail", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
     for (const hub of hubDefinitions)
@@ -170,15 +170,15 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).not.toContain("Controlled environments");
     expect(html).not.toContain("People &amp; organisation</h3>");
     for (const destination of personnelDestinations.normal) {
-      const tile = directoryTile(html, destination.href);
+      const tile = directoryWorkspaceLink(html, destination.href);
       expect(tile).toBeDefined();
       expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
       expect(tile).toContain('class="workspace-icon"');
       expect(tile).not.toContain("Controlled access");
     }
-    expect(directoryTile(html, "/people-culture")).toBeUndefined();
+    expect(directoryWorkspaceLink(html, "/people-culture")).toBeUndefined();
     for (const destination of personnelDestinations.controlled) {
-      expect(directoryTile(html, destination.href)).toBeUndefined();
+      expect(directoryWorkspaceLink(html, destination.href)).toBeUndefined();
       expect(html).toContain(`href="${destination.href}"`);
     }
     expect(personnelDestinations.controlled).toHaveLength(3);

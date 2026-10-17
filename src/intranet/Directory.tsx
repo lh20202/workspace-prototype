@@ -5,7 +5,6 @@ import AccessLock from "../components/AccessLock";
 import TeamsMark from "../components/TeamsMark";
 import StaffLink from "../components/StaffLink";
 import {
-  ArrowRight20Regular,
   GridDots24Regular,
   ChevronRight16Regular,
   Organization24Regular,
@@ -29,18 +28,18 @@ import "../executive/styles.css";
 import "../workspaces/styles.css";
 import "./architecture-hubs.css";
 
-export function WorkspaceCard({
+export function WorkspaceLink({
   destination,
 }: {
   destination: ArchitectureDestination;
 }) {
   return (
     <StaffLink
-      className="directory-tile directory-workspace-card"
+      className="directory-workspace-link"
       href={destination.href}
       data-environment="workspace"
     >
-      <WorkspaceIcon />
+      <WorkspaceIcon size={20} />
       <h3>
         {destination.label}
         {destination.accessLevel === "strictly-confidential" && (
@@ -57,7 +56,7 @@ function WorkspaceGroup({ label, ids }: { label: string; ids: string[] }) {
       <h3 className="directory-subheading">{label}</h3>
       <div className="directory-hub-grid">
         {ids.map((id) => (
-          <WorkspaceCard
+          <WorkspaceLink
             key={id}
             destination={architectureDestinationById.get(id)!}
           />
@@ -125,10 +124,9 @@ export default function Directory() {
                           href={destination.href}
                           data-environment="workspace"
                         >
-                          <WorkspaceIcon size={32} />
+                          <WorkspaceIcon size={24} />
                           <h2 id="hub-finance">{destination.label}</h2>
                           <AccessLock className="directory-confidential" />
-                          <ArrowRight20Regular aria-hidden="true" />
                         </StaffLink>
                       </header>
                       <div className="directory-finance-jumps">
@@ -177,7 +175,7 @@ export default function Directory() {
                             <div className="directory-hub-grid">
                               {personnelDestinations.normal.map(
                                 (destination) => (
-                                  <WorkspaceCard
+                                  <WorkspaceLink
                                     destination={destination}
                                     key={destination.id}
                                   />
@@ -231,10 +229,9 @@ export default function Directory() {
                                 >
                                   <EnvironmentIcon
                                     type={environment.type as "wiki" | "portal"}
-                                    size={26}
+                                    size={20}
                                   />
                                   <span>{environment.label}</span>
-                                  <ArrowRight20Regular aria-hidden="true" />
                                 </StaffLink>
                               ))}
                           </div>
