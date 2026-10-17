@@ -28,6 +28,13 @@ import {
   contentDefaultTab,
 } from "../content/channels";
 import { documents as planningFiles } from "../data/workspace";
+import PlanningConversation from "../planning/PlanningConversation";
+import {
+  planningChannelFiles,
+  planningReportingChannel,
+  departmentSubmissionsHref,
+} from "../planning/teams";
+import StaffLink from "../components/StaffLink";
 import DepartmentChannel from "../coordination/DivisionChannel";
 import { resolveDepartment } from "../coordination/data";
 import TeamsShell, { TeamsComposer, initials } from "../teams/TeamsShell";
@@ -274,7 +281,10 @@ export default function TeamsPreview() {
     workspaceDenied || channelDenied
       ? []
       : workspace.id === "planning"
-        ? planningFiles
+        ? (channel === planningReportingChannel
+            ? planningChannelFiles
+            : planningFiles
+          )
             .filter((file) => file.library !== "restricted")
             .map((file) => ({
               id: file.id,
@@ -454,6 +464,14 @@ export default function TeamsPreview() {
         />
       ) : tab === "Shared" ? (
         <div className="m365-teams-files">
+          {workspace.id === "planning" &&
+            channel === planningReportingChannel && (
+              <p>
+                <StaffLink href={departmentSubmissionsHref}>
+                  Department submissions
+                </StaffLink>
+              </p>
+            )}
           {availableLibraries.length > 1 && (
             <label className="teams-shared-library-picker">
               Document library
@@ -513,6 +531,13 @@ export default function TeamsPreview() {
             query.delete("view");
             history.replaceState({}, "", `/teams?${query}`);
           }}
+        />
+      ) : workspace.id === "planning" &&
+        channel === planningReportingChannel ? (
+        <PlanningConversation
+          userName={person.name}
+          userRole={person.role}
+          query={search}
         />
       ) : workspace.id === "digital" ? (
         <TechnicalConversation

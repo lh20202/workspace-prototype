@@ -293,7 +293,7 @@ describe("Teams route boundaries use the same staff memberships as navigation", 
       at(`/planning?staff=${person.id}`, person.id);
       const planning = renderToStaticMarkup(createElement(PlanningApp));
       expect(planning.includes('class="teams-button"')).toBe(
-        person.id === "robin",
+        ["robin", "sam"].includes(person.id),
       );
     }
   });

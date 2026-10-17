@@ -130,7 +130,7 @@ describe("all Teams surfaces follow the central nine-role policy", () => {
       ],
       leonie: ["company", "digital", "strategy-technology"],
       nadia: ["company", "content", "marketing-growth"],
-      sam: ["company", "finance-services"],
+      sam: ["company", "planning", "finance-services"],
       elliot: ["company", "digital", "strategy-technology"],
     };
     for (const member of staff) {
@@ -147,7 +147,11 @@ describe("all Teams surfaces follow the central nine-role policy", () => {
       expect(canSeeWorkspace(member, "logistics")).toBe(member.id === "maya");
       expect(canSeeWorkspace(member, "content")).toBe(member.id === "nadia");
       expect(visibleWorkspaceChannels(member, "planning")).toEqual(
-        member.id === "robin" ? ["General", "Planning coordination"] : [],
+        member.id === "robin"
+          ? ["General", "Planning coordination", "Planning & Reporting"]
+          : member.id === "sam"
+            ? ["Planning & Reporting"]
+            : [],
       );
       expect(visibleWorkspaceChannels(member, "digital")).toEqual(
         member.id === "devon"

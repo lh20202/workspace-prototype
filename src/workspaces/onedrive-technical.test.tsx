@@ -8,22 +8,32 @@ import { canAccessArea, canAccessChannel } from "../access/policy";
 import { germanOneDriveTechnical } from "../i18n/de-onedrive-technical";
 import TechnicalConversation from "./TechnicalConversation";
 import TeamsPreview from "../intranet/TeamsPreview";
+import { workspaceFAQExampleHref } from "../components/workspaceFAQContent";
 
 const oneDrivePosts = technicalPosts.filter(
-  (post) => post.attachment?.source === "onedrive",
+  (post) => post.fileLink?.correctedFrom === "onedrive",
 );
 afterEach(() => vi.unstubAllGlobals());
 
 describe("occasional OneDrive sharing in a functional Team", () => {
-  it("adds one historical source reference, reusing one real shared file", () => {
+  it("corrects one personal OneDrive link, reusing one real shared file", () => {
     expect(oneDrivePosts).toHaveLength(1);
     const post = oneDrivePosts[0];
     const config = configById.get("digital")!;
     const file = config.files.find(
-      (candidate) => candidate.id === post.attachment!.fileId,
+      (candidate) => candidate.id === post.fileLink!.fileId,
     )!;
     expect(file).toBeDefined();
-    expect(post.attachment?.removed).toBe(true);
+    expect(post.fileLink?.correctedFrom).toBe("onedrive");
+    expect(post.text).not.toContain("OneDrive");
+    expect(post.replies?.[0].text).toContain(
+      "link points to your personal OneDrive",
+    );
+    expect(post.replies?.[1].text).toContain(
+      "didn't realise I'd shared the OneDrive link",
+    );
+    expect(post.replies?.[1].text).toContain("updated my original post");
+    expect(JSON.stringify(post)).not.toMatch(/attachment|Department|Leonie/);
     expect(
       functionalConfigs
         .flatMap((workspace) => workspace.files)
@@ -50,7 +60,7 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     }
   });
 
-  it("keeps ordinary provider attribution with human moderator replies and real links", () => {
+  it("shows the edited original as a canonical link, with human moderator replies and no attachment removal", () => {
     vi.stubGlobal(
       "location",
       new URL(
@@ -64,19 +74,37 @@ describe("occasional OneDrive sharing in a functional Team", () => {
         messages: [post],
       }),
     );
-    expect(html).toContain(
-      'class="m365-teams-attachment teams-attachment-removed"',
-    );
-    expect(html).toContain('class="teams-file-provider"');
-    expect(html).toContain("Attachment removed");
+    expect(html).toContain("Edited");
+    expect(html).not.toMatch(/Attachment removed|teams-attachment-removed|<s>/);
     expect(html).toContain("OneDrive");
     expect(html.match(/class="teams-moderator-badge"/g)).toHaveLength(2);
     expect(html.match(/class="m365-teams-reply"/g)).toHaveLength(3);
     expect(html).toContain("file=digital-F17&amp;staff=devon");
     expect(html).not.toContain('href="https://onedrive');
-    expect(html.indexOf('class="teams-file-provider"')).toBeLessThan(
+    expect(html.indexOf("file=digital-F17&amp;staff=devon")).toBeLessThan(
       html.indexOf('class="m365-teams-reply"'),
     );
+  });
+
+  it("opens the FAQ's exact thread in the full Teams view", () => {
+    vi.stubGlobal(
+      "location",
+      new URL(workspaceFAQExampleHref, "https://example.test"),
+    );
+    vi.stubGlobal("sessionStorage", { getItem: () => "devon" });
+    const html = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(html).toContain(`id="post-${oneDrivePosts[0].id}"`);
+    expect(html).toContain(
+      renderToStaticMarkup(
+        createElement(
+          "p",
+          { style: { whiteSpace: "pre-line" } },
+          oneDrivePosts[0].text,
+        ),
+      ),
+    );
+    expect(html).toContain("That link points to your personal OneDrive");
+    expect(html).not.toContain("Attachment removed");
   });
 
   it("does not expose the example to roles outside this technical channel", () => {
@@ -100,5 +128,6 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     for (const text of [post.text, ...post.replies!.map((reply) => reply.text)])
       expect(germanOneDriveTechnical[text]).toBeTruthy();
     expect(germanOneDriveTechnical[post.replies![0].link!.label]).toBeTruthy();
+    expect(germanOneDriveTechnical["· Edited"]).toBe("· Bearbeitet");
   });
 });

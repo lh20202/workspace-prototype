@@ -165,12 +165,6 @@ describe("canonical file sensitivity", () => {
           .find((config) => config.id === "digital")
           ?.files.find((item) => item.id === file.id)?.sensitivity,
       ).toBe(file.sensitivity);
-    const oneDrive = departments
-      .flatMap((department) => department.posts)
-      .find((post) => post.upload?.source === "onedrive")!;
-    expect(oneDrive.upload?.sensitivity).toBe(
-      audience.find((file) => file.id === "seg-model")?.sensitivity,
-    );
   });
   it("keeps the shared compact badge a property rather than an action or warning", () => {
     for (const value of sensitivityLabels) {

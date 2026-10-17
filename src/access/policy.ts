@@ -113,7 +113,7 @@ export const previewRoles: PreviewRole[] = [
       governance: ["approved", "liaison", "outputs"],
     },
     teamChannels: {
-      planning: ["General", "Planning coordination"],
+      planning: ["General", "Planning coordination", "Planning & Reporting"],
     },
     teamsLanding: { kind: "department", departmentId: "executive-office" },
     projectMemberships: [
@@ -252,7 +252,7 @@ export const previewRoles: PreviewRole[] = [
     unitId: "accounting-and-control",
     workspaceMemberships: [...ordinaryWorkspaces],
     restrictedAreas: { finance: ["payment-exceptions", "refund-chargeback"] },
-    teamChannels: {},
+    teamChannels: { planning: ["Planning & Reporting"] },
     teamsLanding: { kind: "department", departmentId: "finance-services" },
     projectMemberships: [],
     projectTeamMemberships: [],

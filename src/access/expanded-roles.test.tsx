@@ -70,7 +70,7 @@ describe("business and delegated site administration roles", () => {
       expect(canAccessArea("sam", "finance", area)).toBe(false);
     expect(
       teamsGroups(resolveStaffPerson("sam")).map((group) => group.id),
-    ).toEqual(["company", "finance-services"]);
+    ).toEqual(["company", "planning", "finance-services"]);
     vi.stubGlobal(
       "location",
       new URL(

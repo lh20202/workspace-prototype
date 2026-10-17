@@ -7,8 +7,6 @@ import {
 } from "../access/policy";
 import { configById } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
-import { filesById as audienceFilesById } from "../audience/data";
-import { libraryFor as audienceLibraryFor } from "../audience/libraries";
 
 export interface CoordinationPerson {
   departmentPreviewId?: string;
@@ -67,7 +65,6 @@ export interface ThreadUpload {
   destination: string;
   destinationName: string;
   removed?: boolean;
-  source?: "onedrive";
 }
 export interface CoordinationReply {
   author: string;
@@ -395,23 +392,6 @@ const departmentReplies: Record<
   Record<string, NonNullable<CoordinationPost["replies"]>>
 > = {
   "marketing-growth": {
-    onedrive: [
-      {
-        author: "Taylor Brooks",
-        text: "Oops, sorry — didn't realise I'd shared the OneDrive copy. I've moved it into the shared folder now — here's the link.",
-        time: "12:21",
-        link: {
-          href: `/audience-innovation/${audienceLibraryFor(audienceFilesById.get("seg-model")!)}?file=seg-model`,
-          label: audienceFilesById.get("seg-model")!.name,
-        },
-      },
-      {
-        author: "Priya Shah",
-        text: "No worries! Could you update your original post with that link too? I've removed the old OneDrive attachment here.",
-        time: "12:23",
-        moderator: true,
-      },
-    ],
     P1: [
       {
         author: "Taylor Brooks",
@@ -749,27 +729,6 @@ export const departments: Department[] = definitions.map(
       time: "12:05",
       attachmentId: byFolder("Social & Team Activities"),
     });
-    if (id === "marketing-growth") {
-      const canonical = audienceFilesById.get("seg-model")!;
-      posts.push({
-        id: `${id}-onedrive`,
-        author: "Taylor Brooks",
-        text: "Here's the segmentation model for tomorrow's planning session. Could you check the audience labels?",
-        time: "12:15",
-        upload: {
-          id: "UP-MKT-OD-01",
-          name: canonical.name,
-          kind: "Misplaced business upload",
-          sensitivity: canonical.sensitivity,
-          destination: `/audience-innovation/${audienceLibraryFor(canonical)}?file=${canonical.id}`,
-          destinationName: "Research & Insight → Audience Segmentation",
-          source: "onedrive",
-          removed: true,
-        },
-        moderatorReply:
-          "Thanks, Taylor. Could you move the working copy into Research & Insight and link it here? Then everyone working on it can use the same version.",
-      });
-    }
     for (const post of posts) {
       const key = post.id.slice(id.length + 1);
       post.replies = departmentReplies[id]?.[key];

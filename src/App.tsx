@@ -14,6 +14,18 @@ import AccessBoundary from "./access/AccessBoundary";
 import { teamsStaffForWorkspace } from "./teams/navigation";
 import { visibleWorkspaceChannels } from "./teams/visibility";
 import { resolveStaffPerson } from "./intranet/catalog";
+import TeamsHomePanel from "./components/TeamsHomePanel";
+import {
+  planningReportingChannel,
+  planningTeamsHref,
+  logframeDocument,
+  logframeHref,
+} from "./planning/teams";
+import { withExplicitStaff } from "./utils/staffNavigation";
+import {
+  PlanningLogframeView,
+  PlanningRegistration,
+} from "./planning/PlanningWorkingViews";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -124,6 +136,18 @@ export default function App() {
   const [locationState, setLocationState] = useState(route);
   const { page, folder, view } = locationState;
   const restrictedAllowed = canAccessArea(person, "planning", "restricted");
+  const planningChannels = visibleWorkspaceChannels(person, "planning");
+  const [logframeOpen, setLogframeOpen] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return (
+      params.get("document") === logframeDocument.id &&
+      params.get("mode") === "guided"
+    );
+  });
+  const [registrationOpen, setRegistrationOpen] = useState(
+    () =>
+      new URLSearchParams(location.search).get("event") === "strategy-away-day",
+  );
   const [workspaceSearch, setWorkspaceSearch] = useState("");
   const [favorite, setFavorite] = useState(true);
   const [search, setSearch] = useState("");
@@ -155,6 +179,12 @@ export default function App() {
       setLocationState(route());
       setSearch("");
       setModal(null);
+      const params = new URLSearchParams(location.search);
+      setLogframeOpen(
+        params.get("document") === logframeDocument.id &&
+          params.get("mode") === "guided",
+      );
+      setRegistrationOpen(params.get("event") === "strategy-away-day");
       setFilterOpen(
         !!filtersFromParams(new URLSearchParams(location.search)).area,
       );
@@ -184,6 +214,8 @@ export default function App() {
     nextFilters: Filters = emptyFilters,
     documentId = "",
   ) {
+    setLogframeOpen(false);
+    setRegistrationOpen(false);
     const params = new URLSearchParams();
     const staff = new URLSearchParams(location.search).get("staff");
     if (staff) params.set("staff", staff);
@@ -477,14 +509,16 @@ export default function App() {
         <CompanyMark />
         <div className="site-title">
           <h1>Planning Cycle</h1>
-          {visibleWorkspaceChannels(person, "planning").length > 0 && (
+          {planningChannels.length > 0 && (
             <button
               className="teams-button"
               aria-label="Microsoft Teams connection"
               title="Microsoft Teams"
               onClick={() =>
                 location.assign(
-                  `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning", channel: visibleWorkspaceChannels(person, "planning")[0] })}`,
+                  planningChannels.includes(planningReportingChannel)
+                    ? planningTeamsHref(person.id)
+                    : `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning", channel: planningChannels[0] })}`,
                 )
               }
             >
@@ -666,6 +700,19 @@ export default function App() {
                 </section>
               </div>
               <aside className="home-aside" aria-label="Planning shortcuts">
+                {planningChannels.includes(planningReportingChannel) && (
+                  <TeamsHomePanel
+                    heading="Planning & Reporting"
+                    description="Coordinate department plans, submissions and reporting."
+                    channels={[
+                      {
+                        name: planningReportingChannel,
+                        href: planningTeamsHref(person.id),
+                      },
+                    ]}
+                    openHref={planningTeamsHref(person.id)}
+                  />
+                )}
                 <section className="department-jumps">
                   <h3>Jump to department submissions</h3>
                   <p>2027 Annual Planning</p>
@@ -986,7 +1033,7 @@ export default function App() {
         modalType="non-modal"
         position="end"
         size="medium"
-        open={!!selected && !modal}
+        open={!!selected && !modal && !logframeOpen && !registrationOpen}
         onOpenChange={(_, d) => {
           if (!d.open) setSelected(null);
         }}
@@ -1020,9 +1067,19 @@ export default function App() {
               <div className="detail-actions">
                 <Button
                   appearance="primary"
-                  onClick={() =>
-                    setToast("Document preview is unavailable for this file.")
-                  }
+                  onClick={() => {
+                    if (selected.id === logframeDocument.id) {
+                      setLogframeOpen(true);
+                      history.replaceState(
+                        {},
+                        "",
+                        withExplicitStaff(logframeHref),
+                      );
+                    } else
+                      setToast(
+                        "Document preview is unavailable for this file.",
+                      );
+                  }}
                 >
                   Open
                 </Button>
@@ -1159,6 +1216,33 @@ export default function App() {
           </DialogBody>
         </DialogSurface>
       </Dialog>
+      <PlanningLogframeView
+        open={logframeOpen}
+        onClose={() => {
+          setLogframeOpen(false);
+          const params = new URLSearchParams(location.search);
+          params.delete("mode");
+          history.replaceState(
+            {},
+            "",
+            `${location.pathname}${params.size ? `?${params}` : ""}`,
+          );
+        }}
+      />
+      <PlanningRegistration
+        open={registrationOpen}
+        userName={person.name}
+        onClose={() => {
+          setRegistrationOpen(false);
+          const params = new URLSearchParams(location.search);
+          params.delete("event");
+          history.replaceState(
+            {},
+            "",
+            `${location.pathname}${params.size ? `?${params}` : ""}`,
+          );
+        }}
+      />
       {toast && (
         <div className="toast" role="status">
           <Info20Regular />

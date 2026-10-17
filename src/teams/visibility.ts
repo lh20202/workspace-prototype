@@ -38,7 +38,7 @@ export const workspaceChannels: Record<string, string[]> = {
   logistics: logisticsChannels
     .filter((channel) => channel.team === "logistics")
     .map((channel) => channel.name),
-  planning: ["General", "Planning coordination"],
+  planning: ["General", "Planning coordination", "Planning & Reporting"],
   content: contentChannels.map((channel) => channel.name),
   digital: technicalChannels,
 };

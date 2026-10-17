@@ -174,7 +174,6 @@ describe("department coordination architecture", () => {
       ),
     ).toEqual([
       "/audience-innovation/analytics",
-      "/audience-innovation/research?file=seg-model",
       "/content-delivery/creative",
       "/financial-operations/planning",
       "/services/purchasing",

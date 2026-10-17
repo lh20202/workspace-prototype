@@ -32,7 +32,10 @@ describe("final staff-facing German interpretation", () => {
   });
 
   it("keeps personal storage outside shared work and describes human moderation in two sentences", () => {
-    for (const entry of workspaceFAQQuestions) {
+    const personalDriveQuestions = workspaceFAQQuestions.filter((entry) =>
+      ["personal-drives", "personal-drive-shared"].includes(entry.id),
+    );
+    for (const entry of personalDriveQuestions) {
       expect(german(entry.question)).toMatch(
         /persönliche[nr]? Speicherbereich/,
       );
@@ -42,21 +45,32 @@ describe("final staff-facing German interpretation", () => {
           .filter((part) => part.trim()),
       ).toHaveLength(2);
     }
-    expect(german(workspaceFAQQuestions[0].answer)).toContain(
-      "dieselbe Fassung",
-    );
-    expect(german(workspaceFAQQuestions[1].answer)).toContain(
-      "Ansprechpersonen",
-    );
-    expect(german(workspaceFAQQuestions[1].answer)).toContain(
-      "beim Verschieben der Arbeitsfassung",
-    );
+    expect(
+      german(
+        workspaceFAQQuestions.find((entry) => entry.id === "personal-drives")!
+          .answer,
+      ),
+    ).toContain("dieselbe Fassung");
+    expect(
+      german(
+        workspaceFAQQuestions.find(
+          (entry) => entry.id === "personal-drive-shared",
+        )!.answer,
+      ),
+    ).toContain("Ansprechpersonen");
+    expect(
+      german(
+        workspaceFAQQuestions.find(
+          (entry) => entry.id === "personal-drive-shared",
+        )!.answer,
+      ),
+    ).toContain("beim Verschieben der Arbeitsfassung");
     expect(german("See an example")).toBe("Beispiel ansehen");
     expect(
       new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
         "post",
       ),
-    ).toBe("marketing-growth-onedrive");
+    ).toBe("digital-onedrive-review");
   });
 
   it("uses clear role names and never translates SharePoint site administration as a physical location", () => {

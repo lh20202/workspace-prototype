@@ -1,10 +1,8 @@
-import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import { useState } from "react";
 import { Code20Regular } from "@fluentui/react-icons";
-import DocumentIcon from "../components/DocumentIcon";
 import StaffLink from "../components/StaffLink";
-import OneDriveSourceNote from "../components/OneDriveSourceNote";
 import { configById } from "./config";
+import { functionalFileHref } from "./siteArchitecture";
 import { TeamsComposer } from "../teams/TeamsShell";
 import {
   technicalPosts,
@@ -55,7 +53,7 @@ export default function TechnicalConversation({
       p.text,
       p.replies?.map((reply) => `${reply.author} ${reply.text}`).join(" "),
       p.repo,
-      p.attachment?.fileId,
+      p.fileLink?.fileId,
       p.replies?.map((reply) => reply.link?.label).join(" "),
     ]
       .join(" ")
@@ -68,10 +66,10 @@ export default function TechnicalConversation({
         <p className="m365-teams-empty">No messages found.</p>
       )}
       {currentPosts.map((p) => {
-        const attachment = p.attachment
+        const linkedFile = p.fileLink
           ? configById
               .get("digital")
-              ?.files.find((file) => file.id === p.attachment!.fileId)
+              ?.files.find((file) => file.id === p.fileLink!.fileId)
           : undefined;
         const likeCount = (p.likes || 0) + Number(likes.includes(p.id));
         return (
@@ -87,22 +85,22 @@ export default function TechnicalConversation({
                 <strong>{p.author}</strong>
                 <small>
                   <time>{p.time}</time>
+                  {p.fileLink?.correctedFrom && <span> · Edited</span>}
                 </small>
               </div>
             </header>
             <p style={{ whiteSpace: "pre-line" }}>{p.text}</p>
-            {attachment && (
-              <div className="technical-attachment-history">
-                <div className="m365-teams-attachment teams-attachment-removed">
-                  <DocumentIcon name={attachment.name} />
-                  <span>
-                    <s>{attachment.name}</s>
-                    <SensitivityBadge value={attachment.sensitivity} />
-                    <small>Attachment removed</small>
-                  </span>
-                </div>
-                <OneDriveSourceNote />
-              </div>
+            {linkedFile && (
+              <p>
+                <StaffLink
+                  href={functionalFileHref(
+                    configById.get("digital")!,
+                    linkedFile.id,
+                  )}
+                >
+                  {linkedFile.name}
+                </StaffLink>
+              </p>
             )}
             {p.repo && (
               <a

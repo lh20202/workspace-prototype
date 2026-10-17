@@ -23,6 +23,8 @@ import { germanArchivesRefinement } from "./de-archives-refinement";
 import { germanPlanningPersonnelRefinement } from "./de-planning-personnel-refinement";
 import { germanFinanceRefinement } from "./de-finance-refinement";
 import { germanFAQRolesSensitivity } from "./de-faq-roles-sensitivity";
+import { germanPlanningReporting } from "./de-planning-reporting";
+import { germanWorkspaceFAQ } from "./de-workspace-faq";
 
 export type Language = "en" | "de";
 const messages = {
@@ -50,6 +52,8 @@ const messages = {
   ...germanPlanningPersonnelRefinement,
   ...germanFinanceRefinement,
   ...germanFAQRolesSensitivity,
+  ...germanPlanningReporting,
+  ...germanWorkspaceFAQ,
 };
 const englishMonths = [
   "January",

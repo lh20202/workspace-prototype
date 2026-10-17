@@ -4,45 +4,21 @@ import { renderToStaticMarkup } from "react-dom/server";
 import DepartmentChannel from "./DivisionChannel";
 import { departments } from "./data";
 import { staff } from "../intranet/catalog";
-import { files, filesById } from "../audience/data";
-import { libraryFor } from "../audience/libraries";
-import { canAccessArea } from "../access/policy";
 import { canSeeDepartment } from "../teams/visibility";
 
 afterEach(() => vi.unstubAllGlobals());
 
 const department = departments.find((item) => item.id === "marketing-growth")!;
-const post = department.posts.find(
-  (item) => item.id === "marketing-growth-onedrive",
-)!;
 const taylor = staff.find((person) => person.id === "taylor")!;
 
-describe("occasional Department OneDrive correction", () => {
-  it("keeps one removed source reference and links to the unique shared working file", () => {
-    expect(
-      departments
-        .flatMap((item) => item.posts)
-        .filter((item) => item.upload?.source === "onedrive"),
-    ).toEqual([post]);
-    const canonical = filesById.get("seg-model")!;
-    expect(files.filter((file) => file.name === canonical.name)).toEqual([
-      canonical,
-    ]);
-    expect(post.upload).toMatchObject({
-      source: "onedrive",
-      removed: true,
-      name: canonical.name,
-      destination: `/audience-innovation/${libraryFor(canonical)}?file=${canonical.id}`,
-    });
-    expect(post.replies?.[0].link).toEqual({
-      href: post.upload!.destination,
-      label: canonical.name,
-    });
-    expect(post.replies?.[1].moderator).toBe(true);
-    expect(
-      department.library.some((file) => file.name === canonical.name),
-    ).toBe(false);
-    expect(canAccessArea(taylor, "audience", canonical.area)).toBe(true);
+describe("Department uploads remain separate from personal OneDrive links", () => {
+  it("removes the mixed OneDrive/upload example while retaining ordinary misplaced-upload threads", () => {
+    for (const item of departments) {
+      expect(JSON.stringify(item.posts)).not.toMatch(/onedrive/i);
+      expect(
+        item.posts.some((post) => post.upload && post.moderatorReply),
+      ).toBe(true);
+    }
   });
 
   it("retains Department membership boundaries", () => {
@@ -61,7 +37,7 @@ describe("occasional Department OneDrive correction", () => {
     ).toBe(false);
   });
 
-  it("renders the system source note separately before the human moderator thread", () => {
+  it("keeps the existing Department attachment correction without calling it a OneDrive link", () => {
     vi.stubGlobal(
       "location",
       new URL(
@@ -70,6 +46,9 @@ describe("occasional Department OneDrive correction", () => {
       ),
     );
     vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
+    const post = department.posts.find(
+      (item) => item.id === "marketing-growth-misfiled",
+    )!;
     const html = renderToStaticMarkup(
       createElement(DepartmentChannel, {
         department: { ...department, posts: [post] },
@@ -78,19 +57,12 @@ describe("occasional Department OneDrive correction", () => {
         onTabChange: () => {},
       }),
     );
-    expect(html).toContain('class="coord-attachment coord-attachment-removed"');
-    expect(html).toContain('class="teams-file-provider"');
-    expect(html.indexOf('class="teams-file-provider"')).toBeLessThan(
-      html.indexOf('aria-label="Moderator reply from Priya Shah"'),
-    );
-    expect(html).toContain("OneDrive");
-    expect(html).not.toMatch(
-      /access may be limited|check access|policy error|automatic warning|fui-Warning/,
-    );
+    expect(html).toContain("Website Conversion Analysis — October.pptx");
+    expect(html).toContain('aria-label="Moderator reply from Priya Shah"');
+    expect(html).not.toContain("OneDrive");
     expect(html).toContain(
-      'href="/audience-innovation/research?file=seg-model&amp;staff=taylor"',
+      'href="/audience-innovation/analytics?staff=taylor"',
     );
-    expect(html.match(/class="coord-moderator-badge"/g)).toHaveLength(2);
-    expect(html).not.toMatch(/<button[^>]*class="coord-attachment"/);
+    expect(html).toMatch(/<button[^>]*class="coord-attachment"/);
   });
 });

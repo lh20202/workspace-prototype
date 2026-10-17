@@ -47,27 +47,98 @@
   outline-offset: 2px;
 }
 :root .workspace-faq-dialog {
-  width: min(640px, calc(100vw - 40px));
-  max-height: calc(100svh - 48px);
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100svh - 40px);
   overflow: hidden;
 }
 :root .workspace-faq-dialog-body {
-  max-height: calc(100svh - 96px);
+  display: flex;
+  flex-direction: column;
+  height: min(680px, calc(100svh - 88px));
   min-height: 0;
+  overflow: hidden;
+  gap: 0;
+}
+.workspace-faq-title,
+.workspace-faq-footer {
+  flex-shrink: 0;
+}
+.workspace-faq-title {
+  padding-bottom: 16px;
+}
+:root .workspace-faq-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+  scroll-padding-block: 8px;
+}
+.workspace-faq-footer {
+  padding-top: 16px;
+}
+.workspace-faq-group + .workspace-faq-group {
+  margin-top: 26px;
+}
+.workspace-faq-group > h3 {
+  margin: 0 0 7px;
+  color: #616b70;
+  font-size: 11px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
 }
 .workspace-faq-question {
-  margin-top: 22px;
+  border-bottom: 1px solid #e8e8e8;
 }
-.workspace-faq-question h3 {
-  margin: 0 0 9px;
-  font-size: 17px;
-  line-height: 1.4;
-  font-weight: 600;
+.workspace-faq-question h4 {
+  margin: 0;
 }
-.workspace-faq-question p {
-  margin: 0 0 14px;
+:root .workspace-faq-question .fui-AccordionHeader__button {
+  min-height: 46px;
+  padding: 10px 2px;
+  border-radius: 2px;
+  background: transparent;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  text-align: left;
+}
+:root .workspace-faq-question .fui-AccordionHeader__button:hover {
+  background: #f6f7f7;
+}
+:root .workspace-faq-question .fui-AccordionHeader__button:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: -2px;
+}
+.workspace-faq-question .fui-AccordionHeader__expandIcon {
+  color: #6b7073;
+  flex-shrink: 0;
+}
+:root .workspace-faq-answer {
+  margin: 0;
+  padding: 0 22px 16px 2px;
+}
+.workspace-faq-answer > p {
+  margin: 0;
   font-size: 14px;
   line-height: 1.65;
+}
+.workspace-faq-answer > .workspace-faq-example {
+  margin-top: 12px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-faq-question .fui-AccordionHeader__button {
+    transition: background-color 120ms ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-faq-accordion *,
+  .workspace-faq-example svg {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 .workspace-faq-example {
   display: inline-flex;
@@ -144,29 +215,6 @@
   margin: 8px 0;
   font-size: 14px;
   line-height: 1.55;
-}
-.workspace-faq-thread-attachment {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  padding: 8px;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
-  color: #616161;
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-.workspace-faq-thread-file-meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  margin-top: 4px;
-}
-.workspace-faq-thread .teams-file-provider {
-  margin: 4px 0 0;
-  max-width: 100%;
 }
 .workspace-faq-thread-reply {
   display: flex;

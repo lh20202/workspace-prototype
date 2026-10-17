@@ -540,6 +540,17 @@
   align-items: baseline;
   gap: 8px;
 }
+.technical-conversation .teams-moderator-badge {
+  display: inline-block;
+  margin-inline: 6px;
+  padding: 0 5px;
+  border-radius: 2px;
+  background: #f0f0f0;
+  color: #616161;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 400;
+}
 .m365-teams-reply {
   display: flex;
   gap: 12px;

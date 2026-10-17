@@ -1,5 +1,9 @@
 import {
   Button,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionPanel,
   Dialog,
   DialogActions,
   DialogBody,
@@ -11,7 +15,7 @@ import {
 import { QuestionCircle16Regular } from "@fluentui/react-icons";
 import WorkspaceFAQExample from "./WorkspaceFAQExample";
 import {
-  workspaceFAQQuestions,
+  workspaceFAQGroups,
   workspaceFAQExampleHref,
 } from "./workspaceFAQContent";
 import "./workspace-faq.css";
@@ -19,13 +23,38 @@ import "./workspace-faq.css";
 export function WorkspaceFAQContent() {
   return (
     <>
-      {workspaceFAQQuestions.map(({ question, answer }, index) => (
-        <section className="workspace-faq-question" key={question}>
-          <h3>{question}</h3>
-          <p>{answer}</p>
-          {index === 1 && (
-            <WorkspaceFAQExample href={workspaceFAQExampleHref} />
-          )}
+      {workspaceFAQGroups.map((group) => (
+        <section
+          className="workspace-faq-group"
+          aria-labelledby={`faq-group-${group.id}`}
+          key={group.id}
+        >
+          <h3 id={`faq-group-${group.id}`}>{group.title}</h3>
+          <Accordion
+            collapsible
+            multiple
+            defaultOpenItems={[]}
+            className="workspace-faq-accordion"
+          >
+            {group.questions.map(({ id, question, answer }) => (
+              <AccordionItem
+                value={id}
+                key={id}
+                className="workspace-faq-question"
+                data-faq-id={id}
+              >
+                <AccordionHeader as="h4" size="small" expandIconPosition="end">
+                  {question}
+                </AccordionHeader>
+                <AccordionPanel className="workspace-faq-answer">
+                  <p>{answer}</p>
+                  {id === "personal-drive-shared" && (
+                    <WorkspaceFAQExample href={workspaceFAQExampleHref} />
+                  )}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </section>
       ))}
     </>
@@ -48,11 +77,13 @@ export default function WorkspaceFAQ() {
       </DialogTrigger>
       <DialogSurface className="workspace-faq-dialog">
         <DialogBody className="workspace-faq-dialog-body">
-          <DialogTitle>Workspace FAQ</DialogTitle>
-          <DialogContent>
+          <DialogTitle className="workspace-faq-title">
+            Workspace FAQ
+          </DialogTitle>
+          <DialogContent className="workspace-faq-scroll">
             <WorkspaceFAQContent />
           </DialogContent>
-          <DialogActions>
+          <DialogActions className="workspace-faq-footer">
             <DialogTrigger disableButtonEnhancement>
               <Button appearance="primary">Close</Button>
             </DialogTrigger>

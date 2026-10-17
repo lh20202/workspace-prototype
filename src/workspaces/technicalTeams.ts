@@ -20,7 +20,7 @@ export interface ConversationMessage {
   repo?: string;
   kind?: string;
   ref?: string;
-  attachment?: { fileId: string; source: "onedrive"; removed: true };
+  fileLink?: { fileId: string; correctedFrom?: "onedrive" };
 }
 export const technicalChannels = [
   "General",
@@ -51,14 +51,14 @@ export const technicalPosts: ConversationMessage[] = [
     channel: "M365 & SPFx",
     author: "Ari Morgan",
     time: "10:18",
-    text: "I've put the provisioning review in OneDrive because I needed to give Leonie access. Could we take a quick look before Thursday?",
-    attachment: { fileId: "digital-F17", source: "onedrive", removed: true },
+    text: "Here's the provisioning review for Thursday. Could you take a quick look before the meeting?",
+    fileLink: { fileId: "digital-F17", correctedFrom: "onedrive" },
     replies: [
       {
         author: "Devon Park",
         time: "10:26",
         moderator: true,
-        text: "No need — Leonie already has access to the M365 & SPFx folder in Tech & Digital. Save the working copy there and share that link.",
+        text: "Thanks, Ari. That link points to your personal OneDrive. Could you move the working copy into the M365 & SPFx folder in Tech & Digital and share the link here?",
         link: {
           href: provisioningFolderHref,
           label: "Open M365 & SPFx working folder",
@@ -67,7 +67,7 @@ export const technicalPosts: ConversationMessage[] = [
       {
         author: "Ari Morgan",
         time: "10:34",
-        text: "Really? I didn't realise. Perfect — I've moved it there. Here's the working copy.",
+        text: "Oops, I didn't realise I'd shared the OneDrive link! I've moved it into the shared folder and updated my original post. Here's the working copy.",
         link: {
           href: provisioningFileHref,
           label: "Provisioning Script Review.docx",
@@ -77,7 +77,7 @@ export const technicalPosts: ConversationMessage[] = [
         author: "Devon Park",
         time: "10:37",
         moderator: true,
-        text: "Thanks! Please update your original post to use that link. I've removed the old OneDrive attachment here.",
+        text: "No worries, thanks! We can all use the same link now.",
       },
     ],
   },
