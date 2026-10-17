@@ -96,6 +96,7 @@ export const definitions: Record<string, LibraryDefinition> = {
   production: {
     id: "production",
     name: "Current Production",
+    defaultSensitivity: "Internal",
     columns: [
       { key: "name", label: "Name" },
       { key: "Channel", label: "Channel" },

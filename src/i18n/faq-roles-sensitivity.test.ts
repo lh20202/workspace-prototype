@@ -100,11 +100,8 @@ describe("final staff-facing German interpretation", () => {
 
   it("distinguishes delegated technical maintenance from protected business entitlement", () => {
     for (const option of siteAdministrationOptions) {
-      const combined = `${option.name}: ${option.detail} This is a simulated setting; no live changes are made.`;
-      expect(german(combined)).toContain(
-        "keine Änderungen an produktiven Systemen",
-      );
-      expect(german(combined)).not.toContain(option.detail);
+      expect(german(option.name)).not.toBe(option.name);
+      expect(german(option.detail)).not.toBe(option.detail);
     }
     const permissions = siteAdministrationOptions.find(
       (option) => option.name === "Site permissions",

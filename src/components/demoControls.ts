@@ -4,6 +4,7 @@ import { teamsPreviewHrefForStaff } from "../teams/navigation";
 const entryKey = "workspace-demo-welcome-entry";
 const seenKey = "workspace-demo-controls-seen";
 export const revealDemoControlsEvent = "workspace:reveal-demo-controls";
+export const previewRoleChangingEvent = "workspace:preview-role-changing";
 
 /** Only a first departure from Welcome invites the visitor to try the controls. */
 export function markWelcomeEntry() {
@@ -32,6 +33,8 @@ export function consumeWelcomeEntry() {
 export function changePreviewRole(nextId: string) {
   const nextPerson = staff.find((member) => member.id === nextId);
   if (!nextPerson) return;
+  if (typeof window !== "undefined")
+    window.dispatchEvent(new Event(previewRoleChangingEvent));
   rememberStaff(nextId);
   const teams =
     location.pathname === "/teams" ||
@@ -45,6 +48,7 @@ export function changePreviewRole(nextId: string) {
     const next = new URL(location.href);
     next.searchParams.set("staff", nextId);
     next.searchParams.delete("preview");
+    next.searchParams.delete("siteSettings");
     location.assign(`${next.pathname}${next.search}${next.hash}`);
   }
 }

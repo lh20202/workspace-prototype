@@ -91,7 +91,10 @@ describe("business and delegated site administration roles", () => {
   });
   it("opens delegated site settings while keeping business security separate", () => {
     expect(canAdministerSites("elliot")).toBe(true);
-    for (const role of previewRoles.filter((role) => role.id !== "elliot"))
+    expect(canAdministerSites("leonie")).toBe(true);
+    for (const role of previewRoles.filter(
+      (role) => !["elliot", "leonie"].includes(role.id),
+    ))
       expect(canAdministerSites(role)).toBe(false);
     for (const [workspace, area] of [
       ["executive", "leadership"],
@@ -128,11 +131,12 @@ describe("business and delegated site administration roles", () => {
       renderToStaticMarkup(<SiteSettingsButton onMessage={() => {}} />),
     ).not.toContain('aria-label="Site settings"');
     expect(siteAdministrationOptions.map((option) => option.name)).toEqual([
+      "Site contents",
       "Site information",
       "Site permissions",
-      "Site contents",
-      "Navigation",
-      "Library settings",
+      "Apply a site template",
+      "Site usage",
+      "Change the look",
     ]);
   });
   it("bases role help on precise real participation and protected permissions", () => {

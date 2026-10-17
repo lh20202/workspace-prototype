@@ -25,6 +25,10 @@ import { germanFinanceRefinement } from "./de-finance-refinement";
 import { germanFAQRolesSensitivity } from "./de-faq-roles-sensitivity";
 import { germanPlanningReporting } from "./de-planning-reporting";
 import { germanWorkspaceFAQ } from "./de-workspace-faq";
+import {
+  germanAdministration,
+  germanAdministrationLabel,
+} from "./de-administration";
 
 export type Language = "en" | "de";
 const messages = {
@@ -54,6 +58,7 @@ const messages = {
   ...germanFAQRolesSensitivity,
   ...germanPlanningReporting,
   ...germanWorkspaceFAQ,
+  ...germanAdministration,
 };
 const englishMonths = [
   "January",
@@ -142,6 +147,10 @@ function interpretText(source: string, language: Language): string {
   const text = source.trim().replace(/\s+/g, " ");
   const direct = messages[text];
   if (direct) return leading + direct + trailing;
+  const administration = germanAdministrationLabel(text, (part) =>
+    translateText(part, language),
+  );
+  if (administration) return leading + administration + trailing;
   const date = dateText(text);
   if (date) return leading + date + trailing;
   const accessDraft = text.match(/^I need access to (.+)\.$/);

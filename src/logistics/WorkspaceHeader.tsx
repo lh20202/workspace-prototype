@@ -42,7 +42,7 @@ export default function WorkspaceHeader({
     contentType?: string;
     folderPath?: string;
   })[];
-  memberCount?: number;
+  memberCount?: number | null;
   helpText?: string;
 }) {
   const [query, setQuery] = useState("");
@@ -186,16 +186,18 @@ export default function WorkspaceHeader({
             <Star20Filled />
             {favorite ? "Added to favorites" : "Add to favorites"}
           </button>
-          <button
-            onClick={() =>
-              onMessage(
-                `${memberCount} members coordinate shared workspace activity.`,
-              )
-            }
-          >
-            <People24Regular />
-            {memberCount} members
-          </button>
+          {memberCount !== null && (
+            <button
+              onClick={() =>
+                onMessage(
+                  `${memberCount} members coordinate shared workspace activity.`,
+                )
+              }
+            >
+              <People24Regular />
+              {memberCount} members
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -14,6 +14,7 @@ import {
   allowedPreviewRoles,
   hasAlternativePreviewAccess,
   canAdministerSites,
+  canManageSiteSettings,
 } from "./policy";
 import {
   peopleDirectory,
@@ -62,7 +63,7 @@ describe("the nine role access matrix", () => {
     ).toEqual([]);
   });
 
-  it("has exactly nine distinct access archetypes and retains authors without hidden preview identities", () => {
+  it("keeps nine distinct preview identities while the two site-management roles share the same entitlement profile", () => {
     expect(staff.map((role) => role.id)).toEqual([
       "taylor",
       "maya",
@@ -86,12 +87,37 @@ describe("the nine role access matrix", () => {
           ]),
         ),
       ).size,
-    ).toBe(9);
+    ).toBe(8);
+    expect(new Set(staff.map((role) => role.id)).size).toBe(9);
     expect(peopleDirectory.some((person) => person.id === "alex")).toBe(true);
     expect(staff.some((person) => person.id === "alex")).toBe(false);
     expect(staff.some((person) => person.id === "nadia")).toBe(true);
     expect(resolveStaffPerson("alex").id).toBe("taylor");
     expect(canAccessWorkspace("alex", "content")).toBe(false);
+  });
+  it("grants the same delegated site-management capability to the two specified roles without broadening business access", () => {
+    for (const person of previewRoles) {
+      const elevated = ["leonie", "elliot"].includes(person.id);
+      expect(canAdministerSites(person)).toBe(elevated);
+      for (const workspace of ["planning", "content", "digital", "logistics"])
+        expect(canManageSiteSettings(person, workspace)).toBe(
+          elevated && canAccessWorkspace(person, workspace),
+        );
+      for (const workspace of [
+        "executive",
+        "employment",
+        "welfare",
+        "governance",
+      ])
+        if (elevated)
+          expect(canManageSiteSettings(person, workspace)).toBe(false);
+      if (elevated) {
+        expect(person.restrictedAreas).toEqual({});
+        expect(person.projectMemberships).toEqual([]);
+        expect(person.emergencyMemberships).toEqual([]);
+      }
+    }
+    expect(canManageSiteSettings("devon", "digital")).toBe(false);
   });
   it("gives ordinary staff internal collaboration, ordinary Wiki and their own department without privilege", () => {
     for (const workspace of [

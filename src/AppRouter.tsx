@@ -20,6 +20,10 @@ const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
 const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
 const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
 const WikiApp = lazy(() => import("./wiki/WikiApp"));
+const SiteAdministrationPage = lazy(
+  () => import("./administration/SiteAdministrationPage"),
+);
+import { siteAdministrationPage } from "./administration/routes";
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   const external = externalPreviewForPath(location.pathname);
@@ -41,6 +45,12 @@ export default function AppRouter() {
     );
   if (prototype === "launcher") return <Launcher />;
   if (prototype === "architecture") return <Directory />;
+  if (siteAdministrationPage(location.search))
+    return (
+      <Suspense fallback={<div role="status">Opening settings…</div>}>
+        <SiteAdministrationPage />
+      </Suspense>
+    );
   if (external)
     return (
       <div className="prototype-frame external-preview-frame">

@@ -48,6 +48,7 @@ import {
   packageHref,
   toolHref,
   queryPackages,
+  pipelineViews,
   stages,
   rightsStatuses,
   updateStage,
@@ -196,7 +197,7 @@ export default function ContentApp() {
   const selected = packages.find((item) => item.id === params.get("package"));
   const search = params.get("search") || "";
   const requestedView = params.get("view") || "All Packages";
-  const views = ["All Packages", "In Production", "Needs Review", "Completed"];
+  const views = pipelineViews;
   const view = views.includes(requestedView) ? requestedView : "All Packages";
   const rows = queryPackages(
     packages,

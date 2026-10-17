@@ -8,7 +8,7 @@ import { PreviewRoleProvider } from "./PreviewRoleContext";
 import { germanAccessUpdate } from "../i18n/de-access-update";
 import { translateText } from "../i18n/translate";
 import * as teamsNavigation from "../teams/navigation";
-import { changePreviewRole } from "./demoControls";
+import { changePreviewRole, previewRoleChangingEvent } from "./demoControls";
 
 const hint = vi.hoisted(() => ({
   value: null as null | {
@@ -34,6 +34,25 @@ afterEach(() => {
 });
 
 describe("external role-preview controls", () => {
+  it("closes settings before switching roles and removes the administrative page query", () => {
+    const events: string[] = [];
+    const target = new EventTarget();
+    target.addEventListener(previewRoleChangingEvent, () =>
+      events.push("close"),
+    );
+    vi.stubGlobal("window", target);
+    vi.stubGlobal("sessionStorage", { getItem: () => null, setItem: vi.fn() });
+    vi.stubGlobal("location", {
+      href: "https://example.test/planning?staff=elliot&siteSettings=permissions",
+      pathname: "/planning",
+      search: "?staff=elliot&siteSettings=permissions",
+      assign: (href: string) => {
+        events.push(href);
+      },
+    });
+    changePreviewRole("taylor");
+    expect(events).toEqual(["close", "/planning?staff=taylor"]);
+  });
   it.each([
     "/planning",
     "/teams",

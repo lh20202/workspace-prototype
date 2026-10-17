@@ -300,7 +300,13 @@ export const previewRoleGroups = [
   { label: "SPECIALIST / ADMIN", roleIds: ["devon", "leonie", "elliot"] },
 ] as const;
 export const canAdministerSites = (person: PolicyPerson) =>
-  previewRoleFor(person)?.id === "elliot";
+  ["elliot", "leonie"].includes(previewRoleFor(person)?.id || "");
+
+/** Delegated site ownership never grants access to protected business content. */
+export const canManageSiteSettings = (
+  person: PolicyPerson,
+  workspaceId: string,
+) => canAdministerSites(person) && canAccessWorkspace(person, workspaceId);
 export type PolicyPerson =
   string | { id: string; departmentPreviewId?: string };
 export function previewRoleFor(person: PolicyPerson) {
