@@ -52,7 +52,7 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(html).not.toContain("<details");
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
     expect(creationExplanation).toBe(
-      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.",
+      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.",
     );
   });
   it("groups all requested questions into a repeatable, initially collapsed accordion", () => {

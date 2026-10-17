@@ -27,7 +27,7 @@ describe("final staff-facing German interpretation", () => {
     );
     expect(german(creationExplanation)).toContain("keine Unternehmensdaten");
     expect(german(creationExplanation)).toContain(
-      "keine Verbindung zu produktiven digitalen Arbeitsplatzplattformen oder Geschäftssystemen",
+      "keine Verbindung zu Tools oder Systemen des Unternehmens",
     );
   });
 

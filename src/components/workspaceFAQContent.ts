@@ -1,6 +1,6 @@
 /** Staff-facing explanations remain separate from the simulated product. */
 export const creationExplanation =
-  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.";
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.";
 
 export interface WorkspaceFAQQuestion {
   id: string;

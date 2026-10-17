@@ -237,7 +237,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       expectGenericCopy(displayText(creationExplanation, language));
     }
     expect(displayText(creationExplanation, "en")).toContain(
-      "live digital workplace platforms or business systems",
+      "company tools or systems",
     );
   });
 });

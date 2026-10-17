@@ -2,8 +2,8 @@
 export const germanFAQRolesSensitivity: Record<string, string> = {
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
     "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
-  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live digital workplace platforms or business systems.":
-    "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet, und es besteht keine Verbindung zu produktiven digitalen Arbeitsplatzplattformen oder Geschäftssystemen.",
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.":
+    "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet, und es besteht keine Verbindung zu Tools oder Systemen des Unternehmens.",
   "Workspace FAQ": "Häufige Fragen zu Arbeitsbereichen",
   "Where do personal drives fit in?":
     "Welche Rolle spielen persönliche Speicherbereiche?",
