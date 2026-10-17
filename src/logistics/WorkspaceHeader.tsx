@@ -26,7 +26,7 @@ export default function WorkspaceHeader({
 }: {
   onSearchChange?: (query: string) => void;
   onOpen: (f: OperationalFile) => void;
-  onTeams: () => void;
+  onTeams?: () => void;
   onMessage: (m: string) => void;
   title?: string;
   userName?: string;
@@ -171,14 +171,16 @@ export default function WorkspaceHeader({
         </div>
         <div className="site-title">
           <h1>{title}</h1>
-          <button
-            className="teams-button"
-            aria-label="Open Microsoft Teams channels"
-            title="Microsoft Teams"
-            onClick={onTeams}
-          >
-            <img src="/images/teams-logo.svg" alt="" />
-          </button>
+          {onTeams && (
+            <button
+              className="teams-button"
+              aria-label="Open Microsoft Teams channels"
+              title="Microsoft Teams"
+              onClick={onTeams}
+            >
+              <img src="/images/teams-logo.svg" alt="" />
+            </button>
+          )}
         </div>
         <div className="site-context">
           <span>Private group</span>

@@ -150,11 +150,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
         l?.areas.some((id) => ["communications", "frameworks"].includes(id))) ||
       (workspace.id === "digital" &&
         l?.areas.some((id) =>
-          [
-            "web-crm",
-            "information-architecture",
-            "systems-engineering",
-          ].includes(id),
+          ["web-crm", "information-architecture"].includes(id),
         )) ||
       (workspace.id === "customer" && l?.areas.includes("quality")) ||
       (workspace.id === "quality" && l?.areas.includes("process")) ||
@@ -197,12 +193,6 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
               </a>
             </>
           )}
-          {workspace.id === "digital" &&
-            l?.areas.includes("systems-engineering") && (
-              <a href="/employment-admin">
-                Employment process & record ownership ↗
-              </a>
-            )}
           {workspace.id === "digital" &&
             l?.areas.includes("information-architecture") && (
               <a href="/archives/retention">Retention requirements ↗</a>
@@ -276,7 +266,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                   <td>{x.owner}</td>
                   <td>
                     <select
-                      aria-label={`Work status ${x.id}`}
+                      aria-label={`Work status for ${x.name}`}
                       value={x.status}
                       onChange={(e) =>
                         setItems(
@@ -390,10 +380,13 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
         userRole={contextStaff.role}
         searchFiles={config.files}
         onOpen={(f) => openSearchFile(f.id)}
-        onTeams={() =>
-          location.assign(
-            `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`,
-          )
+        onTeams={
+          workspace.teams
+            ? () =>
+                location.assign(
+                  `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id })}`,
+                )
+            : undefined
         }
         onMessage={setNotice}
         helpText={workspace.purpose}
@@ -459,7 +452,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
             {workspace.id === "people" && (
               <a
                 href={href("communities")}
-                aria-current={isCommunityPage ? "page" : undefined}
+                aria-current={isCommunityPage && !subject ? "page" : undefined}
               >
                 Staff communities
               </a>
@@ -482,7 +475,15 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                     ? "communities/network-membership"
                     : "protected",
                 )}
-                aria-current={page === "protected" ? "page" : undefined}
+                aria-current={
+                  workspace.id === "people"
+                    ? subject?.id === "network-membership"
+                      ? "page"
+                      : undefined
+                    : page === "protected" && subject?.id !== "employee-records"
+                      ? "page"
+                      : undefined
+                }
               >
                 <LockClosed20Regular />
                 {protectedNavigation[workspace.id]}
@@ -632,7 +633,7 @@ export default function FunctionalApp({ id: providedId }: { id?: string }) {
                       ))}
                     </div>
                   </section>
-                  {home.teams && (
+                  {home.teams && workspace.teams && (
                     <section className="functional-teams-links">
                       <h2>
                         <img

@@ -119,6 +119,20 @@ describe("Configured SharePoint libraries", () => {
     },
   );
 
+  it("keeps each ordinary file in one primary working library across workspaces", () => {
+    const owners = new Map<string, string>();
+    for (const source of sources) {
+      const owner = `${source.workspace} / ${source.library}`;
+      for (const file of source.files) {
+        expect(
+          owners.get(file.id),
+          `${file.name} has more than one working location`,
+        ).toBeUndefined();
+        owners.set(file.id, owner);
+      }
+    }
+  });
+
   it("assigns every functional file to exactly one declared library and retains canonical objects", () => {
     for (const config of functionalConfigs) {
       const libraries = functionalLibraries[config.id];

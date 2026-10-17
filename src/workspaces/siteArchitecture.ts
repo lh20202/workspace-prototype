@@ -667,7 +667,6 @@ export const functionalHomes: Record<string, FunctionalHome> = {
         href: "/digital-tech/systems/github?repo=company-web&kind=repository",
       },
       { label: "Request IT support", href: "/service-desk/it-support" },
-      { label: "Employment process ownership", href: "/employment-admin" },
     ],
     teams: {
       heading: "Technical coordination in Teams",

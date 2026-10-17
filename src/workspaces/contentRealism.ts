@@ -1,8 +1,7 @@
 import type { WorkingFile } from "./types";
 import { functionalLibraries } from "./siteArchitecture";
-import { workspaceById } from "./registry";
 
-type AddedFile = [area: string, name: string, folder?: string];
+type AddedFile = [area: string, name: string, stableId?: string];
 const additions: Record<string, AddedFile[]> = {
   services: [
     ["office", "Office Readiness — Room Checks.xlsx"],
@@ -79,22 +78,52 @@ const additions: Record<string, AddedFile[]> = {
     ["policy", "Policy Review — Publication Checklist.docx"],
   ],
   people: [
-    ["workforce", "Workforce Planning — Role Needs Template.docx"],
-    ["workforce", "Workforce Planning — Contribution Guidance.docx"],
-    ["culture", "Leadership Programme — Facilitation Outline.docx"],
-    ["culture", "Leadership Programme — Aggregate Feedback.xlsx"],
-    ["hiring", "Selection Planning — Structured Interview Guide.docx"],
-    ["hiring", "Selection Planning — Panel Preparation.docx"],
-    ["hiring", "Selection Planning — Process Review.xlsx"],
-    ["learning", "Manager Capability Programme — Learning Plan.docx"],
-    ["learning", "Manager Capability Programme — Facilitation Notes.docx"],
-    ["learning", "Onboarding Learning — Session Outline.docx"],
-    ["learning", "Onboarding Learning — Programme Review.docx"],
-    ["employment", "Employment Process — Handoff Guidance.docx"],
-    ["communications", "Intranet & Wiki — Editorial Brief.docx"],
-    ["communications", "Intranet & Wiki — Page Owner Review.xlsx"],
-    ["analytics", "Workforce Analysis — Aggregate Measures.xlsx"],
-    ["wellbeing", "Wellbeing Events — Communications Plan.docx"],
+    [
+      "workforce",
+      "Workforce Planning — Role Needs Template.docx",
+      "people-R01",
+    ],
+    [
+      "workforce",
+      "Workforce Planning — Contribution Guidance.docx",
+      "people-R02",
+    ],
+    [
+      "culture",
+      "Leadership Programme — Facilitation Outline.docx",
+      "people-R03",
+    ],
+    ["culture", "Leadership Programme — Aggregate Feedback.xlsx", "people-R04"],
+    [
+      "learning",
+      "Manager Capability Programme — Learning Plan.docx",
+      "people-R08",
+    ],
+    [
+      "learning",
+      "Manager Capability Programme — Facilitation Notes.docx",
+      "people-R09",
+    ],
+    ["learning", "Onboarding Learning — Session Outline.docx", "people-R10"],
+    ["learning", "Onboarding Learning — Programme Review.docx", "people-R11"],
+    ["communications", "Intranet & Wiki — Editorial Brief.docx", "people-R13"],
+    [
+      "communications",
+      "Intranet & Wiki — Page Owner Review.xlsx",
+      "people-R14",
+    ],
+    ["analytics", "Workforce Analysis — Aggregate Measures.xlsx", "people-R15"],
+    ["wellbeing", "Wellbeing Events — Communications Plan.docx", "people-R16"],
+  ],
+  employment: [
+    [
+      "hiring",
+      "Selection Planning — Structured Interview Guide.docx",
+      "people-R05",
+    ],
+    ["hiring", "Selection Planning — Panel Preparation.docx", "people-R06"],
+    ["hiring", "Selection Planning — Process Review.xlsx", "people-R07"],
+    ["employment", "Employment Process — Handoff Guidance.docx", "people-R12"],
   ],
   customer: [
     ["care", "Care Review — Service Recovery Method.docx"],
@@ -481,25 +510,43 @@ function contentTypeFor(id: string, file: WorkingFile) {
         : undefined;
 }
 
+const programmeBaselines: Record<string, string> = {
+  "people-F3": "2026-08-19",
+  "people-F6": "2026-09-18",
+  "people-F19": "2026-08-27",
+  "people-R02": "2026-09-24",
+  "people-R12": "2026-09-30",
+};
+const programmeOwners: Record<string, string> = {
+  learning: "Elena Rossi",
+  communications: "Staff Communications",
+  communities: "Staff Networks",
+  wellbeing: "Wellbeing Programmes",
+};
+
+function workingOwner(workspace: string, file: WorkingFile) {
+  if (workspace === "employment")
+    return file.area === "hiring" ? "Jamie Ellis" : "Employment Operations";
+  if (workspace === "people")
+    return programmeOwners[file.area] || "People & Culture";
+  return workspace === "digital" ? "Devon Park" : file.owner;
+}
+
 /** Enrich the canonical public fixtures once; every surface keeps these IDs. */
 export function enrichFunctionalFiles(
   id: string,
   existing: WorkingFile[],
 ): WorkingFile[] {
   const template = existing[0];
-  const added = (additions[id] || []).map(([area, name], index) => ({
+  const added = (additions[id] || []).map(([area, name, stableId], index) => ({
     ...template,
-    id: `${id}-R${String(index + 1).padStart(2, "0")}`,
+    id: stableId || `${id}-R${String(index + 1).padStart(2, "0")}`,
     area,
     name,
     type: name.split(".").at(-1)!,
   }));
   return [...existing, ...added].map((file, index) => {
-    const owningId =
-      id === "people" && ["hiring", "employment"].includes(file.area)
-        ? "employment"
-        : id;
-    const folderPath = folderForFunctionalFile(owningId, file.area, file.name);
+    const folderPath = folderForFunctionalFile(id, file.area, file.name);
     const target =
       id === "services" &&
       file.area === "reception" &&
@@ -507,10 +554,10 @@ export function enrichFunctionalFiles(
         ? functionalLibraries.services.find(
             (l) => l.id === "bookings-coordination",
           )!
-        : functionalLibraries[owningId].find((l) =>
-            l.areas.includes(file.area),
-          )!;
-    const modified = `2026-10-${String(2 + ((index * 3 + file.name.length) % 15)).padStart(2, "0")}`;
+        : functionalLibraries[id].find((l) => l.areas.includes(file.area))!;
+    const modified =
+      programmeBaselines[file.id] ||
+      `2026-10-${String(2 + ((index * 3 + file.name.length) % 15)).padStart(2, "0")}`;
     const status: WorkingFile["status"] =
       /Checklist|Guidance|Method|Guide|Criteria|Contract.yaml/.test(file.name)
         ? "Current"
@@ -519,28 +566,15 @@ export function enrichFunctionalFiles(
           : "Draft";
     const result: WorkingFile = {
       ...file,
-      ...(owningId !== id
-        ? {
-            campaign: workspaceById.get(owningId)!.title,
-            location: workspaceById.get(owningId)!.title,
-          }
-        : {}),
       documentLibrary: target.id,
       folderPath,
       folder: folderPath,
       modified,
       status,
-      contentType: contentTypeFor(owningId, file),
-      owner:
-        id === "digital"
-          ? "Devon Park"
-          : owningId === "employment"
-            ? "Employment Operations"
-            : id === "people"
-              ? "Elena Rossi"
-              : file.owner,
+      contentType: contentTypeFor(id, file),
+      owner: workingOwner(id, file),
     };
-    result.metadata = fileMetadata(owningId, result);
+    result.metadata = fileMetadata(id, result);
     result.workType =
       result.metadata.Activity ||
       result.metadata["Work type"] ||

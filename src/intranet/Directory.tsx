@@ -78,7 +78,7 @@ export default function Directory() {
               <p>
                 {x === "Digital Workspaces"
                   ? "You are on Digital Workspaces."
-                  : "Illustrative intranet navigation. This destination is not included in the prototype."}
+                  : "Illustrative intranet navigation. This destination is not included in the proof of concept."}
               </p>
             </PopoverSurface>
           </Popover>
@@ -86,13 +86,12 @@ export default function Directory() {
       </nav>
       <main className="directory-main">
         <div className="architecture-preview-label">
-          <span>Full Architecture Prototype</span>
-          <span className="exploratory-badge">EXPLORATORY BETA</span>
+          <span>Full Architecture Proof of Concept</span>
+          <span className="exploratory-badge">EXPLORATORY</span>
           <a href="/">Home</a>
         </div>
         <div className="directory-heading">
           <div>
-            <small>OUR WORKPLACE / DIGITAL WORKSPACES</small>
             <h1>Digital workspaces</h1>
             <p>Find the shared space for your work.</p>
           </div>
@@ -101,7 +100,8 @@ export default function Directory() {
             <div>
               <strong>Fictional examples</strong>
               <span>
-                Workspace titles are illustrative, not real site names.
+                Interactive proof of concept. Workspace names and data are
+                fictional.
               </span>
             </div>
           </aside>

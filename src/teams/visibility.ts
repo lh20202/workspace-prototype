@@ -1,3 +1,4 @@
+import { hasWorkspaceTeams } from "../workspaces/registry";
 import type { StaffPerson } from "../intranet/catalog";
 import {
   visibleContentChannels,
@@ -31,12 +32,7 @@ export const projectChannels = [
 ];
 export const workspaceChannels: Record<string, string[]> = {
   planning: ["General", "Planning coordination"],
-  services: ["General"],
-  audience: ["General", "Research coordination"],
   content: visibleContentChannels("morgan").map((channel) => channel.name),
-  employment: ["General", "Recruitment coordination"],
-  finance: ["General", "Close coordination"],
-  executive: ["General"],
   digital: technicalChannels,
 };
 export const isInformationManager = (person: Pick<StaffPerson, "id">) =>
@@ -51,6 +47,7 @@ export function canSeeWorkspace(
   person: Pick<StaffPerson, "id">,
   workspaceId: string,
 ) {
+  if (!hasWorkspaceTeams(workspaceId)) return false;
   return (
     workspaceId === "logistics" ||
     (workspaceId === "content" &&

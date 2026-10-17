@@ -63,12 +63,15 @@
   font: inherit;
 }
 .functional-work-row strong {
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
   color: #006caa;
 }
 .functional-work-row span {
-  font-size: 11px;
-  color: #777;
+  font-size: 12px;
+  line-height: 18px;
+  color: #616161;
   max-width: 55%;
 }
 .functional-two-columns {
@@ -301,8 +304,13 @@
 }
 .archive-search input {
   font: inherit;
-  padding: 11px;
-  border: 1px solid #aaa;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
   background: white;
 }
 .archive-filters {
@@ -318,8 +326,12 @@
 }
 .archive-filters select {
   font: inherit;
-  padding: 6px;
-  border: 1px solid #aaa;
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
   background: white;
   max-width: 180px;
 }
@@ -491,7 +503,7 @@
 .functional-home-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(230px, 0.42fr);
-  gap: 38px;
+  gap: 32px;
   max-width: 1200px;
 }
 .functional-home-layout section {

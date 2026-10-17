@@ -1,3 +1,8 @@
+import {
+  employmentProtectedSubjects,
+  legacyEmploymentBoundary,
+} from "./employmentSubjects";
+
 export interface WorkspaceDefinition {
   id: string;
   title: string;
@@ -10,7 +15,7 @@ export interface WorkspaceDefinition {
   accessModel: string;
   departmentRelationships: string[];
 }
-const seed: [string, string, string, string, string, string][] = [
+const seed: [string, string, string, string, string, string, boolean][] = [
   [
     "projects",
     "Projects",
@@ -18,6 +23,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Coordinate project governance and support, and access current and completed project workspaces.",
     "Project delivery",
     "projects",
+    false,
   ],
   [
     "planning",
@@ -26,6 +32,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Organisation-wide strategy, planning and formal performance reporting.",
     "Strategy & planning",
     "strategy",
+    true,
   ],
   [
     "logistics",
@@ -34,6 +41,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Operational deployment, rotas, locations, staffing coordination and direct-delivery logistics.",
     "Campaign operations",
     "people",
+    true,
   ],
   [
     "audience",
@@ -42,6 +50,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Audience research, segmentation, journeys, behavioural insight, analysis, experimentation and marketing-automation ideation.",
     "Audience & experience",
     "research",
+    false,
   ],
   [
     "content",
@@ -50,6 +59,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Shared production space for editorial, creative and channel teams coordinating live content, campaigns and rapid-response coverage.",
     "Audience & experience",
     "content",
+    true,
   ],
   [
     "customer",
@@ -58,6 +68,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Customer care, relationship continuity, account stewardship, partnerships and frontline interaction quality.",
     "Customer relationships",
     "customer",
+    false,
   ],
   [
     "finance",
@@ -66,6 +77,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Income administration, reconciliation, payments, accounting, financial planning and treasury.",
     "Financial operations",
     "finance",
+    false,
   ],
   [
     "services",
@@ -74,6 +86,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Office maintenance and equipment, purchasing and suppliers, travel services and reception.",
     "Workplace operations",
     "services",
+    false,
   ],
   [
     "quality",
@@ -82,6 +95,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Shared workspace for monitoring quality, improving processes, coordinating process improvement work and developing more effective and environmentally responsible ways of working.",
     "Improvement",
     "quality",
+    false,
   ],
   [
     "digital",
@@ -90,6 +104,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Shared engineering and technology workspace for building, operating and governing digital platforms, business systems, automation and emerging technology.",
     "Engineering & platforms",
     "digital",
+    true,
   ],
   [
     "legal",
@@ -98,6 +113,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Shared workspace for legal review, privacy, compliance, organisational risk and assurance activity.",
     "Advice & assurance",
     "legal",
+    false,
   ],
   [
     "people",
@@ -106,6 +122,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Workforce and organisation development, leadership, culture, inclusion, capability, staff communications and wellbeing programmes.",
     "People & organisation",
     "people-culture",
+    false,
   ],
   [
     "employment",
@@ -114,6 +131,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Shared controlled workspace for recruitment administration, employment records, contracts and authorised employment changes.",
     "Employment operations",
     "employment",
+    false,
   ],
   [
     "executive",
@@ -122,6 +140,7 @@ const seed: [string, string, string, string, string, string][] = [
     "Executive coordination, restricted leadership work, governance liaison and strategic initiatives.",
     "Leadership & governance",
     "executive",
+    false,
   ],
   [
     "archives",
@@ -130,10 +149,11 @@ const seed: [string, string, string, string, string, string][] = [
     "Search, preserve and manage the company's historical records and organisational memory.",
     "Records & memory",
     "archives",
+    false,
   ],
 ];
 export const workspaceRegistry: WorkspaceDefinition[] = seed.map(
-  ([id, title, href, description, group, icon]) => ({
+  ([id, title, href, description, group, icon, teams]) => ({
     id,
     title,
     href,
@@ -141,13 +161,17 @@ export const workspaceRegistry: WorkspaceDefinition[] = seed.map(
     purpose: description,
     group,
     icon,
-    teams: true,
+    teams,
     accessModel:
       "Shared functional work; sensitive subjects require specific participation",
     departmentRelationships: [],
   }),
 );
+// Teams is deliberate: live operations, production and engineering; Planning keeps its lightweight reference connection.
+// Other functional coordination uses company/department Teams rather than duplicate generic feeds.
 export const workspaceById = new Map(workspaceRegistry.map((w) => [w.id, w]));
+export const hasWorkspaceTeams = (id: string) =>
+  workspaceById.get(id)?.teams === true;
 export const legacyRedirects: Record<string, string> = {
   "/quality-monitoring/change": "/projects/support",
   "/services/technology": "/digital-tech",
@@ -172,19 +196,7 @@ export const legacyRedirects: Record<string, string> = {
   "/people-culture/systems/recruitment": "/employment-admin/systems/greenhouse",
   "/people-culture/systems/workday": "/employment-admin/systems/workday",
   ...Object.fromEntries(
-    [
-      "candidate-applications",
-      "candidate-assessments",
-      "references",
-      "offers",
-      "placement",
-      "employee-records",
-      "employment-changes",
-      "compensation",
-      "employee-relations",
-      "complaints",
-      "welfare",
-    ].map((subject) => [
+    employmentProtectedSubjects.map(([subject]) => [
       `/people-culture/protected/${subject}`,
       `/employment-admin/protected/${subject}`,
     ]),
@@ -220,10 +232,13 @@ export function resolveLegacy(path: string) {
         return "/legal-compliance/protected/formal-cases";
       if (old === "/services/hiring")
         return "/employment-admin/protected/candidate-assessments";
-      if (old === "/people-culture/hiring")
-        return `/employment-admin/protected/${path.split("/")[3] || "candidate-assessments"}`;
+      if (
+        old === "/people-culture/hiring" ||
+        old === "/people-culture/hiring-documents"
+      )
+        return legacyEmploymentBoundary(path, true);
       if (old === "/people-culture/employment")
-        return `/employment-admin/protected/${path.split("/")[3] || "employment-changes"}`;
+        return legacyEmploymentBoundary(path, false);
       if (old === "/services/technology")
         return "/digital-tech/protected/privileged-access";
       if (old === "/services/workplace")
@@ -243,16 +258,21 @@ export const primaryDestinations: Record<string, string> = {
   "Supplier sourcing file": "/services/purchasing",
   "Supplier invoice": "/financial-operations/payments",
   "Candidate assessment": "/employment-admin/protected/candidate-assessments",
+  "Employment contract": "/employment-admin/protected/employee-records",
   "HR-system API change": "/digital-tech/systems-engineering",
+  "Leadership development programme": "/people-culture/leadership",
   "Annual All-Staff Meeting agenda": "/people-culture/communications",
   "Company picnic planning": "/people-culture/communities",
   "Catering booking for picnic": "/services/reception",
   "Legal contract advice": "/legal-compliance/contracts",
+  "External editorial production": "/content-delivery/creative",
+  "CMS source-code change": "/digital-tech/web-crm",
   "Retention schedule": "/archives/retention",
   "SharePoint metadata implementation":
     "/digital-tech/information-architecture",
   "Historical final annual report": "/archives/collections",
   "Executive pre-decision paper": "/executive/leadership",
+  "Formal project plan": "/projects/PRJ-2026-014",
 };
 export const crossWorkspaceHandoffs = [
   {

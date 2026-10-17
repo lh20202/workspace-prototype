@@ -140,17 +140,14 @@ export default function GovernanceApp() {
                     >
                       <strong>{r.name}</strong>
                       <span>
-                        {r.id} · {r.body} · {r.state} · {r.date}
+                        {r.body} · {r.state} · {r.date}
                       </span>
                     </button>
                   ))}
                   {record && visible.some((r) => r.id === record) && (
                     <div className="governance-record-detail" role="status">
                       <h3>{visible.find((r) => r.id === record)?.name}</h3>
-                      <p>
-                        {record} · Authoritative record location: Governance &
-                        Members Portal.
-                      </p>
+                      <p>Record held in the Governance & Members Portal.</p>
                       <p>
                         Fictional low-detail governance example. No confidential
                         paper text or member deliberation is reproduced.

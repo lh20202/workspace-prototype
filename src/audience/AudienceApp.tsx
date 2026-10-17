@@ -1,4 +1,3 @@
-import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
 import {
   Button,
@@ -317,9 +316,6 @@ export default function AudienceApp() {
         memberCount={18}
         helpText={description}
         onOpen={(file) => nav(fileLink(filesById.get(file.id)!))}
-        onTeams={() => {
-          location.href = `/teams?staff=${teamsStaffForWorkspace("audience")}&workspace=audience`;
-        }}
         onMessage={setMessage}
       />
       <div className="workspace">

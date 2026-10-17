@@ -110,7 +110,8 @@
 .content-room-home-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 285px;
-  gap: 36px;
+  gap: 32px;
+  max-width: 1204px;
   align-items: start;
 }
 .content-room-production h2,
@@ -137,7 +138,7 @@
   min-width: 0;
 }
 .content-room-production strong {
-  font-weight: 600;
+  font-weight: 500;
 }
 .content-room-production small,
 .content-room-team-links small {

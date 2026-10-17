@@ -43,7 +43,6 @@ export default function ArchivePane({
     <>
       <form className="archive-search" onSubmit={(e) => e.preventDefault()}>
         <label>
-          Search the archive
           <input
             aria-label="Search the archive"
             value={query}
@@ -87,7 +86,7 @@ export default function ArchivePane({
         {records.map((r) => (
           <button key={r.id} onClick={() => setSelected(r)}>
             <small>
-              {r.id} · {r.year} · {r.series}
+              {r.year} · {r.series}
             </small>
             <strong>{r.name}</strong>
             <span>{r.description}</span>
@@ -365,12 +364,27 @@ export default function ArchivePane({
           <span className="archive-view-only">VIEW ONLY</span>
           <h2>{selected.name}</h2>
           <dl>
-            {Object.entries(selected).map(([k, v]) => (
-              <div key={k}>
-                <dt>{k}</dt>
-                <dd>{v}</dd>
-              </div>
-            ))}
+            {(
+              [
+                ["Collection", selected.collection],
+                ["Record series", selected.series],
+                ["Year", selected.year],
+                ["Created by", selected.creator],
+                ["Business area", selected.area],
+                ["Description", selected.description],
+                ["Format", selected.format],
+                ["Access", selected.access],
+                ["Preservation", selected.preservation],
+                ["Region", selected.region],
+              ] as const
+            )
+              .filter(([, value]) => value)
+              .map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
           </dl>
         </section>
       )}

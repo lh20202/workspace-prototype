@@ -365,18 +365,12 @@ export default function LogisticsApp() {
                         {quickLinks.map((link) => (
                           <button
                             key={link.label}
-                            onClick={() => {
-                              if (link.id)
-                                openFromHome(filesById.get(link.id)!);
-                              else navigate(link.page!);
-                            }}
+                            onClick={() =>
+                              openFromHome(filesById.get(link.id)!)
+                            }
                           >
                             <span className="quick-link-icon">
-                              {link.page ? (
-                                <Location24Regular />
-                              ) : (
-                                <Document24Regular />
-                              )}
+                              <Document24Regular />
                             </span>
                             <span>{link.label}</span>
                           </button>
@@ -463,17 +457,6 @@ export default function LogisticsApp() {
                             <ArrowRight20Regular />
                           </button>
                         ))}
-                    </section>
-                    <section className="home-reference">
-                      <h3>Operational reference</h3>
-                      <button onClick={() => navigate("resources")}>
-                        <Library24Regular />
-                        Shared operations guides
-                      </button>
-                      <button onClick={() => navigate("records")}>
-                        <CheckmarkCircle24Regular />
-                        Completed campaign records
-                      </button>
                     </section>
                   </aside>
                 </div>

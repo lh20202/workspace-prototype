@@ -653,10 +653,6 @@ export default function App() {
                     <History20Regular />
                     Documents in review
                   </button>
-                  <button onClick={() => navigate("approved")}>
-                    <CheckmarkCircle24Regular />
-                    Approved plans & reports
-                  </button>
                 </section>
               </aside>
             </div>

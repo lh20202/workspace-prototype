@@ -15,6 +15,8 @@ import {
 import { prototypeForPath, pageTitle } from "../utils/routes";
 import { queryLibrary } from "../sharepoint/library";
 import { departments } from "../coordination/data";
+import { employmentProtectedIds } from "./employmentSubjects";
+import { documentProperties } from "../sharepoint/library";
 
 const people = configById.get("people")!;
 const employment = configById.get("employment")!;
@@ -149,6 +151,8 @@ describe("employment administration has a separate business owner", () => {
       "employee-master-data",
       "payroll-inputs",
       "employee-relations",
+      "complaints",
+      "welfare",
     ])
       expect(subjectIds.has(id)).toBe(true);
     expect(employment.protected.every((subject) => subject.strict)).toBe(true);
@@ -174,6 +178,159 @@ describe("employment administration has a separate business owner", () => {
           view: "recent",
         }),
       ).toEqual([]);
+  });
+
+  it("searches the actual public file collections without residual People administration", () => {
+    for (const name of [
+      "Role & Selection Criteria.docx",
+      "Interview Planning Schedule.xlsx",
+      "Employment Process — Working Checklist.docx",
+      "Selection Planning — Panel Preparation.docx",
+      "Employment Process — Handoff Guidance.docx",
+    ]) {
+      expect(queryLibrary(people.files, { folder: "", search: name })).toEqual(
+        [],
+      );
+      const results = queryLibrary(employment.files, {
+        folder: "",
+        search: name,
+      });
+      expect(results).toHaveLength(1);
+      expect(employment.files).toContain(results[0]);
+    }
+    for (const id of ["services", "digital"]) {
+      const files = configById.get(id)!.files;
+      expect(
+        queryLibrary(files, {
+          folder: "",
+          search: "Interview Planning Schedule",
+        }),
+      ).toEqual([]);
+      expect(
+        queryLibrary(files, {
+          folder: "",
+          search: "Employment Process — Working Checklist",
+        }),
+      ).toEqual([]);
+    }
+    const recentPeopleFiles = functionalLibraries.people.flatMap((library) =>
+      queryLibrary(functionalLibraryDocuments(people, library), {
+        folder: "",
+        view: "recent",
+        definition: library,
+      }),
+    );
+    const ordinaryPeopleIds = new Set(people.files.map((file) => file.id));
+    expect(new Set(recentPeopleFiles.map((file) => file.id))).toEqual(
+      ordinaryPeopleIds,
+    );
+    expect(
+      recentPeopleFiles.every(
+        (file) =>
+          !employment.files.some((adminFile) => adminFile.id === file.id),
+      ),
+    ).toBe(true);
+    const homeAreas = new Set(functionalHomes.people.areas);
+    expect(
+      people.files
+        .filter((file) => homeAreas.has(file.area))
+        .every((file) => !employment.files.includes(file)),
+    ).toBe(true);
+  });
+
+  it("resolves every migrated protected route to a real strict subject, including legacy nested URLs", () => {
+    expect(new Set(employment.protected.map((subject) => subject.id))).toEqual(
+      employmentProtectedIds,
+    );
+    for (const id of employmentProtectedIds) {
+      const previous = `/people-culture/protected/${id}`;
+      const destination = resolveLegacy(previous)!;
+      expect(destination).toBe(`/employment-admin/protected/${id}`);
+      expect(
+        employment.protected.find(
+          (subject) => subject.id === destination.split("/")[3],
+        )?.strict,
+      ).toBe(true);
+      expect(people.protected.some((subject) => subject.id === id)).toBe(false);
+      expect(resolveLegacy(`${previous}/former-record`)).toBe(destination);
+    }
+    for (const [path, id] of [
+      ["/people-culture/hiring/recruitment/REC-221", "candidate-assessments"],
+      ["/people-culture/hiring/old-candidate-case", "candidate-assessments"],
+      [
+        "/people-culture/hiring-documents/candidate-assessments",
+        "candidate-assessments",
+      ],
+      [
+        "/people-culture/employment/old-individual-change",
+        "employment-changes",
+      ],
+      ["/people-culture/employment/employee-records", "employee-records"],
+      ["/people-culture/hiring/offers", "offers"],
+    ])
+      expect(resolveLegacy(path)).toBe(`/employment-admin/protected/${id}`);
+    expect(
+      resolveLegacy("/people-culture/communities/network-membership"),
+    ).toBeUndefined();
+    expect(prototypeForPath("/employee-council")).toBe("functional");
+  });
+
+  it("excludes restricted record details from every ordinary employment view and property pane", () => {
+    for (const library of functionalLibraries.employment) {
+      const files = functionalLibraryDocuments(employment, library);
+      for (const view of library.views || []) {
+        for (const file of queryLibrary(files, {
+          folder: "",
+          definition: library,
+          view: view.id,
+        })) {
+          expect(employmentProtectedIds.has(file.id)).toBe(false);
+          expect(files).toContain(file);
+          const properties = JSON.stringify(documentProperties(file, library));
+          expect(properties).not.toMatch(
+            /salary value|absence reason|health data|candidate score|case notes|employee address/i,
+          );
+        }
+      }
+    }
+    expect(
+      people.tools.some((tool) => ["greenhouse", "workday"].includes(tool.id)),
+    ).toBe(false);
+    expect(
+      people.areas.every(
+        (area) =>
+          !["hiring", "employment", "inputs", "protected"].includes(area.id),
+      ),
+    ).toBe(true);
+    expect(
+      functionalLibraries.people.every(
+        (library) =>
+          !library.areas.some((area) =>
+            ["hiring", "employment", "inputs"].includes(area),
+          ),
+      ),
+    ).toBe(true);
+  });
+
+  it("retains older programme baselines and gives working files meaningful owners", () => {
+    expect(people.files.find((file) => file.id === "people-F5")?.owner).toBe(
+      "Elena Rossi",
+    );
+    expect(people.files.find((file) => file.id === "people-F8")?.owner).toBe(
+      "Staff Communications",
+    );
+    expect(
+      employment.files.find((file) => file.id === "people-F3")?.owner,
+    ).toBe("Jamie Ellis");
+    expect(
+      employment.files.find((file) => file.id === "people-F7")?.owner,
+    ).toBe("Employment Operations");
+    expect(
+      new Set(people.files.map((file) => file.modified.slice(0, 7))).size,
+    ).toBeGreaterThan(1);
+    expect(
+      new Set(employment.files.map((file) => file.modified.slice(0, 7))).size,
+    ).toBeGreaterThan(1);
   });
 
   it("uses authoritative HR tools while retaining technical platform configuration in Digital", () => {

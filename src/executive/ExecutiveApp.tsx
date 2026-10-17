@@ -1,4 +1,3 @@
-import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useState } from "react";
 import { LockClosed20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
@@ -146,11 +145,6 @@ export default function ExecutiveApp() {
             `${href(original.audience === "base" ? "coordination" : original.activity)}&file=${encodeURIComponent(f.id)}`,
           );
         }}
-        onTeams={() =>
-          location.assign(
-            `/teams?staff=${teamsStaffForWorkspace("executive")}&workspace=executive`,
-          )
-        }
         onMessage={setNotice}
         helpText="Executive coordination. Leadership, liaison and initiative access are separate."
       />

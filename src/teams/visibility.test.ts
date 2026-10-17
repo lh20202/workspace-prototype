@@ -102,7 +102,7 @@ describe("Teams membership follows the selected staff context", () => {
   it("gives the information specialist all team structures and private channels", () => {
     const specialist = person("morgan");
     expect(specialist.role).toBe("Information Management Specialist");
-    for (const workspace of workspaces.filter((w) => w.id !== "projects"))
+    for (const workspace of workspaces.filter((w) => w.teams))
       expect(canSeeWorkspace(specialist, workspace.id)).toBe(true);
     expect(
       canSeeWorkspaceChannel(specialist, "digital", "Security Engineering"),

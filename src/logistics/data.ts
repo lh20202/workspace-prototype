@@ -496,7 +496,6 @@ export const filesById = new Map(files.map((file) => [file.id, file]));
 export const quickLinks = [
   { label: "Today's deployment plan", id: "central-deployment" },
   { label: "Current in-person campaign brief", id: "street-brief" },
-  { label: "Location & permit tracker", page: "locations" },
   { label: "On-call rota", id: "on-call" },
   { label: "Current calling scripts", id: "telephone-guide" },
   { label: "New starter checklist", id: "starter-checklist" },

@@ -1,4 +1,7 @@
 import { describe, it, expect } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import Launcher from "./intranet/Launcher";
 import { accessRequestHref, pageTitle, prototypeForPath } from "./utils/routes";
 import { posts, filesById, permits } from "./logistics/data";
 import {
@@ -16,7 +19,10 @@ describe("launcher and service desk routes", () => {
     );
   });
   it("sets distinct product and page titles", () => {
-    expect(pageTitle("/")).toBe("Workspace prototypes");
+    expect(pageTitle("/")).toBe("Digital workspace design");
+    expect(pageTitle("/architecture")).toBe(
+      "Full Architecture Proof of Concept | Exploratory",
+    );
     expect(prototypeForPath("/architecture")).toBe("architecture");
     expect(pageTitle("/logistics/teams")).toBe(
       "Acquisition & Activation Logistics | Teams",
@@ -24,6 +30,16 @@ describe("launcher and service desk routes", () => {
     expect(pageTitle("/service-desk/access-request")).toBe(
       "Access request | Service Desk",
     );
+  });
+  it("distinguishes two reference prototypes from the exploratory architecture proof of concept", () => {
+    const launcher = renderToStaticMarkup(createElement(Launcher));
+    expect(launcher.match(/Reference prototype/g)).toHaveLength(2);
+    expect(launcher).toContain("Full Architecture Proof of Concept");
+    expect(launcher).toContain("EXPLORATORY");
+    expect(launcher).not.toMatch(/beta/i);
+    expect(launcher).toContain('href="/planning"');
+    expect(launcher).toContain('href="/logistics"');
+    expect(launcher).toContain('href="/architecture"');
   });
   it("carries the attempted restricted path into the access form", () => {
     const url = new URL(

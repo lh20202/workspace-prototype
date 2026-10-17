@@ -588,7 +588,7 @@ export default function ProjectsApp() {
         )}
         {filesView(true)}
         <section>
-          <h2>Quick links</h2>
+          <h2>Delivery & support</h2>
           <div className="project-context-links">
             <a href={project.delivery}>{project.area} ↗</a>
             <a href="/executive/initiatives">Stage decision ↗</a>
@@ -928,19 +928,20 @@ export default function ProjectsApp() {
     );
   }
   return (
-    <div className="projects-app">
+    <div className="app-shell projects-app">
       <WorkspaceHeader
         title={title}
         userName={person.name}
         searchFiles={[]}
         onSearchChange={setQuery}
         onOpen={() => {}}
-        onTeams={() =>
-          location.assign(
-            project
-              ? `${root}/teams`
-              : "/teams?workspace=projects&staff=" + person.id,
-          )
+        onTeams={
+          project &&
+          !readOnly &&
+          permitted &&
+          canSeeProject(person, project.code)
+            ? () => location.assign(`${root}/teams?staff=${person.id}`)
+            : undefined
         }
         onMessage={(m) => window.alert(m)}
       />

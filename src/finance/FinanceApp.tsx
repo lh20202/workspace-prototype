@@ -1,4 +1,3 @@
-import { teamsStaffForWorkspace } from "../teams/navigation";
 import { useState } from "react";
 import {
   Button,
@@ -181,11 +180,6 @@ export default function FinanceApp() {
           if (l)
             location.assign(`${base}/${l.id}?file=${encodeURIComponent(f.id)}`);
         }}
-        onTeams={() =>
-          location.assign(
-            `/teams?staff=${teamsStaffForWorkspace("finance")}&workspace=finance`,
-          )
-        }
         onMessage={setNotice}
         helpText="Financial working documents, close coordination and planning contributions."
       />
@@ -221,7 +215,10 @@ export default function FinanceApp() {
             ))}
           </nav>
         </aside>
-        <main id="finance-main" className="services-main finance-main">
+        <main
+          id="finance-main"
+          className={`services-main finance-main${page === "home" ? " finance-home" : ""}`}
+        >
           <div className="finance-breadcrumb">
             <a href={base}>Workspace</a> /{" "}
             {protectedName ? "Access required" : activeName}
@@ -270,6 +267,11 @@ export default function FinanceApp() {
                 <a href={`${base}/close-checklist`}>
                   Continue the close checklist →
                 </a>
+                <p>
+                  <a href={`${base}/planning-documents?file=FIN-05`}>
+                    2027 budget commentary →
+                  </a>
+                </p>
               </section>
               <section>
                 <h2>Upcoming deadlines</h2>
@@ -280,20 +282,8 @@ export default function FinanceApp() {
                 ))}
                 <a href={`${base}/calendar`}>Financial calendar →</a>
               </section>
-              <section>
-                <h2>Current contributions</h2>
-                <div className="functional-context-links">
-                  <a href={`${base}/close-checklist`}>Close Checklist</a>
-                  <a href={`${base}/reconciliation-issues`}>
-                    Reconciliation Issues
-                  </a>
-                  <a href={`${base}/planning-documents?file=FIN-05`}>
-                    2027 budget commentary
-                  </a>
-                </div>
-              </section>
               <DocumentLibrary
-                title="Recently updated guidance"
+                title="Recently updated documents"
                 files={libraries.flatMap(libraryFiles)}
                 embedded
               />

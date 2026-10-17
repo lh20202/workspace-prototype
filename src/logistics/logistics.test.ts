@@ -38,8 +38,7 @@ describe("one shared document model", () => {
     );
   });
   it.each(quickLinks)("resolves $label", (link) => {
-    if (link.id) expect(filesById.has(link.id)).toBe(true);
-    else expect(link.page).toBe("locations");
+    expect(filesById.has(link.id)).toBe(true);
   });
   it.each(campaigns)("finds operational files for $name", (c) =>
     expect(

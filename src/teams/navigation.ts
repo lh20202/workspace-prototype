@@ -8,6 +8,7 @@ import { channels, workspaceTitle } from "../logistics/data";
 import { departments, departmentHref } from "../coordination/data";
 import { currentProjects, projectHref, projectTitle } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
+import { hasWorkspaceTeams } from "../workspaces/registry";
 import { resolveContentChannel } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
 import {
@@ -20,6 +21,18 @@ import {
   projectChannels,
   visibleWorkspaceChannels,
 } from "./visibility";
+
+/** A functional site without live Teams uses the colleague's department conversation. */
+export function defaultTeamsContext(person: StaffPerson) {
+  return hasWorkspaceTeams(person.workspace)
+    ? { workspaceId: person.workspace, departmentId: undefined }
+    : {
+        workspaceId: undefined,
+        departmentId: departments.find(
+          (department) => department.id === person.departmentId,
+        )?.id,
+      };
+}
 
 export function teamsGroups(person: StaffPerson): TeamsGroup[] {
   const logisticsGroups: TeamsGroup[] = ["company", "logistics"].map(

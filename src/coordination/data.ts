@@ -383,7 +383,7 @@ export const departments: Department[] = definitions.map(
       {
         id: `${id}-P1`,
         author: coordinatorName,
-        text: "Reminder that unit inputs for the planning cycle are due Friday. The local tracker in Files has been updated.",
+        text: "Reminder that unit inputs for the planning cycle are due Friday. The local tracker in Shared has been updated.",
         time: "09:10",
         attachmentId: byFolder("Planning Cycle Coordination"),
       },
@@ -425,7 +425,7 @@ export const departments: Department[] = definitions.map(
       {
         id: `${id}-P6`,
         author: coordinatorName,
-        text: "Expense submissions from the conference are due at the end of the week. The submission checklist is in Files.",
+        text: "Expense submissions from the conference are due at the end of the week. The submission checklist is in Shared.",
         time: "11:25",
         attachmentId: library.find(
           (f) => f.name === "Expense Submission Checklist.docx",

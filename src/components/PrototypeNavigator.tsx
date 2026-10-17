@@ -27,7 +27,7 @@ export default function PrototypeNavigator() {
         <span>DEMO CONTROLS</span>
         <a href="/">Home</a>
         <a href="/architecture">
-          Full architecture <small>EXPLORATORY BETA</small>
+          Full architecture <small>POC</small>
         </a>
         {teams && (
           <label className="demo-persona">
@@ -100,8 +100,8 @@ export default function PrototypeNavigator() {
         <aside className="demo-caveat" aria-label="Demonstration caveat">
           <Warning16Regular aria-hidden="true" />
           <div>
-            <strong>Fictional workspace titles</strong>
-            <small>Fictional data · Changes stay in this browser</small>
+            <strong>Fictional names & data</strong>
+            <small>Changes stay in this browser</small>
           </div>
         </aside>
       </nav>

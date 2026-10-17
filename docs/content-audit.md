@@ -6,68 +6,68 @@ Development snapshot of the fictional content fixtures. This report is not shown
 
 Counts support a realism review; they are not acceptance quotas or requirements from ISO standards. A single-file folder can be appropriate. No files are generated automatically to satisfy a count.
 
-| Workspace | Library | Files | Leaf folders | Files per leaf | Single | Empty | Above 12 |
-| --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
-| Planning | Planning Cycles | 16 | 10 | 1–4 | 7 | 0 | 0 |
-| Planning | Strategy Development | 13 | 6 | 1–3 | 2 | 0 | 0 |
-| Planning | Performance & Reporting | 7 | 3 | 1–4 | 1 | 0 | 0 |
-| Planning | Approved Plans & Reports | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| services | Service Operations | 8 | 2 | 3–5 | 0 | 0 | 0 |
-| services | Purchasing & Suppliers | 9 | 2 | 3–6 | 0 | 0 | 0 |
-| services | Bookings & Coordination | 8 | 2 | 3–5 | 0 | 0 | 0 |
-| quality | Quality & Monitoring | 7 | 2 | 2–5 | 0 | 0 | 0 |
-| quality | Process & Improvement | 10 | 3 | 3–4 | 0 | 0 | 0 |
-| quality | Eco Practice | 5 | 2 | 2–3 | 0 | 0 | 0 |
-| digital | Engineering Delivery | 27 | 8 | 1–5 | 1 | 0 | 0 |
-| digital | Architecture & Decisions | 8 | 2 | 4–4 | 0 | 0 | 0 |
-| digital | Platform Operations | 4 | 1 | 4–4 | 0 | 0 | 0 |
-| legal | Advice, Compliance & Policy | 10 | 3 | 3–4 | 0 | 0 | 0 |
-| legal | Privacy & Assurance | 7 | 3 | 2–3 | 0 | 0 | 0 |
-| legal | Contract Review | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| people | Workforce & Culture | 14 | 6 | 2–3 | 0 | 0 | 0 |
-| people | Capability & Learning | 6 | 2 | 3–3 | 0 | 0 | 0 |
-| people | Staff Communications | 9 | 2 | 3–6 | 0 | 0 | 0 |
-| employment | Recruitment Administration | 7 | 1 | 7–7 | 0 | 0 | 0 |
-| employment | Employment Operations | 5 | 2 | 2–3 | 0 | 0 | 0 |
-| customer | Care Standards & Quality | 9 | 3 | 2–4 | 0 | 0 | 0 |
-| customer | Relationships & Accounts | 11 | 4 | 2–4 | 0 | 0 | 0 |
-| customer | Meetings & Negotiations | 4 | 1 | 4–4 | 0 | 0 | 0 |
-| archives | Archive Practice & Transfers | 15 | 5 | 2–4 | 0 | 0 | 0 |
-| Audience | Research & Insight | 17 | 7 | 1–4 | 1 | 0 | 0 |
-| Audience | Experiments & Testing | 6 | 3 | 1–4 | 2 | 0 | 0 |
-| Audience | Analysis & Reporting | 19 | 5 | 2–7 | 0 | 0 | 0 |
-| Content | Current Production | 30 | 8 | 2–5 | 0 | 0 | 0 |
-| Content | Editorial & Messaging | 5 | 4 | 1–2 | 3 | 0 | 0 |
-| Content | Creative & Multimedia | 5 | 3 | 1–2 | 1 | 0 | 0 |
-| Content | Published & Final Content | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| Finance | Income & Reconciliation | 8 | 2 | 4–4 | 0 | 0 | 0 |
-| Finance | Payments & Close | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| Finance | Planning & Analysis | 6 | 2 | 3–3 | 0 | 0 | 0 |
-| Finance | Accounting & Reporting | 4 | 1 | 4–4 | 0 | 0 | 0 |
-| Finance | Treasury & Banking | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| Executive | Executive Coordination | 4 | 4 | 1–1 | 4 | 0 | 0 |
-| Logistics | Campaign Operations | 15 | 5 | 2–4 | 0 | 0 | 0 |
-| Logistics | Shared Operations | 7 | 1 | 7–7 | 0 | 0 | 0 |
-| Logistics | Training & Onboarding | 4 | 1 | 4–4 | 0 | 0 | 0 |
-| Logistics | Completed Campaign Records | 3 | 1 | 3–3 | 0 | 0 | 0 |
-| Projects | PRJ-2026-014 · Customer Platform Renewal | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-021 · Workplace Modernisation | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-027 · Company Archive Migration | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-031 · Customer Chatbot Pilot | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-034 · New Starter Experience Redesign | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-038 · Financial Close Improvement | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-042 · Digital Workplace Search Upgrade | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2026-045 · Supplier Onboarding Redesign | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2024-018 · Digital Workplace Programme | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2024-026 · Office Consolidation | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2025-007 · Customer Experience Review | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2022-011 · Finance Platform Renewal | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2023-019 · Recruitment Process Redesign | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2023-027 · Website Modernisation | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2020-006 · CRM Consolidation | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2021-014 · Workplace Technology Refresh | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2021-022 · Reporting Framework Programme | 6 | 3 | 1–3 | 1 | 0 | 0 |
-| Projects | PRJ-2018-009 · Office Equipment Renewal | 6 | 3 | 1–3 | 1 | 0 | 0 |
+| Workspace  | Library                                         | Files | Leaf folders | Files per leaf | Single | Empty | Above 12 |
+| ---------- | ----------------------------------------------- | ----: | -----------: | -------------- | -----: | ----: | -------: |
+| Planning   | Planning Cycles                                 |    16 |           10 | 1–4            |      7 |     0 |        0 |
+| Planning   | Strategy Development                            |    13 |            6 | 1–3            |      2 |     0 |        0 |
+| Planning   | Performance & Reporting                         |     7 |            3 | 1–4            |      1 |     0 |        0 |
+| Planning   | Approved Plans & Reports                        |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| services   | Service Operations                              |     8 |            2 | 3–5            |      0 |     0 |        0 |
+| services   | Purchasing & Suppliers                          |     9 |            2 | 3–6            |      0 |     0 |        0 |
+| services   | Bookings & Coordination                         |     8 |            2 | 3–5            |      0 |     0 |        0 |
+| quality    | Quality & Monitoring                            |     7 |            2 | 2–5            |      0 |     0 |        0 |
+| quality    | Process & Improvement                           |    10 |            3 | 3–4            |      0 |     0 |        0 |
+| quality    | Eco Practice                                    |     5 |            2 | 2–3            |      0 |     0 |        0 |
+| digital    | Engineering Delivery                            |    27 |            8 | 1–5            |      1 |     0 |        0 |
+| digital    | Architecture & Decisions                        |     8 |            2 | 4–4            |      0 |     0 |        0 |
+| digital    | Platform Operations                             |     4 |            1 | 4–4            |      0 |     0 |        0 |
+| legal      | Advice, Compliance & Policy                     |    10 |            3 | 3–4            |      0 |     0 |        0 |
+| legal      | Privacy & Assurance                             |     7 |            3 | 2–3            |      0 |     0 |        0 |
+| legal      | Contract Review                                 |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| people     | Workforce & Culture                             |    14 |            6 | 2–3            |      0 |     0 |        0 |
+| people     | Capability & Learning                           |     6 |            2 | 3–3            |      0 |     0 |        0 |
+| people     | Staff Communications                            |     9 |            2 | 3–6            |      0 |     0 |        0 |
+| employment | Recruitment Administration                      |     7 |            1 | 7–7            |      0 |     0 |        0 |
+| employment | Employment Operations                           |     5 |            2 | 2–3            |      0 |     0 |        0 |
+| customer   | Care Standards & Quality                        |     9 |            3 | 2–4            |      0 |     0 |        0 |
+| customer   | Relationships & Accounts                        |    11 |            4 | 2–4            |      0 |     0 |        0 |
+| customer   | Meetings & Negotiations                         |     4 |            1 | 4–4            |      0 |     0 |        0 |
+| archives   | Archive Practice & Transfers                    |    15 |            5 | 2–4            |      0 |     0 |        0 |
+| Audience   | Research & Insight                              |    17 |            7 | 1–4            |      1 |     0 |        0 |
+| Audience   | Experiments & Testing                           |     6 |            3 | 1–4            |      2 |     0 |        0 |
+| Audience   | Analysis & Reporting                            |    19 |            5 | 2–7            |      0 |     0 |        0 |
+| Content    | Current Production                              |    30 |            8 | 2–5            |      0 |     0 |        0 |
+| Content    | Editorial & Messaging                           |     5 |            4 | 1–2            |      3 |     0 |        0 |
+| Content    | Creative & Multimedia                           |     5 |            3 | 1–2            |      1 |     0 |        0 |
+| Content    | Published & Final Content                       |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| Finance    | Income & Reconciliation                         |     8 |            2 | 4–4            |      0 |     0 |        0 |
+| Finance    | Payments & Close                                |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| Finance    | Planning & Analysis                             |     6 |            2 | 3–3            |      0 |     0 |        0 |
+| Finance    | Accounting & Reporting                          |     4 |            1 | 4–4            |      0 |     0 |        0 |
+| Finance    | Treasury & Banking                              |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| Executive  | Executive Coordination                          |     4 |            4 | 1–1            |      4 |     0 |        0 |
+| Logistics  | Campaign Operations                             |    15 |            5 | 2–4            |      0 |     0 |        0 |
+| Logistics  | Shared Operations                               |     7 |            1 | 7–7            |      0 |     0 |        0 |
+| Logistics  | Training & Onboarding                           |     4 |            1 | 4–4            |      0 |     0 |        0 |
+| Logistics  | Completed Campaign Records                      |     3 |            1 | 3–3            |      0 |     0 |        0 |
+| Projects   | PRJ-2026-014 · Customer Platform Renewal        |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-021 · Workplace Modernisation          |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-027 · Company Archive Migration        |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-031 · Customer Chatbot Pilot           |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-034 · New Starter Experience Redesign  |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-038 · Financial Close Improvement      |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-042 · Digital Workplace Search Upgrade |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2026-045 · Supplier Onboarding Redesign     |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2024-018 · Digital Workplace Programme      |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2024-026 · Office Consolidation             |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2025-007 · Customer Experience Review       |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2022-011 · Finance Platform Renewal         |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2023-019 · Recruitment Process Redesign     |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2023-027 · Website Modernisation            |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2020-006 · CRM Consolidation                |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2021-014 · Workplace Technology Refresh     |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2021-022 · Reporting Framework Programme    |     6 |            3 | 1–3            |      1 |     0 |        0 |
+| Projects   | PRJ-2018-009 · Office Equipment Renewal         |     6 |            3 | 1–3            |      1 |     0 |        0 |
 
 ## Review decisions
 

@@ -27,7 +27,11 @@ describe("canonical functional ownership", () => {
     );
     expect(
       workspaceRegistry.every(
-        (w) => w.purpose && w.description && w.accessModel && w.teams,
+        (w) =>
+          w.purpose &&
+          w.description &&
+          w.accessModel &&
+          typeof w.teams === "boolean",
       ),
     ).toBe(true);
     expect(workspaceRegistry.some((w) => w.title.endsWith("Department"))).toBe(
@@ -35,7 +39,7 @@ describe("canonical functional ownership", () => {
     );
   });
   it("gives every ambiguity example one explicit primary destination", () => {
-    expect(Object.keys(primaryDestinations)).toHaveLength(16);
+    expect(Object.keys(primaryDestinations)).toHaveLength(21);
     for (const route of Object.values(primaryDestinations)) {
       expect(
         workspaceRegistry.filter(

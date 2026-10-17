@@ -11,24 +11,11 @@ import {
   files as logisticsFiles,
   type OperationalFile,
 } from "../logistics/data";
-import { documents as serviceFiles } from "../services/data";
-import { files as audienceFiles } from "../audience/data";
-import {
-  documentFor as audienceDocument,
-  libraryFor as audienceLibrary,
-  definitions as audienceDefinitions,
-} from "../audience/libraries";
 import {
   documentFor as contentDocument,
   libraryFor as contentLibrary,
   definitions as contentDefinitions,
 } from "../content/libraries";
-import {
-  financialDocument,
-  libraries as financeLibraries,
-  definitions as financeDefinitions,
-} from "../finance/libraries";
-import { executiveDocument, executiveDefinition } from "../executive/libraries";
 import { files as contentFiles } from "../content/data";
 import ContentConversation from "../content/ContentConversation";
 import {
@@ -37,38 +24,31 @@ import {
   contentFilesForChannel,
   contentChannelReadOnly,
 } from "../content/channels";
-import { files as financialFiles } from "../finance/data";
-import { visibleFiles as executiveFiles } from "../executive/data";
 import { documents as planningFiles } from "../data/workspace";
 import DepartmentChannel from "../coordination/DivisionChannel";
 import { resolveDepartment } from "../coordination/data";
-import { currentProjects, projectHref, projectTitle } from "../projects/data";
 import TeamsShell, { TeamsComposer, initials } from "../teams/TeamsShell";
 import DocumentLibrary, {
   type LibraryDocument,
 } from "../sharepoint/DocumentLibrary";
-import { planningPath } from "../utils/routes";
 
-import { teamsGroups } from "../teams/navigation";
+import { teamsGroups, defaultTeamsContext } from "../teams/navigation";
 import {
   canSeeDepartment,
-  canSeeProject,
   canSeeWorkspace,
   canSeeWorkspaceChannel,
   workspaceChannels,
 } from "../teams/visibility";
 import TeamsAdministration from "../teams/Administration";
+import { hasWorkspaceTeams } from "../workspaces/registry";
+import { sharepointDestination } from "../teams/sharepointDestination";
 
 export const sharedFiles: Record<string, OperationalFile[]> = {
   logistics: logisticsFiles,
-  services: serviceFiles,
-  audience: audienceFiles,
   content: contentFiles,
-  finance: financialFiles,
-  executive: executiveFiles("base"),
 };
 for (const config of functionalConfigs) {
-  sharedFiles[config.id] = config.files;
+  if (hasWorkspaceTeams(config.id)) sharedFiles[config.id] = config.files;
 }
 const logisticsChannel: Record<string, string> = {
   General: "general",
@@ -91,12 +71,16 @@ export default function TeamsPreview() {
     staff.find((s) => s.id === params.get("staff")) ||
     staff.find((s) => s.id === selectedStaffId()) ||
     staff[0];
-  const department = resolveDepartment(
-    params.get("department") || params.get("division"),
-  );
+  const requestedWorkspace = params.get("workspace");
   const workspace =
-    workspaces.find((w) => w.id === params.get("workspace")) ||
-    workspaces.find((w) => w.id === person.workspace)!;
+    workspaces.find((item) => item.id === requestedWorkspace) ||
+    workspaces.find((item) => item.id === person.workspace)!;
+  const department =
+    resolveDepartment(params.get("department") || params.get("division")) ||
+    (!requestedWorkspace
+      ? resolveDepartment(defaultTeamsContext(person).departmentId || null)
+      : undefined);
+  const workspaceUnavailable = !department && !hasWorkspaceTeams(workspace.id);
   const requested = params.get("channel") || "General";
   const contentChannelName = (value: string) => {
     const resolved = resolveContentChannel(value);
@@ -129,12 +113,28 @@ export default function TeamsPreview() {
   );
   useEffect(() => {
     rememberStaff(person.id);
+    if (workspaceUnavailable) {
+      location.replace(
+        sharepointDestination(
+          workspace.id,
+          new URLSearchParams(location.search).get("file"),
+        ),
+      );
+      return;
+    }
     if (!department && workspace.id === "logistics") {
       location.replace(
         `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: logisticsChannel[initialChannel] || "general", tab })}`,
       );
     }
-  }, [person.id, workspace.id, department, initialChannel, tab]);
+  }, [
+    person.id,
+    workspace.id,
+    department,
+    initialChannel,
+    tab,
+    workspaceUnavailable,
+  ]);
   function chooseChannel(workspaceId: string, name: string) {
     const query = new URLSearchParams({
       staff: person.id,
@@ -198,206 +198,118 @@ export default function TeamsPreview() {
   }));
   const workspaceDenied = department
     ? !canSeeDepartment(person, department.id)
-    : workspace.id === "projects"
-      ? !currentProjects.some((p) => canSeeProject(person, p.code))
-      : !canSeeWorkspace(person, workspace.id);
+    : !canSeeWorkspace(person, workspace.id);
   const channelDenied =
-    !department &&
-    workspace.id !== "projects" &&
-    !canSeeWorkspaceChannel(person, workspace.id, channel);
+    !department && !canSeeWorkspaceChannel(person, workspace.id, channel);
   const securityDenied =
     workspace.id === "digital" && channel === "Security Engineering";
-  const files = (sharedFiles[workspace.id] || []).filter((f) => {
+  const files = (sharedFiles[workspace.id] || []).filter((file) => {
     if (securityDenied || workspaceDenied || channelDenied) return false;
     if (workspace.id === "content")
-      return contentFilesForChannel(channel).some((file) => file.id === f.id);
+      return contentFilesForChannel(channel).some(
+        (item) => item.id === file.id,
+      );
     if (workspace.id === "digital" && channel !== "General")
       return (
-        (f as OperationalFile & { area: string }).area === digitalArea[channel]
+        (file as OperationalFile & { area: string }).area ===
+        digitalArea[channel]
       );
-    if (workspace.id === "finance" && channel === "Close coordination")
-      return ["reconciliation", "accounting", "payments"].includes(f.folder);
     return true;
   });
+  const config = functionalConfigs.find(
+    (item) => item.id === workspace.id && hasWorkspaceTeams(item.id),
+  );
   const documents: LibraryDocument[] =
     workspaceDenied || channelDenied
       ? []
       : workspace.id === "planning"
         ? planningFiles
-            .filter((f) => f.library !== "restricted")
-            .map((f) => ({
-              id: f.id,
-              name: f.name,
-              folder: f.folderPath,
-              modified: f.modified,
-              owner: f.owner,
-              status: f.status,
+            .filter((file) => file.library !== "restricted")
+            .map((file) => ({
+              id: file.id,
+              name: file.name,
+              folder: file.folderPath,
+              modified: file.modified,
+              owner: file.owner,
+              status: file.status,
             }))
-        : functionalConfigs.some((config) => config.id === workspace.id)
-          ? functionalLibraries[workspace.id]
-              .flatMap((library) =>
-                functionalLibraryDocuments(
-                  functionalConfigs.find(
-                    (config) => config.id === workspace.id,
-                  )!,
-                  library,
-                ),
-              )
-              .filter((document) =>
-                files.some((file) => file.id === document.id),
-              )
-          : files.map((f) =>
-              workspace.id === "audience"
-                ? audienceDocument(
-                    audienceFiles.find((source) => source.id === f.id)!,
-                  )
-                : workspace.id === "content"
-                  ? contentDocument(
-                      contentFiles.find((source) => source.id === f.id)!,
-                    )
-                  : workspace.id === "finance"
-                    ? financialDocument(f)
-                    : workspace.id === "executive"
-                      ? executiveDocument(
-                          executiveFiles("base").find(
-                            (source) => source.id === f.id,
-                          )!,
-                        )
-                      : {
-                          id: f.id,
-                          name: f.name,
-                          folder: f.folder,
-                          modified: f.modified,
-                          owner: f.owner,
-                          status: f.status,
-                        },
-            );
-  const selectedFileId = new URLSearchParams(location.search).get("file");
-  const selectedAudience = audienceFiles.find((f) => f.id === selectedFileId);
-  const selectedContent = contentFiles.find((f) => f.id === selectedFileId);
-  const selectedFinance = financialFiles.find((f) => f.id === selectedFileId);
+        : workspace.id === "content"
+          ? files.map((file) =>
+              contentDocument(
+                contentFiles.find((item) => item.id === file.id)!,
+              ),
+            )
+          : config
+            ? functionalLibraries[config.id]
+                .flatMap((library) =>
+                  functionalLibraryDocuments(config, library),
+                )
+                .filter((document) =>
+                  files.some((file) => file.id === document.id),
+                )
+            : [];
+  const selectedFileId = params.get("file");
+  const selectedContent = contentFiles.find(
+    (file) =>
+      file.id === selectedFileId && files.some((item) => item.id === file.id),
+  );
   const defaultDefinition =
-    workspace.id === "audience"
-      ? audienceDefinitions[
-          selectedAudience ? audienceLibrary(selectedAudience) : "research"
+    workspace.id === "content"
+      ? contentDefinitions[
+          selectedContent
+            ? contentLibrary(selectedContent)
+            : files[0]
+              ? contentLibrary(files[0] as (typeof contentFiles)[number])
+              : "production"
         ]
-      : workspace.id === "content"
-        ? contentDefinitions[
-            selectedContent
-              ? contentLibrary(selectedContent)
-              : files[0]
-                ? contentLibrary(files[0] as (typeof contentFiles)[number])
-                : "production"
-          ]
-        : workspace.id === "finance"
-          ? financeDefinitions[
-              financeLibraries.find((l) =>
-                l.areas.includes(selectedFinance?.folder || "income"),
-              )!.id
-            ]
-          : workspace.id === "executive"
-            ? executiveDefinition("coordination")
-            : functionalConfigs.some((config) => config.id === workspace.id)
-              ? libraryForFile(
-                  functionalConfigs.find(
-                    (config) => config.id === workspace.id,
-                  )!,
-                  selectedFileId || "",
-                ) || functionalLibraries[workspace.id][0]
-              : undefined;
+      : config
+        ? libraryForFile(config, selectedFileId || "") ||
+          functionalLibraries[config.id][0]
+        : undefined;
   const availableLibraries =
-    workspace.id === "audience"
-      ? Object.values(audienceDefinitions)
-      : workspace.id === "content"
-        ? Object.values(contentDefinitions).filter((definition) =>
-            files.some(
-              (file) =>
-                contentLibrary(file as (typeof contentFiles)[number]) ===
-                definition.id,
-            ),
-          )
-        : workspace.id === "finance"
-          ? Object.values(financeDefinitions)
-          : functionalLibraries[workspace.id] ||
-            (defaultDefinition ? [defaultDefinition] : []);
+    workspace.id === "content"
+      ? Object.values(contentDefinitions).filter((definition) =>
+          files.some(
+            (file) =>
+              contentLibrary(file as (typeof contentFiles)[number]) ===
+              definition.id,
+          ),
+        )
+      : config
+        ? functionalLibraries[config.id]
+        : [];
   const definition =
     availableLibraries.find((library) => library.id === sharedLibraryId) ||
     defaultDefinition;
   const documentsForLibrary =
     definition && availableLibraries.length > 1
       ? documents.filter((document) => {
-          const audience = audienceFiles.find(
-            (file) => file.id === document.id,
+          const source = contentFiles.find((file) => file.id === document.id);
+          return (
+            (workspace.id === "content" && source
+              ? contentLibrary(source)
+              : config
+                ? libraryForFile(config, document.id)?.id
+                : undefined) === definition.id
           );
-          const content = contentFiles.find((file) => file.id === document.id);
-          const finance = financialFiles.find(
-            (file) => file.id === document.id,
-          );
-          const functionalConfig = functionalConfigs.find(
-            (config) => config.id === workspace.id,
-          );
-          const libraryId =
-            workspace.id === "audience" && audience
-              ? audienceLibrary(audience)
-              : workspace.id === "content" && content
-                ? contentLibrary(content)
-                : workspace.id === "finance" && finance
-                  ? financeLibraries.find((library) =>
-                      library.areas.includes(finance.folder),
-                    )?.id
-                  : functionalConfig
-                    ? libraryForFile(functionalConfig, document.id)?.id
-                    : undefined;
-          return libraryId === definition.id;
         })
       : documents;
   const visibleDocuments = search.trim()
-    ? documentsForLibrary.filter((f) =>
-        `${f.name} ${f.folder} ${f.contentType || ""} ${Object.values(f.metadata || {}).join(" ")}`
+    ? documentsForLibrary.filter((file) =>
+        `${file.name} ${file.folder} ${file.contentType || ""} ${Object.values(file.metadata || {}).join(" ")}`
           .toLowerCase()
           .includes(search.toLowerCase()),
       )
     : documentsForLibrary;
   function openSharePoint() {
-    const id = new URLSearchParams(location.search).get("file");
-    const source = files.find((f) => f.id === id) as
-      (OperationalFile & { area?: string }) | undefined;
-    if (workspace.id === "planning" && id) {
-      const document = planningFiles.find(
-        (f) => f.id === id && f.library !== "restricted",
-      );
-      if (document)
-        location.assign(
-          `${planningPath(document.library)}?${new URLSearchParams({ document: id, folder: document.folderPath })}`,
-        );
-      return;
-    }
-    let suffix = source?.area
-      ? `/${source.area}`
-      : definition
-        ? `/${definition.id}`
-        : "";
-    const functionalConfig = functionalConfigs.find(
-      (config) => config.id === workspace.id,
-    );
-    if (source && functionalConfig) {
-      const sourceLibrary = libraryForFile(functionalConfig, source.id);
-      if (sourceLibrary) suffix = `/${sourceLibrary.id}`;
-    }
-    if (source && workspace.id === "finance") suffix = `/${source.folder}`;
-    if (source && workspace.id === "audience") {
-      const audience = audienceFiles.find((f) => f.id === id);
-      if (audience) suffix = `/${audienceLibrary(audience)}`;
-    }
-    if (source && workspace.id === "content") {
-      const content = contentFiles.find((f) => f.id === id);
-      if (content) suffix = `/${contentLibrary(content)}`;
-    }
-    if (source && workspace.id === "executive") suffix = "/coordination";
     location.assign(
-      `${workspace.href}${suffix}${id ? `?${new URLSearchParams({ file: id, folder: documents.find((f) => f.id === id)?.folder || "" })}` : ""}`,
+      sharepointDestination(
+        workspace.id,
+        new URLSearchParams(location.search).get("file"),
+      ),
     );
   }
+  if (workspaceUnavailable) return <div role="status">Opening SharePoint…</div>;
   if (!department && workspace.id === "logistics")
     return <div role="status">Opening Teams…</div>;
   return (
@@ -455,22 +367,6 @@ export default function TeamsPreview() {
           <h2>Access denied</h2>
           <p>Security Engineering requires specific technical authorisation.</p>
         </section>
-      ) : workspace.id === "projects" ? (
-        <div className="m365-teams-files">
-          <h2>Project teams</h2>
-          {currentProjects
-            .filter((p) => canSeeProject(person, p.code))
-            .map((p) => (
-              <button
-                key={p.code}
-                onClick={() =>
-                  location.assign(`${projectHref(p)}/teams?staff=${person.id}`)
-                }
-              >
-                {projectTitle(p)}
-              </button>
-            ))}
-        </div>
       ) : tab === "Shared" ? (
         <div className="m365-teams-files">
           {availableLibraries.length > 1 && (
@@ -502,7 +398,7 @@ export default function TeamsPreview() {
             definition={definition}
             headingLevel={2}
             readOnly={
-              ["planning", "archives", "executive"].includes(workspace.id) ||
+              workspace.id === "planning" ||
               (workspace.id === "content" &&
                 (contentChannelReadOnly(channel) ||
                   definition?.id === "published"))
@@ -542,8 +438,6 @@ export default function TeamsPreview() {
       ) : (
         <CoordinationFeed
           key={`${workspace.id}:${channel}`}
-          workspaceId={workspace.id}
-          channel={channel}
           userName={person.name}
           query={search}
         />
@@ -551,63 +445,18 @@ export default function TeamsPreview() {
     </TeamsShell>
   );
 }
-const updates: Record<string, { author: string; text: string }> = {
-  planning: {
-    author: "Casey Blake",
-    text: "The annual planning guidance is ready for review. Please raise any questions about department submissions in this thread before Friday.",
-  },
-  services: {
-    author: "Jordan Lee",
-    text: "The office setup checklist is updated. Please add any remaining equipment or reception cover requirements before the next review.",
-  },
-  audience: {
-    author: "Taylor Brooks",
-    text: "The segmentation research brief is ready for the team’s comments. Please flag any recruitment or analysis dependencies here.",
-  },
-  employment: {
-    author: "Jamie Ellis",
-    text: "Please confirm the vacancy setup checklist and interview coordination guidance before the next hiring round. Candidate decisions and individual employee records stay in their protected areas.",
-  },
-  finance: {
-    author: "Sam Patel",
-    text: "Please add outstanding reconciliation questions before the close review. The working notes and checklist are in Shared.",
-  },
-  executive: {
-    author: "Robin Avery",
-    text: "Please confirm briefing contributions for the next coordination meeting. The approved schedule is in Shared.",
-  },
-  quality: {
-    author: "Jordan Lee",
-    text: "Please review the open corrective actions before the quarterly quality meeting and add any dependencies to the working notes.",
-  },
-  people: {
-    author: "Elena Rossi",
-    text: "The next onboarding session is ready for review. Please confirm the session owners and any remaining learning materials.",
-  },
-  legal: {
-    author: "Jordan Lee",
-    text: "Please add non-confidential coordination questions for the next review meeting. Restricted advice remains in the protected workspace.",
-  },
-  customer: {
-    author: "Jordan Lee",
-    text: "The monthly interaction review is ready. Please confirm follow-up owners before the relationship meeting.",
-  },
-  archives: {
-    author: "Jordan Lee",
-    text: "The next transfer review is scheduled. Please update the appraisal worksheet with any outstanding questions before the meeting.",
-  },
+const planningUpdate = {
+  author: "Casey Blake",
+  text: "The annual planning guidance is ready for review. Please raise any questions about department submissions in this thread before Friday.",
 };
 function CoordinationFeed({
-  workspaceId,
   userName,
   query,
 }: {
-  workspaceId: string;
-  channel: string;
   userName: string;
   query: string;
 }) {
-  const update = updates[workspaceId] || updates.services;
+  const update = planningUpdate;
   const [draft, setDraft] = useState("");
   const [posts, setPosts] = useState<string[]>([]);
   const [liked, setLiked] = useState(false);

@@ -426,7 +426,7 @@
 :root .m365-teams-tabs button[aria-selected="true"] {
   font-weight: 600;
 }
-.m365-teams-tabs button[aria-selected="true"]::after {
+.m365-teams-tabs button::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -435,6 +435,12 @@
   height: 3px;
   background: #5b5fc7;
   border-radius: 2px 2px 0 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 140ms ease-out;
+}
+.m365-teams-tabs button[aria-selected="true"]::after {
+  transform: scaleX(1);
 }
 .m365-teams-canvas {
   position: relative;

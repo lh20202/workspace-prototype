@@ -1,6 +1,9 @@
 import { workspaceById } from "./registry";
 import { enrichFunctionalFiles } from "./contentRealism";
+import { employmentProtectedSubjects } from "./employmentSubjects";
 import type { FunctionalConfig, WorkingFile } from "./types";
+// Explicit IDs preserve established links when a fixture moves to another owner.
+// The seed itself belongs only to its current business workspace.
 const seeds = {
   services: {
     areas: [
@@ -494,18 +497,12 @@ const seeds = {
       [
         "workforce",
         "Workforce & Organisation",
-        "Workforce planning, organisation design and authorised lifecycle coordination.",
+        "Workforce planning, organisation design and organisation-wide people programmes.",
       ],
       [
         "culture",
         "Leadership, Culture & Inclusion",
         "Leadership, inclusive working practices and culture development.",
-      ],
-      [
-        "hiring",
-        "Hiring & Talent",
-        "Vacancy and role design, selection methods, interview planning, offer coordination and career development.",
-        "greenhouse",
       ],
       [
         "learning",
@@ -538,123 +535,125 @@ const seeds = {
         "Wellbeing & Duty of Care",
         "Shared wellbeing programme and support-path coordination.",
       ],
-      [
-        "employment",
-        "Employment Administration",
-        "Operational employment handoffs are owned by Employment & Hiring Administration.",
-      ],
     ],
     items: [
       [
         "workforce",
         "Workforce planning coordination",
         "Review role needs with department contributors",
+        "PEOPLE-101",
       ],
       [
         "culture",
         "Inclusive leadership programme",
         "Review programme design and participation methods",
-      ],
-      [
-        "hiring",
-        "Vacancy and interview planning",
-        "Confirm role criteria and structured interview schedule",
-      ],
-      [
-        "hiring",
-        "Hiring-process improvement",
-        "Review selection handoffs; candidate assessment stays protected",
+        "PEOPLE-102",
       ],
       [
         "learning",
         "Manager capability pilot",
         "Review aggregate pilot feedback and next learning cycle",
+        "PEOPLE-105",
       ],
       [
         "learning",
         "New starter onboarding",
         "Coordinate learning and induction after authorised hiring handoff",
-      ],
-      [
-        "employment",
-        "Employment change process review",
-        "Review business process; individual changes remain protected",
+        "PEOPLE-106",
       ],
       [
         "communications",
         "Company All-Staff Meeting",
         "Prepare agenda, speakers, slides, Q&A, run of show and publication",
+        "PEOPLE-108",
       ],
       [
         "communications",
         "Intranet & Wiki Publishing",
         "Review page ownership, editorial queue and staff update",
+        "PEOPLE-109",
       ],
       [
         "communities",
         "Annual Summer Picnic",
         "Agree programme, participation and staff communications",
+        "PEOPLE-110",
       ],
       [
         "communities",
         "Annual Winter Social",
         "Review programme and community experience",
+        "PEOPLE-111",
       ],
       [
         "communities",
         "Company volunteering day",
         "Coordinate open participation and event communications",
+        "PEOPLE-112",
       ],
       [
         "analytics",
         "Aggregate workforce analysis",
         "Review synthetic aggregate questions with authorised analysts",
+        "PEOPLE-113",
       ],
       [
         "wellbeing",
         "Wellbeing events programme",
         "Coordinate open events and appropriate support routes",
+        "PEOPLE-114",
       ],
       [
         "frameworks",
         "Reward framework consultation",
         "Review organisation-wide principles and aggregate consultation themes",
+        "PEOPLE-115",
       ],
     ],
     files: [
-      ["workforce", "Workforce Planning — Contribution Schedule.xlsx"],
-      ["culture", "Leadership Programme — Design Review.docx"],
-      ["hiring", "Role & Selection Criteria.docx"],
-      ["hiring", "Interview Planning Schedule.xlsx"],
-      ["learning", "Manager Capability Programme — Pilot Feedback.xlsx"],
-      ["learning", "Onboarding Learning Plan.docx"],
-      ["employment", "Employment Process — Working Checklist.docx"],
-      ["communications", "Company All-Staff Meeting — Agenda.docx"],
-      ["communications", "All-Staff Speaker Coordination.xlsx"],
-      ["communications", "All-Staff Slides — Working Deck.pptx"],
-      ["communications", "All-Staff Questions & Follow-up.xlsx"],
-      ["communications", "All-Staff Run of Show.docx"],
-      ["communications", "Recording & Publication Checklist.docx"],
-      ["communications", "Intranet & Wiki — Publishing Calendar.xlsx"],
-      ["communities", "Summer Picnic — Programme.docx"],
-      ["communities", "Winter Social — Participation Plan.docx"],
-      ["analytics", "Aggregate People Questions.docx"],
-      ["wellbeing", "Wellbeing Events — Planning.docx"],
-      ["frameworks", "Reward Framework — Design Principles.docx"],
-      ["frameworks", "Employment Framework — Consultation Plan.xlsx"],
+      [
+        "workforce",
+        "Workforce Planning — Contribution Schedule.xlsx",
+        "people-F1",
+      ],
+      ["culture", "Leadership Programme — Design Review.docx", "people-F2"],
+      [
+        "learning",
+        "Manager Capability Programme — Pilot Feedback.xlsx",
+        "people-F5",
+      ],
+      ["learning", "Onboarding Learning Plan.docx", "people-F6"],
+      [
+        "communications",
+        "Company All-Staff Meeting — Agenda.docx",
+        "people-F8",
+      ],
+      ["communications", "All-Staff Speaker Coordination.xlsx", "people-F9"],
+      ["communications", "All-Staff Slides — Working Deck.pptx", "people-F10"],
+      ["communications", "All-Staff Questions & Follow-up.xlsx", "people-F11"],
+      ["communications", "All-Staff Run of Show.docx", "people-F12"],
+      [
+        "communications",
+        "Recording & Publication Checklist.docx",
+        "people-F13",
+      ],
+      [
+        "communications",
+        "Intranet & Wiki — Publishing Calendar.xlsx",
+        "people-F14",
+      ],
+      ["communities", "Summer Picnic — Programme.docx", "people-F15"],
+      ["communities", "Winter Social — Participation Plan.docx", "people-F16"],
+      ["analytics", "Aggregate People Questions.docx", "people-F17"],
+      ["wellbeing", "Wellbeing Events — Planning.docx", "people-F18"],
+      ["frameworks", "Reward Framework — Design Principles.docx", "people-F19"],
+      [
+        "frameworks",
+        "Employment Framework — Consultation Plan.xlsx",
+        "people-F20",
+      ],
     ],
     protected: [
-      ["candidate-applications", "Candidate Applications", "hiring", false],
-      ["candidate-assessments", "Candidate Assessments", "hiring", false],
-      ["references", "Candidate References", "hiring", false],
-      ["offers", "Offer Decisions", "hiring", false],
-      ["placement", "Health / Placement Circumstances", "hiring", true],
-      ["employee-records", "Employee Records & Contracts", "protected", true],
-      ["employment-changes", "Employment Changes", "protected", true],
-      ["compensation", "Individual Compensation", "protected", true],
-      ["employee-relations", "Employee Relations Cases", "protected", true],
-      ["complaints", "Complaints & Investigations", "protected", true],
-      ["welfare", "Welfare & Safeguarding Cases", "protected", true],
       [
         "network-membership",
         "Staff Network Membership & Private Channels",
@@ -662,14 +661,7 @@ const seeds = {
         true,
       ],
     ],
-    tools: [
-      [
-        "greenhouse",
-        "Greenhouse Recruiting",
-        "Authoritative candidate workflow; authorised users only",
-      ],
-      ["staffbase", "Staffbase", "Internal communications publishing"],
-    ],
+    tools: [["staffbase", "Staffbase", "Internal communications publishing"]],
   },
   employment: {
     areas: [
@@ -708,6 +700,24 @@ const seeds = {
         "Employment-change handoff review",
         "Check the authorisation sequence and Workday process responsibilities",
       ],
+      [
+        "hiring",
+        "Vacancy and interview planning",
+        "Confirm role criteria and structured interview schedule",
+        "PEOPLE-103",
+      ],
+      [
+        "hiring",
+        "Hiring-process improvement",
+        "Review selection handoffs; candidate assessment stays protected",
+        "PEOPLE-104",
+      ],
+      [
+        "employment",
+        "Employment change process review",
+        "Review business process; individual changes remain protected",
+        "PEOPLE-107",
+      ],
     ],
     files: [
       ["hiring", "Vacancy Setup — Approval Checklist.docx"],
@@ -715,27 +725,25 @@ const seeds = {
       ["inputs", "Payroll Input — Control Checklist.docx"],
       ["inputs", "Benefits Input — Handoff Procedure.docx"],
       ["employment", "Leaver Process — System Handoff.docx"],
-    ],
-    protected: [
+      ["hiring", "Role & Selection Criteria.docx", "people-F3"],
+      ["hiring", "Interview Planning Schedule.xlsx", "people-F4"],
       [
-        "payroll-inputs",
-        "Individual Payroll & Benefits Inputs",
-        "protected",
-        true,
+        "employment",
+        "Employment Process — Working Checklist.docx",
+        "people-F7",
       ],
-      [
-        "absence-administration",
-        "Individual Absence Administration",
-        "protected",
-        true,
-      ],
-      ["employee-master-data", "Employee Master Data", "protected", true],
     ],
+    protected: employmentProtectedSubjects,
     tools: [
       [
         "workday",
         "Workday HCM",
         "Authoritative employment and personnel records, employment changes, payroll and benefits inputs. Authorised users only; SharePoint contains shared coordination methods.",
+      ],
+      [
+        "greenhouse",
+        "Greenhouse Recruiting",
+        "Authoritative candidate workflow; authorised users only",
       ],
     ],
   },
@@ -985,7 +993,7 @@ const seeds = {
     ],
   },
 };
-const initialConfigs: FunctionalConfig[] = Object.entries(seeds).map(
+export const functionalConfigs: FunctionalConfig[] = Object.entries(seeds).map(
   ([id, s]) => ({
     id,
     areas: s.areas.map(([id, name, summary, tool]) => ({
@@ -994,8 +1002,8 @@ const initialConfigs: FunctionalConfig[] = Object.entries(seeds).map(
       summary,
       tool,
     })),
-    items: s.items.map(([area, name, nextAction], i) => ({
-      id: `${id.toUpperCase()}-${101 + i}`,
+    items: s.items.map(([area, name, nextAction, stableId], i) => ({
+      id: stableId || `${id.toUpperCase()}-${101 + i}`,
       area,
       name,
       nextAction,
@@ -1026,9 +1034,9 @@ const initialConfigs: FunctionalConfig[] = Object.entries(seeds).map(
     files: enrichFunctionalFiles(
       id,
       s.files.map(
-        ([area, name], i) =>
+        ([area, name, stableId], i) =>
           ({
-            id: `${id}-F${i + 1}`,
+            id: stableId || `${id}-F${i + 1}`,
             area,
             name,
             folder: area,
@@ -1057,57 +1065,6 @@ const initialConfigs: FunctionalConfig[] = Object.entries(seeds).map(
     })),
     tools: s.tools.map(([id, name, purpose]) => ({ id, name, purpose })),
   }),
-);
-// Keep the original file objects/IDs when correcting the business owner. Older
-// links can therefore resolve the same document in its new owning workspace.
-const initialPeople = initialConfigs.find((config) => config.id === "people")!;
-const administrationAreas = new Set(["hiring", "employment"]);
-const movedSubjects = initialPeople.protected.filter(
-  (subject) => subject.id !== "network-membership",
-);
-export const functionalConfigs: FunctionalConfig[] = initialConfigs.map(
-  (config) => {
-    if (config.id === "people")
-      return {
-        ...config,
-        areas: config.areas.filter((area) => !administrationAreas.has(area.id)),
-        items: config.items.filter(
-          (item) => !administrationAreas.has(item.area),
-        ),
-        files: config.files.filter(
-          (file) => !administrationAreas.has(file.area),
-        ),
-        protected: config.protected.filter(
-          (subject) => subject.id === "network-membership",
-        ),
-        tools: config.tools.filter((tool) => tool.id !== "greenhouse"),
-      };
-    if (config.id === "employment")
-      return {
-        ...config,
-        items: [
-          ...config.items,
-          ...initialPeople.items
-            .filter((item) => administrationAreas.has(item.area))
-            .map((item) => ({ ...item, owner: "Employment Operations" })),
-        ],
-        files: [
-          ...config.files,
-          ...initialPeople.files.filter((file) =>
-            administrationAreas.has(file.area),
-          ),
-        ],
-        protected: [
-          ...config.protected,
-          ...movedSubjects.map((subject) => ({ ...subject, strict: true })),
-        ],
-        tools: [
-          ...config.tools,
-          ...initialPeople.tools.filter((tool) => tool.id === "greenhouse"),
-        ],
-      };
-    return config;
-  },
 );
 export const configById = new Map(functionalConfigs.map((c) => [c.id, c]));
 export const filesForWorkspace = (id: string) =>

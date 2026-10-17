@@ -5,7 +5,7 @@
   min-width: 0;
 }
 .teams-conversation {
-  max-width: 920px;
+  max-width: 880px;
   margin-inline: auto;
 }
 .teams-conversation .teams-post {
@@ -90,9 +90,10 @@
   line-height: 20px;
   margin: 0 0 8px;
 }
+/* Keep the same post frame and text alignment for every pet conversation. */
 .teams-conversation .teams-post.daisy-thread {
-  max-width: 720px;
-  padding-top: 8px;
+  max-width: none;
+  padding: 16px 20px;
 }
 .teams-conversation .daisy-thread .post-photo {
   max-height: clamp(90px, 16vh, 140px);
@@ -147,11 +148,6 @@
   }
 }
 
-/* Keep the same post frame and text alignment for every pet conversation. */
-.teams-conversation .teams-post.daisy-thread {
-  max-width: none;
-  padding: 16px 20px;
-}
 .teams-conversation .teams-post.daisy-thread > p {
   margin: 0 0 12px 42px;
 }

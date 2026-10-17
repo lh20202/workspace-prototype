@@ -62,6 +62,61 @@ body,
   line-height: 24px;
 }
 
+:root .home-aside[aria-label="Planning shortcuts"] h3,
+:root #audience-main > .library-heading + .service-section > h3 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+/* Keep Home sections close enough to scan on larger desktop displays. */
+:root .app-shell .home-layout {
+  max-width: 1204px;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 32px;
+}
+
+:root .app-shell .home-layout .recent-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:root .app-shell .home-layout .recent-date {
+  flex-shrink: 0;
+}
+
+:root .functional-work-row:hover,
+:root .content-room-production > a:hover,
+:root .content-room-team-links > a:hover,
+:root .functional-home-handoffs > a:hover {
+  background: #f7f9fa;
+}
+
+:root .functional-work-row:active,
+:root .content-room-production > a:active,
+:root .content-room-team-links > a:active,
+:root .functional-home-handoffs > a:active {
+  background: #edf2f4;
+}
+
+:root .functional-home-layout .functional-recent-file {
+  min-height: 56px;
+}
+
+:root .functional-breadcrumb {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+:root .app-shell .command-bar .fui-Button {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+:root .app-shell .command-bar > div:first-child > .fui-Button:first-child,
+:root .sp-library-commandbar .fui-Button:first-child {
+  font-weight: 500;
+}
+
 :root
   :is(.finance-table, .project-table, .functional-register, .sp-file-table) {
   font-variant-numeric: tabular-nums;
@@ -69,7 +124,7 @@ body,
 
 /* The directory is a working index: one icon, one name, one quiet action cue. */
 :root .intranet-directory .directory-nav {
-  padding: 8px 28px;
+  padding: 8px 32px;
   gap: 24px;
 }
 
@@ -80,8 +135,8 @@ body,
 }
 
 :root .intranet-directory .directory-main:has(.directory-content) {
-  max-width: 1560px;
-  padding: 24px 28px 112px;
+  max-width: 1480px;
+  padding: 24px 32px 112px;
 }
 
 :root .intranet-directory .architecture-preview-label {
@@ -129,7 +184,7 @@ body,
 
 :root .intranet-directory .directory-content {
   grid-template-columns: minmax(0, 1fr) 248px;
-  gap: 28px;
+  gap: 32px;
 }
 
 :root .intranet-directory .directory-content .directory-grid {
@@ -160,7 +215,7 @@ body,
   margin: 0;
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.1px;
   overflow-wrap: normal;
 }
@@ -201,6 +256,11 @@ body,
   box-shadow: none;
 }
 
+:root .intranet-directory .directory-content .directory-tile:active {
+  background: #edf4f6;
+  border-color: #708e99;
+}
+
 :root .intranet-directory .directory-tile:hover .directory-open {
   color: #006c83;
 }
@@ -229,12 +289,23 @@ body,
 :root .intranet-directory .department-quick-link {
   padding: 12px 0;
   gap: 10px;
+  border-radius: 2px;
 }
 
 :root .intranet-directory .department-quick-link > span {
   display: block;
   font-size: 14px;
   line-height: 20px;
+  font-weight: 500;
+}
+
+:root .intranet-directory .department-quick-link:hover {
+  color: #454394;
+  background: #f8f8fc;
+}
+
+:root .intranet-directory .department-quick-link:active {
+  background: #efeff7;
 }
 
 :root .intranet-directory .department-quick-link small {
@@ -253,7 +324,7 @@ body,
 
 /* A persistent utility, kept visually lighter than the directory itself. */
 :root .intranet-directory .directory-teams {
-  padding: 12px 28px;
+  padding: 12px 32px;
   gap: 12px;
   background: #fafafe;
   border-top: 1px solid #e3e2ed;
@@ -325,6 +396,13 @@ body,
   :root .intranet-directory .directory-teams label {
     display: grid;
     gap: 4px;
+  }
+}
+
+@media (max-width: 950px) {
+  :root .app-shell .home-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
   }
 }
 
