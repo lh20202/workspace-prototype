@@ -165,11 +165,6 @@ export default function Directory() {
                             {orgCentralGroups.map((group) => (
                               <WorkspaceGroup
                                 key={group.label}
-                                label={
-                                  group.label === "Direction & assurance"
-                                    ? undefined
-                                    : group.label
-                                }
                                 ids={group.ids}
                               />
                             ))}
