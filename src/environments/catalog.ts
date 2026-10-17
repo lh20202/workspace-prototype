@@ -73,6 +73,15 @@ export const adminPlatforms: AdminPlatform[] = [
     theme: "teal",
   },
   {
+    id: "metriva",
+    name: "Metriva",
+    logo: "/images/admin-logins/metriva.svg",
+    category: "Data analytics & reporting",
+    purpose: "Explore data, monitor performance and build analytical reports.",
+    hubs: ["infrastructure"],
+    theme: "navy",
+  },
+  {
     id: "peopleharbour",
     name: "PeopleHarbour",
     logo: "/images/admin-logins/peopleharbour.svg",

@@ -31,6 +31,7 @@ export const germanExternalEnvironments: Record<string, string> = {
   "IT & service support": "IT- und Servicesupport",
   "Invoice & document workflow": "Rechnungs- und Dokumentenprozesse",
   "Project management": "Projektmanagement",
+  "Data analytics & reporting": "Datenanalyse & Berichtswesen",
   "HR & people administration": "Personalverwaltung",
   "Financial administration": "Finanzverwaltung",
   "Create and edit production imagery and visual assets.":
@@ -45,6 +46,8 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Dokumente und Rechnungen zur Prüfung und Freigabe weiterleiten.",
   "Coordinate project tasks, milestones and delivery.":
     "Projektaufgaben, Meilensteine und Umsetzung koordinieren.",
+  "Explore data, monitor performance and build analytical reports.":
+    "Daten untersuchen, Kennzahlen verfolgen und Analyseberichte erstellen.",
   "Administer employee records and recruitment processes.":
     "Personalakten und Bewerbungsprozesse verwalten.",
   "Manage accounting, financial planning and treasury records.":

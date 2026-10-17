@@ -32,7 +32,7 @@ describe("canonical environment and vendor identities", () => {
     vi.stubGlobal("location", new URL("https://example.test/architecture"));
     const counts = [
       ["sales-marketing", 3],
-      ["infrastructure", 3],
+      ["infrastructure", 4],
       ["personnel", 1],
       ["finance", 2],
     ] as const;
@@ -51,8 +51,8 @@ describe("canonical environment and vendor identities", () => {
         expect(html).toContain(system.name);
       }
     }
-    expect(adminPlatforms).toHaveLength(8);
-    expect(new Set(adminPlatforms.map(({ id }) => id)).size).toBe(8);
+    expect(adminPlatforms).toHaveLength(9);
+    expect(new Set(adminPlatforms.map(({ id }) => id)).size).toBe(9);
   });
 
   it("reuses exactly one CRM identity across Sales, finance and customer references", () => {
@@ -80,7 +80,7 @@ describe("canonical environment and vendor identities", () => {
     const logos = adminPlatforms.map((system) =>
       readFileSync(`public${system.logo}`, "utf8"),
     );
-    expect(new Set(logos).size).toBe(8);
+    expect(new Set(logos).size).toBe(9);
     for (const logo of logos) {
       expect(logo).toContain("linearGradient");
       expect(logo).toContain("feDropShadow");
