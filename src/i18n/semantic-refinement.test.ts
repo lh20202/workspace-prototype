@@ -13,7 +13,7 @@ describe("final German semantic interpretation", () => {
       "Purse Strings": "Geldströme",
       "Org Central": "Zentrale Funktionen",
       "Income & Booking": "Einnahmen & Verbuchung",
-      "Admin logins": "Admin-Zugänge",
+      Tools: "Tools",
       "Company Archives": "Unternehmensarchiv",
       "Personnel Admin": "Personalverwaltung",
       "Purchasing & Suppliers": "Einkauf & Lieferanten",

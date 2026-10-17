@@ -16,7 +16,7 @@ export default function AdminLogins({ hubId }: { hubId: AdminHubId }) {
       className="directory-admin-logins"
       aria-labelledby={`admin-logins-${hubId}`}
     >
-      <h3 id={`admin-logins-${hubId}`}>Admin logins</h3>
+      <h3 id={`admin-logins-${hubId}`}>Tools</h3>
       <div className="directory-admin-list">
         {entries.map((entry) => (
           <StaffLink

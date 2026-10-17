@@ -8,7 +8,7 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Entdecken Sie alle Arbeitsbereiche und Wikis des Unternehmens.",
   "No company data was used to create this demo site.":
     "Für diese Demoseite wurden keine Unternehmensdaten verwendet.",
-  "Admin logins": "Admin-Zugänge",
+  Tools: "Tools",
   "Knowledge & external environments": "Wissen und externe Angebote",
   "External environments": "Externe Angebote",
   "International Taskforce Portal": "Portal der internationalen Taskforce",

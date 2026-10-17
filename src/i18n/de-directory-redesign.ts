@@ -9,7 +9,7 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Planning & Reporting": "Planung & Berichterstattung",
   Treasury: "Liquiditätsmanagement",
   "Open my Teams": "Meine Teams öffnen",
-  "Admin logins": "Systemzugänge",
+  Tools: "Tools",
   "IT & service support": "IT- und Servicesupport",
   "Service requests": "Serviceanfragen",
   "Account setup": "Kontoeinrichtung",
