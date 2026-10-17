@@ -1,6 +1,6 @@
 /** Staff-facing explanations remain separate from the simulated product. */
 export const creationExplanation =
-  "This demo was built with AI-assisted coding. The AI was given generic descriptions of how a typical organisation works and asked to create fictional files, conversations and workflows that feel realistic. No company data was used, and nothing is connected to live Microsoft 365 or business systems.";
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.";
 
 export const workspaceFAQQuestions = [
   {

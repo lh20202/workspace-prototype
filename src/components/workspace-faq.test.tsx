@@ -49,7 +49,9 @@ describe("shared staff-facing Workspace FAQ", () => {
       /Graph|RSC|application permissions/,
     );
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
-    expect(creationExplanation).toContain("how a typical organisation works");
+    expect(creationExplanation).toBe(
+      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.",
+    );
   });
   it("links to a real authorised human correction thread instead of a separate demo", () => {
     const url = new URL(workspaceFAQExampleHref, "https://example.test");
