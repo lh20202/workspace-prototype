@@ -89,7 +89,7 @@ export default function Directory() {
             width="40"
             height="32"
           />
-          <strong>Our workplace</strong>
+          <strong>Generic Corp GmbH</strong>
           {["Home", "News", "Our organisation", "Tools & support"].map((x) => (
             <button type="button" key={x} disabled>
               {x}

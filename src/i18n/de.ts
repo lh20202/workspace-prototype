@@ -387,7 +387,7 @@ export const germanMessages: Record<string, string> = {
   "Selected response lead": "Ausgewählte Einsatzleitung",
   "Response preview": "Krisenreaktion in der Vorschau",
   "Leave response": "Krisenreaktion verlassen",
-  "Our workplace": "Unser Arbeitsplatz",
+  "Generic Corp GmbH": "Musterfirma",
   "Our organisation": "Unsere Organisation",
   News: "Nachrichten",
   "Tools & support": "Tools und Unterstützung",
