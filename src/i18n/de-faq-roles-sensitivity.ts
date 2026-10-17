@@ -5,8 +5,8 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
   "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
     "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet. Die Demo ist weder mit Microsoft 365 noch mit anderen produktiven Geschäftssystemen verbunden.",
   "Workspace FAQ": "Häufige Fragen zu Arbeitsbereichen",
-  "Where do personal drives such as OneDrive fit in?":
-    "Welche Rolle spielen persönliche Speicherbereiche wie OneDrive?",
+  "Where do personal drives fit in?":
+    "Welche Rolle spielen persönliche Speicherbereiche?",
   "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.":
     "Persönliche Speicherbereiche gehören nicht zu dem hier gezeigten Modell für die gemeinsame Arbeit. Gemeinsam genutzte Geschäftsdokumente liegen in Arbeitsbereichen, damit die zuständigen Personen dieselbe Fassung finden, darauf zugreifen und sie gemeinsam pflegen können.",
   "What if someone shares a personal drive file anyway?":

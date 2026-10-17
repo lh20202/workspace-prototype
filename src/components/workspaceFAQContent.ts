@@ -4,7 +4,7 @@ export const creationExplanation =
 
 export const workspaceFAQQuestions = [
   {
-    question: "Where do personal drives such as OneDrive fit in?",
+    question: "Where do personal drives fit in?",
     answer:
       "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.",
   },
