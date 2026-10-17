@@ -160,6 +160,9 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px 14px;
 }
+:root .architecture-poc-page .directory-knowledge > a:only-child {
+  grid-column: 1 / -1;
+}
 :root .architecture-poc-page .directory-hub .directory-admin-logins {
   margin-top: 10px;
   padding-top: 8px;
