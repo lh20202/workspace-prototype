@@ -259,10 +259,18 @@ body,
 :root .intranet-directory .directory-content .directory-tile:active {
   background: #edf4f6;
   border-color: #708e99;
+  /* A press acknowledges immediately; release uses the existing gentle settle. */
+  transition-duration: 0s;
 }
 
 :root .intranet-directory .directory-tile:hover .directory-open {
   color: #006c83;
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  :root .intranet-directory .directory-tile .directory-open {
+    transition: color var(--workspace-fast) ease;
+  }
 }
 
 :root .intranet-directory .directory-content .directory-tile:focus-visible {

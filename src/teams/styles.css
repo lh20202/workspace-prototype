@@ -613,6 +613,20 @@
 :root .m365-teams-composer button[type="submit"] {
   color: #5b5fc7;
 }
+:root .m365-teams-composer button:disabled {
+  cursor: default;
+}
+:root .m365-teams-composer button:disabled:is(:hover, :active) {
+  background: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .m365-teams-search,
+  .m365-teams-composer {
+    transition:
+      border-color 120ms ease-out,
+      box-shadow 120ms ease-out;
+  }
+}
 .m365-teams-composer.is-expanded {
   flex-wrap: wrap;
 }

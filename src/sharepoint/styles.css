@@ -265,6 +265,21 @@
 .sp-library-table .sp-library-actions .fui-Button[aria-expanded="true"] {
   opacity: 1;
 }
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .sp-library-table .sp-library-actions .fui-Button {
+    transition:
+      background-color var(--workspace-fast) ease,
+      border-color var(--workspace-fast) ease,
+      box-shadow var(--workspace-fast) ease,
+      color var(--workspace-fast) ease,
+      opacity var(--sp-action-reveal-duration, 110ms) ease-out;
+  }
+  .sp-library-table tr:focus-within .sp-library-actions .fui-Button,
+  .sp-library-table .sp-library-row-selected .sp-library-actions .fui-Button,
+  .sp-library-table .sp-library-actions .fui-Button[aria-expanded="true"] {
+    --sp-action-reveal-duration: 0ms;
+  }
+}
 @media (hover: none) {
   .sp-library-table .sp-library-actions .fui-Button {
     opacity: 1;
