@@ -79,6 +79,13 @@
 :root .prototype-launcher .launcher-choices {
   border-top: 1px solid #deddda;
 }
+:root .prototype-launcher .launcher-development-heading {
+  margin: 28px 0 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #616161;
+}
 :root .prototype-launcher .launcher-choice {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr) 24px;
@@ -109,6 +116,7 @@
 }
 :root .prototype-launcher .launcher-complete-choice {
   position: relative;
+  border-top: 1px solid #deddda;
 }
 :root .prototype-launcher .launcher-complete-link {
   color: inherit;

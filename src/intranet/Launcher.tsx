@@ -101,28 +101,29 @@ export default function Launcher() {
               <ArrowRight24Regular aria-hidden="true" />
             </a>
           ))}
-          <article className="launcher-choice launcher-complete-choice">
-            <Organization24Regular aria-hidden="true" />
-            <div>
-              <div className="launcher-choice-title">
-                <h3>
-                  <a
-                    href={withExplicitStaff("/architecture")}
-                    className="launcher-complete-link"
-                    onClick={markWelcomeEntry}
-                  >
-                    Explore all workspaces &amp; wikis
-                  </a>
-                </h3>
-                <BetaBadge />
-              </div>
-              <span className="launcher-action">
-                Browse all company workspaces and wikis.
-              </span>
-            </div>
-            <ArrowRight24Regular aria-hidden="true" />
-          </article>
         </div>
+        <h2 className="launcher-development-heading">In development</h2>
+        <article className="launcher-choice launcher-complete-choice">
+          <Organization24Regular aria-hidden="true" />
+          <div>
+            <div className="launcher-choice-title">
+              <h3>
+                <a
+                  href={withExplicitStaff("/architecture")}
+                  className="launcher-complete-link"
+                  onClick={markWelcomeEntry}
+                >
+                  Explore all workspaces &amp; wikis
+                </a>
+              </h3>
+              <BetaBadge />
+            </div>
+            <span className="launcher-action">
+              Browse all company workspaces and wikis.
+            </span>
+          </div>
+          <ArrowRight24Regular aria-hidden="true" />
+        </article>
       </div>
     </main>
   );
