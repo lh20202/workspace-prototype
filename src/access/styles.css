@@ -24,7 +24,8 @@
   font-size: 14px;
   line-height: 22px;
 }
-.access-preview-role button {
+/* Keep this demo action prominent inside shells with broad button resets. */
+:root .access-boundary-main .access-preview-role button {
   min-height: 44px;
   max-width: 100%;
   padding: 10px 18px;
@@ -39,14 +40,14 @@
   text-align: left;
   cursor: pointer;
 }
-.access-preview-role button:hover {
+:root .access-boundary-main .access-preview-role button:hover {
   border-color: #0f548c;
   background: #0f548c;
 }
-.access-preview-role button:active {
+:root .access-boundary-main .access-preview-role button:active {
   background: #0c3b5e;
 }
-.access-preview-role button:focus-visible {
+:root .access-boundary-main .access-preview-role button:focus-visible {
   outline: 2px solid #0c3b5e;
   outline-offset: 3px;
   border-radius: 2px;
