@@ -10,12 +10,12 @@ import { sensitivityLabels } from "../sharepoint/sensitivity";
 const german = (source: string) => translateText(source, "de");
 
 describe("final staff-facing German interpretation", () => {
-  it("explains the demo limits", () => {
+  it("explains the idea in plain language and preserves the separate creation note", () => {
     expect(german(proofOfConceptInfoText)).toContain(
-      "keine echten Dateien des Unternehmens",
+      "eine Idee ausprobieren",
     );
-    expect(german(proofOfConceptInfoText)).toContain(
-      "weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen",
+    expect(german(proofOfConceptInfoText)).not.toMatch(
+      /Migration|Zugriffsregelungen/i,
     );
     expect(german(creationExplanation)).toContain(
       "keine Verbindung zu Tools oder Systemen des Unternehmens",

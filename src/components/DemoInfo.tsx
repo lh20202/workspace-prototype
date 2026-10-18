@@ -8,7 +8,7 @@ import { Info16Regular } from "@fluentui/react-icons";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
-  "These examples use demonstration content, not real files from the company. They do not represent completed migrations or confirmed access arrangements.";
+  "A proof of concept is a simple way to try out an idea and see whether it works. It lets people explore, ask questions and suggest improvements before anything is final.";
 export const roleAccessInfoText =
   "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.";
 export const demoUserInfoText =

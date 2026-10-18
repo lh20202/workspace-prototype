@@ -47,13 +47,11 @@ describe("small demo information controls", () => {
       expect(translateText(text, "de")).not.toBe(text);
       expect(translateText(text, "en")).toBe(text);
     }
-    expect(proofOfConceptInfoText).toContain("not real files from the company");
+    expect(proofOfConceptInfoText).toContain("try out an idea");
     expect(proofOfConceptInfoText).not.toMatch(
-      /prototype|product-development/i,
+      /prototype|product-development|migration|access arrangements/i,
     );
-    expect(proofOfConceptInfoText).toContain(
-      "do not represent completed migrations or confirmed access arrangements",
-    );
+    expect(proofOfConceptInfoText.match(/[.!?](?:\s|$)/g)).toHaveLength(2);
     expect(demoUserInfoText).toBe(
       "Explore the ordinary workspace experience. Restricted content still follows access rules.",
     );
