@@ -43,7 +43,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe("hub families retain one canonical owner for every environment", () => {
   it("defines the three hub families and keeps finance outside a multi-site hub", () => {
     expect(hubDefinitions.map((hub) => [hub.name, hub.workspaceIds])).toEqual([
-      ["Marketing & Sales", ["audience", "content", "logistics", "customer"]],
+      ["North", ["audience", "content", "logistics", "customer"]],
       [
         "Org Central",
         [

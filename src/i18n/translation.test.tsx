@@ -62,7 +62,7 @@ describe("English and German display language", () => {
   });
   it("translates hub headings and short workspace labels consistently", () => {
     const hubLabels = {
-      "Marketing & Sales": "Marketing & Vertrieb",
+      North: "Nord",
       "Org Central": "Zentrale Funktionen",
       Personnel: "Personal",
       "Research & Insight": "Forschung & Analyse",
