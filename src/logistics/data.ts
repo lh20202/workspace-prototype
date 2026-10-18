@@ -773,8 +773,14 @@ export interface Post {
   reply?: string;
   replyTime?: string;
   locationLink?: boolean;
-  pet?: string;
-  image?: { src: string; alt: string };
+  image?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    /** Visible photo area, in source pixels; keeps screenshot controls out of the chat. */
+    frame?: [number, number, number, number];
+  };
 }
 export const posts: Post[] = [
   {
@@ -915,16 +921,166 @@ export const posts: Post[] = [
     replyTime: "10:24",
     reply: "Alex Morgan: take me to your leader",
     fileIds: [],
-    image: { src: "/images/daisy.jpg", alt: "Daisy the cat" },
+    image: {
+      src: "/images/pets/daisy.jpg",
+      alt: "Daisy the cat",
+      width: 960,
+      height: 640,
+    },
   },
   {
     id: "post-miso",
     channel: "pets",
     author: "Maya Chen",
-    time: "Yesterday",
-    text: "This is Miso pretending not to sit on the keyboard.",
+    time: "10:05",
+    text: "Does Louis look more sophisticated with this bow tie?",
+    replyTime: "10:08",
+    reply: "Alex Morgan: He looks like he wants to discuss my mortgage.",
     fileIds: [],
-    pet: "🐱",
+    image: {
+      src: "/images/pets/louis.png",
+      alt: "Louis, a black and white Devon Rex cat wearing a checked bow tie",
+      width: 384,
+      height: 342,
+      frame: [0, 0, 384, 342],
+    },
+  },
+  {
+    id: "post-puppy",
+    channel: "pets",
+    author: "Sam Patel",
+    time: "17 October 2026, 15:30",
+    text: "A whole dachshund. In one hand.",
+    replyTime: "17 October 2026, 15:34",
+    reply: "Jamie Brooks: HALP. I can't. Too cute.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/dachshund.jpg",
+      alt: "A tiny black and tan dachshund puppy resting in a hand",
+      width: 441,
+      height: 960,
+      frame: [0, 129, 374, 633],
+    },
+  },
+  {
+    id: "post-goats",
+    channel: "pets",
+    author: "Jordan Lee",
+    time: "17 October 2026, 14:10",
+    text: "These aren't my pets. I'd like to point out that Pet photos is discriminatory towards those of us who don't own these goats, yet clearly had to post them here.",
+    replyTime: "17 October 2026, 14:14",
+    reply:
+      "Alex Morgan: Thank you for bringing this important information to our attention.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/goats.jpg",
+      alt: "A smiling man holding three baby goats",
+      width: 441,
+      height: 960,
+      frame: [0, 57, 374, 692],
+    },
+  },
+  {
+    id: "post-greyhound",
+    channel: "pets",
+    author: "Jamie Brooks",
+    time: "17 October 2026, 13:15",
+    text: "the devil walks among us",
+    replyTime: "17 October 2026, 13:18",
+    reply: "Maya Chen: And apparently sleeps on the good pillows.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/greyhound-glowing-eyes.jpg",
+      alt: "A black Italian greyhound on a bed with glowing blue eyes",
+      width: 441,
+      height: 960,
+      frame: [0, 131, 374, 628],
+    },
+  },
+  {
+    id: "post-pingu",
+    channel: "pets",
+    author: "Alex Morgan",
+    time: "16 October 2026, 16:10",
+    text: "Not a pet but still...",
+    replyTime: "16 October 2026, 16:12",
+    reply: "Sam Patel: the noot has spoken",
+    fileIds: [],
+    image: {
+      src: "/images/pets/hypotenoot.jpg",
+      alt: "Pingu meme: Chapter 8 — The Hypotenoot, with a right triangle over his beak. Pingu © Joker.",
+      width: 441,
+      height: 960,
+      frame: [0, 129, 441, 551],
+    },
+  },
+  {
+    id: "post-metaverse",
+    channel: "pets",
+    author: "Sam Patel",
+    time: "16 October 2026, 15:20",
+    text: "Focus on what you are naturally drawn to. Use that simply clue to cut through the noise and find your rhythm. The frequency is there...",
+    replyTime: "16 October 2026, 15:24",
+    reply: "Jordan Lee: I am naturally drawn to closing my laptop.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/metaverse.jpg",
+      alt: "A sphynx cat sitting in a meditation pose, wearing a chain and pendant",
+      width: 441,
+      height: 960,
+      frame: [0, 187, 441, 442],
+    },
+  },
+  {
+    id: "post-garden-cat",
+    channel: "pets",
+    author: "Maya Chen",
+    time: "16 October 2026, 14:05",
+    text: "The garden has a new head of security. References available on request.",
+    replyTime: "16 October 2026, 14:09",
+    reply: "Jamie Brooks: I've been refused entry to my own house.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/garden-cat.jpg",
+      alt: "A fluffy grey cat sitting on a garden path in front of a gate",
+      width: 441,
+      height: 960,
+      frame: [13, 220, 414, 553],
+    },
+  },
+  {
+    id: "post-judgement",
+    channel: "pets",
+    author: "Sam Patel",
+    time: "16 October 2026, 12:20",
+    text: "Performance review came back.",
+    replyTime: "16 October 2026, 12:23",
+    reply: "Alex Morgan: No notes. Just prolonged eye contact.",
+    fileIds: [],
+    image: {
+      src: "/images/pets/judgement.jpg",
+      alt: "A black and white cat beneath the caption: It’s not that she dislikes you, she just judges you and your life choices",
+      width: 441,
+      height: 960,
+      frame: [0, 141, 441, 689],
+    },
+  },
+  {
+    id: "post-serenade",
+    channel: "pets",
+    author: "Jordan Lee",
+    time: "16 October 2026, 11:10",
+    text: "Anyone know how to switch this mosquito to silent?",
+    replyTime: "16 October 2026, 11:13",
+    reply: "Jamie Brooks: Have you checked the battery in your dog?",
+    fileIds: [],
+    image: {
+      src: "/images/pets/greyhound-serenade.jpg",
+      alt: "A grey Italian greyhound on a bed beneath the caption: Help I’m being serenaded by a large mosquito",
+      width: 441,
+      height: 960,
+      frame: [0, 141, 374, 619],
+    },
   },
   {
     id: "post-learning",

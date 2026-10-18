@@ -23,6 +23,7 @@ import {
   workspaceTitle,
   type OperationalFile,
   type TaskState,
+  type Post,
 } from "./data";
 import { fileHref, filesForChannel } from "./query";
 import { rememberStaff } from "../intranet/catalog";
@@ -282,25 +283,7 @@ export default function TeamsView({
                 {p.title && <h3>{p.title}</h3>}
                 <p>{p.text}</p>
                 {p.image && (
-                  <img
-                    className="post-photo"
-                    src={p.image.src}
-                    alt={p.image.alt}
-                  />
-                )}
-                {p.pet && (
-                  <div
-                    className="pet-thumbnail"
-                    role="img"
-                    aria-label={
-                      p.pet === "🐶"
-                        ? "Illustrated fictional dog Pickle"
-                        : "Illustrated fictional cat Miso"
-                    }
-                  >
-                    {p.pet}
-                    <span>{p.pet === "🐶" ? "Pickle" : "Miso"}</span>
-                  </div>
+                  <PostPhoto image={p.image} first={p.id === "post-daisy"} />
                 )}
                 {p.fileIds.length > 0 && (
                   <div className="post-file-links">
@@ -558,6 +541,46 @@ function librariesName(id: string) {
       records: "Completed Campaign Records",
     } as Record<string, string>
   )[id];
+}
+
+function PostPhoto({
+  image,
+  first,
+}: {
+  image: NonNullable<Post["image"]>;
+  first: boolean;
+}) {
+  const picture = (
+    <img
+      className={image.frame ? undefined : "post-photo"}
+      src={image.src}
+      alt={image.alt}
+      width={image.width}
+      height={image.height}
+      loading={first ? "eager" : "lazy"}
+      fetchPriority={first ? "high" : undefined}
+      decoding="async"
+      style={
+        image.frame
+          ? {
+              width: `${(image.width / image.frame[2]) * 100}%`,
+              left: `${(-image.frame[0] / image.frame[2]) * 100}%`,
+              top: `${(-image.frame[1] / image.frame[3]) * 100}%`,
+            }
+          : undefined
+      }
+    />
+  );
+  if (!image.frame) return picture;
+  const ratio = image.frame[2] / image.frame[3];
+  return (
+    <div
+      className="post-photo-frame"
+      style={{ width: Math.min(300, 280 * ratio), aspectRatio: ratio }}
+    >
+      {picture}
+    </div>
+  );
 }
 
 function ThreadReply({

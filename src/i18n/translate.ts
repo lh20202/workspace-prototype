@@ -24,6 +24,7 @@ import { germanPlanningPersonnelRefinement } from "./de-planning-personnel-refin
 import { germanFinanceRefinement } from "./de-finance-refinement";
 import { germanFAQRolesSensitivity } from "./de-faq-roles-sensitivity";
 import { germanPlanningReporting } from "./de-planning-reporting";
+import { germanPetPhotos } from "./de-pet-photos";
 import { germanWorkspaceFAQ } from "./de-workspace-faq";
 import {
   germanAdministration,
@@ -62,6 +63,7 @@ const messages = {
   ...germanFAQRolesSensitivity,
   ...germanPlanningReporting,
   ...germanWorkspaceFAQ,
+  ...germanPetPhotos,
   ...germanAdministration,
   ...germanDiscoverability,
   ...germanAccessMatrix,

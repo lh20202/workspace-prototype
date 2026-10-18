@@ -165,8 +165,10 @@ describe("Daisy content", () => {
     const first = posts.find((p) => p.channel === "pets")!;
     expect(first.text).toBe("important mews coming in live");
     expect(first.image).toEqual({
-      src: "/images/daisy.jpg",
+      src: "/images/pets/daisy.jpg",
       alt: "Daisy the cat",
+      width: 960,
+      height: 640,
     });
   });
 });

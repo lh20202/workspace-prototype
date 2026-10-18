@@ -52,6 +52,20 @@
 .teams-conversation .post-photo {
   max-width: calc(100% - 42px);
 }
+.post-photo-frame {
+  position: relative;
+  overflow: hidden;
+  max-width: calc(100% - 42px);
+  margin: 0 0 12px 42px;
+  border-radius: 4px;
+  background: #f6f6f8;
+}
+.post-photo-frame img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}
 .teams-conversation .post-file-links button {
   padding: 8px 12px;
   font-size: 14px;
