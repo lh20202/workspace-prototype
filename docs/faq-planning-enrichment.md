@@ -12,7 +12,7 @@ Welcome now explains the early design stage and demonstration content. “What a
 
 ### Files & access
 
-- Is this replacing our existing sites, channels and K:Drive folders?
+- Is this replacing our existing sites, channels and folders on the shared drive?
 - Who can see my files?
 - Where do personal drives fit in?
 - What if someone shares a personal drive file anyway?

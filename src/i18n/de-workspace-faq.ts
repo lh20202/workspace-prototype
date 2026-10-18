@@ -16,8 +16,8 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet, und es besteht keine Verbindung zu Tools oder Systemen des Unternehmens.",
   "This fictional exchange illustrates one way colleagues could help each other. It does not represent an agreed support process.":
     "Dieser fiktive Austausch zeigt beispielhaft, wie sich Kolleginnen und Kollegen gegenseitig helfen könnten. Er stellt keinen vereinbarten Unterstützungsprozess dar.",
-  "Is this replacing our existing sites, channels and K:Drive folders?":
-    "Ersetzt das unsere bisherigen Websites, Kanäle und Ordner auf dem K:Drive?",
+  "Is this replacing our existing sites, channels and folders on the shared drive?":
+    "Ersetzt das unsere bisherigen Websites, Kanäle und Ordner auf dem gemeinsamen Laufwerk?",
   "Not immediately. The proposed approach is to organise shared information around the work the company carries out, rather than simply reproducing departmental folder structures. Existing locations will be assessed as part of the preparation and migration process. The future arrangements will be introduced in stages.":
     "Nicht unmittelbar. Der vorgeschlagene Ansatz richtet die gemeinsame Informationsablage an den Aufgaben des Unternehmens aus, statt einfach die Ordnerstrukturen der Abteilungen nachzubilden. Bestehende Ablageorte werden im Zuge der Vorbereitung und Migrationsplanung geprüft. Die künftigen Strukturen werden schrittweise eingeführt.",
   "Who can see my files?": "Wer kann auf meine Dateien zugreifen?",
@@ -57,8 +57,8 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Manche Informationen müssen aufbewahrt werden, andere können dauerhaft archiviert und wieder andere später gelöscht werden. Das Unternehmen entwickelt derzeit die Aufbewahrungsregeln und Verfahren, die den Umgang mit den verschiedenen Informationsarten bestimmen werden.",
   "What happens to files in our current shared drive?":
     "Was passiert mit den Dateien auf unserem bisherigen gemeinsamen Laufwerk?",
-  "The K:Drive and existing sites are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.":
-    "Das K:Drive und die bestehenden Websites werden analysiert, um festzustellen, was aufbewahrt, neu geordnet, migriert oder entfernt werden muss. Es wird keine sofortige Übertragung sämtlicher Inhalte in die neuen Arbeitsbereiche geben. Jede Migration erfordert Vorbereitung, vereinbarte Zielorte und geeignete Schutzmaßnahmen.",
+  "The shared drive and existing sites are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.":
+    "Das gemeinsame Laufwerk und die bestehenden Websites werden analysiert, um festzustellen, was aufbewahrt, neu geordnet, migriert oder entfernt werden muss. Es wird keine sofortige Übertragung sämtlicher Inhalte in die neuen Arbeitsbereiche geben. Jede Migration erfordert Vorbereitung, vereinbarte Zielorte und geeignete Schutzmaßnahmen.",
   "What happens to my existing links, bookmarks and synced folders?":
     "Was passiert mit meinen bisherigen Links, Lesezeichen und synchronisierten Ordnern?",
   "Some may need updating when information moves to a new location. The implications for existing links and synchronisation will need to be assessed as part of migration planning, with instructions provided before changes take place.":

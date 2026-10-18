@@ -8,7 +8,7 @@ An interactive React/TypeScript/Vite proof of concept for a SharePoint intranet,
 
 ## Run and validate
 
-All site content must remain anonymous. Refer to the organisation as **the company** (or the natural German equivalent), including when adapting supplied documents. Do not copy real organisation names into visible text, translations, metadata or public assets. The experience is technology agnostic: use sites, channels, libraries and personal drives instead of vendor product names or logos. Internal identifiers and routes remain stable. The production build runs a site-wide anonymity check before compilation.
+All site content must remain anonymous. Refer to the organisation as **the company** (or the natural German equivalent), including when adapting supplied documents. Do not copy real organisation names into visible text, translations, metadata or public assets. The experience is technology agnostic: use sites, channels, libraries and personal drives instead of vendor product names or logos. Drive terminology: use **P drive** only within the Archives workspace; elsewhere, use **the shared drive**, with the natural German equivalent. Internal identifiers and routes remain stable. The production build runs a site-wide anonymity check before compilation.
 
 Use Node 24 (Render uses 24.19.0).
 

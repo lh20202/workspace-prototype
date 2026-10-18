@@ -6,6 +6,8 @@ import { expect, it } from "vitest";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const organisationName =
   /\b(?:msf|medecins\s+sans\s+frontieres|(?:a|ae)rzte\s+ohne\s+grenzen)\b/i;
+const obsoleteDriveName =
+  /\bk[\s:‐‑–—-]*(?:drive|laufwerk)\b|\bk:\s*[\\/]|\blaufwerk\s+k\b/i;
 
 function filesUnder(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -14,7 +16,7 @@ function filesUnder(directory: string): string[] {
   });
 }
 
-it("keeps all production copy and public asset names anonymous", () => {
+it("keeps production copy and public assets anonymous and free of obsolete drive names", () => {
   const files = [
     ...filesUnder(join(root, "src")).filter(
       (path) => !/\.test\.[cm]?[jt]sx?$/.test(path),
@@ -34,7 +36,10 @@ it("keeps all production copy and public asset names anonymous", () => {
       .normalize("NFKD")
       .replace(/\p{M}/gu, "");
     return (
-      organisationName.test(text) || organisationName.test(relative(root, path))
+      organisationName.test(text) ||
+      organisationName.test(relative(root, path)) ||
+      obsoleteDriveName.test(text) ||
+      obsoleteDriveName.test(relative(root, path))
     );
   });
   expect(matches.map((path) => relative(root, path))).toEqual([]);

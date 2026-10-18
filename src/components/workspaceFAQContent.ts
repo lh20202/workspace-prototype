@@ -27,7 +27,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
       {
         id: "existing-locations",
         question:
-          "Is this replacing our existing sites, channels and K:Drive folders?",
+          "Is this replacing our existing sites, channels and folders on the shared drive?",
         answer:
           "Not immediately. The proposed approach is to organise shared information around the work the company carries out, rather than simply reproducing departmental folder structures. Existing locations will be assessed as part of the preparation and migration process. The future arrangements will be introduced in stages.",
       },
@@ -93,7 +93,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         id: "shared-drive-migration",
         question: "What happens to files in our current shared drive?",
         answer:
-          "The K:Drive and existing sites are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.",
+          "The shared drive and existing sites are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.",
       },
       {
         id: "existing-links",
