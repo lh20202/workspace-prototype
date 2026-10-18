@@ -10,7 +10,7 @@ import { wikiFigures } from "../wiki/WikiFigure";
 describe("final German semantic interpretation", () => {
   it("conveys organisational finance, accounting and access rather than literal English meanings", () => {
     const labels = {
-      "Purse Strings": "Geldströme",
+      South: "Süd",
       East: "Ost",
       "Income & Booking": "Einnahmen & Verbuchung",
       Tools: "Tools",
@@ -21,7 +21,7 @@ describe("final German semantic interpretation", () => {
     };
     for (const [source, expected] of Object.entries(labels))
       expect(translateText(source, "de")).toBe(expected);
-    expect(translateText("Purse Strings", "de")).not.toMatch(
+    expect(translateText("South", "de")).not.toMatch(
       /Geldbeutel|Finanzabteilung/,
     );
   });

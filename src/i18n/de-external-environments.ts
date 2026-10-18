@@ -77,7 +77,7 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Informationen und Koordination für internationale Mitarbeitende",
   "Linked environment; access is managed separately":
     "Verknüpftes Angebot; Zugriffsrechte werden separat verwaltet",
-  "Purse Strings": "Geldströme",
+  South: "Süd",
   East: "Ost",
   "Personnel Admin": "Personalverwaltung",
   "Income & Booking": "Einnahmen & Verbuchung",

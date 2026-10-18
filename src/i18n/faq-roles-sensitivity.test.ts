@@ -127,8 +127,8 @@ describe("final staff-facing German interpretation", () => {
       );
       expect(translateText(label, "en")).toBe(label);
     }
-    expect(german("Purse Strings")).toBe("Geldströme");
-    expect(german("Purse Strings")).not.toMatch(/Geldbeutel|Finanzabteilung/);
+    expect(german("South")).toBe("Süd");
+    expect(german("South")).not.toMatch(/Geldbeutel|Finanzabteilung/);
   });
 
   it("retains every reviewed phrase without changing English source copy", () => {

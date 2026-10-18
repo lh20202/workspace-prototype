@@ -18,7 +18,7 @@ describe("final external-environment German interpretation", () => {
     }
   });
   it("makes the external boundary and administrative nature clear without literal purse wording", () => {
-    expect(germanExternalEnvironments["Purse Strings"]).toBe("Geldströme");
+    expect(germanExternalEnvironments.South).toBe("Süd");
     expect(germanExternalEnvironments.Tools).toBe("Tools");
     expect(germanExternalEnvironments["Back to demo"]).toBe("Zurück zur Demo");
     expect(germanExternalEnvironments["COMING SOON"]).toBe("IN VORBEREITUNG");

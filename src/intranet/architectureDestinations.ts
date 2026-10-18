@@ -55,7 +55,7 @@ function destinationForEnvironment(
   return {
     id: environment.id,
     label:
-      environment.id === "finance" ? "Purse Strings" : environment.hubLabel,
+      environment.id === "finance" ? "South" : environment.hubLabel,
     href: environment.href,
     icon: environment.icon,
     hub: environment.hubId,

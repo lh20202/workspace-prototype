@@ -83,7 +83,7 @@ describe("English and German display language", () => {
       "Personnel Admin": "Personalverwaltung",
       "Workers' Union": "Arbeitnehmervertretung",
       "Welfare & Safeguarding": "Fürsorge & Schutz",
-      "Purse Strings": "Geldströme",
+      South: "Süd",
       "Frontline Crew Portal": "Frontline Crew Portal",
     };
     for (const [english, german] of Object.entries(hubLabels)) {

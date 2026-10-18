@@ -21,7 +21,7 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Personnel Admin": "Personaladministration",
   "Workers' Union": "Arbeitnehmervertretung",
   "Welfare & Safeguarding": "Fürsorge & Schutz",
-  "Purse Strings": "Geldströme",
+  South: "Süd",
   Workspaces: "Arbeitsbereiche",
   "Go to the Frontline Crew Portal for the information and tools used in day-to-day frontline work.":
     "Im Frontline Crew Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",

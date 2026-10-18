@@ -93,7 +93,7 @@ describe("task-oriented architecture destinations", () => {
       );
     }
     expect(architectureDestinationById.get("finance")).toMatchObject({
-      label: "Purse Strings",
+      label: "South",
       href: "/financial-operations",
       type: "workspace",
     });
