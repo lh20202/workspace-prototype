@@ -2,7 +2,7 @@
 export const germanSimplifiedNames: Record<string, string> = {
   North: "Nord",
   East: "Ost",
-  Personnel: "Personal",
+  West: "West",
   "Research & Insight": "Forschung & Analyse",
   "Creative Studio": "Kreativstudio",
   "Acquisition Logistics": "Akquiselogistik",

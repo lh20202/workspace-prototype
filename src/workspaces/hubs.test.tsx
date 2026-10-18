@@ -57,7 +57,7 @@ describe("hub families retain one canonical owner for every environment", () => 
           "archives",
         ],
       ],
-      ["Personnel", ["people", "employment", "welfare"]],
+      ["West", ["people", "employment", "welfare"]],
     ]);
     expect(architectureSections).toEqual([
       { type: "hub", id: "sales-marketing" },

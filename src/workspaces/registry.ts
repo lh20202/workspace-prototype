@@ -54,7 +54,7 @@ export const hubDefinitions: HubDefinition[] = [
   },
   {
     id: "personnel",
-    name: "Personnel",
+    name: "West",
     externalIds: ["taskforce"],
     icon: "personnel",
     description: "",
