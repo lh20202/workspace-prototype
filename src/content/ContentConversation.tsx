@@ -10,6 +10,7 @@ import {
 } from "./channels";
 import { studioPosts, type StudioPost } from "./conversations";
 import { matchesDisplayText } from "../i18n/search";
+import { peopleDirectory } from "../intranet/catalog";
 import "./styles.css";
 
 export default function ContentConversation({
@@ -71,7 +72,19 @@ export default function ContentConversation({
               <span className="m365-teams-avatar">{initials(post.author)}</span>
               <div>
                 <strong>{post.author}</strong>
-                <small>{post.time}</small>
+                <small>
+                  {context.kind === "topic" && (
+                    <>
+                      {
+                        peopleDirectory.find(
+                          (person) => person.name === post.author,
+                        )?.role
+                      }{" "}
+                      ·{" "}
+                    </>
+                  )}
+                  {post.time}
+                </small>
               </div>
             </div>
             <p data-no-translate={post.id.startsWith("local-") || undefined}>

@@ -105,7 +105,8 @@ describe("business and delegated site administration roles", () => {
       ["digital", "security"],
     ])
       expect(canAccessArea("elliot", workspace, area)).toBe(false);
-    expect(canAccessProject("elliot", "PRJ-2026-014")).toBe(false);
+    expect(canAccessProject("elliot", "PRJ-2026-014")).toBe(true);
+    expect(canAccessProject("elliot", "PRJ-2026-027")).toBe(false);
     expect(
       teamsGroups(resolveStaffPerson("elliot")).map((group) => group.id),
     ).toEqual(["company", "digital", "strategy-technology"]);
@@ -145,7 +146,7 @@ describe("business and delegated site administration roles", () => {
         { kind: "channel", workspaceId: "content", channelId: "editorial" },
         "maya",
       ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       hasAlternativePreviewAccess(
         { kind: "channel", workspaceId: "content", channelId: "media" },

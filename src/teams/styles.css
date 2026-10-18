@@ -762,3 +762,21 @@
   outline: 2px solid #7471b8;
   outline-offset: 3px;
 }
+.m365-teams-role-discovery {
+  margin: 20px 4px 12px;
+}
+.m365-teams-role-discovery .preview-role-prompt {
+  margin: 0;
+}
+.m365-teams-global-view {
+  display: block;
+  margin: 4px 12px 14px;
+  color: #414b8f;
+  font-size: 13px;
+  line-height: 20px;
+  text-underline-offset: 3px;
+}
+.m365-teams-global-view:focus-visible {
+  outline: 2px solid #414b8f;
+  outline-offset: 3px;
+}

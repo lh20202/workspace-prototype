@@ -4,6 +4,7 @@ import {
   canAccessDepartment,
   canAccessUnit,
   departmentPreviewFor,
+  previewRoleFor,
 } from "../access/policy";
 import { configById } from "../workspaces/config";
 import { functionalFileHref } from "../workspaces/siteArchitecture";
@@ -790,7 +791,11 @@ export function accessibleFiles(
   person: CoordinationPerson,
 ) {
   if (!canOpenDepartment(department, person)) return [];
-  if (departmentPreviewFor(person)) return [...department.library];
+  if (
+    departmentPreviewFor(person) &&
+    previewRoleFor(person)?.departmentId !== department.id
+  )
+    return [...department.library];
   return [
     ...department.library,
     ...department.units
@@ -818,7 +823,7 @@ export function departmentHref(
   departmentId: string,
   tab = "Posts",
 ) {
-  return `/teams?${new URLSearchParams({ staff: staffId, department: departmentCodes[departmentId] || departmentId, tab })}`;
+  return `/teams?${new URLSearchParams({ staff: staffId, department: departmentCodes[departmentId] || departmentId, context: `department:${departmentId}`, tab })}`;
 }
 
 const availabilityNames: Record<string, string> = {

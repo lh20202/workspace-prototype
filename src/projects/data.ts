@@ -1,3 +1,4 @@
+import { projectSeeds, historicalProjectSeeds } from "./accessClassification";
 import type { SensitivityLabel } from "../sharepoint/sensitivity";
 import type { LibraryDefinition, LibraryDocument } from "../sharepoint/library";
 import { resolveStaffPerson } from "../intranet/catalog";
@@ -22,97 +23,8 @@ export type Project = {
   archived?: string;
   period?: string;
 };
-const seeds = [
-  [
-    "014",
-    "Customer Platform Renewal",
-    "Renew customer platform capabilities and coordinate business acceptance.",
-    "Customer care",
-    "/digital-tech/web-crm",
-    "Delivery",
-    "Attention Needed",
-    "2027-03-31",
-    "Open Internal",
-  ],
-  [
-    "021",
-    "Workplace Modernisation",
-    "Coordinate equipment, office readiness and transition.",
-    "Staff Service Operations",
-    "/services/office",
-    "Planning",
-    "On Track",
-    "2027-02-26",
-    "Open Internal",
-  ],
-  [
-    "027",
-    "Company Archive Migration",
-    "Coordinate a controlled archive migration.",
-    "Company Archives",
-    "/archives",
-    "Delivery",
-    "On Track",
-    "2027-04-30",
-    "Restricted",
-  ],
-  [
-    "031",
-    "Customer Chatbot Pilot",
-    "Evaluate a small fictional chatbot pilot and operational readiness.",
-    "Digital & Technology",
-    "/digital-tech/ai-automation",
-    "Discovery",
-    "On Track",
-    "2026-12-18",
-    "Open Internal",
-  ],
-  [
-    "034",
-    "New Starter Experience Redesign",
-    "Improve the handoff from hiring to office and technical readiness.",
-    "Employment & Hiring Administration",
-    "/employment-admin/recruitment-administration",
-    "Initiation",
-    "Attention Needed",
-    "2027-01-29",
-    "Open Internal",
-  ],
-  [
-    "038",
-    "Financial Close Improvement",
-    "Coordinate a controlled financial process change.",
-    "Financial operations",
-    "/financial-operations/reconciliation",
-    "Delivery",
-    "At Risk",
-    "2027-02-12",
-    "Restricted",
-  ],
-  [
-    "042",
-    "Digital Workplace Search Upgrade",
-    "Coordinate search acceptance and business adoption.",
-    "Digital & Technology",
-    "/digital-tech/m365",
-    "Transition",
-    "Closing",
-    "2026-11-27",
-    "Open Internal",
-  ],
-  [
-    "045",
-    "Supplier Onboarding Redesign",
-    "Coordinate a controlled supplier onboarding change.",
-    "Staff Service Operations",
-    "/services/purchasing",
-    "Planning",
-    "Paused",
-    "2027-03-12",
-    "Restricted",
-  ],
-];
-export const currentProjects: Project[] = seeds.map((s, i) => ({
+
+export const currentProjects: Project[] = projectSeeds.map((s, i) => ({
   code: `PRJ-2026-${s[0]}`,
   name: s[1],
   purpose: s[2],
@@ -143,19 +55,8 @@ export const archivePeriods = [
   "2020–2023 Projects",
   "Earlier Projects",
 ];
-const historical = [
-  ["2024-018", "Digital Workplace Programme"],
-  ["2024-026", "Office Consolidation"],
-  ["2025-007", "Customer Experience Review"],
-  ["2022-011", "Finance Platform Renewal"],
-  ["2023-019", "Recruitment Process Redesign"],
-  ["2023-027", "Website Modernisation"],
-  ["2020-006", "CRM Consolidation"],
-  ["2021-014", "Workplace Technology Refresh"],
-  ["2021-022", "Reporting Framework Programme"],
-  ["2018-009", "Office Equipment Renewal"],
-];
-export const archivedProjects: Project[] = historical.map(
+
+export const archivedProjects: Project[] = historicalProjectSeeds.map(
   ([code, name], i) => ({
     ...currentProjects[0],
     code: `PRJ-${code}`,

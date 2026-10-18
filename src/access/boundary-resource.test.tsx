@@ -77,20 +77,25 @@ describe("the role signpost uses the actual denied destination", () => {
     },
   );
 
-  it("places the action directly after the access box, before the sales alternative", () => {
+  it("places the shared role action directly after a genuine access box", () => {
     vi.stubGlobal(
       "location",
-      new URL("/content-delivery?staff=maya", "https://example.test"),
+      new URL("/executive?staff=taylor", "https://example.test"),
     );
-    vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
+    vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
     const html = renderToStaticMarkup(
       <PreviewRoleProvider>
-        <ContentApp />
+        <AccessBoundary
+          workspaceId="executive"
+          area="Executive & CEO"
+          personId="taylor"
+          resource={{ kind: "workspace", workspaceId: "executive" }}
+        />
       </PreviewRoleProvider>,
     );
     expect(html).toContain('aria-controls="preview-role"');
     expect(html.indexOf("</section>")).toBeLessThan(html.indexOf(prompt));
-    expect(html.indexOf(prompt)).toBeLessThan(html.indexOf("<aside"));
+    expect(html).toContain('class="preview-role-prompt access-preview-role"');
   });
 
   it.each<AccessResource>([
@@ -119,17 +124,31 @@ describe("the role signpost uses the actual denied destination", () => {
   );
 
   it.each([
-    [{ kind: "channel", workspaceId: "logistics", channelId: "general" }, true],
-    [{ kind: "channel", workspaceId: "digital", channelId: "AI Lab" }, true],
+    [
+      { kind: "channel", workspaceId: "logistics", channelId: "general" },
+      false,
+    ],
+    [{ kind: "channel", workspaceId: "digital", channelId: "AI Lab" }, false],
+    [
+      {
+        kind: "channel",
+        workspaceId: "digital",
+        channelId: "Security Engineering",
+      },
+      true,
+    ],
     [
       {
         kind: "channel",
         workspaceId: "digital",
         channelId: "Workspace & Wiki Moderators",
       },
-      true,
+      false,
     ],
-    [{ kind: "channel", workspaceId: "content", channelId: "editorial" }, true],
+    [
+      { kind: "channel", workspaceId: "content", channelId: "editorial" },
+      false,
+    ],
     [
       { kind: "channel", workspaceId: "logistics", channelId: "north-city" },
       false,

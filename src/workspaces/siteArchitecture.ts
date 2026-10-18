@@ -653,7 +653,7 @@ export interface FunctionalHome {
   recentHeading: string;
   handoffs: { label: string; href: string }[];
   handoffsHeading?: string;
-  teams?: { heading: string; cue: string; channels: string[] };
+  teams?: { heading: string; cue: string };
 }
 export const functionalHomes: Record<string, FunctionalHome> = {
   services: {
@@ -705,14 +705,8 @@ export const functionalHomes: Record<string, FunctionalHome> = {
       { label: "Request IT support", href: "/service-desk/it-support" },
     ],
     teams: {
-      heading: "Technical coordination in Teams",
+      heading: "Technical coordination",
       cue: "Discuss the current design and release reviews.",
-      channels: [
-        "Engineering",
-        "AI Lab",
-        "M365 & SPFx",
-        "Workspace & Wiki Moderators",
-      ],
     },
   },
   legal: {

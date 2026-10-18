@@ -154,7 +154,7 @@ describe("site administration resolves permitted canonical content", () => {
         "",
       ],
       ["/financial-operations/income/high-value-payment", ""],
-      ["/projects/PRJ-2026-014", ""],
+      ["/projects/PRJ-2026-027", ""],
       ["/executive", ""],
       ["/employment-admin", ""],
       ["/welfare-representation", ""],

@@ -46,6 +46,7 @@ import { resolveStaffPerson } from "../intranet/catalog";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
+import { readChannelEntryContext, channelContextValue } from "../teams/context";
 import {
   files,
   filesById,
@@ -105,9 +106,7 @@ export default function LogisticsApp() {
     new URLSearchParams(location.search).get("staff"),
   );
   const homeTeamsChannels = channels.filter(
-    (channel) =>
-      channel.team === "logistics" &&
-      canSeeLogisticsChannel(teamsPerson, channel),
+    (channel) => channel.team === "logistics",
   );
   const [route, setRoute] = useState(logisticsRoute);
   const [search, setSearch] = useState("");
@@ -150,11 +149,9 @@ export default function LogisticsApp() {
     );
     if (page === "teams") {
       query.set("staff", teamsPerson.id);
-      const departmentPreview = new URLSearchParams(location.search).get(
-        "departmentPreview",
-      );
-      if (teamsPerson.id === "taylor" && departmentPreview)
-        query.set("departmentPreview", departmentPreview);
+      query.set("context", route.page === "teams"
+        ? channelContextValue(readChannelEntryContext(location.pathname, location.search))
+        : "workspace:logistics");
     }
     history.pushState(
       {},
@@ -440,15 +437,17 @@ export default function LogisticsApp() {
                   {homeTeamsChannels.length > 0 && (
                     <aside className="home-aside">
                       <TeamsHomePanel
-                        heading="Your day-to-day coordination"
+                        heading="Operational coordination"
                         description="Share updates, discuss handovers and work with the team."
+                        workspace={{ id: "logistics", name: workspaceTitle }}
                         channels={homeTeamsChannels
-                          .slice(0, 6)
+                          .filter((channel) => channel.homeFeatured)
                           .map((channel) => ({
+                            id: channel.id,
                             name: channel.name,
-                            href: `/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: channel.id, tab: "Posts" })}`,
+                            href: `/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, context: "workspace:logistics", channel: channel.id, tab: "Posts" })}`,
                           }))}
-                        openHref={`/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, channel: homeTeamsChannels[0].id, tab: "Posts" })}`}
+                        openHref={`/logistics/teams?${new URLSearchParams({ staff: teamsPerson.id, context: "workspace:logistics", channel: homeTeamsChannels[0].id, tab: "Posts" })}`}
                       />
                     </aside>
                   )}

@@ -42,7 +42,7 @@ describe("Teams is available only where the work needs live coordination", () =>
     }
   });
   it("uses deterministic central role landings rather than functional SharePoint visibility", () => {
-    for (const id of ["taylor", "jamie", "robin"]) {
+    for (const id of ["jamie", "robin"]) {
       const member = person(id);
       expect(defaultTeamsContext(member)).toEqual({
         workspaceId: undefined,
@@ -52,6 +52,11 @@ describe("Teams is available only where the work needs live coordination", () =>
         teamsGroups(member).some((group) => group.id === member.departmentId),
       ).toBe(true);
     }
+    expect(defaultTeamsContext(person("taylor"))).toEqual({
+      workspaceId: undefined,
+      departmentId: undefined,
+      companyChannelId: "important",
+    });
     expect(defaultTeamsContext(person("devon"))).toEqual({
       workspaceId: "digital",
       departmentId: undefined,
@@ -72,7 +77,8 @@ describe("Teams is available only where the work needs live coordination", () =>
       defaultTeamsContext({ ...person("taylor"), workspace: "logistics" }),
     ).toEqual({
       workspaceId: undefined,
-      departmentId: "marketing-growth",
+      departmentId: undefined,
+      companyChannelId: "important",
     });
   });
   it("retains active project, department and emergency teams independently from the central Projects site", () => {

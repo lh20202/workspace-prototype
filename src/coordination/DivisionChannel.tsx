@@ -93,7 +93,8 @@ export default function DepartmentChannel({
   const entitled =
     canSeeDepartment(person, department.id) &&
     canOpenDepartment(department, person);
-  const genericPreview = !!departmentPreviewFor(person);
+  const genericPreview =
+    !!departmentPreviewFor(person) && person.departmentId !== department.id;
   const [deniedResource, setDeniedResource] = useState<
     AccessResource | undefined
   >(
@@ -180,6 +181,7 @@ export default function DepartmentChannel({
       staff: person.id,
       department: departmentCodes[department.id],
       tab: nextTab === "Files" ? "Shared" : nextTab,
+      context: params.get("context") || `department:${department.id}`,
     });
     if (genericPreview) search.set("departmentPreview", department.id);
     if (nextFolder) search.set("folder", nextFolder);

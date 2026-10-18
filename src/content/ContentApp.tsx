@@ -63,7 +63,7 @@ import {
 } from "./data";
 import "../services/styles.css";
 import "./styles.css";
-import { contentTeamsHref, visibleContentChannels } from "./channels";
+import { contentTeamsHref, contentHomeChannelGroups } from "./channels";
 const base = "/content-delivery";
 const date = (value: string) =>
   new Date(value + "T12:00:00").toLocaleDateString("en-GB", {
@@ -269,9 +269,7 @@ export default function ContentApp() {
     "content",
     params.get("staff") || undefined,
   );
-  const homeChannels = visibleContentChannels(teamsPerson)
-    .filter((channel) => channel.lifecycle === "Active")
-    .slice(0, 4);
+  const homeChannelGroups = contentHomeChannelGroups();
   if (!canAccessWorkspace(resolveStaffPerson(teamsPerson), "content"))
     return (
       <WorkspaceDenied
@@ -302,11 +300,7 @@ export default function ContentApp() {
             onOpen={(file) => navigate(fileLink(filesById.get(file.id)!))}
             userName={resolveStaffPerson(teamsPerson).name}
             userRole={resolveStaffPerson(teamsPerson).role}
-            onTeams={
-              homeChannels.length
-                ? () => location.assign(contentTeamsHref(teamsPerson))
-                : undefined
-            }
+            onTeams={() => location.assign(contentTeamsHref(teamsPerson))}
             onMessage={setMessage}
           />
         </>
@@ -314,7 +308,7 @@ export default function ContentApp() {
         <header className="content-scoped-header">
           <img
             src="/images/sharepoint-logo.svg"
-            alt="SharePoint"
+            alt="Site"
             width="32"
             height="32"
           />
@@ -539,17 +533,20 @@ export default function ContentApp() {
                 </div>
                 <TeamsHomePanel
                   heading="Live studio coordination"
-                  description="Join a desk or coverage conversation. Production files stay in SharePoint."
-                  channels={homeChannels.map((channel) => ({
-                    name: channel.name,
-                    href: contentTeamsHref(teamsPerson, channel.id),
-                    cue:
-                      channel.kind === "temporary"
-                        ? "Temporary coverage"
-                        : undefined,
+                  description="Discuss production with channel desks and topic specialists. Shared files stay in the workspace."
+                  workspace={{ id: "content", name: title }}
+                  groups={homeChannelGroups.map((group) => ({
+                    ...group,
+                    channels: group.channels.map((channel) => ({
+                      id: channel.id,
+                      name: channel.name,
+                      href: contentTeamsHref(teamsPerson, channel.id),
+                      lifecycle: channel.lifecycle,
+                      temporary: channel.kind === "temporary",
+                    })),
                   }))}
                   openHref={contentTeamsHref(teamsPerson)}
-                  openLabel="Open studio in Teams"
+                  openLabel="Open all studio channels"
                 />
               </div>
             </>
@@ -620,7 +617,7 @@ export default function ContentApp() {
               </div>
             </section>
           ) : page === "teams" ? (
-            <p role="status">Opening Creative Studio in Teams…</p>
+            <p role="status">Opening Creative Studio channels…</p>
           ) : page === "calendar" ? (
             <>
               <h2>Production Calendar</h2>

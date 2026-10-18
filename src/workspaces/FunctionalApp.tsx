@@ -29,10 +29,8 @@ import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { matchesDisplayText } from "../i18n/search";
 import { teamsStaffForWorkspace } from "../teams/navigation";
-import {
-  canSeeWorkspaceChannel,
-  visibleWorkspaceChannels,
-} from "../teams/visibility";
+import { workspaceChannels } from "../teams/visibility";
+import { technicalChannelDefinitions } from "./technicalChannelDefinitions";
 import { staff } from "../intranet/catalog";
 import { personnelDestinations } from "../intranet/architectureDestinations";
 import { workspaceRegistry, workspaceById } from "./registry";
@@ -137,7 +135,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     new URLSearchParams(location.search).get("staff") || undefined,
   );
   const contextStaff = staff.find((person) => person.id === contextStaffId)!;
-  const teamChannels = visibleWorkspaceChannels(contextStaff, workspace.id);
+  const teamChannels = workspaceChannels[workspace.id] || [];
   const actor = contextStaff.name;
   const workspaceAllowed = canAccessWorkspace(contextStaff, workspace.id);
   const subjectAllowed =
@@ -573,7 +571,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           teamChannels.length
             ? () =>
                 location.assign(
-                  `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel: teamChannels[0] })}`,
+                  `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, context: `workspace:${workspace.id}`, channel: teamChannels[0] })}`,
                 )
             : undefined
         }
@@ -871,19 +869,16 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     <TeamsHomePanel
                       heading={home.teams.heading}
                       description={home.teams.cue}
-                      channels={home.teams.channels
-                        .filter((channel) =>
-                          canSeeWorkspaceChannel(
-                            contextStaff,
-                            workspace.id,
-                            channel,
-                          ),
-                        )
+                      workspace={{ id: workspace.id, name: workspace.title }}
+                      channels={technicalChannelDefinitions
+                        .filter((channel) => channel.homeFeatured)
                         .map((channel) => ({
-                          name: channel,
-                          href: `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel })}`,
+                          id: channel.name,
+                          name: channel.name,
+                          privacy: channel.privacy,
+                          href: `/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, context: `workspace:${workspace.id}`, channel: channel.name })}`,
                         }))}
-                      openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, channel: teamChannels[0] })}`}
+                      openHref={`/teams?${new URLSearchParams({ staff: contextStaffId, workspace: workspace.id, context: `workspace:${workspace.id}`, channel: teamChannels[0] })}`}
                     />
                   )}
                   <section>

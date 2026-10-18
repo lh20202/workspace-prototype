@@ -11,7 +11,11 @@ import {
 import { workspaceById } from "./registry";
 import { moderatorChannel, publishingLegacyHref } from "./publishingRetirement";
 import { technicalChannels, technicalPosts } from "./technicalTeams";
-import { canAccessChannel } from "../access/policy";
+import {
+  canAccessChannel,
+  isChannelPinnedForRole,
+  previewRoles,
+} from "../access/policy";
 import { translateText } from "../i18n/translate";
 import TechnicalConversation from "./TechnicalConversation";
 import FunctionalApp from "./FunctionalApp";
@@ -29,7 +33,11 @@ describe("moderation belongs to Tech & Digital, with legacy content kept canonic
       false,
     );
     expect(canAccessChannel("leonie", "digital", moderatorChannel)).toBe(true);
-    expect(canAccessChannel("taylor", "digital", moderatorChannel)).toBe(false);
+    for (const role of previewRoles)
+      expect(canAccessChannel(role, "digital", moderatorChannel)).toBe(true);
+    expect(isChannelPinnedForRole("taylor", "digital", moderatorChannel)).toBe(
+      false,
+    );
   });
 
   it("moves each original file once into the existing Architecture & Decisions library", () => {
@@ -132,7 +140,7 @@ describe("moderation belongs to Tech & Digital, with legacy content kept canonic
     expect(html).toContain("Workspace reviews");
   });
 
-  it("opens one migrated canonical file in moderator Shared, while unjoined roles stay denied", () => {
+  it("opens the same migrated canonical file in contextual Shared for ordinary unpinned readers", () => {
     const file = migratedPublishingFiles[2];
     const target = publishingLegacyHref(
       "/teams",
@@ -151,10 +159,14 @@ describe("moderation belongs to Tech & Digital, with legacy content kept canonic
         "https://example.test",
       ),
     );
-    const denied = renderToStaticMarkup(createElement(TeamsPreview));
-    expect(denied).toContain("Access required");
-    expect(denied).not.toContain(file.name);
-    expect(denied).not.toContain('class="document-library');
+    const ordinaryReader = renderToStaticMarkup(createElement(TeamsPreview));
+    expect(ordinaryReader).not.toContain("Access required");
+    expect(ordinaryReader).toContain(file.name);
+    expect(ordinaryReader).toContain("Architecture &amp; Decisions");
+    expect(ordinaryReader).toContain('class="sp-document-library"');
+    expect(isChannelPinnedForRole("taylor", "digital", moderatorChannel)).toBe(
+      false,
+    );
   });
 
   it("translates the new channel, role and Policy conversation naturally", () => {

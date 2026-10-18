@@ -2,6 +2,8 @@ import { LanguageToggle } from "../i18n/Language";
 import TeamsMark from "../components/TeamsMark";
 import TeamIdentity, { type TeamKind } from "./TeamIdentity";
 import AccessLock from "../components/AccessLock";
+import PreviewRolePrompt from "../components/PreviewRolePrompt";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import {
@@ -56,6 +58,7 @@ export interface TeamsShellProps {
   searchResults?: ReactNode;
   headerActions?: ReactNode;
   navigationFooter?: ReactNode;
+  showRoleDiscovery?: boolean;
   children: ReactNode;
 }
 export function initials(name: string) {
@@ -88,6 +91,7 @@ function TeamsShellSession({
   searchResults,
   headerActions,
   navigationFooter,
+  showRoleDiscovery,
   children,
 }: TeamsShellProps) {
   const visibleGroups = groups.filter((group) => group.channels.length > 0);
@@ -305,6 +309,12 @@ function TeamsShellSession({
             ))}
           </div>
           <div className="m365-teams-nav-scroll">
+            <a
+              className="m365-teams-global-view"
+              href={withExplicitStaff("/teams")}
+            >
+              Open your channel view
+            </a>
             <div className="m365-teams-section-label">Channels</div>
             {visibleGroups.map((group) => {
               const active = group.channels.some(
@@ -388,6 +398,15 @@ function TeamsShellSession({
                 </div>
               );
             })}
+            {showRoleDiscovery && (
+              <div className="m365-teams-role-discovery">
+                <PreviewRolePrompt
+                  heading="See a role-based channel view"
+                  description="Choose a preview role to see the department, workspace and project channels that would normally appear here."
+                  actionLabel="Choose a preview role"
+                />
+              </div>
+            )}
             {navigationFooter && (
               <div className="m365-teams-navigation-footer">
                 {navigationFooter}

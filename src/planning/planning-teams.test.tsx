@@ -38,7 +38,7 @@ describe("Planning & Reporting uses the existing Planning Team and working files
       const expected = ["robin", "sam"].includes(person.id);
       expect(
         canSeeWorkspaceChannel(person, "planning", planningReportingChannel),
-      ).toBe(expected);
+      ).toBe(true);
       const planning = teamsGroups(person).find(
         (group) => group.id === "planning",
       );
@@ -61,9 +61,9 @@ describe("Planning & Reporting uses the existing Planning Team and working files
           "/teams",
           new URL(planningTeamsHref("robin"), "https://example.test").search,
         ),
-      ).not.toContain("workspace=planning");
+      ).toContain("workspace=planning");
   });
-  it("shows the familiar Home panel and same-person channel link only to participants", () => {
+  it("shows the canonical Home panel and same-person context link under every role", () => {
     for (const person of staff) {
       at(`/planning?staff=${person.id}`);
       const html = renderToStaticMarkup(createElement(PlanningApp));
@@ -71,7 +71,7 @@ describe("Planning & Reporting uses the existing Planning Team and working files
         html.match(
           /<section class="teams-home-panel"[\s\S]*?<\/section>/,
         )?.[0] || "";
-      expect(!!panel).toBe(["robin", "sam"].includes(person.id));
+      expect(!!panel).toBe(true);
       if (panel) {
         expect(panel).toContain("Planning &amp; Reporting");
         expect(panel).toContain("Open channel");
@@ -169,15 +169,16 @@ describe("Planning & Reporting uses the existing Planning Team and working files
         ).searchParams.get("staff"),
       ).toBe("sam");
   });
-  it("keeps denied channel deep links behind the existing access boundary", () => {
+  it("opens ordinary reporting channel examples for unrelated roles without exposing protected Planning", () => {
     for (const person of staff.filter(
       (person) => !["robin", "sam"].includes(person.id),
     )) {
       at(planningTeamsHref(person.id));
       const html = renderToStaticMarkup(createElement(TeamsPreview));
-      expect(html).toContain("Access required");
-      expect(html).not.toContain("planning-budget-submissions");
-      expect(html).not.toContain("Financial Planning Partner");
+      expect(html).not.toContain("Access required");
+      expect(html).toContain("planning-budget-submissions");
+      expect(html).toContain("Financial Planning Partner");
+      expect(canAccessArea(person, "planning", "restricted")).toBe(false);
     }
   });
   it("reviews the same Logframe one outcome at a time and identifies missing targets", () => {

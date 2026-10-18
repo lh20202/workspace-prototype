@@ -30,6 +30,8 @@ import {
   germanAdministrationLabel,
 } from "./de-administration";
 
+import { germanDiscoverability } from "./de-discoverability";
+
 export type Language = "en" | "de";
 const messages = {
   ...germanMessages,
@@ -59,6 +61,7 @@ const messages = {
   ...germanPlanningReporting,
   ...germanWorkspaceFAQ,
   ...germanAdministration,
+  ...germanDiscoverability,
 };
 const englishMonths = [
   "January",

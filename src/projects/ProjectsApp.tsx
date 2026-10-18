@@ -7,7 +7,12 @@ import AccessBoundary from "../access/AccessBoundary";
 import { PeopleTeam20Regular, Chat20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
-import { teamsGroups } from "../teams/navigation";
+import {
+  teamsGroups,
+  readChannelEntryContext,
+  channelContextValue,
+} from "../teams/navigation";
+import TeamsHomePanel from "../components/TeamsHomePanel";
 import { canSeeProject, projectChannels } from "../teams/visibility";
 import DocumentIcon from "../components/DocumentIcon";
 import NavigationIcon from "../components/NavigationIcon";
@@ -61,7 +66,7 @@ export default function ProjectsApp() {
   const [query, setQuery] = useState(""),
     [states, setStates] = useState<Record<string, string>>({}),
     [channel, setChannel] = useState(
-      () => new URLSearchParams(location.search).get("channel") || "General",
+      () => new URLSearchParams(location.search).get("channel") ?? "General",
     ),
     [tab, setTab] = useState(() =>
       new URLSearchParams(location.search).get("tab") === "Shared"
@@ -85,7 +90,7 @@ export default function ProjectsApp() {
   useEffect(() => {
     const restoreTeamsLocation = () => {
       const params = new URLSearchParams(location.search);
-      setChannel(params.get("channel") || "General");
+      setChannel(params.get("channel") ?? "General");
       setTab(params.get("tab") === "Shared" ? "Shared" : "Posts");
       setProjectDraft("");
       setProjectReply("");
@@ -97,6 +102,10 @@ export default function ProjectsApp() {
   const title = project ? projectTitle(project) : "Project Centre";
   const root = project ? projectHref(project) : "/projects";
   const readOnly = !!project?.archived;
+  const entryContext = readChannelEntryContext(
+    location.pathname,
+    location.search,
+  );
   const mode = project ? projectNav : centralNav;
   const canControl = controlRoles.includes(person.id),
     canSupport = supportRoles.includes(person.id);
@@ -537,6 +546,21 @@ export default function ProjectsApp() {
           </p>
         )}
         {filesView(true)}
+        {!readOnly && (
+          <TeamsHomePanel
+            workspace={{ id: project.code, name: project.name }}
+            description="Coordinate project delivery, decisions and actions alongside shared project files."
+            channels={projectChannels.map((name) => ({
+              id: name,
+              name,
+              privacy:
+                project.access === "Restricted" ? "restricted" : "standard",
+              href: `${root}/teams?${new URLSearchParams({ staff: person.id, context: `project:${project.code}`, channel: name, tab: "Posts" })}`,
+            }))}
+            openHref={`${root}/teams?${new URLSearchParams({ staff: person.id, context: `project:${project.code}`, channel: "General", tab: "Posts" })}`}
+            openLabel="Open project channels"
+          />
+        )}
         <section>
           <h2>Delivery & support</h2>
           <div className="project-context-links">
@@ -653,9 +677,8 @@ export default function ProjectsApp() {
     );
   };
   if (teams && project) {
-    const selectedChannel = projectChannels.includes(channel)
-      ? channel
-      : "General";
+    const knownChannel = projectChannels.includes(channel);
+    const selectedChannel = channel;
     const conversation = projectConversation(project, selectedChannel);
     const changeTeamsLocation = (nextChannel: string, nextTab: string) => {
       setChannel(nextChannel);
@@ -667,6 +690,7 @@ export default function ProjectsApp() {
         staff: person.id,
         channel: nextChannel,
         tab: nextTab,
+        context: channelContextValue(entryContext),
       });
       history.pushState({}, "", withExplicitStaff(`${root}/teams?${params}`));
     };
@@ -674,9 +698,9 @@ export default function ProjectsApp() {
       <TeamsShell
         userName={person.name}
         teamName={title}
-        channelName={selectedChannel}
+        channelName={knownChannel ? selectedChannel : "Unavailable location"}
         privateChannel={project.access === "Restricted"}
-        groups={teamsGroups(person).map((group) =>
+        groups={teamsGroups(person, entryContext).map((group) =>
           group.id === project.code
             ? {
                 ...group,
@@ -688,10 +712,11 @@ export default function ProjectsApp() {
             : group,
         )}
         selectedChannelId={`${project.code}:${selectedChannel}`}
-        activeTab={tab}
+        activeTab={knownChannel ? tab : "Posts"}
+        tabs={knownChannel ? undefined : ["Posts"]}
         onTabChange={(next) => changeTeamsLocation(selectedChannel, next)}
         onOpenSharePoint={
-          !canSeeProject(person, project.code) || !permitted
+          !knownChannel || !canSeeProject(person, project.code) || !permitted
             ? undefined
             : () => {
                 if (tab !== "Shared") {
@@ -709,7 +734,7 @@ export default function ProjectsApp() {
         searchValue={query}
         onSearchChange={setQuery}
         searchResults={
-          canSeeProject(person, project.code) && permitted
+          knownChannel && canSeeProject(person, project.code) && permitted
             ? searchResults
             : undefined
         }
@@ -731,6 +756,11 @@ export default function ProjectsApp() {
             />
           ) : !permitted ? (
             denied()
+          ) : !knownChannel ? (
+            <section className="m365-teams-empty">
+              <h2>This location is unavailable</h2>
+              <StaffLink href={root}>Open workspace</StaffLink>
+            </section>
           ) : tab === "Shared" ? (
             filesView()
           ) : (
@@ -906,6 +936,7 @@ export default function ProjectsApp() {
       <WorkspaceHeader
         title={title}
         userName={person.name}
+        restricted={project?.access === "Restricted"}
         searchFiles={[]}
         onSearchChange={setQuery}
         onOpen={() => {}}
@@ -916,7 +947,9 @@ export default function ProjectsApp() {
           canSeeProject(person, project.code)
             ? () =>
                 location.assign(
-                  withExplicitStaff(`${root}/teams?staff=${person.id}`),
+                  withExplicitStaff(
+                    `${root}/teams?${new URLSearchParams({ staff: person.id, context: `project:${project.code}` })}`,
+                  ),
                 )
             : undefined
         }

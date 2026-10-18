@@ -29,7 +29,11 @@ import { rememberStaff } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { teamsPersonForSearch } from "../teams/departmentPreview";
-import { teamsGroups } from "../teams/navigation";
+import {
+  teamsGroups,
+  readChannelEntryContext,
+  channelNavigationFor,
+} from "../teams/navigation";
 import { canSeeLogisticsChannel } from "../teams/visibility";
 import "../teams/integrations.css";
 import DocumentIcon from "../components/DocumentIcon";
@@ -52,6 +56,10 @@ export default function TeamsView({
   onMessage: (m: string) => void;
 }) {
   const person = teamsPersonForSearch(location.search);
+  const entryContext = readChannelEntryContext(
+    location.pathname,
+    location.search,
+  );
   useEffect(() => rememberStaff(person.id), [person.id]);
   const requestedChannel = channels.find((c) => c.id === channelId);
   const channel = requestedChannel ?? channels.find((c) => c.id === "general")!;
@@ -75,8 +83,14 @@ export default function TeamsView({
   const [liked, setLiked] = useState<string[]>([]);
   const [saved, setSaved] = useState<string[]>([]);
   const allowed = !!requestedChannel && canSeeLogisticsChannel(person, channel);
-  const permittedChannels = channels.filter((c) =>
-    canSeeLogisticsChannel(person, c),
+  const navigation = channelNavigationFor({ person, entryContext });
+  const navigationIds = new Set(
+    navigation.groups.flatMap((group) => group.channels.map((item) => item.id)),
+  );
+  const permittedChannels = channels.filter(
+    (c) =>
+      navigationIds.has(`${c.team}:${c.id}`) &&
+      canSeeLogisticsChannel(person, c),
   );
   const permittedFileIds = new Set(permittedChannels.flatMap((c) => c.fileIds));
   const visiblePosts = allowed
@@ -103,7 +117,7 @@ export default function TeamsView({
         channel.team === "logistics" ? workspaceTitle : "Company Updates"
       }
       channelName={requestedChannel?.name || channelId}
-      groups={teamsGroups(person).map((group) => ({
+      groups={teamsGroups(person, entryContext).map((group) => ({
         ...group,
         channels: group.channels.map((item) => ({
           ...item,
@@ -112,6 +126,7 @@ export default function TeamsView({
             : item.onSelect,
         })),
       }))}
+      showRoleDiscovery={navigation.showRoleDiscovery}
       selectedChannelId={`${channel.team}:${channel.id}`}
       activeTab={tab}
       tabs={

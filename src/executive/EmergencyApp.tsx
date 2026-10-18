@@ -13,7 +13,11 @@ import {
   DialogActions,
 } from "@fluentui/react-components";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
-import { teamsGroups } from "../teams/navigation";
+import {
+  teamsGroups,
+  readChannelEntryContext,
+  channelContextValue,
+} from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
@@ -47,18 +51,28 @@ export default function EmergencyApp() {
   const responseAccess = incident
     ? visibleIncidents.includes(incident)
     : !initialId && visibleIncidents.length > 0;
-  const baseGroups = teamsGroups(requestedPerson).filter(
+  const entryContext = readChannelEntryContext(
+    location.pathname,
+    location.search,
+  );
+  const navigationIncidents = entryContext
+    ? visibleIncidents.filter(
+        (item) =>
+          entryContext.kind === "incident" && item.id === entryContext.id,
+      )
+    : visibleIncidents;
+  const baseGroups = teamsGroups(requestedPerson, entryContext).filter(
     (group) => group.id !== "emergency",
   );
   const groups = [
     ...baseGroups,
-    ...(visibleIncidents.length
+    ...(navigationIncidents.length
       ? [
           {
             id: "emergency",
             label: "Emergency Response",
             initials: "ER",
-            channels: visibleIncidents.map((i) => ({
+            channels: navigationIncidents.map((i) => ({
               id: `emergency:${i.id}`,
               label: `${i.id} · ${i.title}`,
               private: true,
@@ -112,7 +126,7 @@ export default function EmergencyApp() {
     history.pushState(
       {},
       "",
-      `/emergency-response/incidents/${id}${requestedPerson ? `?staff=${requestedPerson.id}` : ""}`,
+      `/emergency-response/incidents/${id}?${new URLSearchParams({ staff: requestedPerson.id, context: channelContextValue(entryContext ? { kind: "incident", id } : undefined) })}`,
     );
     window.dispatchEvent(new Event("workspace:navigation"));
   }

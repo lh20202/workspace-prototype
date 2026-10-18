@@ -9,6 +9,7 @@ import {
   resolveContentChannel,
   contentTeamsHref,
   contentDefaultTab,
+  contentHomeChannelGroups,
 } from "./channels";
 import {
   files,
@@ -59,16 +60,16 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
       contentChannelReadOnly("Special Coverage · City Innovation Summit"),
     ).toBe(false);
   });
-  it("gives only the Sales specialist a selected Studio desk membership", () => {
+  it("keeps role pinning separate from ordinary contextual Studio access", () => {
     expect(visibleContentChannels("maya").map((channel) => channel.id)).toEqual(
       [],
     );
-    expect(canSeeContentChannel("maya", "Production Coordination")).toBe(false);
-    expect(canSeeContentChannel("maya", "Web Desk")).toBe(false);
-    expect(canSeeContentChannel("sam", "coastal-flooding")).toBe(false);
+    expect(canSeeContentChannel("maya", "Production Coordination")).toBe(true);
+    expect(canSeeContentChannel("maya", "Web Desk")).toBe(true);
+    expect(canSeeContentChannel("sam", "coastal-flooding")).toBe(true);
     expect(canSeeWorkspace({ id: "maya" }, "content")).toBe(false);
     expect(canSeeWorkspaceChannel({ id: "maya" }, "content", "Web Desk")).toBe(
-      false,
+      true,
     );
     expect(visibleContentChannels("morgan")).toEqual([]);
     for (const person of staff) {
@@ -78,18 +79,13 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
         person.id === "nadia" ? ["editorial", "social", "coordination"] : [],
       );
       for (const channel of contentChannels)
-        expect(canSeeContentChannel(person.id, channel.name)).toBe(
-          channel.members.includes(person.id),
-        );
+        expect(canSeeContentChannel(person.id, channel.name)).toBe(true);
     }
   });
   it("retains Studio and archived coverage without showing an empty Team to preview roles", () => {
     const taylor = staff.find((person) => person.id === "taylor")!;
     const groups = teamsGroups(taylor);
-    expect(groups.map((group) => group.id)).toEqual([
-      "company",
-      "marketing-growth",
-    ]);
+    expect(groups.map((group) => group.id)).toEqual(["company"]);
     for (const person of staff)
       expect(teamsGroups(person).some((group) => group.id === "content")).toBe(
         person.id === "nadia",
@@ -98,6 +94,36 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
       resolveContentChannel("Special Coverage · City Innovation Summit")?.kind,
     ).toBe("temporary");
     expect(contentChannelReadOnly("community-week")).toBe(true);
+  });
+  it("selects Home channels by canonical working purpose rather than role or array order", () => {
+    const groups = contentHomeChannelGroups();
+    expect(groups.map((group) => group.label)).toEqual([
+      "Channel desks",
+      "Topic specialists",
+      "Current coverage",
+    ]);
+    expect(
+      groups[0].channels.every(
+        (channel) => channel.homeFeatured && channel.kind === "desk",
+      ),
+    ).toBe(true);
+    expect(groups[1].channels.map((channel) => channel.name)).toEqual([
+      "Cities & Mobility",
+      "Education & Skills",
+      "Digital Society",
+      "Arts & Culture",
+    ]);
+    expect(groups[2].channels).toHaveLength(2);
+    for (const channel of groups.flatMap((group) => group.channels)) {
+      expect(channel).toBe(resolveContentChannel(channel.id));
+      expect(channel.lifecycle).toBe("Active");
+      const url = new URL(
+        contentTeamsHref("taylor", channel.id),
+        "https://example.test",
+      );
+      expect(url.searchParams.get("context")).toBe("workspace:content");
+      expect(url.searchParams.get("channel")).toBe(channel.name);
+    }
   });
   it("keeps old entry names compatible without creating duplicate channels", () => {
     expect(resolveContentChannel("General")?.name).toBe(

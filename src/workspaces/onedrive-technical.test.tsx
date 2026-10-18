@@ -4,7 +4,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { technicalPosts } from "./technicalTeams";
 import { configById, functionalConfigs } from "./config";
 import { functionalFileHref, libraryForFile } from "./siteArchitecture";
-import { canAccessArea, canAccessChannel } from "../access/policy";
+import {
+  canAccessArea,
+  canAccessChannel,
+  isChannelPinnedForRole,
+  previewRoles,
+} from "../access/policy";
 import { germanOneDriveTechnical } from "../i18n/de-onedrive-technical";
 import TechnicalConversation from "./TechnicalConversation";
 import TeamsPreview from "../intranet/TeamsPreview";
@@ -54,7 +59,7 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     expect(folder.searchParams.get("folder")).toBe(file.folder);
     expect(folder.searchParams.has("file")).toBe(false);
     expect(workingCopy.href).toBe(canonical.href);
-    for (const role of ["devon", "leonie"]) {
+    for (const role of previewRoles) {
       expect(canAccessChannel(role, "digital", post.channel)).toBe(true);
       expect(canAccessArea(role, "digital", file.area)).toBe(true);
     }
@@ -107,19 +112,61 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     expect(html).not.toContain("Attachment removed");
   });
 
-  it("does not expose the example to roles outside this technical channel", () => {
-    for (const role of ["taylor", "maya", "robin", "jamie"]) {
+  it("allows ordinary unpinned readers to explore the canonical correction exchange contextually", () => {
+    for (const { id: role } of previewRoles) {
       vi.stubGlobal(
         "location",
         new URL(
-          `https://example.test/teams?staff=${role}&workspace=digital&channel=M365+%26+SPFx&tab=Posts`,
+          `https://example.test/teams?staff=${role}&context=workspace:digital&workspace=digital&channel=M365+%26+SPFx&tab=Posts`,
+        ),
+      );
+      vi.stubGlobal("sessionStorage", { getItem: () => role });
+      const html = renderToStaticMarkup(createElement(TeamsPreview));
+      expect(html).not.toContain("Access required");
+      expect(html).toContain(
+        renderToStaticMarkup(
+          createElement(
+            "p",
+            { style: { whiteSpace: "pre-line" } },
+            oneDrivePosts[0].text,
+          ),
+        ),
+      );
+      expect(html).toContain("That link points to your personal OneDrive");
+      expect(html).toContain(`file=digital-F17&amp;staff=${role}`);
+      expect(html).not.toContain("Attachment removed");
+    }
+    expect(
+      isChannelPinnedForRole("taylor", "digital", oneDrivePosts[0].channel),
+    ).toBe(false);
+  });
+
+  it("keeps the private security conversation protected despite ordinary technical channel exploration", () => {
+    const security = technicalPosts.find(
+      (post) => post.channel === "Security Engineering",
+    )!;
+    for (const { id: role } of previewRoles.filter(
+      (person) => person.id !== "devon",
+    )) {
+      vi.stubGlobal(
+        "location",
+        new URL(
+          `https://example.test/teams?staff=${role}&context=workspace:digital&workspace=digital&channel=Security+Engineering&tab=Posts`,
         ),
       );
       vi.stubGlobal("sessionStorage", { getItem: () => role });
       const html = renderToStaticMarkup(createElement(TeamsPreview));
       expect(html).toContain("Access required");
-      expect(html).not.toContain("OneDrive source");
-      expect(html).not.toContain(oneDrivePosts[0].text);
+      expect(html).not.toContain(security.text);
+      expect(html).not.toContain(
+        renderToStaticMarkup(
+          createElement(
+            "p",
+            { style: { whiteSpace: "pre-line" } },
+            oneDrivePosts[0].text,
+          ),
+        ),
+      );
     }
   });
 

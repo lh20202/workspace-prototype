@@ -229,7 +229,7 @@ describe("confidential membership remains separate from hub association", () => 
     expect(html).toContain('href="/digital-tech?staff=devon"');
     expect(html).toContain('href="/sales-marketing/wiki?staff=devon"');
     expect(html).toContain(
-      'href="/teams?staff=taylor&amp;department=stt&amp;departmentPreview=strategy-technology&amp;tab=Posts"',
+      'href="/teams?staff=devon&amp;department=stt&amp;departmentPreview=strategy-technology&amp;context=department%3Astrategy-technology&amp;tab=Posts"',
     );
   });
   it("denies ordinary CEO entry without exposing executive working files", () => {
@@ -262,9 +262,7 @@ describe("confidential membership remains separate from hub association", () => 
     expect(staff.some((person) => person.id === "skyler")).toBe(false);
     const fallback = resolveStaffPerson("skyler");
     expect(fallback.id).toBe("taylor");
-    expect(defaultTeamsContext(fallback).departmentId).toBe(
-      fallback.departmentId,
-    );
+    expect(defaultTeamsContext(fallback).companyChannelId).toBe("important");
     const groups = teamsGroups(fallback).map((group) => group.id);
     expect(groups).toContain("company");
     expect(groups).not.toContain("logistics");
@@ -272,7 +270,7 @@ describe("confidential membership remains separate from hub association", () => 
     expect(groups).not.toContain("publishing");
     at("/teams?staff=skyler", "skyler");
     const html = renderToStaticMarkup(createElement(TeamsPreview));
-    expect(html).toContain("Signed in as Taylor Brooks");
+    expect(html).toContain("Opening channels");
     expect(html).not.toContain("PAC Department");
     expect(html).not.toContain("Manage teams");
   });

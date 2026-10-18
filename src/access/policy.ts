@@ -1,3 +1,10 @@
+import { workspaceAccessLevels } from "../workspaces/accessClassification";
+import { projectAccessLevels } from "../projects/accessClassification";
+import { channelDefinitions } from "../content/channelDefinitions";
+import { technicalChannelDefinitions } from "../workspaces/technicalChannelDefinitions";
+import { channels as operationalChannels } from "../logistics/data";
+import { planningChannels } from "../planning/channels";
+
 /**
  * Fictional preview entitlements. This is the only source of role membership;
  * product views and Teams adapters ask the same policy rather than inferring
@@ -55,7 +62,7 @@ export const previewRoles: PreviewRole[] = [
     workspaceMemberships: [...ordinaryWorkspaces, "audience", "content"],
     restrictedAreas: {},
     teamChannels: {},
-    teamsLanding: { kind: "department", departmentId: "marketing-growth" },
+    teamsLanding: { kind: "company", channelId: "important" },
     projectMemberships: ["PRJ-2026-021", "PRJ-2026-031", "PRJ-2024-018"],
     projectTeamMemberships: [],
     temporaryTeamMemberships: [],
@@ -315,8 +322,19 @@ export function previewRoleFor(person: PolicyPerson) {
 }
 
 export function canAccessWorkspace(person: PolicyPerson, workspaceId: string) {
-  return !!previewRoleFor(person)?.workspaceMemberships.includes(workspaceId);
+  const role = previewRoleFor(person);
+  if (!role) return false;
+  if (workspaceAccessLevels[workspaceId] === "internal") return true;
+  // Whole confidential workspaces and the separate legacy governance boundary
+  // retain their original genuine membership. Ordinary relevance is not access.
+  return role.workspaceMemberships.includes(workspaceId);
 }
+
+/** Original participation remains useful for relevance without gating exploration. */
+export const isWorkspacePinnedForRole = (
+  person: PolicyPerson,
+  workspaceId: string,
+) => !!previewRoleFor(person)?.workspaceMemberships.includes(workspaceId);
 
 /** Protected subject IDs stay distinct from ordinary library/area IDs. */
 const protectedAreas: Record<string, string[]> = {
@@ -550,10 +568,10 @@ export function canAccessArea(
 export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
   const role = previewRoleFor(person);
   if (!role) return false;
-  if (areaId === "insight") return role.id !== "maya";
   return [
     "foundations",
     "messaging",
+    "insight",
     "standards",
     "learning",
     "tools",
@@ -562,11 +580,32 @@ export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
   ].includes(areaId);
 }
 export const canAccessPortal = (person: PolicyPerson) =>
-  previewRoleFor(person)?.id === "maya";
-export const canAccessProject = (person: PolicyPerson, projectId: string) =>
-  !!previewRoleFor(person)?.projectMemberships.includes(projectId);
-export const canAccessProjectTeam = (person: PolicyPerson, projectId: string) =>
-  !!previewRoleFor(person)?.projectTeamMemberships.includes(projectId);
+  !!previewRoleFor(person);
+export const canAccessProject = (person: PolicyPerson, projectId: string) => {
+  const role = previewRoleFor(person);
+  return (
+    !!role &&
+    (projectAccessLevels[projectId] === "Open Internal" ||
+      (projectAccessLevels[projectId] === "Restricted" &&
+        role.projectMemberships.includes(projectId)))
+  );
+};
+export const canAccessProjectTeam = (
+  person: PolicyPerson,
+  projectId: string,
+) => {
+  const role = previewRoleFor(person);
+  return (
+    !!role &&
+    (projectAccessLevels[projectId] === "Open Internal" ||
+      (projectAccessLevels[projectId] === "Restricted" &&
+        role.projectTeamMemberships.includes(projectId)))
+  );
+};
+export const isProjectPinnedForRole = (
+  person: PolicyPerson,
+  projectId: string,
+) => !!previewRoleFor(person)?.projectTeamMemberships.includes(projectId);
 const knownDepartments = [
   "marketing-growth",
   "communications",
@@ -575,10 +614,10 @@ const knownDepartments = [
   "people-culture",
   "executive-office",
 ];
-/** A validated General Staff preview is confined to the chosen Department. */
+/** A route-scoped preview is confined to the chosen Department, for every role. */
 export const departmentPreviewFor = (person: PolicyPerson) =>
   typeof person !== "string" &&
-  person.id === defaultPreviewRoleId &&
+  !!previewRoleFor(person) &&
   person.departmentPreviewId &&
   knownDepartments.includes(person.departmentPreviewId)
     ? person.departmentPreviewId
@@ -602,9 +641,63 @@ export function canAccessUnit(
   return (
     !!role &&
     canAccessDepartment(person, departmentId) &&
-    (!unitOnly || (!departmentPreviewFor(person) && role.unitId === unitId))
+    role.departmentId === departmentId &&
+    (!unitOnly || role.unitId === unitId)
   );
 }
+
+function canonicalChannel(workspaceId: string, channelId: string) {
+  if (workspaceId === "content")
+    return channelDefinitions.find(
+      (channel) => channel.id === channelId || channel.name === channelId,
+    )?.id;
+  if (workspaceId === "digital")
+    return technicalChannelDefinitions.find(
+      (channel) => channel.name === channelId,
+    )?.name;
+  if (workspaceId === "planning")
+    return planningChannels.includes(channelId) ? channelId : undefined;
+  return operationalChannels.find(
+    (channel) =>
+      channel.team === workspaceId &&
+      (channel.id === channelId || channel.name === channelId),
+  )?.id;
+}
+
+/** Daily sidebar membership is deliberately narrower than ordinary channel access. */
+export function isChannelPinnedForRole(
+  person: PolicyPerson,
+  workspaceId: string,
+  channelId: string,
+) {
+  const role = previewRoleFor(person);
+  const id = canonicalChannel(workspaceId, channelId);
+  return (
+    !!role &&
+    !!id &&
+    (workspaceId === "company" ||
+      !!role.teamChannels[workspaceId]?.includes(id))
+  );
+}
+
+/** Genuine private-channel entitlement, including occasional unpinned membership. */
+export function canAccessRestrictedChannel(
+  person: PolicyPerson,
+  workspaceId: string,
+  channelId: string,
+) {
+  const role = previewRoleFor(person);
+  const id = canonicalChannel(workspaceId, channelId);
+  return (
+    !!role &&
+    !!id &&
+    !!(
+      role.teamChannels[workspaceId]?.includes(id) ||
+      role.additionalChannelAccess?.[workspaceId]?.includes(id)
+    )
+  );
+}
+
 export function canAccessChannel(
   person: PolicyPerson,
   workspaceId: string,
@@ -612,23 +705,16 @@ export function canAccessChannel(
 ) {
   const role = previewRoleFor(person);
   if (!role) return false;
-  if (workspaceId === "company")
-    return [
-      "important",
-      "bulletin",
-      "office",
-      "pets",
-      "learning",
-      "socials",
-    ].includes(channelId);
-  const canonicalChannel =
-    workspaceId === "logistics" && channelId === "General"
-      ? "general"
-      : channelId;
-  return !!(
-    role.teamChannels[workspaceId]?.includes(canonicalChannel) ||
-    role.additionalChannelAccess?.[workspaceId]?.includes(canonicalChannel)
-  );
+  const id = canonicalChannel(workspaceId, channelId);
+  if (!id) return false;
+  if (workspaceId === "company") return true;
+  if (!canAccessWorkspace(role, workspaceId)) return false;
+  const restricted =
+    workspaceId === "digital" &&
+    technicalChannelDefinitions.some(
+      (channel) => channel.name === id && channel.privacy === "private",
+    );
+  return !restricted || canAccessRestrictedChannel(role, workspaceId, id);
 }
 export const canAccessEmergency = (person: PolicyPerson, incidentId: string) =>
   !!previewRoleFor(person)?.emergencyMemberships.includes(incidentId);

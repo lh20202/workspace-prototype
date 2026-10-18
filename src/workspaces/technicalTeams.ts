@@ -22,18 +22,7 @@ export interface ConversationMessage {
   ref?: string;
   fileLink?: { fileId: string; correctedFrom?: "onedrive" };
 }
-export const technicalChannels = [
-  "General",
-  "Engineering",
-  "Innovators",
-  "AI Lab",
-  "Web & CRM DevOps",
-  "M365 & SPFx",
-  "Architecture & Governance",
-  "Platform Operations",
-  "Security Engineering",
-  "Workspace & Wiki Moderators",
-];
+export { technicalChannels } from "./technicalChannelDefinitions";
 const provisioningFileHref = functionalFileHref(
   configById.get("digital")!,
   "digital-F17",

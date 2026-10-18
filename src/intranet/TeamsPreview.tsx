@@ -1,6 +1,6 @@
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { matchesDisplayText } from "../i18n/search";
-import { canAccessArea } from "../access/policy";
+import { canAccessArea, canAccessWorkspace } from "../access/policy";
 import { useState, useEffect } from "react";
 import { functionalConfigs } from "../workspaces/config";
 import {
@@ -43,12 +43,17 @@ import DocumentLibrary, {
   type LibraryDocument,
 } from "../sharepoint/DocumentLibrary";
 
-import { teamsGroups, defaultTeamsContext } from "../teams/navigation";
+import {
+  teamsGroups,
+  defaultTeamsContext,
+  readChannelEntryContext,
+  channelContextValue,
+  channelNavigationFor,
+} from "../teams/navigation";
 import {
   canSeeDepartment,
-  canSeeWorkspace,
   canSeeWorkspaceChannel,
-  visibleWorkspaceChannels,
+  workspaceChannels,
 } from "../teams/visibility";
 import AccessBoundary from "../access/AccessBoundary";
 import { hasWorkspaceTeams } from "../workspaces/registry";
@@ -85,26 +90,38 @@ export default function TeamsPreview() {
   const params = new URLSearchParams(location.search);
   const person = teamsPersonForSearch(location.search);
   const departmentPreview = readDepartmentPreview(location.search);
-  const requestedWorkspace = params.get("workspace");
+  const entryContext = readChannelEntryContext(
+    location.pathname,
+    location.search,
+  );
+  const entryScope = channelContextValue(entryContext);
+  const requestedWorkspace = entryContext
+    ? entryContext.kind === "workspace"
+      ? entryContext.id
+      : null
+    : params.get("workspace");
   const defaultContext = defaultTeamsContext(person);
   const workspace =
     workspaces.find((item) => item.id === requestedWorkspace) ||
     workspaces.find(
       (item) => item.id === (defaultContext.workspaceId || "planning"),
     )!;
-  const department =
-    departmentPreview ||
-    resolveDepartment(params.get("department") || params.get("division")) ||
-    (!requestedWorkspace
-      ? resolveDepartment(defaultContext.departmentId || null)
-      : undefined);
+  const department = entryContext
+    ? entryContext.kind === "department"
+      ? resolveDepartment(entryContext.id)
+      : undefined
+    : departmentPreview ||
+      resolveDepartment(params.get("department") || params.get("division")) ||
+      (!requestedWorkspace
+        ? resolveDepartment(defaultContext.departmentId || null)
+        : undefined);
   const companyFallback =
     !requestedWorkspace && !department
       ? defaultContext.companyChannelId
       : undefined;
   const workspaceUnavailable = !department && !hasWorkspaceTeams(workspace.id);
   const requested =
-    params.get("channel") ||
+    (department ? "General" : params.get("channel")) ||
     (!requestedWorkspace || requestedWorkspace === defaultContext.workspaceId
       ? defaultContext.channel
       : undefined) ||
@@ -141,6 +158,7 @@ export default function TeamsPreview() {
           staff: person.id,
           channel: companyFallback,
           tab: "Posts",
+          context: entryScope,
         })}`,
       );
       return;
@@ -167,6 +185,7 @@ export default function TeamsPreview() {
       query.set("staff", person.id);
       query.set("channel", targetChannel);
       query.set("tab", tab);
+      query.set("context", entryScope);
       location.replace(`/logistics/teams?${query}`);
     }
   }, [
@@ -177,6 +196,7 @@ export default function TeamsPreview() {
     tab,
     workspaceUnavailable,
     companyFallback,
+    entryScope,
   ]);
   function chooseChannel(workspaceId: string, name: string) {
     const query = new URLSearchParams({
@@ -184,6 +204,7 @@ export default function TeamsPreview() {
       workspace: workspaceId,
       channel: name,
       tab: workspaceId === "content" ? contentDefaultTab(name) : "Posts",
+      context: channelContextValue(entryContext),
     });
     if (department || workspaceId !== workspace.id)
       location.assign(`/teams?${query}`);
@@ -238,7 +259,7 @@ export default function TeamsPreview() {
     defaultContext.workspaceId,
     defaultContext.channel,
   ]);
-  const groups = teamsGroups(person).map((group) => ({
+  const groups = teamsGroups(person, entryContext).map((group) => ({
     ...group,
     channels: group.channels.map((item) => ({
       ...item,
@@ -250,7 +271,8 @@ export default function TeamsPreview() {
   }));
   const workspaceDenied = department
     ? !canSeeDepartment(person, department.id)
-    : !canSeeWorkspace(person, workspace.id);
+    : !hasWorkspaceTeams(workspace.id) ||
+      !canAccessWorkspace(person, workspace.id);
   const channelDenied =
     !department && !canSeeWorkspaceChannel(person, workspace.id, channel);
   const securityDenied =
@@ -265,12 +287,11 @@ export default function TeamsPreview() {
       );
     if (workspace.id === "digital") {
       const area = (file as OperationalFile & { area: string }).area;
+      if (!canAccessArea(person, "digital", area)) return false;
       if (channel === "Security Engineering")
         return ["operations", "m365"].includes(area);
       return channel === "General"
-        ? visibleWorkspaceChannels(person, "digital").some(
-            (name) => digitalArea[name] === area,
-          )
+        ? workspaceChannels.digital.some((name) => digitalArea[name] === area)
         : area === digitalArea[channel];
     }
     return true;
@@ -393,14 +414,16 @@ export default function TeamsPreview() {
       teamName={department?.name || workspace.title}
       channelName={department ? "General" : channel}
       groups={groups}
+      showRoleDiscovery={
+        channelNavigationFor({ person, entryContext }).showRoleDiscovery
+      }
       selectedChannelId={
         department ? `${department.id}:General` : `${workspace.id}:${channel}`
       }
       activeTab={tab}
       onTabChange={chooseTab}
       privateChannel={
-        department?.channelAccess === "Department-only" ||
-        (workspace.id === "digital" && channel === "Security Engineering")
+        workspace.id === "digital" && channel === "Security Engineering"
       }
       onOpenSharePoint={
         department || workspaceDenied || channelDenied || securityDenied

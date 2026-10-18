@@ -11,6 +11,7 @@ import { selectedStaffId } from "../intranet/catalog";
 import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "../components/PreviewRoleContext";
+import PreviewRolePrompt from "../components/PreviewRolePrompt";
 import AccessLock from "../components/AccessLock";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
@@ -152,16 +153,10 @@ export default function AccessBoundary({
             </a>
           </section>
           {showRoleHelper && (
-            <p className="access-preview-role">
-              <button
-                type="button"
-                aria-controls="preview-role"
-                onClick={preview!.focusRoleSelector}
-              >
-                {t("Try another preview role")}
-              </button>
-              <span>{t("Some preview roles can access this area.")}</span>
-            </p>
+            <PreviewRolePrompt
+              actionLabel="Try another preview role"
+              description="Some preview roles can access this area."
+            />
           )}
         </div>
         {sales && (

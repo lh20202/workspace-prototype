@@ -16,6 +16,10 @@ import CompanyMark from "../components/CompanyMark";
 import HubNavigation from "../components/HubNavigation";
 import { files, workspaceTitle, type OperationalFile } from "./data";
 import "../sharepoint/fidelity.css";
+import {
+  workspaceSeed,
+  workspaceAccessLevels,
+} from "../workspaces/accessClassification";
 import { matchesDisplayText } from "../i18n/search";
 import { LanguageToggle } from "../i18n/Language";
 export default function WorkspaceHeader({
@@ -28,6 +32,7 @@ export default function WorkspaceHeader({
   title = workspaceTitle,
   searchFiles = files,
   memberCount = 42,
+  restricted,
   helpText = "Use campaign folders for operational files, the shared location list for permits, and channels for coordination.",
 }: {
   onSearchChange?: (query: string) => void;
@@ -43,9 +48,18 @@ export default function WorkspaceHeader({
     folderPath?: string;
   })[];
   memberCount?: number | null;
+  restricted?: boolean;
   helpText?: string;
 }) {
   const [query, setQuery] = useState("");
+  const site = workspaceSeed.find(
+    ([, , href]) =>
+      typeof location !== "undefined" &&
+      (location.pathname === href || location.pathname.startsWith(`${href}/`)),
+  );
+  const restrictedWorkspace =
+    restricted ??
+    (site ? workspaceAccessLevels[site[0]] === "strictly-confidential" : false);
   const [favorite, setFavorite] = useState(true);
   const results = searchFiles.filter((f) =>
     matchesDisplayText(
@@ -178,7 +192,7 @@ export default function WorkspaceHeader({
           )}
         </div>
         <div className="site-context">
-          <span>Private group</span>
+          {restrictedWorkspace && <span>Private group</span>}
           <button
             aria-pressed={favorite}
             onClick={() => setFavorite(!favorite)}

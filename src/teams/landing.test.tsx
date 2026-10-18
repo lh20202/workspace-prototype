@@ -10,7 +10,6 @@ afterEach(() => vi.unstubAllGlobals());
 describe("role-specific Teams landing and shell", () => {
   it("opens each ordinary role in its own valid collaboration context", () => {
     for (const [id, team, channel] of [
-      ["taylor", "MCG Department", "General"],
       ["robin", "EAO Department", "General"],
       ["jamie", "PAC Department", "General"],
       ["devon", "Tech &amp; Digital", "Engineering"],
@@ -76,16 +75,20 @@ describe("role-specific Teams landing and shell", () => {
     }
   });
 
-  it("leaves trailing and nested Logistics routes when the new role is not a participant", () => {
+  it("retains ordinary contextual Logistics routes for an unrelated role", () => {
     const devon = staff.find((person) => person.id === "devon")!;
     for (const path of ["/logistics/teams/", "/logistics/teams/legacy-path"]) {
-      expect(
+      const target = new URL(
         teamsPreviewHrefForStaff(
           devon,
           path,
           "?staff=maya&channel=central-city&tab=Shared&file=central-deployment",
         ),
-      ).toBe("/teams?staff=devon");
+        "https://example.test",
+      );
+      expect(target.pathname).toBe(path);
+      expect(target.searchParams.get("context")).toBe("workspace:logistics");
+      expect(target.searchParams.get("file")).toBeNull();
     }
   });
 });

@@ -28,7 +28,7 @@ describe("compact Architecture destination links", () => {
     );
     expect(card).toContain('class="directory-workspace-link"');
     expect(card).toContain('class="workspace-icon"');
-    expect(card).toContain('--workspace-icon-size:20px');
+    expect(card).toContain("--workspace-icon-size:20px");
     expect(card).toContain("Research &amp; Insight");
     expect(card).not.toContain("directory-row-arrow");
     expect(card).not.toContain("ArrowRight");
@@ -78,14 +78,17 @@ describe("compact Architecture destination links", () => {
     expect(html).not.toContain("Open your Teams view");
   });
 
-  it("opens every Department as the ordinary member preview, independent of the selected executive", () => {
+  it("opens every Department in explicit context while retaining the selected executive", () => {
     const html = renderDirectory();
     for (const department of departments) {
       const href = departmentPreviewHref(department.id);
       expect(html).toContain(`href="${href.replace(/&/g, "&amp;")}"`);
       expect(
         new URL(href, "https://example.test").searchParams.get("staff"),
-      ).toBe("taylor");
+      ).toBe("robin");
+      expect(
+        new URL(href, "https://example.test").searchParams.get("context"),
+      ).toBe(`department:${department.id}`);
     }
   });
 });

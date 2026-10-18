@@ -5,30 +5,43 @@ import {
   type StaffPerson,
 } from "../intranet/catalog";
 import { channels, workspaceTitle } from "../logistics/data";
+import { departments } from "../coordination/data";
 import {
-  departments,
-  departmentHref,
-  resolveDepartment,
-} from "../coordination/data";
-import { currentProjects, projectHref, projectTitle } from "../projects/data";
+  allProjects,
+  currentProjects,
+  projectHref,
+  projectTitle,
+} from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
 import {
   canAccessChannel,
   canAccessEmergency,
   previewRoleFor,
   departmentPreviewFor,
+  defaultPreviewRoleId,
+  isProjectPinnedForRole,
 } from "../access/policy";
 import { resolveContentChannel, contentDefaultTab } from "../content/channels";
 import type { TeamsGroup } from "./TeamsShell";
 import {
   canSeeDepartment,
-  canSeeLogisticsChannel,
   canSeeProject,
   canSeeWorkspace,
   canSeeWorkspaceChannel,
   projectChannels,
   visibleWorkspaceChannels,
+  workspaceChannels,
 } from "./visibility";
+import {
+  channelContextValue,
+  readChannelEntryContext,
+  type ChannelEntryContext,
+} from "./context";
+export {
+  channelContextValue,
+  readChannelEntryContext,
+  type ChannelEntryContext,
+} from "./context";
 
 export interface DefaultTeamsContext {
   workspaceId: string | undefined;
@@ -37,12 +50,9 @@ export interface DefaultTeamsContext {
   companyChannelId?: string;
 }
 
-/** Teams landings follow explicit participation, independently of SharePoint access. */
+/** Global defaults describe personal relevance, independently of ordinary content access. */
 export function defaultTeamsContext(person: StaffPerson): DefaultTeamsContext {
   const role = previewRoleFor(person);
-  const departmentPreview = departmentPreviewFor(person);
-  if (departmentPreview)
-    return { workspaceId: undefined, departmentId: departmentPreview };
   const primary = role?.teamsLanding;
   if (
     primary?.kind === "workspace" &&
@@ -55,8 +65,7 @@ export function defaultTeamsContext(person: StaffPerson): DefaultTeamsContext {
     };
   if (
     primary?.kind === "department" &&
-    canSeeDepartment(person, primary.departmentId) &&
-    departments.some((item) => item.id === primary.departmentId)
+    canSeeDepartment(person, primary.departmentId)
   )
     return { workspaceId: undefined, departmentId: primary.departmentId };
   if (
@@ -77,141 +86,190 @@ export function defaultTeamsContext(person: StaffPerson): DefaultTeamsContext {
       departmentId: undefined,
       channel: visibleWorkspaceChannels(person, joinedWorkspace)[0],
     };
-  const department = departments.find((item) =>
-    canSeeDepartment(person, item.id),
-  );
-  return department
-    ? { workspaceId: undefined, departmentId: department.id }
-    : {
-        workspaceId: undefined,
-        departmentId: undefined,
-        companyChannelId: "important",
-      };
+  return {
+    workspaceId: undefined,
+    departmentId: undefined,
+    companyChannelId: "important",
+  };
 }
 
-export function teamsGroups(person: StaffPerson): TeamsGroup[] {
-  const departmentPreview = departmentPreviewFor(person);
-  const logisticsGroups: TeamsGroup[] = ["company", "logistics"].flatMap(
-    (team) => {
-      const joinedChannels = channels.filter(
-        (channel) =>
-          channel.team === team &&
-          (!departmentPreview || team === "company") &&
-          canSeeLogisticsChannel(person, channel),
-      );
-      if (!joinedChannels.length) return [];
-      return [
-        {
-          id: team,
-          kind: team === "company" ? "company" : "workspace",
-          label: team === "company" ? "Company Updates" : workspaceTitle,
-          channels: joinedChannels.map((c) => ({
-            id: `${team}:${c.id}`,
-            label: c.name,
-            unread: ["important", "pets", "central-city", "telephone"].includes(
-              c.id,
-            ),
-            onSelect: () =>
-              location.assign(
-                `/logistics/teams?${new URLSearchParams({ staff: person.id, channel: c.id, tab: "Posts", ...(departmentPreview ? { departmentPreview } : {}) })}`,
-              ),
-          })),
-        },
-      ];
-    },
-  );
-  return [
-    ...logisticsGroups,
-    ...workspaces
+/** One navigation model separates deliberate environment entry from a role's pinned view. */
+export function channelNavigationFor({
+  person,
+  entryContext,
+}: {
+  person: StaffPerson;
+  entryContext?: ChannelEntryContext;
+}) {
+  const legacyDepartment = departmentPreviewFor(person);
+  const context =
+    entryContext ||
+    (legacyDepartment
+      ? { kind: "department" as const, id: legacyDepartment }
+      : undefined);
+  const scope = channelContextValue(context);
+  const role = previewRoleFor(person);
+  const query = (values: Record<string, string>) =>
+    new URLSearchParams({ staff: person.id, ...values, context: scope });
+  const company: TeamsGroup = {
+    id: "company",
+    kind: "company",
+    label: "Company Updates",
+    channels: channels
       .filter(
-        (w) =>
-          !departmentPreview &&
-          w.id !== "logistics" &&
-          canSeeWorkspace(person, w.id),
+        (channel) =>
+          channel.team === "company" &&
+          canAccessChannel(person, "company", channel.id),
       )
-      .map((w) => ({
-        id: w.id,
-        kind: "workspace" as const,
-        label: w.title,
-        channels: visibleWorkspaceChannels(person, w.id).map((name) => ({
-          id: `${w.id}:${name}`,
+      .map((channel) => ({
+        id: `company:${channel.id}`,
+        label: channel.name,
+        unread: ["important", "pets"].includes(channel.id),
+        onSelect: () =>
+          location.assign(
+            `/logistics/teams?${query({ channel: channel.id, tab: "Posts" })}`,
+          ),
+      })),
+  };
+  const groups: TeamsGroup[] = [company];
+  for (const workspace of workspaces) {
+    const selected =
+      context?.kind === "workspace" && context.id === workspace.id;
+    if (context ? !selected : !canSeeWorkspace(person, workspace.id)) continue;
+    const names = selected
+      ? workspaceChannels[workspace.id] || []
+      : visibleWorkspaceChannels(person, workspace.id);
+    if (!names.length) continue;
+    groups.push({
+      id: workspace.id,
+      kind: "workspace",
+      label: workspace.id === "logistics" ? workspaceTitle : workspace.title,
+      channels: names.map((name) => {
+        const content =
+          workspace.id === "content" ? resolveContentChannel(name) : undefined;
+        const logistics =
+          workspace.id === "logistics"
+            ? channels.find(
+                (item) => item.team === "logistics" && item.name === name,
+              )
+            : undefined;
+        const channelId = logistics?.id || name;
+        return {
+          id: `${workspace.id}:${channelId}`,
           label: name,
-          unread: w.id === "digital" && name === "AI Lab",
+          unread:
+            (workspace.id === "digital" && name === "AI Lab") ||
+            (!!logistics &&
+              ["central-city", "telephone"].includes(logistics.id)),
           private: name === "Security Engineering",
           cue:
-            w.id === "content" &&
-            resolveContentChannel(name)?.kind === "temporary"
-              ? resolveContentChannel(name)?.lifecycle === "Archived"
+            content?.kind === "temporary"
+              ? content.lifecycle === "Archived"
                 ? ("Archived" as const)
                 : ("Temporary" as const)
               : undefined,
           onSelect: () =>
             location.assign(
-              `/teams?${new URLSearchParams({ staff: person.id, workspace: w.id, channel: name, tab: w.id === "content" ? contentDefaultTab(name) : "Posts" })}`,
+              `${workspace.id === "logistics" ? "/logistics/teams" : "/teams"}?${query(
+                {
+                  ...(workspace.id === "logistics"
+                    ? {}
+                    : { workspace: workspace.id }),
+                  channel: channelId,
+                  tab:
+                    workspace.id === "content"
+                      ? contentDefaultTab(name)
+                      : "Posts",
+                },
+              )}`,
             ),
-        })),
-      })),
-    ...departments
-      .filter((d) => canSeeDepartment(person, d.id))
-      .map((d) => ({
-        id: d.id,
-        kind: "department" as const,
-        label: d.name,
-        channels: [
-          {
-            id: `${d.id}:General`,
-            label: "General",
-            private: d.channelAccess === "Department-only",
-            onSelect: () =>
-              location.assign(
-                departmentPreview
-                  ? `/teams?${new URLSearchParams({ staff: person.id, department: d.id, departmentPreview: d.id, tab: "Posts" })}`
-                  : departmentHref(person.id, d.id),
-              ),
-          },
-        ],
-      })),
-    ...currentProjects
-      .filter((p) => !departmentPreview && canSeeProject(person, p.code))
-      .map((p) => ({
-        id: p.code,
-        kind: "project" as const,
-        label: projectTitle(p),
-        channels: projectChannels.map((name) => ({
-          id: `${p.code}:${name}`,
-          label: name,
-          private: p.access === "Restricted",
+        };
+      }),
+    });
+  }
+  for (const department of departments) {
+    if (
+      context
+        ? context.kind !== "department" || context.id !== department.id
+        : person.id === defaultPreviewRoleId ||
+          role?.departmentId !== department.id
+    )
+      continue;
+    groups.push({
+      id: department.id,
+      kind: "department",
+      label: department.name,
+      channels: [
+        {
+          id: `${department.id}:General`,
+          label: "General",
           onSelect: () =>
             location.assign(
-              `${projectHref(p)}/teams?${new URLSearchParams({ staff: person.id, channel: name, tab: "Posts" })}`,
+              `/teams?${query({ department: department.id, tab: "Posts" })}`,
             ),
-        })),
+        },
+      ],
+    });
+  }
+  for (const project of context?.kind === "project"
+    ? allProjects
+    : currentProjects) {
+    const selected = context?.kind === "project" && context.id === project.code;
+    if (context ? !selected : !isProjectPinnedForRole(person, project.code))
+      continue;
+    // Protected project identities/content are not advertised outside genuine entitlement.
+    if (!canSeeProject(person, project.code)) continue;
+    groups.push({
+      id: project.code,
+      kind: "project",
+      label: projectTitle(project),
+      channels: projectChannels.map((name) => ({
+        id: `${project.code}:${name}`,
+        label: name,
+        private: project.access === "Restricted",
+        cue: project.archived ? "Archived" : undefined,
+        onSelect: () =>
+          location.assign(
+            `${projectHref(project)}/teams?${query({ channel: name, tab: "Posts" })}`,
+          ),
       })),
-    ...(!departmentPreview &&
-    initialIncidents.some((incident) => canAccessEmergency(person, incident.id))
-      ? [
-          {
-            id: "emergency",
-            kind: "emergency" as const,
-            label: "Emergency Response",
-            channels: initialIncidents
-              .filter((incident) => canAccessEmergency(person, incident.id))
-              .map((incident) => ({
-                id: `emergency:${incident.id}`,
-                label: `${incident.id} · ${incident.title}`,
-                private: true,
-                onSelect: () =>
-                  location.assign(
-                    `/emergency-response/incidents/${incident.id}?staff=${person.id}`,
-                  ),
-              })),
-          },
-        ]
-      : []),
-  ].filter((group) => group.channels.length > 0);
+    });
+  }
+  const incidents = initialIncidents.filter(
+    (incident) =>
+      canAccessEmergency(person, incident.id) &&
+      (!context || (context.kind === "incident" && context.id === incident.id)),
+  );
+  if (incidents.length)
+    groups.push({
+      id: "emergency",
+      kind: "emergency",
+      label: "Emergency Response",
+      channels: incidents.map((incident) => ({
+        id: `emergency:${incident.id}`,
+        label: `${incident.id} · ${incident.title}`,
+        private: true,
+        onSelect: () =>
+          location.assign(
+            `/emergency-response/incidents/${incident.id}?${query({})}`,
+          ),
+      })),
+    });
+  return {
+    entryContext: context,
+    groups: groups.filter((group) => group.channels.length > 0),
+    showRoleDiscovery: !context && person.id === defaultPreviewRoleId,
+  };
 }
 
-/** Opening Teams never changes the colleague selected in the preview controls. */
+export function teamsGroups(
+  person: StaffPerson,
+  entryContext?: ChannelEntryContext,
+): TeamsGroup[] {
+  return channelNavigationFor({ person, entryContext }).groups;
+}
+
+/** Opening channels never changes the colleague selected in the preview controls. */
 export function teamsStaffForWorkspace(
   _workspaceId: string,
   preferredId = selectedStaffId(),
@@ -219,68 +277,43 @@ export function teamsStaffForWorkspace(
   return resolveStaffPerson(preferredId).id;
 }
 
-/** A persona switch retains only a channel the next colleague actually joined. */
+/** Preserve deliberate context on role change, while clearing file/unit/post selection. */
 export function teamsPreviewHrefForStaff(
   person: StaffPerson,
   pathname: string,
   search: string,
 ) {
   const params = new URLSearchParams(search);
-  const previousStaffId = params.get("staff");
+  const context = readChannelEntryContext(pathname, search);
   params.set("staff", person.id);
-  const ownTeams = `/teams?${new URLSearchParams({ staff: person.id })}`;
-  if (params.has("departmentPreview")) return ownTeams;
-  // A post focus is only meaningful within the original channel and identity.
-  if (previousStaffId !== person.id) params.delete("post");
-  if (
-    pathname === "/logistics/teams" ||
-    pathname.startsWith("/logistics/teams/")
-  ) {
-    const channel = channels.find(
-      (item) => item.id === (params.get("channel") || "general"),
-    );
-    if (!channel || !canSeeLogisticsChannel(person, channel)) {
-      return ownTeams;
-    }
-  } else if (pathname === "/teams") {
-    const departmentValue = params.get("department") || params.get("division");
-    const department = resolveDepartment(departmentValue);
-    if (departmentValue) {
-      if (!department || !canSeeDepartment(person, department.id))
-        return ownTeams;
-      if (
-        person.id !== previousStaffId &&
-        defaultTeamsContext(person).workspaceId
-      )
-        return ownTeams;
-      // Unit/file context belongs to the previous person; restart at their common department view.
-      for (const key of ["unit", "section", "folder", "file", "document"])
-        params.delete(key);
-    } else {
-      const workspaceId = params.get("workspace");
-      if (
-        !workspaceId ||
-        !canSeeWorkspaceChannel(
-          person,
-          workspaceId,
-          params.get("channel") || "General",
-        )
-      )
-        return ownTeams;
-    }
-  } else if (pathname.startsWith("/projects/")) {
-    const code =
-      pathname.split("/").find((part) => part.startsWith("PRJ-")) || "";
-    if (!canSeeProject(person, code)) return ownTeams;
-  } else if (pathname.startsWith("/emergency-response")) {
-    const incidentId = pathname.split("/")[3];
+  params.set("context", channelContextValue(context));
+  for (const key of [
+    "post",
+    "unit",
+    "section",
+    "folder",
+    "file",
+    "document",
+    "documentLibrary",
+    "departmentPreview",
+  ])
+    params.delete(key);
+  if (!context) {
+    // A globally selected ordinary conversation can remain selected, with the next role's curated sidebar.
     if (
-      !initialIncidents.some(
-        (incident) =>
-          incident.id === incidentId && canAccessEmergency(person, incident.id),
+      /^\/logistics\/teams(?:\/|$)/.test(pathname) &&
+      channels.some(
+        (channel) =>
+          channel.team === "company" && channel.id === params.get("channel"),
       )
     )
-      return ownTeams;
+      return `${pathname}?${params}`;
+    return `/teams?${new URLSearchParams({ staff: person.id })}`;
   }
+  if (context.kind === "department") {
+    params.delete("workspace");
+    params.set("department", context.id);
+  }
+  // A newly selected role still meets the actual private/project/incident boundary in place.
   return `${pathname}?${params}`;
 }

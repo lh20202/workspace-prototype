@@ -59,6 +59,28 @@ describe("Studio conversation fixtures", () => {
       }
   });
 
+  it("uses ordinary subject specialists with one concise creative exchange in each topic channel", () => {
+    for (const channel of [
+      "cities-mobility",
+      "education-skills",
+      "digital-society",
+      "arts-culture",
+    ]) {
+      const posts = studioPosts[channel];
+      expect(posts).toHaveLength(1);
+      const specialist = peopleDirectory.find(
+        (person) => person.name === posts[0].author,
+      )!;
+      expect(specialist).toBeTruthy();
+      expect(previewRoles.some((person) => person.id === specialist.id)).toBe(
+        false,
+      );
+      expect(specialist.role).toMatch(/Specialist|Adviser/);
+      expect(posts[0].reply).toBeTruthy();
+      expect(posts[0].handoff).toBeTruthy();
+      expect(renderConversation(channel)).toContain(specialist.name);
+    }
+  });
   it("renders only the reactions recorded on each post", () => {
     const articles = renderConversation("web").match(
       /<article\b[^>]*>[\s\S]*?<\/article>/g,

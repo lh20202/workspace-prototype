@@ -36,46 +36,39 @@ function markup(pathname = wikiBase, search = "") {
 }
 
 describe("Sales & Marketing knowledge navigation", () => {
-  it("uses the same role for specialist articles, managed-source deep links and the A–Z library", () => {
+  it("opens the same ordinary article, managed source and A–Z entry for every preview role", () => {
     const specialist = wikiArticles.find(
       (article) => article.areaId === "insight",
     )!;
-    for (const id of ["maya"]) {
-      const denied = markup(wikiArticleHref(specialist), `?staff=${id}`);
-      expect(denied).toContain("Access required");
-      expect(denied).toContain("Are you frontline sales staff?");
-      expect(denied).toContain(`href="/frontline-sales?staff=${id}"`);
-      expect(denied).not.toContain('aria-label="Wiki article"');
-      expect(denied).not.toContain(specialist.introduction);
+    for (const { id } of previewRoles) {
+      const permitted = markup(wikiArticleHref(specialist), `?staff=${id}`);
+      expect(permitted).toContain('aria-label="Wiki article"');
+      expect(permitted).toContain(specialist.introduction);
+      expect(permitted).not.toContain("Access required");
+      expect(permitted).toContain(
+        `file=${specialist.sourceId}&amp;staff=${id}`,
+      );
       const source = markup(
         `${wikiBase}/a-z`,
         `?staff=${id}&file=${specialist.sourceId}`,
       );
-      expect(source).toContain("Access required");
-      expect(source).not.toContain("Document preview");
-      const directory = markup(`${wikiBase}/a-z`, `?staff=${id}`);
-      expect(directory).toContain('class="sp-document-library"');
-      expect(directory).not.toContain(
+      expect(source).not.toContain("Access required");
+      expect(source).toContain('class="sp-document-library"');
+      expect(source).toContain(
         wikiFiles.find((file) => file.id === specialist.sourceId)!.name,
       );
-    }
-    for (const id of ["taylor", "robin", "jamie", "devon", "leonie"]) {
-      const permitted = markup(wikiArticleHref(specialist), `?staff=${id}`);
-      expect(permitted).toContain('aria-label="Wiki article"');
-      expect(permitted).not.toContain("Access required");
       const directory = markup(`${wikiBase}/a-z`, `?staff=${id}`);
+      expect(directory).toContain('class="sp-document-library"');
       expect(directory).toContain(
         wikiFiles.find((file) => file.id === specialist.sourceId)!.name,
       );
     }
   });
 
-  it("opens internal knowledge to every role, with only the frontline Insight subset restricted", () => {
+  it("opens every ordinary internal knowledge area to every role, keeping unknown areas closed", () => {
     for (const role of previewRoles) {
       for (const area of wikiAreas)
-        expect(canAccessWikiArea(role, area.id)).toBe(
-          role.id !== "maya" || area.id !== "insight",
-        );
+        expect(canAccessWikiArea(role, area.id)).toBe(true);
       expect(canAccessWikiArea(role, "unknown-knowledge-area")).toBe(false);
     }
     expect(canAccessWikiArea("not-a-role", "foundations")).toBe(false);

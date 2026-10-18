@@ -579,6 +579,7 @@ export interface Channel {
   notes: string[];
   planner: boolean;
   team: "logistics" | "company";
+  homeFeatured?: boolean;
 }
 export const channels: Channel[] = [
   {
@@ -595,6 +596,7 @@ export const channels: Channel[] = [
   },
   {
     id: "street",
+    homeFeatured: true,
     name: "In-person Operations",
     purpose:
       "Common in-person coordination, equipment and operational changes.",
@@ -655,6 +657,7 @@ export const channels: Channel[] = [
   },
   {
     id: "telephone",
+    homeFeatured: true,
     name: "Calling Campaigns",
     purpose: "Calling schedules, current scripts, questions and handovers.",
     fileIds: [
@@ -674,6 +677,7 @@ export const channels: Channel[] = [
   },
   {
     id: "coaches",
+    homeFeatured: true,
     name: "Coaches & Team Leads",
     purpose: "Operational coaching schedules and team-lead coordination.",
     fileIds: ["coach-schedule", "team-lead-checklist", "escalation-guide"],
@@ -686,6 +690,7 @@ export const channels: Channel[] = [
   },
   {
     id: "onboarding",
+    homeFeatured: true,
     name: "Training & Onboarding",
     purpose:
       "Starter sessions, training coordination and shared guide questions.",

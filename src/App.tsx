@@ -11,8 +11,7 @@ import PocAnnotation from "./components/PocAnnotation";
 import HubNavigation from "./components/HubNavigation";
 import { planningPath, planningPage } from "./utils/routes";
 import AccessBoundary from "./access/AccessBoundary";
-import { teamsStaffForWorkspace } from "./teams/navigation";
-import { visibleWorkspaceChannels } from "./teams/visibility";
+import { planningChannels } from "./planning/channels";
 import { resolveStaffPerson } from "./intranet/catalog";
 import TeamsHomePanel from "./components/TeamsHomePanel";
 import {
@@ -136,7 +135,6 @@ export default function App() {
   const [locationState, setLocationState] = useState(route);
   const { page, folder, view } = locationState;
   const restrictedAllowed = canAccessArea(person, "planning", "restricted");
-  const planningChannels = visibleWorkspaceChannels(person, "planning");
   const [logframeOpen, setLogframeOpen] = useState(() => {
     const params = new URLSearchParams(location.search);
     return (
@@ -514,20 +512,13 @@ export default function App() {
               className="teams-button"
               aria-label="Open channels"
               title="Channels"
-              onClick={() =>
-                location.assign(
-                  planningChannels.includes(planningReportingChannel)
-                    ? planningTeamsHref(person.id)
-                    : `/teams?${new URLSearchParams({ staff: teamsStaffForWorkspace("planning", new URLSearchParams(location.search).get("staff") || undefined), workspace: "planning", channel: planningChannels[0] })}`,
-                )
-              }
+              onClick={() => location.assign(planningTeamsHref(person.id))}
             >
               <img src="/images/teams-logo.svg" alt="" />
             </button>
           )}
         </div>
         <div className="site-context">
-          <span>Private group</span>
           <button
             onClick={() => setFavorite(!favorite)}
             aria-pressed={favorite}
@@ -700,19 +691,19 @@ export default function App() {
                 </section>
               </div>
               <aside className="home-aside" aria-label="Planning shortcuts">
-                {planningChannels.includes(planningReportingChannel) && (
-                  <TeamsHomePanel
-                    heading="Planning & Reporting"
-                    description="Coordinate department plans, submissions and reporting."
-                    channels={[
-                      {
-                        name: planningReportingChannel,
-                        href: planningTeamsHref(person.id),
-                      },
-                    ]}
-                    openHref={planningTeamsHref(person.id)}
-                  />
-                )}
+                <TeamsHomePanel
+                  heading="Planning & Reporting"
+                  description="Coordinate department plans, submissions and reporting."
+                  workspace={{ id: "planning", name: "Planning Cycle" }}
+                  channels={planningChannels
+                    .filter((name) => name === planningReportingChannel)
+                    .map((name) => ({
+                      id: name,
+                      name,
+                      href: `/teams?${new URLSearchParams({ staff: person.id, workspace: "planning", context: "workspace:planning", channel: name, tab: "Posts" })}`,
+                    }))}
+                  openHref={planningTeamsHref(person.id)}
+                />
                 <section className="department-jumps">
                   <h3>Jump to department submissions</h3>
                   <p>2027 Annual Planning</p>

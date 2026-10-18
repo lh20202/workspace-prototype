@@ -3,12 +3,13 @@ import type { StaffPerson } from "../intranet/catalog";
 import { contentChannels, resolveContentChannel } from "../content/channels";
 import { technicalChannels } from "../workspaces/technicalTeams";
 import { channels as logisticsChannels } from "../logistics/data";
+import { planningChannels } from "../planning/channels";
 import {
   previewRoles,
   canAccessChannel,
   canAccessDepartment,
   canAccessProjectTeam,
-  previewRoleFor,
+  isChannelPinnedForRole,
 } from "../access/policy";
 
 /** Compatibility exports are projections, never a second membership table. */
@@ -38,7 +39,7 @@ export const workspaceChannels: Record<string, string[]> = {
   logistics: logisticsChannels
     .filter((channel) => channel.team === "logistics")
     .map((channel) => channel.name),
-  planning: ["General", "Planning coordination", "Planning & Reporting"],
+  planning: planningChannels,
   content: contentChannels.map((channel) => channel.name),
   digital: technicalChannels,
 };
@@ -58,12 +59,17 @@ export const isWorkspaceMember = (
 ) =>
   !!workspaceChannels[workspaceId]?.some((channel) => {
     const id = channelKey(workspaceId, channel);
-    return !!id && canAccessChannel(person, workspaceId, id);
+    return (
+      !!id &&
+      isChannelPinnedForRole(person, workspaceId, id) &&
+      canAccessChannel(person, workspaceId, id)
+    );
   });
 export function canSeeWorkspace(
   person: Pick<StaffPerson, "id">,
   workspaceId: string,
 ) {
+  // Compatibility name: this is global sidebar relevance, never ordinary workspace access.
   return (
     hasWorkspaceTeams(workspaceId) && isWorkspaceMember(person, workspaceId)
   );
@@ -73,12 +79,11 @@ export function visibleWorkspaceChannels(
   workspaceId: string,
 ) {
   if (!hasWorkspaceTeams(workspaceId)) return [];
-  const curated = previewRoleFor(person)?.teamChannels[workspaceId] || [];
   return (workspaceChannels[workspaceId] || []).filter((channel) => {
     const key = channelKey(workspaceId, channel);
     return (
       !!key &&
-      curated.includes(key) &&
+      isChannelPinnedForRole(person, workspaceId, key) &&
       canSeeWorkspaceChannel(person, workspaceId, channel)
     );
   });

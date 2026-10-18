@@ -161,9 +161,9 @@ export const studioPosts: Record<string, StudioPost[]> = {
   "cities-mobility": [
     {
       id: "city-context",
-      author: "Nadia Stein",
+      author: "Mira Kline",
       time: "Today, 08:55",
-      text: "I’ve put the agreed transport terms in the brief. Can we lead with what changes for readers, then bring in the wider city context?",
+      text: "The brief uses the agreed transport terms. Lead with the route changes and travel options; the wider city context can follow. The service disruption is temporary, so avoid suggesting a permanent route closure.",
       attachment: "coastal-brief",
       handoff: {
         label: "Pass topic context to Editorial Desk",
@@ -171,20 +171,24 @@ export const studioPosts: Record<string, StudioPost[]> = {
       },
       reply: {
         author: "Alex Morgan",
-        text: "Yes, that’s clearer. I’ll link the note here so the desks can work from it.",
+        text: "That helps. I’ll use that distinction in the opening and send the revised public copy through Production Coordination for release review.",
       },
     },
   ],
   "education-skills": [
     {
       id: "skills-context",
-      author: "Nadia Stein",
+      author: "Felix Ward",
       time: "Yesterday, 14:10",
-      text: "The audio intro still doesn’t quite say what people will learn. I’d make that the first sentence. The Future Skills Week evaluation is useful background, but the old campaign wording won’t fit this one.",
+      text: "The audio intro should explain what people will learn before listing the sessions. The Future Skills Week evaluation is useful context, but this programme has a different audience. Keep the practical outcome in the first sentence.",
       attachment: "audio-script",
       handoff: {
         label: "Send the reviewed context to Publications & Email",
         channel: "publications",
+      },
+      reply: {
+        author: "Rory Bell",
+        text: "I’ll adapt that opening for the email and social copy. The reviewed script stays in the workspace so each desk can use the same source.",
       },
       reactions: [{ emoji: "👍", count: 2 }],
     },
@@ -192,24 +196,32 @@ export const studioPosts: Record<string, StudioPost[]> = {
   "digital-society": [
     {
       id: "digital-context",
-      author: "Inez Hart",
+      author: "Sana Malik",
       time: "Today, 09:20",
-      text: "I’ve split the brief into the public explanation and the text inside the sign-up journey. Does the first part explain the service well enough before we ask people to register? Digital has the technical requirements.",
+      text: "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech & Digital.",
       attachment: "landing-brief",
       handoff: {
         label: "Review the public explanation in Editorial Desk",
         channel: "editorial",
+      },
+      reply: {
+        author: "Inez Hart",
+        text: "Agreed. I’ll move the explanation above the registration link, check the headings, and send the content order back for review.",
       },
     },
   ],
   "arts-culture": [
     {
       id: "culture-context",
-      author: "Alex Morgan",
+      author: "Leo Moreno",
       time: "Yesterday, 16:00",
-      text: "The photo selects are attached. They’re cleared for print only, so we’ll need a separate rights check if the event team wants a digital version. Can someone check the programme context and credits before we pass them on?",
+      text: "The programme names and image credits are checked in the selects sheet. These photos are cleared for print only. Please keep those credits with the layout; a digital version needs a separate rights check before release.",
       attachment: "print-selects",
       handoff: { label: "Coordinate the visual handoff", channel: "video" },
+      reply: {
+        author: "Alex Morgan",
+        text: "I’ll keep the credits in the print layout and flag the digital rights check in the production handoff. The approved selects sheet stays alongside the working files.",
+      },
     },
   ],
   "coastal-flooding": [

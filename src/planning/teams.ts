@@ -14,7 +14,7 @@ export const departmentSubmissionsHref = `${planningPath("planning")}?${new URLS
 export const awayDayRegistrationHref = "/planning?event=strategy-away-day";
 export const logframeHref = `${sharepointDestination("planning", logframeDocument.id)}&mode=guided`;
 export const planningTeamsHref = (staff: string, tab = "Posts") =>
-  `/teams?${new URLSearchParams({ staff, workspace: "planning", channel: planningReportingChannel, tab })}`;
+  `/teams?${new URLSearchParams({ staff, workspace: "planning", context: "workspace:planning", channel: planningReportingChannel, tab })}`;
 
 /** References to the existing working files; there are no channel-owned copies. */
 export const planningChannelFiles = documents.filter(

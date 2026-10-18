@@ -106,3 +106,28 @@
     transition: none;
   }
 }
+.teams-home-channel-group + .teams-home-channel-group {
+  margin-top: 20px;
+}
+:root .app-shell .teams-home-channel-group h3 {
+  margin: 0 0 4px;
+  color: #616161;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.teams-home-channels small > svg {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  vertical-align: text-bottom;
+}
+.teams-home-channel-group .teams-home-channels > a {
+  min-height: 36px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 13px;
+  line-height: 18px;
+}
