@@ -9,4 +9,8 @@ export const germanOneDriveTechnical: Record<string, string> = {
     "Kein Problem, danke! Jetzt können wir alle denselben Link verwenden.",
   "· Edited": "· Bearbeitet",
   "Open M365 & SPFx working folder": "Arbeitsordner M365 & SPFx öffnen",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Thanks, Ari. That link points to your personal OneDrive. Could you move the working copy into the M365 & SPFx folder in Tech and share the link here?":
+    "Danke, Ari. Der Link führt zu deinem persönlichen OneDrive. Könntest du die Arbeitsfassung in den Ordner M365 & SPFx unter Technik verschieben und den Link hier teilen?",
 };

@@ -72,4 +72,10 @@ export const germanDiscoverability: Record<string, string> = {
     "Die Programmnamen und Bildnachweise in der Auswahltabelle sind geprüft. Diese Fotos sind nur für Print freigegeben. Bitte behaltet die Nachweise im Layout. Vor der Freigabe einer digitalen Fassung müssen die Rechte gesondert geprüft werden.",
   "I’ll keep the credits in the print layout and flag the digital rights check in the production handoff. The approved selects sheet stays alongside the working files.":
     "Ich lasse die Nachweise im Printlayout und vermerke die Prüfung der digitalen Nutzungsrechte bei der Produktionsübergabe. Die freigegebene Auswahltabelle bleibt bei den Arbeitsdateien.",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Page copy, accessibility and content acceptance. CMS engineering stays in Tech.":
+    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische Arbeit am CMS bleibt bei „Technik“.",
+  "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech.":
+    "Die öffentliche Erklärung sollte das Angebot beschreiben, bevor sie zur Anmeldung auffordert. Trennt die Teilnahmevoraussetzungen von den Formularhinweisen. Die Menschen müssen zuerst verstehen, ob das Angebot für sie nützlich ist. Die technischen Anforderungen liegen bei „Technik“.",
 };

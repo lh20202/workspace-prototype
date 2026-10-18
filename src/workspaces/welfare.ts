@@ -5,7 +5,7 @@ import {
   previewRoles,
 } from "../access/policy";
 
-export const welfareTitle = "Welfare & Employee Representation";
+export const welfareTitle = "Welfare";
 export const welfareHref = "/welfare-representation";
 export const welfareAreas = [
   {

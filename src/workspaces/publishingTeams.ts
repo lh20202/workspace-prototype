@@ -1,6 +1,6 @@
 import type { ConversationMessage } from "./technicalTeams";
 
-/** Historical exchanges are rendered only in Tech & Digital’s moderator channel. */
+/** Historical exchanges are rendered only in Tech’s moderator channel. */
 export const publishingPosts: ConversationMessage[] = [
   {
     channel: "General",

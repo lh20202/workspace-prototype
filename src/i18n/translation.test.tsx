@@ -65,25 +65,32 @@ describe("English and German display language", () => {
       North: "Nord",
       East: "Ost",
       West: "West",
-      "Research & Insight": "Forschung & Analyse",
+      "Research Lab": "Forschungslabor",
       "Creative Studio": "Kreativstudio",
-      "Acquisition Logistics": "Akquiselogistik",
-      "Client & Customer Relations": "Beziehungen zu Auftraggebern und Kunden",
-      "Executive & CEO": "Geschäftsführung & CEO",
+      Acquisitions: "Akquise",
+      "Client Relations": "Kundenbeziehungen",
+      CEO: "CEO",
       "Planning Cycle": "Planungszyklus",
-      "Project Centre": "Projektzentrale",
-      "Quality & Monitoring": "Qualität & Monitoring",
+      Projects: "Projekte",
+      "Quality Monitoring": "Qualitätsmonitoring",
       Legal: "Recht",
       "Office Services": "Büroservices",
-      "Tech & Digital": "Technik & Digitales",
-      "Company Archives": "Unternehmensarchiv",
-      "Culture & Inclusion": "Kultur & Inklusion",
-      "Learning Management": "Lernmanagement",
-      "Internal Events & Networking": "Interne Veranstaltungen & Netzwerke",
-      "Personnel Admin": "Personalverwaltung",
+      Tech: "Technik",
+      Archives: "Archiv",
+      "Workforce & Ethics": "Belegschaft & Ethik",
+      Curriculum: "Curriculum",
+      "Internal News & Networking": "Interne Nachrichten & Netzwerke",
+      Personnel: "Personal",
       "Workers' Union": "Arbeitnehmervertretung",
-      "Welfare & Safeguarding": "Fürsorge & Schutz",
+      Welfare: "Fürsorge",
       South: "Süd",
+      "Media Library": "Medienbibliothek",
+      "Membership Portal": "Mitgliederportal",
+      "Money In": "Einnahmen",
+      "Money Out": "Ausgaben",
+      "Value for Money": "Wirtschaftlichkeit",
+      "Bank Vault": "Tresor",
+      "Jump to…": "Direkt zu…",
       "Frontline Crew Portal": "Frontline Crew Portal",
     };
     for (const [english, german] of Object.entries(hubLabels)) {
@@ -96,8 +103,9 @@ describe("English and German display language", () => {
     expect(translateText("Office Services workspace", "de")).toBe(
       "Arbeitsbereich Büroservices",
     );
-    expect(translateText("Legal workspace", "de")).toBe(
-      "Arbeitsbereich Recht",
+    expect(translateText("Legal workspace", "de")).toBe("Arbeitsbereich Recht");
+    expect(translateText("Client Relations workspace", "de")).toBe(
+      "Arbeitsbereich Kundenbeziehungen",
     );
     expect(translateText("Customer Care & Relations workspace", "de")).toBe(
       "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",

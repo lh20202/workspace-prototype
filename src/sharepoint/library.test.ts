@@ -11,6 +11,7 @@ import {
   libraryDate,
   libraryFolders,
   libraryLocation,
+  libraryTitleMatches,
   queryLibrary,
   type LibraryDocument,
   type LibraryDefinition,
@@ -134,6 +135,60 @@ describe("SharePoint library navigation", () => {
         "Campaigns/Current",
       ).folder,
     ).toBe("Campaigns/Current");
+  });
+
+  it("preserves folder and file bookmarks only for reviewed library title renames", () => {
+    const renamedLibraries = [
+      ["Workforce & Culture", "Workforce & Ethics"],
+      ["Capability & Learning", "Curriculum"],
+      ["Quality & Monitoring", "Quality Monitoring"],
+      ["Income & Reconciliation", "Money In"],
+      ["Income & Reconciliation", "Money Out"],
+      ["Payments & Close", "Money Out"],
+      ["Planning & Analysis", "Value for Money"],
+      ["Treasury & Banking", "Bank Vault"],
+      ["Research & Insight", "Research Lab"],
+    ];
+    for (const [previousTitle, title] of renamedLibraries) {
+      expect(libraryTitleMatches(title, title)).toBe(true);
+      expect(libraryTitleMatches(previousTitle, title)).toBe(true);
+      const params = new URLSearchParams({
+        library: previousTitle,
+        folder: "Campaigns/Previous",
+      });
+      expect(libraryLocation(params, title, files)).toEqual({
+        folder: "Campaigns/Previous",
+        file: undefined,
+      });
+      params.set("file", "DOC-101");
+      expect(libraryLocation(params, title, files)).toEqual({
+        folder: "Campaigns/Current",
+        file: files[0],
+      });
+      params.set("file", "unavailable-file");
+      expect(libraryLocation(params, title, files).file).toBeUndefined();
+    }
+    for (const unrelatedTitle of [
+      "Other",
+      "Capability & Learning",
+      "Workforce & Culture ",
+      "workforce & culture",
+    ]) {
+      expect(libraryTitleMatches(unrelatedTitle, "Workforce & Ethics")).toBe(
+        false,
+      );
+      expect(
+        libraryLocation(
+          new URLSearchParams({
+            library: unrelatedTitle,
+            folder: "Campaigns/Previous",
+            file: "DOC-101",
+          }),
+          "Workforce & Ethics",
+          files,
+        ),
+      ).toEqual({ folder: "", file: undefined });
+    }
   });
 
   it("derives a readable version trail from the file's status, editor and modification date", () => {

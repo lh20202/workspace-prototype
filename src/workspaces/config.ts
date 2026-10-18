@@ -117,7 +117,7 @@ const seeds = {
     areas: [
       [
         "monitoring",
-        "Quality & Monitoring",
+        "Quality Monitoring",
         "Quality reviews, recurring issues, corrective actions and cross-company follow-up.",
         "safetyculture",
       ],
@@ -316,7 +316,7 @@ const seeds = {
       [
         "systems-engineering",
         "People Platform Integration",
-        "Review technical API change; employment records remain in Employment & Hiring Administration",
+        "Review technical API change; employment records remain in Personnel",
       ],
       [
         "ai-automation",
@@ -505,18 +505,18 @@ const seeds = {
       ],
       [
         "culture",
-        "Leadership, Culture & Inclusion",
+        "Workforce & Ethics",
         "Leadership, inclusive working practices and culture development.",
       ],
       [
         "learning",
-        "Capability & Learning",
+        "Curriculum",
         "Learning design, capability reviews and onboarding development.",
       ],
       [
         "frameworks",
         "Reward & Employment Frameworks",
-        "Organisation-wide reward principles and employment-framework design; individual administration belongs to Employment & Hiring Administration.",
+        "Organisation-wide reward principles and employment-framework design; individual administration belongs to Personnel.",
       ],
       [
         "communications",
@@ -526,7 +526,7 @@ const seeds = {
       ],
       [
         "communities",
-        "Staff Communities & Company Events",
+        "Internal News & Networking",
         "Opt-in networks, open events, programme planning and staff experience.",
       ],
       [
@@ -537,7 +537,7 @@ const seeds = {
       [
         "wellbeing",
         "Wellbeing Programmes",
-        "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare & Employee Representation.",
+        "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare.",
       ],
     ],
     items: [

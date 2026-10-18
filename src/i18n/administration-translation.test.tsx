@@ -107,8 +107,8 @@ describe("German administration terminology reviewed after English completion", 
           content.description || "",
         ]),
       ].filter(Boolean)) {
-        if (copy === "Sales & Marketing Wiki")
-          expect(german(copy)).toBe(copy); // Preserve the established Wiki brand.
+        if (["Sales & Marketing Wiki", "CEO", "Curriculum"].includes(copy))
+          expect(german(copy)).toBe(copy); // These labels are also used in German.
         else expect.soft(german(copy), `${path}: ${copy}`).not.toBe(copy);
       }
     }

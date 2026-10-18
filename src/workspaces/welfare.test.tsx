@@ -27,7 +27,7 @@ function render(path: string, personId: string) {
   return renderToStaticMarkup(createElement(WelfareWorkspace));
 }
 
-describe("Welfare & Employee Representation has one protected owner", () => {
+describe("Welfare has one protected owner", () => {
   it("registers one controlled site while retaining independent focal points outside preview roles", () => {
     expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");
     expect(workspaceById.get("welfare")?.teams).toBe(false);
@@ -211,7 +211,7 @@ describe("Welfare & Employee Representation has one protected owner", () => {
       .areas.find((area) => area.id === "wellbeing")!;
     expect(wellbeing.name).toBe("Wellbeing Programmes");
     expect(wellbeing.summary).toContain(
-      "confidential support and duty-of-care follow-up belong to Welfare & Employee Representation",
+      "confidential support and duty-of-care follow-up belong to Welfare",
     );
     expect(
       configById

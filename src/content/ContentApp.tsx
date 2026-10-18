@@ -562,14 +562,14 @@ export default function ContentApp() {
                     <StaffLink
                       href={externalPreviewHref("media-library", base)}
                     >
-                      <EnvironmentIcon type="portal" /> Global Media Library{" "}
+                      <EnvironmentIcon type="portal" /> Media Library{" "}
                       <ArrowUpRight20Regular />
                     </StaffLink>
                     <StaffLink href="/audience-innovation/research">
                       Audience evidence <ArrowRight20Regular />
                     </StaffLink>
                     <StaffLink href="/digital-tech/web-crm">
-                      CMS engineering in Tech & Digital <ArrowRight20Regular />
+                      CMS engineering in Tech <ArrowRight20Regular />
                     </StaffLink>
                   </div>
                 </div>
@@ -691,7 +691,7 @@ export default function ContentApp() {
                 </StaffLink>
                 {page === "digital" && (
                   <StaffLink href="/digital-tech/web-crm">
-                    Tech & Digital
+                    Tech
                   </StaffLink>
                 )}
                 {packageContext &&
@@ -842,7 +842,7 @@ export default function ContentApp() {
               </StaffLink>
               <p>
                 <StaffLink href="/audience-innovation/analytics">
-                  Return performance evidence to Research & Insight
+                  Return performance evidence to Research Lab
                 </StaffLink>
               </p>
               {selected.id === "PKG-102" && (

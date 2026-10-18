@@ -116,11 +116,11 @@ export const externalEnvironments: ExternalEnvironment[] = [
   { id: "taskforce", name: "International Crew Portal", theme: "navy" },
   {
     id: "members",
-    name: "Executive Committee Members portal",
+    name: "Membership Portal",
     theme: "burgundy",
   },
   { id: "city-health", name: "City Health Unit", theme: "teal" },
-  { id: "media-library", name: "Global Media Library", theme: "violet" },
+  { id: "media-library", name: "Media Library", theme: "violet" },
 ];
 export const externalEnvironmentById = new Map(
   externalEnvironments.map((environment) => [environment.id, environment]),

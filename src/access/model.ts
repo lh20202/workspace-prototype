@@ -71,7 +71,7 @@ const specialContacts: Record<string, AccessFocalPoint> = {
 };
 const specialWorkspaces: Record<string, { title: string; href: string }> = {
   governance: {
-    title: "Executive Committee Members portal",
+    title: "Membership Portal",
     href: "/governance",
   },
   emergency: { title: "Emergency Response", href: "/emergency-response" },
@@ -163,6 +163,22 @@ export function accessWorkspaceId(
       "Legal, Privacy & Compliance": "legal",
       "Customer Relations": "customer",
       "Customer Care & Relations": "customer",
+      "Client & Customer Relations": "customer",
+      "Research & Insight": "audience",
+      "Audience Research & Marketing Insight": "audience",
+      "Acquisition Logistics": "logistics",
+      "Acquisition & Activation Logistics": "logistics",
+      "Executive & CEO": "executive",
+      "Project Centre": "projects",
+      "Quality & Monitoring": "quality",
+      "Tech & Digital": "digital",
+      "Company Archives": "archives",
+      "Global Media Library": "media-library",
+      "Executive Committee Members portal": "members",
+      "Employment & Hiring Administration": "employment",
+      "Personnel Admin": "employment",
+      "Welfare & Employee Representation": "welfare",
+      "Welfare & Safeguarding": "welfare",
     };
     if (value && Object.hasOwn(legacyWorkspaceNames, value))
       return legacyWorkspaceNames[value];

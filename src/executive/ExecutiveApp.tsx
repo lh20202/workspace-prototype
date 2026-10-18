@@ -177,7 +177,7 @@ export default function ExecutiveApp() {
   const portal = (
     <StaffLink href="/governance/approved">
       <EnvironmentIcon type="portal" />
-      Executive Committee Members portal ↗
+      Membership Portal ↗
     </StaffLink>
   );
   const emergency = (

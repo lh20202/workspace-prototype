@@ -23,7 +23,7 @@ import TeamsPreview from "../intranet/TeamsPreview";
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe("moderation belongs to Tech & Digital, with legacy content kept canonical", () => {
+describe("moderation belongs to Tech, with legacy content kept canonical", () => {
   it("retires the separate site, config, libraries and Team", () => {
     expect(workspaceById.has("publishing")).toBe(false);
     expect(configById.has("publishing")).toBe(false);

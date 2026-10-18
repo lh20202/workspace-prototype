@@ -73,19 +73,21 @@ describe("People & Culture keeps functional entrances in one existing workspace"
     expect(communications).toContain("All-staff meetings");
     expect(communications).toContain("Intranet &amp; Wiki");
     expect(render("/people-culture/communities")).toContain(
-      "/people-culture/workforce-documents?library=Workforce+%26+Culture&amp;folder=Company+events&amp;staff=taylor",
+      "/people-culture/workforce-documents?library=Workforce+%26+Ethics&amp;folder=Company+events&amp;staff=taylor",
     );
     expect(functionalLibraries.people).toHaveLength(3);
   });
 
   it("keeps the selected function when opening a canonical file link", () => {
-    const markup = render(
-      "/people-culture/workforce-documents?file=people-F2&library=Workforce+%26+Culture",
-    );
-    expect(currentLinks(localNavigation(markup))).toEqual([
-      "/people-culture/culture?staff=taylor",
-    ]);
-    expect(markup).toContain("Leadership Programme — Design Review.docx");
+    for (const title of ["Workforce & Ethics", "Workforce & Culture"]) {
+      const markup = render(
+        `/people-culture/workforce-documents?${new URLSearchParams({ file: "people-F2", library: title })}`,
+      );
+      expect(currentLinks(localNavigation(markup))).toEqual([
+        "/people-culture/culture?staff=taylor",
+      ]);
+      expect(markup).toContain("Leadership Programme — Design Review.docx");
+    }
   });
 
   it("keeps ordinary Personnel entrances available for all six roles without opening private areas", () => {
@@ -132,9 +134,9 @@ describe("People & Culture keeps functional entrances in one existing workspace"
         translateText(label, "de"),
       ),
     ).toEqual([
-      "Kultur & Inklusion",
-      "Lernmanagement",
-      "Interne Veranstaltungen & Netzwerke",
+      "Belegschaft & Ethik",
+      "Curriculum",
+      "Interne Nachrichten & Netzwerke",
     ]);
     expect(translateText("Controlled environments", "de")).toBe(
       "Zugriffsbeschränkte Bereiche",

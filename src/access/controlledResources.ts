@@ -683,7 +683,7 @@ export const controlledResourceInventory: ControlledResourceDefinition[] = [
     {
       id: "external:governance",
       category: "external-governance",
-      label: "Executive Committee Members portal",
+      label: "Membership Portal",
       href: "/governance",
       genuinelyRestricted: false,
     },

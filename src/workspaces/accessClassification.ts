@@ -16,7 +16,7 @@ export const workspaceSeed: [
 ][] = [
   [
     "projects",
-    "Project Centre",
+    "Projects",
     "/projects",
     "Coordinate project governance and support, and access current and completed project workspaces.",
     "Project delivery",
@@ -34,7 +34,7 @@ export const workspaceSeed: [
   ],
   [
     "logistics",
-    "Acquisition Logistics",
+    "Acquisitions",
     "/logistics",
     "Operational deployment, rotas, locations, staffing coordination and direct-delivery logistics.",
     "Campaign operations",
@@ -43,7 +43,7 @@ export const workspaceSeed: [
   ],
   [
     "audience",
-    "Research & Insight",
+    "Research Lab",
     "/audience-innovation",
     "Audience research, segmentation, journeys, behavioural insight, analysis, experimentation and marketing-automation ideation.",
     "Audience & experience",
@@ -61,7 +61,7 @@ export const workspaceSeed: [
   ],
   [
     "customer",
-    "Client & Customer Relations",
+    "Client Relations",
     "/customer-relations",
     "Customer care, relationship continuity, account stewardship, partnerships and frontline interaction quality.",
     "Customer relationships",
@@ -88,7 +88,7 @@ export const workspaceSeed: [
   ],
   [
     "quality",
-    "Quality & Monitoring",
+    "Quality Monitoring",
     "/quality-monitoring",
     "Shared workspace for monitoring quality, improving processes, coordinating process improvement work and developing more effective and environmentally responsible ways of working.",
     "Improvement",
@@ -97,7 +97,7 @@ export const workspaceSeed: [
   ],
   [
     "digital",
-    "Tech & Digital",
+    "Tech",
     "/digital-tech",
     "Shared engineering and technology workspace for building, operating and governing digital platforms, business systems, automation and emerging technology.",
     "Engineering & platforms",
@@ -124,7 +124,7 @@ export const workspaceSeed: [
   ],
   [
     "employment",
-    "Employment & Hiring Administration",
+    "Personnel",
     "/employment-admin",
     "Shared controlled workspace for recruitment administration, employment records, contracts and authorised employment changes.",
     "Employment operations",
@@ -133,7 +133,7 @@ export const workspaceSeed: [
   ],
   [
     "welfare",
-    "Welfare & Employee Representation",
+    "Welfare",
     "/welfare-representation",
     "Strictly confidential coordination for staff welfare, safeguarding and independent employee representation.",
     "Personnel",
@@ -142,7 +142,7 @@ export const workspaceSeed: [
   ],
   [
     "executive",
-    "Executive & CEO",
+    "CEO",
     "/executive",
     "Executive coordination, restricted leadership work, governance liaison and strategic initiatives.",
     "Leadership & governance",
@@ -151,7 +151,7 @@ export const workspaceSeed: [
   ],
   [
     "archives",
-    "Company Archives",
+    "Archives",
     "/archives",
     "Search, preserve and manage the company's historical records and organisational memory.",
     "Records & memory",

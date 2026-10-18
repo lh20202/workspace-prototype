@@ -92,8 +92,8 @@ describe("canonical environment and vendor identities", () => {
     vi.stubGlobal("location", new URL("https://example.test/architecture"));
     const html = renderToStaticMarkup(createElement(Directory));
     const entries = [
-      ["sales-marketing", "media-library", "Global Media Library"],
-      ["infrastructure", "members", "Executive Committee Members portal"],
+      ["sales-marketing", "media-library", "Media Library"],
+      ["infrastructure", "members", "Membership Portal"],
       ["personnel", "taskforce", "International Crew Portal"],
     ] as const;
     for (const [hub, id, label] of entries) {

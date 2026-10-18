@@ -1,5 +1,5 @@
 import type { OperationalFile } from "../logistics/data";
-export const title = "Executive & CEO";
+export const title = "CEO";
 export const description =
   "Shared workspace for executive coordination, organisation-wide decisions, governance liaison and oversight of strategic initiatives.";
 export type ExecutiveRole =

@@ -21,7 +21,7 @@ export interface OperationalFile {
   sensitivity: SensitivityLabel;
   recordState: "Working information" | "Current standard" | "Final record";
 }
-export const workspaceTitle = "Acquisition Logistics";
+export const workspaceTitle = "Acquisitions";
 export const workspacePurpose =
   "Shared workspace for coordinating active in-person, travelling and calling campaigns.";
 export const demoToday = "2026-10-14";

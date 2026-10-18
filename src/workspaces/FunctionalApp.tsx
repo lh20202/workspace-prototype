@@ -19,6 +19,7 @@ import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import AccessBoundary from "../access/AccessBoundary";
 import PocAnnotation, { PocPreviewControls } from "../components/PocAnnotation";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import { libraryTitleMatches } from "../sharepoint/library";
 import DocumentIcon from "../components/DocumentIcon";
 import NavigationIcon, {
   type NavigationKind,
@@ -259,7 +260,8 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         library &&
         requestedFileLibrary &&
         (requestedFileLibrary.id !== library.id ||
-          (requestedLibraryTitle && requestedLibraryTitle !== library.name))
+          (requestedLibraryTitle &&
+            !libraryTitleMatches(requestedLibraryTitle, library.name)))
       ? fileHref(requestedFileId)
       : "";
   useEffect(() => {
@@ -568,7 +570,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       : "Follow-up"
     : peopleDestination?.label ||
       (isCommunityPage
-        ? "Staff Communities & Events"
+        ? "Internal News & Networking"
         : library?.name || area?.name);
   return (
     <div
@@ -1001,7 +1003,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                       Internal communications
                     </StaffLink>
                     <StaffLink href={href("communities")}>
-                      Internal Events & Networking
+                      Internal News & Networking
                     </StaffLink>
                   </div>
                 )}

@@ -324,4 +324,28 @@ export const germanContent: Record<string, string> = {
     "Beim Machbarkeitsnachweis für die Company Data API würde ich die Grenze klar halten: TypeScript-Validierung am Eingang, Python-Worker für die Stapelverarbeitung. Spricht etwas dafür, die gesamte Verarbeitung hinter einem synchronen Endpunkt abzuwickeln?",
   "For the chatbot proof of concept I’d keep embeddings local and test Qdrant before a hosted vector service. The RAG harness now separates retrieval quality from answer quality, with no real customer data in the test set.":
     "Beim Chatbot-Machbarkeitsnachweis würde ich die Embeddings lokal halten und zunächst Qdrant statt eines gehosteten Vektordiensts testen. Die RAG-Testumgebung trennt jetzt Retrieval- und Antwortqualität; der Testdatensatz enthält keine echten Kundendaten.",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare.":
+    "Offene Veranstaltungen für das Wohlbefinden und die zugehörige Kommunikation. Vertrauliche Unterstützung und die Wahrnehmung der Fürsorgepflicht liegen im Arbeitsbereich „Fürsorge“.",
+  "Page copy, accessibility and content acceptance. CMS engineering stays in Tech.":
+    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische CMS-Entwicklung bleibt bei Technik.",
+  "Copy acceptance is separate from the CMS release. The platform colleagues will handle configuration, source changes and deployment in Tech; our review stays on wording, content order and accessibility.":
+    "Inhaltliche Abnahme und CMS-Veröffentlichung sind getrennte Schritte. Das Plattformteam übernimmt Konfiguration, Quellcodeänderungen und Bereitstellung im Bereich Technik; wir prüfen Formulierungen, Inhaltsreihenfolge und Barrierefreiheit.",
+  "Readers should understand the digital service before they reach the sign-up form. The brief now separates the public explanation from the copy needed inside the journey; technical requirements stay with Tech.":
+    "Die Lesenden sollten den digitalen Dienst verstehen, bevor sie das Anmeldeformular erreichen. Das Briefing trennt jetzt die öffentliche Erklärung von den Texten innerhalb des Ablaufs; technische Anforderungen bleiben bei Technik.",
+  "Thanks, Sam. As these are the actual Q4 forecast working assumptions, could you move the file to Value for Money rather than department admin? Keep a link in this thread so the conversation stays connected to the working version. Happy to help with the move.":
+    "Danke, Sam. Das sind die tatsächlichen Arbeitsannahmen für die Q4-Prognose. Könntest du die Datei in „Wirtschaftlichkeit“ statt in der Abteilungsverwaltung ablegen? Ein Link in diesem Thread hält die Unterhaltung mit der Arbeitsfassung verbunden. Ich helfe gern beim Verschieben.",
+  "Thanks, Elena — this is the programme evaluation the learning colleagues are working on. Could you move the working file to Curriculum and link it here? We can keep the department discussion in this thread. Happy to help with the move.":
+    "Danke, Elena. An dieser Programmauswertung arbeitet das Weiterbildungsteam. Könntest du die Arbeitsdatei nach „Curriculum“ verschieben und hier verlinken? Die Abteilungsdiskussion kann in diesem Thread bleiben. Ich helfe gern beim Verschieben.",
+  "Thanks — the shared candidate-workflow administration belongs in Personnel. Please keep the process checklist there and link it here. Applications, assessments, references and individual decisions must stay in their separately authorised locations. Leadership and culture programmes remain in People & Culture.":
+    "Danke. Die gemeinsame Verwaltung des Bewerbungsprozesses gehört in „Personal“. Bitte legt die Prozesscheckliste dort ab und verlinkt sie hier. Bewerbungen, Beurteilungen, Referenzen und Einzelentscheidungen müssen an gesondert autorisierten Ablageorten bleiben. Führungs- und Kulturprogramme bleiben bei „Personal und Kultur“.",
+  "Thanks, Devon — the API, authentication and integration work belongs in Tech. Please keep the technical review there and link it here. Personnel owns the business process and individual employment records, with their separate access controls.":
+    "Danke, Devon. API-, Authentifizierungs- und Integrationsarbeiten gehören zu „Technik“. Bitte legt die technische Prüfung dort ab und verlinkt sie hier. „Personal“ verantwortet den Geschäftsprozess und die individuellen Personalunterlagen mit ihren gesonderten Zugriffsrechten.",
+  "Review format risk, preservation copies, checksums, metadata completeness, digitisation and audio-visual media. Infrastructure implementation links to Tech.":
+    "Formatrisiken, Erhaltungskopien, Prüfsummen, vollständige Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung ist mit „Technik“ verknüpft.",
+  "Review technical API change; employment records remain in Personnel":
+    "Technische API-Änderung prüfen; Personalunterlagen verbleiben im Arbeitsbereich „Personal“",
+  "Organisation-wide reward principles and employment-framework design; individual administration belongs to Personnel.":
+    "Organisationsweite Vergütungsgrundsätze und Gestaltung der Beschäftigungsrahmenbedingungen; die individuelle Verwaltung gehört in den Arbeitsbereich „Personal“.",
 };

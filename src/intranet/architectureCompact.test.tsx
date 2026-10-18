@@ -29,7 +29,7 @@ describe("compact Architecture destination links", () => {
     expect(card).toContain('class="directory-workspace-link"');
     expect(card).toContain('class="workspace-icon"');
     expect(card).toContain("--workspace-icon-size:20px");
-    expect(card).toContain("Research &amp; Insight");
+    expect(card).toContain("Research Lab");
     expect(card).not.toContain("directory-row-arrow");
     expect(card).not.toContain("ArrowRight");
     expect(card).not.toContain("directory-tile");

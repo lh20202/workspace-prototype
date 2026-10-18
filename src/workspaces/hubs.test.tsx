@@ -87,13 +87,13 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(
       environmentsForHub("sales-marketing").map((item) => item.hubLabel),
     ).toEqual([
-      "Research & Insight",
+      "Research Lab",
       "Creative Studio",
-      "Acquisition Logistics",
-      "Client & Customer Relations",
+      "Acquisitions",
+      "Client Relations",
       "Sales & Marketing Wiki",
       "Frontline Crew Portal",
-      "Global Media Library",
+      "Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
       title: "Office Services",
@@ -103,14 +103,27 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(
       prototypeForPath("/welfare-representation/employee-representation"),
     ).toBe("functional");
-    expect(pageTitle("/welfare-representation")).toBe(
-      "Welfare & Employee Representation",
-    );
-    expect(accessWorkspaceId("Organisation Services")).toBe("services");
-    expect(accessWorkspaceId("Purchasing & Office")).toBe("services");
-    expect(accessWorkspaceId("Legal & Risk")).toBe("legal");
-    expect(accessWorkspaceId("Customer Relations")).toBe("customer");
-    expect(accessWorkspaceId("Customer Care & Relations")).toBe("customer");
+    expect(pageTitle("/welfare-representation")).toBe("Welfare");
+    for (const [previousName, id] of [
+      ["Organisation Services", "services"],
+      ["Purchasing & Office", "services"],
+      ["Legal & Risk", "legal"],
+      ["Customer Relations", "customer"],
+      ["Customer Care & Relations", "customer"],
+      ["Client & Customer Relations", "customer"],
+      ["Research & Insight", "audience"],
+      ["Acquisition Logistics", "logistics"],
+      ["Executive & CEO", "executive"],
+      ["Project Centre", "projects"],
+      ["Quality & Monitoring", "quality"],
+      ["Tech & Digital", "digital"],
+      ["Company Archives", "archives"],
+      ["Employment & Hiring Administration", "employment"],
+      ["Welfare & Employee Representation", "welfare"],
+      ["Global Media Library", "media-library"],
+      ["Executive Committee Members portal", "members"],
+    ])
+      expect(accessWorkspaceId(previousName), previousName).toBe(id);
     expect(workspaceById.get("legal")).toMatchObject({
       title: "Legal",
       hubLabel: "Legal",
@@ -156,7 +169,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     for (const hub of hubDefinitions)
       expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
     expect(html).toContain('aria-labelledby="hub-finance"');
-    expect(html).toContain('aria-label="Department channels"');
+    expect(html).toContain('aria-label="Jump to…"');
     expect(html).not.toContain('class="directory-teams"');
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");
@@ -191,9 +204,9 @@ describe("hub families retain one canonical owner for every environment", () => 
       expect(html).toContain(`href="${destination.href}"`);
     }
     expect(personnelDestinations.controlled).toHaveLength(3);
-    expect(html).toContain("Personnel Admin");
+    expect(html).toContain("Personnel");
     expect(html).toContain("Workers&#x27; Union");
-    expect(html).toContain("Welfare &amp; Safeguarding");
+    expect(html).toContain("Welfare");
   });
   it("keeps the Personnel hub at environment level for every functional entrance", () => {
     at("/people-culture/workforce?staff=jamie", "jamie");

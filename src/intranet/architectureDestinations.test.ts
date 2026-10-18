@@ -19,9 +19,9 @@ describe("task-oriented architecture destinations", () => {
     expect(
       personnelDestinations.normal.map(({ label, href }) => [label, href]),
     ).toEqual([
-      ["Culture & Inclusion", "/people-culture/culture"],
-      ["Learning Management", "/people-culture/learning"],
-      ["Internal Events & Networking", "/people-culture/communities"],
+      ["Workforce & Ethics", "/people-culture/culture"],
+      ["Curriculum", "/people-culture/learning"],
+      ["Internal News & Networking", "/people-culture/communities"],
     ]);
     const areas = configById.get("people")!.areas;
     for (const destination of personnelDestinations.normal) {
@@ -45,9 +45,9 @@ describe("task-oriented architecture destinations", () => {
     expect(
       personnelDestinations.controlled.map(({ label, href }) => [label, href]),
     ).toEqual([
-      ["Personnel Admin", "/employment-admin"],
+      ["Personnel", "/employment-admin"],
       ["Workers' Union", "/welfare-representation/employee-representation"],
-      ["Welfare & Safeguarding", "/welfare-representation/welfare-support"],
+      ["Welfare", "/welfare-representation/welfare-support"],
     ]);
     expect(
       personnelDestinations.controlled.every(
@@ -98,13 +98,13 @@ describe("task-oriented architecture destinations", () => {
       type: "workspace",
     });
     expect(financeJumpLinks).toEqual([
-      { label: "Income & Booking", href: "/financial-operations/income" },
+      { label: "Money In", href: "/financial-operations/income" },
       {
-        label: "Payments & Close",
+        label: "Money Out",
         href: "/financial-operations/reconciliation",
       },
-      { label: "Cost benefit analysis", href: "/financial-operations/planning" },
-      { label: "Treasury", href: "/financial-operations/treasury" },
+      { label: "Value for Money", href: "/financial-operations/planning" },
+      { label: "Bank Vault", href: "/financial-operations/treasury" },
     ]);
     expect(workspaceRegistry.filter(({ id }) => id === "finance")).toHaveLength(
       1,

@@ -102,4 +102,7 @@ export const germanTeamsHistory: Record<string, string> = {
   "Financial Close Improvement": "Verbesserung des Finanzabschlusses",
   "Digital Workplace Search Upgrade": "Verbesserung der internen Suche",
   "Supplier Onboarding Redesign": "Neugestaltung der Lieferantenaufnahme",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Tech / Security Engineering": "Technik / IT-Sicherheit",
 };

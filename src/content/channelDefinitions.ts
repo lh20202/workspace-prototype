@@ -40,7 +40,7 @@ export const channelDefinitions: Omit<ContentChannel, "members">[] = [
       .map((file) => file.id),
     focus: "conversation",
     purpose:
-      "Page copy, accessibility and content acceptance. CMS engineering stays in Tech & Digital.",
+      "Page copy, accessibility and content acceptance. CMS engineering stays in Tech.",
   },
   {
     id: "social",

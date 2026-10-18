@@ -8,15 +8,15 @@ This is an exploratory Digital Workspace proof of concept. Ordinary exploration,
 
 ## Discoverability and protection
 
-Demo User can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Project Centre, Quality & Monitoring, Legal, Office Services, Company Archives, People & Culture, Income & Financial Operations, Acquisition Logistics, Client & Customer Relations, Research & Insight, Creative Studio and Tech & Digital. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
+Demo User can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Projects, Quality Monitoring, Legal, Office Services, Archives, People & Culture, Income & Financial Operations, Acquisitions, Client Relations, Research Lab, Creative Studio and Tech. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
 
 The canonical registry retains exactly three whole workspace restrictions:
 
 | Workspace                          | Genuine participation retained                                                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Executive & CEO                    | Executive Director; individual executive areas remain separately scoped                                                  |
-| Employment & Hiring Administration | Personnel Administrator; individual records and hiring subjects remain separately scoped                                 |
-| Welfare & Employee Representation  | Personnel Administrator for its authorised subjects; safeguarding and independent representation are not broadly granted |
+| CEO                    | Executive Director; individual executive areas remain separately scoped                                                  |
+| Personnel | Personnel Administrator; individual records and hiring subjects remain separately scoped                                 |
+| Welfare  | Personnel Administrator for its authorised subjects; safeguarding and independent representation are not broadly granted |
 
 Protected children remain controlled: Restricted Planning; employee and candidate records; safeguarding; privileged legal work and investigations; financial authorisations, bank/payment data and security; participant administration and raw research; embargoed, pre-release and rights-restricted material; technical credentials, privileged access, production security and recovery; restricted tenders, visitor arrangements, historical records and network membership. Safe destination labels may be visible with a lock, without revealing protected files or conversation snippets. The separate legacy governance environment retains its controlled boundary.
 
@@ -48,9 +48,9 @@ Existing explicit workspace, Department and project bookmarks resolve determinis
 
 ## Channel-enabled workspaces
 
-The registry's four channel-enabled ordinary workspaces are **Planning Cycle, Acquisition Logistics, Creative Studio and Tech & Digital**. Each retains its header channel affordance and a lightweight canonical Home panel under every preview role. Ordinary channel access is separate from pinning. Private channels retain their actual membership checks.
+The registry's four channel-enabled ordinary workspaces are **Planning Cycle, Acquisitions, Creative Studio and Tech**. Each retains its header channel affordance and a lightweight canonical Home panel under every preview role. Ordinary channel access is separate from pinning. Private channels retain their actual membership checks.
 
-Planning always demonstrates Planning & Reporting and its shared planning files; Restricted Planning remains protected. Tech & Digital always demonstrates technical coordination, with a controlled Security Engineering destination. Acquisition Logistics always demonstrates operational coordination, including for roles outside frontline work. Individual active projects demonstrate General, Project Delivery and Decisions & Actions on their own Homes; Project Centre does not become one giant channel environment. Archived project Homes remain read-only records views, while existing direct archived channel routes retain their archived context.
+Planning always demonstrates Planning & Reporting and its shared planning files; Restricted Planning remains protected. Tech always demonstrates technical coordination, with a controlled Security Engineering destination. Acquisitions always demonstrates operational coordination, including for roles outside frontline work. Individual active projects demonstrate General, Project Delivery and Decisions & Actions on their own Homes; Projects does not become one giant channel environment. Archived project Homes remain read-only records views, while existing direct archived channel routes retain their archived context.
 
 ## Creative Studio
 
@@ -85,7 +85,7 @@ Site Administrator and Information Advisory Specialist retain equivalent delegat
 
 Root manually completed the Demo User journey without changing Preview Role: Welcome, All workspaces and hubs, all 13 ordinary Homes, Wiki and Frontline Crew Portal, plus Studio library search, document preview, register and calendar. Root also checked Creative Studio Home under all nine roles at 100% zoom.
 
-Root manually exercised the requested contextual journeys: Demo User global Company Updates/helper; all six Architecture Department entries; Studio to its channels; Studio context retained after switching to Finance; explicit global entry restoring Finance's view; Tech & Digital ordinary channels with Security protected; Sales role entering Planning & Reporting; Executive role selecting another Department without unrelated groups; and a restricted project remaining denied without entitlement. Additional checks covered ordinary project and Logistics conversations, incident denial, all three whole restricted workspaces, Restricted Planning, equal advisory/admin settings, and the technology role's ordinary settings. The role action revealed and focused the highlighted selector on desktop and mobile.
+Root manually exercised the requested contextual journeys: Demo User global Company Updates/helper; all six Architecture Department entries; Studio to its channels; Studio context retained after switching to Finance; explicit global entry restoring Finance's view; Tech ordinary channels with Security protected; Sales role entering Planning & Reporting; Executive role selecting another Department without unrelated groups; and a restricted project remaining denied without entitlement. Additional checks covered ordinary project and Logistics conversations, incident denial, all three whole restricted workspaces, Restricted Planning, equal advisory/admin settings, and the technology role's ordinary settings. The role action revealed and focused the highlighted selector on desktop and mobile.
 
 Automated evidence includes all nine roles against the canonical ordinary workspace registry and protected subject matrix; all ordinary channels versus private Security; Open Internal versus restricted projects; all six Department contexts and genuine unit boundaries; four channel-enabled Home panels under all nine roles; global curated groups; contextual focus; role switching/reset; and canonical Studio topic identities, lifecycle and conversations. Targeted policy, Wiki, publishing and OneDrive checks passed **44 tests** during implementation. Existing protection assertions were retained or replaced with equivalent checks for the intended access contract, including no private Security conversation leakage.
 

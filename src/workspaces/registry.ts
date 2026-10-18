@@ -71,18 +71,18 @@ export const architectureSections: (
   { type: "workspace", id: "finance" },
 ];
 const hubLabels: Record<string, string> = {
-  audience: "Research & Insight",
+  audience: "Research Lab",
   content: "Creative Studio",
-  logistics: "Acquisition Logistics",
-  customer: "Client & Customer Relations",
-  executive: "Executive & CEO",
+  logistics: "Acquisitions",
+  customer: "Client Relations",
+  executive: "CEO",
   planning: "Planning Cycle",
-  projects: "Project Centre",
-  quality: "Quality & Monitoring",
+  projects: "Projects",
+  quality: "Quality Monitoring",
   legal: "Legal",
   services: "Office Services",
-  digital: "Tech & Digital",
-  archives: "Company Archives",
+  digital: "Tech",
+  archives: "Archives",
   employment: "Employment & Hiring",
 };
 
@@ -158,14 +158,14 @@ export const environmentRegistry: WorkspaceDefinition[] = [
     ],
     [
       "media-library",
-      "Global Media Library",
+      "Media Library",
       "/external/media-library",
       "sales-marketing",
       "Global media and approved visual resources",
     ],
     [
       "members",
-      "Executive Committee Members portal",
+      "Membership Portal",
       "/governance",
       "infrastructure",
       "Formal member and governance environment",

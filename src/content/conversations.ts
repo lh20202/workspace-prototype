@@ -198,7 +198,7 @@ export const studioPosts: Record<string, StudioPost[]> = {
       id: "digital-context",
       author: "Sana Malik",
       time: "Today, 09:20",
-      text: "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech & Digital.",
+      text: "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech.",
       attachment: "landing-brief",
       handoff: {
         label: "Review the public explanation in Editorial Desk",

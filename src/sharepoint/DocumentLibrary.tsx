@@ -44,6 +44,7 @@ import {
   libraryDate,
   libraryFolders,
   libraryLocation,
+  libraryTitleMatches,
   libraryColumns,
   libraryFields,
   libraryValue,
@@ -266,7 +267,12 @@ export default function DocumentLibrary({
   function closeSurface() {
     setSurface(null);
     setActiveId(null);
-    if (new URLSearchParams(location.search).get("library") === title)
+    if (
+      libraryTitleMatches(
+        new URLSearchParams(location.search).get("library"),
+        title,
+      )
+    )
       updateUrl(folder);
     setFormError("");
   }

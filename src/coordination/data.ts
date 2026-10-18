@@ -139,7 +139,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Confidential",
       destination: "/audience-innovation/analytics",
-      destinationName: "Research & Insight → Measurement & Analytics",
+      destinationName: "Research Lab → Measurement & Analytics",
     },
     reply:
       "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.",
@@ -587,10 +587,10 @@ export const departments: Department[] = departmentDefinitions.map(
           sensitivity: "Internal",
           destination: "/employment-admin/recruitment-administration",
           destinationName:
-            "Employment & Hiring Administration → Recruitment Administration",
+            "Personnel → Recruitment Administration",
         },
         moderatorReply:
-          "Could you put this in Employment & Hiring Administration → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.",
+          "Could you put this in Personnel → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.",
       });
     if (id === "strategy-technology")
       posts.splice(5, 0, {
@@ -604,10 +604,10 @@ export const departments: Department[] = departmentDefinitions.map(
           kind: "Misplaced business upload",
           sensitivity: "Internal",
           destination: "/digital-tech/systems-engineering",
-          destinationName: "Tech & Digital → Engineering Delivery",
+          destinationName: "Tech → Engineering Delivery",
         },
         moderatorReply:
-          "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Employment & Hiring Administration.",
+          "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Personnel.",
       });
     posts.push({
       id: `${id}-P7`,

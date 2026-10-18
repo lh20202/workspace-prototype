@@ -87,7 +87,7 @@ describe("the role signpost uses the actual denied destination", () => {
       <PreviewRoleProvider>
         <AccessBoundary
           workspaceId="executive"
-          area="Executive & CEO"
+          area="CEO"
           personId="taylor"
           resource={{ kind: "workspace", workspaceId: "executive" }}
         />

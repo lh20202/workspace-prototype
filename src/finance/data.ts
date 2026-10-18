@@ -5,12 +5,12 @@ export const title = "Income & Financial Operations";
 export const description =
   "Shared workspace for administering incoming revenue, reconciling transactions, processing financial obligations, maintaining accounts, planning finances and managing cash.";
 export const areas = [
-  { id: "income", name: "Income Administration" },
-  { id: "reconciliation", name: "Reconciliation & Close" },
+  { id: "income", name: "Money In" },
+  { id: "reconciliation", name: "Money Out" },
   { id: "payments", name: "Payments & Settlement" },
-  { id: "planning", name: "Planning & Analysis" },
+  { id: "planning", name: "Value for Money" },
   { id: "accounting", name: "Accounting & Reporting" },
-  { id: "treasury", name: "Treasury & Banking" },
+  { id: "treasury", name: "Bank Vault" },
   { id: "calendar", name: "Financial Calendar" },
 ];
 export const systems = [

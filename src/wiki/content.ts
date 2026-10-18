@@ -161,8 +161,8 @@ article(
         "Betrachten Sie ein Segment als Planungshilfe, nicht als Vorhersage über eine einzelne Person.",
       ],
       [
-        "Take new research questions to Research & Insight; retain the source and its limitations.",
-        "Neue Forschungsfragen gehen an Forschung & Analyse. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
+        "Take new research questions to Research Lab; retain the source and its limitations.",
+        "Neue Forschungsfragen gehen an das Forschungslabor. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
       ],
     ],
   ],
@@ -549,8 +549,8 @@ article(
         "Klären Sie, was sich verändert hat, ob der Unterschied bedeutsam ist und was als Nächstes untersucht werden sollte.",
       ],
       [
-        "Current reporting and analysis remain in Research & Insight and approved dashboards.",
-        "Aktuelle Berichte und Analysen verbleiben in Forschung & Analyse und den freigegebenen Dashboards.",
+        "Current reporting and analysis remain in Research Lab and approved dashboards.",
+        "Aktuelle Berichte und Analysen verbleiben im Forschungslabor und den freigegebenen Dashboards.",
       ],
     ],
   ],
@@ -582,8 +582,8 @@ article(
         "Beschreiben Sie wahrscheinliche Bedürfnisse und Hürden und prüfen Sie, ob die Belege zur Aufgabe passen.",
       ],
       [
-        "Ask Research & Insight before changing a definition or combining small groups.",
-        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit Forschung & Analyse ab.",
+        "Ask Research Lab before changing a definition or combining small groups.",
+        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit dem Forschungslabor ab.",
       ],
     ],
   ],
@@ -615,8 +615,8 @@ article(
         "Konzentrieren Sie sich auf die anstehende Entscheidung, statt jedes denkbare Beispiel zu sammeln.",
       ],
       [
-        "Commission or update competitor research through Research & Insight.",
-        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über Forschung & Analyse.",
+        "Commission or update competitor research through Research Lab.",
+        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über das Forschungslabor.",
       ],
     ],
   ],
@@ -681,8 +681,8 @@ article(
         "Vergleichen Sie einen definierten Schritt und Zeitraum und prüfen Sie anschließend Größe und Beständigkeit des Unterschieds.",
       ],
       [
-        "Digital & Technology manages tracking implementation; Research & Insight manages interpretation.",
-        "Technik & Digitales betreut die technische Messung. Forschung & Analyse verantwortet die Auswertung.",
+        "Digital & Technology manages tracking implementation; Research Lab manages interpretation.",
+        "Technik betreut die technische Messung. Das Forschungslabor verantwortet die Auswertung.",
       ],
     ],
   ],
@@ -714,8 +714,8 @@ article(
         "Halten Sie fest, was beibehalten und verändert werden sollte und was unklar bleibt.",
       ],
       [
-        "Keep the live evaluation in Research & Insight and link to its approved conclusion.",
-        "Führen Sie die laufende Auswertung in Forschung & Analyse und verlinken Sie ihr freigegebenes Fazit.",
+        "Keep the live evaluation in Research Lab and link to its approved conclusion.",
+        "Führen Sie die laufende Auswertung im Forschungslabor und verlinken Sie ihr freigegebenes Fazit.",
       ],
     ],
   ],
@@ -747,8 +747,8 @@ article(
         "Vermeiden Sie suggestive Fragen und dokumentieren Sie Rekrutierung, Stichprobe und Auswertungsmethode.",
       ],
       [
-        "Ask Research & Insight to review the method before participant contact.",
-        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch Forschung & Analyse prüfen.",
+        "Ask Research Lab to review the method before participant contact.",
+        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch das Forschungslabor prüfen.",
       ],
     ],
   ],
@@ -1082,8 +1082,8 @@ article(
         "Nutzen Sie Interviews zur Erkundung möglicher Erklärungen und ein geeignetes Messdesign zur Prüfung ihrer Verbreitung.",
       ],
       [
-        "Ask Research & Insight for a method review before recruiting participants.",
-        "Bitten Sie Forschung & Analyse vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
+        "Ask Research Lab for a method review before recruiting participants.",
+        "Bitten Sie das Forschungslabor vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
       ],
     ],
   ],
@@ -1148,8 +1148,8 @@ article(
         "Priorisieren Sie eine konkrete Hürde und benennen Sie das für die Übergabe zuständige Team.",
       ],
       [
-        "Check the proposed change with Customer Care and Research & Insight before broader rollout.",
-        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und Forschung & Analyse.",
+        "Check the proposed change with Customer Care and Research Lab before broader rollout.",
+        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und dem Forschungslabor.",
       ],
     ],
   ],
@@ -1183,7 +1183,7 @@ article(
       ],
       [
         "Send platform faults to Digital & Technology; ask Customer Care about record-handling questions.",
-        "Melden Sie Plattformfehler an Technik & Digitales. Fragen zur Datensatzbearbeitung gehen an die Kundenbetreuung.",
+        "Melden Sie Plattformfehler an Technik. Fragen zur Datensatzbearbeitung gehen an die Kundenbetreuung.",
       ],
     ],
   ],
@@ -1281,8 +1281,8 @@ article(
         "Achten Sie auf Volumenänderungen, fehlende Daten und Unterschiede im Zielgruppen- oder Kanalmix.",
       ],
       [
-        "Take unexplained movement to Research & Insight with the same filters and reporting period.",
-        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zu Forschung & Analyse.",
+        "Take unexplained movement to Research Lab with the same filters and reporting period.",
+        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zum Forschungslabor.",
       ],
     ],
   ],
@@ -1310,8 +1310,8 @@ article(
     [
       ["Review and report", "Prüfen und berichten"],
       [
-        "Ask Research & Insight to check the design and the approved contact route.",
-        "Lassen Sie Design und freigegebenen Kontaktweg durch Forschung & Analyse prüfen.",
+        "Ask Research Lab to check the design and the approved contact route.",
+        "Lassen Sie Design und freigegebenen Kontaktweg durch das Forschungslabor prüfen.",
       ],
       [
         "Report the response base and limitations; keep participant data in the approved research system.",

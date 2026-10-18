@@ -3028,4 +3028,43 @@ export const germanMessages: Record<string, string> = {
   "CEO & Executive Committee workspace":
     "Arbeitsbereich Geschäftsleitung und Leitungsausschuss",
   "Company Archives workspace": "Arbeitsbereich Unternehmensarchiv",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Jump to…": "Direkt zu…",
+  "Welfare navigation": "Navigation für Fürsorge",
+  "Meetings, planning and team coordination.":
+    "Besprechungen, Planung und Teamkoordination.",
+  Welfare: "Fürsorge",
+  "Welfare workspace": "Arbeitsbereich Fürsorge",
+  Acquisitions: "Akquise",
+  "Research Lab": "Forschungslabor",
+  "Client Relations": "Kundenbeziehungen",
+  "Quality Monitoring": "Qualitätsmonitoring",
+  Tech: "Technik",
+  "Membership Portal": "Mitgliederportal",
+  "Membership Portal ↗": "Mitgliederportal ↗",
+  "Money In": "Einnahmen",
+  "Value for Money": "Wirtschaftlichkeit",
+  "Bank Vault & Payments": "Tresor und Zahlungsverkehr",
+  Curriculum: "Curriculum",
+  "CMS engineering in Tech": "CMS-Entwicklung in Technik",
+  "Money Out": "Ausgaben",
+  "Bank Vault": "Tresor",
+  "Workforce & Ethics": "Belegschaft & Ethik",
+  "Record held in the Membership Portal.": "Akte im Mitgliederportal geführt.",
+  "Return performance evidence to Research Lab":
+    "Leistungsnachweise an Forschungslabor zurückgeben",
+  "Tech / Security Engineering": "Technik/Sicherheitstechnik",
+  "Archives · Appraisal, retention and preservation ↗":
+    "Archiv · Bewertung, Aufbewahrung und Bestandserhaltung ↗",
+  "Page copy, accessibility and content acceptance. CMS engineering stays in Tech.":
+    "Seitentexte, Barrierefreiheit und Inhaltsabnahme. CMS-Entwicklung bleibt bei Technik.",
+  "Acquisitions workspace": "Arbeitsbereich Akquise",
+  "Research Lab workspace": "Arbeitsbereich Forschungslabor",
+  "Client Relations workspace": "Arbeitsbereich Kundenbeziehungen",
+  "Quality Monitoring workspace": "Arbeitsbereich Qualitätsmonitoring",
+  "Tech workspace": "Arbeitsbereich Technik",
+  "Personnel workspace": "Arbeitsbereich Personal",
+  "CEO workspace": "Arbeitsbereich CEO",
+  "Archives workspace": "Arbeitsbereich Archiv",
 };

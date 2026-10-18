@@ -12,10 +12,10 @@ describe("final German semantic interpretation", () => {
     const labels = {
       South: "Süd",
       East: "Ost",
-      "Income & Booking": "Einnahmen & Verbuchung",
+      "Money In": "Einnahmen",
       Tools: "Tools",
-      "Company Archives": "Unternehmensarchiv",
-      "Personnel Admin": "Personalverwaltung",
+      Archives: "Archiv",
+      Personnel: "Personal",
       "Purchasing & Suppliers": "Einkauf & Lieferanten",
       "Security Engineering": "IT-Sicherheit",
     };

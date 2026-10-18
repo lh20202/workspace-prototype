@@ -172,7 +172,7 @@ describe("business focal point before technical access escalation", () => {
     const params = new URL(href, "https://example.test").searchParams;
     expect(params.get("urgency")).toBe("urgent");
     expect(params.get("workspaceId")).toBe("employment");
-    expect(params.get("workspace")).toBe("Employment & Hiring Administration");
+    expect(params.get("workspace")).toBe("Personnel");
     expect(params.get("area")).toBe("Employee Records & Contracts");
     expect(params.get("location")).toBe(
       "Employment / Employment Records & Contracts",

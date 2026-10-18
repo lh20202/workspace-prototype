@@ -27,9 +27,9 @@ export interface ArchitectureDestination {
 }
 
 const peopleSections = [
-  ["culture", "Culture & Inclusion"],
-  ["learning", "Learning Management"],
-  ["communities", "Internal Events & Networking"],
+  ["culture", "Workforce & Ethics"],
+  ["learning", "Curriculum"],
+  ["communities", "Internal News & Networking"],
 ] as const;
 
 const people = environmentRegistry.find(
@@ -54,8 +54,7 @@ function destinationForEnvironment(
 ): ArchitectureDestination {
   return {
     id: environment.id,
-    label:
-      environment.id === "finance" ? "South" : environment.hubLabel,
+    label: environment.id === "finance" ? "South" : environment.hubLabel,
     href: environment.href,
     icon: environment.icon,
     hub: environment.hubId,
@@ -81,7 +80,7 @@ export const personnelDestinations = {
   controlled: [
     {
       ...architectureDestinationById.get("employment")!,
-      label: "Personnel Admin",
+      label: "Personnel",
     },
     {
       ...architectureDestinationById.get("welfare")!,
@@ -93,7 +92,7 @@ export const personnelDestinations = {
     },
     {
       ...architectureDestinationById.get("welfare")!,
-      label: "Welfare & Safeguarding",
+      label: "Welfare",
       href: "/welfare-representation/welfare-support",
       type: "controlled-environment" as const,
       parentWorkspaceId: "welfare",
@@ -110,10 +109,10 @@ export const orgCentralGroups = [
 ];
 
 export const financeJumpLinks = [
-  { label: "Income & Booking", href: "/financial-operations/income" },
-  { label: "Payments & Close", href: "/financial-operations/reconciliation" },
-  { label: "Cost benefit analysis", href: "/financial-operations/planning" },
-  { label: "Treasury", href: "/financial-operations/treasury" },
+  { label: "Money In", href: "/financial-operations/income" },
+  { label: "Money Out", href: "/financial-operations/reconciliation" },
+  { label: "Value for Money", href: "/financial-operations/planning" },
+  { label: "Bank Vault", href: "/financial-operations/treasury" },
 ];
 
 export function destinationsForHub(id: HubId): ArchitectureDestination[] {

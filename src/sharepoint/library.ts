@@ -326,13 +326,37 @@ export function queryLibrary(
   });
 }
 
+// Exact legacy display names remain valid for bookmarks after a destination
+// rename. These aliases do not change the supplied library's files or scope.
+const legacyLibraryTitles = new Map<string, readonly string[]>([
+  ["Workforce & Ethics", ["Workforce & Culture"]],
+  ["Curriculum", ["Capability & Learning"]],
+  ["Quality Monitoring", ["Quality & Monitoring"]],
+  ["Money In", ["Income & Reconciliation"]],
+  ["Money Out", ["Income & Reconciliation", "Payments & Close"]],
+  ["Value for Money", ["Planning & Analysis"]],
+  ["Bank Vault", ["Treasury & Banking"]],
+  ["Research Lab", ["Research & Insight"]],
+]);
+
+export function libraryTitleMatches(
+  requestedTitle: string | null,
+  title: string,
+) {
+  return (
+    requestedTitle === title ||
+    (requestedTitle !== null &&
+      (legacyLibraryTitles.get(title)?.includes(requestedTitle) ?? false))
+  );
+}
+
 export function libraryLocation(
   params: URLSearchParams,
   title: string,
   files: LibraryDocument[],
   initialFolder = "",
 ) {
-  const scoped = params.get("library") === title;
+  const scoped = libraryTitleMatches(params.get("library"), title);
   const file =
     scoped || !params.has("library")
       ? files.find((item) => item.id === params.get("file"))

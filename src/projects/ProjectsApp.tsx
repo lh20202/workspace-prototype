@@ -118,7 +118,7 @@ export default function ProjectsApp() {
     window.addEventListener("popstate", restoreTeamsLocation);
     return () => window.removeEventListener("popstate", restoreTeamsLocation);
   }, []);
-  const title = project ? projectTitle(project) : "Project Centre";
+  const title = project ? projectTitle(project) : "Projects";
   const root = project ? projectHref(project) : "/projects";
   const readOnly = !!project?.archived;
   const entryContext = readChannelEntryContext(
@@ -713,14 +713,14 @@ export default function ProjectsApp() {
           ))}
           <p>
             <StaffLink href="/archives">
-              Company Archives · Appraisal, retention and preservation ↗
+              Archives · Appraisal, retention and preservation ↗
             </StaffLink>
           </p>
         </>
       );
     return (
       <>
-        <h1>Project Centre</h1>
+        <h1>Projects</h1>
         <p>
           Shared workspace for project control, delivery support and access to
           current and completed project workspaces.

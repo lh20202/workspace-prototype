@@ -97,7 +97,7 @@ const surfaces = [
     element: () => createElement(Launcher),
   },
   {
-    name: "Architecture and Department channels rail",
+    name: "Architecture and Jump to rail",
     path: "/architecture?staff=taylor",
     element: () => createElement(Directory),
   },
@@ -117,7 +117,7 @@ const surfaces = [
     element: () => createElement(PlanningApp),
   },
   {
-    name: "Tech & Digital Home",
+    name: "Tech Home",
     path: "/digital-tech?staff=devon",
     element: () => createElement(FunctionalApp),
   },
@@ -185,7 +185,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
     const shell = render(
       createElement(TeamsShell, {
         userName: "Devon Park",
-        teamName: "Tech & Digital",
+        teamName: "Tech",
         channelName: "M365 & SPFx",
         groups: [],
         selectedChannelId: "M365 & SPFx",
@@ -227,7 +227,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
 
   it("localises the new generic labels and configured settings copy", () => {
     expect(displayText("Search channels", "de")).toBe("Kanäle durchsuchen");
-    expect(displayText("Department channels", "de")).toBe("Abteilungskanäle");
+    expect(displayText("Jump to…", "de")).toBe("Direkt zu…");
     expect(displayText("Open workspace", "de")).toBe("Arbeitsbereich öffnen");
     for (const language of ["en", "de"] as const) {
       for (const option of siteAdministrationOptions)

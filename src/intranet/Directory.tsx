@@ -244,12 +244,9 @@ export default function Directory() {
                 );
               })}
             </div>
-            <aside
-              className="directory-coordination"
-              aria-label="Department channels"
-            >
-              <h2>Department channels</h2>
-              <p>Local meetings, planning and team coordination.</p>
+            <aside className="directory-coordination" aria-label="Jump to…">
+              <h2>Jump to…</h2>
+              <p>Meetings, planning and team coordination.</p>
               {departments.map((department) => (
                 <StaffLink
                   className="department-quick-link"

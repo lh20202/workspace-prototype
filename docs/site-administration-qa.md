@@ -15,7 +15,7 @@ Site Administrator (Elliot) and Information Advisory Specialist (Leonie) use the
 
 The gear inserts Library settings or List settings immediately after Site contents only inside the corresponding accessible canonical object. Site information exposes View all site settings. That page links to Site permissions, Site columns, Site content types, Navigation, Regional settings and Site libraries and lists.
 
-Ordinary permitted roles retain Site contents, Site usage and Reading preferences. Technology & Engineering Administrator (Devon) receives these ordinary controls, not delegated ownership. Demo User can explore ordinary Tech & Digital areas while delegated owner controls remain unavailable.
+Ordinary permitted roles retain Site contents, Site usage and Reading preferences. Technology & Engineering Administrator (Devon) receives these ordinary controls, not delegated ownership. Demo User can explore ordinary Tech areas while delegated owner controls remain unavailable.
 
 ## Library and list surfaces
 
@@ -40,7 +40,7 @@ The configured label examples are the existing Wiki default and Current Producti
 
 ## Local manual verification
 
-At 100% zoom, compared Demo User, Information Advisory and Site Administrator on Planning, Creative Studio, Tech & Digital and Acquisition Logistics. Compared contextual libraries and the Locations & Permits list. Verified both elevated roles have equivalent settings, ordinary roles lack owner controls, and Devon remains ordinary.
+At 100% zoom, compared Demo User, Information Advisory and Site Administrator on Planning, Creative Studio, Tech and Acquisitions. Compared contextual libraries and the Locations & Permits list. Verified both elevated roles have equivalent settings, ordinary roles lack owner controls, and Devon remains ordinary.
 
 Exercised Site information save/reopen/cancel, permissions and explicit advanced groups, Theme/Header/Navigation previews, the wider template chooser and simulated application, canonical Site contents links, advanced metadata/content-type/navigation/regional pages and honest unavailable Site usage information. Exercised library versioning, inherited permissions, columns, views, configured content types and configured default sensitivity save/reopen.
 

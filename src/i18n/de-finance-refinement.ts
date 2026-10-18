@@ -117,4 +117,10 @@ export const germanFinanceRefinement: Record<string, string> = {
   "Liquidity Stress Scenario": "Liquiditätsstressszenario",
   "Transfer Authorisation": "Überweisungsfreigabe",
   "Banking Security Review": "Prüfung der Sicherheit im Bankverkehr",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Money In": "Einnahmen",
+  "Bank Vault → accounting": "Tresor → Buchhaltung",
+  "Bank Vault → accounting confirmation":
+    "Tresor → Bestätigung der Buchhaltung",
 };

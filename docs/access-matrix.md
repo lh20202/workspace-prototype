@@ -10,7 +10,7 @@ The complete resource-by-resource review, exact specialist grants, deliberate ex
 
 Every valid preview role can explore all ordinary internal workspace Homes, normal libraries, lists, calendars, ordinary channels, Wiki guidance and external-environment previews. Participation controls personal relevance rather than ordinary exploration.
 
-Whole-workspace restrictions remain on Executive & CEO, Employment & Hiring Administration, and Welfare & Employee Representation. Protected subjects inside ordinary workspaces retain their own checks. Unknown workspaces, subjects, private channels, projects and unit IDs fail closed. The retired governance destination is an external preview, not a business-content entitlement.
+Whole-workspace restrictions remain on CEO, Personnel, and Welfare. Protected subjects inside ordinary workspaces retain their own checks. Unknown workspaces, subjects, private channels, projects and unit IDs fail closed. The retired governance destination is an external preview, not a business-content entitlement.
 
 ## Role purpose
 

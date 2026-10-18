@@ -98,16 +98,16 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
   if (pathname.startsWith("/logistics/teams"))
-    return "Acquisition Logistics | Teams";
+    return "Acquisitions | Teams";
   const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
   );
   if (registered) return registered.title;
   if (pathname.startsWith("/employee-council"))
-    return "Welfare & Employee Representation";
-  if (pathname.startsWith("/executive")) return "CEO & Executive Committee";
+    return "Welfare";
+  if (pathname.startsWith("/executive")) return "CEO";
   if (pathname.startsWith("/governance"))
-    return "Executive Committee Members portal";
+    return "Membership Portal";
   if (pathname.startsWith("/emergency-response"))
     return "Emergency Response | Demo preview";
   if (pathname === "/teams") return "Digital workspaces | Teams";
@@ -122,7 +122,7 @@ export function pageTitle(pathname: string) {
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")
   )
-    return "Audience Research & Marketing Insight";
+    return "Research Lab";
   if (pathname === "/services" || pathname.startsWith("/services/"))
     return "Office Services";
   if (pathname === "/service-desk/it-support")
@@ -130,9 +130,9 @@ export function pageTitle(pathname: string) {
   if (pathname.startsWith("/service-desk/"))
     return "Access request | Service Desk";
   if (pathname.startsWith("/logistics/teams"))
-    return "Acquisition Logistics | Teams";
+    return "Acquisitions | Teams";
   if (pathname.startsWith("/logistics"))
-    return "Acquisition & Activation Logistics";
+    return "Acquisitions";
   return pathname === "/"
     ? "Digital Workspaces | Company intranet"
     : "Organisational Planning & Reporting";

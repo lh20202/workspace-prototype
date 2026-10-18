@@ -40,7 +40,7 @@ describe("strict Employment workspace membership", () => {
         expect(html).toContain("Raise urgent access request");
         expect(html).toContain("Jamie Ellis");
         expect(html).not.toContain(
-          'aria-label="Employment &amp; Hiring Administration navigation"',
+          'aria-label="Personnel navigation"',
         );
         expect(html).not.toContain("Document preview");
         expect(html).not.toContain("Recruitment readiness");
@@ -106,7 +106,7 @@ describe("strict Employment workspace membership", () => {
       const { html } = render(`/employment-admin?${query}`, "jamie");
       expect(html).toContain("Access required");
       expect(html).not.toContain(
-        'aria-label="Employment &amp; Hiring Administration navigation"',
+        'aria-label="Personnel navigation"',
       );
     }
   });

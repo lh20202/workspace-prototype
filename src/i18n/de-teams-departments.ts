@@ -237,4 +237,16 @@ export const germanTeamsDepartments: Record<string, string> = {
   "Today, 09:16": "Heute, 09:16",
   "Today, 11:38": "Heute, 11:38",
   "Today, 14:03": "Heute, 14:03",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Done — the feedback is in Curriculum now. I've updated the link in my post too.":
+    "Erledigt – die Rückmeldungen liegen jetzt unter Curriculum. Den Link in meinem Beitrag habe ich auch aktualisiert.",
+  "Ah, this one's part of the Q4 forecast. Can you put it in Value for Money and link it here? Fine to keep the discussion in this thread.":
+    "Ah, das gehört zur Q4-Prognose. Kannst du es unter Wirtschaftlichkeit ablegen und hier verlinken? Die Diskussion kann gern in diesem Thread bleiben.",
+  "Could you keep the feedback in Curriculum and post the link here? Then the learning team can add to the same copy.":
+    "Könntest du die Rückmeldungen unter Curriculum ablegen und hier verlinken? Dann kann das Lernteam dieselbe Datei ergänzen.",
+  "Could you put this in Personnel → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.":
+    "Könntest du sie unter „Personal → Bewerbungsadministration“ ablegen und hier verlinken? Bewerbungsdaten lassen wir bitte in den geschützten Recruiting-Bereichen.",
+  "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Personnel.":
+    "Devon, kannst du die API- und Authentifizierungsprüfung unter Technische Umsetzung ablegen und hier verlinken? Die Prozessfragen lasse ich im Arbeitsbereich „Personal“.",
 };

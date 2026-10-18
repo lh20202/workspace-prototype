@@ -464,7 +464,9 @@ export default function FinanceApp() {
             <>
               <DocumentLibrary
                 key={`${library.id}-${page}`}
-                title={library.name}
+                title={
+                  area && library.areas.length > 1 ? area.name : library.name
+                }
                 definition={definitions[library.id]}
                 files={libraryFiles(library)}
                 initialFolder={area ? folderNames[area.id] : undefined}

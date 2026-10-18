@@ -40,4 +40,32 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Opening Creative Studio in Teams…": "Kreativstudio wird in Teams geöffnet…",
   "Return performance evidence to Research & Insight":
     "Ergebnisnachweise an Forschung & Analyse zurückgeben",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Research Lab": "Forschungslabor",
+  Acquisitions: "Akquise",
+  "Client Relations": "Kundenbeziehungen",
+  "Client Relations workspace": "Arbeitsbereich Kundenbeziehungen",
+  CEO: "CEO",
+  Projects: "Projekte",
+  "Quality Monitoring": "Qualitätsmonitoring",
+  Tech: "Technik",
+  "Workforce & Ethics": "Belegschaft & Ethik",
+  Curriculum: "Curriculum",
+  "Internal News & Networking": "Interne Nachrichten & Netzwerke",
+  Personnel: "Personal",
+  Welfare: "Fürsorge",
+  "CMS engineering in Tech": "Technische CMS-Umsetzung in Technik",
+  "Return performance evidence to Research Lab":
+    "Ergebnisnachweise an das Forschungslabor zurückgeben",
+  "Media Library": "Medienbibliothek",
+  Archives: "Archiv",
+  "Membership Portal": "Mitgliederportal",
+  "Money In": "Einnahmen",
+  "Money Out": "Ausgaben",
+  "Value for Money": "Wirtschaftlichkeit",
+  "Bank Vault": "Tresor",
+  "Jump to…": "Direkt zu…",
+  "Meetings, planning and team coordination.":
+    "Besprechungen, Planung und Teamkoordination.",
 };

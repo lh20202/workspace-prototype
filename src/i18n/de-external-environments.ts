@@ -83,8 +83,7 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Income & Booking": "Einnahmen & Verbuchung",
   "Company Archives": "Unternehmensarchiv",
   "Staff Service Operations": "Büroservices",
-  "Staff Service Operations workspace":
-    "Arbeitsbereich Büroservices",
+  "Staff Service Operations workspace": "Arbeitsbereich Büroservices",
   "Purchasing & Suppliers": "Einkauf & Lieferanten",
   "Controlled access": "Geschützter Zugriff",
   "Workspace focal point": "Ansprechperson für den Arbeitsbereich",
@@ -112,4 +111,12 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Supplier sourcing": "Lieferantenauswahl",
   "Prepare sourcing decisions, supplier onboarding and renewal reviews.":
     "Beschaffungsentscheidungen, die Aufnahme neuer Lieferanten und Vertragsverlängerungen vorbereiten.",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Membership Portal": "Mitgliederportal",
+  "Membership Portal ↗": "Mitgliederportal ↗",
+  "Media Library": "Medienbibliothek",
+  Personnel: "Personal",
+  "Money In": "Einnahmen",
+  Archives: "Archiv",
 };

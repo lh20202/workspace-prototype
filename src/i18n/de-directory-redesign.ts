@@ -34,4 +34,10 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Fictional external system. No live connection or sign-in.":
     "Fiktives externes System. Keine Live-Verbindung oder Anmeldung.",
   "Demo item": "Demovorgang",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Money In": "Einnahmen",
+  "Money Out": "Ausgaben",
+  "Value for Money": "Wirtschaftlichkeit",
+  "Bank Vault": "Tresor",
 };

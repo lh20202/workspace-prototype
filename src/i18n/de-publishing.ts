@@ -140,4 +140,12 @@ export const germanPublishing: Record<string, string> = {
     "Rückmeldung zur Suche: Die veröffentlichte Richtlinie wird gefunden, das Arbeitsverfahren jedoch nicht. Ich habe beide Zugangswege in die heutige Navigationsprüfung aufgenommen.",
   "I’ll check the wording with the procedure owner. Any search configuration change stays with Digital & Technology.":
     "Ich prüfe die Formulierungen mit der verfahrensverantwortlichen Person. Änderungen an der Suchkonfiguration bleiben bei Digital & Technologie.",
+
+  // Current display names; legacy keys above remain available for saved content.
+  "Review navigation feedback with the content owners; refer search configuration to Tech.":
+    "Rückmeldungen zur Navigation mit den Inhaltsverantwortlichen prüfen; Fragen zur Suchkonfiguration an „Technik“ weitergeben.",
+  "This week’s moderation reviews are in the register. Please confirm the business owner before asking Tech to implement a change.":
+    "Die Moderationsprüfungen dieser Woche stehen in der Prüfübersicht. Bitte zuerst die fachliche Verantwortung klären, bevor „Technik“ mit einer Änderung beauftragt wird.",
+  "I’ll check the wording with the procedure owner. Any search configuration change stays with Tech.":
+    "Ich prüfe die Formulierungen mit der verfahrensverantwortlichen Person. Änderungen an der Suchkonfiguration bleiben bei „Technik“.",
 };

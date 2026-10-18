@@ -77,7 +77,7 @@ export default function WelfareWorkspace() {
       <div className="functional-layout">
         {member && (
           <aside className="sidebar services-sidebar">
-            <nav aria-label="Welfare & Employee Representation navigation">
+            <nav aria-label="Welfare navigation">
               <a
                 href={href()}
                 aria-current={page === "home" ? "page" : undefined}

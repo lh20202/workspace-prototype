@@ -25,7 +25,7 @@ describe("employment administration has a separate business owner", () => {
   it("registers real routes for employment operations without relabelling People & Culture", () => {
     expect(workspaceById.get("employment")?.href).toBe("/employment-admin");
     expect(pageTitle("/employment-admin/protected/employee-records")).toBe(
-      "Employment & Hiring Administration",
+      "Personnel",
     );
     for (const page of [
       "",
@@ -94,7 +94,7 @@ describe("employment administration has a separate business owner", () => {
       );
       expect(target.searchParams.get("file")).toBe(id);
       expect(target.searchParams.get("folder")).toBe(copies[0].folder);
-      expect(copies[0].campaign).toBe("Employment & Hiring Administration");
+      expect(copies[0].campaign).toBe("Personnel");
     }
     // Programme files keep their pre-split identities too.
     expect(people.files.find((file) => file.id === "people-F5")?.name).toBe(
@@ -341,7 +341,7 @@ describe("employment administration has a separate business owner", () => {
       .items.find((item) => item.name === "People Platform Integration")!;
     expect(technicalWork.area).toBe("systems-engineering");
     expect(technicalWork.nextAction).toContain(
-      "Employment & Hiring Administration",
+      "Personnel",
     );
     expect(
       crossWorkspaceHandoffs.find((handoff) => handoff.id === "starter")

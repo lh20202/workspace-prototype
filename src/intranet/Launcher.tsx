@@ -28,7 +28,7 @@ const choices = [
     action: "Explore workspace",
   },
   {
-    title: "Acquisition & Activation Logistics",
+    title: "Acquisitions",
     href: "/logistics",
     action: "Explore workspace",
   },
