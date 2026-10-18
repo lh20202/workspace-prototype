@@ -12,7 +12,7 @@ export const germanSimplifiedNames: Record<string, string> = {
     "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
   "Customer Care & Relations workspace":
     "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
-  "Crew portal": "Crew-Portal",
+  "Local crew portal": "Lokales Crew-Portal",
   "Advertising, Marketing & Sales Wiki": "Advertising, Marketing & Sales Wiki",
   "Planning Cycle": "Planungszyklus",
   Planning: "Planung",
@@ -34,11 +34,11 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Welfare & Safeguarding": "Fürsorge & Schutz",
   South: "Süd",
   Workspaces: "Arbeitsbereiche",
-  "Go to the Crew portal for the information and tools used in day-to-day frontline work.":
-    "Im Crew-Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",
-  "Open Crew portal": "Crew-Portal öffnen",
-  "I have a question about the Crew portal.":
-    "Ich habe eine Frage zum Crew-Portal.",
+  "Go to the Local crew portal for the information and tools used in day-to-day frontline work.":
+    "Im lokalen Crew-Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",
+  "Open Local crew portal": "Lokales Crew-Portal öffnen",
+  "I have a question about the Local crew portal.":
+    "Ich habe eine Frage zum lokalen Crew-Portal.",
   "CMS engineering in Tech & Digital":
     "Technische CMS-Umsetzung in Technik & Digitales",
   "Opening Studio in Teams…": "Studio wird in Teams geöffnet…",
@@ -77,7 +77,8 @@ export const germanSimplifiedNames: Record<string, string> = {
     "Besprechungen, Planung und Teamkoordination.",
   // Historical display names in saved content remain interpretable.
   "Sales & Marketing Wiki": "Advertising, Marketing & Sales Wiki",
-  "Frontline Crew Portal": "Crew-Portal",
+  "Frontline Crew Portal": "Lokales Crew-Portal",
+  "Crew portal": "Lokales Crew-Portal",
   "Research Lab": "Labor",
   "Research Lab workspace": "Arbeitsbereich Labor",
   "Creative Studio": "Studio",

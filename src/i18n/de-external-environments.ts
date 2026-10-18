@@ -22,7 +22,7 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Portal für Mitglieder des Exekutivausschusses ↗",
   "City Health Unit": "Städtischer Gesundheitsdienst",
   "Global Media Library": "Globale Medienbibliothek",
-  "Crew portal": "Crew-Portal",
+  "Local crew portal": "Lokales Crew-Portal",
   "This linked environment is represented at a high level in this demo.":
     "Dieses verknüpfte Angebot wird in der Demo nur im Überblick dargestellt.",
   "COMING SOON": "IN VORBEREITUNG",

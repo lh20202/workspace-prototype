@@ -147,6 +147,14 @@ export default function Directory() {
                 }
                 const hub = hubById.get(section.id)!;
                 const environments = destinationsForHub(hub.id);
+                const knowledgeEnvironments = environments
+                  .filter((environment) =>
+                    ["wiki", "portal"].includes(environment.type),
+                  )
+                  .sort(
+                    (a, b) =>
+                      Number(a.id === hub.portal) - Number(b.id === hub.portal),
+                  );
                 return (
                   <section
                     className={`directory-hub directory-hub-${hub.id}`}
@@ -211,30 +219,24 @@ export default function Directory() {
                         )}
                       </div>
                       <div className="directory-hub-support">
-                        {environments.some((environment) =>
-                          ["wiki", "portal"].includes(environment.type),
-                        ) && (
+                        {knowledgeEnvironments.length > 0 && (
                           <div
                             className="directory-knowledge"
                             aria-label="Knowledge & external environments"
                           >
-                            {environments
-                              .filter((environment) =>
-                                ["wiki", "portal"].includes(environment.type),
-                              )
-                              .map((environment) => (
-                                <StaffLink
-                                  key={environment.id}
-                                  href={environment.href}
-                                  data-environment={environment.type}
-                                >
-                                  <EnvironmentIcon
-                                    type={environment.type as "wiki" | "portal"}
-                                    size={20}
-                                  />
-                                  <span>{environment.label}</span>
-                                </StaffLink>
-                              ))}
+                            {knowledgeEnvironments.map((environment) => (
+                              <StaffLink
+                                key={environment.id}
+                                href={environment.href}
+                                data-environment={environment.type}
+                              >
+                                <EnvironmentIcon
+                                  type={environment.type as "wiki" | "portal"}
+                                  size={20}
+                                />
+                                <span>{environment.label}</span>
+                              </StaffLink>
+                            ))}
                           </div>
                         )}
                         <AdminLogins hubId={hub.id} />

@@ -92,7 +92,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       "Acquisitions",
       "Relations",
       "Advertising, Marketing & Sales Wiki",
-      "Crew portal",
+      "Local crew portal",
       "Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({

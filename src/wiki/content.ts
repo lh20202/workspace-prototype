@@ -227,8 +227,8 @@ article(
         "Halten Sie das Leistungsversprechen beim Wechsel zwischen Kontakt, Website und Service konsistent.",
       ],
       [
-        "Use Acquisition for deployment planning and the Crew portal for the current daily briefing.",
-        "Nutzen Sie Akquise für die Einsatzplanung und das Crew-Portal für das aktuelle Tagesbriefing.",
+        "Use Acquisition for deployment planning and the Local crew portal for the current daily briefing.",
+        "Nutzen Sie Akquise für die Einsatzplanung und das lokale Crew-Portal für das aktuelle Tagesbriefing.",
       ],
     ],
   ],
@@ -360,8 +360,8 @@ article(
         "Halten Sie häufige Fragen, passende Belege und den richtigen Weiterverweisungsweg zusammen.",
       ],
       [
-        "Daily conversation priorities appear in the Crew portal; stable guidance stays here.",
-        "Tägliche Gesprächsschwerpunkte stehen im Crew-Portal. Dauerhafte Hinweise bleiben hier.",
+        "Daily conversation priorities appear in the Local crew portal; stable guidance stays here.",
+        "Tägliche Gesprächsschwerpunkte stehen im lokalen Crew-Portal. Dauerhafte Hinweise bleiben hier.",
       ],
     ],
   ],
@@ -1009,8 +1009,8 @@ article(
     [
       ["Before each shift", "Vor jedem Einsatz"],
       [
-        "Read the current briefing in the Crew portal and confirm coverage with your team lead.",
-        "Lesen Sie das aktuelle Briefing im Crew-Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
+        "Read the current briefing in the Local crew portal and confirm coverage with your team lead.",
+        "Lesen Sie das aktuelle Briefing im lokalen Crew-Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
       ],
       [
         "Use the approved customer tool for activity records; keep personal notes out of shared training files.",

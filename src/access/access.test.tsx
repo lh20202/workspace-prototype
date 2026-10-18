@@ -45,7 +45,7 @@ describe("business focal point before technical access escalation", () => {
       expect(html.indexOf("Access required")).toBeLessThan(
         html.indexOf("Are you frontline sales staff?"),
       );
-      expect(html.indexOf("Open Crew portal")).toBeLessThan(
+      expect(html.indexOf("Open Local crew portal")).toBeLessThan(
         html.indexOf("Frontline sales focal point"),
       );
       expect(html.indexOf("Frontline sales focal point")).toBeLessThan(
@@ -150,6 +150,7 @@ describe("business focal point before technical access escalation", () => {
       ["Quality Monitoring", "quality"],
       ["Planning Cycle", "planning"],
       ["Frontline Crew Portal", "frontline-sales"],
+      ["Crew portal", "frontline-sales"],
       ["Sales & Marketing Wiki", "sales-wiki"],
     ];
     for (const [title, workspaceId] of previousTitles) {

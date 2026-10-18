@@ -169,6 +169,13 @@
 :root .architecture-poc-page .directory-knowledge > a:only-child {
   grid-column: 1 / -1;
 }
+:root
+  .architecture-poc-page
+  .directory-hub-sales-marketing
+  .directory-knowledge
+  > a[data-environment="wiki"] {
+  grid-column: 1 / -1;
+}
 :root .architecture-poc-page .directory-hub .directory-admin-logins {
   margin-top: 10px;
   padding-top: 8px;

@@ -92,7 +92,7 @@ describe("English and German display language", () => {
       Vault: "Tresor",
       "Jump to…": "Direkt zu…",
       "Meetings and coordination": "Besprechungen und Koordination",
-      "Crew portal": "Crew-Portal",
+      "Local crew portal": "Lokales Crew-Portal",
       "Advertising, Marketing & Sales Wiki":
         "Advertising, Marketing & Sales Wiki",
     };

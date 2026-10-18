@@ -151,7 +151,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
   ...[
     [
       "frontline-sales",
-      "Crew portal",
+      "Local crew portal",
       "/frontline-sales",
       "sales-marketing",
       "Day-to-day frontline information and tools",

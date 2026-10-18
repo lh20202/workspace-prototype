@@ -181,6 +181,7 @@ export function accessWorkspaceId(
       "Company Archives": "archives",
       "Global Media Library": "media-library",
       "Frontline Crew Portal": "frontline-sales",
+      "Crew portal": "frontline-sales",
       "Sales & Marketing Wiki": "sales-wiki",
       "Executive Committee Members portal": "members",
       "Employment & Hiring Administration": "employment",

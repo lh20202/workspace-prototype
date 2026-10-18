@@ -74,7 +74,7 @@ export default function AccessBoundary({
     setMessageEdited(false);
     setMessage(
       person.id === frontlineSalesFocalPoint.id
-        ? "I have a question about the Crew portal. "
+        ? "I have a question about the Local crew portal. "
         : `I need access to ${context.area}. `,
     );
     setContactOpen(true);
@@ -169,7 +169,7 @@ export default function AccessBoundary({
           >
             <h2>Are you frontline sales staff?</h2>
             <p>
-              Go to the Crew portal for the information and tools used in
+              Go to the Local crew portal for the information and tools used in
               day-to-day frontline work.
             </p>
             <a
@@ -177,7 +177,7 @@ export default function AccessBoundary({
               href={withExplicitStaff("/frontline-sales")}
             >
               <EnvironmentIcon type="portal" size={18} />
-              Open Crew portal <span aria-hidden="true">→</span>
+              Open Local crew portal <span aria-hidden="true">→</span>
             </a>
             <div className="access-sales-contact">
               <h3>Frontline sales focal point</h3>
