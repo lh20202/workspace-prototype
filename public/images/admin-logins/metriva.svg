@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#50B8CE"/><stop offset="1" stop-color="#3D5A9C"/></linearGradient><linearGradient id="signal" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#397DAD"/><stop offset="1" stop-color="#7B65AE"/></linearGradient><filter id="depth" x="-30%" y="-20%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="1.1" flood-color="#354C86" flood-opacity=".22"/></filter></defs><g filter="url(#depth)"><path d="m14 50 18-18 18-18" stroke="url(#signal)" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="8" y="8" width="12" height="12" rx="3" fill="#A6D8E2"/><rect x="26" y="8" width="12" height="12" rx="3" fill="#77B5D0"/><rect x="44" y="8" width="12" height="12" rx="3" fill="url(#signal)"/><rect x="8" y="26" width="12" height="12" rx="3" fill="#86C6D8"/><rect x="26" y="26" width="12" height="12" rx="3" fill="url(#face)"/><rect x="44" y="26" width="12" height="12" rx="3" fill="#A3B5D7"/><rect x="8" y="44" width="12" height="12" rx="3" fill="url(#face)"/><rect x="26" y="44" width="12" height="12" rx="3" fill="#8DB6D1"/><rect x="44" y="44" width="12" height="12" rx="3" fill="#C3B5DC"/><path d="M29 29h6m-6 3h6" stroke="#C7EDF2" stroke-width="1.5" stroke-linecap="round"/><circle cx="50" cy="14" r="2" fill="#EEEAF7"/><circle cx="14" cy="50" r="2" fill="#D8F4F5"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#5fb9d0" />
+      <stop offset="1" stop-color="#394f91" />
+    </linearGradient>
+    <linearGradient id="trend" x1="0" y1="1" x2="1" y2="0">
+      <stop stop-color="#8de1d4" />
+      <stop offset="1" stop-color="#f2d785" />
+    </linearGradient>
+    <filter id="depth" x="-30%" y="-20%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.1" flood-color="#354c86" flood-opacity=".22" />
+    </filter>
+  </defs>
+  <g filter="url(#depth)">
+    <rect x="8" y="8" width="48" height="48" rx="10" fill="url(#panel)" />
+    <path d="M17 20h30M17 28h30M17 36h30M17 44h30" stroke="#d9edf5" stroke-opacity=".26" stroke-width="1.5" />
+    <path d="M17 48V39h7v9m4 0V33h7v15m4 0V27h7v21" fill="#bce5ed" fill-opacity=".82" />
+    <path d="m17 35 10-6 10 2 10-12" fill="none" stroke="url(#trend)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="17" cy="35" r="2.5" fill="#fff3c2" />
+    <circle cx="27" cy="29" r="2.5" fill="#fff3c2" />
+    <circle cx="37" cy="31" r="2.5" fill="#fff3c2" />
+    <circle cx="47" cy="19" r="2.5" fill="#fff3c2" />
+  </g>
+</svg>

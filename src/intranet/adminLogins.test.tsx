@@ -31,10 +31,10 @@ describe("canonical environment and vendor identities", () => {
   it("keeps admin systems subordinate to each hub with the requested product counts", () => {
     vi.stubGlobal("location", new URL("https://example.test/architecture"));
     const counts = [
-      ["sales-marketing", 3],
+      ["sales-marketing", 4],
       ["infrastructure", 4],
       ["personnel", 1],
-      ["finance", 2],
+      ["finance", 3],
     ] as const;
     for (const [hubId, count] of counts) {
       const platforms = adminPlatformsForHub(hubId);

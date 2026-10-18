@@ -78,7 +78,7 @@ export const adminPlatforms: AdminPlatform[] = [
     logo: "/images/admin-logins/metriva.svg",
     category: "Data analytics & reporting",
     purpose: "Explore data, monitor performance and build analytical reports.",
-    hubs: ["infrastructure"],
+    hubs: ["sales-marketing", "infrastructure", "finance"],
     theme: "navy",
   },
   {
