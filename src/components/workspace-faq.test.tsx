@@ -52,9 +52,7 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(html).not.toContain("Could this be automated?");
     expect(html).not.toContain("<details");
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
-    expect(creationExplanation).toContain(
-      "the access shown here is illustrative",
-    );
+    expect(creationExplanation).toContain("No company data was used");
     expect(html).toContain(workspaceDemoStage);
   });
   it("groups all requested questions into a repeatable, initially collapsed accordion", () => {

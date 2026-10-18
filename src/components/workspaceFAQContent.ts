@@ -1,12 +1,9 @@
 /** Staff guidance describes the proposed approach, not deployed organisational processes. */
-export const workspaceDemoIntro =
-  "Explore how shared work could be organised around the company's business activities, making information easier to find, use and share across departments.";
-
 export const workspaceDemoStage =
   "These are early design examples, not final workspace structures. The organisation, access arrangements and functionality will be refined through further testing and consultation.";
 
 export const creationExplanation =
-  "This interactive demo illustrates proposed ways to organise shared work, reference knowledge and collaboration. Its screens use fictional people and demonstration content. Nothing is connected to live systems used by the company, and the access shown here is illustrative.";
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.";
 
 export const workspaceFAQExampleNote =
   "This fictional exchange illustrates one way colleagues could help each other. It does not represent an agreed support process.";

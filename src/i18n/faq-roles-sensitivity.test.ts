@@ -22,10 +22,10 @@ describe("final staff-facing German interpretation", () => {
       "weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen",
     );
     expect(german(creationExplanation)).toContain(
-      "keine Verbindung zu produktiven Systemen",
+      "keine Verbindung zu Tools oder Systemen des Unternehmens",
     );
     expect(german(creationExplanation)).toContain(
-      "dienen der Veranschaulichung",
+      "keine Unternehmensdaten verwendet",
     );
     const answer = (id: string) =>
       german(workspaceFAQQuestions.find((entry) => entry.id === id)!.answer);

@@ -20,11 +20,7 @@ import { withExplicitStaff } from "../utils/staffNavigation";
 import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
 import WorkspaceFAQ from "../components/WorkspaceFAQ";
-import {
-  creationExplanation,
-  workspaceDemoIntro,
-  workspaceDemoStage,
-} from "../components/workspaceFAQContent";
+import { creationExplanation } from "../components/workspaceFAQContent";
 const choices = [
   {
     title: "Planning",
@@ -44,7 +40,7 @@ export default function Launcher() {
         <LanguageToggle />
       </div>
       <div className="launcher-content">
-        <h1>Welcome to the Digital Workspace demo!</h1>
+        <h1>Welcome to the Digital Workspace demo site!</h1>
         <img
           className="launcher-sharepoint-cue"
           src="/images/site-mark.svg"
@@ -52,24 +48,27 @@ export default function Launcher() {
           width="24"
           height="24"
         />
-        <p className="launcher-intro">{workspaceDemoIntro}</p>
-        <p className="launcher-stage-note">{workspaceDemoStage}</p>
+        <p className="launcher-intro">
+          Explore what your new Digital Workspaces could look and feel like.
+        </p>
         <div className="launcher-explanation">
           <DemoInfo label="Proof of concept" buttonText="Proof of concept">
             {proofOfConceptInfoText}
           </DemoInfo>
         </div>
-        <p className="launcher-data-note">{proofOfConceptInfoText}</p>
+        <p className="launcher-data-note">
+          No company data was used to create this demo site.
+        </p>
         <div className="launcher-secondary-links">
           <Dialog>
             <DialogTrigger disableButtonEnhancement>
               <button className="launcher-created-link" type="button">
-                What am I looking at?
+                How was this created?
               </button>
             </DialogTrigger>
             <DialogSurface className="launcher-created-dialog">
               <DialogBody>
-                <DialogTitle>What am I looking at?</DialogTitle>
+                <DialogTitle>How was this created?</DialogTitle>
                 <DialogContent>
                   <p>{creationExplanation}</p>
                 </DialogContent>

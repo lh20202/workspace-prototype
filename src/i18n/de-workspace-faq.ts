@@ -12,8 +12,8 @@ export const germanWorkspaceFAQ: Record<string, string> = {
     "Dies sind frühe Gestaltungsbeispiele, keine endgültigen Strukturen. Die Organisation, Zugriffsregelungen und Funktionen werden durch weitere Tests und Abstimmungen verfeinert.",
   "These examples use demonstration content, not real files from the company. They do not represent completed migrations or confirmed access arrangements.":
     "Diese Beispiele verwenden Demoinhalte, keine echten Dateien des Unternehmens. Sie bilden weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen ab.",
-  "This interactive demo illustrates proposed ways to organise shared work, reference knowledge and collaboration. Its screens use fictional people and demonstration content. Nothing is connected to live systems used by the company, and the access shown here is illustrative.":
-    "Diese interaktive Demo veranschaulicht vorgeschlagene Möglichkeiten, gemeinsame Arbeit, Nachschlagewissen und Zusammenarbeit zu organisieren. Die Ansichten verwenden fiktive Personen und Demoinhalte. Es besteht keine Verbindung zu produktiven Systemen des Unternehmens; die gezeigten Zugriffe dienen der Veranschaulichung.",
+  "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.":
+    "Diese Demo wurde mit Unterstützung von KI programmiert. Es wurden keine Unternehmensdaten verwendet, und es besteht keine Verbindung zu Tools oder Systemen des Unternehmens.",
   "This fictional exchange illustrates one way colleagues could help each other. It does not represent an agreed support process.":
     "Dieser fiktive Austausch zeigt beispielhaft, wie sich Kolleginnen und Kollegen gegenseitig helfen könnten. Er stellt keinen vereinbarten Unterstützungsprozess dar.",
   "Is this replacing our existing sites, channels and K:Drive folders?":

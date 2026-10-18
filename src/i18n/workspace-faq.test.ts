@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  workspaceDemoIntro,
   workspaceDemoStage,
   creationExplanation,
   workspaceFAQExampleNote,
@@ -17,7 +16,6 @@ describe("the expanded FAQ's final German wording", () => {
     const sources = [
       "Welcome to the Digital Workspace demo!",
       "What am I looking at?",
-      workspaceDemoIntro,
       workspaceDemoStage,
       creationExplanation,
       workspaceFAQExampleNote,
