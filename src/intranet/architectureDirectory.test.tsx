@@ -3,8 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Directory from "./Directory";
 import {
   architectureDestinationById,
-  financeJumpLinks,
-  personnelDestinations,
 } from "./architectureDestinations";
 import {
   architectureHubViews,
@@ -95,27 +93,19 @@ describe("architecture directory", () => {
     expect(renderDirectory()).toContain('href="/projects?staff=devon"');
   });
 
-  it("uses one controlled workspace mark for CEO, Personnel, Council, Welfare and the four Finance entrances", () => {
+  it("uses the same workspace mark for every entrance without changing access classifications", () => {
     renderDirectory();
-    const expected = new Set([
-      architectureDestinationById.get("executive")!.href,
-      ...personnelDestinations.controlled.map(({ href }) => href),
-      ...financeJumpLinks.map(({ href }) => href),
-    ]);
     for (const hub of architectureHubViews) {
       for (const destination of hub.primary) {
         const html = renderToStaticMarkup(
           <ArchitectureDestinationLink destination={destination} />,
         );
-        expect(
-          html.includes('data-access="controlled"'),
-          destination.label,
-        ).toBe(expected.has(destination.href));
         expect(html).toContain('class="architecture-workspace-icon"');
+        expect(html).toContain('src="/images/workspaces/workspace-chunky.png"');
       }
     }
-    expect(renderDirectory().match(/data-access="controlled"/g)).toHaveLength(
-      8,
+    expect(renderDirectory()).not.toMatch(
+      /workspace-chunky-red|architecture-workspace-lock|Controlled access|data-access=/,
     );
     // Signposting must not reclassify Finance or grant specialist permissions.
     const finance = architectureDestinationById.get("finance")!;

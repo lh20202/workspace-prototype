@@ -23,9 +23,6 @@ export function ArchitectureDestinationLink({
   destination: DirectoryDestination;
 }) {
   const { type, label, href, description } = destination;
-  const controlled =
-    destination.controlledMark ||
-    destination.accessLevel === "strictly-confidential";
   const isWorkspace = !["wiki", "portal", "archive"].includes(type);
   return (
     <StaffLink
@@ -43,7 +40,7 @@ export function ArchitectureDestinationLink({
       ) : type === "wiki" || type === "portal" ? (
         <EnvironmentIcon type={type} size={20} />
       ) : (
-        <ArchitectureWorkspaceIcon controlled={controlled} />
+        <ArchitectureWorkspaceIcon />
       )}
       <span>{label}</span>
     </StaffLink>

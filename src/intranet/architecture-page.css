@@ -37,17 +37,6 @@
   flex: 0 0 28px;
   object-fit: contain;
 }
-.architecture-destination
-  > .architecture-workspace-icon[data-access="controlled"] {
-  width: 47px;
-  flex-basis: 47px;
-}
-.architecture-workspace-lock {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  color: #b1233d;
-}
 .architecture-panel-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

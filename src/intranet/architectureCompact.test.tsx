@@ -55,7 +55,7 @@ describe("compact Architecture destination links", () => {
     expect(html.match(/class="architecture-destination"/g)).toHaveLength(24);
   });
 
-  it("keeps other environment types, controlled links and finance jumps distinct", () => {
+  it("keeps environment types and destinations intact with consistent workspace icons", () => {
     const html = renderDirectory();
     const anchors = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(
       ([link]) => link,
@@ -75,7 +75,8 @@ describe("compact Architecture destination links", () => {
       const anchor = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].find(
         ([link]) => link.includes(`href="${destination.href}?staff=robin"`),
       )?.[0];
-      expect(anchor).toContain('data-access="controlled"');
+      expect(anchor).toContain('src="/images/workspaces/workspace-chunky.png"');
+      expect(anchor).not.toContain("Controlled access");
     }
     expect(html).toContain('aria-labelledby="layout-hub-finance"');
     expect(html).not.toContain("Open my Teams");

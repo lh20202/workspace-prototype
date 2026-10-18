@@ -178,7 +178,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).not.toContain("Shared services");
     expect(html.match(/class="architecture-workspace-icon"/g)).toHaveLength(25);
     expect(html.match(/data-environment="workspace"/g)).toHaveLength(19);
-    expect(html.match(/aria-label="Controlled access"/g)).toHaveLength(8);
+    expect(html).not.toContain('aria-label="Controlled access"');
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
       "executive",
@@ -188,7 +188,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
   });
-  it("Directory renders two ordinary Personnel entrances followed by protected workspace links", () => {
+  it("Directory uses the same mark for ordinary and protected Personnel workspace links", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
     expect(html).not.toContain("Controlled environments");
@@ -203,7 +203,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(directoryWorkspaceLink(html, "/people-culture")).toBeUndefined();
     for (const destination of personnelDestinations.controlled) {
       expect(directoryWorkspaceLink(html, destination.href)).toContain(
-        'data-access="controlled"',
+        'src="/images/workspaces/workspace-chunky.png"',
       );
       expect(html).toContain(`href="${destination.href}"`);
     }

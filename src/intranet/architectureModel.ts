@@ -11,7 +11,6 @@ import {
 
 export type DirectoryDestination = ArchitectureDestination & {
   description?: string;
-  controlledMark?: boolean;
 };
 
 export interface ArchitectureHubView {
@@ -38,8 +37,6 @@ export const architectureHubViews: ArchitectureHubView[] =
           id: link.href,
           type: "workspace-section",
           parentWorkspaceId: site.id,
-          // Architecture signposting does not change the underlying Finance permissions.
-          controlledMark: true,
         })),
         knowledge: [],
         secondary: [],
