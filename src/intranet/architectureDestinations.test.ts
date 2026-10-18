@@ -73,7 +73,7 @@ describe("task-oriented architecture destinations", () => {
     );
   });
 
-  it("groups Org Central and uses one finance site for every jump link", () => {
+  it("groups East and uses one finance site for every jump link", () => {
     expect(orgCentralGroups).toEqual([
       {
         label: "Direction & assurance",

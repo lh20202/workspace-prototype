@@ -45,7 +45,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(hubDefinitions.map((hub) => [hub.name, hub.workspaceIds])).toEqual([
       ["North", ["audience", "content", "logistics", "customer"]],
       [
-        "Org Central",
+        "East",
         [
           "executive",
           "planning",

@@ -11,7 +11,7 @@ describe("final German semantic interpretation", () => {
   it("conveys organisational finance, accounting and access rather than literal English meanings", () => {
     const labels = {
       "Purse Strings": "Geldströme",
-      "Org Central": "Zentrale Funktionen",
+      East: "Ost",
       "Income & Booking": "Einnahmen & Verbuchung",
       Tools: "Tools",
       "Company Archives": "Unternehmensarchiv",

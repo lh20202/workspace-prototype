@@ -37,7 +37,7 @@ export const hubDefinitions: HubDefinition[] = [
   },
   {
     id: "infrastructure",
-    name: "Org Central",
+    name: "East",
     externalIds: ["members"],
     icon: "infrastructure",
     description: "",

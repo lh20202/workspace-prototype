@@ -78,7 +78,7 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Linked environment; access is managed separately":
     "Verknüpftes Angebot; Zugriffsrechte werden separat verwaltet",
   "Purse Strings": "Geldströme",
-  "Org Central": "Zentrale Funktionen",
+  East: "Ost",
   "Personnel Admin": "Personalverwaltung",
   "Income & Booking": "Einnahmen & Verbuchung",
   "Company Archives": "Unternehmensarchiv",

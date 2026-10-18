@@ -1,7 +1,7 @@
 /** Concise environment labels; canonical routes, records and library names stay stable. */
 export const germanSimplifiedNames: Record<string, string> = {
   North: "Nord",
-  "Org Central": "Unternehmenszentrale",
+  East: "Ost",
   Personnel: "Personal",
   "Research & Insight": "Forschung & Analyse",
   "Creative Studio": "Kreativstudio",
