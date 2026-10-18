@@ -108,10 +108,26 @@ export const orgCentralGroups = [
 ];
 
 export const financeJumpLinks = [
-  { label: "-> $", href: "/financial-operations/income" },
-  { label: "$ ->", href: "/financial-operations/reconciliation" },
-  { label: "Value", href: "/financial-operations/planning" },
-  { label: "Vault", href: "/financial-operations/treasury" },
+  {
+    label: "-> $",
+    description: "Income and booking",
+    href: "/financial-operations/income",
+  },
+  {
+    label: "$ ->",
+    description: "Payments and close",
+    href: "/financial-operations/reconciliation",
+  },
+  {
+    label: "Value",
+    description: "Value for money",
+    href: "/financial-operations/planning",
+  },
+  {
+    label: "Vault",
+    description: "Treasury",
+    href: "/financial-operations/treasury",
+  },
 ];
 
 export function destinationsForHub(id: HubId): ArchitectureDestination[] {

@@ -569,7 +569,7 @@ export default function ContentApp() {
                       Audience evidence <ArrowRight20Regular />
                     </StaffLink>
                     <StaffLink href="/digital-tech/web-crm">
-                      CMS engineering in Dev <ArrowRight20Regular />
+                      CMS engineering in Dev. <ArrowRight20Regular />
                     </StaffLink>
                   </div>
                 </div>
@@ -690,7 +690,7 @@ export default function ContentApp() {
                   Production Register
                 </StaffLink>
                 {page === "digital" && (
-                  <StaffLink href="/digital-tech/web-crm">Dev</StaffLink>
+                  <StaffLink href="/digital-tech/web-crm">Dev.</StaffLink>
                 )}
                 {packageContext &&
                   partnerShares

@@ -12,7 +12,7 @@ export const germanSimplifiedNames: Record<string, string> = {
     "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
   "Customer Care & Relations workspace":
     "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
-  "Local crew portal": "Lokales Crew-Portal",
+  "Local Crew Portal": "Lokales Crew-Portal",
   "Advertising, Marketing & Sales Wiki": "Advertising, Marketing & Sales Wiki",
   "Planning Cycle": "Planungszyklus",
   Planning: "Planung",
@@ -23,10 +23,10 @@ export const germanSimplifiedNames: Record<string, string> = {
   Legal: "Recht",
   "Legal workspace": "Arbeitsbereich Recht",
   "Legal, Privacy & Compliance workspace": "Arbeitsbereich Recht",
-  "Tech & Digital": "Dev",
-  "Dev": "Dev",
-  "Dev workspace": "Arbeitsbereich Dev",
-  "Tech workspace": "Arbeitsbereich Dev",
+  "Tech & Digital": "Dev.",
+  "Dev.": "Dev.",
+  "Dev. workspace": "Arbeitsbereich Dev.",
+  "Tech workspace": "Arbeitsbereich Dev.",
   Services: "Services",
   "Services workspace": "Arbeitsbereich Services",
   "Culture & Inclusion": "Kultur & Inklusion",
@@ -38,12 +38,12 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Welfare & Safeguarding": "Fürsorge & Schutz",
   South: "Süd",
   Workspaces: "Arbeitsbereiche",
-  "Go to the Local crew portal for the information and tools used in day-to-day frontline work.":
+  "Go to the Local Crew Portal for the information and tools used in day-to-day frontline work.":
     "Im lokalen Crew-Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",
-  "Open Local crew portal": "Lokales Crew-Portal öffnen",
-  "I have a question about the Local crew portal.":
+  "Open Local Crew Portal": "Lokales Crew-Portal öffnen",
+  "I have a question about the Local Crew Portal.":
     "Ich habe eine Frage zum lokalen Crew-Portal.",
-  "CMS engineering in Tech & Digital": "Technische CMS-Umsetzung in Dev",
+  "CMS engineering in Tech & Digital": "Technische CMS-Umsetzung in Dev.",
   "Opening Studio in Teams…": "Studio wird in Teams geöffnet…",
   "Return performance evidence to Research & Insight":
     "Ergebnisnachweise an Forschung & Analyse zurückgeben",
@@ -58,7 +58,7 @@ export const germanSimplifiedNames: Record<string, string> = {
   CEO: "CEO",
   Projects: "Projekte",
   Quality: "Qualität",
-  Tech: "Dev",
+  Tech: "Dev.",
   Workforce: "Belegschaft",
   Edu: "Edu",
   "Edu workspace": "Arbeitsbereich Edu",
@@ -68,9 +68,8 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Workforce workspace": "Arbeitsbereich Belegschaft",
   Personnel: "Personal",
   Welfare: "Fürsorge",
-  "CMS engineering in Dev": "Technische CMS-Umsetzung in Dev",
-  "Return performance evidence to Lab":
-    "Leistungsnachweise an Lab zurückgeben",
+  "CMS engineering in Dev.": "Technische CMS-Umsetzung in Dev.",
+  "Return performance evidence to Lab": "Leistungsnachweise an Lab zurückgeben",
   "Return performance evidence to Laboratory":
     "Ergebnisnachweise an das Labor zurückgeben",
   "Media Library": "Medienbibliothek",

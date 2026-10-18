@@ -12,6 +12,7 @@ import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "../components/PreviewRoleContext";
 import PreviewRolePrompt from "../components/PreviewRolePrompt";
+import { workspaceDisplayName } from "../workspaces/presentation";
 import AccessLock from "../components/AccessLock";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
@@ -54,6 +55,11 @@ export default function AccessBoundary({
   const Heading = headingLevel === 1 ? "h1" : "h2";
   const classification = strict ? "Strictly confidential" : sensitivity;
   const workspace = accessWorkspace(context);
+  const workspaceTitle = workspaceDisplayName(
+    context.workspaceId,
+    workspace.title,
+    resource?.kind === "area" ? resource.areaId : undefined,
+  );
   const focal = accessFocalPoint(context);
   const sales = isSalesAccessContext(context);
   const wiki = context.workspaceId === "sales-wiki";
@@ -74,7 +80,7 @@ export default function AccessBoundary({
     setMessageEdited(false);
     setMessage(
       person.id === frontlineSalesFocalPoint.id
-        ? "I have a question about the Local crew portal. "
+        ? "I have a question about the Local Crew Portal. "
         : `I need access to ${context.area}. `,
     );
     setContactOpen(true);
@@ -95,12 +101,12 @@ export default function AccessBoundary({
         <p>
           Sie benötigen Zugriff? Wenden Sie sich an{" "}
           <strong>{focal.name}</strong>, Ihre Ansprechperson für den
-          Arbeitsbereich „{t(workspace.title)}“.
+          Arbeitsbereich „{t(workspaceTitle)}“.
         </p>
       ) : (
         <p>
           Need access? Contact <strong>{focal.name}</strong>, the{" "}
-          {workspace.title} focal point.
+          {workspaceTitle} focal point.
         </p>
       )}
       <Button appearance="primary" onClick={() => openContact(focal)}>
@@ -169,7 +175,7 @@ export default function AccessBoundary({
           >
             <h2>Are you frontline sales staff?</h2>
             <p>
-              Go to the Local crew portal for the information and tools used in
+              Go to the Local Crew Portal for the information and tools used in
               day-to-day frontline work.
             </p>
             <a
@@ -177,7 +183,7 @@ export default function AccessBoundary({
               href={withExplicitStaff("/frontline-sales")}
             >
               <EnvironmentIcon type="portal" size={18} />
-              Open Local crew portal <span aria-hidden="true">→</span>
+              Open Local Crew Portal <span aria-hidden="true">→</span>
             </a>
             <div className="access-sales-contact">
               <h3>Frontline sales focal point</h3>
@@ -230,7 +236,7 @@ export default function AccessBoundary({
           <p>
             {contact.id === frontlineSalesFocalPoint.id
               ? "Frontline sales focal point"
-              : `Access focal point · ${workspace.title}`}
+              : `Access focal point · ${workspaceTitle}`}
           </p>
           <label>
             Message

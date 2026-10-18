@@ -25,7 +25,7 @@ export const welfareAreas = [
   },
   {
     id: "employee-representation",
-    name: "Employee Representation",
+    name: "Council",
     summary:
       "Independent representative working methods and consultation preparation.",
     participants: [],

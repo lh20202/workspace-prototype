@@ -26,6 +26,10 @@ describe("launcher and service desk routes", () => {
       "All workspaces | Digital Workspace demo site",
     );
     expect(prototypeForPath("/architecture")).toBe("architecture");
+    expect(pageTitle("/welfare-representation/employee-representation")).toBe(
+      "Council",
+    );
+    expect(pageTitle("/digital-tech")).toBe("Dev.");
     expect(pageTitle("/logistics/teams")).toBe("Acquisitions | Teams");
     expect(pageTitle("/service-desk/access-request")).toBe(
       "Access request | Service Desk",

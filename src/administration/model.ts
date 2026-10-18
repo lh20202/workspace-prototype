@@ -1,3 +1,4 @@
+import { workspaceDisplayName } from "../workspaces/presentation";
 import {
   canAccessArea,
   canAccessWorkspace,
@@ -582,7 +583,7 @@ export function getSiteAdminModel(
   }
   return {
     id: site.id,
-    title: site.title,
+    title: workspaceDisplayName(site.id, site.title),
     description: site.description,
     href: site.href,
     hubId: site.hubId,

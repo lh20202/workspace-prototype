@@ -9,6 +9,7 @@ import {
 } from "./siteArchitecture";
 import { previewRoles } from "../access/policy";
 import { translateText } from "../i18n/translate";
+import { pageTitle } from "../utils/routes";
 import { getHubNavigationModel } from "../components/hubNavigationModel";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -34,19 +35,21 @@ function currentLinks(markup: string) {
 function localNavigation(markup: string) {
   return (
     markup.match(
-      /<nav aria-label="People &amp; Culture navigation">([\s\S]*?)<\/nav>/,
+      /<nav aria-label="(?:Workforce|Edu|Workforce &amp; Edu) navigation">([\s\S]*?)<\/nav>/,
     )?.[1] || ""
   );
 }
 
 describe("People & Culture keeps functional entrances in one existing workspace", () => {
-  it("opens every direct section with its own heading and local selection, while the hub selects People & Culture", () => {
+  it("opens every direct section with its own heading and local selection, while the hub keeps the shared workspace selected", () => {
     for (const destination of personnelDestinations.normal) {
       const markup = render(destination.href);
       const local = localNavigation(markup);
       expect(markup).toContain(
         `<h1>${destination.label.replaceAll("&", "&amp;")}</h1>`,
       );
+      expect(pageTitle(destination.href)).toBe(destination.label);
+      expect(markup).not.toContain("People &amp; Culture");
       expect(currentLinks(local)).toEqual([`${destination.href}?staff=taylor`]);
       expect(
         getHubNavigationModel({
@@ -60,6 +63,22 @@ describe("People & Culture keeps functional entrances in one existing workspace"
         expect(local).toContain(`href="${sibling.href}?staff=taylor"`);
       expect(markup).not.toContain('class="access-boundary');
     }
+  });
+
+  it("keeps Edu and Workforce names through library and file links without duplicate content headings", () => {
+    for (const [section, title] of [
+      ["learning-documents", "Edu"],
+      ["workforce-documents", "Workforce"],
+    ]) {
+      const markup = render(`/people-culture/${section}`);
+      expect(pageTitle(`/people-culture/${section}`)).toBe(title);
+      expect(markup).not.toContain("People &amp; Culture");
+      const main = markup.match(/<main[\s\S]*?<\/main>/)?.[0] || "";
+      expect(main.match(new RegExp(`>${title}<\\/h[12]>`, "g"))).toHaveLength(
+        1,
+      );
+    }
+    expect(pageTitle("/people-culture")).toBe("Workforce & Edu");
   });
 
   it("uses the existing shared libraries with folder scopes, including both communications channels", () => {

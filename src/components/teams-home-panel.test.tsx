@@ -49,7 +49,7 @@ describe("shared Teams Home panel", () => {
   it("keeps semantic groups compact while exposing canonical lifecycle and private cues", () => {
     const html = renderToStaticMarkup(
       <TeamsHomePanel
-        workspace={{ id: "digital", name: "Dev" }}
+        workspace={{ id: "digital", name: "Dev." }}
         description="Discuss working files."
         groups={[
           {

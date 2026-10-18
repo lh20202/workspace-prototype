@@ -49,7 +49,7 @@ describe("compact Architecture destination links", () => {
       expect(band).toContain("directory-workspace-link");
       expect(band).toContain("directory-hub-grid");
     }
-    expect(html.match(/class="directory-workspace-link"/g)).toHaveLength(15);
+    expect(html.match(/class="directory-workspace-link"/g)).toHaveLength(14);
   });
 
   it("keeps other environment types, controlled links and finance jumps distinct", () => {

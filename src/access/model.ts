@@ -108,7 +108,7 @@ export function accessFocalPoint(
     };
   if (
     context.workspaceId === "welfare" &&
-    /^(Employee Representation|Independent representative|Council participation)/i.test(
+    /^(Employee Representation|Independent representative|Council(?: participation|$))/i.test(
       context.area || "",
     )
   )
@@ -178,6 +178,8 @@ export function accessWorkspaceId(
       "Quality & Monitoring": "quality",
       "Quality Monitoring": "quality",
       "Tech & Digital": "digital",
+      Dev: "digital",
+      "Local crew portal": "frontline-sales",
       "Company Archives": "archives",
       "Global Media Library": "media-library",
       "Frontline Crew Portal": "frontline-sales",

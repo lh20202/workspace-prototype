@@ -330,8 +330,8 @@ export const germanContent: Record<string, string> = {
     "Offene Veranstaltungen für das Wohlbefinden und die zugehörige Kommunikation. Vertrauliche Unterstützung und die Wahrnehmung der Fürsorgepflicht liegen im Arbeitsbereich „Fürsorge“.",
   "Page copy, accessibility and content acceptance. CMS engineering stays in Dev.":
     "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische CMS-Entwicklung bleibt bei Dev.",
-  "Copy acceptance is separate from the CMS release. The platform colleagues will handle configuration, source changes and deployment in Dev; our review stays on wording, content order and accessibility.":
-    "Inhaltliche Abnahme und CMS-Veröffentlichung sind getrennte Schritte. Das Plattformteam übernimmt Konfiguration, Quellcodeänderungen und Bereitstellung in Dev; wir prüfen Formulierungen, Inhaltsreihenfolge und Barrierefreiheit.",
+  "Copy acceptance is separate from the CMS release. The platform colleagues will handle configuration, source changes and deployment in Dev.; our review stays on wording, content order and accessibility.":
+    "Inhaltliche Abnahme und CMS-Veröffentlichung sind getrennte Schritte. Das Plattformteam übernimmt Konfiguration, Quellcodeänderungen und Bereitstellung in Dev.; wir prüfen Formulierungen, Inhaltsreihenfolge und Barrierefreiheit.",
   "Readers should understand the digital service before they reach the sign-up form. The brief now separates the public explanation from the copy needed inside the journey; technical requirements stay with Dev.":
     "Die Lesenden sollten den digitalen Dienst verstehen, bevor sie das Anmeldeformular erreichen. Das Briefing trennt jetzt die öffentliche Erklärung von den Texten innerhalb des Ablaufs; technische Anforderungen bleiben bei Dev.",
   "Thanks, Sam. As these are the actual Q4 forecast working assumptions, could you move the file to Value rather than department admin? Keep a link in this thread so the conversation stays connected to the working version. Happy to help with the move.":
@@ -343,7 +343,7 @@ export const germanContent: Record<string, string> = {
   "Thanks, Devon — the API, authentication and integration work belongs in Dev. Please keep the technical review there and link it here. Personnel owns the business process and individual employment records, with their separate access controls.":
     "Danke, Devon. API-, Authentifizierungs- und Integrationsarbeiten gehören zu Dev. Bitte legt die technische Prüfung dort ab und verlinkt sie hier. „Personal“ verantwortet den Geschäftsprozess und die individuellen Personalunterlagen mit ihren gesonderten Zugriffsrechten.",
   "Review format risk, preservation copies, checksums, metadata completeness, digitisation and audio-visual media. Infrastructure implementation links to Dev.":
-    "Formatrisiken, Erhaltungskopien, Prüfsummen, vollständige Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung ist mit Dev verknüpft.",
+    "Formatrisiken, Erhaltungskopien, Prüfsummen, vollständige Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung ist mit Dev. verknüpft.",
   "Review technical API change; employment records remain in Personnel":
     "Technische API-Änderung prüfen; Personalunterlagen verbleiben im Arbeitsbereich „Personal“",
   "Organisation-wide reward principles and employment-framework design; individual administration belongs to Personnel.":

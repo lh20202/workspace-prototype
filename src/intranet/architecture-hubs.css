@@ -37,6 +37,8 @@
   --hub-surface: #eaf4f5;
   min-width: 0;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--hub-border);
   border-radius: 6px;
   background: var(--hub-surface);
@@ -89,6 +91,8 @@
 }
 :root .architecture-poc-page .directory-hub-body {
   display: grid;
+  flex: 1;
+  grid-template-rows: 1fr auto;
   gap: 12px;
 }
 :root .architecture-poc-page .directory-hub-workspaces,
@@ -239,10 +243,18 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 28px;
+  padding: 3px 0;
   font-size: 14px;
   line-height: 21px;
   color: #743e51;
   text-decoration: none;
+}
+:root .architecture-poc-page .directory-hub-finance .directory-admin-logins {
+  margin-top: auto;
+}
+:root .architecture-poc-page .directory-finance-destinations {
+  margin-bottom: 12px;
 }
 :root .architecture-poc-page .directory-finance-destinations .workspace-icon {
   color: var(--hub-accent);

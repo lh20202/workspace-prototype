@@ -36,6 +36,7 @@ import { staff } from "../intranet/catalog";
 import { personnelDestinations } from "../intranet/architectureDestinations";
 import { workspaceRegistry, workspaceById } from "./registry";
 import { configById, functionalConfigs } from "./config";
+import { workspaceDisplayName } from "./presentation";
 import type { WorkingItem } from "./types";
 import {
   functionalLibraries,
@@ -238,6 +239,11 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     : peopleArea === "communications"
       ? "communities"
       : peopleArea;
+  const displayTitle = workspaceDisplayName(
+    workspace.id,
+    workspace.title,
+    activePeopleSection,
+  );
   const requestedLibraryTitle = new URLSearchParams(location.search).get(
     "library",
   );
@@ -464,7 +470,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           Skip to workspace
         </StaffLink>
         <WorkspaceHeader
-          title={workspace.title}
+          title={displayTitle}
           userName={actor}
           userRole={contextStaff.role}
           searchFiles={[]}
@@ -499,7 +505,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     ? { kind: "workspace", workspaceId: workspace.id }
                     : undefined
             }
-            area={subject?.name || workspace.title}
+            area={subject?.name || displayTitle}
             personId={contextStaffId}
             strict={
               subject?.strict ||
@@ -519,7 +525,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     return (
       <div className="technical-partner-preview">
         <PocPreviewControls title="Partner preview">
-          <span>Dev</span>
+          <span>Dev.</span>
         </PocPreviewControls>
         <main>
           <h1>Web platform implementation review</h1>
@@ -579,7 +585,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         Skip to workspace
       </StaffLink>
       <WorkspaceHeader
-        title={workspace.title}
+        title={displayTitle}
         userName={actor}
         userRole={contextStaff.role}
         searchFiles={safeFiles}
@@ -597,7 +603,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       />
       <div className="functional-layout">
         <aside className="sidebar services-sidebar">
-          <nav aria-label={`${workspace.title} navigation`}>
+          <nav aria-label={`${displayTitle} navigation`}>
             <StaffLink
               href={homeHref}
               aria-current={page === "home" ? "page" : undefined}
@@ -809,7 +815,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             </section>
           ) : workspace.id === "archives" && !library ? (
             <>
-              <h1>{page === "home" ? workspace.title : area?.name}</h1>
+              <h1>{page === "home" ? displayTitle : area?.name}</h1>
               <ArchivePane
                 page={page}
                 region={parts[2]}
@@ -821,7 +827,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             <>
               <div className="functional-home-layout">
                 <div>
-                  <h1>{workspace.title}</h1>
+                  <h1>{displayTitle}</h1>
                   <p className="functional-intro">{workspace.description}</p>
                   <section
                     className="functional-current-work"
@@ -886,7 +892,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     <TeamsHomePanel
                       heading={home.teams.heading}
                       description={home.teams.cue}
-                      workspace={{ id: workspace.id, name: workspace.title }}
+                      workspace={{ id: workspace.id, name: displayTitle }}
                       channels={technicalChannelDefinitions
                         .filter((channel) => channel.homeFeatured)
                         .map((channel) => ({
@@ -963,7 +969,10 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             </>
           ) : library ? (
             <>
-              {peopleDestination && <h1>{peopleDestination.label}</h1>}
+              {peopleDestination &&
+                peopleDestination.label !== library.name && (
+                  <h1>{peopleDestination.label}</h1>
+                )}
               <DocumentLibrary
                 key={`${library.id}-${page}`}
                 title={library.name}
@@ -975,7 +984,11 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                   ),
                 ]}
                 initialFolder={initialLibraryFolder}
-                headingLevel={peopleDestination ? 2 : 1}
+                headingLevel={
+                  peopleDestination && peopleDestination.label !== library.name
+                    ? 2
+                    : 1
+                }
               />
               {workspace.id === "people" &&
                 activePeopleSection === "culture" && (

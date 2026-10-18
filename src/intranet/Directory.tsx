@@ -51,10 +51,9 @@ export function WorkspaceLink({
   );
 }
 
-function WorkspaceGroup({ label, ids }: { label?: string; ids: string[] }) {
+function WorkspaceGroup({ ids }: { ids: string[] }) {
   return (
     <div className="directory-workspace-group">
-      {label && <h3 className="directory-subheading">{label}</h3>}
       <div className="directory-hub-grid">
         {ids.map((id) => (
           <WorkspaceLink
@@ -71,6 +70,9 @@ export default function Directory() {
   return (
     <div className="architecture-poc-page">
       <PrototypeNavigator />
+      <StaffLink className="skip-link" href="#directory-main">
+        Skip to workspaces
+      </StaffLink>
       <div className="intranet-directory">
         <header className="directory-brand">
           <GridDots24Regular aria-hidden="true" />
@@ -100,7 +102,7 @@ export default function Directory() {
             Digital Workspaces
           </StaffLink>
         </nav>
-        <main className="directory-main">
+        <main className="directory-main" id="directory-main">
           <div className="directory-heading">
             <div>
               <h1>Digital workspaces</h1>
@@ -136,7 +138,12 @@ export default function Directory() {
                       >
                         <div>
                           {financeJumpLinks.map((link) => (
-                            <StaffLink href={link.href} key={link.href}>
+                            <StaffLink
+                              href={link.href}
+                              key={link.href}
+                              title={link.description}
+                              aria-label={`${link.label}: ${link.description}`}
+                            >
                               <WorkspaceIcon size={20} />
                               <span>{link.label}</span>
                             </StaffLink>
@@ -210,7 +217,6 @@ export default function Directory() {
                           </>
                         ) : (
                           <WorkspaceGroup
-                            label="Workspaces"
                             ids={environments
                               .filter(
                                 (destination) =>

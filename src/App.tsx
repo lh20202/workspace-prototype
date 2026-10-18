@@ -527,7 +527,7 @@ export default function App() {
             aria-pressed={favorite}
           >
             <Star20Filled />
-            {favorite ? "Added to favorites" : "Add to favorites"}
+            {favorite ? "Added to favourites" : "Add to favourites"}
           </button>
           <button
             onClick={() =>

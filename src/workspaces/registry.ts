@@ -81,9 +81,9 @@ const hubLabels: Record<string, string> = {
   quality: "Quality",
   legal: "Legal",
   services: "Services",
-  digital: "Dev",
+  digital: "Dev.",
   archives: "Archives",
-  employment: "Employment & Hiring",
+  employment: "Personnel",
 };
 
 export interface WorkspaceDefinition {
@@ -151,7 +151,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
   ...[
     [
       "frontline-sales",
-      "Local crew portal",
+      "Local Crew Portal",
       "/frontline-sales",
       "sales-marketing",
       "Day-to-day frontline information and tools",

@@ -111,6 +111,8 @@ describe("German administration terminology reviewed after English completion", 
           [
             "Advertising, Marketing & Sales Wiki",
             "CEO",
+            "Lab",
+            "Dev.",
             "Edu",
             "Studio",
             "Services",

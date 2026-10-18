@@ -1,3 +1,4 @@
+import { workspaceDisplayName } from "../workspaces/presentation";
 import ExternalBrandMark from "../components/ExternalBrandMark";
 import { adminPlatformById } from "../environments/catalog";
 import { useState } from "react";
@@ -43,6 +44,7 @@ export default function AccessRequest() {
     project: project?.code,
   };
   const workspace = accessWorkspace(context);
+  const workspaceTitle = workspaceDisplayName(workspaceId, workspace.title);
   const focal = accessFocalPoint(context);
   const requestedLocation =
     params.get("location") || `${workspace.title} / ${area}`;
@@ -74,7 +76,11 @@ export default function AccessRequest() {
       <main className="service-desk-main">
         <a className="service-desk-back" href={returnPath}>
           <ArrowLeft20Regular />
-          Back to {workspace.title}
+          {returnPath.split("?")[0] === "/architecture" ? (
+            "Back to all workspaces"
+          ) : (
+            <>Back to {workspaceTitle}</>
+          )}
         </a>
         <div className="service-desk-breadcrumb">
           Help centre <span>/</span>
@@ -165,7 +171,7 @@ export default function AccessRequest() {
                     ? "IT request / incident"
                     : "Urgent access escalation",
                 ],
-                ["Workspace", workspace.title],
+                ["Workspace", workspaceTitle],
                 ...(project ? [["Project", projectTitle(project)]] : []),
                 ["Area", area],
                 ["Requested location", requestedLocation],

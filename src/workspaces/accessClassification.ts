@@ -97,7 +97,7 @@ export const workspaceSeed: [
   ],
   [
     "digital",
-    "Dev",
+    "Dev.",
     "/digital-tech",
     "Shared engineering and technology workspace for building, operating and governing digital platforms, business systems, automation and emerging technology.",
     "Engineering & platforms",

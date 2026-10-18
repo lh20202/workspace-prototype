@@ -130,6 +130,7 @@ describe("Welfare has one protected owner", () => {
       for (const route of [representationRoute, migratedCouncilRoute]) {
         const html = render(route, personId);
         expect(html).toContain("Access required");
+        expect(html).toMatch(/<h1[^>]*>Council<\/h1>/);
         expect(html).toContain("<strong>Skyler Lane</strong>");
         expect(html).not.toContain("<strong>Riley Quinn</strong>");
         expect(html).not.toContain(

@@ -162,7 +162,7 @@ article(
       ],
       [
         "Take new research questions to Lab; retain the source and its limitations.",
-        "Neue Forschungsfragen gehen an das Labor. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
+        "Neue Forschungsfragen gehen an Lab. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
       ],
     ],
   ],
@@ -194,8 +194,8 @@ article(
         "Klären Sie vor einer Weitergabe, wer die nächste Kundenantwort übernimmt.",
       ],
       [
-        "Customer Care coordinates continuing service; current relationship records remain in the customer platform.",
-        "Die Kundenbetreuung koordiniert den laufenden Service. Aktuelle Beziehungsdaten verbleiben in der Kundenplattform.",
+        "Relations coordinates continuing service; current relationship records remain in the customer platform.",
+        "Das Team für Beziehungen koordiniert den laufenden Service. Aktuelle Beziehungsdaten verbleiben in der Kundenplattform.",
       ],
     ],
   ],
@@ -227,7 +227,7 @@ article(
         "Halten Sie das Leistungsversprechen beim Wechsel zwischen Kontakt, Website und Service konsistent.",
       ],
       [
-        "Use Acquisition for deployment planning and the Local crew portal for the current daily briefing.",
+        "Use Acquisitions for deployment planning and the Local Crew Portal for the current daily briefing.",
         "Nutzen Sie Akquise für die Einsatzplanung und das lokale Crew-Portal für das aktuelle Tagesbriefing.",
       ],
     ],
@@ -360,7 +360,7 @@ article(
         "Halten Sie häufige Fragen, passende Belege und den richtigen Weiterverweisungsweg zusammen.",
       ],
       [
-        "Daily conversation priorities appear in the Local crew portal; stable guidance stays here.",
+        "Daily conversation priorities appear in the Local Crew Portal; stable guidance stays here.",
         "Tägliche Gesprächsschwerpunkte stehen im lokalen Crew-Portal. Dauerhafte Hinweise bleiben hier.",
       ],
     ],
@@ -550,7 +550,7 @@ article(
       ],
       [
         "Current reporting and analysis remain in Lab and approved dashboards.",
-        "Aktuelle Berichte und Analysen verbleiben im Labor und den freigegebenen Dashboards.",
+        "Aktuelle Berichte und Analysen verbleiben in Lab und den freigegebenen Dashboards.",
       ],
     ],
   ],
@@ -583,7 +583,7 @@ article(
       ],
       [
         "Ask Lab before changing a definition or combining small groups.",
-        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit dem Labor ab.",
+        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit Lab ab.",
       ],
     ],
   ],
@@ -616,7 +616,7 @@ article(
       ],
       [
         "Commission or update competitor research through Lab.",
-        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über das Labor.",
+        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über Lab.",
       ],
     ],
   ],
@@ -681,8 +681,8 @@ article(
         "Vergleichen Sie einen definierten Schritt und Zeitraum und prüfen Sie anschließend Größe und Beständigkeit des Unterschieds.",
       ],
       [
-        "Digital & Technology manages tracking implementation; Lab manages interpretation.",
-        "Technik betreut die technische Messung. Das Labor verantwortet die Auswertung.",
+        "Dev. manages tracking implementation; Lab manages interpretation.",
+        "Dev. betreut die technische Messung. Lab verantwortet die Auswertung.",
       ],
     ],
   ],
@@ -715,7 +715,7 @@ article(
       ],
       [
         "Keep the live evaluation in Lab and link to its approved conclusion.",
-        "Führen Sie die laufende Auswertung im Labor und verlinken Sie ihr freigegebenes Fazit.",
+        "Führen Sie die laufende Auswertung in Lab und verlinken Sie ihr freigegebenes Fazit.",
       ],
     ],
   ],
@@ -748,7 +748,7 @@ article(
       ],
       [
         "Ask Lab to review the method before participant contact.",
-        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch das Labor prüfen.",
+        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch Lab prüfen.",
       ],
     ],
   ],
@@ -781,8 +781,8 @@ article(
         "Nutzen Sie den freigegebenen Erfassungsweg, damit Kundenstammsatz und nachgelagerte Nutzung übereinstimmen.",
       ],
       [
-        "Refer uncertainty to Legal/privacy and Customer Care before proceeding.",
-        "Klären Sie Unsicherheiten vor dem Fortfahren mit Recht/Datenschutz und der Kundenbetreuung.",
+        "Refer uncertainty to Legal/privacy and Relations before proceeding.",
+        "Klären Sie Unsicherheiten vor dem Fortfahren mit Recht/Datenschutz und dem Team für Beziehungen.",
       ],
     ],
   ],
@@ -843,8 +843,8 @@ article(
     [
       ["Use the right response", "Den richtigen Meldeweg nutzen"],
       [
-        "Refer suspicious customer activity through the approved Customer Care process.",
-        "Melden Sie verdächtige Kundenaktivitäten über das freigegebene Verfahren der Kundenbetreuung.",
+        "Refer suspicious customer activity through the approved Relations process.",
+        "Melden Sie verdächtige Kundenaktivitäten über das freigegebene Verfahren im Arbeitsbereich Beziehungen.",
       ],
       [
         "Use IT support for suspected account or device compromise; keep sensitive details out of shared channels.",
@@ -942,8 +942,8 @@ article(
     [
       ["Handle a question", "Eine Frage bearbeiten"],
       [
-        "Refer interpretation to Legal and individual relationship questions to Customer Care.",
-        "Fragen zur Auslegung gehen an Recht, individuelle Beziehungsfragen an die Kundenbetreuung.",
+        "Refer interpretation to Legal and individual relationship questions to Relations.",
+        "Fragen zur Auslegung gehen an Recht, individuelle Beziehungsfragen an das Team für Beziehungen.",
       ],
       [
         "Keep the customer's question in the approved service record rather than in Wiki comments.",
@@ -1009,7 +1009,7 @@ article(
     [
       ["Before each shift", "Vor jedem Einsatz"],
       [
-        "Read the current briefing in the Local crew portal and confirm coverage with your team lead.",
+        "Read the current briefing in the Local Crew Portal and confirm coverage with your team lead.",
         "Lesen Sie das aktuelle Briefing im lokalen Crew-Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
       ],
       [
@@ -1083,7 +1083,7 @@ article(
       ],
       [
         "Ask Lab for a method review before recruiting participants.",
-        "Bitten Sie das Labor vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
+        "Bitten Sie Lab vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
       ],
     ],
   ],
@@ -1148,8 +1148,8 @@ article(
         "Priorisieren Sie eine konkrete Hürde und benennen Sie das für die Übergabe zuständige Team.",
       ],
       [
-        "Check the proposed change with Customer Care and Lab before broader rollout.",
-        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und dem Labor.",
+        "Check the proposed change with Relations and Lab before broader rollout.",
+        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit den Teams für Beziehungen und Lab.",
       ],
     ],
   ],
@@ -1182,8 +1182,8 @@ article(
         "Nutzen Sie den vereinbarten Aktivitätstyp und eine sachliche, relevante Zusammenfassung.",
       ],
       [
-        "Send platform faults to Digital & Technology; ask Customer Care about record-handling questions.",
-        "Melden Sie Plattformfehler an Technik. Fragen zur Datensatzbearbeitung gehen an die Kundenbetreuung.",
+        "Send platform faults to Dev. Ask Relations about record-handling questions.",
+        "Melden Sie Plattformfehler an Dev. Fragen zur Datensatzbearbeitung gehen an das Team für Beziehungen.",
       ],
     ],
   ],
@@ -1211,7 +1211,7 @@ article(
     [
       ["Launch through the working process", "Über den Arbeitsprozess starten"],
       [
-        "Use Acquisition for current deployment and coverage planning.",
+        "Use Acquisitions for current deployment and coverage planning.",
         "Nutzen Sie Akquise für die aktuelle Einsatz- und Kapazitätsplanung.",
       ],
       [
@@ -1282,7 +1282,7 @@ article(
       ],
       [
         "Take unexplained movement to Lab with the same filters and reporting period.",
-        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zum Labor.",
+        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zu Lab.",
       ],
     ],
   ],
@@ -1311,7 +1311,7 @@ article(
       ["Review and report", "Prüfen und berichten"],
       [
         "Ask Lab to check the design and the approved contact route.",
-        "Lassen Sie Design und freigegebenen Kontaktweg durch das Labor prüfen.",
+        "Lassen Sie Design und freigegebenen Kontaktweg durch Lab prüfen.",
       ],
       [
         "Report the response base and limitations; keep participant data in the approved research system.",
@@ -1343,8 +1343,8 @@ article(
     [
       ["Confirm the handover", "Die Übergabe bestätigen"],
       [
-        "Make Customer Care aware of likely questions and the release window.",
-        "Informieren Sie die Kundenbetreuung über erwartbare Fragen und das Versandfenster.",
+        "Make Relations aware of likely questions and the release window.",
+        "Informieren Sie das Team für Beziehungen über erwartbare Fragen und das Versandfenster.",
       ],
       [
         "Keep selection and send records in the authorised platform; the Wiki holds the method only.",
@@ -1412,8 +1412,8 @@ article(
     [
       ["Specialist support", "Fachliche Unterstützung"],
       [
-        "Use Customer Care for continuing customer service and Devon Park for digital platform issues.",
-        "Wenden Sie sich für laufende Kundenanliegen an die Kundenbetreuung und für digitale Plattformprobleme an Devon Park.",
+        "Use Relations for continuing customer service and Devon Park for digital platform issues.",
+        "Wenden Sie sich für laufende Kundenanliegen an das Team für Beziehungen und für digitale Plattformprobleme an Devon Park.",
       ],
       [
         "Harper Cole coordinates legal and privacy questions. Elena Rossi supports learning and capability development.",

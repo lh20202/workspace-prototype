@@ -137,11 +137,7 @@ export default function WorkspaceHeader({
           <button
             className="global-icon"
             aria-label="Notifications"
-            onClick={() =>
-              onMessage(
-                "No new notifications. Check current operations for this week’s handover.",
-              )
-            }
+            onClick={() => onMessage("No new notifications in this demo.")}
           >
             <Alert24Regular />
           </button>
@@ -198,7 +194,7 @@ export default function WorkspaceHeader({
             onClick={() => setFavorite(!favorite)}
           >
             <Star20Filled />
-            {favorite ? "Added to favorites" : "Add to favorites"}
+            {favorite ? "Added to favourites" : "Add to favourites"}
           </button>
           {memberCount !== null && (
             <button

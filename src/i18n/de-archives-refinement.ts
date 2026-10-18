@@ -306,5 +306,5 @@ export const germanArchivesRefinement: Record<string, string> = {
   // Current display names; legacy keys above remain available for saved content.
   Archives: "Archiv",
   "Review format risk, preservation copies, checksums, metadata completeness, digitisation and audio-visual media. Infrastructure implementation links to Dev.":
-    "Formatrisiken, Archivkopien, Prüfsummen, Vollständigkeit der Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung wird mit Dev abgestimmt.",
+    "Formatrisiken, Archivkopien, Prüfsummen, Vollständigkeit der Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung wird mit Dev. abgestimmt.",
 };

@@ -45,7 +45,7 @@ describe("business focal point before technical access escalation", () => {
       expect(html.indexOf("Access required")).toBeLessThan(
         html.indexOf("Are you frontline sales staff?"),
       );
-      expect(html.indexOf("Open Local crew portal")).toBeLessThan(
+      expect(html.indexOf("Open Local Crew Portal")).toBeLessThan(
         html.indexOf("Frontline sales focal point"),
       );
       expect(html.indexOf("Frontline sales focal point")).toBeLessThan(

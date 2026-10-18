@@ -3042,7 +3042,7 @@ export const germanMessages: Record<string, string> = {
   Laboratory: "Labor",
   Relations: "Beziehungen",
   Quality: "Qualität",
-  Tech: "Dev",
+  Tech: "Dev.",
   "Membership Portal": "Mitgliederportal",
   "Membership Portal ↗": "Mitgliederportal ↗",
   "-> $": "-> $",
@@ -3051,16 +3051,15 @@ export const germanMessages: Record<string, string> = {
   Edu: "Edu",
   Curriculum: "Edu",
   "Edu workspace": "Arbeitsbereich Edu",
-  "CMS engineering in Dev": "CMS-Entwicklung in Dev",
+  "CMS engineering in Dev.": "CMS-Entwicklung in Dev.",
   "$ ->": "$ ->",
   Vault: "Tresor",
   Workforce: "Belegschaft",
   "Record held in the Membership Portal.": "Akte im Mitgliederportal geführt.",
-  "Return performance evidence to Lab":
-    "Leistungsnachweise an Lab zurückgeben",
+  "Return performance evidence to Lab": "Leistungsnachweise an Lab zurückgeben",
   "Return performance evidence to Laboratory":
     "Leistungsnachweise an das Labor zurückgeben",
-  "Dev / Security Engineering": "Dev/Sicherheitstechnik",
+  "Dev. / Security Engineering": "Dev./Sicherheitstechnik",
   "Archives · Appraisal, retention and preservation ↗":
     "Archiv · Bewertung, Aufbewahrung und Bestandserhaltung ↗",
   "Page copy, accessibility and content acceptance. CMS engineering stays in Dev.":
@@ -3070,7 +3069,7 @@ export const germanMessages: Record<string, string> = {
   "Lab workspace": "Arbeitsbereich Lab",
   "Relations workspace": "Arbeitsbereich Beziehungen",
   "Quality workspace": "Arbeitsbereich Qualität",
-  "Dev workspace": "Arbeitsbereich Dev",
+  "Dev. workspace": "Arbeitsbereich Dev.",
   "Personnel workspace": "Arbeitsbereich Personal",
   "CEO workspace": "Arbeitsbereich CEO",
   "Archives workspace": "Arbeitsbereich Archiv",

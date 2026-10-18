@@ -96,7 +96,9 @@ describe("task-oriented architecture destinations", () => {
       href: "/financial-operations",
       type: "workspace",
     });
-    expect(financeJumpLinks).toEqual([
+    expect(
+      financeJumpLinks.map(({ label, href }) => ({ label, href })),
+    ).toEqual([
       { label: "-> $", href: "/financial-operations/income" },
       {
         label: "$ ->",

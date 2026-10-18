@@ -15,6 +15,7 @@ import {
 } from "@fluentui/react-icons";
 import EnvironmentIcon from "./EnvironmentIcon";
 import WorkspaceIcon from "./WorkspaceIcon";
+import { workspaceDisplayName } from "../workspaces/presentation";
 import {
   getHubNavigationModel,
   type HubNavigationDestination,
@@ -51,7 +52,9 @@ function Destination({
         ) : undefined
       }
     >
-      <span className="hub-navigation-label">{environment.title}</span>
+      <span className="hub-navigation-label">
+        {workspaceDisplayName(environment.id, environment.title)}
+      </span>
     </MenuItemLink>
   );
 }

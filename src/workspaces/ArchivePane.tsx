@@ -345,7 +345,7 @@ export default function ArchivePane({
             <p>
               Review format risk, preservation copies, checksums, metadata
               completeness, digitisation and audio-visual media. Infrastructure
-              implementation links to Digital & Technology.
+              implementation links to Dev.
             </p>
           )}
         </section>

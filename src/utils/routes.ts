@@ -1,4 +1,5 @@
 import { environmentRegistry } from "../workspaces/registry";
+import { workspaceDisplayName } from "../workspaces/presentation";
 import { externalPreviewForPath } from "../environments/previewRoutes";
 export function planningPath(page: string) {
   return page === "home"
@@ -101,7 +102,12 @@ export function pageTitle(pathname: string) {
   const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
   );
-  if (registered) return registered.title;
+  if (registered)
+    return workspaceDisplayName(
+      registered.id,
+      registered.title,
+      pathname.split("/")[2],
+    );
   if (pathname.startsWith("/employee-council")) return "Welfare";
   if (pathname.startsWith("/executive")) return "CEO";
   if (pathname.startsWith("/governance")) return "Membership Portal";

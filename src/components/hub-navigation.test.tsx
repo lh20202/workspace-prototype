@@ -35,7 +35,7 @@ describe("shared SharePoint hub navigation", () => {
     ];
     const related = [
       ["Advertising, Marketing & Sales Wiki", "/sales-marketing/wiki"],
-      ["Local crew portal", "/frontline-sales"],
+      ["Local Crew Portal", "/frontline-sales"],
       ["Media Library", "/external/media-library"],
     ];
     for (const [, pathname] of [...workspaces, related[0]]) {

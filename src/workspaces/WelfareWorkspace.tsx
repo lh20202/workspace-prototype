@@ -17,6 +17,7 @@ import {
   welfareTitle,
 } from "./welfare";
 import { functionalLibraries, functionalFileHref } from "./siteArchitecture";
+import { workspaceDisplayName } from "./presentation";
 import "../services/styles.css";
 import "./styles.css";
 
@@ -61,7 +62,7 @@ export default function WelfareWorkspace() {
         Skip to workspace
       </a>
       <WorkspaceHeader
-        title={welfareTitle}
+        title={workspaceDisplayName("welfare", welfareTitle, page)}
         userName={person.name}
         userRole={person.role}
         memberCount={2}

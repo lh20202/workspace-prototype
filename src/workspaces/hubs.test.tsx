@@ -92,7 +92,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       "Acquisitions",
       "Relations",
       "Advertising, Marketing & Sales Wiki",
-      "Local crew portal",
+      "Local Crew Portal",
       "Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
@@ -117,6 +117,8 @@ describe("hub families retain one canonical owner for every environment", () => 
       ["Project Centre", "projects"],
       ["Quality & Monitoring", "quality"],
       ["Tech & Digital", "digital"],
+      ["Dev", "digital"],
+      ["Local crew portal", "frontline-sales"],
       ["Company Archives", "archives"],
       ["Employment & Hiring Administration", "employment"],
       ["Welfare & Employee Representation", "welfare"],
@@ -174,8 +176,8 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");
     expect(html).not.toContain("Shared services");
-    expect(html.match(/class="workspace-icon"/g)).toHaveLength(15);
-    expect(html.match(/data-environment="workspace"/g)).toHaveLength(16);
+    expect(html.match(/class="workspace-icon"/g)).toHaveLength(18);
+    expect(html.match(/data-environment="workspace"/g)).toHaveLength(15);
     expect(html.match(/title="Controlled access"/g)).toHaveLength(4);
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
@@ -186,7 +188,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
   });
-  it("renders three ordinary Personnel entrances followed by quiet protected text links", () => {
+  it("renders two ordinary Personnel entrances followed by quiet protected text links", () => {
     at("/architecture");
     const html = renderToStaticMarkup(createElement(Directory));
     expect(html).not.toContain("Controlled environments");
@@ -205,7 +207,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     }
     expect(personnelDestinations.controlled).toHaveLength(3);
     expect(html).toContain("Personnel");
-    expect(html).toContain("Workers&#x27; Union");
+    expect(html).toContain("Council");
     expect(html).toContain("Welfare");
   });
   it("keeps the Personnel hub at environment level for every functional entrance", () => {

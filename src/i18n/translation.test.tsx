@@ -75,7 +75,7 @@ describe("English and German display language", () => {
       Quality: "Qualität",
       Legal: "Recht",
       Services: "Services",
-      Dev: "Dev",
+      "Dev.": "Dev.",
       Archives: "Archiv",
       Workforce: "Belegschaft",
       Edu: "Edu",
@@ -92,7 +92,7 @@ describe("English and German display language", () => {
       Vault: "Tresor",
       "Jump to…": "Direkt zu…",
       "Meetings and coordination": "Besprechungen und Koordination",
-      "Local crew portal": "Lokales Crew-Portal",
+      "Local Crew Portal": "Lokales Crew-Portal",
       "Advertising, Marketing & Sales Wiki":
         "Advertising, Marketing & Sales Wiki",
     };

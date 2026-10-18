@@ -486,7 +486,7 @@ export default function TeamsPreview() {
             areaId: "security",
           }}
           personId={person.id}
-          location="Digital & Technology / Security Engineering"
+          location="Dev. / Security Engineering"
           strict
           returnHref="/digital-tech"
           headingLevel={2}
