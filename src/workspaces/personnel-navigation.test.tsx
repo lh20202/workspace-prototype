@@ -132,12 +132,12 @@ describe("People & Culture keeps functional entrances in one existing workspace"
     ).toBe(true);
   });
 
-  it("translates the three entrances and grouping labels without changing routes or canonical data", () => {
+  it("translates the two entrances and grouping labels without changing routes or canonical data", () => {
     expect(
       personnelDestinations.normal.map(({ label }) =>
         translateText(label, "de"),
       ),
-    ).toEqual(["Belegschaft", "Curriculum", "Netzwerk"]);
+    ).toEqual(["Belegschaft", "Curriculum"]);
     expect(translateText("Controlled environments", "de")).toBe(
       "Zugriffsbeschränkte Bereiche",
     );

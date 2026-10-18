@@ -29,7 +29,6 @@ export interface ArchitectureDestination {
 const peopleSections = [
   ["culture", "Workforce"],
   ["learning", "Curriculum"],
-  ["communities", "Network"],
 ] as const;
 
 const people = environmentRegistry.find(

@@ -15,13 +15,12 @@ import {
 import { configById, filesForWorkspace } from "../workspaces/config";
 
 describe("task-oriented architecture destinations", () => {
-  it("signposts three canonical Personnel sections without duplicating their files", () => {
+  it("signposts two canonical Personnel sections without duplicating their files", () => {
     expect(
       personnelDestinations.normal.map(({ label, href }) => [label, href]),
     ).toEqual([
       ["Workforce", "/people-culture/culture"],
       ["Curriculum", "/people-culture/learning"],
-      ["Network", "/people-culture/communities"],
     ]);
     const areas = configById.get("people")!.areas;
     for (const destination of personnelDestinations.normal) {

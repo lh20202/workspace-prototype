@@ -1000,7 +1000,6 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     <StaffLink href={href("communications")}>
                       Internal communications
                     </StaffLink>
-                    <StaffLink href={href("communities")}>Network</StaffLink>
                   </div>
                 )}
               {relatedLinks(library)}
