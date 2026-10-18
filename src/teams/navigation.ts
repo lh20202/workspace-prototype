@@ -5,7 +5,7 @@ import {
   type StaffPerson,
 } from "../intranet/catalog";
 import { channels, workspaceTitle } from "../logistics/data";
-import { departments } from "../coordination/data";
+import { departments, unitFolders } from "../coordination/data";
 import {
   allProjects,
   currentProjects,
@@ -277,7 +277,7 @@ export function teamsStaffForWorkspace(
   return resolveStaffPerson(preferredId).id;
 }
 
-/** Preserve deliberate context on role change, while clearing file/unit/post selection. */
+/** Preserve deliberate destinations on role change; recheck their actual access in place. */
 export function teamsPreviewHrefForStaff(
   person: StaffPerson,
   pathname: string,
@@ -285,6 +285,16 @@ export function teamsPreviewHrefForStaff(
 ) {
   const params = new URLSearchParams(search);
   const context = readChannelEntryContext(pathname, search);
+  const selectedUnit =
+    pathname === "/teams" &&
+    context?.kind === "department" &&
+    ["Shared", "Files"].includes(params.get("tab") || "") &&
+    params.get("folder") === "Unit Coordination"
+      ? departments
+          .find((department) => department.id === context.id)
+          ?.units.find((unit) => unit.id === params.get("unit"))
+      : undefined;
+  const selectedSection = params.get("section");
   params.set("staff", person.id);
   params.set("context", channelContextValue(context));
   for (const key of [
@@ -313,6 +323,13 @@ export function teamsPreviewHrefForStaff(
   if (context.kind === "department") {
     params.delete("workspace");
     params.set("department", context.id);
+    if (selectedUnit) {
+      params.set("tab", "Shared");
+      params.set("folder", "Unit Coordination");
+      params.set("unit", selectedUnit.id);
+      if (selectedSection && unitFolders.includes(selectedSection))
+        params.set("section", selectedSection);
+    }
   }
   // A newly selected role still meets the actual private/project/incident boundary in place.
   return `${pathname}?${params}`;

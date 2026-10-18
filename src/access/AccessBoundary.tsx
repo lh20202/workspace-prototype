@@ -29,6 +29,7 @@ import "./styles.css";
 export interface AccessBoundaryProps extends AccessContext {
   headingLevel?: 1 | 2;
   strict?: boolean;
+  sensitivity?: "Confidential" | "Strictly confidential";
   compact?: boolean;
   returnLabel?: string;
   /** Exact business destination or Teams participation boundary for the role cue. */
@@ -37,6 +38,7 @@ export interface AccessBoundaryProps extends AccessContext {
 export default function AccessBoundary({
   headingLevel = 1,
   strict = false,
+  sensitivity,
   compact = false,
   returnLabel = "Return to workspace",
   resource,
@@ -50,6 +52,7 @@ export default function AccessBoundary({
       (typeof sessionStorage === "undefined" ? "taylor" : selectedStaffId()),
   };
   const Heading = headingLevel === 1 ? "h1" : "h2";
+  const classification = strict ? "Strictly confidential" : sensitivity;
   const workspace = accessWorkspace(context);
   const focal = accessFocalPoint(context);
   const sales = isSalesAccessContext(context);
@@ -127,9 +130,9 @@ export default function AccessBoundary({
               className="access-boundary-lock"
               labelled={false}
             />
-            {strict && (
+            {classification && (
               <span className="access-boundary-sensitivity">
-                Strictly confidential
+                {classification}
               </span>
             )}
             <Heading>Access required</Heading>

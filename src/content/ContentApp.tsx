@@ -6,7 +6,7 @@ import {
   externalEnvironmentForTool,
   externalPreviewHref,
 } from "../environments/catalog";
-import { canAccessWorkspace } from "../access/policy";
+import { canAccessArea, canAccessWorkspace } from "../access/policy";
 import WorkspaceDenied from "../access/WorkspaceDenied";
 import { teamsStaffForWorkspace } from "../teams/navigation";
 import { resolveStaffPerson } from "../intranet/catalog";
@@ -154,12 +154,13 @@ export default function ContentApp() {
     page === "production-register" ||
     (page === "pipeline" && !!params.get("view"));
   const valid =
-    page === "home" ||
-    !!activeLibrary ||
     !!topic ||
-    !!share ||
-    !!tool ||
-    ["tools", "teams", "calendar", "production-register"].includes(page);
+    (parts.length === 4 && !!share) ||
+    (parts.length === 3 && !!tool) ||
+    (parts.length <= 2 &&
+      (page === "home" ||
+        !!activeLibrary ||
+        ["tools", "teams", "calendar", "production-register"].includes(page)));
   const navigate = (href: string, replace = false) => {
     history[replace ? "replaceState" : "pushState"](
       {},
@@ -387,7 +388,7 @@ export default function ContentApp() {
               <h2>Page not found</h2>
               <StaffLink href={base}>Return to workspace</StaffLink>
             </>
-          ) : topic ? (
+          ) : topic && !canAccessArea(teamsPerson, "content", topic.id) ? (
             <AccessBoundary
               workspaceId="content"
               area={topic.name}
@@ -398,13 +399,54 @@ export default function ContentApp() {
                 areaId: topic.id,
               }}
               location={`${title} / ${pkg(topic.packageId).name} / ${topic.name}`}
-              strict={
-                topic.id === "participant-administration" ||
-                topic.id === "commercial-proposal"
+              strict={topic.id === "participant-administration"}
+              sensitivity={
+                topic.id === "commercial-proposal" ? "Confidential" : undefined
               }
               returnHref={packageHref(topic.packageId)}
               returnLabel="Back to shared production files"
             />
+          ) : topic ? (
+            <section>
+              <h1>{topic.name}</h1>
+              <SensitivityBadge value="Confidential" />
+              <p>
+                Review the proposed production scope and supplier handoff before
+                confirming the commercial agreement.
+              </p>
+              <dl>
+                {[
+                  ["Production package", pkg(topic.packageId).name],
+                  [
+                    "Production partner",
+                    pkg(topic.packageId).partner || "Internal production",
+                  ],
+                  ["Deliverables", pkg(topic.packageId).formats.join(" + ")],
+                  ["Review due", date(pkg(topic.packageId).reviewDue)],
+                  ["Release date", date(pkg(topic.packageId).releaseDate)],
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p>
+                The proposal covers the agreed formats and production handoff.
+                Supplier payment approval remains with Finance.
+              </p>
+              <DocumentLibrary
+                title="Supporting production documents"
+                headingLevel={2}
+                files={files
+                  .filter((file) => file.packageId === topic.packageId)
+                  .map(documentFor)}
+                readOnly
+              />
+              <StaffLink href={packageHref(topic.packageId)}>
+                Back to shared production files
+              </StaffLink>
+            </section>
           ) : share ? (
             <>
               <DocumentLibrary

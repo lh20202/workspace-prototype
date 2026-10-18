@@ -44,7 +44,7 @@ It reuses the current prominent restricted-page Preview Role panel, filled actio
 
 Context is explicit, reload-safe query state: `context=department:communications`, `context=workspace:content`, `context=project:PRJ-2026-014` or `context=incident:INC-104`. The selected `staff` remains unchanged on entry. Department context additionally carries the existing Department route value; workspace routes carry `workspace`, with Logistics retaining its existing `/logistics/teams` route. Global selections carry `context=global` when necessary to prevent a selected conversation from being mistaken for a fresh contextual entry. A bare global `/teams?staff=<id>` uses the role's default landing.
 
-Existing explicit workspace, Department and project bookmarks resolve deterministically to the corresponding context. Selecting a different environment replaces that context. Role switching preserves deliberate Department/workspace/project/incident context and reapplies genuine protected access, while clearing prior file, folder, unit and post selections. Explicit global entry restores the new role's curated channel view. Browser history and referrer are not used as access or context inputs.
+Existing explicit workspace, Department and project bookmarks resolve deterministically to the corresponding context. Selecting a different environment replaces that context. Role switching preserves deliberate Department/workspace/project/incident context and reapplies genuine protected access. A canonical unit destination in Department Shared retains its unit, folder and section so that switching roles changes access at that exact destination. File and post selections clear; invalid unit state is discarded. Explicit global entry restores the new role's curated channel view. Browser history and referrer are not used as access or context inputs.
 
 ## Channel-enabled workspaces
 
@@ -76,6 +76,8 @@ Posts link to existing workspace files and actual desk handoffs. Home and Channe
 ## Administration and security
 
 Original `workspaceMemberships`, daily `teamChannels`, occasional collaboration, project and incident memberships remain intact. Separate helpers answer ordinary opening, channel pinning, genuine restricted channel access and project pinning. The General Staff default channel landing changes to Company Updates without changing Department or memberships.
+
+The subsequent [access-matrix integrity pass](access-matrix-integrity-qa.md) adds the reviewed specialist business grants, Sam's Financial Close project participation and exact assigned-project security reviews. Its current matrix supersedes earlier specialist grant counts, while preserving the ordinary discovery and contextual navigation described here.
 
 Site Administrator and Information Advisory Specialist retain equivalent delegated site/library/list administration. Technology & Engineering Administrator does not become Site Administrator. Administrative metadata and settings still use the canonical access-filtered model; they cannot grant protected business access. No protected business fixture or membership was broadened to make an ordinary Home work.
 

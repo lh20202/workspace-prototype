@@ -37,7 +37,11 @@ export default function EmergencyApp() {
   const [incidents, setIncidents] = useState(initialIncidents),
     [tab, setTab] = useState("Posts"),
     [post, setPost] = useState("");
-  const initialId = location.pathname.split("/")[3];
+  const routeParts = location.pathname.split("/").filter(Boolean);
+  const knownRoute =
+    routeParts.length === 1 ||
+    (routeParts.length === 3 && routeParts[1] === "incidents");
+  const initialId = knownRoute ? routeParts[2] : "unavailable";
   const [selectedId, setSelectedId] = useState(initialId || "");
   const incident = incidents.find((i) => i.id === selectedId),
     archived = incident?.status === "Archived";

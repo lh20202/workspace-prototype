@@ -17,6 +17,7 @@ import {
   readChannelEntryContext,
 } from "./navigation";
 import TeamsPreview from "../intranet/TeamsPreview";
+import { PreviewRoleProvider } from "../components/PreviewRoleContext";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -117,5 +118,93 @@ describe("deliberate Department introductions", () => {
       ),
     ).toBeUndefined();
     expect(departmentPreviewHref("unknown")).toBe("/architecture");
+  });
+
+  it("keeps the exact unit destination when the role cue is used and rechecks access in both directions", () => {
+    const department = departments.find(
+      (department) => department.id === "people-culture",
+    )!;
+    const unit = department.units.find(
+      (unit) => unit.id === "people-operations",
+    )!;
+    let url = new URL(
+      "/teams?staff=taylor&department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=people-operations&section=Unit+Meetings&file=stale-file&post=stale-post",
+      "https://example.test",
+    );
+    for (const id of ["taylor", "jamie", "taylor"]) {
+      const next = staff.find((person) => person.id === id)!;
+      url = new URL(
+        teamsPreviewHrefForStaff(next, url.pathname, url.search),
+        url.origin,
+      );
+      expect(url.searchParams.get("department")).toBe(department.id);
+      expect(url.searchParams.get("context")).toBe(
+        `department:${department.id}`,
+      );
+      expect(url.searchParams.get("folder")).toBe("Unit Coordination");
+      expect(url.searchParams.get("unit")).toBe(unit.id);
+      expect(url.searchParams.get("section")).toBe("Unit Meetings");
+      expect(url.searchParams.get("tab")).toBe("Shared");
+      expect(url.searchParams.has("file")).toBe(false);
+      expect(url.searchParams.has("post")).toBe(false);
+      vi.stubGlobal("location", url);
+      vi.stubGlobal("sessionStorage", { getItem: () => id });
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <TeamsPreview />
+        </PreviewRoleProvider>,
+      );
+      const permitted = id === "jamie";
+      expect(html.includes("Access required")).toBe(!permitted);
+      expect(html.includes("Try another preview role")).toBe(!permitted);
+      expect(html.includes(unit.files[0].name)).toBe(permitted);
+    }
+  });
+
+  it("preserves each canonical unit across role changes without treating the route as membership", () => {
+    for (const department of departments)
+      for (const unit of department.units)
+        for (const next of staff) {
+          const source = new URL(
+            `/teams?staff=taylor&department=${department.id}&context=department:${department.id}&tab=Shared&folder=Unit+Coordination&unit=${unit.id}&section=Absence+%26+Cover+Calendar`,
+            "https://example.test",
+          );
+          const target = new URL(
+            teamsPreviewHrefForStaff(next, source.pathname, source.search),
+            source.origin,
+          );
+          expect(target.searchParams.get("staff")).toBe(next.id);
+          expect(target.searchParams.get("unit")).toBe(unit.id);
+          expect(target.searchParams.get("section")).toBe(
+            "Absence & Cover Calendar",
+          );
+          const person = teamsPersonForSearch(target.search);
+          expect(person.departmentId).toBe(next.departmentId);
+          expect(person.unitId).toBe(next.unitId);
+          expect(canOpenUnit(department, unit, person)).toBe(
+            canOpenUnit(department, unit, next),
+          );
+        }
+  });
+
+  it("clears stale, foreign or invalid unit state and keeps file and post selections transient", () => {
+    const next = staff.find((person) => person.id === "jamie")!;
+    for (const query of [
+      "department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=unknown",
+      "department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=it-services",
+      "department=PAC&context=department:people-culture&tab=Posts&folder=Unit+Coordination&unit=people-operations",
+      "department=PAC&context=global&tab=Shared&folder=Unit+Coordination&unit=people-operations",
+    ]) {
+      const target = new URL(
+        teamsPreviewHrefForStaff(
+          next,
+          "/teams",
+          `?staff=taylor&${query}&file=old&post=old`,
+        ),
+        "https://example.test",
+      );
+      for (const field of ["folder", "unit", "section", "file", "post"])
+        expect(target.searchParams.has(field)).toBe(false);
+    }
   });
 });

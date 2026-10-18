@@ -4,6 +4,7 @@ import {
   canManageSiteSettings,
   canAccessWikiArea,
   canAccessProject,
+  canAccessProjectSecurityReview,
   canAccessEmergency,
   type PolicyPerson,
 } from "../access/policy";
@@ -29,6 +30,7 @@ import {
   packages as contentPackages,
   pipelineViews,
   protectedTopics,
+  protectedHref,
 } from "../content/data";
 import {
   libraries as logisticsLibraries,
@@ -52,11 +54,15 @@ import {
   libraryFiles as financialDocuments,
 } from "../finance/libraries";
 import { protectedSubjects as financeProtectedSubjects } from "../finance/data";
+import { areas as financeAreas } from "../finance/data";
+import { navigation as executiveNavigation } from "../executive/data";
+import { regions } from "../workspaces/archiveData";
 import {
   wikiArticles,
   wikiBase,
   wikiFiles,
   wikiLibrary,
+  resolveWikiPath,
 } from "../wiki/content";
 import { libraryFields, libraryViewDefinitions } from "../sharepoint/library";
 import type {
@@ -325,6 +331,12 @@ export function getSiteAdminModel(
     if (site.id === "planning") {
       contents = planningContents(person);
       denied =
+        parts.length > 1 ||
+        ![
+          "home",
+          "cycles",
+          ...planningLibraries.map((library) => library.id),
+        ].includes(page) ||
         (page === "restricted" &&
           !canAccessArea(person, "planning", "restricted")) ||
         !!planningDocuments.find(
@@ -335,11 +347,41 @@ export function getSiteAdminModel(
         );
     } else if (site.id === "content") {
       contents = contentContents();
+      const subject = protectedTopics.find(
+        (topic) => protectedHref(topic) === pathname,
+      );
+      const scopedShare =
+        parts.length === 3 &&
+        parts[0] === "packages" &&
+        parts[2] === "shared" &&
+        contentPackages.some((pkg) => pkg.id === parts[1]);
+      denied = subject
+        ? !canAccessArea(person, "content", subject.id)
+        : !scopedShare &&
+          (parts.length > 1 ||
+            ![
+              "home",
+              "pipeline",
+              "channels",
+              "partners",
+              "digital",
+              "tools",
+              "calendar",
+              "production-register",
+              ...contentLibraries.map((library) => library.id),
+            ].includes(page));
+    } else if (site.id === "logistics") {
+      contents = logisticsContents();
       denied =
-        parts.includes("protected") ||
-        !!protectedTopics.find((topic) => parts.includes(topic.id));
-    } else if (site.id === "logistics") contents = logisticsContents();
-    else if (site.id === "audience") {
+        parts.length > 1 ||
+        ![
+          "home",
+          "locations",
+          "rota",
+          "calendar",
+          ...logisticsLibraries.map((library) => library.id),
+        ].includes(page);
+    } else if (site.id === "audience") {
       contents = audienceLibraries.map((library) =>
         libraryContent(
           audienceDefinitions[library.id],
@@ -350,8 +392,19 @@ export function getSiteAdminModel(
         ),
       );
       denied =
-        parts.includes("participant-administration") &&
-        !canAccessArea(person, "audience", "participant-administration");
+        pathname ===
+        `${site.href}/research/website-usability/participant-administration`
+          ? !canAccessArea(person, "audience", "participant-administration")
+          : parts.length > 1 ||
+            ![
+              "home",
+              "audiences",
+              "decisions",
+              "register",
+              "automation",
+              "calendar",
+              ...audienceLibraries.map((library) => library.id),
+            ].includes(page);
     } else if (site.id === "finance") {
       contents = financeLibraries.map((library) =>
         libraryContent(
@@ -360,11 +413,23 @@ export function getSiteAdminModel(
           `${site.href}/${library.id}`,
         ),
       );
-      const subject = Object.values(financeProtectedSubjects)
-        .flat()
-        .find(([id]) => parts.includes(id));
-      denied = !!subject && !canAccessArea(person, "finance", subject[0]);
+      const subject = financeProtectedSubjects[page]?.find(
+        ([id]) => parts.length === 2 && id === parts[1],
+      );
+      denied = subject
+        ? !canAccessArea(person, "finance", subject[0])
+        : parts.length > 1 ||
+          ![
+            "home",
+            "calendar",
+            "close-checklist",
+            "reconciliation-issues",
+            "restricted",
+            ...financeLibraries.map((library) => library.id),
+            ...financeAreas.map((area) => area.id),
+          ].includes(page);
     } else if (wiki) {
+      denied = !resolveWikiPath(pathname).valid;
       contents = [
         libraryContent(
           wikiLibrary,
@@ -377,6 +442,13 @@ export function getSiteAdminModel(
           `${wikiBase}/a-z`,
         ),
       ];
+    } else if (site.id === "executive") {
+      denied =
+        parts.length > 1 ||
+        !["home", ...executiveNavigation.map((area) => area.id)].includes(
+          page,
+        ) ||
+        !canAccessArea(person, "executive", page);
     } else {
       const config = configById.get(site.id);
       if (config) {
@@ -398,12 +470,35 @@ export function getSiteAdminModel(
               `${site.href}/${library.id}`,
             ),
           );
-        const subject = config.protected.find((item) =>
-          parts.includes(item.id),
+        const subject = config.protected.find(
+          (item) =>
+            (parts.length === 1 && item.id === page) ||
+            (parts.length === 2 &&
+              item.id === parts[1] &&
+              (page === "protected" || page === item.area)),
         );
         const area = config.areas.find((item) => item.id === page);
         const requested = config.files.find((file) => file.id === fileId);
+        const library = (functionalLibraries[site.id] || []).find(
+          (item) =>
+            item.id === page ||
+            item.aliases?.includes(page) ||
+            item.areas.includes(page),
+        );
+        const validRoute =
+          !!subject ||
+          (parts.length <= 1 &&
+            (page === "home" ||
+              !!area ||
+              !!library ||
+              ["protected", "actions"].includes(page))) ||
+          (site.id === "archives" &&
+            parts.length === 2 &&
+            page === "global" &&
+            regions.some((region) => region.id === parts[1]));
         denied = !!(
+          !validRoute ||
+          (page === "protected" && parts.length > 1 && !subject) ||
           (page === "protected" &&
             !canAccessArea(person, site.id, subject?.id || "protected")) ||
           (subject && !canAccessArea(person, site.id, subject.id)) ||
@@ -413,15 +508,35 @@ export function getSiteAdminModel(
       }
     }
     if (site.id === "projects" && page !== "home") {
+      const projectPage = parts[page === "archive" ? 2 : 1] || "home";
+      const projectId = page === "archive" ? parts[1] : page;
       denied = ["control", "support", "reviews"].includes(page)
-        ? !canAccessArea(person, "projects", page)
+        ? parts.length !== 1 || !canAccessArea(person, "projects", page)
         : page === "current" || (page === "archive" && !parts[1])
-          ? false
-          : !canAccessProject(person, page === "archive" ? parts[1] : page);
+          ? parts.length !== 1
+          : parts.length > (page === "archive" ? 3 : 2) ||
+            (projectPage === "security"
+              ? !canAccessProjectSecurityReview(person, projectId)
+              : ![
+                  "home",
+                  "documents",
+                  "plan",
+                  "decisions",
+                  "risks",
+                  "handover",
+                ].includes(projectPage) ||
+                !canAccessProject(person, projectId));
     }
     if (site.id === "emergency" && page !== "home")
       denied = !canAccessEmergency(person, page);
   }
+  if (
+    fileId &&
+    !contents.some((entry) =>
+      entry.documents?.some((file) => file.id === fileId),
+    )
+  )
+    denied = true;
   if (!denied) contents.unshift(home(site.href));
   else contents = [];
   const selectedByFile = fileId

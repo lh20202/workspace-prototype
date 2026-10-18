@@ -48,6 +48,7 @@ import {
   type FunctionalLibrary,
 } from "./siteArchitecture";
 import ArchivePane from "./ArchivePane";
+import { regions } from "./archiveData";
 import WelfareWorkspace from "./WelfareWorkspace";
 import "../services/styles.css";
 import "./styles.css";
@@ -91,11 +92,13 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   const area = config.areas.find((a) => a.id === page);
   const subject = config.protected.find(
     (s) =>
-      (s.id === parts[2] && (page === "protected" || s.area === page)) ||
-      (s.id === page && parts[1] !== "home"),
+      (parts.length === 3 &&
+        s.id === parts[2] &&
+        (page === "protected" || s.area === page)) ||
+      (parts.length === 2 && s.id === page && parts[1] !== "home"),
   );
   const tool =
-    page === "systems"
+    page === "systems" && parts.length === 3
       ? config.tools.find((t) => t.id === parts[2])
       : undefined;
   const siteLibraries = functionalLibraries[workspace.id] || [];
@@ -138,6 +141,18 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
   const teamChannels = workspaceChannels[workspace.id] || [];
   const actor = contextStaff.name;
   const workspaceAllowed = canAccessWorkspace(contextStaff, workspace.id);
+  const validRouteShape =
+    parts.length <= 2 ||
+    !!subject ||
+    !!tool ||
+    (workspace.id === "digital" &&
+      parts.length === 3 &&
+      page === "web-crm" &&
+      parts[2] === "partner-review") ||
+    (workspace.id === "archives" &&
+      parts.length === 3 &&
+      page === "global" &&
+      regions.some((region) => region.id === parts[2]));
   const subjectAllowed =
     !!subject && canAccessArea(contextStaff, workspace.id, subject.id);
   const safeItems = items.filter((item) =>
@@ -471,13 +486,14 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     workspaceId: workspace.id,
                     areaId: subject.id,
                   }
-                : deniedWorkingArea
+                : deniedWorkingArea && validRouteShape
                   ? {
                       kind: "area",
                       workspaceId: workspace.id,
                       areaId: deniedWorkingArea,
                     }
-                  : page === "home" || library || area || tool || isList
+                  : validRouteShape &&
+                      (page === "home" || library || area || tool || isList)
                     ? { kind: "workspace", workspaceId: workspace.id }
                     : undefined
             }
@@ -538,13 +554,14 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       </div>
     );
   const known =
-    page === "home" ||
-    !!area ||
-    !!library ||
-    !!tool ||
-    !!subject ||
-    page === "protected" ||
-    isList;
+    validRouteShape &&
+    (page === "home" ||
+      !!area ||
+      !!library ||
+      !!tool ||
+      !!subject ||
+      (page === "protected" && parts.length === 2) ||
+      isList);
   const heading = isList
     ? workspace.id === "quality"
       ? "Actions & Reviews"
@@ -722,7 +739,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                 "Unavailable location"
               }
               resource={
-                subject || deniedWorkingArea
+                known && (subject || deniedWorkingArea)
                   ? {
                       kind: "area",
                       workspaceId: workspace.id,
@@ -748,7 +765,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                 title="Administration working methods"
                 headingLevel={2}
                 readOnly
-                files={config.files
+                files={safeFiles
                   .filter((file) =>
                     subject.area === "protected"
                       ? workspace.id === "digital"

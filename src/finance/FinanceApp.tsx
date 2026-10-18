@@ -11,6 +11,12 @@ import { useState } from "react";
 import SimulationMessage from "../components/SimulationMessage";
 import { canAccessArea } from "../access/policy";
 import AccessBoundary from "../access/AccessBoundary";
+import SensitivityBadge from "../sharepoint/SensitivityBadge";
+import {
+  protectedReviewSummaries,
+  protectedReviewItemIds,
+  strictlyConfidentialFinanceSubjects,
+} from "./protectedReviews";
 import PocAnnotation from "../components/PocAnnotation";
 import {
   Button,
@@ -57,8 +63,14 @@ export default function FinanceApp() {
   const protectedName = protectedSubjects[page]?.find(
     (s) => s[0] === subject,
   )?.[1];
-  const unknown = !!subject && !protectedName && !system;
+  const unknown = parts.length > 3 || (!!subject && !protectedName && !system);
+  const protectedSensitivity = strictlyConfidentialFinanceSubjects.has(subject)
+    ? "Strictly confidential"
+    : "Confidential";
   const [records, setRecords] = useState(items);
+  const protectedReviewItems = records.filter((item) =>
+    protectedReviewItemIds[subject]?.includes(item.id),
+  );
   const [selected, setSelected] = useState<FinancialItem>();
   const [notice, setNotice] = useState("");
   const [checks, setChecks] = useState<string[]>([]);
@@ -285,7 +297,7 @@ export default function FinanceApp() {
             <AccessBoundary
               workspaceId="finance"
               resource={
-                protectedName
+                protectedName && !unknown
                   ? { kind: "area", workspaceId: "finance", areaId: subject }
                   : undefined
               }
@@ -295,19 +307,44 @@ export default function FinanceApp() {
                 .join(" / ")}
               personId={person.id}
               returnHref={withExplicitStaff(base)}
-              strict
+              sensitivity={protectedName ? protectedSensitivity : undefined}
             />
           ) : protectedName ? (
             <section>
               <h1>{protectedName}</h1>
-              <p>
-                Review exceptions, confirm the supporting evidence and record
-                the authorised resolution in the financial system.
-              </p>
+              <SensitivityBadge value={protectedSensitivity} />
+              <p>{protectedReviewSummaries[subject]}</p>
+              <div className="finance-table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      {["Work item", "Owner", "Status", "Due"].map((label) => (
+                        <th key={label}>{label}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {protectedReviewItems.map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.name}</td>
+                        <td>{item.owner}</td>
+                        <td>{item.status}</td>
+                        <td>{item.due}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <p>
                 Individual payment details and live financial records are not
                 held in this demonstration.
               </p>
+              <DocumentLibrary
+                title="Supporting working documents"
+                headingLevel={2}
+                files={library ? libraryFiles(library) : []}
+                readOnly
+              />
               <StaffLink href={`${base}/${library?.id || page}`}>
                 Return to working documents
               </StaffLink>

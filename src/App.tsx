@@ -243,7 +243,10 @@ export default function App() {
     setWorkspaceSearch("");
   }
   const library = libraries.find((l) => l.id === page);
-  const allowed = page !== "restricted" || restrictedAllowed;
+  const routeParts = location.pathname.split("/").filter(Boolean);
+  const validRoute =
+    routeParts.length <= (routeParts[0] === "planning" ? 2 : 1);
+  const allowed = validRoute && (page !== "restricted" || restrictedAllowed);
   const scoped = allowed ? documents.filter((d) => d.library === page) : [];
   const rows = queryDocuments(
     scoped,
@@ -782,7 +785,11 @@ export default function App() {
                 {!allowed ? (
                   <AccessBoundary
                     workspaceId="planning"
-                    area="Restricted Planning"
+                    area={
+                      validRoute
+                        ? "Restricted Planning"
+                        : "Unavailable location"
+                    }
                     location={[
                       "Organisational Planning & Reporting",
                       "Restricted Planning",
@@ -791,11 +798,15 @@ export default function App() {
                       .filter(Boolean)
                       .join(" / ")}
                     personId={person.id}
-                    resource={{
-                      kind: "area",
-                      workspaceId: "planning",
-                      areaId: "restricted",
-                    }}
+                    resource={
+                      validRoute
+                        ? {
+                            kind: "area",
+                            workspaceId: "planning",
+                            areaId: "restricted",
+                          }
+                        : undefined
+                    }
                     headingLevel={2}
                     returnHref="/planning/cycles"
                     returnLabel="Return to Planning Cycles"

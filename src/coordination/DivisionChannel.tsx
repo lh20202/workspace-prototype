@@ -90,6 +90,7 @@ export default function DepartmentChannel({
 }) {
   const params = new URLSearchParams(location.search),
     initialUnit = department.units.find((u) => u.id === params.get("unit"));
+  const unknownUnit = !!params.get("unit") && !initialUnit;
   const entitled =
     canSeeDepartment(person, department.id) &&
     canOpenDepartment(department, person);
@@ -110,11 +111,7 @@ export default function DepartmentChannel({
   const [folder, setFolder] = useState(params.get("folder") || ""),
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
-  const [denied, setDenied] = useState(
-      initialUnit && !canOpenUnit(department, initialUnit, person)
-        ? "This unit has limited its coordination files to unit members."
-        : "",
-    ),
+  const [denied, setDenied] = useState(""),
     [localQuery, setQuery] = useState(""),
     [file, setFile] = useState<AdminFile>(),
     [uploadId, setUploadId] = useState("");
@@ -532,7 +529,18 @@ export default function DepartmentChannel({
                     ))}
                 </div>
               ) : folder === "Unit Coordination" ? (
-                !unit ? (
+                unknownUnit ? (
+                  <AccessBoundary
+                    workspaceId="department"
+                    department={department.id}
+                    area="Unavailable location"
+                    personId={person.id}
+                    headingLevel={2}
+                    compact
+                    returnHref={`/teams?staff=${person.id}`}
+                    returnLabel="Open your channel view"
+                  />
+                ) : !unit ? (
                   <div className="coord-folders">
                     {department.units.map((u) => (
                       <button
@@ -553,10 +561,22 @@ export default function DepartmentChannel({
                     ))}
                   </div>
                 ) : !unitAllowed ? (
-                  <p>
-                    This unit’s coordination files are unavailable for this
-                    staff preview.
-                  </p>
+                  <AccessBoundary
+                    workspaceId="department"
+                    department={department.id}
+                    resource={{
+                      kind: "unit",
+                      departmentId: department.id,
+                      unitId: unit.id,
+                      unitOnly: unit.access === "Unit-only",
+                    }}
+                    area={unit.name}
+                    personId={person.id}
+                    headingLevel={2}
+                    compact
+                    returnHref={`/teams?staff=${person.id}`}
+                    returnLabel="Open your channel view"
+                  />
                 ) : !section ? (
                   <div className="coord-folders">
                     {unitFolders.map((f) => (

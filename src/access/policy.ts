@@ -1,9 +1,22 @@
+import {
+  protectedAreaDefinitions,
+  ordinaryAreaDefinitions,
+} from "./areaDefinitions";
+export {
+  protectedAreaDefinitions,
+  ordinaryAreaDefinitions,
+} from "./areaDefinitions";
 import { workspaceAccessLevels } from "../workspaces/accessClassification";
 import { projectAccessLevels } from "../projects/accessClassification";
 import { channelDefinitions } from "../content/channelDefinitions";
 import { technicalChannelDefinitions } from "../workspaces/technicalChannelDefinitions";
 import { channels as operationalChannels } from "../logistics/data";
 import { planningChannels } from "../planning/channels";
+import {
+  departmentDefinitions,
+  unitId as canonicalUnitId,
+  unitOnly as privateUnitNames,
+} from "../coordination/definitions";
 
 /**
  * Fictional preview entitlements. This is the only source of role membership;
@@ -97,12 +110,7 @@ export const previewRoles: PreviewRole[] = [
     workspace: "executive",
     departmentId: "executive-office",
     unitId: "ceo-office",
-    workspaceMemberships: [
-      ...ordinaryWorkspaces,
-      "executive",
-      "content",
-      "governance",
-    ],
+    workspaceMemberships: [...ordinaryWorkspaces, "executive", "content"],
     restrictedAreas: {
       executive: [
         "home",
@@ -114,10 +122,13 @@ export const previewRoles: PreviewRole[] = [
         "calendar",
         "SI-01",
         "SI-02",
+        "SI-03",
+        "SI-04",
+        "SI-05",
       ],
       planning: ["restricted"],
       projects: ["control", "reviews"],
-      governance: ["approved", "liaison", "outputs"],
+      finance: ["restructuring-cost", "pre-decision"],
     },
     teamChannels: {
       planning: ["General", "Planning coordination", "Planning & Reporting"],
@@ -170,7 +181,14 @@ export const previewRoles: PreviewRole[] = [
     unitId: "it-services",
     workspaceMemberships: [...ordinaryWorkspaces, "digital"],
     restrictedAreas: {
-      digital: ["security", "privileged-access", "production", "recovery"],
+      // Platform delivery and recovery do not confer access to secrets or privileged records.
+      digital: [
+        "security",
+        "production",
+        "recovery",
+        "vulnerabilities",
+        "restricted-web",
+      ],
     },
     teamChannels: {
       digital: [
@@ -235,7 +253,11 @@ export const previewRoles: PreviewRole[] = [
     departmentId: "marketing-growth",
     unitId: "marketing-insight-and-performance",
     workspaceMemberships: [...ordinaryWorkspaces, "audience", "content"],
-    restrictedAreas: {},
+    restrictedAreas: {
+      // Selected commercial work; customer cases, participant data and embargoes remain separate.
+      content: ["commercial-proposal"],
+      customer: ["commercial-account"],
+    },
     teamChannels: { content: ["coordination", "editorial", "social"] },
     additionalChannelAccess: {
       content: ["cities-mobility", "education-skills", "clean-water-week"],
@@ -258,11 +280,25 @@ export const previewRoles: PreviewRole[] = [
     departmentId: "finance-services",
     unitId: "accounting-and-control",
     workspaceMemberships: [...ordinaryWorkspaces],
-    restrictedAreas: { finance: ["payment-exceptions", "refund-chargeback"] },
+    restrictedAreas: {
+      finance: [
+        "payment-exceptions",
+        "refund-chargeback",
+        "high-value-payment",
+        "payment-data-correction",
+        "disputed-supplier-payment",
+        "draft-scenarios",
+        "workforce-cost",
+        "investment-affordability",
+        "external-audit",
+        "pre-issue-statements",
+        "liquidity-stress",
+      ],
+    },
     teamChannels: { planning: ["Planning & Reporting"] },
     teamsLanding: { kind: "department", departmentId: "finance-services" },
-    projectMemberships: [],
-    projectTeamMemberships: [],
+    projectMemberships: ["PRJ-2026-038"],
+    projectTeamMemberships: ["PRJ-2026-038"],
     temporaryTeamMemberships: [],
     emergencyMemberships: [],
   },
@@ -325,9 +361,12 @@ export function canAccessWorkspace(person: PolicyPerson, workspaceId: string) {
   const role = previewRoleFor(person);
   if (!role) return false;
   if (workspaceAccessLevels[workspaceId] === "internal") return true;
-  // Whole confidential workspaces and the separate legacy governance boundary
-  // retain their original genuine membership. Ordinary relevance is not access.
-  return role.workspaceMemberships.includes(workspaceId);
+  // Whole confidential workspaces retain genuine membership. Unknown/retired
+  // destinations cannot become access grants through stale fixture membership.
+  return (
+    workspaceAccessLevels[workspaceId] === "strictly-confidential" &&
+    role.workspaceMemberships.includes(workspaceId)
+  );
 }
 
 /** Original participation remains useful for relevance without gating exploration. */
@@ -336,217 +375,6 @@ export const isWorkspacePinnedForRole = (
   workspaceId: string,
 ) => !!previewRoleFor(person)?.workspaceMemberships.includes(workspaceId);
 
-/** Protected subject IDs stay distinct from ordinary library/area IDs. */
-const protectedAreas: Record<string, string[]> = {
-  projects: ["control", "reviews"],
-  services: ["live-tender", "negotiation", "visitor-arrangements"],
-  digital: [
-    "security",
-    "privileged-access",
-    "credentials",
-    "vulnerabilities",
-    "production",
-    "restricted-web",
-    "recovery",
-    "protected",
-  ],
-  legal: [
-    "privileged",
-    "disputes",
-    "privacy-incidents",
-    "investigations",
-    "formal-cases",
-    "sensitive-risk",
-  ],
-  people: ["network-membership"],
-  employment: [
-    "payroll-inputs",
-    "absence-administration",
-    "employee-master-data",
-    "candidate-applications",
-    "candidate-assessments",
-    "references",
-    "offers",
-    "placement",
-    "employee-records",
-    "employment-changes",
-    "compensation",
-    "protected",
-  ],
-  customer: [
-    "platinum",
-    "customer-cases",
-    "commercial-account",
-    "relationships",
-    "premium",
-    "accounts",
-    "partnerships",
-    "stakeholders",
-    "meetings",
-  ],
-  archives: ["historical"],
-  planning: ["restricted"],
-  audience: [
-    "participant-administration",
-    "raw-data",
-    "participant-data",
-    "restricted",
-    "pre-decision",
-  ],
-  content: [
-    "participant-administration",
-    "pre-release-briefing",
-    "embargoed-distribution",
-    "commercial-proposal",
-    "restricted",
-    "pre-release",
-    "rights-restricted",
-  ],
-  finance: [
-    "protected",
-    "individual-income",
-    "refunds",
-    "bank-details",
-    "payroll",
-    "sensitive-adjustment",
-    "restricted-forecast",
-    "liquidity-model",
-    "payment-exceptions",
-    "refund-chargeback",
-    "high-value-payment",
-    "payment-data-correction",
-    "payroll-settlement",
-    "employee-reimbursements",
-    "disputed-supplier-payment",
-    "exceptional-authorisation",
-    "draft-scenarios",
-    "workforce-cost",
-    "restructuring-cost",
-    "investment-affordability",
-    "pre-decision",
-    "tax-working-papers",
-    "external-audit",
-    "accounting-investigation",
-    "pre-issue-statements",
-    "bank-mandates",
-    "signatories",
-    "liquidity-stress",
-    "transfer-authorisation",
-    "banking-security",
-    "restricted-planning",
-  ],
-};
-
-/** Finite ordinary areas make unknown protected URLs fail closed as well. */
-const ordinaryAreas: Record<string, string[]> = {
-  services: ["office", "purchasing", "travel", "reception"],
-  quality: ["monitoring", "process", "improvement", "eco", "reviews"],
-  digital: [
-    "engineering",
-    "web-crm",
-    "systems-engineering",
-    "ai-automation",
-    "m365",
-    "information-architecture",
-    "architecture",
-    "operations",
-    "protected",
-  ],
-  legal: [
-    "review",
-    "privacy",
-    "compliance",
-    "risk",
-    "contracts",
-    "audit",
-    "policy",
-  ],
-  people: [
-    "workforce",
-    "culture",
-    "learning",
-    "frameworks",
-    "communications",
-    "communities",
-    "analytics",
-    "wellbeing",
-  ],
-  employment: ["hiring", "employment", "inputs", "protected"],
-  customer: [
-    "care",
-    "relationships",
-    "premium",
-    "accounts",
-    "partnerships",
-    "stakeholders",
-    "meetings",
-    "quality",
-  ],
-  archives: [
-    "collections",
-    "legacy-drive",
-    "global",
-    "retention",
-    "transfer",
-    "cataloguing",
-    "preservation",
-    "access",
-    "projects",
-  ],
-  planning: [
-    "home",
-    "planning",
-    "strategy",
-    "performance",
-    "approved",
-    "department-submissions",
-  ],
-  audience: [
-    "home",
-    "automation",
-    "research",
-    "audiences",
-    "experiments",
-    "analytics",
-    "decisions",
-    "calendar",
-  ],
-  content: [
-    "home",
-    "editorial",
-    "creative",
-    "digital",
-    "channels",
-    "production",
-    "published",
-    "calendar",
-    "packages",
-    "partners",
-    "topics",
-  ],
-  finance: [
-    "home",
-    "income",
-    "reconciliation",
-    "payments",
-    "planning",
-    "accounting",
-    "treasury",
-    "calendar",
-  ],
-  logistics: [
-    "home",
-    "operations",
-    "resources",
-    "training",
-    "records",
-    "calendar",
-    "locations",
-    "rota",
-  ],
-  projects: ["home", "control", "support", "reviews"],
-};
-
 export function canAccessArea(
   person: PolicyPerson,
   workspaceId: string,
@@ -554,15 +382,9 @@ export function canAccessArea(
 ) {
   const role = previewRoleFor(person);
   if (!role || !canAccessWorkspace(role, workspaceId)) return false;
-  if (
-    workspaceId === "welfare" ||
-    workspaceId === "governance" ||
-    workspaceId === "executive"
-  )
+  if (protectedAreaDefinitions[workspaceId]?.includes(areaId))
     return !!role.restrictedAreas[workspaceId]?.includes(areaId);
-  if (protectedAreas[workspaceId]?.includes(areaId))
-    return !!role.restrictedAreas[workspaceId]?.includes(areaId);
-  return !!ordinaryAreas[workspaceId]?.includes(areaId);
+  return !!ordinaryAreaDefinitions[workspaceId]?.includes(areaId);
 }
 
 export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
@@ -606,14 +428,22 @@ export const isProjectPinnedForRole = (
   person: PolicyPerson,
   projectId: string,
 ) => !!previewRoleFor(person)?.projectTeamMemberships.includes(projectId);
-const knownDepartments = [
-  "marketing-growth",
-  "communications",
-  "finance-services",
-  "strategy-technology",
-  "people-culture",
-  "executive-office",
-];
+
+/** Assigned technical reviewers can inspect delivery security without receiving secrets. */
+export function canAccessProjectSecurityReview(
+  person: PolicyPerson,
+  projectId: string,
+) {
+  const role = previewRoleFor(person);
+  return (
+    !!role &&
+    !!projectAccessLevels[projectId] &&
+    role.projectMemberships.includes(projectId) &&
+    canAccessArea(role, "digital", "production") &&
+    canAccessArea(role, "digital", "security")
+  );
+}
+const knownDepartments = departmentDefinitions.map(([id]) => id);
 /** A route-scoped preview is confined to the chosen Department, for every role. */
 export const departmentPreviewFor = (person: PolicyPerson) =>
   typeof person !== "string" &&
@@ -638,11 +468,16 @@ export function canAccessUnit(
   unitOnly = true,
 ) {
   const role = previewRoleFor(person);
+  const unitName = departmentDefinitions
+    .find(([id]) => id === departmentId)?.[6]
+    .find((name) => canonicalUnitId(name) === unitId);
+  const privateUnit = !!unitName && privateUnitNames.has(unitName);
   return (
     !!role &&
+    !!unitName &&
     canAccessDepartment(person, departmentId) &&
     role.departmentId === departmentId &&
-    (!unitOnly || role.unitId === unitId)
+    (!(unitOnly || privateUnit) || role.unitId === unitId)
   );
 }
 
@@ -726,6 +561,7 @@ export type AccessResource =
   | { kind: "portal" }
   | { kind: "project"; projectId: string }
   | { kind: "project-team"; projectId: string }
+  | { kind: "project-security"; projectId: string }
   | { kind: "channel"; workspaceId: string; channelId: string }
   | { kind: "department"; departmentId: string }
   | { kind: "unit"; departmentId: string; unitId: string; unitOnly?: boolean }
@@ -745,6 +581,8 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
       return canAccessProject(person, resource.projectId);
     case "project-team":
       return canAccessProjectTeam(person, resource.projectId);
+    case "project-security":
+      return canAccessProjectSecurityReview(person, resource.projectId);
     case "channel":
       return canAccessChannel(person, resource.workspaceId, resource.channelId);
     case "department":

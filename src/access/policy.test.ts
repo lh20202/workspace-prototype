@@ -8,6 +8,7 @@ import {
   canAccessPortal,
   canAccessProject,
   canAccessProjectTeam,
+  canAccessProjectSecurityReview,
   canAccessDepartment,
   canAccessChannel,
   canAccessEmergency,
@@ -20,6 +21,8 @@ import {
   isProjectPinnedForRole,
   canAccessUnit,
   departmentPreviewFor,
+  protectedAreaDefinitions,
+  ordinaryAreaDefinitions,
 } from "./policy";
 import { workspaceRegistry } from "../workspaces/registry";
 import { allProjects } from "../projects/data";
@@ -229,9 +232,9 @@ describe("the nine role access matrix", () => {
     expect(canAccessWorkspace("robin", "executive")).toBe(true);
     expect(canAccessArea("robin", "executive", "leadership")).toBe(true);
     expect(canAccessArea("robin", "executive", "SI-01")).toBe(true);
-    expect(canAccessArea("robin", "executive", "SI-05")).toBe(false);
+    expect(canAccessArea("robin", "executive", "SI-05")).toBe(true);
     expect(canAccessArea("robin", "planning", "restricted")).toBe(true);
-    expect(canAccessArea("robin", "governance", "liaison")).toBe(true);
+    expect(canAccessArea("robin", "governance", "liaison")).toBe(false);
     expect(canAccessArea("robin", "governance", "committee")).toBe(false);
     expect(canAccessWorkspace("robin", "employment")).toBe(false);
     expect(canAccessArea("robin", "digital", "security")).toBe(false);
@@ -293,6 +296,216 @@ describe("the nine role access matrix", () => {
     expect(canAccessEmergency("devon", "INC-104")).toBe(true);
     expect(canAccessEmergency("devon", "INC-107")).toBe(false);
     expect(canAccessEmergency("jamie", "INC-107")).toBe(true);
+  });
+});
+
+describe("controlled work follows each preview role's purpose", () => {
+  it("gives Finance Operations eleven selected subjects and preserves sensitive authorisation boundaries", () => {
+    const financeWork = [
+      "payment-exceptions",
+      "refund-chargeback",
+      "high-value-payment",
+      "payment-data-correction",
+      "disputed-supplier-payment",
+      "draft-scenarios",
+      "workforce-cost",
+      "investment-affordability",
+      "external-audit",
+      "pre-issue-statements",
+      "liquidity-stress",
+    ];
+    for (const [id] of Object.values(protectedSubjects).flat())
+      expect(canAccessArea("sam", "finance", id), id).toBe(
+        financeWork.includes(id),
+      );
+    for (const id of [
+      "payroll-settlement",
+      "employee-reimbursements",
+      "bank-mandates",
+      "signatories",
+      "banking-security",
+      "transfer-authorisation",
+      "exceptional-authorisation",
+      "restructuring-cost",
+      "pre-decision",
+    ])
+      expect(canAccessArea("sam", "finance", id), id).toBe(false);
+    expect(canAccessProject("sam", "PRJ-2026-038")).toBe(true);
+    expect(canAccessProjectTeam("sam", "PRJ-2026-038")).toBe(true);
+    expect(canAccessProject("sam", "PRJ-2026-027")).toBe(false);
+    expect(canAdministerSites("sam")).toBe(false);
+  });
+
+  it("gives personnel administrators relevant employment work without unrelated cases or representation", () => {
+    const authorised = [
+      "candidate-applications",
+      "candidate-assessments",
+      "references",
+      "offers",
+      "employee-records",
+      "employment-changes",
+      "employee-master-data",
+      "absence-administration",
+    ];
+    for (const id of protectedAreaDefinitions.employment)
+      expect(canAccessArea("jamie", "employment", id), id).toBe(
+        authorised.includes(id),
+      );
+    expect(canAccessArea("jamie", "welfare", "welfare-support")).toBe(true);
+    expect(canAccessArea("jamie", "welfare", "approved-consultation")).toBe(
+      true,
+    );
+    for (const id of ["safeguarding-complaints", "employee-representation"])
+      expect(canAccessArea("jamie", "welfare", id)).toBe(false);
+    expect(canAccessArea("jamie", "finance", "workforce-cost")).toBe(false);
+  });
+
+  it("gives technology administrators operational security work without secrets, privileged records or site ownership", () => {
+    const operational = [
+      "security",
+      "production",
+      "recovery",
+      "vulnerabilities",
+      "restricted-web",
+    ];
+    for (const id of protectedAreaDefinitions.digital)
+      expect(canAccessArea("devon", "digital", id), id).toBe(
+        operational.includes(id),
+      );
+    expect(canAccessChannel("devon", "digital", "Security Engineering")).toBe(
+      true,
+    );
+    expect(canAdministerSites("devon")).toBe(false);
+    expect(canAccessArea("devon", "employment", "employee-records")).toBe(
+      false,
+    );
+  });
+
+  it("limits production-security reviews to the technical administrator's genuinely assigned projects", () => {
+    const assigned = ["PRJ-2026-014", "PRJ-2026-042", "PRJ-2020-006"];
+    for (const role of previewRoles)
+      for (const project of allProjects)
+        expect(
+          canAccessProjectSecurityReview(role, project.code),
+          `${role.id}:${project.code}`,
+        ).toBe(role.id === "devon" && assigned.includes(project.code));
+    expect(canAccessProjectSecurityReview("devon", "not-a-project")).toBe(
+      false,
+    );
+    expect(canAccessProjectSecurityReview("not-a-role", assigned[0])).toBe(
+      false,
+    );
+    expect(canAccessProject("devon", "PRJ-2026-021")).toBe(true);
+    expect(canAccessProjectSecurityReview("devon", "PRJ-2026-021")).toBe(false);
+    for (const role of previewRoles)
+      for (const projectId of assigned)
+        expect(
+          hasAlternativePreviewAccess(
+            { kind: "project-security", projectId },
+            role.id,
+          ),
+        ).toBe(role.id !== "devon");
+    expect(
+      hasAlternativePreviewAccess(
+        { kind: "project-security", projectId: "PRJ-2026-045" },
+        "taylor",
+      ),
+    ).toBe(false);
+    expect(canAccessArea("devon", "digital", "credentials")).toBe(false);
+    expect(canAccessArea("devon", "digital", "privileged-access")).toBe(false);
+  });
+
+  it("gives Sales and Marketing selected commercial work without participant data, customer cases or embargoes", () => {
+    expect(canAccessArea("nadia", "content", "commercial-proposal")).toBe(true);
+    expect(canAccessArea("nadia", "customer", "commercial-account")).toBe(true);
+    for (const [workspace, id] of [
+      ["audience", "participant-administration"],
+      ["content", "participant-administration"],
+      ["content", "pre-release-briefing"],
+      ["content", "embargoed-distribution"],
+      ["customer", "customer-cases"],
+      ["customer", "platinum"],
+    ])
+      expect(canAccessArea("nadia", workspace, id)).toBe(false);
+    for (const role of ["maya", "taylor"])
+      for (const [workspace, ids] of Object.entries(protectedAreaDefinitions))
+        for (const id of ids)
+          expect(
+            canAccessArea(role, workspace, id),
+            `${role}:${workspace}:${id}`,
+          ).toBe(false);
+  });
+
+  it("gives the executive portfolio and predecision oversight without a universal business-data grant", () => {
+    for (const id of protectedAreaDefinitions.executive)
+      expect(canAccessArea("robin", "executive", id)).toBe(true);
+    for (const id of ["restructuring-cost", "pre-decision"])
+      expect(canAccessArea("robin", "finance", id)).toBe(true);
+    for (const [workspace, id] of [
+      ["finance", "banking-security"],
+      ["employment", "employee-records"],
+      ["welfare", "safeguarding-complaints"],
+      ["digital", "credentials"],
+    ])
+      expect(canAccessArea("robin", workspace, id)).toBe(false);
+  });
+
+  it("keeps information and site administration independent of every protected business subject", () => {
+    for (const role of ["leonie", "elliot"]) {
+      expect(canAdministerSites(role)).toBe(true);
+      for (const [workspace, ids] of Object.entries(protectedAreaDefinitions))
+        for (const id of ids)
+          expect(
+            canAccessArea(role, workspace, id),
+            `${role}:${workspace}:${id}`,
+          ).toBe(false);
+    }
+  });
+
+  it("keeps every granted ID canonical, ordinary indexes separate, and obsolete protected IDs closed", () => {
+    for (const role of previewRoles)
+      for (const [workspace, ids] of Object.entries(role.restrictedAreas))
+        for (const id of ids)
+          expect(
+            protectedAreaDefinitions[workspace],
+            `${role.id}:${workspace}:${id}`,
+          ).toContain(id);
+    for (const [workspace, ids] of Object.entries(protectedAreaDefinitions))
+      for (const id of ids)
+        expect(ordinaryAreaDefinitions[workspace] || []).not.toContain(id);
+    for (const role of previewRoles) {
+      expect(canAccessArea(role, "digital", "protected")).toBe(true);
+      for (const id of [
+        "relationships",
+        "premium",
+        "accounts",
+        "partnerships",
+        "stakeholders",
+        "meetings",
+      ])
+        expect(canAccessArea(role, "customer", id)).toBe(true);
+      for (const [workspace, ids] of Object.entries({
+        finance: [
+          "individual-income",
+          "refunds",
+          "bank-details",
+          "payroll",
+          "restricted-forecast",
+          "liquidity-model",
+          "restricted-planning",
+        ],
+        audience: [
+          "raw-data",
+          "participant-data",
+          "restricted",
+          "pre-decision",
+        ],
+        content: ["restricted", "pre-release", "rights-restricted"],
+        governance: ["approved", "liaison", "outputs"],
+      }))
+        for (const id of ids)
+          expect(canAccessArea(role, workspace, id)).toBe(false);
+    }
   });
 });
 
@@ -397,6 +610,24 @@ describe("ordinary discoverability is separate from membership and pinning", () 
         departmentPreviewId: "communications",
       }),
     ).toBeUndefined();
+    for (const role of previewRoles)
+      for (const explicitPrivacy of [true, false]) {
+        expect(
+          canAccessUnit(
+            role,
+            role.departmentId,
+            "not-a-real-unit",
+            explicitPrivacy,
+          ),
+        ).toBe(false);
+        expect(
+          canAccessUnit(role, "not-a-department", role.unitId, explicitPrivacy),
+        ).toBe(false);
+      }
+    // A caller-supplied public flag cannot turn a canonical private unit public.
+    expect(
+      canAccessUnit("taylor", "marketing-growth", "strategic-accounts", false),
+    ).toBe(false);
   });
 });
 

@@ -27,7 +27,9 @@ import "./styles.css";
 import { resolveStaffPerson } from "../intranet/catalog";
 import { executiveDocument, executiveDefinition } from "./libraries";
 export default function ExecutiveApp() {
-  const page = location.pathname.split("/")[2] || "home";
+  const routeParts = location.pathname.split("/").filter(Boolean);
+  const page = routeParts[1] || "home";
+  const validRoute = routeParts.length <= 2;
   const staffPerson = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
   );
@@ -40,7 +42,7 @@ export default function ExecutiveApp() {
     return target.pathname + target.search;
   };
   const area = navigation.find((a) => a.id === page);
-  const allowed = canAccessArea(staffPerson, "executive", page);
+  const allowed = validRoute && canAccessArea(staffPerson, "executive", page);
   const safeFiles = files.filter(
     (file) =>
       workspaceAllowed &&
@@ -158,9 +160,9 @@ export default function ExecutiveApp() {
             workspaceId="executive"
             area={title}
             resource={
-              page === "home"
+              validRoute && page === "home"
                 ? { kind: "workspace", workspaceId: "executive" }
-                : area
+                : validRoute && area
                   ? { kind: "area", workspaceId: "executive", areaId: page }
                   : undefined
             }
@@ -255,11 +257,11 @@ export default function ExecutiveApp() {
               workspaceId="executive"
               area={area?.name || "Executive work"}
               personId={staffPerson.id}
-              resource={{
-                kind: "area",
-                workspaceId: "executive",
-                areaId: page,
-              }}
+              resource={
+                validRoute && area
+                  ? { kind: "area", workspaceId: "executive", areaId: page }
+                  : undefined
+              }
               returnHref={href("home")}
               strict
             />

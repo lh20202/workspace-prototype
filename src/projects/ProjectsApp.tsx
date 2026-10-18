@@ -4,6 +4,7 @@ import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
+import { canAccessProjectSecurityReview } from "../access/policy";
 import { PeopleTeam20Regular, Chat20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
@@ -87,6 +88,24 @@ export default function ProjectsApp() {
     [notes, setNotes] = useState<string[]>([]),
     [projectView, setProjectView] = useState("All projects");
   const teams = page === "teams";
+  const knownRoute = project
+    ? parts.length <= (archived ? 4 : 3) &&
+      [
+        "home",
+        "documents",
+        "plan",
+        "decisions",
+        "risks",
+        "handover",
+        "security",
+        "teams",
+      ].includes(page)
+    : parts.length <= 2 &&
+      ["home", "control", "support", "reviews", "current", "archive"].includes(
+        page,
+      );
+  const knownProjectDestination =
+    knownRoute && (!teams || projectChannels.includes(channel));
   useEffect(() => {
     const restoreTeamsLocation = () => {
       const params = new URLSearchParams(location.search);
@@ -284,12 +303,14 @@ export default function ProjectsApp() {
       location={`Projects / ${title} / ${page}`}
       project={project?.code}
       resource={
-        project
-          ? {
-              kind: teams ? "project-team" : "project",
-              projectId: project.code,
-            }
-          : { kind: "area", workspaceId: "projects", areaId: page }
+        !knownProjectDestination
+          ? undefined
+          : project
+            ? {
+                kind: teams ? "project-team" : "project",
+                projectId: project.code,
+              }
+            : { kind: "area", workspaceId: "projects", areaId: page }
       }
       personId={person.id}
       returnHref={withExplicitStaff("/projects")}
@@ -299,19 +320,53 @@ export default function ProjectsApp() {
   );
   const projectBody = () => {
     if (!project) return null;
-    if (!permitted) return denied();
-    if (page === "security")
+    if (!knownRoute) return <h1>This location is unavailable</h1>;
+    if (
+      page === "security" &&
+      !canAccessProjectSecurityReview(person, project.code)
+    )
       return (
         <AccessBoundary
           workspaceId="digital"
           area="Production Security Review"
           project={project.code}
+          resource={{ kind: "project-security", projectId: project.code }}
           location={`Projects / ${title} / Production Security Review`}
           personId={person.id}
           returnHref={withExplicitStaff(root)}
-          strict
+          sensitivity="Confidential"
         />
       );
+    if (page === "security")
+      return (
+        <section>
+          <h1>Production Security Review</h1>
+          <p>{project.purpose}</p>
+          {readOnly && (
+            <p className="project-readonly">
+              {project.archived} · Read-only. Closure history and selected final
+              records only.
+            </p>
+          )}
+          <DocumentLibrary
+            title="Project Documents"
+            headingLevel={2}
+            embedded
+            files={documents.filter((file) =>
+              ["Design Options.pptx", "Transition Checklist.docx"].includes(
+                file.name,
+              ),
+            )}
+            readOnly={readOnly}
+          />
+          <p>
+            <StaffLink href={withExplicitStaff(root)}>
+              Back to Projects
+            </StaffLink>
+          </p>
+        </section>
+      );
+    if (!permitted) return denied();
     if (page === "documents") return filesView();
     if (page === "plan")
       return (
@@ -607,6 +662,7 @@ export default function ProjectsApp() {
     </section>
   ) : null;
   const centralBody = () => {
+    if (!knownRoute) return <h1>This location is unavailable</h1>;
     if (blockedCentral) return denied();
     if (page === "control")
       return (
@@ -676,7 +732,7 @@ export default function ProjectsApp() {
       </>
     );
   };
-  if (teams && project) {
+  if (teams && project && knownRoute) {
     const knownChannel = projectChannels.includes(channel);
     const selectedChannel = channel;
     const conversation = projectConversation(project, selectedChannel);
@@ -747,7 +803,11 @@ export default function ProjectsApp() {
               workspaceId="projects"
               area="Project team"
               project={project.code}
-              resource={{ kind: "project-team", projectId: project.code }}
+              resource={
+                knownChannel
+                  ? { kind: "project-team", projectId: project.code }
+                  : undefined
+              }
               personId={person.id}
               headingLevel={2}
               compact

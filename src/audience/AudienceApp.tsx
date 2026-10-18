@@ -109,12 +109,13 @@ export default function AudienceApp() {
     (page === "research" && !!params.get("registerView")) ||
     (page === "decisions" && !!params.get("initiative"));
   const known =
-    page === "home" ||
-    !!activeLibrary ||
-    register ||
-    ["automation", "calendar"].includes(page) ||
-    system ||
-    protectedStudy;
+    protectedStudy ||
+    (parts.length === 3 && system) ||
+    (parts.length <= 2 &&
+      (page === "home" ||
+        !!activeLibrary ||
+        register ||
+        ["automation", "calendar"].includes(page)));
   const nav = (href: string, replace = false) => {
     history[replace ? "replaceState" : "pushState"](
       {},

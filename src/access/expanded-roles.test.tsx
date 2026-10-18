@@ -57,20 +57,32 @@ describe("business and delegated site administration roles", () => {
       "treasury",
       "payment-exceptions",
       "refund-chargeback",
+      "high-value-payment",
+      "payment-data-correction",
+      "disputed-supplier-payment",
+      "draft-scenarios",
+      "workforce-cost",
+      "investment-affordability",
+      "external-audit",
+      "pre-issue-statements",
+      "liquidity-stress",
     ])
       expect(canAccessArea("sam", "finance", area)).toBe(true);
     for (const area of [
-      "payroll",
+      "payroll-settlement",
+      "employee-reimbursements",
       "bank-mandates",
       "signatories",
       "banking-security",
-      "high-value-payment",
       "exceptional-authorisation",
+      "transfer-authorisation",
+      "restructuring-cost",
+      "pre-decision",
     ])
       expect(canAccessArea("sam", "finance", area)).toBe(false);
     expect(
       teamsGroups(resolveStaffPerson("sam")).map((group) => group.id),
-    ).toEqual(["company", "planning", "finance-services"]);
+    ).toEqual(["company", "planning", "finance-services", "PRJ-2026-038"]);
     vi.stubGlobal(
       "location",
       new URL(

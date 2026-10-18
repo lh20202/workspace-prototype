@@ -75,7 +75,7 @@ describe("curated global channels and explicit entry context", () => {
       ],
       leonie: ["company", "digital", "strategy-technology"],
       nadia: ["company", "content", "marketing-growth"],
-      sam: ["company", "planning", "finance-services"],
+      sam: ["company", "planning", "finance-services", "PRJ-2026-038"],
       elliot: ["company", "digital", "strategy-technology"],
     };
     for (const member of staff.filter((item) => item.id !== "taylor")) {
@@ -195,7 +195,7 @@ describe("curated global channels and explicit entry context", () => {
       ),
     ).toEqual({ kind: "project", id: "PRJ-2024-018" });
   });
-  it("preserves contextual environments across role changes while clearing file/unit/post state", () => {
+  it("preserves contextual environments across role changes while clearing transient files, posts and stale unit state", () => {
     for (const [pathname, search, expected] of [
       [
         "/teams",
@@ -266,6 +266,7 @@ describe("curated global channels and explicit entry context", () => {
       "company",
       "planning",
       "finance-services",
+      "PRJ-2026-038",
     ]);
   });
 });
