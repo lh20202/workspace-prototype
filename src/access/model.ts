@@ -152,14 +152,21 @@ export function accessWorkspaceId(
 ) {
   if (explicit === "council" || value === "Employee Representative Council")
     return "welfare";
-  // Preserve saved access-request links after the visible service-site rename.
-  if (
-    !explicit &&
-    ["Organisation Services", "Organisation Services workspace"].includes(
-      value || "",
-    )
-  )
-    return "services";
+  // Preserve saved access-request links after visible workspace renames.
+  if (!explicit) {
+    const legacyWorkspaceNames: Record<string, string> = {
+      "Organisation Services": "services",
+      "Organisation Services workspace": "services",
+      "Staff Service Operations": "services",
+      "Purchasing & Office": "services",
+      "Legal & Risk": "legal",
+      "Legal, Privacy & Compliance": "legal",
+      "Customer Relations": "customer",
+      "Customer Care & Relations": "customer",
+    };
+    if (value && Object.hasOwn(legacyWorkspaceNames, value))
+      return legacyWorkspaceNames[value];
+  }
   if (
     explicit &&
     (environmentById.has(explicit) ||

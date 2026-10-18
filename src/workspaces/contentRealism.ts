@@ -288,7 +288,7 @@ function fileMetadata(id: string, file: WorkingFile): Record<string, string> {
                 file.area === "office"
                   ? "Office readiness"
                   : "Front-desk cover",
-              "Service owner": "Staff Service Operations",
+              "Service owner": "Office Services",
             };
     case "quality":
       return file.area === "eco"

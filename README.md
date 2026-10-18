@@ -31,12 +31,12 @@ The existing local production preview can be run with `npx vite preview --host 1
 | Acquisition Logistics              | `/logistics`              | Deployment, staffing, rotas, locations and operational logistics |
 | Research & Insight                 | `/audience-innovation`    | Research, journeys, analytics, experiments and automation ideation |
 | Creative Studio                    | `/content-delivery`       | Editorial, creative, content packages, requirements and acceptance |
-| Customer Relations                 | `/customer-relations`     | Care, relationships, accounts, partnerships and interaction quality |
+| Client & Customer Relations                 | `/customer-relations`     | Care, relationships, accounts, partnerships and interaction quality |
 | Income & Financial Operations      | `/financial-operations`   | Income, reconciliation, settlement, accounting, FP&A and treasury; signposted as Purse Strings in the directory |
-| Purchasing & Office                | `/services`               | Office Maintenance & Equipment, Purchasing & Suppliers, Travel Services, Reception only |
+| Office Services                | `/services`               | Office Maintenance & Equipment, Purchasing & Suppliers, Travel Services, Reception only |
 | Quality & Monitoring               | `/quality-monitoring`     | Cross-company monitoring, process redesign, improvement and Eco Practice |
 | Tech & Digital                     | `/digital-tech`           | Engineering, Web & CRM, business systems, AI, M365, information architecture and operations |
-| Legal & Risk                       | `/legal-compliance`       | Advice, privacy, compliance, assurance and controlled legal matters |
+| Legal                       | `/legal-compliance`       | Advice, privacy, compliance, assurance and controlled legal matters |
 | People & Culture                   | `/people-culture`         | Workforce, leadership, culture, inclusion, learning, internal communications, wellbeing and organisation-wide framework design |
 | Employment & Hiring Administration | `/employment-admin`       | Strictly confidential recruitment/employment coordination, protected candidate/personnel records and system handoffs |
 | Welfare & Employee Representation  | `/welfare-representation` | Strictly confidential welfare, safeguarding/complaints and independent employee representation |
@@ -56,8 +56,8 @@ The directory uses four compact, colour-tinted panels in a two-column desktop/la
 
 | Directory band | Destinations |
 | -------------- | ------------ |
-| Sales | Workspaces: Research & Insight; Creative Studio; Acquisition Logistics; Customer Relations. Separately: Sales & Marketing Wiki and Frontline Crew Portal. |
-| Org Central | Direction & assurance: Executive & CEO; Planning Cycle; Project Centre; Quality & Monitoring; Legal & Risk. Shared services: Tech & Digital; Purchasing & Office; Company Archives. |
+| Sales | Workspaces: Research & Insight; Creative Studio; Acquisition Logistics; Client & Customer Relations. Separately: Sales & Marketing Wiki and Frontline Crew Portal. |
+| Org Central | Direction & assurance: Executive & CEO; Planning Cycle; Project Centre; Quality & Monitoring; Legal. Shared services: Tech & Digital; Office Services; Company Archives. |
 | Personnel | Culture & Inclusion; Learning Management; Internal Events & Networking. Quiet protected text links: Personnel Admin; Workers' Union; Welfare & Safeguarding. |
 | Purse Strings | The existing Income & Financial Operations workspace at `/financial-operations`. Jump to: Income & Booking; Payments & Close; Planning & Reporting; Treasury. German label: **Geldströme**. |
 
@@ -87,8 +87,8 @@ The installed Figma SharePoint Web UI Kit was inspected for navigation hierarchy
 
 - Audience defines segment, journey, automation hypothesis and measurement; Content develops messages/creative; Digital engineers automation/integration; Audience evaluates results.
 - Content's Digital Content & Experience area owns requirements and acceptance. Code, deployment, runtime operation, engineering repositories and external technical collaboration live in Digital. The scoped technical partner preview is `/digital-tech/web-crm/partner-review`.
-- People & Culture owns workforce/organisation design, leadership, inclusion, learning, all-staff meetings, intranet/wiki publishing, opt-in communities, wellbeing and organisation-wide reward/employment frameworks. Employment & Hiring Administration owns recruitment administration, candidate workflow handoffs and controlled employment operations. Individual candidate/personnel/contract/change/payroll/absence records remain protected. Digital owns HR-platform engineering, APIs, authentication and integrations. Staff Service Operations owns physical event logistics, rooms, equipment, travel and reception. Welfare & Employee Representation owns confidential welfare/support, safeguarding, complaints and employee-representation work; People retains organisation-wide wellbeing programmes.
-- Staff Service Operations owns sourcing; Legal reviews contracts/privacy; Finance owns payment/accounting; Quality handles systemic process improvement. Staff Service Operations has no IT, hiring, legal or project library and no system wall.
+- People & Culture owns workforce/organisation design, leadership, inclusion, learning, all-staff meetings, intranet/wiki publishing, opt-in communities, wellbeing and organisation-wide reward/employment frameworks. Employment & Hiring Administration owns recruitment administration, candidate workflow handoffs and controlled employment operations. Individual candidate/personnel/contract/change/payroll/absence records remain protected. Digital owns HR-platform engineering, APIs, authentication and integrations. Office Services owns physical event logistics, rooms, equipment, travel and reception. Welfare & Employee Representation owns confidential welfare/support, safeguarding, complaints and employee-representation work; People retains organisation-wide wellbeing programmes.
+- Office Services owns sourcing; Legal reviews contracts/privacy; Finance owns payment/accounting; Quality handles systemic process improvement. Office Services has no IT, hiring, legal or project library and no system wall.
 - Customer Care owns interaction quality, coaching, calibration and recovery. Quality owns organisation-wide methods, monitoring and process redesign.
 - Archives owns retention, appraisal and preservation decisions. Digital implements storage, metadata, migration and access controls against those requirements. Archive catalogue and legacy-drive records are view-only.
 

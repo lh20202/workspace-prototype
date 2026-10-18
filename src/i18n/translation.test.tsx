@@ -68,13 +68,13 @@ describe("English and German display language", () => {
       "Research & Insight": "Forschung & Analyse",
       "Creative Studio": "Kreativstudio",
       "Acquisition Logistics": "Akquiselogistik",
-      "Customer Relations": "Kundenbeziehungen",
+      "Client & Customer Relations": "Beziehungen zu Auftraggebern und Kunden",
       "Executive & CEO": "Geschäftsführung & CEO",
       "Planning Cycle": "Planungszyklus",
       "Project Centre": "Projektzentrale",
       "Quality & Monitoring": "Qualität & Monitoring",
-      "Legal & Risk": "Recht & Risiko",
-      "Purchasing & Office": "Einkauf & Büroorganisation",
+      Legal: "Recht",
+      "Office Services": "Büroservices",
       "Tech & Digital": "Technik & Digitales",
       "Company Archives": "Unternehmensarchiv",
       "Culture & Inclusion": "Kultur & Inklusion",
@@ -91,11 +91,20 @@ describe("English and German display language", () => {
       expect(translateText(english, "en")).toBe(english);
     }
     expect(translateText("Staff Service Operations workspace", "de")).toBe(
-      "Arbeitsbereich Einkauf & Büroorganisation",
+      "Arbeitsbereich Büroservices",
+    );
+    expect(translateText("Office Services workspace", "de")).toBe(
+      "Arbeitsbereich Büroservices",
+    );
+    expect(translateText("Legal workspace", "de")).toBe(
+      "Arbeitsbereich Recht",
+    );
+    expect(translateText("Customer Care & Relations workspace", "de")).toBe(
+      "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
     );
     expect(
-      translateText("Purchasing & Office → Purchasing & Suppliers", "de"),
-    ).toBe("Einkauf & Büroorganisation → Einkauf & Lieferanten");
+      translateText("Office Services → Purchasing & Suppliers", "de"),
+    ).toBe("Büroservices → Einkauf & Lieferanten");
   });
   it("translates confidential personnel work and independent representation clearly", () => {
     const protectedLabels = {

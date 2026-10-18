@@ -61,7 +61,7 @@ export const workspaceSeed: [
   ],
   [
     "customer",
-    "Customer Relations",
+    "Client & Customer Relations",
     "/customer-relations",
     "Customer care, relationship continuity, account stewardship, partnerships and frontline interaction quality.",
     "Customer relationships",
@@ -79,7 +79,7 @@ export const workspaceSeed: [
   ],
   [
     "services",
-    "Purchasing & Office",
+    "Office Services",
     "/services",
     "Office maintenance and equipment, purchasing and suppliers, travel services and reception.",
     "Workplace operations",
@@ -106,7 +106,7 @@ export const workspaceSeed: [
   ],
   [
     "legal",
-    "Legal & Risk",
+    "Legal",
     "/legal-compliance",
     "Shared workspace for legal review, privacy, compliance, organisational risk and assurance activity.",
     "Advice & assurance",

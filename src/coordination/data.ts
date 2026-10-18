@@ -182,7 +182,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/services/purchasing",
-      destinationName: "Purchasing & Office → Purchasing & Suppliers",
+      destinationName: "Office Services → Purchasing & Suppliers",
       removed: true,
     },
     reply:

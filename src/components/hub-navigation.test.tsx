@@ -31,7 +31,7 @@ describe("shared SharePoint hub navigation", () => {
       ["Research & Insight", "/audience-innovation"],
       ["Creative Studio", "/content-delivery"],
       ["Acquisition Logistics", "/logistics"],
-      ["Customer Relations", "/customer-relations"],
+      ["Client & Customer Relations", "/customer-relations"],
     ];
     const related = [
       ["Sales & Marketing Wiki", "/sales-marketing/wiki"],

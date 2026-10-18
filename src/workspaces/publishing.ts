@@ -44,7 +44,7 @@ export const environmentReviews: EnvironmentReview[] = [
   },
   {
     id: "PUB-103",
-    environment: "Customer Care & Relations",
+    environment: "Client & Customer Relations",
     area: "Private library request",
     owner: "Maya Chen",
     moderator: "Jordan Lee",

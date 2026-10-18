@@ -8,7 +8,7 @@ This is an exploratory Digital Workspace proof of concept. Ordinary exploration,
 
 ## Discoverability and protection
 
-Demo User can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Project Centre, Quality & Monitoring, Legal & Risk, Purchasing & Office, Company Archives, People & Culture, Income & Financial Operations, Acquisition Logistics, Customer Relations, Research & Insight, Creative Studio and Tech & Digital. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
+Demo User can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Project Centre, Quality & Monitoring, Legal, Office Services, Company Archives, People & Culture, Income & Financial Operations, Acquisition Logistics, Client & Customer Relations, Research & Insight, Creative Studio and Tech & Digital. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
 
 The canonical registry retains exactly three whole workspace restrictions:
 

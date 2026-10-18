@@ -90,13 +90,13 @@ describe("hub families retain one canonical owner for every environment", () => 
       "Research & Insight",
       "Creative Studio",
       "Acquisition Logistics",
-      "Customer Relations",
+      "Client & Customer Relations",
       "Sales & Marketing Wiki",
       "Frontline Crew Portal",
       "Global Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
-      title: "Purchasing & Office",
+      title: "Office Services",
       href: "/services",
     });
     expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");
@@ -107,6 +107,15 @@ describe("hub families retain one canonical owner for every environment", () => 
       "Welfare & Employee Representation",
     );
     expect(accessWorkspaceId("Organisation Services")).toBe("services");
+    expect(accessWorkspaceId("Purchasing & Office")).toBe("services");
+    expect(accessWorkspaceId("Legal & Risk")).toBe("legal");
+    expect(accessWorkspaceId("Customer Relations")).toBe("customer");
+    expect(accessWorkspaceId("Customer Care & Relations")).toBe("customer");
+    expect(workspaceById.get("legal")).toMatchObject({
+      title: "Legal",
+      hubLabel: "Legal",
+      href: "/legal-compliance",
+    });
     expect(
       accessFocalPoint({
         workspaceId: accessWorkspaceId(null, "council"),

@@ -124,7 +124,7 @@ export function pageTitle(pathname: string) {
   )
     return "Audience Research & Marketing Insight";
   if (pathname === "/services" || pathname.startsWith("/services/"))
-    return "Staff Service Operations";
+    return "Office Services";
   if (pathname === "/service-desk/it-support")
     return "IT requests | Service Desk";
   if (pathname.startsWith("/service-desk/"))

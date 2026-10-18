@@ -82,9 +82,9 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Personnel Admin": "Personalverwaltung",
   "Income & Booking": "Einnahmen & Verbuchung",
   "Company Archives": "Unternehmensarchiv",
-  "Staff Service Operations": "Einkauf & Büroorganisation",
+  "Staff Service Operations": "Büroservices",
   "Staff Service Operations workspace":
-    "Arbeitsbereich Einkauf & Büroorganisation",
+    "Arbeitsbereich Büroservices",
   "Purchasing & Suppliers": "Einkauf & Lieferanten",
   "Controlled access": "Geschützter Zugriff",
   "Workspace focal point": "Ansprechperson für den Arbeitsbereich",
