@@ -74,7 +74,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "metriva",
-    name: "DataHub",
+    name: "DataAnalystica",
     logo: "/images/admin-logins/datahub.svg",
     category: "Data analytics & reporting",
     purpose: "Explore data, monitor performance and build analytical reports.",
@@ -173,7 +173,7 @@ const legacyBrandPatterns: [RegExp, string][] = [
   [/\bFramevia\b/g, "framevia"],
   [/\bSlotline\b/g, "slotline"],
   [/\bRelovia\b/g, "relovia"],
-  [/\bMetriva\b/g, "metriva"],
+  [/\bMetriva\b|\bDataHub\b/g, "metriva"],
   [/\bTeralink\b/g, "teralink"],
   [/\bRecorda\b/g, "recorda"],
   [/\bPathory\b/g, "pathory"],
