@@ -1,7 +1,5 @@
 /** Presentation refinements; routes, stored values and source records stay stable. */
 export const germanPolish: Record<string, string> = {
-  "Architecture layout": "Layout der Übersicht",
-  Layout: "Layout",
   "Research & analysis": "Forschung & Analyse",
   "Creative development": "Kreative Entwicklung",
   "Campaign operations": "Kampagnen koordinieren",

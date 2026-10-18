@@ -112,7 +112,7 @@ describe("canonical environment and vendor identities", () => {
       expect(anchor).not.toContain("workspace-icon");
     }
     expect(html).not.toContain('id="admin-logins-heading"');
-    expect(html.match(/class="architecture-shared-tools"/g)).toHaveLength(1);
-    expect(html.match(/data-brand=/g)).toHaveLength(9);
+    expect(html.match(/class="directory-admin-logins"/g)).toHaveLength(4);
+    expect(html.match(/data-brand=/g)).toHaveLength(12);
   });
 });

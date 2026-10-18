@@ -1,27 +1,10 @@
-/* Three presentations share the same destinations and white directory canvas. */
+/* The architecture directory keeps workspaces and tools in their four quadrants. */
 :root
   .architecture-poc-page
   .intranet-directory:has(.architecture-exploration) {
   background: #fff;
 }
 
-:root .architecture-poc-page .architecture-layout-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #5d6870;
-}
-:root .architecture-poc-page .architecture-layout-control select {
-  width: 124px;
-  min-height: 32px;
-  padding: 4px 24px 4px 9px;
-  border: 1px solid #c7cdd2;
-  border-radius: 4px;
-  background: #fff;
-  color: #37454e;
-  font: inherit;
-}
 :root .architecture-poc-page .directory-main:has(.architecture-exploration) {
   max-width: 1480px;
   padding: 20px 28px 28px;
@@ -36,7 +19,7 @@
   align-items: start;
   gap: 24px;
 }
-.architecture-layout-main {
+.architecture-main {
   min-width: 0;
 }
 .architecture-panel-row {
@@ -150,8 +133,7 @@
 .architecture-jump-groups section + section {
   margin-top: 24px;
 }
-:root .architecture-poc-page .architecture-jump-groups h2,
-:root .architecture-poc-page .architecture-shared-tools > h2 {
+:root .architecture-poc-page .architecture-jump-groups h2 {
   margin: 0 0 8px;
   font-size: 18px;
   line-height: 26px;
@@ -211,143 +193,13 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.architecture-exploration a:focus-visible,
-:root .architecture-poc-page .architecture-layout-control select:focus-visible {
+.architecture-exploration a:focus-visible {
   outline: 2px solid #0078d4;
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Layout 1 keeps a single, deduplicated Tools list beside the quadrants. */
-.architecture-layout-workspaces-first .architecture-exploration {
-  grid-template-columns: minmax(0, 1fr) 220px;
-}
-.architecture-shared-tools {
-  min-width: 0;
-  padding-left: 18px;
-  border-left: 1px solid #dddfe7;
-}
-.architecture-tools-list {
-  display: grid;
-  gap: 2px 24px;
-}
-.architecture-tool-link {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) 14px;
-  align-items: center;
-  gap: 8px;
-  min-height: 54px;
-  padding: 8px 0;
-  color: #37454e;
-  font-size: 14px;
-  line-height: 21px;
-  text-decoration: none;
-}
-.architecture-tool-copy {
-  min-width: 0;
-}
-.architecture-tool-copy small {
-  display: block;
-  color: #616161;
-  font-size: 12px;
-  line-height: 18px;
-}
-.architecture-tool-link > svg:last-child {
-  color: #70818b;
-  width: 14px;
-  height: 14px;
-}
-.architecture-tool-link:hover {
-  background: #f6f8f9;
-}
-.architecture-tool-link:hover .architecture-tool-copy > span {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-@media (min-width: 1280px) {
-  .architecture-layout-workspaces-first .architecture-exploration {
-    grid-template-columns: minmax(0, 1fr) 210px 250px;
-  }
-}
-@media (min-width: 1101px) and (max-width: 1279px) {
-  .architecture-layout-workspaces-first .architecture-jump-groups {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    padding: 18px 0 0;
-    border-left: 0;
-    border-top: 1px solid #dddfe7;
-  }
-  .architecture-layout-workspaces-first
-    .architecture-jump-groups
-    section
-    + section {
-    margin: 0;
-  }
-}
-
-/* Layout 3 stacks the four sections, with names and descriptions in equal columns. */
-.architecture-layout-directory .architecture-panel-row {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 24px;
-  margin-bottom: 24px;
-}
-.architecture-layout-directory .architecture-panel {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
-.architecture-layout-directory .architecture-panel-heading {
-  border-top: 3px solid var(--hub-accent);
-  padding-top: 10px;
-}
-.architecture-layout-directory .architecture-destination-grid {
-  grid-template-columns: minmax(0, 1fr);
-}
-.architecture-layout-directory .architecture-destination,
-.architecture-tool-detailed {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) minmax(0, 1fr);
-  gap: 8px;
-  min-height: 38px;
-  padding: 6px 0;
-}
-.architecture-destination-description {
-  border-left: 1px solid #e4e5e8;
-  padding-left: 20px;
-  color: #616161;
-  font-size: 13px;
-  line-height: 20px;
-  font-weight: 400;
-}
-.architecture-panel-tools {
-  margin-top: 14px;
-}
-:root .architecture-poc-page .architecture-panel-tools h3 {
-  margin: 0 0 4px;
-  color: #5d6870;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 550;
-}
-.architecture-layout-directory .restricted-workspace-badge {
-  background: #fff;
-}
-
 @media (max-width: 1100px) {
-  .architecture-layout-workspaces-first .architecture-exploration {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .architecture-shared-tools {
-    padding: 18px 0 0;
-    border-left: 0;
-    border-top: 1px solid #dddfe7;
-  }
-  .architecture-tools-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
   .architecture-exploration {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -376,13 +228,9 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
-  .architecture-tools-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 @media (max-width: 480px) {
   .architecture-destination-grid,
-  .architecture-tools-list,
   .architecture-jump-groups {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -400,9 +248,6 @@
   }
 }
 @media (max-width: 480px) {
-  .architecture-destination-description {
-    padding-left: 12px;
-  }
   .architecture-jump-groups section + section {
     margin-top: 24px;
   }

@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Directory from "./Directory";
-import { ArchitectureDestinationLink } from "./ArchitectureLayouts";
+import { ArchitectureDestinationLink } from "./ArchitectureContent";
 import {
   architectureDestinationById,
   personnelDestinations,
@@ -17,8 +17,7 @@ function renderDirectory() {
     new URL("https://example.test/architecture?staff=robin"),
   );
   vi.stubGlobal("sessionStorage", {
-    getItem: (key: string) =>
-      key === "architecture-layout-session" ? "classic" : "robin",
+    getItem: () => "robin",
   });
   return renderToStaticMarkup(<Directory />);
 }

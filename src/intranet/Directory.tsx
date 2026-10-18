@@ -1,12 +1,5 @@
-import { useState } from "react";
-import ArchitectureLayouts from "./ArchitectureLayouts";
-import {
-  architectureLayoutOptions,
-  readArchitectureLayout,
-  saveArchitectureLayout,
-  type ArchitectureLayout,
-} from "./architectureLayoutModel";
-import "./architecture-layouts.css";
+import ArchitectureContent from "./ArchitectureContent";
+import "./architecture-page.css";
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import StaffLink from "../components/StaffLink";
 import { LanguageToggle } from "../i18n/Language";
@@ -19,13 +12,8 @@ import "../workspaces/styles.css";
 import "./architecture-hubs.css";
 
 export default function Directory() {
-  const [layout, setLayout] = useState(readArchitectureLayout);
-  function changeLayout(next: ArchitectureLayout) {
-    setLayout(next);
-    saveArchitectureLayout(next);
-  }
   return (
-    <div className={`architecture-poc-page architecture-layout-${layout}`}>
+    <div className="architecture-poc-page">
       <PrototypeNavigator />
       <StaffLink className="skip-link" href="#directory-main">
         Skip to workspaces
@@ -65,28 +53,8 @@ export default function Directory() {
               <h1>Digital workspaces</h1>
               <p>Find the shared space for your work.</p>
             </div>
-            <label
-              className="architecture-layout-control"
-              htmlFor="architecture-layout"
-            >
-              <span>Layout</span>
-              <select
-                id="architecture-layout"
-                aria-label="Architecture layout"
-                value={layout}
-                onChange={(event) =>
-                  changeLayout(event.target.value as ArchitectureLayout)
-                }
-              >
-                {architectureLayoutOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
           </div>
-          <ArchitectureLayouts layout={layout} />
+          <ArchitectureContent />
         </main>
       </div>
     </div>

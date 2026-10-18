@@ -1,8 +1,4 @@
-import {
-  Archive20Regular,
-  ChevronRight16Regular,
-  Open16Regular,
-} from "@fluentui/react-icons";
+import { Archive20Regular, ChevronRight16Regular } from "@fluentui/react-icons";
 import type { ReactNode } from "react";
 import StaffLink from "../components/StaffLink";
 import WorkspaceIcon from "../components/WorkspaceIcon";
@@ -13,27 +9,19 @@ import { departments } from "../coordination/data";
 import { departmentPreviewHref } from "../teams/departmentPreview";
 import { projectHref } from "../projects/data";
 import AdminLogins from "./AdminLogins";
-import ExternalBrandMark from "../components/ExternalBrandMark";
-import { externalPreviewHref } from "../environments/catalog";
 import HubHeadingIcon from "./HubHeadingIcon";
 import { architectureDestinationById } from "./architectureDestinations";
 import {
   architectureHubViews,
   architectureProjects,
-  architectureTools,
-  architectureToolsForHub,
-  destinationDescriptions,
   type ArchitectureHubView,
-  type ArchitectureLayout,
-  type LayoutDestination,
-} from "./architectureLayoutModel";
+  type DirectoryDestination,
+} from "./architectureModel";
 
 export function ArchitectureDestinationLink({
   destination,
-  detailed = false,
 }: {
-  destination: LayoutDestination;
-  detailed?: boolean;
+  destination: DirectoryDestination;
 }) {
   const { type, label, href, description } = destination;
   const controlled =
@@ -61,21 +49,14 @@ export function ArchitectureDestinationLink({
         <WorkspaceIcon size={20} />
       )}
       <span>{label}</span>
-      {detailed && (
-        <span className="architecture-destination-description">
-          {destinationDescriptions[destination.id]}
-        </span>
-      )}
     </StaffLink>
   );
 }
 
 function DestinationGrid({
   destinations,
-  detailed,
 }: {
-  destinations: LayoutDestination[];
-  detailed: boolean;
+  destinations: DirectoryDestination[];
 }) {
   return (
     <div className="architecture-destination-grid">
@@ -83,21 +64,13 @@ function DestinationGrid({
         <ArchitectureDestinationLink
           key={destination.id}
           destination={destination}
-          detailed={detailed}
         />
       ))}
     </div>
   );
 }
 
-function HubPanel({
-  hub,
-  layout,
-}: {
-  hub: ArchitectureHubView;
-  layout: ArchitectureLayout;
-}) {
-  const detailed = layout === "directory";
+function HubPanel({ hub }: { hub: ArchitectureHubView }) {
   const heading = (
     <>
       <HubHeadingIcon hubId={hub.id} />
@@ -114,68 +87,8 @@ function HubPanel({
       </header>
       <DestinationGrid
         destinations={[...hub.primary, ...hub.knowledge, ...hub.secondary]}
-        detailed={detailed}
       />
-      {layout === "classic" && <AdminLogins hubId={hub.id} />}
-      {detailed && (
-        <section
-          className="architecture-panel-tools"
-          aria-labelledby={`layout-tools-${hub.id}`}
-        >
-          <h3 id={`layout-tools-${hub.id}`}>Tools</h3>
-          {architectureToolsForHub(hub.id).map((entry) => (
-            <ToolLink key={entry.tool.id} {...entry} detailed />
-          ))}
-        </section>
-      )}
-    </section>
-  );
-}
-
-function ToolLink({
-  tool,
-  description,
-  detailed = false,
-}: (typeof architectureTools)[number] & { detailed?: boolean }) {
-  return (
-    <StaffLink
-      className={`architecture-tool-link${detailed ? " architecture-tool-detailed" : ""}`}
-      href={externalPreviewHref(tool.id)}
-      data-brand={tool.id}
-    >
-      <ExternalBrandMark id={tool.id} size={20} />
-      {detailed ? (
-        <>
-          <span data-no-translate>{tool.name}</span>
-          <span className="architecture-destination-description">
-            {description}
-          </span>
-        </>
-      ) : (
-        <>
-          <span className="architecture-tool-copy">
-            <span data-no-translate>{tool.name}</span>
-            <small>{description}</small>
-          </span>
-          <Open16Regular aria-hidden="true" />
-        </>
-      )}
-    </StaffLink>
-  );
-}
-
-function SharedTools() {
-  return (
-    <section
-      className="architecture-shared-tools"
-      aria-labelledby="architecture-tools-title"
-    >
-      <h2 id="architecture-tools-title">Tools</h2>
-      <div className="architecture-tools-list">
-        {architectureTools.map((entry) => (
-          <ToolLink key={entry.tool.id} {...entry} />
-        ))}
-      </div>
+      <AdminLogins hubId={hub.id} />
     </section>
   );
 }
@@ -245,14 +158,10 @@ function ArchitectureJumpGroups() {
   );
 }
 
-export default function ArchitectureLayouts({
-  layout,
-}: {
-  layout: ArchitectureLayout;
-}) {
+export default function ArchitectureContent() {
   return (
     <div className="architecture-exploration">
-      <div className="architecture-layout-main">
+      <div className="architecture-main">
         <div className="architecture-panels">
           {[
             architectureHubViews.slice(0, 2),
@@ -260,13 +169,12 @@ export default function ArchitectureLayouts({
           ].map((row) => (
             <div className="architecture-panel-row" key={row[0].id}>
               {row.map((hub) => (
-                <HubPanel key={hub.id} hub={hub} layout={layout} />
+                <HubPanel key={hub.id} hub={hub} />
               ))}
             </div>
           ))}
         </div>
       </div>
-      {layout === "workspaces-first" && <SharedTools />}
       <ArchitectureJumpGroups />
     </div>
   );
