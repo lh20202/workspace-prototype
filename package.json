@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "build": "vitest run src/company-anonymity.test.ts src/i18n/site-copy-audit.test.ts && tsc -b && vite build",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "test": "vitest run",

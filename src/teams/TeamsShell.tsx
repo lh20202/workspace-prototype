@@ -455,7 +455,7 @@ function TeamsShellSession({
                   title="Open workspace"
                   aria-label="Open workspace"
                 >
-                  <img src="/images/sharepoint-logo.svg" alt="" />
+                  <img src="/images/site-mark.svg" alt="" />
                   <span>Open workspace</span>
                   <ArrowUpRight20Regular />
                 </button>

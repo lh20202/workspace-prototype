@@ -152,7 +152,7 @@ function interpretText(source: string, language: Language): string {
   const leading = source.match(/^\s*/)?.[0] || "";
   const trailing = source.match(/\s*$/)?.[0] || "";
   const text = source.trim().replace(/\s+/g, " ");
-  const direct = messages[text];
+  const direct = messages[source.trim()] ?? messages[text];
   if (direct) return leading + direct + trailing;
   const administration = germanAdministrationLabel(text, (part) =>
     translateText(part, language),

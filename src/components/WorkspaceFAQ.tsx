@@ -15,7 +15,6 @@ import {
 import { QuestionCircle16Regular } from "@fluentui/react-icons";
 import WorkspaceFAQExample from "./WorkspaceFAQExample";
 import { useTranslation } from "../i18n/Language";
-import { translateWorkspaceFAQ } from "../i18n/de-workspace-faq";
 import {
   workspaceFAQGroups,
   workspaceFAQExampleHref,
@@ -24,8 +23,7 @@ import {
 import "./workspace-faq.css";
 
 export function WorkspaceFAQContent() {
-  const { language } = useTranslation();
-  const faqText = (source: string) => translateWorkspaceFAQ(source, language);
+  const { t: faqText } = useTranslation();
   return (
     <>
       <p className="workspace-faq-intro" data-no-translate>

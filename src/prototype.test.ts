@@ -47,7 +47,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher.match(/Explore workspace/g)).toHaveLength(2);
     expect(launcher.match(/class="workspace-icon"/g)).toHaveLength(2);
     expect(launcher).toContain('alt="Workspace"');
-    expect(launcher).toContain('src="/images/sharepoint-logo.svg"');
+    expect(launcher).toContain('src="/images/site-mark.svg"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
     expect(launcher).toContain("Browse all company workspaces and wikis.");
     expect(launcher).toContain("BETA TEST");
@@ -55,7 +55,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain('aria-label="Proof of concept"');
     expect(launcher).toContain("What am I looking at?");
     expect(launcher).toContain(
-      "These examples use demonstration content, not real MSF Germany files.",
+      "These examples use demonstration content, not real files from the company.",
     );
     expect(launcher).not.toContain("Full Architecture Proof of Concept");
     expect(launcher).not.toContain("Reference proof of concept");

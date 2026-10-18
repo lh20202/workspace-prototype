@@ -47,7 +47,7 @@ export default function Launcher() {
         <h1>Welcome to the Digital Workspace demo!</h1>
         <img
           className="launcher-sharepoint-cue"
-          src="/images/sharepoint-logo.svg"
+          src="/images/site-mark.svg"
           alt="Workspace"
           width="24"
           height="24"

@@ -308,7 +308,7 @@ export default function ContentApp() {
       ) : (
         <header className="content-scoped-header">
           <img
-            src="/images/sharepoint-logo.svg"
+            src="/images/site-mark.svg"
             alt="Site"
             width="32"
             height="32"

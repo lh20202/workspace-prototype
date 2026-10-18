@@ -517,7 +517,7 @@ export default function App() {
               title="Channels"
               onClick={() => location.assign(planningTeamsHref(person.id))}
             >
-              <img src="/images/teams-logo.svg" alt="" />
+              <img src="/images/channels-mark.svg" alt="" />
             </button>
           )}
         </div>

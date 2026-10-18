@@ -35,8 +35,8 @@ describe("Teams navigation shell", () => {
     expect(html).toContain('aria-label="Show channels"');
     expect(html).toContain('aria-label="Open workspace"');
     expect(html).toContain('title="Open workspace"');
-    expect(html).toContain('src="/images/teams-logo.svg"');
-    expect(html).toContain('src="/images/sharepoint-logo.svg"');
+    expect(html).toContain('src="/images/channels-mark.svg"');
+    expect(html).toContain('src="/images/site-mark.svg"');
     const displayedCopy = [
       html.replace(/<[^>]*>/g, " "),
       ...Array.from(

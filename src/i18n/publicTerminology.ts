@@ -3,6 +3,8 @@ import type { Language } from "./translate";
 /** Audited display aliases. Stored channel names, file references and routes are unchanged. */
 export const publicTerminologyAliases = {
   en: {
+    "personal OneDrive": "personal drive",
+    "OneDrive link": "personal drive link",
     "The Microsoft-style screens are simulations — they aren't connected to live SharePoint, Teams or business systems.":
       "The simulated screens are not connected to live workspaces, channels or business systems.",
     "SharePoint, SPFx, Graph, tenant changes, provisioning, Teams and search engineering.":
@@ -81,6 +83,15 @@ export const publicTerminologyAliases = {
     "in SharePoint": "in the workspace",
   },
   de: {
+    "deinem persönlichen OneDrive": "deinem persönlichen Speicherbereich",
+    "OneDrive-Links": "Links zum persönlichen Speicherbereich",
+    "OneDrive-Link": "Link zum persönlichen Speicherbereich",
+    "OneDrive-Dateien": "Dateien im persönlichen Speicherbereich",
+    "OneDrive-Datei": "Datei im persönlichen Speicherbereich",
+    "OneDrive-Ordner": "Ordner im persönlichen Speicherbereich",
+    "zu OneDrive": "zum persönlichen Speicherbereich",
+    "aus OneDrive": "aus dem persönlichen Speicherbereich",
+    "in OneDrive": "im persönlichen Speicherbereich",
     // These are ordinary groups of people, not the channel product.
     "Beide Teams sind heute im Einsatz.":
       "Beide Einsatzgruppen sind heute im Einsatz.",
@@ -213,8 +224,8 @@ export function formatPublicTerminology(
   language: Language,
 ): string {
   if (
-    !/\b(?:SharePoint|Microsoft|M365)\b/i.test(source) &&
-    !/\b(?:Teams|Team)\b|Abteilungsteams/.test(source)
+    !/\b(?:SharePoint|Microsoft|M365|OneDrive)\b/i.test(source) &&
+    !/\b(?:Teams|Team|TEAMS)\b|Abteilungsteams/.test(source)
   )
     return source;
   const protectedValues: string[] = [];
@@ -238,7 +249,11 @@ export function formatPublicTerminology(
         : "digital workplace platforms",
     )
     .replace(/\bSharePoint\b/gi, "Site")
-    .replace(/\bTeams\b/g, language === "de" ? "Kanäle" : "Channels")
+    .replace(/\b(?:Teams|TEAMS)\b/g, language === "de" ? "Kanäle" : "Channels")
+    .replace(
+      /\bOneDrive\b/gi,
+      language === "de" ? "persönlicher Speicherbereich" : "personal drive",
+    )
     .replace(
       /\bMicrosoft\b/gi,
       language === "de"

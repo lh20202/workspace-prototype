@@ -47,7 +47,7 @@ describe("small demo information controls", () => {
       expect(translateText(text, "de")).not.toBe(text);
       expect(translateText(text, "en")).toBe(text);
     }
-    expect(proofOfConceptInfoText).toContain("not real MSF Germany files");
+    expect(proofOfConceptInfoText).toContain("not real files from the company");
     expect(proofOfConceptInfoText).not.toMatch(
       /prototype|product-development/i,
     );

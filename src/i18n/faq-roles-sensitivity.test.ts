@@ -16,7 +16,7 @@ const german = (source: string) => translateText(source, "de");
 describe("final staff-facing German interpretation", () => {
   it("explains the demo limits and the role of personal storage", () => {
     expect(german(proofOfConceptInfoText)).toContain(
-      "keine echten Dateien von MSF Deutschland",
+      "keine echten Dateien des Unternehmens",
     );
     expect(german(proofOfConceptInfoText)).toContain(
       "weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen",

@@ -1,4 +1,4 @@
-/** The same local Microsoft Teams mark wherever the destination is Teams. */
+/** A neutral conversation mark for channel destinations. */
 export default function TeamsMark({
   size = 20,
   labelled = false,
@@ -9,7 +9,7 @@ export default function TeamsMark({
   return (
     <img
       className="teams-mark"
-      src="/images/teams-logo.svg"
+      src="/images/channels-mark.svg"
       alt={labelled ? "Channels" : ""}
       width={size}
       height={size}

@@ -8,7 +8,9 @@ import {
   workspaceFAQQuestions,
 } from "../components/workspaceFAQContent";
 import { proofOfConceptInfoText } from "../components/DemoInfo";
-import { germanWorkspaceFAQ, translateWorkspaceFAQ } from "./de-workspace-faq";
+import { germanWorkspaceFAQ } from "./de-workspace-faq";
+import { displayText } from "./displayText";
+import { formatDisplayPunctuation } from "./displayPunctuation";
 
 describe("the expanded FAQ's final German wording", () => {
   it("covers every question, short answer and group while leaving English unchanged", () => {
@@ -28,55 +30,45 @@ describe("the expanded FAQ's final German wording", () => {
     ];
     for (const source of sources) {
       expect(germanWorkspaceFAQ[source], source).toBeTruthy();
-      expect(translateWorkspaceFAQ(source, "de"), source).toBe(
-        germanWorkspaceFAQ[source],
+      expect(displayText(source, "de"), source).toBe(
+        formatDisplayPunctuation(germanWorkspaceFAQ[source], "de"),
       );
-      expect(translateWorkspaceFAQ(source, "en")).toBe(source);
+      expect(displayText(source, "en")).toBe(
+        formatDisplayPunctuation(source, "en"),
+      );
     }
   });
   it("uses the established classification and product terms without conflating personal data and strict confidentiality", () => {
     const sensitivity = workspaceFAQQuestions.find(
       (entry) => entry.id === "sensitivity",
     )!.answer;
-    expect(translateWorkspaceFAQ(sensitivity, "de")).toContain(
+    expect(displayText(sensitivity, "de")).toContain(
       "Öffentlich, Intern, Vertraulich und Streng vertraulich",
     );
     const protectedInformation = workspaceFAQQuestions.find(
       (entry) => entry.id === "protected-information",
     )!;
-    expect(
-      translateWorkspaceFAQ(protectedInformation.question, "de"),
-    ).toContain(
+    expect(displayText(protectedInformation.question, "de")).toContain(
       "personenbezogene Daten oder streng vertrauliche Informationen",
     );
   });
-  it("preserves real system names in this guidance without substituting fictional demo tools", () => {
+  it("keeps all questions and answers technology agnostic in both languages", () => {
     const answer = (id: string) =>
       workspaceFAQQuestions.find((entry) => entry.id === id)!.answer;
-    for (const language of ["en", "de"] as const) {
-      expect(
-        translateWorkspaceFAQ(answer("specialist-tools"), language),
-      ).toContain("DONNA, Jira");
-      expect(
-        translateWorkspaceFAQ(answer("specialist-tools"), language),
-      ).not.toContain("RaiseTicket");
-      expect(
-        translateWorkspaceFAQ(answer("protected-information"), language),
-      ).toContain("SharePoint");
-      expect(
-        translateWorkspaceFAQ(answer("teams-workspace-difference"), language),
-      ).toContain("Teams");
-    }
-    expect(translateWorkspaceFAQ(answer("focal-points"), "de")).toContain(
+    for (const entry of workspaceFAQQuestions)
+      for (const source of [entry.question, entry.answer])
+        for (const language of ["en", "de"] as const)
+          expect(displayText(source, language)).not.toMatch(
+            /\b(?:Microsoft|SharePoint|Teams|OneDrive|MSF)\b/i,
+          );
+    expect(displayText(answer("focal-points"), "de")).toContain(
       "Unterschiedliche Aufgaben",
     );
+    expect(displayText(answer("protected-information"), "de")).toContain(
+      "nicht automatisch streng vertraulich",
+    );
     expect(
-      translateWorkspaceFAQ(answer("protected-information"), "de"),
-    ).toContain("nicht automatisch streng vertraulich");
-    expect(
-      translateWorkspaceFAQ(answer("workspace-wiki-difference"), "de").split(
-        "\n\n",
-      ),
+      displayText(answer("workspace-wiki-difference"), "de").split("\n\n"),
     ).toHaveLength(2);
   });
 });

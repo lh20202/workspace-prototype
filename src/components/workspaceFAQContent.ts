@@ -1,12 +1,12 @@
 /** Staff guidance describes the proposed approach, not deployed organisational processes. */
 export const workspaceDemoIntro =
-  "Explore how shared work could be organised around MSF Germany's business activities, making information easier to find, use and share across departments.";
+  "Explore how shared work could be organised around the company's business activities, making information easier to find, use and share across departments.";
 
 export const workspaceDemoStage =
   "These are early design examples, not final workspace structures. The organisation, access arrangements and functionality will be refined through further testing and consultation.";
 
 export const creationExplanation =
-  "This interactive demo illustrates proposed ways to organise shared work, reference knowledge and collaboration. Its screens use fictional people and demonstration content. Nothing is connected to live MSF Germany systems, and the access shown here is illustrative.";
+  "This interactive demo illustrates proposed ways to organise shared work, reference knowledge and collaboration. Its screens use fictional people and demonstration content. Nothing is connected to live systems used by the company, and the access shown here is illustrative.";
 
 export const workspaceFAQExampleNote =
   "This fictional exchange illustrates one way colleagues could help each other. It does not represent an agreed support process.";
@@ -30,9 +30,9 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
       {
         id: "existing-locations",
         question:
-          "Is this replacing our existing SharePoint sites, Teams channels and K:Drive folders?",
+          "Is this replacing our existing sites, channels and K:Drive folders?",
         answer:
-          "Not immediately. The proposed approach is to organise shared information around the work MSF Germany carries out, rather than simply reproducing departmental folder structures. Existing locations will be assessed as part of the preparation and migration process. The future arrangements will be introduced in stages.",
+          "Not immediately. The proposed approach is to organise shared information around the work the company carries out, rather than simply reproducing departmental folder structures. Existing locations will be assessed as part of the preparation and migration process. The future arrangements will be introduced in stages.",
       },
       {
         id: "file-access",
@@ -44,13 +44,13 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         id: "personal-drives",
         question: "Where do personal drives fit in?",
         answer:
-          "OneDrive can be useful for individual working files and drafts. Information that colleagues need to access, contribute to or maintain over time should be kept in an appropriate shared location.",
+          "A personal drive can be useful for individual working files and drafts. Information that colleagues need to access, contribute to or maintain over time should be kept in an appropriate shared location.",
       },
       {
         id: "personal-drive-shared",
         question: "What if someone shares a personal drive file anyway?",
         answer:
-          "You can share files from OneDrive, but ongoing access may depend on the individual account and sharing settings. For information used by a team or across departments, an agreed shared location is more reliable.",
+          "You can share files from a personal drive, but ongoing access may depend on the individual account and sharing settings. For information used by a team or across departments, an agreed shared location is more reliable.",
       },
       {
         id: "role-changes",
@@ -62,14 +62,14 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         id: "sensitivity",
         question: "How do I know how sensitive a document is?",
         answer:
-          "MSF Germany's proposed classification framework distinguishes between Public, Internal, Confidential and Strictly Confidential information. Guidance will help staff recognise what requires additional protection and when to seek advice.",
+          "The company's proposed classification framework distinguishes between Public, Internal, Confidential and Strictly Confidential information. Guidance will help staff recognise what requires additional protection and when to seek advice.",
       },
       {
         id: "protected-information",
         question:
           "Where do I save personal data or Strictly Confidential information?",
         answer:
-          "Continue using the approved locations and procedures for that information. Personal data requires appropriate protection, but is not automatically Strictly Confidential. Decisions about which sensitive information can be stored in SharePoint are still subject to security, legal and data protection requirements.",
+          "Continue using the approved locations and procedures for that information. Personal data requires appropriate protection, but is not automatically Strictly Confidential. Decisions about which sensitive information can be stored on a site are still subject to security, legal and data protection requirements.",
       },
       {
         id: "sharing-copies",
@@ -83,20 +83,20 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         question:
           "What happens if I accidentally delete or overwrite something?",
         answer:
-          "SharePoint can retain earlier document versions and deleted files for a limited period, depending on its configuration. Contact IT support promptly if you cannot recover something yourself.",
+          "A site can retain earlier document versions and deleted files for a limited period, depending on its configuration. Contact IT support promptly if you cannot recover something yourself.",
       },
       {
         id: "finished-work",
         question:
           "What happens to files when a project or piece of work finishes?",
         answer:
-          "Some information needs to be retained, some may be archived permanently, and other material can eventually be deleted. MSF Germany is developing the retention rules and procedures that will determine what happens to different types of information.",
+          "Some information needs to be retained, some may be archived permanently, and other material can eventually be deleted. The company is developing the retention rules and procedures that will determine what happens to different types of information.",
       },
       {
         id: "shared-drive-migration",
         question: "What happens to files in our current shared drive?",
         answer:
-          "The K:Drive and existing SharePoint locations are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.",
+          "The K:Drive and existing sites are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.",
       },
       {
         id: "existing-links",
@@ -115,11 +115,11 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         id: "international-colleagues",
         question: "Can I work with colleagues in other countries?",
         answer:
-          "Yes, where collaboration and access have been authorised. The new structure is intended to make relevant information easier to find and connect across MSF, while respecting existing access and information-sharing requirements.",
+          "Yes, where collaboration and access have been authorised. The new structure is intended to make relevant information easier to find and connect across the company, while respecting existing access and information-sharing requirements.",
       },
       {
         id: "external-collaboration",
-        question: "Can I work with people outside MSF?",
+        question: "Can I work with people outside the company?",
         answer:
           "Where necessary and approved. External access and sharing must follow the applicable security, confidentiality and data protection requirements. The available options will depend on the information and systems involved.",
       },
@@ -127,7 +127,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         id: "teams-workspace-difference",
         question: "What's the difference between channels and a workspace?",
         answer:
-          "A workspace brings together information and collaboration around a particular area of work. Teams channels can be used within that environment to organise discussions, files and activities. Not every activity needs a separate workspace or channel.",
+          "A workspace brings together information and collaboration around a particular area of work. Channels can be used within that environment to organise discussions, files and activities. Not every activity needs a separate workspace or channel.",
       },
       {
         id: "workspace-wiki-difference",
@@ -140,7 +140,7 @@ export const workspaceFAQGroups: readonly WorkspaceFAQGroup[] = [
         question:
           "I work with lots of different tools and platforms. How do they fit in?",
         answer:
-          "The new structure is not intended to replace every system. Specialist tools such as DONNA, Jira or other approved platforms will continue to serve their specific purposes. Workspaces and Wikis can help staff find and access information across these tools without unnecessarily duplicating it.",
+          "The new structure is not intended to replace every system. Approved specialist tools will continue to serve their specific purposes. Workspaces and Wikis can help staff find and access information across these tools without unnecessarily duplicating it.",
       },
       {
         id: "fewer-places",

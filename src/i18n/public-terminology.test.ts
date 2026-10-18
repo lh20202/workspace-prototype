@@ -15,7 +15,7 @@ const display = (source: string, language: Language) =>
     formatPublicTerminology(translateText(source, language), language),
     language,
   );
-const vendor = /\b(?:Microsoft|SharePoint|M365)\b|\bTeams\b/i;
+const vendor = /\b(?:Microsoft|SharePoint|M365|OneDrive)\b|\bTeams\b/i;
 
 /** Actual display fields, not routes, IDs, implementation names or source comments. */
 const fixtureCopy = [
@@ -54,7 +54,9 @@ const fixtureCopy = [
       ...section.points,
     ]),
   ]),
-].filter((copy) => /\b(?:Microsoft|SharePoint|M365|Teams)\b/.test(copy));
+].filter((copy) =>
+  /\b(?:Microsoft|SharePoint|M365|OneDrive|Teams)\b/.test(copy),
+);
 
 describe("public product terminology keeps the workplace concepts clear", () => {
   it("audits the actual conversation, Wiki, role and working-file display fields in both languages", () => {
@@ -65,7 +67,7 @@ describe("public product terminology keeps the workplace concepts clear", () => 
         expect(rendered, `${language}: ${source}`).not.toMatch(vendor);
       }
     for (const translated of Object.values(wikiTranslations).filter((copy) =>
-      /\b(?:Microsoft|SharePoint|M365|Teams)\b/.test(copy),
+      /\b(?:Microsoft|SharePoint|M365|OneDrive|Teams)\b/.test(copy),
     ))
       expect(formatPublicTerminology(translated, "de"), translated).not.toMatch(
         vendor,
@@ -86,13 +88,15 @@ describe("public product terminology keeps the workplace concepts clear", () => 
     expect(post.channel).toBe("M365 & SPFx");
   });
 
-  it("retains the OneDrive example and business-colleague focal-point meaning", () => {
+  it("uses generic personal storage wording while retaining the example and focal-point meaning", () => {
     const post = technicalPosts.find(
       (item) => item.id === "digital-onedrive-review",
     )!;
     const reply = post.replies!.find((item) => item.text.includes("OneDrive"))!;
     for (const language of ["en", "de"] as const) {
-      expect(display(reply.text, language)).toContain("OneDrive");
+      expect(display(reply.text, language)).toContain(
+        language === "en" ? "personal drive" : "persönlichen Speicherbereich",
+      );
       expect(display(reply.text, language)).not.toMatch(vendor);
     }
     const focalPointCopy =

@@ -8,7 +8,7 @@ import { Info16Regular } from "@fluentui/react-icons";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
-  "These examples use demonstration content, not real MSF Germany files. They do not represent completed migrations or confirmed access arrangements.";
+  "These examples use demonstration content, not real files from the company. They do not represent completed migrations or confirmed access arrangements.";
 export const roleAccessInfoText =
   "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.";
 export const demoUserInfoText =

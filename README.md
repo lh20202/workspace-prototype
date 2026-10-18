@@ -8,6 +8,8 @@ An interactive React/TypeScript/Vite proof of concept for a SharePoint intranet,
 
 ## Run and validate
 
+All site content must remain anonymous. Refer to the organisation as **the company** (or the natural German equivalent), including when adapting supplied documents. Do not copy real organisation names into visible text, translations, metadata or public assets. The experience is technology agnostic: use sites, channels, libraries and personal drives instead of vendor product names or logos. Internal identifiers and routes remain stable. The production build runs a site-wide anonymity check before compilation.
+
 Use Node 24 (Render uses 24.19.0).
 
 ```sh
@@ -228,7 +230,7 @@ This mirrors SharePoint’s [Sensitivity column for integrated sensitivity label
 
 ### FAQ and Planning & Reporting enrichment
 
-The shared Workspace FAQ has 23 initially collapsed questions in three lightweight groups, with a fixed title/Close action and scrolling content. The staff guidance distinguishes design principles, the proposed approach and processes still being developed or approved. Welcome explains the early design stage and demonstration content. English and German guidance covers staged migration, Workspace/Wiki differences, protected information and specialist systems; named systems in this supplied copy retain their meaning rather than using fictional demo aliases. The inline channel exchange is explicitly a fictional illustration, not an agreed support process. Planning Cycle has one new Planning & Reporting channel for Robin and Sam, using canonical Department submissions, Logframe and reporting files. A same-document guided Logframe and a separate response-free registration preview support the conversation links. [Question inventory, final migration/training copy and implementation limits](docs/faq-planning-enrichment.md).
+The shared Workspace FAQ has 23 initially collapsed questions in three lightweight groups, with a fixed title/Close action and scrolling content. The staff guidance distinguishes design principles, the proposed approach and processes still being developed or approved. Welcome explains the early design stage and demonstration content. English and German guidance covers staged migration, Workspace/Wiki differences, protected information and specialist systems using anonymous, technology agnostic wording. The inline channel exchange is explicitly a fictional illustration, not an agreed support process. Planning Cycle has one new Planning & Reporting channel for Robin and Sam, using canonical Department submissions, Logframe and reporting files. A same-document guided Logframe and a separate response-free registration preview support the conversation links. [Question inventory, final migration/training copy and implementation limits](docs/faq-planning-enrichment.md).
 
 Visible English and German copy uses `src/i18n/displayPunctuation.ts` after translation to remove hyphens and dash punctuation. German compounds use reviewed phrase rewrites, while ranges retain their meaning. Canonical source records, routes, identifiers, repository names, code and user-entered text stay intact. Displayed filenames remain searchable in either language; native option values retain their original values.
 

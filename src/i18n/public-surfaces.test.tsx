@@ -158,6 +158,11 @@ const surfaces = [
       }),
   },
   {
+    name: "Workspace FAQ questions",
+    path: "/?staff=taylor",
+    element: () => createElement(WorkspaceFAQContent),
+  },
+  {
     name: "Site Administrator settings trigger",
     path: "/digital-tech?staff=elliot",
     element: () => createElement(SiteSettingsButton, { onMessage: noAction }),
@@ -174,17 +179,9 @@ describe("public rendered surfaces use generic workplace terminology", () => {
     }
   });
 
-  it("preserves named systems in the explicitly scoped staff FAQ guidance", () => {
-    const html = render(createElement(WorkspaceFAQContent), "/?staff=taylor");
-    expect(html).toContain("data-no-translate");
-    expect(html).toContain(
-      "SharePoint sites, Teams channels and K:Drive folders?",
-    );
-  });
-
-  it("keeps the product logo assets and actual collaboration URLs intact", () => {
+  it("uses neutral site and channel marks while preserving collaboration URLs", () => {
     const welcome = render(createElement(Launcher), "/?staff=devon");
-    expect(welcome).toContain('src="/images/sharepoint-logo.svg"');
+    expect(welcome).toContain('src="/images/site-mark.svg"');
     const shell = render(
       createElement(TeamsShell, {
         userName: "Devon Park",
@@ -199,8 +196,8 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       }),
       workspaceFAQExampleHref,
     );
-    expect(shell).toContain('src="/images/teams-logo.svg"');
-    expect(shell).toContain('src="/images/sharepoint-logo.svg"');
+    expect(shell).toContain('src="/images/channels-mark.svg"');
+    expect(shell).toContain('src="/images/site-mark.svg"');
     for (const language of ["en", "de"] as const)
       expectGenericCopy(exposedCopy(shell, language));
 
@@ -240,7 +237,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       expectGenericCopy(displayText(creationExplanation, language));
     }
     expect(displayText(creationExplanation, "en")).toContain(
-      "live MSF Germany systems",
+      "live systems used by the company",
     );
   });
 });

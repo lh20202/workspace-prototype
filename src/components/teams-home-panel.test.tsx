@@ -17,7 +17,7 @@ describe("shared Teams Home panel", () => {
       ),
     ).toBe("");
   });
-  it("identifies each channel as a Teams destination with one adjacent logo", () => {
+  it("identifies each channel with one neutral conversation mark", () => {
     const channels = [
       {
         name: "Engineering",
@@ -32,7 +32,7 @@ describe("shared Teams Home panel", () => {
         openHref="/teams?workspace=digital"
       />,
     );
-    expect(markup.match(/src="\/images\/teams-logo.svg"/g)).toHaveLength(
+    expect(markup.match(/src="\/images\/channels-mark.svg"/g)).toHaveLength(
       channels.length + 1,
     );
     for (const channel of channels) {

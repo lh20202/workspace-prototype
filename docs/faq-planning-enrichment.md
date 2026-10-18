@@ -12,7 +12,7 @@ Welcome now explains the early design stage and demonstration content. “What a
 
 ### Files & access
 
-- Is this replacing our existing SharePoint sites, Teams channels and K:Drive folders?
+- Is this replacing our existing sites, channels and K:Drive folders?
 - Who can see my files?
 - Where do personal drives fit in?
 - What if someone shares a personal drive file anyway?
@@ -28,7 +28,7 @@ Welcome now explains the early design stage and demonstration content. “What a
 ### Working with others
 
 - Can I work with colleagues in other countries?
-- Can I work with people outside MSF?
+- Can I work with people outside the company?
 - What's the difference between channels and a workspace?
 - What's the difference between a Workspace and a Wiki?
 - I work with lots of different tools and platforms. How do they fit in?
@@ -44,7 +44,7 @@ Welcome now explains the early design stage and demonstration content. “What a
 
 ### Language and examples
 
-All questions, answers and orientation copy have reviewed German equivalents. The FAQ text is explicitly localised and exempt from the simulated product's display aliases: references to SharePoint, Teams, OneDrive, DONNA and Jira retain their meaning in the supplied guidance. Tool names and routes elsewhere are unchanged.
+All questions, answers and orientation copy have reviewed German equivalents. Organisation references use “the company” or the natural German equivalent. The FAQ uses the shared technology agnostic display wording: sites, channels, libraries and personal drives. A build check prevents real organisation names from being reintroduced into shipped copy or asset names. Routes and access rules are unchanged.
 
 “See an example” still expands the existing Ari Morgan / Devon Park conversation and links to the same authorised Dev. channel post. A new note identifies it as a fictional illustration, not an agreed support process. The canonical file, post, Preview Role and access checks are unchanged.
 
@@ -78,6 +78,8 @@ Posts span 12–16 October 2026, with short replies and named thumbs-up reaction
 The guided Logframe is an illustrative view of the existing file; edits remain in page memory until reload. The fictional registration form sends and stores nothing and exposes no responses. Neither connects to live Microsoft 365 or a business system.
 
 ## Verification
+
+Anonymity and technology agnostic correction (18 October 2026): all 931 tests across 90 suites passed, plus type checking, lint and a production build. Automated scans found no real organisation-name references in 223 production source text files, 12 public text assets or 72 built text files. Both languages were checked in all 23 expanded FAQ answers, the inline personal-drive example, loaded workspace and Wiki pages, the portal, directory and nine tool destinations, including accessible labels. Neutral site and channel marks replace the product logos. Anonymity and source-wide display terminology checks now gate each production build.
 
 FAQ revision (18 October 2026): 46 relevant tests across 7 suites passed, along with type checking, lint for changed source files and a production build. Browser checks covered Welcome, English and German questions and answers, keyboard expansion, multiple open answers, the fictional channel example, the two-paragraph Wiki explanation and a 375 × 800 German dialog with a visible Close action and no horizontal overflow.
 

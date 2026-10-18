@@ -65,7 +65,8 @@ describe("inline FAQ Teams example", () => {
     );
     expect(html).not.toContain("needed to give Leonie access");
     expect(html).not.toMatch(/Department|Attachment removed|<s>/);
-    expect(html).toContain("OneDrive");
+    expect(html).toContain("personal drive");
+    expect(html).not.toContain("OneDrive");
     expect(html).not.toMatch(/<button|<input|<textarea|<form|id="post-/);
     for (const reply of post.replies!) {
       if (reply.link)
