@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import WorkspaceFAQ, { WorkspaceFAQContent } from "./WorkspaceFAQ";
 import {
   creationExplanation,
+  workspaceDemoStage,
   workspaceFAQQuestions,
   workspaceFAQGroups,
   workspaceFAQExampleHref,
@@ -42,7 +43,7 @@ describe("shared staff-facing Workspace FAQ", () => {
         .split(/[.!?]+/)
         .filter((part) => part.trim());
       expect(sentences.length).toBeGreaterThanOrEqual(1);
-      expect(sentences.length).toBeLessThanOrEqual(3);
+      expect(sentences.length).toBeLessThanOrEqual(4);
       const question = renderToStaticMarkup(
         createElement("span", null, entry.question),
       ).replace(/<\/?span>/g, "");
@@ -51,9 +52,10 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(html).not.toContain("Could this be automated?");
     expect(html).not.toContain("<details");
     expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
-    expect(creationExplanation).toBe(
-      "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.",
+    expect(creationExplanation).toContain(
+      "the access shown here is illustrative",
     );
+    expect(html).toContain(workspaceDemoStage);
   });
   it("groups all requested questions into a repeatable, initially collapsed accordion", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
@@ -63,9 +65,10 @@ describe("shared staff-facing Workspace FAQ", () => {
       "GETTING STARTED & SUPPORT",
     ]);
     expect(workspaceFAQGroups.map((group) => group.questions.length)).toEqual([
-      11, 5, 5,
+      12, 6, 5,
     ]);
     expect(workspaceFAQQuestions.map((entry) => entry.id)).toEqual([
+      "existing-locations",
       "file-access",
       "personal-drives",
       "personal-drive-shared",
@@ -80,6 +83,7 @@ describe("shared staff-facing Workspace FAQ", () => {
       "international-colleagues",
       "external-collaboration",
       "teams-workspace-difference",
+      "workspace-wiki-difference",
       "specialist-tools",
       "fewer-places",
       "focal-points",
@@ -89,10 +93,10 @@ describe("shared staff-facing Workspace FAQ", () => {
       "technical-settings",
     ]);
     expect(new Set(workspaceFAQQuestions.map((entry) => entry.id)).size).toBe(
-      21,
+      23,
     );
-    expect(html.match(/data-faq-id=/g)).toHaveLength(21);
-    expect(html.match(/aria-expanded="false"/g)).toHaveLength(21);
+    expect(html.match(/data-faq-id=/g)).toHaveLength(23);
+    expect(html.match(/aria-expanded="false"/g)).toHaveLength(23);
     expect(html).not.toContain('aria-expanded="true"');
     expect(html).not.toContain("What if a document is confidential?");
     expect(
@@ -104,56 +108,45 @@ describe("shared staff-facing Workspace FAQ", () => {
       ),
     ).toHaveLength(1);
   });
-  it("keeps migration, recovery and support helpful without promising automatic fixes", () => {
+  it("distinguishes proposed processes from established principles without promising automatic fixes", () => {
     const answer = (id: string) =>
       workspaceFAQQuestions.find((entry) => entry.id === id)!.answer;
+    expect(answer("existing-locations")).toContain("Not immediately.");
     expect(answer("shared-drive-migration")).toContain(
-      "won't be expected to work out all of the destinations on your own",
+      "Any migration will require preparation",
     );
-    expect(answer("existing-links")).toContain("reviewing old synced folders");
-    expect(answer("existing-links")).not.toContain("automatically");
-    expect(answer("file-recovery")).toContain("can often be restored");
-    expect(answer("training")).toContain(
-      "Workspace focal points will receive additional training",
+    expect(answer("existing-links")).toContain(
+      "need to be assessed as part of migration planning",
     );
+    expect(answer("file-access")).toContain("still being developed");
+    expect(answer("file-recovery")).toContain("depending on its configuration");
+    expect(answer("file-recovery")).toContain("Contact IT support promptly");
+    expect(answer("finished-work")).toContain(
+      "is developing the retention rules",
+    );
+    expect(answer("protected-information")).toContain(
+      "not automatically Strictly Confidential",
+    );
+    expect(answer("training")).toContain("developed alongside implementation");
+    expect(answer("new-workspace")).toContain("still being defined");
     expect(answer("technical-settings")).toContain(
-      "relevant to their responsibilities",
+      "designated colleagues and IT support",
     );
   });
-  it("describes focal points as helpful colleagues with rollout training and a specialist escalation path", () => {
-    const question = workspaceFAQQuestions.find(
-      (entry) => entry.id === "focal-points",
-    )!;
-    expect(question.question).toBe("Who are focal points?");
-    expect(question.answer).toContain("colleagues");
-    expect(question.answer).toContain("workspaces and channels day to day");
-    expect(question.answer).toContain(
-      "first people to ask about access or common setup questions",
+  it("keeps different responsibilities and authoritative information locations distinct", () => {
+    const answer = (id: string) =>
+      workspaceFAQQuestions.find((entry) => entry.id === id)!.answer;
+    expect(answer("focal-points")).toContain(
+      "Different responsibilities may be assigned to different people",
     );
-    expect(question.answer).toContain("additional training");
-    expect(question.answer).toContain("upcoming rollout");
-    expect(question.answer).toContain("settings and good working practices");
-    expect(question.answer).toContain("specialist help");
-    expect(question.answer).not.toMatch(
-      /assigned to you|appointed|administrator|gatekeeper|security approver/i,
+    expect(answer("finding-the-right-place")).toContain("IKM team");
+    expect(answer("specialist-tools")).toContain(
+      "not intended to replace every system",
     );
-    expect(
-      workspaceFAQGroups.find((group) => group.id === "getting-started")!
-        .questions,
-    ).toContain(question);
-    const copy = [
-      creationExplanation,
-      ...workspaceFAQQuestions.flatMap((entry) => [
-        entry.question,
-        entry.answer,
-      ]),
-    ].join(" ");
-    expect(copy).not.toMatch(/\b(?:Teams|SharePoint|Microsoft|M365)\b/i);
-    expect(
-      workspaceFAQQuestions.find(
-        (entry) => entry.id === "teams-workspace-difference",
-      )!.question,
-    ).toBe("What's the difference between channels and a workspace?");
+    expect(answer("workspace-wiki-difference")).toContain(
+      "rather than storing another copy",
+    );
+    expect(answer("workspace-wiki-difference").split("\n\n")).toHaveLength(2);
   });
   it("links to a real authorised human correction thread instead of a separate demo", () => {
     const url = new URL(workspaceFAQExampleHref, "https://example.test");

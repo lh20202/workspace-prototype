@@ -1,88 +1,117 @@
-/** Staff-facing German, reviewed after the English FAQ wording was final. */
+/** Reviewed staff guidance; named systems here describe real context, not fictional demo tools. */
 export const germanWorkspaceFAQ: Record<string, string> = {
   "FILES & ACCESS": "DATEIEN & ZUGRIFF",
   "WORKING WITH OTHERS": "ZUSAMMENARBEIT",
   "GETTING STARTED & SUPPORT": "EINSTIEG & UNTERSTÜTZUNG",
+  "Welcome to the Digital Workspace demo!":
+    "Willkommen zur Demo der digitalen Arbeitsbereiche!",
+  "What am I looking at?": "Was zeigt diese Demo?",
+  "Explore how shared work could be organised around MSF Germany's business activities, making information easier to find, use and share across departments.":
+    "Entdecken Sie, wie die gemeinsame Arbeit entlang der Geschäftsaktivitäten von MSF Deutschland organisiert werden könnte, damit Informationen abteilungsübergreifend leichter zu finden, zu nutzen und zu teilen sind.",
+  "These are early design examples, not final workspace structures. The organisation, access arrangements and functionality will be refined through further testing and consultation.":
+    "Dies sind frühe Gestaltungsbeispiele, keine endgültigen Strukturen. Die Organisation, Zugriffsregelungen und Funktionen werden durch weitere Tests und Abstimmungen verfeinert.",
+  "These examples use demonstration content, not real MSF Germany files. They do not represent completed migrations or confirmed access arrangements.":
+    "Diese Beispiele verwenden Demoinhalte, keine echten Dateien von MSF Deutschland. Sie bilden weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen ab.",
+  "This interactive demo illustrates proposed ways to organise shared work, reference knowledge and collaboration. Its screens use fictional people and demonstration content. Nothing is connected to live MSF Germany systems, and the access shown here is illustrative.":
+    "Diese interaktive Demo veranschaulicht vorgeschlagene Möglichkeiten, gemeinsame Arbeit, Nachschlagewissen und Zusammenarbeit zu organisieren. Die Ansichten verwenden fiktive Personen und Demoinhalte. Es besteht keine Verbindung zu produktiven Systemen von MSF Deutschland; die gezeigten Zugriffe dienen der Veranschaulichung.",
+  "This fictional exchange illustrates one way colleagues could help each other. It does not represent an agreed support process.":
+    "Dieser fiktive Austausch zeigt beispielhaft, wie sich Kolleginnen und Kollegen gegenseitig helfen könnten. Er stellt keinen vereinbarten Unterstützungsprozess dar.",
+  "Is this replacing our existing SharePoint sites, Teams channels and K:Drive folders?":
+    "Ersetzt das unsere bisherigen SharePoint-Websites, Teams-Kanäle und Ordner auf dem K:Drive?",
+  "Not immediately. The proposed approach is to organise shared information around the work MSF Germany carries out, rather than simply reproducing departmental folder structures. Existing locations will be assessed as part of the preparation and migration process. The future arrangements will be introduced in stages.":
+    "Nicht unmittelbar. Der vorgeschlagene Ansatz richtet die gemeinsame Informationsablage an den Aufgaben von MSF Deutschland aus, statt einfach die Ordnerstrukturen der Abteilungen nachzubilden. Bestehende Ablageorte werden im Zuge der Vorbereitung und Migrationsplanung geprüft. Die künftigen Strukturen werden schrittweise eingeführt.",
   "Who can see my files?": "Wer kann auf meine Dateien zugreifen?",
-  "Access to files is linked to your role and the work you're involved in. Most shared work is available to the people who need it, while confidential areas are limited to specific participants.":
-    "Der Zugriff auf Dateien richtet sich nach Ihrer Rolle und den Aufgaben, an denen Sie mitarbeiten. Gemeinsam genutzte Arbeitsunterlagen stehen in der Regel den Personen zur Verfügung, die sie benötigen; vertrauliche Bereiche sind einem festgelegten Personenkreis vorbehalten.",
+  "Access will depend on the work people are involved in and their responsibilities, rather than simply which department they belong to. Information used across departments should be accessible to the relevant colleagues, while sensitive information will have additional restrictions. The detailed access arrangements are still being developed.":
+    "Der Zugriff wird sich nach den Aufgaben und Verantwortlichkeiten der Beteiligten richten, nicht allein nach ihrer Abteilungszugehörigkeit. Abteilungsübergreifend genutzte Informationen sollen den jeweils beteiligten Kolleginnen und Kollegen zugänglich sein; sensible Informationen benötigen zusätzliche Einschränkungen. Die konkreten Zugriffsregelungen werden noch erarbeitet.",
   "Where do personal drives fit in?":
     "Welche Rolle spielen persönliche Speicherbereiche?",
-  "Personal drives aren't part of the shared-working model shown here. Shared business documents live in workspaces so the right people can find, access and maintain the same copy.":
-    "Persönliche Speicherbereiche gehören nicht zu dem hier gezeigten Modell für die gemeinsame Arbeit. Gemeinsam genutzte Geschäftsdokumente liegen in Arbeitsbereichen, damit die zuständigen Personen dieselbe Fassung finden, darauf zugreifen und sie gemeinsam pflegen können.",
+  "OneDrive can be useful for individual working files and drafts. Information that colleagues need to access, contribute to or maintain over time should be kept in an appropriate shared location.":
+    "OneDrive kann für eigene Arbeitsdateien und Entwürfe sinnvoll sein. Informationen, auf die andere zugreifen, an denen sie mitarbeiten oder die sie langfristig pflegen müssen, sollten an einem geeigneten gemeinsamen Ablageort liegen.",
   "What if someone shares a personal drive file anyway?":
     "Was passiert, wenn doch jemand eine Datei aus einem persönlichen Speicherbereich teilt?",
-  "It happens. Workspace focal points are trained to spot personal drive links, help move the working file into the right workspace and update the shared link.":
-    "Das kommt vor. Die Ansprechpersonen der Arbeitsbereiche sind darin geschult, solche Links zu erkennen, beim Verschieben der Arbeitsfassung in den richtigen Arbeitsbereich zu helfen und den geteilten Link zu aktualisieren.",
+  "You can share files from OneDrive, but ongoing access may depend on the individual account and sharing settings. For information used by a team or across departments, an agreed shared location is more reliable.":
+    "Dateien lassen sich aus OneDrive teilen. Der dauerhafte Zugriff kann jedoch vom individuellen Konto und den Freigabeeinstellungen abhängen. Für Informationen, die ein Team oder mehrere Abteilungen nutzen, ist ein vereinbarter gemeinsamer Ablageort verlässlicher.",
   "What happens when someone joins, leaves or changes roles?":
     "Was passiert beim Eintritt, Austritt oder Rollenwechsel?",
-  "Their access is reviewed against the work they now need to do. Relevant access is added and access they no longer need is removed, rather than everything simply following them forever.":
-    "Die Berechtigungen werden anhand der künftigen Aufgaben überprüft. Erforderliche Zugriffe werden ergänzt und nicht mehr benötigte entzogen, statt unverändert bestehen zu bleiben.",
+  "Their access should reflect their current responsibilities. Relevant access arrangements will need to be updated, and important shared information must remain accessible when colleagues change roles or leave. The administrative processes are still being defined.":
+    "Die Zugriffsrechte sollen den aktuellen Verantwortlichkeiten entsprechen. Die jeweiligen Berechtigungen müssen angepasst werden, und wichtige gemeinsame Informationen müssen bei einem Rollenwechsel oder beim Ausscheiden weiterhin zugänglich bleiben. Die administrativen Abläufe werden noch festgelegt.",
   "How do I know how sensitive a document is?":
     "Woran erkenne ich, wie vertraulich ein Dokument ist?",
-  "Every file has a sensitivity label: Public, Internal, Confidential or Strictly confidential. The label helps show how the information should be handled, while more sensitive work is kept in protected areas with narrower access.":
-    "Jede Datei trägt eine Vertraulichkeitskennzeichnung: Öffentlich, Intern, Vertraulich oder Streng vertraulich. Sie zeigt, wie mit den Informationen umzugehen ist; besonders sensible Unterlagen liegen zusätzlich in geschützten Bereichen mit eingeschränktem Zugriff.",
-  "Where do I save personal data or Strictly confidential information?":
+  "MSF Germany's proposed classification framework distinguishes between Public, Internal, Confidential and Strictly Confidential information. Guidance will help staff recognise what requires additional protection and when to seek advice.":
+    "Das vorgeschlagene Klassifikationsmodell von MSF Deutschland unterscheidet zwischen Öffentlich, Intern, Vertraulich und Streng vertraulich. Orientierungshilfen sollen Beschäftigte dabei unterstützen, zusätzlichen Schutzbedarf zu erkennen und bei Bedarf Rat einzuholen.",
+  "Where do I save personal data or Strictly Confidential information?":
     "Wo speichere ich personenbezogene Daten oder streng vertrauliche Informationen?",
-  "Only use the approved protected workspace area or specialist system intended for that information. Don't place it in an ordinary shared folder or general channel conversation if the people there don't need access.":
-    "Nutzen Sie ausschließlich den dafür vorgesehenen, freigegebenen geschützten Bereich oder das entsprechende Fachsystem. Speichern Sie solche Informationen nicht in einem gewöhnlichen gemeinsamen Ordner und teilen Sie sie nicht in einer allgemeinen Kanalunterhaltung, wenn die dort Beteiligten keinen Zugriff benötigen.",
+  "Continue using the approved locations and procedures for that information. Personal data requires appropriate protection, but is not automatically Strictly Confidential. Decisions about which sensitive information can be stored in SharePoint are still subject to security, legal and data protection requirements.":
+    "Nutzen Sie weiterhin die für diese Informationen freigegebenen Ablageorte und Verfahren. Personenbezogene Daten benötigen angemessenen Schutz, sind aber nicht automatisch streng vertraulich. Entscheidungen darüber, welche sensiblen Informationen in SharePoint gespeichert werden dürfen, hängen weiterhin von den Anforderungen an Sicherheit, Recht und Datenschutz ab.",
   "Do I need to make a copy before sharing a document with another team?":
     "Muss ich ein Dokument kopieren, bevor ich es mit einem anderen Team teile?",
-  "Usually not. Keep the working document in its workspace and share the link, so everyone works from the same version.":
-    "In der Regel nicht. Lassen Sie die Arbeitsfassung im zugehörigen Arbeitsbereich und teilen Sie den Link, damit alle mit derselben Version arbeiten.",
+  "Usually not. Where colleagues have the appropriate access, they should be able to work with the same document rather than create separate copies. This helps avoid duplication and conflicting versions.":
+    "In der Regel nicht. Wenn die Beteiligten die erforderlichen Zugriffsrechte haben, sollten sie mit demselben Dokument arbeiten können, statt separate Kopien anzulegen. Das hilft, doppelte Ablagen und widersprüchliche Versionen zu vermeiden.",
   "What happens if I accidentally delete or overwrite something?":
     "Was passiert, wenn ich etwas versehentlich lösche oder überschreibe?",
-  "Workspace files keep version history, so an earlier version can often be restored. If something has been deleted or you can't recover it yourself, contact your workspace focal point.":
-    "Für Dateien in Arbeitsbereichen wird ein Versionsverlauf geführt, sodass sich eine frühere Fassung häufig wiederherstellen lässt. Wenden Sie sich an die Ansprechperson Ihres Arbeitsbereichs, wenn etwas gelöscht wurde oder Sie es nicht selbst wiederherstellen können.",
+  "SharePoint can retain earlier document versions and deleted files for a limited period, depending on its configuration. Contact IT support promptly if you cannot recover something yourself.":
+    "SharePoint kann frühere Dokumentversionen und gelöschte Dateien je nach Konfiguration für einen begrenzten Zeitraum aufbewahren. Wenden Sie sich zeitnah an den IT-Support, wenn Sie etwas nicht selbst wiederherstellen können.",
   "What happens to files when a project or piece of work finishes?":
     "Was passiert mit Dateien nach Abschluss eines Projekts oder einer Aufgabe?",
-  "Useful final records stay in the appropriate workspace or archive. Temporary working material can then be closed, cleaned up or removed in line with its retention needs.":
-    "Wichtige Abschlussunterlagen bleiben im zuständigen Arbeitsbereich oder Archiv erhalten. Vorläufige Arbeitsmaterialien können anschließend entsprechend den Aufbewahrungsvorgaben abgeschlossen, bereinigt oder entfernt werden.",
+  "Some information needs to be retained, some may be archived permanently, and other material can eventually be deleted. MSF Germany is developing the retention rules and procedures that will determine what happens to different types of information.":
+    "Manche Informationen müssen aufbewahrt werden, andere können dauerhaft archiviert und wieder andere später gelöscht werden. MSF Deutschland entwickelt derzeit die Aufbewahrungsregeln und Verfahren, die den Umgang mit den verschiedenen Informationsarten bestimmen werden.",
   "What happens to files in our current shared drive?":
     "Was passiert mit den Dateien auf unserem bisherigen gemeinsamen Laufwerk?",
-  "Existing shared-drive files will be reviewed as work moves into the new setup. Useful information will move to the right workspace or archive; material that is no longer needed doesn't have to be carried forward. You won't be expected to work out all of the destinations on your own.":
-    "Beim Umstieg werden die vorhandenen Dateien auf dem gemeinsamen Laufwerk gesichtet. Weiterhin benötigte Informationen kommen in den passenden Arbeitsbereich oder ins Archiv; nicht mehr benötigtes Material muss nicht mitgenommen werden. Sie müssen die richtigen Ablageorte nicht allein herausfinden.",
+  "The K:Drive and existing SharePoint locations are being analysed to determine what needs to be retained, reorganised, migrated or removed. There will not be an immediate transfer of everything into the new workspaces. Any migration will require preparation, agreed destinations and appropriate safeguards.":
+    "Das K:Drive und die bestehenden SharePoint-Ablagen werden analysiert, um festzustellen, was aufbewahrt, neu geordnet, migriert oder entfernt werden muss. Es wird keine sofortige Übertragung sämtlicher Inhalte in die neuen Arbeitsbereiche geben. Jede Migration erfordert Vorbereitung, vereinbarte Zielorte und geeignete Schutzmaßnahmen.",
   "What happens to my existing links, bookmarks and synced folders?":
     "Was passiert mit meinen bisherigen Links, Lesezeichen und synchronisierten Ordnern?",
-  "Switch-over support will include updating important links and bookmarks and reviewing old synced folders. We'll make it clear what needs changing rather than expecting you to discover broken links yourself.":
-    "Beim Umstieg unterstützen wir Sie dabei, wichtige Links und Lesezeichen zu aktualisieren und bisher synchronisierte Ordner zu überprüfen. Wir erläutern, was geändert werden muss, statt Sie fehlerhafte Links selbst entdecken zu lassen.",
+  "Some may need updating when information moves to a new location. The implications for existing links and synchronisation will need to be assessed as part of migration planning, with instructions provided before changes take place.":
+    "Einige müssen möglicherweise aktualisiert werden, wenn Informationen an einen neuen Ort verschoben werden. Die Auswirkungen auf bestehende Links und die Synchronisierung müssen im Rahmen der Migrationsplanung geprüft werden. Vor Änderungen werden entsprechende Hinweise bereitgestellt.",
   "Can I work with colleagues in other countries?":
     "Kann ich mit Kolleginnen und Kollegen in anderen Ländern zusammenarbeiten?",
-  "Yes. If colleagues are part of the same work, they can collaborate in the relevant workspace regardless of where they're based, subject to the same access and sensitivity rules.":
-    "Ja. Kolleginnen und Kollegen, die an derselben Aufgabe arbeiten, können unabhängig von ihrem Standort im zugehörigen Arbeitsbereich zusammenarbeiten; dabei gelten dieselben Regeln für Zugriff und Vertraulichkeit.",
-  "Can I work with people outside the company?":
-    "Kann ich mit Personen außerhalb des Unternehmens zusammenarbeiten?",
-  "Yes, where external collaboration is needed. Access is limited to the specific shared area or material they need rather than opening up the wider workspace.":
-    "Ja, wenn die Zusammenarbeit mit externen Personen erforderlich ist. Diese erhalten nur Zugriff auf den dafür vorgesehenen gemeinsamen Bereich oder die benötigten Unterlagen, nicht auf den gesamten Arbeitsbereich.",
+  "Yes, where collaboration and access have been authorised. The new structure is intended to make relevant information easier to find and connect across MSF, while respecting existing access and information-sharing requirements.":
+    "Ja, sofern die Zusammenarbeit und der Zugriff genehmigt sind. Die neue Struktur soll relevante Informationen innerhalb von MSF leichter auffindbar und verknüpfbar machen. Dabei gelten weiterhin die bestehenden Anforderungen an Zugriffe und die Weitergabe von Informationen.",
+  "Can I work with people outside MSF?":
+    "Kann ich mit Personen außerhalb von MSF zusammenarbeiten?",
+  "Where necessary and approved. External access and sharing must follow the applicable security, confidentiality and data protection requirements. The available options will depend on the information and systems involved.":
+    "Wenn dies erforderlich und genehmigt ist. Für externe Zugriffe und Freigaben gelten die jeweiligen Anforderungen an Sicherheit, Vertraulichkeit und Datenschutz. Welche Möglichkeiten zur Verfügung stehen, hängt von den Informationen und den beteiligten Systemen ab.",
   "What's the difference between channels and a workspace?":
     "Was ist der Unterschied zwischen Kanälen und einem Arbeitsbereich?",
-  "Channels are mainly for conversations and day-to-day coordination. The workspace is where the shared files and structured working information live.":
-    "Kanäle dienen vor allem dem Austausch und der täglichen Abstimmung. Im Arbeitsbereich liegen die gemeinsam genutzten Dateien und strukturierten Arbeitsinformationen.",
-  "I work with lots of different tools and platforms — how do they fit in?":
-    "Ich nutze viele verschiedene Tools und Plattformen — wie passen sie dazu?",
-  "Workspaces bring the shared documents and collaboration around the work together. Specialist systems still do the jobs they're designed for, and the workspace links you to them instead of trying to duplicate everything.":
-    "Arbeitsbereiche bündeln die gemeinsamen Dokumente und die Zusammenarbeit rund um eine Aufgabe. Fachsysteme erfüllen weiterhin ihre jeweiligen Aufgaben; der Arbeitsbereich verlinkt dorthin, statt ihre Funktionen nachzubauen.",
-  "I already work in lots of sites and channels — will this add even more?":
-    "Ich arbeite schon auf vielen Websites und in vielen Kanälen — werden es dadurch noch mehr?",
-  "The aim is the opposite: fewer, clearer places to work. Not every workspace needs channels, and your normal channel view should only show the conversations that are useful for your role.":
-    "Das Ziel ist das Gegenteil: weniger und klarer zugeordnete Arbeitsorte. Nicht jeder Arbeitsbereich braucht Kanäle, und Ihre übliche Kanalansicht sollte nur die für Ihre Rolle hilfreichen Unterhaltungen zeigen.",
+  "A workspace brings together information and collaboration around a particular area of work. Teams channels can be used within that environment to organise discussions, files and activities. Not every activity needs a separate workspace or channel.":
+    "Ein Arbeitsbereich bündelt Informationen und Zusammenarbeit zu einem bestimmten Aufgabenbereich. Teams-Kanäle können innerhalb dieses Umfelds helfen, Gespräche, Dateien und Aktivitäten zu organisieren. Nicht jede Aufgabe benötigt einen eigenen Arbeitsbereich oder Kanal.",
+  "What's the difference between a Workspace and a Wiki?":
+    "Was ist der Unterschied zwischen einem Arbeitsbereich und einem Wiki?",
+  "Workspaces are where colleagues carry out work together, developing documents, sharing files and coordinating activities. Wikis provide organised, approved information that colleagues can refer to, such as procedures, guidance and other reusable knowledge.\n\nA Wiki may link to information maintained in a workspace or specialist system rather than storing another copy.":
+    "In Arbeitsbereichen arbeiten Kolleginnen und Kollegen gemeinsam an Aufgaben, entwickeln Dokumente, teilen Dateien und koordinieren Aktivitäten. Wikis stellen geordnete, freigegebene Informationen zum Nachschlagen bereit, etwa Verfahren, Leitlinien und anderes wiederverwendbares Wissen.\n\nEin Wiki kann auf Informationen in einem Arbeitsbereich oder Fachsystem verlinken, statt eine weitere Kopie zu speichern.",
+  "I work with lots of different tools and platforms. How do they fit in?":
+    "Ich nutze viele verschiedene Tools und Plattformen. Wie passen sie dazu?",
+  "The new structure is not intended to replace every system. Specialist tools such as DONNA, Jira or other approved platforms will continue to serve their specific purposes. Workspaces and Wikis can help staff find and access information across these tools without unnecessarily duplicating it.":
+    "Die neue Struktur soll nicht jedes System ersetzen. Fachanwendungen wie DONNA, Jira oder andere freigegebene Plattformen erfüllen weiterhin ihre jeweiligen Aufgaben. Arbeitsbereiche und Wikis können helfen, Informationen in diesen Systemen zu finden und darauf zuzugreifen, ohne sie unnötig zu duplizieren.",
+  "I already work in lots of sites and channels. Will this add even more?":
+    "Ich arbeite schon auf vielen Websites und in vielen Kanälen. Werden es dadurch noch mehr?",
+  "The aim is the opposite: to reduce unnecessary duplication and make better use of shared environments. New workspace requirements will be assessed against existing options and the work they need to support, rather than automatically creating separate sites for every department, team or project.":
+    "Das Ziel ist das Gegenteil: unnötige Doppelstrukturen reduzieren und gemeinsame Umgebungen besser nutzen. Der Bedarf an neuen Arbeitsbereichen wird anhand vorhandener Möglichkeiten und der zu unterstützenden Aufgaben geprüft. Es werden nicht automatisch separate Websites für jede Abteilung, jedes Team oder jedes Projekt eingerichtet.",
   "Who are focal points?": "Wer sind die Ansprechpersonen?",
-  "Focal points are colleagues who help people use their workspaces and channels day to day. They're the first people to ask about access or common setup questions. During the upcoming rollout, they'll receive additional training in relevant settings and good working practices, and can escalate anything that needs specialist help.":
-    "Ansprechpersonen sind Kolleginnen und Kollegen, die bei der täglichen Arbeit mit Arbeitsbereichen und Kanälen helfen. Bei Fragen zum Zugriff oder zur Einrichtung sind sie die erste Anlaufstelle. Im Zuge der bevorstehenden Einführung erhalten sie zusätzliche Schulungen zu den relevanten Einstellungen und bewährten Arbeitsweisen und können bei Bedarf Fachleute hinzuziehen.",
+  "Colleagues with specific responsibilities or expertise who help manage and improve how information is organised and used. Depending on their role, they may advise on business information, administer shared spaces, support colleagues or handle sensitive information. Different responsibilities may be assigned to different people.":
+    "Kolleginnen und Kollegen mit bestimmten Verantwortlichkeiten oder Fachkenntnissen, die helfen, Informationen besser zu organisieren und zu nutzen. Je nach Rolle beraten sie zu fachlichen Informationen, verwalten gemeinsame Bereiche, unterstützen andere oder betreuen sensible Informationen. Unterschiedliche Aufgaben können verschiedenen Personen zugeordnet werden.",
   "What if I don't know which workspace something belongs in?":
     "Was mache ich, wenn ich nicht weiß, in welchen Arbeitsbereich etwas gehört?",
-  "Ask your workspace or department focal point. They can help you find the right place without you needing to understand the whole setup.":
-    "Fragen Sie die Ansprechperson Ihres Arbeitsbereichs oder Ihrer Abteilung. Sie hilft Ihnen, den richtigen Ort zu finden, ohne dass Sie die gesamte Struktur kennen müssen.",
+  "Workspaces are organised around business activities, not necessarily departments. Guidance will help staff identify the appropriate location. During implementation, colleagues responsible for the relevant work and the IKM team can help resolve unclear cases.":
+    "Arbeitsbereiche orientieren sich an Geschäftsaktivitäten, nicht zwingend an Abteilungen. Orientierungshilfen sollen Beschäftigte dabei unterstützen, den passenden Ort zu finden. Während der Einführung können die für die jeweilige Aufgabe Verantwortlichen und das IKM-Team bei unklaren Fällen helfen.",
   "How do I create a new workspace if I need one?":
     "Wie gehe ich vor, wenn ich einen neuen Arbeitsbereich benötige?",
-  "In most cases, the existing workspaces should already cover the work you need to do. If you're unsure, speak to your focal point — they may be able to solve the need within an existing workspace and can escalate it if a genuinely new space is required.":
-    "In den meisten Fällen sollten die vorhandenen Arbeitsbereiche Ihre Aufgaben bereits abdecken. Sprechen Sie bei Unsicherheit mit Ihrer Ansprechperson — oft lässt sich der Bedarf mit einem bestehenden Arbeitsbereich abdecken; wird tatsächlich ein neuer benötigt, kann sie das Anliegen weitergeben.",
+  "First, establish whether an existing workspace or working area can meet the need. Requests for new spaces will be assessed against their purpose, participants, information requirements and access needs. The request and approval process is still being defined.":
+    "Prüfen Sie zunächst, ob ein bestehender Arbeitsbereich oder Teilbereich den Bedarf abdecken kann. Anfragen für neue Bereiche werden anhand ihres Zwecks, der Beteiligten, der Informationsanforderungen und des Zugriffsbedarfs beurteilt. Das Anfrage- und Genehmigungsverfahren wird noch festgelegt.",
   "Will my team and I get training?":
     "Erhalten mein Team und ich eine Einführung?",
-  "Yes — everyone will be introduced to the workspaces they use, with support for the new setup, updating important links and bookmarks, and safely creating, sharing and receiving information. Workspace focal points will receive additional training so they can help with structure, access, day-to-day questions and good working practices.":
-    "Ja — alle erhalten eine Einführung in die Arbeitsbereiche, die sie nutzen, sowie Unterstützung beim Umstieg, beim Aktualisieren wichtiger Links und Lesezeichen und beim sicheren Erstellen, Teilen und Empfangen von Informationen. Die Ansprechpersonen der Arbeitsbereiche werden zusätzlich geschult, damit sie bei Struktur, Zugriff, Alltagsfragen und guten Arbeitspraktiken unterstützen können.",
+  "Training and support will be developed alongside implementation. Different colleagues may need different levels of support, from basic navigation and everyday use to workspace administration or handling sensitive information.":
+    "Schulungen und Unterstützung werden begleitend zur Einführung entwickelt. Je nach Aufgabe benötigen Kolleginnen und Kollegen unterschiedliche Unterstützung: von der Orientierung und alltäglichen Nutzung bis zur Verwaltung von Arbeitsbereichen oder zum Umgang mit sensiblen Informationen.",
   "Do I need to learn the technical settings?":
     "Muss ich mich mit den technischen Einstellungen auskennen?",
-  "It depends on your role. Most people only need to know how to use their workspaces day to day; focal points, people who regularly handle personal or sensitive information, and technical or administrative roles will receive the extra training relevant to their responsibilities.":
-    "Das hängt von Ihrer Rolle ab. Für die meisten genügt es zu wissen, wie sie ihre Arbeitsbereiche im Alltag nutzen; Ansprechpersonen, Personen, die regelmäßig mit personenbezogenen oder sensiblen Informationen umgehen, sowie technische und administrative Rollen erhalten die für ihre Aufgaben erforderlichen zusätzlichen Schulungen.",
+  "No. Most staff will only need to understand where to work, how to organise and share information, and what to do when something requires additional protection. Configuration and more advanced administration will be handled by designated colleagues and IT support.":
+    "Nein. Die meisten Beschäftigten müssen lediglich wissen, wo sie arbeiten, wie sie Informationen organisieren und teilen und was bei zusätzlichem Schutzbedarf zu tun ist. Konfiguration und weitergehende Administration übernehmen die dafür zuständigen Kolleginnen und Kollegen sowie der IT-Support.",
 };
+
+/** Preserve the supplied system names and prose instead of applying demo display aliases. */
+export function translateWorkspaceFAQ(
+  source: string,
+  language: "en" | "de",
+): string {
+  return language === "de" ? (germanWorkspaceFAQ[source] ?? source) : source;
+}

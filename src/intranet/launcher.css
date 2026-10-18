@@ -43,6 +43,13 @@
 :root .prototype-launcher .launcher-explanation {
   margin-top: 12px;
 }
+:root .prototype-launcher .launcher-stage-note {
+  clear: both;
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+}
 :root .prototype-launcher .launcher-data-note {
   font-size: 13px;
   line-height: 20px;

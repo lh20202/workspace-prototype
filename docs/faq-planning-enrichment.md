@@ -2,18 +2,23 @@
 
 This remains an exploratory Digital Workspace proof of concept. The current working tree, established architecture and role boundaries were preserved. The polish-website skill was not used.
 
-## FAQ
+## FAQ (revised 18 October 2026)
 
-The same popup opens from Welcome and Demo Controls. A fixed title and Close action surround the scrolling content. All 21 accessible Fluent accordion questions start collapsed; several may remain open. No tabs or question cards were added. The later short personal-drive wording and “See an example” label remain; the previously removed automation explanation was not restored.
+Welcome and Demo Controls open the same accessible FAQ dialog. Its 23 questions start collapsed, multiple answers can stay open, and the fixed title and Close action remain outside the scrolling content.
+
+The revised copy follows the supplied staff FAQ: it separates established design principles from the proposed approach and arrangements still being developed or approved. It explains shared work, approved knowledge, protected information and specialist systems without implying that everything will migrate to SharePoint. Personal data is not automatically Strictly Confidential. Most administrative responsibilities sit with designated colleagues, IKM, IT and specialists.
+
+Welcome now explains the early design stage and demonstration content. “What am I looking at?” describes the simulated experience. The same early-design note appears inside the FAQ for visitors opening it from another page.
 
 ### Files & access
 
+- Is this replacing our existing SharePoint sites, Teams channels and K:Drive folders?
 - Who can see my files?
 - Where do personal drives fit in?
 - What if someone shares a personal drive file anyway?
 - What happens when someone joins, leaves or changes roles?
 - How do I know how sensitive a document is?
-- Where do I save personal data or Strictly confidential information?
+- Where do I save personal data or Strictly Confidential information?
 - Do I need to make a copy before sharing a document with another team?
 - What happens if I accidentally delete or overwrite something?
 - What happens to files when a project or piece of work finishes?
@@ -23,9 +28,10 @@ The same popup opens from Welcome and Demo Controls. A fixed title and Close act
 ### Working with others
 
 - Can I work with colleagues in other countries?
-- Can I work with people outside the company?
+- Can I work with people outside MSF?
 - What's the difference between channels and a workspace?
-- I work with lots of different tools and platforms — how do they fit in?
+- What's the difference between a Workspace and a Wiki?
+- I work with lots of different tools and platforms. How do they fit in?
 - I already work in lots of sites and channels. Will this add even more?
 
 ### Getting started & support
@@ -36,33 +42,11 @@ The same popup opens from Welcome and Demo Controls. A fixed title and Close act
 - Will my team and I get training?
 - Do I need to learn the technical settings?
 
-The sensitivity question explains the four canonical labels. The protected-information question explains where personal data or Strictly confidential information belongs. There is no duplicate general confidential-document question.
+### Language and examples
 
-**Who are focal points?**
+All questions, answers and orientation copy have reviewed German equivalents. The FAQ text is explicitly localised and exempt from the simulated product's display aliases: references to SharePoint, Teams, OneDrive, DONNA and Jira retain their meaning in the supplied guidance. Tool names and routes elsewhere are unchanged.
 
-Focal points are colleagues who help people use their workspaces and channels day to day. They're the first people to ask about access or common setup questions. During the upcoming rollout, they'll receive additional training in relevant settings and good working practices, and can escalate anything that needs specialist help.
-
-### Final migration and training wording
-
-**What happens to files in our current shared drive?**
-
-Existing shared-drive files will be reviewed as work moves into the new setup. Useful information will move to the right workspace or archive; material that is no longer needed doesn't have to be carried forward. You won't be expected to work out all of the destinations on your own.
-
-**What happens to my existing links, bookmarks and synced folders?**
-
-Switch-over support will include updating important links and bookmarks and reviewing old synced folders. We'll make it clear what needs changing rather than expecting you to discover broken links yourself.
-
-**Will my team and I get training?**
-
-Yes — everyone will be introduced to the workspaces they use, with support for the new setup, updating important links and bookmarks, and safely creating, sharing and receiving information. Workspace focal points will receive additional training so they can help with structure, access, day-to-day questions and good working practices.
-
-**Do I need to learn the technical settings?**
-
-It depends on your role. Most people only need to know how to use their workspaces day to day; focal points, people who regularly handle personal or sensitive information, and technical or administrative roles will receive the extra training relevant to their responsibilities.
-
-### OneDrive example
-
-“See an example” expands the actual Ari Morgan / Devon Park exchange inside the popup. Ari did not realise the original link was personal OneDrive; Devon asks for the shared workspace copy, Ari moves it and updates the original link, and Devon acknowledges. The footer opens the same authorized Tech & Digital → M365 & SPFx post as Devon. This remains separate from Department misplaced-upload cleanup.
+“See an example” still expands the existing Ari Morgan / Devon Park conversation and links to the same authorised Dev. channel post. A new note identifies it as a fictional illustration, not an agreed support process. The canonical file, post, Preview Role and access checks are unchanged.
 
 ## Planning & Reporting
 
@@ -95,4 +79,6 @@ The guided Logframe is an illustrative view of the existing file; edits remain i
 
 ## Verification
 
-Local verification passed: npm run lint, npm run typecheck, all 646 tests across 73 suites, and npm run build. New Planning translation checks also passed after the final accessibility-label translations. Browser checks covered Welcome and Demo Controls FAQ entries, Enter/Space expansion, multiple open answers, fixed title and Close action, 375 × 740 German layout, the inline OneDrive thread, Planning Home and Teams, Robin/Sam/Maya role switching, Department submissions, guided Logframe, registration, Shared, Open in SharePoint and Sam’s denied Restricted Planning entry. Live deployment verification is recorded in the final response.
+FAQ revision (18 October 2026): 46 relevant tests across 7 suites passed, along with type checking, lint for changed source files and a production build. Browser checks covered Welcome, English and German questions and answers, keyboard expansion, multiple open answers, the fictional channel example, the two-paragraph Wiki explanation and a 375 × 800 German dialog with a visible Close action and no horizontal overflow.
+
+Original enrichment verification: Local verification passed: npm run lint, npm run typecheck, all 646 tests across 73 suites, and npm run build. New Planning translation checks also passed after the final accessibility-label translations. Browser checks covered Welcome and Demo Controls FAQ entries, Enter/Space expansion, multiple open answers, fixed title and Close action, 375 × 740 German layout, the inline OneDrive thread, Planning Home and Teams, Robin/Sam/Maya role switching, Department submissions, guided Logframe, registration, Shared, Open in SharePoint and Sam’s denied Restricted Planning entry. Live deployment verification is recorded in the final response.

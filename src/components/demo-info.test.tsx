@@ -47,11 +47,13 @@ describe("small demo information controls", () => {
       expect(translateText(text, "de")).not.toBe(text);
       expect(translateText(text, "en")).toBe(text);
     }
-    expect(proofOfConceptInfoText).toContain("before anything is finalised");
+    expect(proofOfConceptInfoText).toContain("not real MSF Germany files");
     expect(proofOfConceptInfoText).not.toMatch(
       /prototype|product-development/i,
     );
-    expect(proofOfConceptInfoText).not.toMatch(/real data|company data/);
+    expect(proofOfConceptInfoText).toContain(
+      "do not represent completed migrations or confirmed access arrangements",
+    );
     expect(demoUserInfoText).toBe(
       "Explore the ordinary workspace experience. Restricted content still follows access rules.",
     );

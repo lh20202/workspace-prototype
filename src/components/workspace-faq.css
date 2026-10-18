@@ -63,6 +63,16 @@
 .workspace-faq-footer {
   flex-shrink: 0;
 }
+.workspace-faq-intro,
+.workspace-faq-example-note {
+  margin: 0 0 20px;
+  color: #616161;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.workspace-faq-example-note {
+  margin: 12px 0 0;
+}
 .workspace-faq-title {
   padding-bottom: 16px;
 }
@@ -125,6 +135,9 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.65;
+}
+.workspace-faq-answer > p + p {
+  margin-top: 12px;
 }
 .workspace-faq-answer > .workspace-faq-example {
   margin-top: 12px;

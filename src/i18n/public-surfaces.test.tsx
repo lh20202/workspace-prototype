@@ -162,11 +162,6 @@ const surfaces = [
     path: "/digital-tech?staff=elliot",
     element: () => createElement(SiteSettingsButton, { onMessage: noAction }),
   },
-  {
-    name: "Workspace FAQ questions",
-    path: "/?staff=taylor",
-    element: () => createElement(WorkspaceFAQContent),
-  },
 ];
 
 describe("public rendered surfaces use generic workplace terminology", () => {
@@ -177,6 +172,14 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       expect(copy.trim()).not.toBe("");
       expectGenericCopy(copy, `${surface.name} (${language})`);
     }
+  });
+
+  it("preserves named systems in the explicitly scoped staff FAQ guidance", () => {
+    const html = render(createElement(WorkspaceFAQContent), "/?staff=taylor");
+    expect(html).toContain("data-no-translate");
+    expect(html).toContain(
+      "SharePoint sites, Teams channels and K:Drive folders?",
+    );
   });
 
   it("keeps the product logo assets and actual collaboration URLs intact", () => {
@@ -237,7 +240,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       expectGenericCopy(displayText(creationExplanation, language));
     }
     expect(displayText(creationExplanation, "en")).toContain(
-      "company tools or systems",
+      "live MSF Germany systems",
     );
   });
 });

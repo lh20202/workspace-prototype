@@ -38,10 +38,10 @@ describe("launcher and service desk routes", () => {
   it("welcomes people with two examples and a clearly labelled complete demo", () => {
     const launcher = renderToStaticMarkup(createElement(Launcher));
     expect(launcher).toContain(
-      "<h1>Welcome to the Digital Workspace demo site!</h1>",
+      "<h1>Welcome to the Digital Workspace demo!</h1>",
     );
     expect(launcher).toContain(
-      "Explore what your new Digital Workspaces could look and feel like.",
+      "making information easier to find, use and share across departments.",
     );
     expect(launcher).not.toMatch(/Switch roles|role switching|change.*role/i);
     expect(launcher.match(/Explore workspace/g)).toHaveLength(2);
@@ -53,9 +53,9 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain("BETA TEST");
     expect(launcher).toContain('aria-label="About beta test"');
     expect(launcher).toContain('aria-label="Proof of concept"');
-    expect(launcher).toContain("How was this created?");
+    expect(launcher).toContain("What am I looking at?");
     expect(launcher).toContain(
-      "No company data was used to create this demo site.",
+      "These examples use demonstration content, not real MSF Germany files.",
     );
     expect(launcher).not.toContain("Full Architecture Proof of Concept");
     expect(launcher).not.toContain("Reference proof of concept");

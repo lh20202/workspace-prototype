@@ -14,15 +14,23 @@ import {
 } from "@fluentui/react-components";
 import { QuestionCircle16Regular } from "@fluentui/react-icons";
 import WorkspaceFAQExample from "./WorkspaceFAQExample";
+import { useTranslation } from "../i18n/Language";
+import { translateWorkspaceFAQ } from "../i18n/de-workspace-faq";
 import {
   workspaceFAQGroups,
   workspaceFAQExampleHref,
+  workspaceDemoStage,
 } from "./workspaceFAQContent";
 import "./workspace-faq.css";
 
 export function WorkspaceFAQContent() {
+  const { language } = useTranslation();
+  const faqText = (source: string) => translateWorkspaceFAQ(source, language);
   return (
     <>
+      <p className="workspace-faq-intro" data-no-translate>
+        {faqText(workspaceDemoStage)}
+      </p>
       {workspaceFAQGroups.map((group) => (
         <section
           className="workspace-faq-group"
@@ -44,10 +52,16 @@ export function WorkspaceFAQContent() {
                 data-faq-id={id}
               >
                 <AccordionHeader as="h4" size="small" expandIconPosition="end">
-                  {question}
+                  <span data-no-translate>{faqText(question)}</span>
                 </AccordionHeader>
                 <AccordionPanel className="workspace-faq-answer">
-                  <p>{answer}</p>
+                  {faqText(answer)
+                    .split("\n\n")
+                    .map((paragraph, index) => (
+                      <p key={index} data-no-translate>
+                        {paragraph}
+                      </p>
+                    ))}
                   {id === "personal-drive-shared" && (
                     <WorkspaceFAQExample href={workspaceFAQExampleHref} />
                   )}

@@ -8,7 +8,7 @@ import { Info16Regular } from "@fluentui/react-icons";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
-  "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.";
+  "These examples use demonstration content, not real MSF Germany files. They do not represent completed migrations or confirmed access arrangements.";
 export const roleAccessInfoText =
   "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.";
 export const demoUserInfoText =

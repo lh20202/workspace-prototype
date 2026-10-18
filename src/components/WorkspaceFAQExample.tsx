@@ -1,6 +1,7 @@
 import { lazy, Suspense, useId, useState } from "react";
 import { ChevronDown16Regular } from "@fluentui/react-icons";
 import StaffLink from "./StaffLink";
+import { workspaceFAQExampleNote } from "./workspaceFAQContent";
 
 const WorkspaceFAQThread = lazy(() => import("./WorkspaceFAQThread"));
 
@@ -22,6 +23,9 @@ export default function WorkspaceFAQExample({ href }: { href: string }) {
       <div id={exampleId} hidden={!expanded}>
         {expanded && (
           <>
+            <p className="workspace-faq-example-note">
+              {workspaceFAQExampleNote}
+            </p>
             <Suspense fallback={<p role="status">Loading channel exchange…</p>}>
               <WorkspaceFAQThread />
             </Suspense>

@@ -14,57 +14,28 @@ import { sensitivityLabels } from "../sharepoint/sensitivity";
 const german = (source: string) => translateText(source, "de");
 
 describe("final staff-facing German interpretation", () => {
-  it("explains an exploratory proof of concept without introducing another development concept", () => {
+  it("explains the demo limits and the role of personal storage", () => {
     expect(german(proofOfConceptInfoText)).toContain(
-      "bevor etwas endgültig festgelegt wird",
+      "keine echten Dateien von MSF Deutschland",
     );
     expect(german(proofOfConceptInfoText)).toContain(
-      "im Alltag funktionieren könnten",
+      "weder abgeschlossene Migrationen noch bestätigte Zugriffsregelungen",
     );
-    expect(german(proofOfConceptInfoText)).not.toMatch(/Prototyp|Methodologie/);
     expect(german(creationExplanation)).toContain(
-      "mit Unterstützung von KI programmiert",
+      "keine Verbindung zu produktiven Systemen",
     );
-    expect(german(creationExplanation)).toContain("keine Unternehmensdaten");
     expect(german(creationExplanation)).toContain(
-      "keine Verbindung zu Tools oder Systemen des Unternehmens",
+      "dienen der Veranschaulichung",
     );
-  });
-
-  it("keeps personal storage outside shared work and describes human moderation in two sentences", () => {
-    const personalDriveQuestions = workspaceFAQQuestions.filter((entry) =>
-      ["personal-drives", "personal-drive-shared"].includes(entry.id),
+    const answer = (id: string) =>
+      german(workspaceFAQQuestions.find((entry) => entry.id === id)!.answer);
+    expect(answer("personal-drives")).toContain(
+      "eigene Arbeitsdateien und Entwürfe",
     );
-    for (const entry of personalDriveQuestions) {
-      expect(german(entry.question)).toMatch(
-        /persönliche[nr]? Speicherbereich/,
-      );
-      expect(
-        german(entry.answer)
-          .split(/[.!?]+/)
-          .filter((part) => part.trim()),
-      ).toHaveLength(2);
-    }
-    expect(
-      german(
-        workspaceFAQQuestions.find((entry) => entry.id === "personal-drives")!
-          .answer,
-      ),
-    ).toContain("dieselbe Fassung");
-    expect(
-      german(
-        workspaceFAQQuestions.find(
-          (entry) => entry.id === "personal-drive-shared",
-        )!.answer,
-      ),
-    ).toContain("Ansprechpersonen");
-    expect(
-      german(
-        workspaceFAQQuestions.find(
-          (entry) => entry.id === "personal-drive-shared",
-        )!.answer,
-      ),
-    ).toContain("beim Verschieben der Arbeitsfassung");
+    expect(answer("personal-drive-shared")).toContain("dauerhafte Zugriff");
+    expect(answer("personal-drive-shared")).toContain(
+      "gemeinsamer Ablageort verlässlicher",
+    );
     expect(german("See an example")).toBe("Beispiel ansehen");
     expect(
       new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
