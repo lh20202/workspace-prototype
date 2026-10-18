@@ -4,6 +4,7 @@ import {
 } from "@fluentui/react-icons";
 import "./teams-home-panel.css";
 import TeamsMark from "./TeamsMark";
+import { withExplicitStaff } from "../utils/staffNavigation";
 
 export interface TeamsHomeChannel {
   id?: string;
@@ -61,7 +62,7 @@ export default function TeamsHomePanel({
           .join(" · ");
         return (
           <a
-            href={channel.href}
+            href={withExplicitStaff(channel.href)}
             key={channel.id || channel.href}
             data-channel={channel.id}
           >
@@ -101,7 +102,7 @@ export default function TeamsHomePanel({
             {channelLinks(group.channels)}
           </div>
         ))}
-      <a className="teams-home-open" href={openHref}>
+      <a className="teams-home-open" href={withExplicitStaff(openHref)}>
         {openLabel} <ArrowRight20Regular aria-hidden="true" />
       </a>
     </section>

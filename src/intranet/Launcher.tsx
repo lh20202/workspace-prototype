@@ -88,7 +88,7 @@ export default function Launcher() {
         <div className="launcher-choices">
           {choices.map(({ title, href, action }) => (
             <a
-              href={withExplicitStaff(href)}
+              href={withExplicitStaff(`${href}?demo=standalone`)}
               key={href}
               className="launcher-choice"
               onClick={markWelcomeEntry}
@@ -111,7 +111,7 @@ export default function Launcher() {
             <div className="launcher-choice-title">
               <h3>
                 <a
-                  href={withExplicitStaff("/architecture")}
+                  href={withExplicitStaff("/architecture?demo=beta")}
                   className="launcher-complete-link"
                   onClick={markWelcomeEntry}
                 >

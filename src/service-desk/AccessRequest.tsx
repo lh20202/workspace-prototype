@@ -10,6 +10,7 @@ import {
 } from "@fluentui/react-icons";
 import { allProjects, projectTitle } from "../projects/data";
 import { resolveStaffPerson } from "../intranet/catalog";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import AccessBoundary from "../access/AccessBoundary";
 import { LanguageToggle, useTranslation } from "../i18n/Language";
 import {
@@ -48,7 +49,9 @@ export default function AccessRequest() {
   const focal = accessFocalPoint(context);
   const requestedLocation =
     params.get("location") || `${workspace.title} / ${area}`;
-  const returnPath = safeAccessReturn(params.get("returnTo"), workspace.href);
+  const returnPath = withExplicitStaff(
+    safeAccessReturn(params.get("returnTo"), workspace.href),
+  );
   const [reason, setReason] = useState(
     urgent
       ? params.get("reason") ||

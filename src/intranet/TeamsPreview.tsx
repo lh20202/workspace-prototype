@@ -154,20 +154,24 @@ export default function TeamsPreview() {
     rememberStaff(person.id);
     if (companyFallback) {
       location.replace(
-        `/logistics/teams?${new URLSearchParams({
-          staff: person.id,
-          channel: companyFallback,
-          tab: "Posts",
-          context: entryScope,
-        })}`,
+        withExplicitStaff(
+          `/logistics/teams?${new URLSearchParams({
+            staff: person.id,
+            channel: companyFallback,
+            tab: "Posts",
+            context: entryScope,
+          })}`,
+        ),
       );
       return;
     }
     if (workspaceUnavailable) {
       location.replace(
-        sharepointDestination(
-          workspace.id,
-          new URLSearchParams(location.search).get("file"),
+        withExplicitStaff(
+          sharepointDestination(
+            workspace.id,
+            new URLSearchParams(location.search).get("file"),
+          ),
         ),
       );
       return;
@@ -207,13 +211,13 @@ export default function TeamsPreview() {
       context: channelContextValue(entryContext),
     });
     if (department || workspaceId !== workspace.id)
-      location.assign(`/teams?${query}`);
+      location.assign(withExplicitStaff(`/teams?${query}`));
     else {
       setChannel(name);
       setSharedLibraryId("");
       setTab(workspaceId === "content" ? contentDefaultTab(name) : "Posts");
       setSearch("");
-      history.pushState({}, "", `/teams?${query}`);
+      history.pushState({}, "", withExplicitStaff(`/teams?${query}`));
     }
   }
   function chooseTab(value: string) {

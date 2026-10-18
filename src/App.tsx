@@ -225,7 +225,9 @@ export default function App() {
     history.pushState(
       {},
       "",
-      `${planningPath(next)}${params.size ? "?" + params : ""}`,
+      withExplicitStaff(
+        `${planningPath(next)}${params.size ? "?" + params : ""}`,
+      ),
     );
     window.scrollTo({ top: 0, behavior: "instant" });
     setLocationState(route());
@@ -515,7 +517,9 @@ export default function App() {
               className="teams-button"
               aria-label="Open channels"
               title="Channels"
-              onClick={() => location.assign(planningTeamsHref(person.id))}
+              onClick={() =>
+                location.assign(withExplicitStaff(planningTeamsHref(person.id)))
+              }
             >
               <img src="/images/channels-mark.svg" alt="" />
             </button>

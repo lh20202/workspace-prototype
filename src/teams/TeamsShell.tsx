@@ -5,6 +5,7 @@ import AccessLock from "../components/AccessLock";
 import PreviewRolePrompt from "../components/PreviewRolePrompt";
 import { demoUserInfoText } from "../components/DemoInfo";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { isStandaloneDemo } from "../utils/demoMode";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import {
@@ -310,12 +311,14 @@ function TeamsShellSession({
             ))}
           </div>
           <div className="m365-teams-nav-scroll">
-            <a
-              className="m365-teams-global-view"
-              href={withExplicitStaff("/teams")}
-            >
-              Open your channel view
-            </a>
+            {!isStandaloneDemo() && (
+              <a
+                className="m365-teams-global-view"
+                href={withExplicitStaff("/teams")}
+              >
+                Open your channel view
+              </a>
+            )}
             <div className="m365-teams-section-label">Channels</div>
             {visibleGroups.map((group) => {
               const active = group.channels.some(

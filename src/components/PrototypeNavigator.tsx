@@ -12,6 +12,7 @@ import { staff, resolveStaffPerson } from "../intranet/catalog";
 import WorkspaceFAQ from "./WorkspaceFAQ";
 import { defaultPreviewRoleId, previewRoleGroups } from "../access/policy";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { isStandaloneDemo } from "../utils/demoMode";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
 import {
@@ -156,19 +157,21 @@ export default function PrototypeNavigator({
         >
           <div className="prototype-links">
             <a href={withExplicitStaff("/")}>← Welcome</a>
-            <span className="prototype-workspaces-link">
-              <a
-                href={withExplicitStaff("/architecture")}
-                aria-current={
-                  location.pathname.replace(/\/+$/, "") === "/architecture"
-                    ? "page"
-                    : undefined
-                }
-              >
-                All workspaces
-              </a>
-              <BetaBadge compact />
-            </span>
+            {!isStandaloneDemo() && (
+              <span className="prototype-workspaces-link">
+                <a
+                  href={withExplicitStaff("/architecture")}
+                  aria-current={
+                    location.pathname.replace(/\/+$/, "") === "/architecture"
+                      ? "page"
+                      : undefined
+                  }
+                >
+                  All workspaces
+                </a>
+                <BetaBadge compact />
+              </span>
+            )}
             <WorkspaceFAQ />
           </div>
           <div className="prototype-utilities">

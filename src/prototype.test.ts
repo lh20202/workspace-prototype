@@ -62,9 +62,9 @@ describe("launcher and service desk routes", () => {
     expect(launcher).not.toContain("Reference prototype");
     expect(launcher.replace(/<[^>]*>/g, "")).not.toContain("POC");
     expect(launcher).not.toContain("Work in progress · expect rough edges");
-    expect(launcher).toContain('href="/planning"');
-    expect(launcher).toContain('href="/logistics"');
-    expect(launcher).toContain('href="/architecture"');
+    expect(launcher).toContain('href="/planning?demo=standalone"');
+    expect(launcher).toContain('href="/logistics?demo=standalone"');
+    expect(launcher).toContain('href="/architecture?demo=beta"');
     for (const anchor of launcher.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)) {
       expect(anchor[0]).not.toContain("<button");
     }

@@ -13,6 +13,8 @@ import {
   projectTitle,
 } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
+import { demoMode } from "../utils/demoMode";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import {
   canAccessChannel,
   canAccessEmergency,
@@ -109,8 +111,14 @@ export function channelNavigationFor({
       : undefined);
   const scope = channelContextValue(context);
   const role = previewRoleFor(person);
+  const mode = demoMode();
   const query = (values: Record<string, string>) =>
-    new URLSearchParams({ staff: person.id, ...values, context: scope });
+    new URLSearchParams({
+      staff: person.id,
+      ...values,
+      context: scope,
+      ...(mode ? { demo: mode } : {}),
+    });
   const company: TeamsGroup = {
     id: "company",
     kind: "company",
@@ -318,7 +326,10 @@ export function teamsPreviewHrefForStaff(
       )
     )
       return `${pathname}?${params}`;
-    return `/teams?${new URLSearchParams({ staff: person.id })}`;
+    return withExplicitStaff(
+      `/teams?${new URLSearchParams({ staff: person.id })}`,
+      search,
+    );
   }
   if (context.kind === "department") {
     params.delete("workspace");

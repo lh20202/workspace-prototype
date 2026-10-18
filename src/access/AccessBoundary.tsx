@@ -88,7 +88,9 @@ export default function AccessBoundary({
   const urgent = (
     <div className="access-boundary-urgent">
       <p>Urgent access needed and your focal point is unavailable?</p>
-      <a href={urgentAccessHref(context)}>Raise urgent access request</a>
+      <a href={withExplicitStaff(urgentAccessHref(context))}>
+        Raise urgent access request
+      </a>
     </div>
   );
   const workspaceContact = (

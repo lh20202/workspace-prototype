@@ -1,14 +1,30 @@
-/** Keep an explicitly selected colleague without spreading route-specific state. */
+import { demoMode } from "./demoMode";
+
+/** Keep the colleague and demo entry choice without spreading route-specific state. */
 export function withExplicitStaff(
   destination: string,
   search = typeof location === "undefined" ? "" : location.search,
 ) {
   const staff = new URLSearchParams(search).get("staff");
-  if (!staff || !destination.startsWith("/") || destination.startsWith("//"))
+  const mode = demoMode(search);
+  if (
+    (!staff && !mode) ||
+    !destination.startsWith("/") ||
+    destination.startsWith("//")
+  )
     return destination;
   const target = new URL(destination, "https://workspace.invalid");
   if (target.origin !== "https://workspace.invalid") return destination;
-  if (target.searchParams.has("staff")) return destination;
-  target.searchParams.set("staff", staff);
+  let changed = false;
+  if (staff && !target.searchParams.has("staff")) {
+    target.searchParams.set("staff", staff);
+    changed = true;
+  }
+  // Welcome offers a fresh choice; its two demo links explicitly choose their mode.
+  if (mode && target.pathname !== "/" && !target.searchParams.has("demo")) {
+    target.searchParams.set("demo", mode);
+    changed = true;
+  }
+  if (!changed) return destination;
   return `${target.pathname}${target.search}${target.hash}`;
 }

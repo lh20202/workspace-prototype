@@ -4,6 +4,7 @@ import AccessBoundary from "./AccessBoundary";
 import { resolveStaffPerson } from "../intranet/catalog";
 import { workspaceDisplayName } from "../workspaces/presentation";
 import { workspaceById } from "../workspaces/registry";
+import { isStandaloneDemo } from "../utils/demoMode";
 
 /** A workspace denial never renders working-file search, navigation or file metadata. */
 export default function WorkspaceDenied({
@@ -38,8 +39,10 @@ export default function WorkspaceDenied({
           resource={
             known ? resource || { kind: "workspace", workspaceId } : undefined
           }
-          returnHref="/architecture"
-          returnLabel="Back to all workspaces"
+          returnHref={isStandaloneDemo() ? "/" : "/architecture"}
+          returnLabel={
+            isStandaloneDemo() ? "Welcome" : "Back to all workspaces"
+          }
         />
       </main>
     </div>

@@ -3,6 +3,7 @@ import { Button } from "@fluentui/react-components";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import StaffLink from "../components/StaffLink";
+import { withExplicitStaff } from "../utils/staffNavigation";
 import { resolveStaffPerson } from "../intranet/catalog";
 import { getSiteAdminModel } from "./model";
 import { siteAdministrationHref, siteAdministrationPage } from "./routes";
@@ -30,7 +31,11 @@ export default function SiteAdministrationPage() {
     (site.canManage || ["contents", "usage"].includes(surface));
   const onClose = () => {
     if (site)
-      location.assign(site.href + `?staff=${encodeURIComponent(person.id)}`);
+      location.assign(
+        withExplicitStaff(
+          site.href + `?staff=${encodeURIComponent(person.id)}`,
+        ),
+      );
   };
   const onSurface = (next: SiteSurface) => {
     if (site) location.assign(siteAdministrationHref(site, next));

@@ -5,6 +5,7 @@ import {
   type WorkspaceDefinition,
 } from "../workspaces/registry";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { isStandaloneDemo } from "../utils/demoMode";
 
 export interface HubNavigationDestination extends WorkspaceDefinition {
   destinationHref: string;
@@ -22,7 +23,8 @@ export function getHubNavigationModel({
   search?: string;
 }) {
   // Teams has its own navigation even when its route belongs to a workspace.
-  if (pathname.split("/").includes("teams")) return null;
+  if (isStandaloneDemo(search) || pathname.split("/").includes("teams"))
+    return null;
   const current = workspaceId
     ? environmentById.get(workspaceId)
     : environmentRegistry
