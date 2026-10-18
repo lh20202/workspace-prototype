@@ -938,11 +938,11 @@ export const posts: Post[] = [
     reply: "Alex Morgan: He looks like he wants to discuss my mortgage.",
     fileIds: [],
     image: {
-      src: "/images/pets/louis.png",
+      src: "/images/pets/louis.jpg",
       alt: "Louis, a black and white Devon Rex cat wearing a checked bow tie",
-      width: 384,
-      height: 342,
-      frame: [0, 0, 384, 342],
+      width: 1206,
+      height: 1670,
+      frame: [0, 0, 1206, 1670],
     },
   },
   {
