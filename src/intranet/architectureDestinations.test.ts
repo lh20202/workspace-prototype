@@ -45,7 +45,7 @@ describe("task-oriented architecture destinations", () => {
       personnelDestinations.controlled.map(({ label, href }) => [label, href]),
     ).toEqual([
       ["Personnel", "/employment-admin"],
-      ["Workers' Union", "/welfare-representation/employee-representation"],
+      ["Council", "/welfare-representation/employee-representation"],
       ["Welfare", "/welfare-representation/welfare-support"],
     ]);
     expect(

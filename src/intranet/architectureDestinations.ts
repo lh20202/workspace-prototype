@@ -84,7 +84,7 @@ export const personnelDestinations = {
     {
       ...architectureDestinationById.get("welfare")!,
       id: "workers-union",
-      label: "Workers' Union",
+      label: "Council",
       href: "/welfare-representation/employee-representation",
       type: "controlled-environment" as const,
       parentWorkspaceId: "welfare",

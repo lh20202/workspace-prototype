@@ -81,7 +81,7 @@ describe("English and German display language", () => {
       Edu: "Edu",
       Network: "Netzwerk",
       Personnel: "Personal",
-      "Workers' Union": "Arbeitnehmervertretung",
+      Council: "Council",
       Welfare: "Fürsorge",
       South: "Süd",
       "Media Library": "Medienbibliothek",
