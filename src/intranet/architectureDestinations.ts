@@ -48,12 +48,18 @@ const peopleDestinations: ArchitectureDestination[] = peopleSections.map(
   }),
 );
 
+const destinationLabels: Record<string, string> = {
+  finance: "South",
+  "frontline-sales": "Crew portal",
+  taskforce: "Mobile Crew portal",
+};
+
 function destinationForEnvironment(
   environment: WorkspaceDefinition,
 ): ArchitectureDestination {
   return {
     id: environment.id,
-    label: environment.id === "finance" ? "South" : environment.hubLabel,
+    label: destinationLabels[environment.id] ?? environment.hubLabel,
     href: environment.href,
     icon: environment.icon,
     hub: environment.hubId,

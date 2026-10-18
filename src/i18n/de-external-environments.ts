@@ -12,6 +12,8 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Knowledge & external environments": "Wissen und externe Angebote",
   "External environments": "Externe Angebote",
   "Global Crew Portal": "Globales Crew-Portal",
+  "Crew portal": "Crew-Portal",
+  "Mobile Crew portal": "Mobiles Crew-Portal",
   "Executive Committee Members portal":
     "Portal für Mitglieder des Exekutivausschusses",
   "Executive Committee Members portal ↗":

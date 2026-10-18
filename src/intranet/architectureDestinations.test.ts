@@ -86,7 +86,7 @@ describe("task-oriented architecture destinations", () => {
       ).toEqual(
         environmentsForHub(id).map(({ id, hubLabel, href }) => [
           id,
-          hubLabel,
+          id === "frontline-sales" ? "Crew portal" : hubLabel,
           href,
         ]),
       );
