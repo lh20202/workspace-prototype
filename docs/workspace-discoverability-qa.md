@@ -8,7 +8,7 @@ This is an exploratory Digital Workspace proof of concept. Ordinary exploration,
 
 ## Discoverability and protection
 
-General Staff can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Project Centre, Quality & Monitoring, Legal & Risk, Purchasing & Office, Company Archives, People & Culture, Income & Financial Operations, Acquisition Logistics, Customer Relations, Research & Insight, Creative Studio and Tech & Digital. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
+Demo User can explore all 13 ordinary internal workspace Homes and their ordinary libraries, lists, calendars, file features and relationships: Planning Cycle, Project Centre, Quality & Monitoring, Legal & Risk, Purchasing & Office, Company Archives, People & Culture, Income & Financial Operations, Acquisition Logistics, Customer Relations, Research & Insight, Creative Studio and Tech & Digital. Ordinary Wiki areas, including Insight & Performance, and the Frontline Crew Portal demonstration are available to every valid preview role. These capabilities no longer disappear because a role lacks normal participation.
 
 The canonical registry retains exactly three whole workspace restrictions:
 
@@ -24,10 +24,10 @@ Open Internal projects are explorable without adding membership. Restricted proj
 
 ## Global channel navigation
 
-General Staff entering Channels globally sees **Company Updates only**, containing Important updates, Bulletin, Office news, Pet photos, Learning & Development and Staff socials. The helper appears in the left navigation after that environment, outside the simulated channel groups:
+Demo User entering Channels globally sees **Company Updates only**, containing Important updates, Bulletin, Office news, Pet photos, Learning & Development and Staff socials. The helper appears in the left navigation after that environment, outside the simulated channel groups:
 
 - Heading as displayed: “See a role based channel view”
-- Supporting text: “Choose a preview role to see the department, workspace and project channels that would normally appear here.”
+- Supporting text: “Explore the ordinary workspace experience. Restricted content still follows access rules.”
 - Action: “Choose a preview role”
 
 It reuses the current prominent restricted-page Preview Role panel, filled action button, selector reveal/focus/highlight interaction and reduced-motion behaviour. It explains personalisation rather than claiming access is denied. Other roles retain curated global views based on their original daily channels, Department, assigned projects and authorised incidents. Ordinary access never adds every available environment to that sidebar.
@@ -75,7 +75,7 @@ Posts link to existing workspace files and actual desk handoffs. Home and Channe
 
 ## Administration and security
 
-Original `workspaceMemberships`, daily `teamChannels`, occasional collaboration, project and incident memberships remain intact. Separate helpers answer ordinary opening, channel pinning, genuine restricted channel access and project pinning. The General Staff default channel landing changes to Company Updates without changing Department or memberships.
+Original `workspaceMemberships`, daily `teamChannels`, occasional collaboration, project and incident memberships remain intact. Separate helpers answer ordinary opening, channel pinning, genuine restricted channel access and project pinning. The Demo User default channel landing changes to Company Updates without changing Department or memberships.
 
 The subsequent [access-matrix integrity pass](access-matrix-integrity-qa.md) adds the reviewed specialist business grants, Sam's Financial Close project participation and exact assigned-project security reviews. Its current matrix supersedes earlier specialist grant counts, while preserving the ordinary discovery and contextual navigation described here.
 
@@ -83,9 +83,9 @@ Site Administrator and Information Advisory Specialist retain equivalent delegat
 
 ## Verification evidence
 
-Root manually completed the General Staff journey without changing Preview Role: Welcome, All workspaces and hubs, all 13 ordinary Homes, Wiki and Frontline Crew Portal, plus Studio library search, document preview, register and calendar. Root also checked Creative Studio Home under all nine roles at 100% zoom.
+Root manually completed the Demo User journey without changing Preview Role: Welcome, All workspaces and hubs, all 13 ordinary Homes, Wiki and Frontline Crew Portal, plus Studio library search, document preview, register and calendar. Root also checked Creative Studio Home under all nine roles at 100% zoom.
 
-Root manually exercised the requested contextual journeys: General Staff global Company Updates/helper; all six Architecture Department entries; Studio to its channels; Studio context retained after switching to Finance; explicit global entry restoring Finance's view; Tech & Digital ordinary channels with Security protected; Sales role entering Planning & Reporting; Executive role selecting another Department without unrelated groups; and a restricted project remaining denied without entitlement. Additional checks covered ordinary project and Logistics conversations, incident denial, all three whole restricted workspaces, Restricted Planning, equal advisory/admin settings, and the technology role's ordinary settings. The role action revealed and focused the highlighted selector on desktop and mobile.
+Root manually exercised the requested contextual journeys: Demo User global Company Updates/helper; all six Architecture Department entries; Studio to its channels; Studio context retained after switching to Finance; explicit global entry restoring Finance's view; Tech & Digital ordinary channels with Security protected; Sales role entering Planning & Reporting; Executive role selecting another Department without unrelated groups; and a restricted project remaining denied without entitlement. Additional checks covered ordinary project and Logistics conversations, incident denial, all three whole restricted workspaces, Restricted Planning, equal advisory/admin settings, and the technology role's ordinary settings. The role action revealed and focused the highlighted selector on desktop and mobile.
 
 Automated evidence includes all nine roles against the canonical ordinary workspace registry and protected subject matrix; all ordinary channels versus private Security; Open Internal versus restricted projects; all six Department contexts and genuine unit boundaries; four channel-enabled Home panels under all nine roles; global curated groups; contextual focus; role switching/reset; and canonical Studio topic identities, lifecycle and conversations. Targeted policy, Wiki, publishing and OneDrive checks passed **44 tests** during implementation. Existing protection assertions were retained or replaced with equivalent checks for the intended access contract, including no private Security conversation leakage.
 

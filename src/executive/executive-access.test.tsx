@@ -18,7 +18,7 @@ function render(
 }
 
 describe("the selected role controls rendered business boundaries", () => {
-  it("switches the same CEO destination from General Staff denial to Executive Director access", () => {
+  it("switches the same CEO destination from Demo User denial to Executive Director access", () => {
     const denied = render("/executive/leadership?staff=taylor");
     expect(denied).toContain("Access required");
     expect(denied).not.toContain('aria-label="Executive workspace navigation"');

@@ -72,13 +72,21 @@ describe("external role-preview controls", () => {
     );
     expect(html).toContain('aria-label="Proof of concept navigation"');
     expect(html).toContain('aria-label="Preview role"');
+    expect(html).toContain('aria-describedby="preview-role-description"');
     expect(html.match(/<option\b/g)).toHaveLength(9);
-    expect(html).toContain('title="General Staff Member — Taylor Brooks"');
+    expect(html).toContain('title="Demo User — Taylor Brooks"');
+    expect(html).toMatch(
+      /<option[^>]*value="taylor"[^>]*selected=""[^>]*>Demo User<\/option>/,
+    );
+    expect(html).toContain(
+      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
+    );
+    expect(html).not.toContain("General Staff Member");
     const options = [...html.matchAll(/<option\b[^>]*>(.*?)<\/option>/g)].map(
       (match) => match[1],
     );
     expect(options).toEqual([
-      "General Staff Member",
+      "Demo User",
       "Sales &amp; Marketing Specialist",
       "Frontline Sales Adviser",
       "Finance Operations Specialist",
@@ -107,6 +115,22 @@ describe("external role-preview controls", () => {
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
     expect(html).toContain('href="/?staff=jamie"');
     expect(html).toContain('href="/architecture?staff=jamie"');
+    expect(html).toMatch(
+      /<option[^>]*value="jamie"[^>]*selected=""[^>]*>Personnel Administrator<\/option>/,
+    );
+  });
+
+  it("preserves the remembered Demo User identity without changing the session key", () => {
+    const readStoredRole = vi.fn(() => "taylor");
+    vi.stubGlobal("location", new URL("/planning", "https://example.test"));
+    vi.stubGlobal("sessionStorage", { getItem: readStoredRole });
+    const html = renderToStaticMarkup(createElement(PrototypeNavigator));
+    expect(readStoredRole).toHaveBeenCalledWith("workspace-preview-staff");
+    expect(html).toMatch(
+      /<option[^>]*value="taylor"[^>]*selected=""[^>]*>Demo User<\/option>/,
+    );
+    expect(html).toContain('href="/"');
+    expect(html).toContain('title="Demo User — Taylor Brooks"');
   });
 
   it("keeps the longest role label intact and exposes its fictional person separately", () => {
@@ -207,9 +231,10 @@ describe("external role-preview controls", () => {
   });
 
   it("provides professional German for the new external and access-control labels", () => {
+    expect(translateText("Demo User", "de")).toBe("Demo User");
     for (const source of [
       "Preview role",
-      "General Staff Member",
+      "Demo User",
       "Frontline Sales Adviser",
       "Executive Director",
       "Personnel Administrator",

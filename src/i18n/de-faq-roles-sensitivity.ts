@@ -21,13 +21,17 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
   "Open channel": "Kanal öffnen",
   "Access follows the role. Switch roles and the demo updates the workspaces, channels and restricted areas that role can use.":
     "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Kanäle und geschützten Bereiche.",
+  "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.":
+    "Wechseln Sie die Vorschaurolle, um persönliche Kanalansichten, geschützte Inhalte und Fachanwendungen zu erkunden. Die normalen Arbeitsbereiche bleiben verfügbar.",
   "Back to all workspaces": "Zurück zu allen Arbeitsbereichen",
   "Try another preview role": "Andere Vorschaurolle ausprobieren",
   "Some preview roles can access this area.":
     "Einige Vorschaurollen haben Zugriff auf diesen Bereich.",
   "GENERAL / BUSINESS": "ALLGEMEIN / FACHBEREICHE",
   "SPECIALIST / ADMIN": "SPEZIALFUNKTIONEN / ADMINISTRATION",
-  "General Staff Member": "Mitarbeitende",
+  "Demo User": "Demo User",
+  "Explore the ordinary workspace experience. Restricted content still follows access rules.":
+    "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
   "Sales & Marketing Specialist": "Fachreferentin für Vertrieb und Marketing",
   "Frontline Sales Adviser": "Vertriebsberaterin im direkten Kundenkontakt",
   "Finance Operations Specialist": "Fachkraft für Finanzprozesse",

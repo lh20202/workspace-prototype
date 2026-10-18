@@ -75,7 +75,7 @@ describe("ordinary contextual channel previews and real private boundaries", () 
         }
       }
   });
-  it("keeps General Staff global company navigation separate and shows the prominent role helper", () => {
+  it("keeps Demo User global company navigation separate and shows the prominent role helper", () => {
     const html = logisticsChannel(
       "/logistics/teams?staff=taylor&channel=important&context=global",
     );
@@ -83,6 +83,10 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     expect(html).not.toContain('data-team-id="logistics"');
     expect(html).not.toContain('data-team-kind="department"');
     expect(html).toContain("See a role based channel view");
+    expect(html).toContain(
+      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
+    );
+    expect(html).not.toContain("General Staff Member");
     expect(html).toContain("Choose a preview role");
     expect(html).toContain('aria-controls="preview-role"');
     expect(html).toContain('class="preview-role-prompt access-preview-role"');

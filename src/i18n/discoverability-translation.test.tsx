@@ -65,17 +65,25 @@ describe("German discoverability review after English implementation was final",
     }
   });
 
-  it("explains role personalisation without implying an access denial", () => {
+  it("explains ordinary exploration and the separate restrictions on protected content", () => {
     expect(german("See a role-based channel view")).toBe(
       "Rollenbezogene Kanalansicht erkunden",
     );
     expect(german("Choose a preview role")).toBe("Vorschaurolle auswählen");
     expect(german("Open your channel view")).toBe("Eigene Kanalansicht öffnen");
     const description = german(
-      "Choose a preview role to see the department, workspace and project channels that would normally appear here.",
+      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
     );
-    expect(description).toContain("dieser Rolle im Alltag");
-    expect(description).not.toMatch(/Zugriff|Berechtigung|verweigert/);
+    expect(description).toBe(
+      "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
+    );
+    expect(
+      german(
+        "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.",
+      ),
+    ).toBe(
+      "Wechseln Sie die Vorschaurolle, um persönliche Kanalansichten, geschützte Inhalte und Fachanwendungen zu erkunden. Die normalen Arbeitsbereiche bleiben verfügbar.",
+    );
     expect(german("Try another preview role")).toBe(
       "Andere Vorschaurolle ausprobieren",
     );
@@ -139,7 +147,7 @@ describe("German discoverability review after English implementation was final",
     expect(german("Sales & Marketing Wiki")).toBe("Sales & Marketing Wiki");
   });
 
-  it("translates the actual Studio Home groups and the General Staff global helper", () => {
+  it("translates the actual Studio Home groups and the Demo User global helper", () => {
     at("/content-delivery?staff=taylor");
     const home = exposedCopy(renderToStaticMarkup(createElement(ContentApp)));
     expect(home).toContain("Kanalredaktionen");
@@ -169,6 +177,9 @@ describe("German discoverability review after English implementation was final",
     const helper = exposedCopy(html);
     expect(helper).toContain("Unternehmensnachrichten");
     expect(helper).toContain("Rollenbezogene Kanalansicht erkunden");
+    expect(helper).toContain(
+      "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
+    );
     expect(helper).toContain("Vorschaurolle auswählen");
     expect(helper).toContain("Eigene Kanalansicht öffnen");
     expect(helper).not.toMatch(/\b(?:Teams|SharePoint|Microsoft|M365)\b/);

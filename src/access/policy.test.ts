@@ -90,6 +90,11 @@ describe("the nine role access matrix", () => {
       "elliot",
     ]);
     expect(defaultPreviewRoleId).toBe("taylor");
+    expect(resolveStaffPerson(defaultPreviewRoleId)).toMatchObject({
+      id: "taylor",
+      name: "Taylor Brooks",
+      role: "Demo User",
+    });
     expect(
       new Set(
         previewRoles.map((role) =>
@@ -133,7 +138,7 @@ describe("the nine role access matrix", () => {
     }
     expect(canManageSiteSettings("devon", "digital")).toBe(false);
   });
-  it("gives ordinary staff internal exploration, ordinary Wiki and their own daily department without privilege", () => {
+  it("gives Demo User internal exploration, ordinary Wiki and their own daily department without privilege", () => {
     for (const workspace of [
       "planning",
       "services",
@@ -155,6 +160,12 @@ describe("the nine role access matrix", () => {
       expect(canAccessWorkspace("taylor", workspace)).toBe(false);
     expect(canAccessArea("taylor", "planning", "restricted")).toBe(false);
     expect(canAccessArea("taylor", "customer", "platinum")).toBe(false);
+    expect(canAccessArea("taylor", "finance", "workforce-cost")).toBe(false);
+    expect(canAccessChannel("taylor", "digital", "Security Engineering")).toBe(
+      false,
+    );
+    expect(canAdministerSites("taylor")).toBe(false);
+    expect(resolveStaffPerson("taylor").restrictedAreas).toEqual({});
   });
   it("keeps frontline relevance while opening normal workspaces, Portal and knowledge to all roles", () => {
     expect(canAccessPortal("maya")).toBe(true);

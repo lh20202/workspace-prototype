@@ -44,7 +44,7 @@ describe("curated global channels and explicit entry context", () => {
     vi.stubGlobal("sessionStorage", { getItem: () => "unknown" });
     expect(selectedStaffId()).toBe("taylor");
   });
-  it("gives General Staff only Company Updates plus the personalisation helper globally", () => {
+  it("gives Demo User only Company Updates plus the personalisation helper globally", () => {
     const model = channelNavigationFor({ person: person("taylor") });
     expect(model.groups.map((group) => group.id)).toEqual(["company"]);
     expect(model.groups[0].channels.map((channel) => channel.id)).toEqual(

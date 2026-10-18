@@ -70,7 +70,8 @@ describe("German access-matrix review after the English surfaces were final", ()
       generic(german(label));
     }
     for (const role of previewRoles) {
-      expect(german(role.role), role.role).not.toBe(role.role);
+      if (role.id === "taylor") expect(german(role.role)).toBe("Demo User");
+      else expect(german(role.role), role.role).not.toBe(role.role);
       generic(german(role.role));
     }
     expect(german("Draft Management Forecast")).toBe(

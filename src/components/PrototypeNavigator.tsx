@@ -6,11 +6,11 @@ import {
 } from "@fluentui/react-icons";
 import PocAnnotation from "./PocAnnotation";
 import BetaBadge from "./BetaBadge";
-import DemoInfo, { roleAccessInfoText } from "./DemoInfo";
+import DemoInfo, { demoUserInfoText, roleAccessInfoText } from "./DemoInfo";
 import { useTranslation } from "../i18n/Language";
 import { staff, resolveStaffPerson } from "../intranet/catalog";
 import WorkspaceFAQ from "./WorkspaceFAQ";
-import { previewRoleGroups } from "../access/policy";
+import { defaultPreviewRoleId, previewRoleGroups } from "../access/policy";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { usePreviewRoleContext } from "./PreviewRoleContext";
 import "./preview-role.css";
@@ -30,6 +30,7 @@ export default function PrototypeNavigator({
   const person = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
   );
+  const isDemoUser = person.id === defaultPreviewRoleId;
   const preview = usePreviewRoleContext();
   const [expanded, setExpanded] = useState(false);
   const [intro, setIntro] = useState(false);
@@ -178,37 +179,50 @@ export default function PrototypeNavigator({
                   Switch roles to explore access
                 </span>
                 <DemoInfo label="About role access">
-                  {roleAccessInfoText}
+                  {isDemoUser ? demoUserInfoText : roleAccessInfoText}
                 </DemoInfo>
               </div>
-              <select
-                id="preview-role"
-                ref={preview?.roleSelectorRef}
-                className={
-                  preview?.roleSelectorHighlighted
-                    ? "preview-role-highlighted"
-                    : undefined
-                }
-                aria-label="Preview role"
-                title={`${t(person.role)} — ${person.name}`}
-                value={person.id}
-                onChange={(e) => changePreviewRole(e.target.value)}
-              >
-                {previewRoleGroups.map((group) => (
-                  <optgroup key={group.label} label={t(group.label)}>
-                    {group.roleIds.map((id) => {
-                      const member = staff.find(
-                        (candidate) => candidate.id === id,
-                      )!;
-                      return (
-                        <option key={member.id} value={member.id}>
-                          {t(member.role)}
-                        </option>
-                      );
-                    })}
-                  </optgroup>
-                ))}
-              </select>
+              <div className="preview-role-selection">
+                <select
+                  id="preview-role"
+                  ref={preview?.roleSelectorRef}
+                  className={
+                    preview?.roleSelectorHighlighted
+                      ? "preview-role-highlighted"
+                      : undefined
+                  }
+                  aria-label="Preview role"
+                  aria-describedby={
+                    isDemoUser ? "preview-role-description" : undefined
+                  }
+                  title={`${t(person.role)} — ${person.name}`}
+                  value={person.id}
+                  onChange={(e) => changePreviewRole(e.target.value)}
+                >
+                  {previewRoleGroups.map((group) => (
+                    <optgroup key={group.label} label={t(group.label)}>
+                      {group.roleIds.map((id) => {
+                        const member = staff.find(
+                          (candidate) => candidate.id === id,
+                        )!;
+                        return (
+                          <option key={member.id} value={member.id}>
+                            {t(member.role)}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                  ))}
+                </select>
+                {isDemoUser && (
+                  <p
+                    id="preview-role-description"
+                    className="preview-role-description"
+                  >
+                    {t(demoUserInfoText)}
+                  </p>
+                )}
+              </div>
             </div>
             {emergency && (
               <div className="response-preview">

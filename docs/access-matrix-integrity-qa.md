@@ -26,7 +26,7 @@ Department General context is intentionally common, not confidential. Unit coord
 
 | Preview role                                   | ALLOW | DENY |
 | ---------------------------------------------- | ----: | ---: |
-| General Staff Member / Taylor                  |    11 |  153 |
+| Demo User / Taylor                  |    11 |  153 |
 | Frontline Sales Adviser / Maya                 |    11 |  153 |
 | Executive Director / Robin                     |    32 |  132 |
 | Personnel Administrator / Jamie                |    23 |  141 |
@@ -99,7 +99,7 @@ Regression fixtures deliberately introduce an orphan, remove `workforce-cost` fr
 
 For every actual business resource and every role, the role-switch alternative is checked against the exact resource, rather than a parent workspace. Explicit department contexts and hidden specialist administration use their own scope/capability rules.
 
-Ordinary workspace discovery, every canonical ordinary child area, all canonical ordinary channels, private security membership, General Staff's Company-only global navigation, all six department contexts and all four workspace channel contexts are tested across every preview role. These prevent the controlled-access repairs from reinstating membership gates on ordinary exploration.
+Ordinary workspace discovery, every canonical ordinary child area, all canonical ordinary channels, private security membership, Demo User's Company-only global navigation, all six department contexts and all four workspace channel contexts are tested across every preview role. These prevent the controlled-access repairs from reinstating membership gates on ordinary exploration.
 
 Every inventory URL is checked through the production route-family resolver, administration-surface resolver or external-preview resolver. Project channels use the owning project's actual `/projects/.../teams` path, including archive prefixes. Incidents use `/emergency-response/incidents/...`. Unit contexts explicitly select Shared and Unit Coordination. The companion route audit renders these actual inventory URLs rather than substituting corrected paths in the test.
 

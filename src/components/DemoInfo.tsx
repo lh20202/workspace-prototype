@@ -10,7 +10,9 @@ import "./demo-info.css";
 export const proofOfConceptInfoText =
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.";
 export const roleAccessInfoText =
-  "Access follows the role. Switch roles and the demo updates the workspaces, channels and restricted areas that role can use.";
+  "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.";
+export const demoUserInfoText =
+  "Explore the ordinary workspace experience. Restricted content still follows access rules.";
 
 /** Small, non-interactive guidance, available on hover, keyboard focus and tap. */
 export function DemoInfo({

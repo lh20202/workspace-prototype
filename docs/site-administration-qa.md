@@ -15,7 +15,7 @@ Site Administrator (Elliot) and Information Advisory Specialist (Leonie) use the
 
 The gear inserts Library settings or List settings immediately after Site contents only inside the corresponding accessible canonical object. Site information exposes View all site settings. That page links to Site permissions, Site columns, Site content types, Navigation, Regional settings and Site libraries and lists.
 
-Ordinary permitted roles retain Site contents, Site usage and Reading preferences. Technology & Engineering Administrator (Devon) receives these ordinary controls, not delegated ownership. General Staff has no existing membership of Tech & Digital; its existing access boundary is preserved.
+Ordinary permitted roles retain Site contents, Site usage and Reading preferences. Technology & Engineering Administrator (Devon) receives these ordinary controls, not delegated ownership. Demo User can explore ordinary Tech & Digital areas while delegated owner controls remain unavailable.
 
 ## Library and list surfaces
 
@@ -40,13 +40,13 @@ The configured label examples are the existing Wiki default and Current Producti
 
 ## Local manual verification
 
-At 100% zoom, compared General Staff, Information Advisory and Site Administrator on Planning, Creative Studio, Tech & Digital and Acquisition Logistics. Compared contextual libraries and the Locations & Permits list. Verified both elevated roles have equivalent settings, ordinary roles lack owner controls, and Devon remains ordinary.
+At 100% zoom, compared Demo User, Information Advisory and Site Administrator on Planning, Creative Studio, Tech & Digital and Acquisition Logistics. Compared contextual libraries and the Locations & Permits list. Verified both elevated roles have equivalent settings, ordinary roles lack owner controls, and Devon remains ordinary.
 
 Exercised Site information save/reopen/cancel, permissions and explicit advanced groups, Theme/Header/Navigation previews, the wider template chooser and simulated application, canonical Site contents links, advanced metadata/content-type/navigation/regional pages and honest unavailable Site usage information. Exercised library versioning, inherited permissions, columns, views, configured content types and configured default sensitivity save/reopen.
 
-Verified role switches with settings open: General Staff to Information Advisory, Information Advisory to Site Administrator, and Site Administrator to General Staff. Each closes the old surface before navigation. Administrative page queries are removed on role change.
+Verified role switches with settings open: Demo User to Information Advisory, Information Advisory to Site Administrator, and Site Administrator to Demo User. Each closes the old surface before navigation. Administrative page queries are removed on role change.
 
-Protected Planning and Executive entry points remain denied. Direct settings URLs cannot turn an inaccessible workspace into Site contents or expose owner permissions to General Staff. Automated coverage also includes personnel, welfare, privileged technology, Finance, projects, participant administration and restricted-file parameters.
+Protected Planning and Executive entry points remain denied. Direct settings URLs cannot turn an inaccessible workspace into Site contents or expose owner permissions to Demo User. Automated coverage also includes personnel, welfare, privileged technology, Finance, projects, participant administration and restricted-file parameters.
 
 Checked the narrow 794px layout and mobile 390px panel bounds. The existing gear now remains reachable on mobile.
 

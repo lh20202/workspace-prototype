@@ -75,8 +75,10 @@ describe("final staff-facing German interpretation", () => {
 
   it("uses clear role names and never translates SharePoint site administration as a physical location", () => {
     expect(previewRoles).toHaveLength(9);
-    for (const role of previewRoles)
-      expect(german(role.role)).not.toBe(role.role);
+    for (const role of previewRoles) {
+      if (role.id === "taylor") expect(german(role.role)).toBe("Demo User");
+      else expect(german(role.role)).not.toBe(role.role);
+    }
     for (const group of previewRoleGroups)
       expect(german(group.label)).not.toBe(group.label);
     expect(german("Site Administrator")).toBe("Websiteadministrator");
@@ -96,6 +98,19 @@ describe("final staff-facing German interpretation", () => {
     expect(german("Some preview roles can access this area.")).toContain(
       "Vorschaurollen",
     );
+  });
+
+  it("keeps Demo User in German and explains ordinary exploration without extending access", () => {
+    expect(german("Demo User")).toBe("Demo User");
+    expect(german("Demo User — Taylor Brooks")).toBe(
+      "Demo User — Taylor Brooks",
+    );
+    const explanation =
+      "Explore the ordinary workspace experience. Restricted content still follows access rules.";
+    expect(german(explanation)).toBe(
+      "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
+    );
+    expect(translateText(explanation, "en")).toBe(explanation);
   });
 
   it("distinguishes delegated technical maintenance from protected business entitlement", () => {

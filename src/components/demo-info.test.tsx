@@ -5,6 +5,7 @@ import BetaBadge, { betaInfoText } from "./BetaBadge";
 import DemoInfo, {
   proofOfConceptInfoText,
   roleAccessInfoText,
+  demoUserInfoText,
 } from "./DemoInfo";
 import { translateText } from "../i18n/translate";
 
@@ -40,6 +41,7 @@ describe("small demo information controls", () => {
       proofOfConceptInfoText,
       betaInfoText,
       roleAccessInfoText,
+      demoUserInfoText,
     ]) {
       expect(text.split(/\s+/).length).toBeLessThanOrEqual(50);
       expect(translateText(text, "de")).not.toBe(text);
@@ -50,7 +52,12 @@ describe("small demo information controls", () => {
       /prototype|product-development/i,
     );
     expect(proofOfConceptInfoText).not.toMatch(/real data|company data/);
-    expect(roleAccessInfoText).toContain("workspaces, channels");
+    expect(demoUserInfoText).toBe(
+      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
+    );
+    expect(roleAccessInfoText).toContain(
+      "Ordinary workspace areas stay available.",
+    );
     expect(roleAccessInfoText).not.toMatch(
       /\b(?:Teams|SharePoint|Microsoft|M365)\b/,
     );

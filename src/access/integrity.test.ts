@@ -330,7 +330,7 @@ describe("controlled access does not undo ordinary exploration or curated channe
       }
   });
 
-  it("keeps global General Staff Company-only and context focused for all channel-enabled workspaces", () => {
+  it("keeps global Demo User Company-only and context focused for all channel-enabled workspaces", () => {
     const baseline = channelNavigationFor({
       person: previewRoles.find((role) => role.id === "taylor")!,
     });

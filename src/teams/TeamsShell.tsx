@@ -3,6 +3,7 @@ import TeamsMark from "../components/TeamsMark";
 import TeamIdentity, { type TeamKind } from "./TeamIdentity";
 import AccessLock from "../components/AccessLock";
 import PreviewRolePrompt from "../components/PreviewRolePrompt";
+import { demoUserInfoText } from "../components/DemoInfo";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
@@ -402,7 +403,7 @@ function TeamsShellSession({
               <div className="m365-teams-role-discovery">
                 <PreviewRolePrompt
                   heading="See a role-based channel view"
-                  description="Choose a preview role to see the department, workspace and project channels that would normally appear here."
+                  description={demoUserInfoText}
                   actionLabel="Choose a preview role"
                 />
               </div>

@@ -68,7 +68,7 @@ export const previewRoles: PreviewRole[] = [
   {
     id: "taylor",
     name: "Taylor Brooks",
-    role: "General Staff Member",
+    role: "Demo User",
     workspace: "audience",
     departmentId: "marketing-growth",
     unitId: "marketing-insight-and-performance",

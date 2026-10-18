@@ -6,13 +6,13 @@ export const germanAccessUpdate: Record<string, string> = {
   "Ari Morgan: I’ll check the review checklist and the recorded approval references before the change window.":
     "Ari Morgan: Ich prüfe die Checkliste und die dokumentierten Freigabereferenzen vor dem Änderungsfenster.",
   "Preview role": "Vorschaurolle",
-  "General Staff Member": "Mitarbeitende",
+  "Demo User": "Demo User",
   "Frontline Sales Adviser": "Vertriebsberaterin im direkten Kundenkontakt",
   "Executive Director": "Geschäftsführung",
   "Personnel Administrator": "Personaladministratorin",
   "Technology & Engineering Administrator":
     "Administrator für Technologie und Engineering",
-  "General Staff Member — Taylor Brooks": "Mitarbeitende — Taylor Brooks",
+  "Demo User — Taylor Brooks": "Demo User — Taylor Brooks",
   "Frontline Sales Adviser — Maya Chen":
     "Vertriebsberaterin im direkten Kundenkontakt — Maya Chen",
   "Executive Director — Robin Avery": "Geschäftsführung — Robin Avery",
