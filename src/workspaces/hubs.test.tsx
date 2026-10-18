@@ -12,7 +12,7 @@ import {
   environmentById,
   resolveLegacy,
 } from "./registry";
-import Directory, { ClassicArchitecture } from "../intranet/Directory";
+import Directory from "../intranet/Directory";
 import { personnelDestinations } from "../intranet/architectureDestinations";
 import HubNavigation from "../components/HubNavigation";
 import { getHubNavigationModel } from "../components/hubNavigationModel";
@@ -34,7 +34,7 @@ function at(path: string, person = "maya") {
 function directoryWorkspaceLink(html: string, href: string) {
   return html.match(
     new RegExp(
-      `<a(?=[^>]*class="directory-workspace-link[^"]*")(?=[^>]*href="${href}")[^>]*>[\\s\\S]*?<\\/a>`,
+      `<a(?=[^>]*class="architecture-destination[^"]*")(?=[^>]*href="${href}")[^>]*>[\\s\\S]*?<\\/a>`,
     ),
   )?.[0];
 }
@@ -155,7 +155,7 @@ describe("hub families retain one canonical owner for every environment", () => 
       const environment = environmentById.get(id)!;
       expect(html).toContain(`href="${environment.href}"`);
       expect(html).not.toContain(
-        `class="directory-workspace-link" href="${environment.href}"`,
+        `class="architecture-destination" href="${environment.href}"`,
       );
       expect(prototypeForPath(environment.href)).toBe(
         id === "sales-wiki" ? "wiki" : "frontline",
@@ -165,20 +165,20 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
     );
   });
-  it("Classic renders four distinct hub panels, one workspace mark and a separate Department channels rail", () => {
+  it("Directory renders four distinct hub panels, one workspace mark and a separate Department channels rail", () => {
     at("/architecture");
-    const html = renderToStaticMarkup(createElement(ClassicArchitecture));
+    const html = renderToStaticMarkup(createElement(Directory));
     for (const hub of hubDefinitions)
-      expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
-    expect(html).toContain('aria-labelledby="hub-finance"');
-    expect(html).toContain('aria-label="Jump to…"');
+      expect(html).toContain(`aria-labelledby="layout-hub-${hub.id}"`);
+    expect(html).toContain('aria-labelledby="layout-hub-finance"');
+    expect(html).toContain('aria-labelledby="architecture-jump-title"');
     expect(html).not.toContain('class="directory-teams"');
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");
     expect(html).not.toContain("Shared services");
-    expect(html.match(/class="workspace-icon"/g)).toHaveLength(18);
-    expect(html.match(/data-environment="workspace"/g)).toHaveLength(15);
-    expect(html.match(/title="Controlled access"/g)).toHaveLength(4);
+    expect(html.match(/class="workspace-icon"/g)).toHaveLength(24);
+    expect(html.match(/data-environment="workspace"/g)).toHaveLength(19);
+    expect(html.match(/aria-label="Controlled access"/g)).toHaveLength(8);
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
       "executive",
@@ -188,9 +188,9 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
   });
-  it("Classic renders two ordinary Personnel entrances followed by quiet protected text links", () => {
+  it("Directory renders two ordinary Personnel entrances followed by protected workspace links", () => {
     at("/architecture");
-    const html = renderToStaticMarkup(createElement(ClassicArchitecture));
+    const html = renderToStaticMarkup(createElement(Directory));
     expect(html).not.toContain("Controlled environments");
     expect(html).not.toContain("People &amp; organisation</h3>");
     for (const destination of personnelDestinations.normal) {
@@ -202,7 +202,9 @@ describe("hub families retain one canonical owner for every environment", () => 
     }
     expect(directoryWorkspaceLink(html, "/people-culture")).toBeUndefined();
     for (const destination of personnelDestinations.controlled) {
-      expect(directoryWorkspaceLink(html, destination.href)).toBeUndefined();
+      expect(directoryWorkspaceLink(html, destination.href)).toContain(
+        'class="restricted-workspace-icon"',
+      );
       expect(html).toContain(`href="${destination.href}"`);
     }
     expect(personnelDestinations.controlled).toHaveLength(3);

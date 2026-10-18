@@ -21,6 +21,8 @@ import {
   architectureHubViews,
   architectureProjects,
   architectureTools,
+  architectureToolsForHub,
+  destinationDescriptions,
   type ArchitectureHubView,
   type ArchitectureLayout,
   type LayoutDestination,
@@ -28,8 +30,10 @@ import {
 
 export function ArchitectureDestinationLink({
   destination,
+  detailed = false,
 }: {
   destination: LayoutDestination;
+  detailed?: boolean;
 }) {
   const { type, label, href, description } = destination;
   const controlled =
@@ -38,7 +42,7 @@ export function ArchitectureDestinationLink({
   const isWorkspace = !["wiki", "portal", "archive"].includes(type);
   return (
     <StaffLink
-      className="architecture-destination"
+      className={`architecture-destination${type === "wiki" ? " architecture-destination-wide" : ""}`}
       href={href}
       data-environment={isWorkspace ? "workspace" : type}
       title={description}
@@ -57,14 +61,21 @@ export function ArchitectureDestinationLink({
         <WorkspaceIcon size={20} />
       )}
       <span>{label}</span>
+      {detailed && (
+        <span className="architecture-destination-description">
+          {destinationDescriptions[destination.id]}
+        </span>
+      )}
     </StaffLink>
   );
 }
 
 function DestinationGrid({
   destinations,
+  detailed,
 }: {
   destinations: LayoutDestination[];
+  detailed: boolean;
 }) {
   return (
     <div className="architecture-destination-grid">
@@ -72,6 +83,7 @@ function DestinationGrid({
         <ArchitectureDestinationLink
           key={destination.id}
           destination={destination}
+          detailed={detailed}
         />
       ))}
     </div>
@@ -80,11 +92,12 @@ function DestinationGrid({
 
 function HubPanel({
   hub,
-  workspacesOnly,
+  layout,
 }: {
   hub: ArchitectureHubView;
-  workspacesOnly: boolean;
+  layout: ArchitectureLayout;
 }) {
+  const detailed = layout === "directory";
   const heading = (
     <>
       <HubHeadingIcon hubId={hub.id} />
@@ -99,48 +112,55 @@ function HubPanel({
       <header className="architecture-panel-heading">
         {hub.href ? <StaffLink href={hub.href}>{heading}</StaffLink> : heading}
       </header>
-      <div className="architecture-primary">
-        <DestinationGrid destinations={hub.primary} />
-        {!workspacesOnly && hub.knowledge.length > 0 && (
-          <div className="architecture-knowledge">
-            {hub.knowledge.map((destination) => (
-              <ArchitectureDestinationLink
-                key={destination.id}
-                destination={destination}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-      {!workspacesOnly && (
-        <>
-          <div
-            className="architecture-secondary"
-            aria-hidden={hub.secondary.length === 0 ? true : undefined}
-          >
-            <DestinationGrid destinations={hub.secondary} />
-          </div>
-          <AdminLogins hubId={hub.id} />
-        </>
+      <DestinationGrid
+        destinations={[...hub.primary, ...hub.knowledge, ...hub.secondary]}
+        detailed={detailed}
+      />
+      {layout === "classic" && <AdminLogins hubId={hub.id} />}
+      {detailed && (
+        <section
+          className="architecture-panel-tools"
+          aria-labelledby={`layout-tools-${hub.id}`}
+        >
+          <h3 id={`layout-tools-${hub.id}`}>Tools</h3>
+          {architectureToolsForHub(hub.id).map((entry) => (
+            <ToolLink key={entry.tool.id} {...entry} detailed />
+          ))}
+        </section>
       )}
     </section>
   );
 }
 
-function SharedEnvironments() {
+function ToolLink({
+  tool,
+  description,
+  detailed = false,
+}: (typeof architectureTools)[number] & { detailed?: boolean }) {
   return (
-    <section
-      className="architecture-shared-environments"
-      aria-labelledby="architecture-knowledge-title"
+    <StaffLink
+      className={`architecture-tool-link${detailed ? " architecture-tool-detailed" : ""}`}
+      href={externalPreviewHref(tool.id)}
+      data-brand={tool.id}
     >
-      <h2 id="architecture-knowledge-title">Knowledge & portals</h2>
-      <DestinationGrid
-        destinations={architectureHubViews.flatMap((hub) => [
-          ...hub.knowledge,
-          ...hub.secondary,
-        ])}
-      />
-    </section>
+      <ExternalBrandMark id={tool.id} size={20} />
+      {detailed ? (
+        <>
+          <span data-no-translate>{tool.name}</span>
+          <span className="architecture-destination-description">
+            {description}
+          </span>
+        </>
+      ) : (
+        <>
+          <span className="architecture-tool-copy">
+            <span data-no-translate>{tool.name}</span>
+            <small>{description}</small>
+          </span>
+          <Open16Regular aria-hidden="true" />
+        </>
+      )}
+    </StaffLink>
   );
 }
 
@@ -152,20 +172,8 @@ function SharedTools() {
     >
       <h2 id="architecture-tools-title">Tools</h2>
       <div className="architecture-tools-list">
-        {architectureTools.map(({ tool, description }) => (
-          <StaffLink
-            className="architecture-tool-link"
-            key={tool.id}
-            href={externalPreviewHref(tool.id)}
-            data-brand={tool.id}
-          >
-            <ExternalBrandMark id={tool.id} size={20} />
-            <span className="architecture-tool-copy">
-              <span data-no-translate>{tool.name}</span>
-              <small>{description}</small>
-            </span>
-            <Open16Regular aria-hidden="true" />
-          </StaffLink>
+        {architectureTools.map((entry) => (
+          <ToolLink key={entry.tool.id} {...entry} />
         ))}
       </div>
     </section>
@@ -197,10 +205,13 @@ function JumpLink({
 
 function ArchitectureJumpGroups() {
   return (
-    <aside className="architecture-jump-groups" aria-label="Jump to…">
+    <aside
+      className="architecture-jump-groups"
+      aria-labelledby="architecture-jump-title"
+    >
+      <h2 id="architecture-jump-title">Jump to…</h2>
       <section aria-labelledby="architecture-department-title">
-        <h2 id="architecture-department-title">Jump to…</h2>
-        <p>Meetings and coordination</p>
+        <p id="architecture-department-title">Meetings and coordination</p>
         {departments.map((department) => (
           <JumpLink
             key={department.id}
@@ -212,7 +223,7 @@ function ArchitectureJumpGroups() {
         ))}
       </section>
       <section aria-labelledby="architecture-project-title">
-        <h2 id="architecture-project-title">Project workspaces</h2>
+        <p id="architecture-project-title">Project workspaces</p>
         {architectureProjects.map((project) => (
           <JumpLink
             key={project.code}
@@ -237,9 +248,8 @@ function ArchitectureJumpGroups() {
 export default function ArchitectureLayouts({
   layout,
 }: {
-  layout: Exclude<ArchitectureLayout, "classic">;
+  layout: ArchitectureLayout;
 }) {
-  const workspacesOnly = layout === "workspaces-first";
   return (
     <div className="architecture-exploration">
       <div className="architecture-layout-main">
@@ -250,18 +260,13 @@ export default function ArchitectureLayouts({
           ].map((row) => (
             <div className="architecture-panel-row" key={row[0].id}>
               {row.map((hub) => (
-                <HubPanel
-                  key={hub.id}
-                  hub={hub}
-                  workspacesOnly={workspacesOnly}
-                />
+                <HubPanel key={hub.id} hub={hub} layout={layout} />
               ))}
             </div>
           ))}
         </div>
-        {workspacesOnly && <SharedEnvironments />}
       </div>
-      {workspacesOnly && <SharedTools />}
+      {layout === "workspaces-first" && <SharedTools />}
       <ArchitectureJumpGroups />
     </div>
   );

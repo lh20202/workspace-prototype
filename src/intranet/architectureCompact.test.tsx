@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import Directory, { WorkspaceLink } from "./Directory";
+import Directory from "./Directory";
+import { ArchitectureDestinationLink } from "./ArchitectureLayouts";
 import {
   architectureDestinationById,
   personnelDestinations,
@@ -25,11 +26,11 @@ function renderDirectory() {
 describe("compact Architecture destination links", () => {
   it("uses a small icon-and-title link without a tile, trailing arrow or Open label", () => {
     const card = renderToStaticMarkup(
-      <WorkspaceLink
+      <ArchitectureDestinationLink
         destination={architectureDestinationById.get("audience")!}
       />,
     );
-    expect(card).toContain('class="directory-workspace-link"');
+    expect(card).toContain('class="architecture-destination"');
     expect(card).toContain('class="workspace-icon"');
     expect(card).toContain("--workspace-icon-size:20px");
     expect(card).toContain("Lab");
@@ -43,40 +44,41 @@ describe("compact Architecture destination links", () => {
     const html = renderDirectory();
     const sections = [
       ...html.matchAll(
-        /<section class="directory-hub directory-hub-([^"]+)"[^>]*>([\s\S]*?)<\/section><\/div><\/div><\/section>/g,
+        /<section class="architecture-panel architecture-tone-([^"]+)"[^>]*>([\s\S]*?)<\/section>/g,
       ),
     ];
     for (const id of ["sales-marketing", "infrastructure", "personnel"]) {
       const band = sections.find(([, hub]) => hub === id)?.[2];
       expect(band, id).toBeDefined();
-      expect(band).toContain("directory-workspace-link");
-      expect(band).toContain("directory-hub-grid");
+      expect(band).toContain("architecture-destination");
+      expect(band).toContain("architecture-destination-grid");
     }
-    expect(html.match(/class="directory-workspace-link"/g)).toHaveLength(14);
+    expect(html.match(/class="architecture-destination"/g)).toHaveLength(24);
   });
 
   it("keeps other environment types, controlled links and finance jumps distinct", () => {
     const html = renderDirectory();
-    for (const href of [
-      "/sales-marketing/wiki",
-      "/frontline-sales",
-      "/external/media-library",
-    ])
-      expect(html).toMatch(
-        new RegExp(
-          `<a(?![^>]*directory-workspace-link)[^>]*href="${href}\\?staff=robin"`,
-        ),
-      );
-    for (const destination of personnelDestinations.controlled)
-      expect(html).toMatch(
-        new RegExp(
-          `<a(?![^>]*directory-workspace-link)[^>]*href="${destination.href}\\?staff=robin"`,
-        ),
-      );
-    expect(html).toContain('class="directory-finance-destinations"');
-    expect(html).not.toMatch(
-      /directory-workspace-link[^>]*href="\/financial-operations/,
+    const anchors = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(
+      ([link]) => link,
     );
+    for (const [href, type] of [
+      ["/sales-marketing/wiki", "wiki"],
+      ["/frontline-sales", "portal"],
+      ["/external/media-library", "portal"],
+    ]) {
+      const anchor = anchors.find((link) =>
+        link.includes(`href="${href}?staff=robin"`),
+      );
+      expect(anchor).toContain(`data-environment="${type}"`);
+      expect(anchor).not.toContain('class="workspace-icon"');
+    }
+    for (const destination of personnelDestinations.controlled) {
+      const anchor = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].find(
+        ([link]) => link.includes(`href="${destination.href}?staff=robin"`),
+      )?.[0];
+      expect(anchor).toContain('class="restricted-workspace-icon"');
+    }
+    expect(html).toContain('aria-labelledby="layout-hub-finance"');
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Open your Teams view");
   });

@@ -10,10 +10,9 @@ import {
 } from "./architectureDestinations";
 
 export const architectureLayoutOptions = [
-  { value: "classic", label: "Classic" },
-  { value: "balanced", label: "Balanced" },
-  { value: "workspaces-first", label: "Workspaces first" },
-  { value: "directory", label: "Directory" },
+  { value: "workspaces-first", label: "Layout 1" },
+  { value: "classic", label: "Layout 2" },
+  { value: "directory", label: "Layout 3" },
 ] as const;
 export type ArchitectureLayout =
   (typeof architectureLayoutOptions)[number]["value"];
@@ -24,10 +23,10 @@ export function readArchitectureLayout(): ArchitectureLayout {
     const stored = sessionStorage.getItem(architectureLayoutStorageKey);
     return (
       architectureLayoutOptions.find(({ value }) => value === stored)?.value ??
-      "balanced"
+      "workspaces-first"
     );
   } catch {
-    return "balanced";
+    return "workspaces-first";
   }
 }
 
@@ -42,6 +41,35 @@ export function saveArchitectureLayout(layout: ArchitectureLayout) {
 export type LayoutDestination = ArchitectureDestination & {
   description?: string;
   controlledMark?: boolean;
+};
+
+/** Brief explanations for the stacked layout, without renaming any destination. */
+export const destinationDescriptions: Record<string, string> = {
+  audience: "Research & analysis",
+  content: "Creative development",
+  logistics: "Campaign operations",
+  customer: "Customers & clients",
+  "sales-wiki": "Open knowledge base",
+  "frontline-sales": "Local crew resources",
+  "media-library": "Approved media assets",
+  executive: "Executive coordination",
+  planning: "Strategy & planning",
+  quality: "Standards & improvement",
+  legal: "Advice & compliance",
+  digital: "Technology & development",
+  services: "Office support",
+  members: "Member resources",
+  archives: "Historical records",
+  "people-culture": "Culture & inclusion",
+  "people-learning": "Learning & development",
+  employment: "Employment administration",
+  "workers-union": "Employee representation",
+  welfare: "Support & safeguarding",
+  taskforce: "Global crew resources",
+  "/financial-operations/income": "Income & booking",
+  "/financial-operations/reconciliation": "Payments & reconciliation",
+  "/financial-operations/planning": "Value for money",
+  "/financial-operations/treasury": "Cash & treasury",
 };
 export interface ArchitectureHubView {
   id: AdminHubId;
@@ -129,3 +157,10 @@ export const architectureTools = [
   tool,
   description: toolDescriptions[tool.id] ?? tool.category,
 }));
+
+export function architectureToolsForHub(hubId: AdminHubId) {
+  return adminPlatformsForHub(hubId).map((tool) => ({
+    tool,
+    description: toolDescriptions[tool.id] ?? tool.category,
+  }));
+}

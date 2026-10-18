@@ -11,6 +11,7 @@ import {
   architectureLayoutOptions,
   architectureLayoutStorageKey,
   architectureProjects,
+  destinationDescriptions,
   readArchitectureLayout,
   saveArchitectureLayout,
   type ArchitectureLayout,
@@ -40,15 +41,14 @@ function hrefs(html: string) {
 }
 
 describe("architecture layout comparison", () => {
-  it("defaults to Balanced and has exactly four accessible presentation choices", () => {
+  it("defaults to Layout 1 and has exactly three numbered presentation choices", () => {
     const html = renderLayout();
-    expect(html).toContain('<option value="balanced" selected=""');
+    expect(html).toContain('<option value="workspaces-first" selected=""');
     expect(html).toContain('aria-label="Architecture layout"');
     expect(architectureLayoutOptions.map(({ label }) => label)).toEqual([
-      "Classic",
-      "Balanced",
-      "Workspaces first",
-      "Directory",
+      "Layout 1",
+      "Layout 2",
+      "Layout 3",
     ]);
   });
 
@@ -57,8 +57,10 @@ describe("architecture layout comparison", () => {
       vi.stubGlobal("sessionStorage", { getItem: () => value });
       expect(readArchitectureLayout()).toBe(value);
     }
-    vi.stubGlobal("sessionStorage", { getItem: () => "unrecognised" });
-    expect(readArchitectureLayout()).toBe("balanced");
+    for (const removed of ["balanced", "unrecognised"]) {
+      vi.stubGlobal("sessionStorage", { getItem: () => removed });
+      expect(readArchitectureLayout()).toBe("workspaces-first");
+    }
     vi.stubGlobal("sessionStorage", {
       getItem: () => {
         throw new Error("unavailable");
@@ -67,7 +69,7 @@ describe("architecture layout comparison", () => {
         throw new Error("unavailable");
       },
     });
-    expect(readArchitectureLayout()).toBe("balanced");
+    expect(readArchitectureLayout()).toBe("workspaces-first");
     expect(() => saveArchitectureLayout("directory")).not.toThrow();
   });
 
@@ -92,20 +94,22 @@ describe("architecture layout comparison", () => {
     }
   });
 
-  it.each(["balanced", "workspaces-first", "directory"] as const)(
-    "%s keeps every Classic destination, with the same explicit role context",
+  it.each(["classic", "workspaces-first", "directory"] as const)(
+    "%s keeps every destination, with the same explicit role context",
     (layout) => {
       const classicHrefs = new Set(hrefs(renderLayout("classic")));
       const alternativeHrefs = hrefs(renderLayout(layout));
       for (const href of classicHrefs) expect(alternativeHrefs).toContain(href);
-      const additions = alternativeHrefs.filter(
-        (href) => !classicHrefs.has(href),
-      );
-      expect(additions.sort()).toEqual(
-        architectureProjects
-          .map((project) => `${projectHref(project)}?staff=devon`)
-          .sort(),
-      );
+      expect(new Set(alternativeHrefs)).toEqual(classicHrefs);
+      for (const hub of architectureHubViews) {
+        for (const destination of [
+          ...hub.primary,
+          ...hub.knowledge,
+          ...hub.secondary,
+        ]) {
+          expect(alternativeHrefs).toContain(`${destination.href}?staff=devon`);
+        }
+      }
       for (const department of departments) {
         expect(alternativeHrefs).toContain(
           departmentPreviewHref(department.id).replaceAll("&", "&amp;"),
@@ -130,7 +134,9 @@ describe("architecture layout comparison", () => {
     expect(east.secondary.find(({ id }) => id === "archives")?.href).toBe(
       "/archives",
     );
-    expect(renderLayout("balanced")).toContain('href="/projects?staff=devon"');
+    expect(renderLayout("workspaces-first")).toContain(
+      'href="/projects?staff=devon"',
+    );
   });
 
   it("uses one controlled workspace mark for CEO, Personnel, Council, Welfare and the four Finance entrances", () => {
@@ -153,7 +159,9 @@ describe("architecture layout comparison", () => {
       }
     }
     expect(
-      renderLayout("balanced").match(/class="restricted-workspace-icon"/g),
+      renderLayout("workspaces-first").match(
+        /class="restricted-workspace-icon"/g,
+      ),
     ).toHaveLength(8);
     // Signposting must not reclassify Finance or grant specialist permissions.
     const finance = architectureDestinationById.get("finance")!;
@@ -166,7 +174,7 @@ describe("architecture layout comparison", () => {
     ).toBe(true);
   });
 
-  it.each(["balanced", "workspaces-first", "directory"] as const)(
+  it.each(["classic", "workspaces-first", "directory"] as const)(
     "%s retains environment icon semantics and every hub's canonical tools",
     (layout) => {
       const html = renderLayout(layout);
@@ -198,7 +206,7 @@ describe("architecture layout comparison", () => {
   );
 
   it("shows five existing open project workspaces with their real workspace destinations and icons", () => {
-    const html = renderLayout("balanced");
+    const html = renderLayout("workspaces-first");
     expect(architectureProjects).toHaveLength(5);
     expect(new Set(architectureProjects.map(({ code }) => code)).size).toBe(5);
     for (const project of architectureProjects) {
@@ -213,18 +221,52 @@ describe("architecture layout comparison", () => {
     }
   });
 
-  it("localises presentation labels without translating layout values or changing destinations", () => {
+  it("keeps numbered labels in both languages and localises the stacked descriptions", () => {
+    for (const { label } of architectureLayoutOptions) {
+      expect(translateText(label, "de")).toBe(label);
+    }
     for (const text of [
       "Architecture layout",
-      "Classic",
-      "Balanced",
-      "Workspaces first",
-      "Directory",
-      "Knowledge & portals",
       "Project workspaces",
       "All projects",
+      ...Object.values(destinationDescriptions),
     ]) {
-      expect(translateText(text, "de")).not.toBe(text);
+      expect(translateText(text, "de"), text).not.toBe(text);
+    }
+    for (const hub of architectureHubViews) {
+      for (const destination of [
+        ...hub.primary,
+        ...hub.knowledge,
+        ...hub.secondary,
+      ]) {
+        expect(
+          destinationDescriptions[destination.id],
+          destination.label,
+        ).toBeTruthy();
+      }
     }
   });
+
+  it.each(architectureLayoutOptions)(
+    "$label keeps supporting links inside their hubs and only one Jump to heading",
+    ({ value }) => {
+      const html = renderLayout(value);
+      expect(html).not.toContain("Knowledge &amp; portals");
+      expect(html).toContain('<h2 id="architecture-jump-title">Jump to…</h2>');
+      expect(html).toContain(
+        '<p id="architecture-project-title">Project workspaces</p>',
+      );
+      expect(html).toContain(
+        '<p id="architecture-department-title">Meetings and coordination</p>',
+      );
+      for (const hub of architectureHubViews) {
+        const panel = html
+          .slice(html.indexOf(`aria-labelledby="layout-hub-${hub.id}"`))
+          .split("</section>")[0];
+        for (const destination of [...hub.knowledge, ...hub.secondary]) {
+          expect(panel).toContain(`href="${destination.href}?staff=devon"`);
+        }
+      }
+    },
+  );
 });
