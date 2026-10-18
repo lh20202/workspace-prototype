@@ -22,15 +22,31 @@
 .architecture-main {
   min-width: 0;
 }
-.architecture-workspace-icon,
-.architecture-workspace-icon img {
-  display: block;
+.architecture-workspace-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   width: 28px;
   height: 28px;
   flex: 0 0 28px;
 }
 .architecture-workspace-icon img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   object-fit: contain;
+}
+.architecture-destination
+  > .architecture-workspace-icon[data-access="controlled"] {
+  width: 47px;
+  flex-basis: 47px;
+}
+.architecture-workspace-lock {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: #b1233d;
 }
 .architecture-panel-row {
   display: grid;

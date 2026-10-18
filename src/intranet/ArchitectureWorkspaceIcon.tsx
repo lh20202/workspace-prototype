@@ -1,3 +1,5 @@
+import { LockClosed16Regular } from "@fluentui/react-icons";
+
 /** The directory's PNG workspace marks; the lock communicates existing access rules. */
 export default function ArchitectureWorkspaceIcon({
   controlled = false,
@@ -13,12 +15,18 @@ export default function ArchitectureWorkspaceIcon({
       aria-hidden={controlled ? undefined : true}
     >
       <img
-        src={`/images/workspaces/workspace-chunky${controlled ? "-locked" : ""}.png`}
+        src={`/images/workspaces/workspace-chunky${controlled ? "-red" : ""}.png`}
         alt=""
         width={28}
         height={28}
         draggable={false}
       />
+      {controlled && (
+        <LockClosed16Regular
+          className="architecture-workspace-lock"
+          aria-hidden="true"
+        />
+      )}
     </span>
   );
 }
