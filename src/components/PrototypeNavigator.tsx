@@ -27,6 +27,7 @@ export default function PrototypeNavigator({
   allowWelcomeInvitation?: boolean;
 }) {
   const { t } = useTranslation();
+  const standalone = isStandaloneDemo();
   const emergency = location.pathname.startsWith("/emergency-response");
   const person = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
@@ -157,7 +158,7 @@ export default function PrototypeNavigator({
         >
           <div className="prototype-links">
             <a href={withExplicitStaff("/")}>← Welcome</a>
-            {!isStandaloneDemo() && (
+            {!standalone && (
               <span className="prototype-workspaces-link">
                 <a
                   href={withExplicitStaff("/architecture")}
@@ -175,57 +176,57 @@ export default function PrototypeNavigator({
             <WorkspaceFAQ />
           </div>
           <div className="prototype-utilities">
-            <div className="preview-role-control">
-              <div className="preview-role-heading">
-                <label htmlFor="preview-role">Preview role</label>
-                <span className="preview-role-cue">
-                  Switch roles to explore access
-                </span>
-                <DemoInfo label="About role access">
-                  {isDemoUser ? demoUserInfoText : roleAccessInfoText}
-                </DemoInfo>
-              </div>
-              <div className="preview-role-selection">
-                <select
-                  id="preview-role"
-                  ref={preview?.roleSelectorRef}
-                  className={
-                    preview?.roleSelectorHighlighted
-                      ? "preview-role-highlighted"
-                      : undefined
-                  }
-                  aria-label="Preview role"
-                  aria-describedby={
-                    isDemoUser ? "preview-role-description" : undefined
-                  }
-                  title={`${t(person.role)} — ${person.name}`}
-                  value={person.id}
-                  onChange={(e) => changePreviewRole(e.target.value)}
-                >
-                  {previewRoleGroups.map((group) => (
-                    <optgroup key={group.label} label={t(group.label)}>
-                      {group.roleIds.map((id) => {
-                        const member = staff.find(
-                          (candidate) => candidate.id === id,
-                        )!;
-                        return (
-                          <option key={member.id} value={member.id}>
-                            {t(member.role)}
-                          </option>
-                        );
-                      })}
-                    </optgroup>
-                  ))}
-                </select>
-                {isDemoUser && (
-                  <p
-                    id="preview-role-description"
-                    className="preview-role-description"
+            {!standalone && (
+              <div className="preview-role-control">
+                <div className="preview-role-heading">
+                  <label htmlFor="preview-role">Preview role</label>
+                  <span className="preview-role-cue">
+                    Switch roles to explore access
+                  </span>
+                  <DemoInfo label="About role access">
+                    {isDemoUser ? demoUserInfoText : roleAccessInfoText}
+                  </DemoInfo>
+                </div>
+                <div className="preview-role-selection">
+                  <select
+                    id="preview-role"
+                    ref={preview?.roleSelectorRef}
+                    className={
+                      preview?.roleSelectorHighlighted
+                        ? "preview-role-highlighted"
+                        : undefined
+                    }
+                    aria-label="Preview role"
+                    aria-describedby={
+                      isDemoUser ? "preview-role-description" : undefined
+                    }
+                    title={`${t(person.role)} — ${person.name}`}
+                    value={person.id}
+                    onChange={(e) => changePreviewRole(e.target.value)}
                   >
-                    {t(demoUserInfoText)}
-                  </p>
-                )}
-                {!isStandaloneDemo() && (
+                    {previewRoleGroups.map((group) => (
+                      <optgroup key={group.label} label={t(group.label)}>
+                        {group.roleIds.map((id) => {
+                          const member = staff.find(
+                            (candidate) => candidate.id === id,
+                          )!;
+                          return (
+                            <option key={member.id} value={member.id}>
+                              {t(member.role)}
+                            </option>
+                          );
+                        })}
+                      </optgroup>
+                    ))}
+                  </select>
+                  {isDemoUser && (
+                    <p
+                      id="preview-role-description"
+                      className="preview-role-description"
+                    >
+                      {t(demoUserInfoText)}
+                    </p>
+                  )}
                   <a
                     className="preview-role-channels"
                     href={withExplicitStaff(
@@ -234,9 +235,9 @@ export default function PrototypeNavigator({
                   >
                     View channels for this role
                   </a>
-                )}
+                </div>
               </div>
-            </div>
+            )}
             {emergency && (
               <div className="response-preview">
                 <a href={withExplicitStaff("/executive")}>Leave response</a>

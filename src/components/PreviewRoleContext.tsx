@@ -10,6 +10,7 @@ import {
 } from "react";
 import { flushSync } from "react-dom";
 import { revealDemoControlsEvent } from "./demoControls";
+import { isStandaloneDemo } from "../utils/demoMode";
 
 type PreviewRoleContextValue = {
   roleSelectorRef: RefObject<HTMLSelectElement | null>;
@@ -45,11 +46,15 @@ export function PreviewRoleProvider({ children }: { children: ReactNode }) {
   );
   return (
     <PreviewRoleContext.Provider
-      value={{
-        roleSelectorRef,
-        roleSelectorHighlighted,
-        focusRoleSelector,
-      }}
+      value={
+        isStandaloneDemo()
+          ? null
+          : {
+              roleSelectorRef,
+              roleSelectorHighlighted,
+              focusRoleSelector,
+            }
+      }
     >
       {children}
     </PreviewRoleContext.Provider>

@@ -12,6 +12,9 @@ import {
   teamsPreviewHrefForStaff,
 } from "../teams/navigation";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { PreviewRoleProvider } from "./PreviewRoleContext";
+import AccessBoundary from "../access/AccessBoundary";
+import { changePreviewRole } from "./demoControls";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -53,7 +56,8 @@ describe("standalone workspace demos and the beta entry", () => {
       const controls = renderToStaticMarkup(<PrototypeNavigator />);
       expect(controls).toContain('href="/?staff=taylor"');
       expect(controls).toContain("Workspace FAQ");
-      expect(controls).toContain('id="preview-role"');
+      expect(controls).not.toContain('id="preview-role"');
+      expect(controls).not.toContain("Switch roles");
       expect(controls).not.toContain("/architecture");
       expect(controls).not.toContain("BETA");
       expect(
@@ -67,6 +71,7 @@ describe("standalone workspace demos and the beta entry", () => {
     (workspace) => {
       visit(`/${workspace}?staff=taylor&demo=beta`);
       const controls = renderToStaticMarkup(<PrototypeNavigator />);
+      expect(controls).toContain('id="preview-role"');
       expect(controls).toContain(
         'href="/architecture?staff=taylor&amp;demo=beta"',
       );
@@ -96,6 +101,50 @@ describe("standalone workspace demos and the beta entry", () => {
       "https://example.test/",
     );
   });
+
+  it.each(["/planning", "/logistics", "/teams?workspace=planning"])(
+    "does not change the preview role from the standalone demo at %s",
+    (path) => {
+      const url = new URL(path, "https://example.test");
+      url.searchParams.set("demo", "standalone");
+      url.searchParams.set("staff", "taylor");
+      const assign = vi.fn();
+      const setItem = vi.fn();
+      vi.stubGlobal("location", {
+        pathname: url.pathname,
+        search: url.search,
+        href: url.href,
+        assign,
+      });
+      vi.stubGlobal("sessionStorage", { getItem: () => "taylor", setItem });
+      changePreviewRole("nadia");
+      expect(assign).not.toHaveBeenCalled();
+      expect(setItem).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(["standalone", "beta"])(
+    "only offers role-switching prompts at a restricted boundary in the beta (%s)",
+    (mode) => {
+      visit(`/planning/restricted?staff=taylor&demo=${mode}`);
+      const html = renderToStaticMarkup(
+        <PreviewRoleProvider>
+          <AccessBoundary
+            workspaceId="planning"
+            area="Restricted Planning"
+            personId="taylor"
+            resource={{
+              kind: "area",
+              workspaceId: "planning",
+              areaId: "restricted",
+            }}
+          />
+        </PreviewRoleProvider>,
+      );
+      expect(html.includes("Try another preview role")).toBe(mode === "beta");
+      expect(html).toContain("Contact focal point");
+    },
+  );
 
   it("keeps channel shortcuts and channel switches in the standalone demo", () => {
     visit("/planning?demo=standalone");

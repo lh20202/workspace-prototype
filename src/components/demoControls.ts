@@ -1,5 +1,6 @@
 import { rememberStaff, staff } from "../intranet/catalog";
 import { teamsPreviewHrefForStaff } from "../teams/navigation";
+import { isStandaloneDemo } from "../utils/demoMode";
 
 const entryKey = "workspace-demo-welcome-entry";
 const seenKey = "workspace-demo-controls-seen";
@@ -31,6 +32,7 @@ export function consumeWelcomeEntry() {
 }
 
 export function changePreviewRole(nextId: string) {
+  if (isStandaloneDemo()) return;
   const nextPerson = staff.find((member) => member.id === nextId);
   if (!nextPerson) return;
   if (typeof window !== "undefined")
