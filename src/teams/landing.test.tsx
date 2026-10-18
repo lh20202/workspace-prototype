@@ -12,7 +12,7 @@ describe("role-specific Teams landing and shell", () => {
     for (const [id, team, channel] of [
       ["robin", "EAO Department", "General"],
       ["jamie", "PAC Department", "General"],
-      ["devon", "Tech", "Engineering"],
+      ["devon", "Dev", "Engineering"],
     ]) {
       vi.stubGlobal(
         "location",

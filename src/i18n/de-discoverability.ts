@@ -40,7 +40,7 @@ export const germanDiscoverability: Record<string, string> = {
   Temporary: "Befristet",
   Archived: "Archiviert",
   "Page copy, accessibility and content acceptance. CMS engineering stays in Tech & Digital.":
-    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische Arbeit am CMS bleibt bei „Technik & Digitales“.",
+    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische Arbeit am CMS bleibt bei Dev.",
   "Coverage closed on 30 September. The conversation is read-only; final outputs and delivery evidence remain in the workspace.":
     "Die Berichterstattung wurde am 30. September abgeschlossen. Die Unterhaltung ist schreibgeschützt. Endfassungen und Nachweise bleiben im Arbeitsbereich.",
   "Topic specialists check city and transport context before the channel desks adapt it for publication.":
@@ -64,7 +64,7 @@ export const germanDiscoverability: Record<string, string> = {
   "I’ll adapt that opening for the email and social copy. The reviewed script stays in the workspace so each desk can use the same source.":
     "Ich passe den Einstieg für die Mailtexte und sozialen Medien an. Das geprüfte Skript bleibt im Arbeitsbereich, damit alle Kanalredaktionen dieselbe Grundlage nutzen können.",
   "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech & Digital.":
-    "Die öffentliche Erklärung sollte das Angebot beschreiben, bevor sie zur Anmeldung auffordert. Trennt die Teilnahmevoraussetzungen von den Formularhinweisen. Die Menschen müssen zuerst verstehen, ob das Angebot für sie nützlich ist. Die technischen Anforderungen liegen bei „Technik & Digitales“.",
+    "Die öffentliche Erklärung sollte das Angebot beschreiben, bevor sie zur Anmeldung auffordert. Trennt die Teilnahmevoraussetzungen von den Formularhinweisen. Die Menschen müssen zuerst verstehen, ob das Angebot für sie nützlich ist. Die technischen Anforderungen liegen bei Dev.",
   "Agreed. I’ll move the explanation above the registration link, check the headings, and send the content order back for review.":
     "Einverstanden. Ich setze die Erklärung vor den Anmeldelink, prüfe die Überschriften und gebe die Reihenfolge der Inhalte noch einmal zur Prüfung weiter.",
   "The programme names and image credits are checked in the selects sheet. These photos are cleared for print only. Please keep those credits with the layout; a digital version needs a separate rights check before release.":
@@ -73,8 +73,8 @@ export const germanDiscoverability: Record<string, string> = {
     "Ich lasse die Nachweise im Printlayout und vermerke die Prüfung der digitalen Nutzungsrechte bei der Produktionsübergabe. Die freigegebene Auswahltabelle bleibt bei den Arbeitsdateien.",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Page copy, accessibility and content acceptance. CMS engineering stays in Tech.":
-    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische Arbeit am CMS bleibt bei „Technik“.",
-  "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Tech.":
-    "Die öffentliche Erklärung sollte das Angebot beschreiben, bevor sie zur Anmeldung auffordert. Trennt die Teilnahmevoraussetzungen von den Formularhinweisen. Die Menschen müssen zuerst verstehen, ob das Angebot für sie nützlich ist. Die technischen Anforderungen liegen bei „Technik“.",
+  "Page copy, accessibility and content acceptance. CMS engineering stays in Dev.":
+    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische Arbeit am CMS bleibt bei Dev.",
+  "The public explanation should describe the service before asking people to register. Keep the eligibility wording separate from the form instructions; people need to understand whether it is useful to them first. The technical requirements are with Dev.":
+    "Die öffentliche Erklärung sollte das Angebot beschreiben, bevor sie zur Anmeldung auffordert. Trennt die Teilnahmevoraussetzungen von den Formularhinweisen. Die Menschen müssen zuerst verstehen, ob das Angebot für sie nützlich ist. Die technischen Anforderungen liegen bei Dev.",
 };

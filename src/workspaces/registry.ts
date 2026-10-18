@@ -81,7 +81,7 @@ const hubLabels: Record<string, string> = {
   quality: "Quality",
   legal: "Legal",
   services: "Services",
-  digital: "Tech",
+  digital: "Dev",
   archives: "Archives",
   employment: "Employment & Hiring",
 };

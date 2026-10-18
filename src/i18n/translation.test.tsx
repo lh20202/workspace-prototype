@@ -75,7 +75,7 @@ describe("English and German display language", () => {
       Quality: "Qualität",
       Legal: "Recht",
       Services: "Services",
-      Tech: "Technik",
+      Dev: "Dev",
       Archives: "Archiv",
       Workforce: "Belegschaft",
       Curriculum: "Curriculum",

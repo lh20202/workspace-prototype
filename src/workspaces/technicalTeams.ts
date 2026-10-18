@@ -47,7 +47,7 @@ export const technicalPosts: ConversationMessage[] = [
         author: "Devon Park",
         time: "10:26",
         moderator: true,
-        text: "Thanks, Ari. That link points to your personal OneDrive. Could you move the working copy into the M365 & SPFx folder in Tech and share the link here?",
+        text: "Thanks, Ari. That link points to your personal OneDrive. Could you move the working copy into the M365 & SPFx folder in Dev and share the link here?",
         link: {
           href: provisioningFolderHref,
           label: "Open M365 & SPFx working folder",

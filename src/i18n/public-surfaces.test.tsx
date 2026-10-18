@@ -185,7 +185,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
     const shell = render(
       createElement(TeamsShell, {
         userName: "Devon Park",
-        teamName: "Tech",
+        teamName: "Dev",
         channelName: "M365 & SPFx",
         groups: [],
         selectedChannelId: "M365 & SPFx",

@@ -142,10 +142,10 @@ export const germanPublishing: Record<string, string> = {
     "Ich prüfe die Formulierungen mit der verfahrensverantwortlichen Person. Änderungen an der Suchkonfiguration bleiben bei Digital & Technologie.",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Review navigation feedback with the content owners; refer search configuration to Tech.":
-    "Rückmeldungen zur Navigation mit den Inhaltsverantwortlichen prüfen; Fragen zur Suchkonfiguration an „Technik“ weitergeben.",
-  "This week’s moderation reviews are in the register. Please confirm the business owner before asking Tech to implement a change.":
-    "Die Moderationsprüfungen dieser Woche stehen in der Prüfübersicht. Bitte zuerst die fachliche Verantwortung klären, bevor „Technik“ mit einer Änderung beauftragt wird.",
-  "I’ll check the wording with the procedure owner. Any search configuration change stays with Tech.":
-    "Ich prüfe die Formulierungen mit der verfahrensverantwortlichen Person. Änderungen an der Suchkonfiguration bleiben bei „Technik“.",
+  "Review navigation feedback with the content owners; refer search configuration to Dev.":
+    "Rückmeldungen zur Navigation mit den Inhaltsverantwortlichen prüfen; Fragen zur Suchkonfiguration an Dev weitergeben.",
+  "This week’s moderation reviews are in the register. Please confirm the business owner before asking Dev to implement a change.":
+    "Die Moderationsprüfungen dieser Woche stehen in der Prüfübersicht. Bitte zuerst die fachliche Verantwortung klären, bevor Dev mit einer Änderung beauftragt wird.",
+  "I’ll check the wording with the procedure owner. Any search configuration change stays with Dev.":
+    "Ich prüfe die Formulierungen mit der verfahrensverantwortlichen Person. Änderungen an der Suchkonfiguration bleiben bei Dev.",
 };

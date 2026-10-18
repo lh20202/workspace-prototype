@@ -104,5 +104,5 @@ export const germanTeamsHistory: Record<string, string> = {
   "Supplier Onboarding Redesign": "Neugestaltung der Lieferantenaufnahme",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Tech / Security Engineering": "Technik / IT-Sicherheit",
+  "Dev / Security Engineering": "Dev / IT-Sicherheit",
 };

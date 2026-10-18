@@ -49,7 +49,7 @@ describe("inline FAQ Teams example", () => {
         ),
       );
     }
-    expect(html).toContain("Tech");
+    expect(html).toContain("Dev");
     expect(html).toContain("Workplace platforms &amp; SPFx");
     expect(html).toContain('aria-label="Channel exchange"');
     expect(html.replace(/<[^>]*>/g, "")).not.toMatch(

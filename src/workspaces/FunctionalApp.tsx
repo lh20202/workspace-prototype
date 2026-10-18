@@ -519,7 +519,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
     return (
       <div className="technical-partner-preview">
         <PocPreviewControls title="Partner preview">
-          <span>Digital &amp; Technology</span>
+          <span>Dev</span>
         </PocPreviewControls>
         <main>
           <h1>Web platform implementation review</h1>

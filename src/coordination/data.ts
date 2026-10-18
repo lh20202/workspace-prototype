@@ -603,7 +603,7 @@ export const departments: Department[] = departmentDefinitions.map(
           kind: "Misplaced business upload",
           sensitivity: "Internal",
           destination: "/digital-tech/systems-engineering",
-          destinationName: "Tech → Engineering Delivery",
+          destinationName: "Dev → Engineering Delivery",
         },
         moderatorReply:
           "Devon, can you keep the API and authentication review in Engineering Delivery and link it here? I'll leave the process questions with Personnel.",

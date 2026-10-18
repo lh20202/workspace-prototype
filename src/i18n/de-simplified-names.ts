@@ -23,7 +23,10 @@ export const germanSimplifiedNames: Record<string, string> = {
   Legal: "Recht",
   "Legal workspace": "Arbeitsbereich Recht",
   "Legal, Privacy & Compliance workspace": "Arbeitsbereich Recht",
-  "Tech & Digital": "Technik & Digitales",
+  "Tech & Digital": "Dev",
+  "Dev": "Dev",
+  "Dev workspace": "Arbeitsbereich Dev",
+  "Tech workspace": "Arbeitsbereich Dev",
   Services: "Services",
   "Services workspace": "Arbeitsbereich Services",
   "Culture & Inclusion": "Kultur & Inklusion",
@@ -39,8 +42,7 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Open Local crew portal": "Lokales Crew-Portal öffnen",
   "I have a question about the Local crew portal.":
     "Ich habe eine Frage zum lokalen Crew-Portal.",
-  "CMS engineering in Tech & Digital":
-    "Technische CMS-Umsetzung in Technik & Digitales",
+  "CMS engineering in Tech & Digital": "Technische CMS-Umsetzung in Dev",
   "Opening Studio in Teams…": "Studio wird in Teams geöffnet…",
   "Return performance evidence to Research & Insight":
     "Ergebnisnachweise an Forschung & Analyse zurückgeben",
@@ -53,7 +55,7 @@ export const germanSimplifiedNames: Record<string, string> = {
   CEO: "CEO",
   Projects: "Projekte",
   Quality: "Qualität",
-  Tech: "Technik",
+  Tech: "Dev",
   Workforce: "Belegschaft",
   Curriculum: "Curriculum",
   Network: "Netzwerk",
@@ -61,7 +63,7 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Workforce workspace": "Arbeitsbereich Belegschaft",
   Personnel: "Personal",
   Welfare: "Fürsorge",
-  "CMS engineering in Tech": "Technische CMS-Umsetzung in Technik",
+  "CMS engineering in Dev": "Technische CMS-Umsetzung in Dev",
   "Return performance evidence to Laboratory":
     "Ergebnisnachweise an das Labor zurückgeben",
   "Media Library": "Medienbibliothek",
