@@ -1,6 +1,7 @@
 import PrototypeNavigator from "../components/PrototypeNavigator";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import WorkspaceIcon from "../components/WorkspaceIcon";
+import HubHeadingIcon from "./HubHeadingIcon";
 import AccessLock from "../components/AccessLock";
 import TeamsMark from "../components/TeamsMark";
 import StaffLink from "../components/StaffLink";
@@ -125,6 +126,7 @@ export default function Directory() {
                           href={destination.href}
                           data-environment="workspace"
                         >
+                          <HubHeadingIcon hubId="finance" />
                           <h2 id="hub-finance">{destination.label}</h2>
                         </StaffLink>
                       </header>
@@ -152,6 +154,7 @@ export default function Directory() {
                     key={hub.id}
                   >
                     <header className="directory-hub-heading">
+                      <HubHeadingIcon hubId={hub.id} />
                       <h2 id={`hub-${hub.id}`}>{hub.name}</h2>
                     </header>
                     <div className="directory-hub-body">
