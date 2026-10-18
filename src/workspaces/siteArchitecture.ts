@@ -399,7 +399,7 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
     ),
     library(
       "learning-documents",
-      "Curriculum",
+      "Edu",
       ["learning"],
       "Design learning programmes and review aggregate feedback.",
       [

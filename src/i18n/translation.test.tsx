@@ -78,7 +78,7 @@ describe("English and German display language", () => {
       Dev: "Dev",
       Archives: "Archiv",
       Workforce: "Belegschaft",
-      Curriculum: "Curriculum",
+      Edu: "Edu",
       Network: "Netzwerk",
       Personnel: "Personal",
       "Workers' Union": "Arbeitnehmervertretung",

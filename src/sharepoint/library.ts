@@ -330,7 +330,7 @@ export function queryLibrary(
 // rename. These aliases do not change the supplied library's files or scope.
 const legacyLibraryTitles = new Map<string, readonly string[]>([
   ["Workforce", ["Workforce & Culture", "Workforce & Ethics"]],
-  ["Curriculum", ["Capability & Learning"]],
+  ["Edu", ["Curriculum", "Capability & Learning"]],
   ["Quality", ["Quality & Monitoring", "Quality Monitoring"]],
   ["-> $", ["Income & Reconciliation", "Money In"]],
   ["$ ->", ["Income & Reconciliation", "Payments & Close", "Money Out"]],

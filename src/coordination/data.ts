@@ -197,11 +197,11 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/people-culture/learning",
-      destinationName: "People & Culture → Curriculum",
+      destinationName: "People & Culture → Edu",
       removed: true,
     },
     reply:
-      "Could you keep the feedback in Curriculum and post the link here? Then the learning team can add to the same copy.",
+      "Could you keep the feedback in Edu and post the link here? Then the learning team can add to the same copy.",
   },
   "executive-office": {
     author: "Robin Avery",
@@ -393,7 +393,7 @@ const departmentReplies: Record<
     misfiled: [
       {
         author: "Elena Rossi",
-        text: "Done — the feedback is in Curriculum now. I've updated the link in my post too.",
+        text: "Done — the feedback is in Edu now. I've updated the link in my post too.",
         time: "10:51",
         link: {
           href: functionalFileHref(configById.get("people")!, "people-F5"),

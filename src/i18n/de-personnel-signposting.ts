@@ -30,5 +30,5 @@ export const germanPersonnelSignposting: Record<string, string> = {
 
   // Current display names; legacy keys above remain available for saved content.
   Workforce: "Belegschaft",
-  Curriculum: "Curriculum",
+  Edu: "Edu",
 };

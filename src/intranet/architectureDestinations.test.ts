@@ -20,7 +20,7 @@ describe("task-oriented architecture destinations", () => {
       personnelDestinations.normal.map(({ label, href }) => [label, href]),
     ).toEqual([
       ["Workforce", "/people-culture/culture"],
-      ["Curriculum", "/people-culture/learning"],
+      ["Edu", "/people-culture/learning"],
     ]);
     const areas = configById.get("people")!.areas;
     for (const destination of personnelDestinations.normal) {

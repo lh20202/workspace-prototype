@@ -141,7 +141,8 @@ describe("SharePoint library navigation", () => {
     const renamedLibraries = [
       ["Workforce & Culture", "Workforce"],
       ["Workforce & Ethics", "Workforce"],
-      ["Capability & Learning", "Curriculum"],
+      ["Curriculum", "Edu"],
+      ["Capability & Learning", "Edu"],
       ["Quality & Monitoring", "Quality"],
       ["Quality Monitoring", "Quality"],
       ["Income & Reconciliation", "-> $"],

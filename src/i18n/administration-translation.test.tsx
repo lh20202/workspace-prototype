@@ -111,7 +111,7 @@ describe("German administration terminology reviewed after English completion", 
           [
             "Advertising, Marketing & Sales Wiki",
             "CEO",
-            "Curriculum",
+            "Edu",
             "Studio",
             "Services",
           ].includes(copy)

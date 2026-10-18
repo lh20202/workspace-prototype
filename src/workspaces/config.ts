@@ -510,7 +510,7 @@ const seeds = {
       ],
       [
         "learning",
-        "Curriculum",
+        "Edu",
         "Learning design, capability reviews and onboarding development.",
       ],
       [

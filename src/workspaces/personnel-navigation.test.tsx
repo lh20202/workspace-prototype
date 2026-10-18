@@ -137,7 +137,7 @@ describe("People & Culture keeps functional entrances in one existing workspace"
       personnelDestinations.normal.map(({ label }) =>
         translateText(label, "de"),
       ),
-    ).toEqual(["Belegschaft", "Curriculum"]);
+    ).toEqual(["Belegschaft", "Edu"]);
     expect(translateText("Controlled environments", "de")).toBe(
       "Zugriffsbeschränkte Bereiche",
     );
