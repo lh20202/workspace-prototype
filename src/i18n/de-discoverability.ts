@@ -5,7 +5,8 @@ export const germanDiscoverability: Record<string, string> = {
   "Choose a preview role to see the department, workspace and project channels that would normally appear here.":
     "Wählen Sie eine Vorschaurolle aus, um zu sehen, welche Kanäle aus Abteilungen, Arbeitsbereichen und Projekten dieser Rolle im Alltag angezeigt würden.",
   "Choose a preview role": "Vorschaurolle auswählen",
-  "Open your channel view": "Eigene Kanalansicht öffnen",
+  "View channels for this role": "Kanäle für diese Rolle ansehen",
+  "Browse available channels": "Verfügbare Kanäle ansehen",
   "Channel desks": "Kanalredaktionen",
   "Topic specialists": "Themenverantwortliche",
   "Current coverage": "Aktuelle Berichterstattung",

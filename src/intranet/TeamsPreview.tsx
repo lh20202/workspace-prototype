@@ -467,7 +467,7 @@ export default function TeamsPreview() {
           area={department ? `${department.name} / General` : channel}
           location={`${department?.name || workspace.title} / ${department ? "General" : channel}`}
           returnHref={`/teams?staff=${person.id}`}
-          returnLabel="Open your channel view"
+          returnLabel="Browse available channels"
           headingLevel={2}
           compact
         />

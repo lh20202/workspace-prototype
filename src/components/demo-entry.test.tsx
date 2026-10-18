@@ -149,7 +149,7 @@ describe("standalone workspace demos and the beta entry", () => {
   );
 
   it.each(["standalone", "beta"])(
-    "only offers the broader channel view in beta mode (%s)",
+    "keeps role exploration in beta demo controls and out of the conversation sidebar (%s)",
     (mode) => {
       visit(
         `/teams?demo=${mode}&workspace=planning&context=workspace:planning`,
@@ -167,8 +167,20 @@ describe("standalone workspace demos and the beta entry", () => {
           Conversation
         </TeamsShell>,
       );
-      expect(html.includes("Open your channel view")).toBe(mode === "beta");
+      expect(html).not.toContain("Open your channel view");
+      expect(html).not.toContain("View channels for this role");
       expect(html).toContain("Conversation");
+      const controls = renderToStaticMarkup(<PrototypeNavigator />);
+      expect(controls.includes("View channels for this role")).toBe(
+        mode === "beta",
+      );
+      if (mode === "beta") {
+        expect(controls).toContain('href="/teams?staff=taylor&amp;demo=beta"');
+        const selection = controls.slice(
+          controls.indexOf('class="preview-role-selection"'),
+        );
+        expect(selection).toContain("View channels for this role");
+      }
     },
   );
 });

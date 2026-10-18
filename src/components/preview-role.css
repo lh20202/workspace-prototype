@@ -51,6 +51,14 @@
   font-size: 12px;
   line-height: 18px;
 }
+:root .poc-controls .preview-role-channels {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 18px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 :root .poc-controls .preview-role-control select:hover {
   border-color: #aaa;
   background-color: #3d3d3d;

@@ -70,7 +70,12 @@ describe("German discoverability review after English implementation was final",
       "Rollenbezogene Kanalansicht erkunden",
     );
     expect(german("Choose a preview role")).toBe("Vorschaurolle auswählen");
-    expect(german("Open your channel view")).toBe("Eigene Kanalansicht öffnen");
+    expect(german("View channels for this role")).toBe(
+      "Kanäle für diese Rolle ansehen",
+    );
+    expect(german("Browse available channels")).toBe(
+      "Verfügbare Kanäle ansehen",
+    );
     const description = german(
       "Explore the ordinary workspace experience. Restricted content still follows access rules.",
     );
@@ -183,7 +188,7 @@ describe("German discoverability review after English implementation was final",
       "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
     );
     expect(helper).toContain("Vorschaurolle auswählen");
-    expect(helper).toContain("Eigene Kanalansicht öffnen");
+    expect(helper).not.toContain("Eigene Kanalansicht öffnen");
     expect(helper).not.toMatch(/\b(?:Teams|SharePoint|Microsoft|M365)\b/);
   });
 });

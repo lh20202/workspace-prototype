@@ -225,6 +225,16 @@ export default function PrototypeNavigator({
                     {t(demoUserInfoText)}
                   </p>
                 )}
+                {!isStandaloneDemo() && (
+                  <a
+                    className="preview-role-channels"
+                    href={withExplicitStaff(
+                      `/teams?staff=${encodeURIComponent(person.id)}`,
+                    )}
+                  >
+                    View channels for this role
+                  </a>
+                )}
               </div>
             </div>
             {emergency && (
