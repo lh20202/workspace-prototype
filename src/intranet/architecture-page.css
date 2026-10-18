@@ -10,7 +10,7 @@
   padding: 20px 28px 28px;
 }
 .architecture-exploration {
-  --architecture-icon: 20px;
+  --architecture-icon: 28px;
   --architecture-link-gap: 8px;
   --architecture-row-height: 30px;
   --architecture-column-gap: 14px;
@@ -21,6 +21,16 @@
 }
 .architecture-main {
   min-width: 0;
+}
+.architecture-workspace-icon,
+.architecture-workspace-icon img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+}
+.architecture-workspace-icon img {
+  object-fit: contain;
 }
 .architecture-panel-row {
   display: grid;

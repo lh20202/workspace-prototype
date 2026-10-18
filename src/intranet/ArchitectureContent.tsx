@@ -1,8 +1,7 @@
 import { Archive20Regular, ChevronRight16Regular } from "@fluentui/react-icons";
 import type { ReactNode } from "react";
 import StaffLink from "../components/StaffLink";
-import WorkspaceIcon from "../components/WorkspaceIcon";
-import RestrictedWorkspaceIcon from "../components/RestrictedWorkspaceIcon";
+import ArchitectureWorkspaceIcon from "./ArchitectureWorkspaceIcon";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import TeamsMark from "../components/TeamsMark";
 import { departments } from "../coordination/data";
@@ -43,10 +42,8 @@ export function ArchitectureDestinationLink({
         />
       ) : type === "wiki" || type === "portal" ? (
         <EnvironmentIcon type={type} size={20} />
-      ) : controlled ? (
-        <RestrictedWorkspaceIcon />
       ) : (
-        <WorkspaceIcon size={20} />
+        <ArchitectureWorkspaceIcon controlled={controlled} />
       )}
       <span>{label}</span>
     </StaffLink>
@@ -141,7 +138,7 @@ function ArchitectureJumpGroups() {
           <JumpLink
             key={project.code}
             href={projectHref(project)}
-            icon={<WorkspaceIcon size={20} />}
+            icon={<ArchitectureWorkspaceIcon />}
             label={project.name}
             detail={project.code}
           />

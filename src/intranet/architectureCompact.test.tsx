@@ -30,8 +30,8 @@ describe("compact Architecture destination links", () => {
       />,
     );
     expect(card).toContain('class="architecture-destination"');
-    expect(card).toContain('class="workspace-icon"');
-    expect(card).toContain("--workspace-icon-size:20px");
+    expect(card).toContain('class="architecture-workspace-icon"');
+    expect(card).toContain('src="/images/workspaces/workspace-chunky.png"');
     expect(card).toContain("Lab");
     expect(card).not.toContain("directory-row-arrow");
     expect(card).not.toContain("ArrowRight");
@@ -69,13 +69,13 @@ describe("compact Architecture destination links", () => {
         link.includes(`href="${href}?staff=robin"`),
       );
       expect(anchor).toContain(`data-environment="${type}"`);
-      expect(anchor).not.toContain('class="workspace-icon"');
+      expect(anchor).not.toContain('class="architecture-workspace-icon"');
     }
     for (const destination of personnelDestinations.controlled) {
       const anchor = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].find(
         ([link]) => link.includes(`href="${destination.href}?staff=robin"`),
       )?.[0];
-      expect(anchor).toContain('class="restricted-workspace-icon"');
+      expect(anchor).toContain('data-access="controlled"');
     }
     expect(html).toContain('aria-labelledby="layout-hub-finance"');
     expect(html).not.toContain("Open my Teams");

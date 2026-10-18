@@ -108,15 +108,15 @@ describe("architecture directory", () => {
           <ArchitectureDestinationLink destination={destination} />,
         );
         expect(
-          html.includes('class="restricted-workspace-icon"'),
+          html.includes('data-access="controlled"'),
           destination.label,
         ).toBe(expected.has(destination.href));
-        expect(html).toContain('class="workspace-icon"');
+        expect(html).toContain('class="architecture-workspace-icon"');
       }
     }
-    expect(
-      renderDirectory().match(/class="restricted-workspace-icon"/g),
-    ).toHaveLength(8);
+    expect(renderDirectory().match(/data-access="controlled"/g)).toHaveLength(
+      8,
+    );
     // Signposting must not reclassify Finance or grant specialist permissions.
     const finance = architectureDestinationById.get("finance")!;
     expect(
@@ -139,7 +139,7 @@ describe("architecture directory", () => {
           anchor.includes(`href="${destination.href}?staff=devon"`),
         )!;
         expect(link).toBeDefined();
-        expect(link).not.toContain('class="workspace-icon"');
+        expect(link).not.toContain('class="architecture-workspace-icon"');
         expect(link).toContain(
           destination.type === "archive"
             ? "architecture-archive-icon"
@@ -167,7 +167,7 @@ describe("architecture directory", () => {
         ([anchor]) =>
           anchor.includes(`href="${projectHref(project)}?staff=devon"`),
       )?.[0];
-      expect(link).toContain('class="workspace-icon"');
+      expect(link).toContain('class="architecture-workspace-icon"');
       expect(link).not.toContain("/teams");
     }
   });

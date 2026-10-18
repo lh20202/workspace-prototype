@@ -176,7 +176,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(html).not.toContain("Open my Teams");
     expect(html).not.toContain("Direction &amp; assurance");
     expect(html).not.toContain("Shared services");
-    expect(html.match(/class="workspace-icon"/g)).toHaveLength(24);
+    expect(html.match(/class="architecture-workspace-icon"/g)).toHaveLength(24);
     expect(html.match(/data-environment="workspace"/g)).toHaveLength(19);
     expect(html.match(/aria-label="Controlled access"/g)).toHaveLength(8);
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
@@ -197,13 +197,13 @@ describe("hub families retain one canonical owner for every environment", () => 
       const tile = directoryWorkspaceLink(html, destination.href);
       expect(tile).toBeDefined();
       expect(tile).toContain(destination.label.replace(/&/g, "&amp;"));
-      expect(tile).toContain('class="workspace-icon"');
+      expect(tile).toContain('class="architecture-workspace-icon"');
       expect(tile).not.toContain("Controlled access");
     }
     expect(directoryWorkspaceLink(html, "/people-culture")).toBeUndefined();
     for (const destination of personnelDestinations.controlled) {
       expect(directoryWorkspaceLink(html, destination.href)).toContain(
-        'class="restricted-workspace-icon"',
+        'data-access="controlled"',
       );
       expect(html).toContain(`href="${destination.href}"`);
     }
