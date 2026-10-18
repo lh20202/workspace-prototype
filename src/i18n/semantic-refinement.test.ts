@@ -63,10 +63,10 @@ describe("final German semantic interpretation", () => {
     );
     expect(
       canonicalBrandText(
-        "Framevia / Slotline / Relovia / Metriva / Teralink / Recorda / Pathory / Velora",
+        "Framevia / Slotline / Relovia / Metriva / Teralink / Recorda / Pathory / Velora / PeopleHarbour",
       ),
     ).toBe(
-      "VidPhotoEditor / ReelPoster / TheCRM / DataHub / RaiseTicket / Invoicer / PMtool / MoneyTool",
+      "VidPhotoEditor / ReelPoster / TheCRM / DataHub / RaiseTicket / Invoicer / PMtool / MoneyTool / HRSystem",
     );
     expect(translateText("Open in ReelPoster", "de")).toBe(
       "In ReelPoster öffnen",

@@ -65,7 +65,8 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Open in Invoicer": "In Invoicer öffnen",
   "Open in PMtool": "In PMtool öffnen",
   "Open in DataHub": "In DataHub öffnen",
-  "Open in PeopleHarbour": "In PeopleHarbour öffnen",
+  "Open in HRSystem": "In HRSystem öffnen",
+  "Open in PeopleHarbour": "In HRSystem öffnen",
   "Open in MoneyTool": "In MoneyTool öffnen",
   "Day-to-day frontline information and tools":
     "Informationen und Werkzeuge für den direkten Kundenkontakt",

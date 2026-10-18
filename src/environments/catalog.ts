@@ -83,8 +83,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "peopleharbour",
-    name: "PeopleHarbour",
-    logo: "/images/admin-logins/peopleharbour.svg",
+    name: "HRSystem",
+    logo: "/images/admin-logins/hrsystem.svg",
     category: "HR & people administration",
     purpose: "Administer employee records and recruitment processes.",
     hubs: ["personnel"],
@@ -178,6 +178,7 @@ const legacyBrandPatterns: [RegExp, string][] = [
   [/\bRecorda\b/g, "recorda"],
   [/\bPathory\b/g, "pathory"],
   [/\bVelora\b/g, "velora"],
+  [/\bPeopleHarbour\b/g, "peopleharbour"],
   [
     /\bSalesforce(?: Sales Cloud| Platform)?\b|\bHubSpot(?: CRM)?\b|\bGainsight\b|\bQuorum\b|\bZendesk\b/g,
     "relovia",
