@@ -193,7 +193,7 @@ describe("architecture layout comparison", () => {
         .sort();
       expect(
         [...html.matchAll(/data-brand="([^"]+)"/g)].map(([, id]) => id).sort(),
-      ).toEqual(tools);
+      ).toEqual(layout === "workspaces-first" ? [...new Set(tools)] : tools);
     },
   );
 

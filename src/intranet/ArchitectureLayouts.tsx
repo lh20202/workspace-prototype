@@ -1,4 +1,8 @@
-import { Archive20Regular, ChevronRight16Regular } from "@fluentui/react-icons";
+import {
+  Archive20Regular,
+  ChevronRight16Regular,
+  Open16Regular,
+} from "@fluentui/react-icons";
 import type { ReactNode } from "react";
 import StaffLink from "../components/StaffLink";
 import WorkspaceIcon from "../components/WorkspaceIcon";
@@ -9,11 +13,14 @@ import { departments } from "../coordination/data";
 import { departmentPreviewHref } from "../teams/departmentPreview";
 import { projectHref } from "../projects/data";
 import AdminLogins from "./AdminLogins";
+import ExternalBrandMark from "../components/ExternalBrandMark";
+import { externalPreviewHref } from "../environments/catalog";
 import HubHeadingIcon from "./HubHeadingIcon";
 import { architectureDestinationById } from "./architectureDestinations";
 import {
   architectureHubViews,
   architectureProjects,
+  architectureTools,
   type ArchitectureHubView,
   type ArchitectureLayout,
   type LayoutDestination,
@@ -122,37 +129,46 @@ function HubPanel({
 
 function SharedEnvironments() {
   return (
-    <>
-      <section
-        className="architecture-shared-environments"
-        aria-labelledby="architecture-knowledge-title"
-      >
-        <h2 id="architecture-knowledge-title">Knowledge & portals</h2>
-        <DestinationGrid
-          destinations={architectureHubViews.flatMap((hub) => [
-            ...hub.knowledge,
-            ...hub.secondary,
-          ])}
-        />
-      </section>
-      <section
-        className="architecture-shared-tools"
-        aria-labelledby="architecture-tools-title"
-      >
-        <h2 id="architecture-tools-title">Tools</h2>
-        <div className="architecture-tools-groups">
-          {architectureHubViews.map((hub) => (
-            <div
-              className={`architecture-tools-group architecture-tone-${hub.id}`}
-              key={hub.id}
-            >
-              <h3>{hub.label}</h3>
-              <AdminLogins hubId={hub.id} />
-            </div>
-          ))}
-        </div>
-      </section>
-    </>
+    <section
+      className="architecture-shared-environments"
+      aria-labelledby="architecture-knowledge-title"
+    >
+      <h2 id="architecture-knowledge-title">Knowledge & portals</h2>
+      <DestinationGrid
+        destinations={architectureHubViews.flatMap((hub) => [
+          ...hub.knowledge,
+          ...hub.secondary,
+        ])}
+      />
+    </section>
+  );
+}
+
+function SharedTools() {
+  return (
+    <section
+      className="architecture-shared-tools"
+      aria-labelledby="architecture-tools-title"
+    >
+      <h2 id="architecture-tools-title">Tools</h2>
+      <div className="architecture-tools-list">
+        {architectureTools.map(({ tool, description }) => (
+          <StaffLink
+            className="architecture-tool-link"
+            key={tool.id}
+            href={externalPreviewHref(tool.id)}
+            data-brand={tool.id}
+          >
+            <ExternalBrandMark id={tool.id} size={20} />
+            <span className="architecture-tool-copy">
+              <span data-no-translate>{tool.name}</span>
+              <small>{description}</small>
+            </span>
+            <Open16Regular aria-hidden="true" />
+          </StaffLink>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -245,6 +261,7 @@ export default function ArchitectureLayouts({
         </div>
         {workspacesOnly && <SharedEnvironments />}
       </div>
+      {workspacesOnly && <SharedTools />}
       <ArchitectureJumpGroups />
     </div>
   );

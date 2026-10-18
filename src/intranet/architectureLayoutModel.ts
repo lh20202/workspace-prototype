@@ -1,5 +1,5 @@
 import { architectureSections, hubById } from "../workspaces/registry";
-import type { AdminHubId } from "../environments/catalog";
+import { adminPlatformsForHub, type AdminHubId } from "../environments/catalog";
 import { currentProjects } from "../projects/data";
 import {
   architectureDestinationById,
@@ -105,3 +105,27 @@ export const architectureHubViews: ArchitectureHubView[] =
 export const architectureProjects = currentProjects
   .filter(({ access }) => access === "Open Internal")
   .slice(0, 5);
+
+/** Concise directory copy; product identities and routes still come from the tool registry. */
+const toolDescriptions: Record<string, string> = {
+  framevia: "Media editing",
+  slotline: "Social media planning",
+  relovia: "CRM",
+  teralink: "IT support",
+  recorda: "Invoice approvals",
+  pathory: "Project management",
+  metriva: "Data analytics",
+  peopleharbour: "HR & recruitment",
+  velora: "Financial administration",
+};
+
+export const architectureTools = [
+  ...new Map(
+    architectureHubViews
+      .flatMap(({ id }) => adminPlatformsForHub(id))
+      .map((tool) => [tool.id, tool]),
+  ).values(),
+].map((tool) => ({
+  tool,
+  description: toolDescriptions[tool.id] ?? tool.category,
+}));
