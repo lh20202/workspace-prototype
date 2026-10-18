@@ -1,6 +1,6 @@
 import {
+  LockClosed24Regular,
   Megaphone24Regular,
-  Money24Regular,
   PeopleTeam24Regular,
   Settings24Regular,
 } from "@fluentui/react-icons";
@@ -11,7 +11,7 @@ const hubIcons = {
   "sales-marketing": Megaphone24Regular,
   infrastructure: Settings24Regular,
   personnel: PeopleTeam24Regular,
-  finance: Money24Regular,
+  finance: LockClosed24Regular,
 };
 
 /** Decorative identifiers for the four directory groupings. */
