@@ -1,0 +1,348 @@
+/* Retain the established white directory canvas around the layout experiments. */
+:root
+  .architecture-poc-page
+  .intranet-directory:has(.architecture-exploration) {
+  background: #fff;
+}
+/* Alternative presentations share the same row geometry and canonical destinations. */
+:root .architecture-poc-page .architecture-layout-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #5d6870;
+}
+:root .architecture-poc-page .architecture-layout-control select {
+  width: 190px;
+  min-height: 32px;
+  padding: 4px 24px 4px 9px;
+  border: 1px solid #c7cdd2;
+  border-radius: 4px;
+  background: #fff;
+  color: #37454e;
+  font: inherit;
+}
+:root .architecture-poc-page .directory-main:has(.architecture-exploration) {
+  max-width: 1480px;
+  padding: 20px 28px 28px;
+}
+.architecture-exploration {
+  --architecture-icon: 20px;
+  --architecture-link-gap: 8px;
+  --architecture-row-height: 30px;
+  --architecture-column-gap: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  align-items: start;
+  gap: 24px;
+}
+.architecture-layout-main {
+  min-width: 0;
+}
+.architecture-panel-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 12px;
+  margin-bottom: 12px;
+}
+.architecture-tone-sales-marketing {
+  --hub-accent: #246a77;
+  --hub-border: #c7dde1;
+  --hub-surface: #eaf4f5;
+}
+.architecture-tone-infrastructure {
+  --hub-accent: #4c647e;
+  --hub-border: #d0dae4;
+  --hub-surface: #edf1f6;
+}
+.architecture-tone-personnel {
+  --hub-accent: #765b83;
+  --hub-border: #ded0e4;
+  --hub-surface: #f3edf6;
+}
+.architecture-tone-finance {
+  --hub-accent: #873f56;
+  --hub-border: #e7ccd5;
+  --hub-surface: #f8edf0;
+}
+.architecture-panel {
+  min-width: 0;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  padding: 16px;
+  border: 1px solid var(--hub-border);
+  border-radius: 6px;
+  background: var(--hub-surface);
+}
+.architecture-panel-heading,
+.architecture-panel-heading > a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--hub-accent);
+  text-decoration: none;
+}
+.architecture-panel-heading {
+  padding-bottom: 10px;
+}
+:root .architecture-poc-page .architecture-panel-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 650;
+  line-height: 28px;
+  letter-spacing: -0.25px;
+}
+.architecture-primary {
+  padding-bottom: 10px;
+}
+.architecture-destination-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 2px var(--architecture-column-gap);
+}
+.architecture-destination {
+  display: flex;
+  align-items: center;
+  gap: var(--architecture-link-gap);
+  min-width: 0;
+  min-height: var(--architecture-row-height);
+  padding: 3px 0;
+  color: #2d5362;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 21px;
+  text-decoration: none;
+}
+.architecture-destination > :first-child {
+  width: var(--architecture-icon);
+  height: var(--architecture-icon);
+  flex: 0 0 var(--architecture-icon);
+}
+.architecture-destination > span:last-child {
+  min-width: 0;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+.architecture-destination .architecture-archive-icon {
+  color: #6a7078;
+}
+.architecture-knowledge {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid var(--hub-border);
+}
+.architecture-secondary {
+  padding: 7px 0;
+  border-top: 1px solid var(--hub-border);
+}
+.architecture-secondary .architecture-destination:only-child {
+  grid-column: 1 / -1;
+}
+:root .architecture-exploration .directory-admin-logins {
+  margin: 0;
+  padding: 8px 0 0;
+}
+:root .architecture-exploration .directory-admin-logins h3 {
+  margin: 0 0 4px;
+}
+:root .architecture-exploration .directory-admin-list {
+  gap: 2px 14px;
+}
+:root .architecture-exploration .directory-admin-list a {
+  min-height: 32px;
+}
+.architecture-jump-groups {
+  padding-left: 18px;
+  border-left: 1px solid #dddfe7;
+}
+.architecture-jump-groups section + section {
+  margin-top: 24px;
+}
+:root .architecture-poc-page .architecture-jump-groups h2,
+:root .architecture-poc-page .architecture-shared-environments > h2,
+:root .architecture-poc-page .architecture-shared-tools > h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 650;
+}
+.architecture-jump-groups p {
+  margin: 0 0 12px;
+  color: #616161;
+  font-size: 13px;
+  line-height: 20px;
+}
+.architecture-jump-link {
+  display: grid;
+  grid-template-columns: var(--architecture-icon) minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: var(--architecture-link-gap);
+  min-height: 62px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e4e5e8;
+  color: #343a40;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-decoration: none;
+}
+.architecture-jump-copy {
+  min-width: 0;
+}
+.architecture-jump-copy small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #616161;
+}
+.architecture-jump-link > svg:last-child {
+  color: #7b838b;
+}
+.architecture-all-projects {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 12px;
+  color: #2d5362;
+  font-size: 13px;
+  text-decoration: none;
+}
+.architecture-jump-link:hover {
+  background: #f6f8f9;
+}
+.architecture-destination:hover,
+.architecture-panel-heading > a:hover,
+.architecture-all-projects:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.architecture-exploration a:focus-visible,
+:root .architecture-poc-page .architecture-layout-control select:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Workspaces first separates workspace entrances from shared supporting environments. */
+.architecture-layout-workspaces-first .architecture-panel {
+  grid-row: span 2;
+}
+.architecture-layout-workspaces-first .architecture-primary {
+  padding-bottom: 0;
+}
+.architecture-shared-environments,
+.architecture-shared-tools {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #dddfe7;
+}
+.architecture-shared-environments .architecture-destination-grid {
+  column-gap: 24px;
+}
+.architecture-tools-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.architecture-tools-group > h3 {
+  margin: 0 0 8px;
+  color: var(--hub-accent);
+  font-size: 14px;
+  line-height: 22px;
+}
+:root .architecture-shared-tools .directory-admin-logins {
+  padding: 0;
+  border: 0;
+}
+:root .architecture-shared-tools .directory-admin-logins h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Directory uses the same structure with lighter, open columns instead of cards. */
+.architecture-layout-directory .architecture-panel-row {
+  column-gap: 28px;
+  margin-bottom: 24px;
+}
+.architecture-layout-directory .architecture-panel {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.architecture-layout-directory .architecture-panel-heading {
+  border-top: 3px solid var(--hub-accent);
+  padding-top: 10px;
+}
+.architecture-layout-directory .restricted-workspace-badge {
+  background: #fff;
+}
+
+@media (max-width: 1100px) {
+  .architecture-exploration {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .architecture-jump-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    padding: 18px 0 0;
+    border-left: 0;
+    border-top: 1px solid #dddfe7;
+  }
+  .architecture-jump-groups section + section {
+    margin: 0;
+  }
+}
+@media (max-width: 760px) {
+  :root .architecture-poc-page .directory-main:has(.architecture-exploration) {
+    padding: 20px 16px 28px;
+  }
+  :root .architecture-poc-page .directory-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .architecture-panel-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .architecture-panel {
+    grid-row: auto;
+    grid-template-rows: auto;
+  }
+  .architecture-layout-workspaces-first .architecture-panel {
+    grid-row: auto;
+  }
+  .architecture-secondary[aria-hidden="true"] {
+    display: none;
+  }
+  .architecture-tools-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .architecture-destination-grid,
+  .architecture-jump-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .architecture-jump-groups {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .architecture-tools-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

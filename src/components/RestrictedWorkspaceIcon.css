@@ -1,0 +1,22 @@
+.restricted-workspace-icon {
+  position: relative;
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: #873f56;
+}
+.restricted-workspace-icon .workspace-icon {
+  color: inherit;
+}
+.restricted-workspace-icon .restricted-workspace-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 11px;
+  height: 11px;
+  padding: 1px;
+  box-sizing: content-box;
+  background: var(--hub-surface, #fff);
+  border-radius: 3px;
+}

@@ -1,5 +1,14 @@
 /** Presentation refinements; routes, stored values and source records stay stable. */
 export const germanPolish: Record<string, string> = {
+  "Architecture layout": "Layout der Übersicht",
+  Layout: "Layout",
+  Classic: "Klassisch",
+  Balanced: "Ausgewogen",
+  "Workspaces first": "Arbeitsbereiche zuerst",
+  Directory: "Verzeichnis",
+  "Knowledge & portals": "Wissen & Portale",
+  "Project workspaces": "Projektarbeitsbereiche",
+  "All projects": "Alle Projekte",
   "Financial destinations": "Finanzbereiche",
   "Income and booking": "Einnahmen und Buchung",
   "Payments and close": "Zahlungen und Abschluss",

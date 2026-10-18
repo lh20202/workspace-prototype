@@ -12,7 +12,7 @@ import {
   environmentById,
   resolveLegacy,
 } from "./registry";
-import Directory from "../intranet/Directory";
+import Directory, { ClassicArchitecture } from "../intranet/Directory";
 import { personnelDestinations } from "../intranet/architectureDestinations";
 import HubNavigation from "../components/HubNavigation";
 import { getHubNavigationModel } from "../components/hubNavigationModel";
@@ -165,9 +165,9 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Infrastructure Wiki|Personnel Wiki|Financial Wiki/,
     );
   });
-  it("renders four distinct hub panels, one workspace mark and a separate Department channels rail", () => {
+  it("Classic renders four distinct hub panels, one workspace mark and a separate Department channels rail", () => {
     at("/architecture");
-    const html = renderToStaticMarkup(createElement(Directory));
+    const html = renderToStaticMarkup(createElement(ClassicArchitecture));
     for (const hub of hubDefinitions)
       expect(html).toContain(`aria-labelledby="hub-${hub.id}"`);
     expect(html).toContain('aria-labelledby="hub-finance"');
@@ -188,9 +188,9 @@ describe("hub families retain one canonical owner for every environment", () => 
       /Support pathway review|Reporting route review|Representative consultation cycle/,
     );
   });
-  it("renders two ordinary Personnel entrances followed by quiet protected text links", () => {
+  it("Classic renders two ordinary Personnel entrances followed by quiet protected text links", () => {
     at("/architecture");
-    const html = renderToStaticMarkup(createElement(Directory));
+    const html = renderToStaticMarkup(createElement(ClassicArchitecture));
     expect(html).not.toContain("Controlled environments");
     expect(html).not.toContain("People &amp; organisation</h3>");
     for (const destination of personnelDestinations.normal) {

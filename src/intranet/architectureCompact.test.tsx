@@ -15,7 +15,10 @@ function renderDirectory() {
     "location",
     new URL("https://example.test/architecture?staff=robin"),
   );
-  vi.stubGlobal("sessionStorage", { getItem: () => "robin" });
+  vi.stubGlobal("sessionStorage", {
+    getItem: (key: string) =>
+      key === "architecture-layout-session" ? "classic" : "robin",
+  });
   return renderToStaticMarkup(<Directory />);
 }
 
