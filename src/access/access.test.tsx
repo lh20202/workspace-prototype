@@ -45,7 +45,7 @@ describe("business focal point before technical access escalation", () => {
       expect(html.indexOf("Access required")).toBeLessThan(
         html.indexOf("Are you frontline sales staff?"),
       );
-      expect(html.indexOf("Open Frontline Crew Portal")).toBeLessThan(
+      expect(html.indexOf("Open Crew portal")).toBeLessThan(
         html.indexOf("Frontline sales focal point"),
       );
       expect(html.indexOf("Frontline sales focal point")).toBeLessThan(
@@ -135,6 +135,29 @@ describe("business focal point before technical access escalation", () => {
       accessFocalPoint({ workspaceId: "people" }).id,
     );
     expect(accessWorkspaceId("Content Room")).toBe("content");
+  });
+
+  it("keeps saved title-only access requests attached to their canonical workspace after renames", () => {
+    const previousTitles = [
+      ["Research & Insight", "audience"],
+      ["Research Lab", "audience"],
+      ["Creative Studio", "content"],
+      ["Customer Relations", "customer"],
+      ["Client Relations", "customer"],
+      ["Purchasing & Office", "services"],
+      ["Office Services", "services"],
+      ["Quality & Monitoring", "quality"],
+      ["Quality Monitoring", "quality"],
+      ["Planning Cycle", "planning"],
+      ["Frontline Crew Portal", "frontline-sales"],
+      ["Sales & Marketing Wiki", "sales-wiki"],
+    ];
+    for (const [title, workspaceId] of previousTitles) {
+      expect(accessWorkspaceId(title)).toBe(workspaceId);
+      expect(accessWorkspaceId(title, "employment")).toBe("employment");
+    }
+    expect(accessWorkspaceId("research lab")).toBe("planning");
+    expect(accessWorkspaceId("Office Services ")).toBe("planning");
   });
 
   it("renders contact as the primary local action and urgent escalation as the smaller secondary link", () => {

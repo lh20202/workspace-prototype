@@ -659,7 +659,7 @@ export default function ContentApp() {
               </div>
             </section>
           ) : page === "teams" ? (
-            <p role="status">Opening Creative Studio channels…</p>
+            <p role="status">Opening Studio channels…</p>
           ) : page === "calendar" ? (
             <>
               <h2>Production Calendar</h2>
@@ -690,9 +690,7 @@ export default function ContentApp() {
                   Production Register
                 </StaffLink>
                 {page === "digital" && (
-                  <StaffLink href="/digital-tech/web-crm">
-                    Tech
-                  </StaffLink>
+                  <StaffLink href="/digital-tech/web-crm">Tech</StaffLink>
                 )}
                 {packageContext &&
                   partnerShares
@@ -842,7 +840,7 @@ export default function ContentApp() {
               </StaffLink>
               <p>
                 <StaffLink href="/audience-innovation/analytics">
-                  Return performance evidence to Research Lab
+                  Return performance evidence to Laboratory
                 </StaffLink>
               </p>
               {selected.id === "PKG-102" && (

@@ -67,8 +67,8 @@ export const germanTeamsTechnical: Record<string, string> = {
     "Die freigegebene Berichtsansicht der Planung hat sich geändert. Könnte jemand den Intranet-Link prüfen? Ich glaube, er öffnet noch den alten Speicherort.",
   "I’ll check it with the page owner today.":
     "Ich prüfe das heute mit der seitenverantwortlichen Person.",
-  "Three Sales & Marketing Wiki pages are due for review this month. Owners are in the register. Do we have dates from everyone yet?":
-    "Drei Seiten im Sales & Marketing Wiki sind diesen Monat zur Überprüfung fällig. Die Verantwortlichen stehen in der Übersicht. Haben wir schon von allen Termine?",
+  "Three Advertising, Marketing & Sales Wiki pages are due for review this month. Owners are in the register. Do we have dates from everyone yet?":
+    "Drei Seiten im Advertising, Marketing & Sales Wiki sind diesen Monat zur Überprüfung fällig. Die Verantwortlichen stehen in der Übersicht. Haben wir schon von allen Termine?",
   "Not yet. I’ve asked them to confirm before the next publishing handoff.":
     "Noch nicht. Ich habe sie gebeten, die Termine vor der nächsten Veröffentlichungsübergabe zu bestätigen.",
   "The updated guidance is waiting for the page owner’s approval. Can we link the working draft from its workspace here? I’d rather not start a second copy.":

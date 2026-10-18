@@ -138,7 +138,7 @@ export default function WikiApp() {
           onClick={(event) => navigate(event, wikiBase)}
         >
           <EnvironmentIcon type="wiki" size={34} />
-          <span>Sales & Marketing Wiki</span>
+          <span>Advertising, Marketing & Sales Wiki</span>
         </StaffLink>
         <div className="wiki-search">
           <label>
@@ -373,7 +373,7 @@ export default function WikiApp() {
                   <div>
                     {article.id === "working-with-creative-studio" && (
                       <StaffLink href="/content-delivery">
-                        Open Creative Studio
+                        Open Studio
                         <ArrowRight20Regular aria-hidden="true" />
                       </StaffLink>
                     )}

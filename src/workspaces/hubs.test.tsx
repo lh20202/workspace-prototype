@@ -87,16 +87,16 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(
       environmentsForHub("sales-marketing").map((item) => item.hubLabel),
     ).toEqual([
-      "Research Lab",
-      "Creative Studio",
+      "Laboratory",
+      "Studio",
       "Acquisitions",
-      "Client Relations",
-      "Sales & Marketing Wiki",
-      "Frontline Crew Portal",
+      "Relations",
+      "Advertising, Marketing & Sales Wiki",
+      "Crew portal",
       "Media Library",
     ]);
     expect(workspaceById.get("services")).toMatchObject({
-      title: "Office Services",
+      title: "Services",
       href: "/services",
     });
     expect(workspaceById.get("welfare")?.href).toBe("/welfare-representation");

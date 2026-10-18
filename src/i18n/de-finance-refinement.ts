@@ -1,7 +1,7 @@
 /** Finance-specific interpretation: reconciliation, posting and liquidity rather than reservations. */
 export const germanFinanceRefinement: Record<string, string> = {
-  "Income & Booking": "Einnahmen & Verbuchung",
-  "Income & Reconciliation": "Einnahmen & Abstimmung",
+  "Income & Booking": "-> $",
+  "Income & Reconciliation": "-> $",
   "Income guidance": "Leitfäden zur Einnahmenbearbeitung",
   "Supplier payments": "Lieferantenzahlungen",
   "Budgets & forecasts": "Budgets & Prognosen",
@@ -119,8 +119,7 @@ export const germanFinanceRefinement: Record<string, string> = {
   "Banking Security Review": "Prüfung der Sicherheit im Bankverkehr",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Money In": "Einnahmen",
-  "Bank Vault → accounting": "Tresor → Buchhaltung",
-  "Bank Vault → accounting confirmation":
-    "Tresor → Bestätigung der Buchhaltung",
+  "-> $": "-> $",
+  "Vault → accounting": "Tresor → Buchhaltung",
+  "Vault → accounting confirmation": "Tresor → Bestätigung der Buchhaltung",
 };

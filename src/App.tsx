@@ -509,7 +509,7 @@ export default function App() {
       <div className="site-header">
         <CompanyMark />
         <div className="site-title">
-          <h1>Planning Cycle</h1>
+          <h1>Planning</h1>
           {planningChannels.length > 0 && (
             <button
               className="teams-button"
@@ -594,7 +594,7 @@ export default function App() {
             <div className="home-layout">
               <div className="home-main">
                 <div className="page-heading">
-                  <h2>Planning Cycle</h2>
+                  <h2>Planning</h2>
                   <p>
                     Shared workspace for organisation-wide strategy, planning,
                     review and performance reporting.
@@ -697,7 +697,7 @@ export default function App() {
                 <TeamsHomePanel
                   heading="Planning & Reporting"
                   description="Coordinate department plans, submissions and reporting."
-                  workspace={{ id: "planning", name: "Planning Cycle" }}
+                  workspace={{ id: "planning", name: "Planning" }}
                   channels={planningChannels
                     .filter((name) => name === planningReportingChannel)
                     .map((name) => ({
@@ -790,11 +790,7 @@ export default function App() {
                         ? "Restricted Planning"
                         : "Unavailable location"
                     }
-                    location={[
-                      "Organisational Planning & Reporting",
-                      "Restricted Planning",
-                      folder,
-                    ]
+                    location={["Planning", "Restricted Planning", folder]
                       .filter(Boolean)
                       .join(" / ")}
                     personId={person.id}

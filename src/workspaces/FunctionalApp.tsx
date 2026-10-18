@@ -569,9 +569,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
       ? "Actions & Reviews"
       : "Follow-up"
     : peopleDestination?.label ||
-      (isCommunityPage
-        ? "Internal News & Networking"
-        : library?.name || area?.name);
+      (isCommunityPage ? "Network" : library?.name || area?.name);
   return (
     <div
       className={`app-shell services-app functional-app ${workspace.id === "archives" ? "archives-app" : ""}`}
@@ -1002,9 +1000,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     <StaffLink href={href("communications")}>
                       Internal communications
                     </StaffLink>
-                    <StaffLink href={href("communities")}>
-                      Internal News & Networking
-                    </StaffLink>
+                    <StaffLink href={href("communities")}>Network</StaffLink>
                   </div>
                 )}
               {relatedLinks(library)}

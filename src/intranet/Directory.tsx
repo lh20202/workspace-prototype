@@ -246,7 +246,7 @@ export default function Directory() {
             </div>
             <aside className="directory-coordination" aria-label="Jump to…">
               <h2>Jump to…</h2>
-              <p>Meetings, planning and team coordination.</p>
+              <p>Meetings and coordination</p>
               {departments.map((department) => (
                 <StaffLink
                   className="department-quick-link"

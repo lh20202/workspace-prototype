@@ -3,11 +3,11 @@ import { areas, documents, filesById, systems, title } from "./data";
 import { resolveLegacy } from "../workspaces/registry";
 import { configById } from "../workspaces/config";
 import { pageTitle, prototypeForPath } from "../utils/routes";
-describe("Office Services has four operational purposes", () => {
+describe("Services has four operational purposes", () => {
   it("uses the new visible name while preserving the Services route", () => {
-    expect(title).toBe("Office Services");
-    expect(pageTitle("/services")).toBe("Office Services");
-    expect(pageTitle("/services/purchasing")).toBe("Office Services");
+    expect(title).toBe("Services");
+    expect(pageTitle("/services")).toBe("Services");
+    expect(pageTitle("/services/purchasing")).toBe("Services");
     expect(prototypeForPath("/services")).toBe("services");
     expect(prototypeForPath("/services/purchasing")).toBe("services");
   });

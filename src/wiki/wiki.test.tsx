@@ -97,12 +97,12 @@ describe("Sales & Marketing knowledge navigation", () => {
     );
     expect(wikiArticles.length).toBe(40);
   });
-  it("adds practical Creative Studio knowledge under Messaging & Creative, without a new working-file store", () => {
+  it("adds practical Studio knowledge under Messaging & Creative, without a new working-file store", () => {
     const article = wikiArticles.find(
       (item) => item.id === "working-with-creative-studio",
     )!;
     expect(article.areaId).toBe("messaging");
-    expect(article.title).toBe("Working with the Creative Studio");
+    expect(article.title).toBe("Working with the Studio");
     const html = markup(wikiArticleHref(article), "?staff=maya");
     expect(html).toContain('aria-label="Wiki article"');
     expect(html).toContain("Topic specialists contribute evidence");
@@ -266,8 +266,8 @@ describe("Sales & Marketing knowledge navigation", () => {
     for (const file of wikiFiles)
       expect(translateText(file.name, "de")).toBe(wikiTranslations[file.name]);
     expect(translateText("Who to Ask", "de")).toBe("Ansprechpersonen");
-    expect(translateText("Sales & Marketing Wiki", "de")).toBe(
-      "Sales & Marketing Wiki",
+    expect(translateText("Advertising, Marketing & Sales Wiki", "de")).toBe(
+      "Advertising, Marketing & Sales Wiki",
     );
     expect(
       matchesDisplayText("Customer-facing Terms", "Kundenbedingungen"),
@@ -279,7 +279,7 @@ describe("Sales & Marketing knowledge navigation", () => {
       (article) => article.id === "working-with-creative-studio",
     )!;
     expect(wikiTranslations[studio.title]).toBe(
-      "Zusammenarbeit mit dem Kreativstudio",
+      "Zusammenarbeit mit dem Studio",
     );
     const copy = [
       studio.title,

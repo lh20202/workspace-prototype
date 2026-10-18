@@ -29,6 +29,6 @@ export const germanPersonnelSignposting: Record<string, string> = {
   "Controlled personnel environments": "Zugriffsbeschränkte Personalbereiche",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Workforce & Ethics": "Belegschaft & Ethik",
+  Workforce: "Belegschaft",
   Curriculum: "Curriculum",
 };

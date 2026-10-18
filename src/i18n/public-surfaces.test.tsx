@@ -122,7 +122,7 @@ const surfaces = [
     element: () => createElement(FunctionalApp),
   },
   {
-    name: "Creative Studio Home",
+    name: "Studio Home",
     path: "/content-delivery?staff=nadia",
     element: () => createElement(ContentApp),
   },

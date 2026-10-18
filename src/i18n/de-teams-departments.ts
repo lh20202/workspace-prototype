@@ -241,8 +241,8 @@ export const germanTeamsDepartments: Record<string, string> = {
   // Current display names; legacy keys above remain available for saved content.
   "Done — the feedback is in Curriculum now. I've updated the link in my post too.":
     "Erledigt – die Rückmeldungen liegen jetzt unter Curriculum. Den Link in meinem Beitrag habe ich auch aktualisiert.",
-  "Ah, this one's part of the Q4 forecast. Can you put it in Value for Money and link it here? Fine to keep the discussion in this thread.":
-    "Ah, das gehört zur Q4-Prognose. Kannst du es unter Wirtschaftlichkeit ablegen und hier verlinken? Die Diskussion kann gern in diesem Thread bleiben.",
+  "Ah, this one's part of the Q4 forecast. Can you put it in Value and link it here? Fine to keep the discussion in this thread.":
+    "Ah, das gehört zur Q4-Prognose. Kannst du es unter Wert ablegen und hier verlinken? Die Diskussion kann gern in diesem Thread bleiben.",
   "Could you keep the feedback in Curriculum and post the link here? Then the learning team can add to the same copy.":
     "Könntest du die Rückmeldungen unter Curriculum ablegen und hier verlinken? Dann kann das Lernteam dieselbe Datei ergänzen.",
   "Could you put this in Personnel → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.":

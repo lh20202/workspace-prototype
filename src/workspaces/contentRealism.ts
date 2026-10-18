@@ -12,9 +12,9 @@ const additions: Record<string, AddedFile[]> = {
     ["purchasing", "Workplace Equipment — Supplier Shortlist.xlsx"],
     ["purchasing", "Workplace Equipment — Commercial Comparison.xlsx"],
     ["purchasing", "Workplace Equipment — Decision Summary.docx"],
-    ["purchasing", "Office Services — Renewal Review.xlsx"],
-    ["purchasing", "Office Services — Performance Summary.docx"],
-    ["purchasing", "Office Services — Renewal Decision.docx"],
+    ["purchasing", "Services — Renewal Review.xlsx"],
+    ["purchasing", "Services — Performance Summary.docx"],
+    ["purchasing", "Services — Renewal Decision.docx"],
     ["travel", "October Group Travel — Booking Requirements.docx"],
     ["travel", "October Group Travel — Provider Comparison.xlsx"],
     ["travel", "October Group Travel — Readiness Checklist.docx"],
@@ -227,11 +227,7 @@ export function folderForFunctionalFile(
   area: string,
   name: string,
 ) {
-  if (
-    id === "services" &&
-    area === "purchasing" &&
-    name.startsWith("Office Services")
-  )
+  if (id === "services" && area === "purchasing" && name.startsWith("Services"))
     return "Supplier reviews/2026 renewals";
   if (id === "services" && area === "reception" && /Visitor|Arrival/.test(name))
     return "Visitor coordination/October 2026";
@@ -262,14 +258,14 @@ function fileMetadata(id: string, file: WorkingFile): Record<string, string> {
       return file.area === "purchasing"
         ? {
             ...base,
-            Supplier: file.name.startsWith("Office Services")
+            Supplier: file.name.startsWith("Services")
               ? "Brightline Services"
               : "Northstar Workplace",
             Activity: /Decision/.test(file.name)
               ? "Decision"
               : /Onboarding/.test(file.name)
                 ? "Onboarding"
-                : /Office Services/.test(file.name)
+                : /Services/.test(file.name)
                   ? "Renewal review"
                   : "Sourcing",
           }
@@ -288,7 +284,7 @@ function fileMetadata(id: string, file: WorkingFile): Record<string, string> {
                 file.area === "office"
                   ? "Office readiness"
                   : "Front-desk cover",
-              "Service owner": "Office Services",
+              "Service owner": "Services",
             };
     case "quality":
       return file.area === "eco"

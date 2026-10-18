@@ -19,9 +19,9 @@ describe("task-oriented architecture destinations", () => {
     expect(
       personnelDestinations.normal.map(({ label, href }) => [label, href]),
     ).toEqual([
-      ["Workforce & Ethics", "/people-culture/culture"],
+      ["Workforce", "/people-culture/culture"],
       ["Curriculum", "/people-culture/learning"],
-      ["Internal News & Networking", "/people-culture/communities"],
+      ["Network", "/people-culture/communities"],
     ]);
     const areas = configById.get("people")!.areas;
     for (const destination of personnelDestinations.normal) {
@@ -98,13 +98,13 @@ describe("task-oriented architecture destinations", () => {
       type: "workspace",
     });
     expect(financeJumpLinks).toEqual([
-      { label: "Money In", href: "/financial-operations/income" },
+      { label: "-> $", href: "/financial-operations/income" },
       {
-        label: "Money Out",
+        label: "$ ->",
         href: "/financial-operations/reconciliation",
       },
-      { label: "Value for Money", href: "/financial-operations/planning" },
-      { label: "Bank Vault", href: "/financial-operations/treasury" },
+      { label: "Value", href: "/financial-operations/planning" },
+      { label: "Vault", href: "/financial-operations/treasury" },
     ]);
     expect(workspaceRegistry.filter(({ id }) => id === "finance")).toHaveLength(
       1,

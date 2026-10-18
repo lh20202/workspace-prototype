@@ -95,8 +95,8 @@ article(
         "Beginnen Sie ein Briefing mit dem Bedarf der Zielgruppe, dem gewünschten Ergebnis und einer zentralen Botschaft.",
       ],
       [
-        "Use the approved identity assets. Creative production and review stay in the Creative Studio workspace.",
-        "Verwenden Sie die freigegebenen Gestaltungselemente. Produktion und Abstimmung finden im Arbeitsbereich Kreativstudio statt.",
+        "Use the approved identity assets. Creative production and review stay in the Studio workspace.",
+        "Verwenden Sie die freigegebenen Gestaltungselemente. Produktion und Abstimmung finden im Arbeitsbereich Studio statt.",
       ],
     ],
   ],
@@ -128,8 +128,8 @@ article(
         "Halten Sie Annahmen fest, damit die nächste Auswertung neue Erkenntnisse von einem Richtungswechsel unterscheiden kann.",
       ],
       [
-        "Manage current plans and department submissions in Organisational Planning & Reporting.",
-        "Aktuelle Pläne und Abteilungsbeiträge werden im Arbeitsbereich Organisationsplanung & Berichterstattung verwaltet.",
+        "Manage current plans and department submissions in Planning.",
+        "Aktuelle Pläne und Abteilungsbeiträge werden im Arbeitsbereich Planung verwaltet.",
       ],
     ],
   ],
@@ -161,8 +161,8 @@ article(
         "Betrachten Sie ein Segment als Planungshilfe, nicht als Vorhersage über eine einzelne Person.",
       ],
       [
-        "Take new research questions to Research Lab; retain the source and its limitations.",
-        "Neue Forschungsfragen gehen an das Forschungslabor. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
+        "Take new research questions to Laboratory; retain the source and its limitations.",
+        "Neue Forschungsfragen gehen an das Labor. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
       ],
     ],
   ],
@@ -227,8 +227,8 @@ article(
         "Halten Sie das Leistungsversprechen beim Wechsel zwischen Kontakt, Website und Service konsistent.",
       ],
       [
-        "Use Acquisition for deployment planning and the Frontline Crew Portal for the current daily briefing.",
-        "Nutzen Sie Akquise für die Einsatzplanung und das Frontline Crew Portal für das aktuelle Tagesbriefing.",
+        "Use Acquisition for deployment planning and the Crew portal for the current daily briefing.",
+        "Nutzen Sie Akquise für die Einsatzplanung und das Crew-Portal für das aktuelle Tagesbriefing.",
       ],
     ],
   ],
@@ -294,8 +294,8 @@ article(
         "Prüfen Sie vor der Wiederverwendung Zielgruppe, Kanal, Prüfdatum und mögliche Einschränkungen.",
       ],
       [
-        "Bring proposed changes back to Creative Studio rather than editing a local copy.",
-        "Bringen Sie Änderungsvorschläge in Kreativstudio ein, statt eine lokale Kopie anzupassen.",
+        "Bring proposed changes back to Studio rather than editing a local copy.",
+        "Bringen Sie Änderungsvorschläge in Studio ein, statt eine lokale Kopie anzupassen.",
       ],
     ],
   ],
@@ -360,8 +360,8 @@ article(
         "Halten Sie häufige Fragen, passende Belege und den richtigen Weiterverweisungsweg zusammen.",
       ],
       [
-        "Daily conversation priorities appear in the Frontline Crew Portal; stable guidance stays here.",
-        "Tägliche Gesprächsschwerpunkte stehen im Frontline Crew Portal. Dauerhafte Hinweise bleiben hier.",
+        "Daily conversation priorities appear in the Crew portal; stable guidance stays here.",
+        "Tägliche Gesprächsschwerpunkte stehen im Crew-Portal. Dauerhafte Hinweise bleiben hier.",
       ],
     ],
   ],
@@ -459,8 +459,8 @@ article(
         "Prüfen Sie die aktuelle Fassung im vereinbarten Produktionsablauf.",
       ],
       [
-        "Creative Studio holds working assets and approvals; this page explains the method.",
-        "Kreativstudio verwaltet Arbeitsdateien und Freigaben. Diese Seite erläutert das Vorgehen.",
+        "Studio holds working assets and approvals; this page explains the method.",
+        "Studio verwaltet Arbeitsdateien und Freigaben. Diese Seite erläutert das Vorgehen.",
       ],
     ],
   ],
@@ -469,17 +469,17 @@ article(
 article(
   "messaging",
   "working-with-creative-studio",
-  ["Working with the Creative Studio", "Zusammenarbeit mit dem Kreativstudio"],
+  ["Working with the Studio", "Zusammenarbeit mit dem Studio"],
   [
     "Bring topic expertise and channel craft together, from a clear brief to a release people can use.",
     "Fachwissen und Kanalexpertise verbinden – von einem klaren Briefing bis zur Veröffentlichung.",
   ],
   [
     [
-      ["What the Studio does", "Die Aufgaben des Kreativstudios"],
+      ["What the Studio does", "Die Aufgaben des Studios"],
       [
         "The Studio brings messaging, design, digital production and channel desks together around a shared piece of work.",
-        "Im Kreativstudio arbeiten Redaktion, Gestaltung, digitale Produktion und Kanalteams gemeinsam an Inhalten.",
+        "Im Studio arbeiten Redaktion, Gestaltung, digitale Produktion und Kanalteams gemeinsam an Inhalten.",
       ],
       [
         "Topic specialists contribute evidence, context and factual checks. Channel desks adapt the work for the places it will appear.",
@@ -500,8 +500,8 @@ article(
     [
       ["Working files and conversation", "Arbeitsdateien und Abstimmung"],
       [
-        "Keep shared drafts, review files and release records in the Creative Studio workspace, with one current link for each working file.",
-        "Gemeinsame Entwürfe, Abstimmungsdateien und Freigaben im Arbeitsbereich Kreativstudio ablegen. Jede Arbeitsdatei hat einen gemeinsamen Link zur aktuellen Fassung.",
+        "Keep shared drafts, review files and release records in the Studio workspace, with one current link for each working file.",
+        "Gemeinsame Entwürfe, Abstimmungsdateien und Freigaben im Arbeitsbereich Studio ablegen. Jede Arbeitsdatei hat einen gemeinsamen Link zur aktuellen Fassung.",
       ],
       [
         "Use the relevant Teams channel for questions, coordination and quick feedback. Link to the workspace file rather than uploading another copy.",
@@ -516,7 +516,7 @@ article(
       ],
       [
         "Ask Alex Morgan, the Studio focal point, to connect a new brief with the right topic specialist or channel desk.",
-        "Alex Morgan ist die Ansprechperson des Kreativstudios und bringt ein neues Briefing mit den passenden Fachverantwortlichen oder Kanalteams zusammen.",
+        "Alex Morgan ist die Ansprechperson des Studios und bringt ein neues Briefing mit den passenden Fachverantwortlichen oder Kanalteams zusammen.",
       ],
     ],
   ],
@@ -549,8 +549,8 @@ article(
         "Klären Sie, was sich verändert hat, ob der Unterschied bedeutsam ist und was als Nächstes untersucht werden sollte.",
       ],
       [
-        "Current reporting and analysis remain in Research Lab and approved dashboards.",
-        "Aktuelle Berichte und Analysen verbleiben im Forschungslabor und den freigegebenen Dashboards.",
+        "Current reporting and analysis remain in Laboratory and approved dashboards.",
+        "Aktuelle Berichte und Analysen verbleiben im Labor und den freigegebenen Dashboards.",
       ],
     ],
   ],
@@ -582,8 +582,8 @@ article(
         "Beschreiben Sie wahrscheinliche Bedürfnisse und Hürden und prüfen Sie, ob die Belege zur Aufgabe passen.",
       ],
       [
-        "Ask Research Lab before changing a definition or combining small groups.",
-        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit dem Forschungslabor ab.",
+        "Ask Laboratory before changing a definition or combining small groups.",
+        "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit dem Labor ab.",
       ],
     ],
   ],
@@ -615,8 +615,8 @@ article(
         "Konzentrieren Sie sich auf die anstehende Entscheidung, statt jedes denkbare Beispiel zu sammeln.",
       ],
       [
-        "Commission or update competitor research through Research Lab.",
-        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über das Forschungslabor.",
+        "Commission or update competitor research through Laboratory.",
+        "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über das Labor.",
       ],
     ],
   ],
@@ -681,8 +681,8 @@ article(
         "Vergleichen Sie einen definierten Schritt und Zeitraum und prüfen Sie anschließend Größe und Beständigkeit des Unterschieds.",
       ],
       [
-        "Digital & Technology manages tracking implementation; Research Lab manages interpretation.",
-        "Technik betreut die technische Messung. Das Forschungslabor verantwortet die Auswertung.",
+        "Digital & Technology manages tracking implementation; Laboratory manages interpretation.",
+        "Technik betreut die technische Messung. Das Labor verantwortet die Auswertung.",
       ],
     ],
   ],
@@ -714,8 +714,8 @@ article(
         "Halten Sie fest, was beibehalten und verändert werden sollte und was unklar bleibt.",
       ],
       [
-        "Keep the live evaluation in Research Lab and link to its approved conclusion.",
-        "Führen Sie die laufende Auswertung im Forschungslabor und verlinken Sie ihr freigegebenes Fazit.",
+        "Keep the live evaluation in Laboratory and link to its approved conclusion.",
+        "Führen Sie die laufende Auswertung im Labor und verlinken Sie ihr freigegebenes Fazit.",
       ],
     ],
   ],
@@ -747,8 +747,8 @@ article(
         "Vermeiden Sie suggestive Fragen und dokumentieren Sie Rekrutierung, Stichprobe und Auswertungsmethode.",
       ],
       [
-        "Ask Research Lab to review the method before participant contact.",
-        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch das Forschungslabor prüfen.",
+        "Ask Laboratory to review the method before participant contact.",
+        "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch das Labor prüfen.",
       ],
     ],
   ],
@@ -810,8 +810,8 @@ article(
     [
       ["If use changes", "Bei geänderter Verwendung"],
       [
-        "Ask Creative Studio to confirm whether the existing approval covers the proposed use.",
-        "Lassen Sie durch Kreativstudio prüfen, ob die bestehende Freigabe die geplante Nutzung abdeckt.",
+        "Ask Studio to confirm whether the existing approval covers the proposed use.",
+        "Lassen Sie durch Studio prüfen, ob die bestehende Freigabe die geplante Nutzung abdeckt.",
       ],
       [
         "Legal handles interpretation and clearance questions; do not copy licence records into this Wiki.",
@@ -913,8 +913,8 @@ article(
         "Prüfen Sie Hinweise in der Größe und im Kanal, in denen Kundinnen und Kunden sie sehen werden.",
       ],
       [
-        "Route new or changed claims through Creative Studio and Legal before publication.",
-        "Lassen Sie neue oder geänderte Aussagen vor Veröffentlichung durch Kreativstudio und Recht prüfen.",
+        "Route new or changed claims through Studio and Legal before publication.",
+        "Lassen Sie neue oder geänderte Aussagen vor Veröffentlichung durch Studio und Recht prüfen.",
       ],
     ],
   ],
@@ -1009,8 +1009,8 @@ article(
     [
       ["Before each shift", "Vor jedem Einsatz"],
       [
-        "Read the current briefing in the Frontline Crew Portal and confirm coverage with your team lead.",
-        "Lesen Sie das aktuelle Briefing im Frontline Crew Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
+        "Read the current briefing in the Crew portal and confirm coverage with your team lead.",
+        "Lesen Sie das aktuelle Briefing im Crew-Portal und bestätigen Sie die Einsatzplanung mit Ihrer Teamleitung.",
       ],
       [
         "Use the approved customer tool for activity records; keep personal notes out of shared training files.",
@@ -1082,8 +1082,8 @@ article(
         "Nutzen Sie Interviews zur Erkundung möglicher Erklärungen und ein geeignetes Messdesign zur Prüfung ihrer Verbreitung.",
       ],
       [
-        "Ask Research Lab for a method review before recruiting participants.",
-        "Bitten Sie das Forschungslabor vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
+        "Ask Laboratory for a method review before recruiting participants.",
+        "Bitten Sie das Labor vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
       ],
     ],
   ],
@@ -1148,8 +1148,8 @@ article(
         "Priorisieren Sie eine konkrete Hürde und benennen Sie das für die Übergabe zuständige Team.",
       ],
       [
-        "Check the proposed change with Customer Care and Research Lab before broader rollout.",
-        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und dem Forschungslabor.",
+        "Check the proposed change with Customer Care and Laboratory before broader rollout.",
+        "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und dem Labor.",
       ],
     ],
   ],
@@ -1244,8 +1244,8 @@ article(
     [
       ["Coordinate delivery", "Die Umsetzung koordinieren"],
       [
-        "Track commissioning, review and publication in Creative Studio.",
-        "Steuern Sie Beauftragung, Abstimmung und Veröffentlichung in Kreativstudio.",
+        "Track commissioning, review and publication in Studio.",
+        "Steuern Sie Beauftragung, Abstimmung und Veröffentlichung in Studio.",
       ],
       [
         "Keep one link to the current asset and record decisions in the production workflow.",
@@ -1281,8 +1281,8 @@ article(
         "Achten Sie auf Volumenänderungen, fehlende Daten und Unterschiede im Zielgruppen- oder Kanalmix.",
       ],
       [
-        "Take unexplained movement to Research Lab with the same filters and reporting period.",
-        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zum Forschungslabor.",
+        "Take unexplained movement to Laboratory with the same filters and reporting period.",
+        "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zum Labor.",
       ],
     ],
   ],
@@ -1310,8 +1310,8 @@ article(
     [
       ["Review and report", "Prüfen und berichten"],
       [
-        "Ask Research Lab to check the design and the approved contact route.",
-        "Lassen Sie Design und freigegebenen Kontaktweg durch das Forschungslabor prüfen.",
+        "Ask Laboratory to check the design and the approved contact route.",
+        "Lassen Sie Design und freigegebenen Kontaktweg durch das Labor prüfen.",
       ],
       [
         "Report the response base and limitations; keep participant data in the approved research system.",
@@ -1548,7 +1548,10 @@ export const wikiLibrary: LibraryDefinition = {
 };
 
 export const wikiInterfaceCopy: Copy[] = [
-  ["Sales & Marketing Wiki", "Sales & Marketing Wiki"],
+  [
+    "Advertising, Marketing & Sales Wiki",
+    "Advertising, Marketing & Sales Wiki",
+  ],
   ["Knowledge & frontline", "Wissen & Vertriebsalltag"],
   ["Search this Wiki", "Dieses Wiki durchsuchen"],
   ["Wiki search results", "Wiki-Suchergebnisse"],

@@ -81,7 +81,7 @@ export const germanTeamsHistory: Record<string, string> = {
   "Digital & Technology / Security Engineering":
     "Technik & Digitales / IT-Sicherheit",
   "CRM webhook retries are ready for contract review in release 2026.10. Content acceptance from Creative & Editorial is linked in the Deployment Checklist; deploy and runtime checks are still ours.":
-    "Die Wiederholungslogik für CRM-Webhooks ist in Release 2026.10 bereit für die Prüfung des Schnittstellenvertrags. Die Inhaltsabnahme des Kreativstudios ist in der Bereitstellungscheckliste verlinkt; Deployment und Laufzeitprüfungen liegen weiterhin bei uns.",
+    "Die Wiederholungslogik für CRM-Webhooks ist in Release 2026.10 bereit für die Prüfung des Schnittstellenvertrags. Die Inhaltsabnahme des Studios ist in der Bereitstellungscheckliste verlinkt; Deployment und Laufzeitprüfungen liegen weiterhin bei uns.",
   "API contract review is open. Can someone check pagination, error semantics and event versioning before we lock the first consumer interface?":
     "Die API-Spezifikation ist bereit fürs Review. Kann jemand Paginierung, Fehlerverhalten und Ereignisversionierung prüfen, bevor wir die erste Schnittstelle für die angebundene Anwendung festlegen?",
   "I’ve added a small Python consumer fixture to test the contract boundary.":

@@ -23,7 +23,7 @@ import WorkspaceFAQ from "../components/WorkspaceFAQ";
 import { creationExplanation } from "../components/workspaceFAQContent";
 const choices = [
   {
-    title: "Organisational Planning & Reporting",
+    title: "Planning",
     href: "/planning",
     action: "Explore workspace",
   },

@@ -25,7 +25,7 @@ export const workspaceSeed: [
   ],
   [
     "planning",
-    "Planning Cycle",
+    "Planning",
     "/planning",
     "Organisation-wide strategy, planning and formal performance reporting.",
     "Strategy & planning",
@@ -43,7 +43,7 @@ export const workspaceSeed: [
   ],
   [
     "audience",
-    "Research Lab",
+    "Laboratory",
     "/audience-innovation",
     "Audience research, segmentation, journeys, behavioural insight, analysis, experimentation and marketing-automation ideation.",
     "Audience & experience",
@@ -52,7 +52,7 @@ export const workspaceSeed: [
   ],
   [
     "content",
-    "Creative Studio",
+    "Studio",
     "/content-delivery",
     "Shared production space where channel teams and topic specialists plan, create, review and release public-facing work.",
     "Audience & experience",
@@ -61,7 +61,7 @@ export const workspaceSeed: [
   ],
   [
     "customer",
-    "Client Relations",
+    "Relations",
     "/customer-relations",
     "Customer care, relationship continuity, account stewardship, partnerships and frontline interaction quality.",
     "Customer relationships",
@@ -79,7 +79,7 @@ export const workspaceSeed: [
   ],
   [
     "services",
-    "Office Services",
+    "Services",
     "/services",
     "Office maintenance and equipment, purchasing and suppliers, travel services and reception.",
     "Workplace operations",
@@ -88,7 +88,7 @@ export const workspaceSeed: [
   ],
   [
     "quality",
-    "Quality Monitoring",
+    "Quality",
     "/quality-monitoring",
     "Shared workspace for monitoring quality, improving processes, coordinating process improvement work and developing more effective and environmentally responsible ways of working.",
     "Improvement",

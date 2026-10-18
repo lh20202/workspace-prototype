@@ -71,16 +71,16 @@ export const architectureSections: (
   { type: "workspace", id: "finance" },
 ];
 const hubLabels: Record<string, string> = {
-  audience: "Research Lab",
-  content: "Creative Studio",
+  audience: "Laboratory",
+  content: "Studio",
   logistics: "Acquisitions",
-  customer: "Client Relations",
+  customer: "Relations",
   executive: "CEO",
-  planning: "Planning Cycle",
+  planning: "Planning",
   projects: "Projects",
-  quality: "Quality Monitoring",
+  quality: "Quality",
   legal: "Legal",
-  services: "Office Services",
+  services: "Services",
   digital: "Tech",
   archives: "Archives",
   employment: "Employment & Hiring",
@@ -132,7 +132,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
   ...workspaceRegistry,
   {
     id: "sales-wiki",
-    title: "Sales & Marketing Wiki",
+    title: "Advertising, Marketing & Sales Wiki",
     href: "/sales-marketing/wiki",
     description:
       "Stable sales and marketing knowledge, reference material and practical guidance.",
@@ -144,14 +144,14 @@ export const environmentRegistry: WorkspaceDefinition[] = [
       "Internal knowledge; protected source systems retain their own access controls",
     departmentRelationships: [],
     hubId: "sales-marketing",
-    hubLabel: "Sales & Marketing Wiki",
+    hubLabel: "Advertising, Marketing & Sales Wiki",
     accessLevel: "internal",
     environmentType: "wiki",
   },
   ...[
     [
       "frontline-sales",
-      "Frontline Crew Portal",
+      "Crew portal",
       "/frontline-sales",
       "sales-marketing",
       "Day-to-day frontline information and tools",

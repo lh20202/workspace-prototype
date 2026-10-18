@@ -57,7 +57,7 @@ export const publishingPosts: ConversationMessage[] = [
     channel: "Wiki Moderation",
     author: "Elena Rossi",
     time: "11:41",
-    text: "Three Sales & Marketing Wiki pages are due for review this month. Owners are in the register. Do we have dates from everyone yet?",
+    text: "Three Advertising, Marketing & Sales Wiki pages are due for review this month. Owners are in the register. Do we have dates from everyone yet?",
     replies: [
       {
         author: "Jordan Lee",

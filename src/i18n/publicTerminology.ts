@@ -164,6 +164,7 @@ export const publicTerminologyAliases = {
     "Teams aufklappen": "Kanalgruppen aufklappen",
     "Teams zuklappen": "Kanalgruppen zuklappen",
     "Teams wird geöffnet": "Kanäle werden geöffnet",
+    "Studio wird in Teams geöffnet": "Die Studiokanäle werden geöffnet",
     "Kreativstudio wird in Teams geöffnet": "Die Studiokanäle werden geöffnet",
     "Kreativ- und Redaktionsstudio wird in Teams geöffnet":
       "Die Studiokanäle werden geöffnet",

@@ -65,54 +65,63 @@ describe("English and German display language", () => {
       North: "Nord",
       East: "Ost",
       West: "West",
-      "Research Lab": "Forschungslabor",
-      "Creative Studio": "Kreativstudio",
+      Laboratory: "Labor",
+      Studio: "Studio",
       Acquisitions: "Akquise",
-      "Client Relations": "Kundenbeziehungen",
+      Relations: "Beziehungen",
       CEO: "CEO",
-      "Planning Cycle": "Planungszyklus",
+      Planning: "Planung",
       Projects: "Projekte",
-      "Quality Monitoring": "Qualitätsmonitoring",
+      Quality: "Qualität",
       Legal: "Recht",
-      "Office Services": "Büroservices",
+      Services: "Services",
       Tech: "Technik",
       Archives: "Archiv",
-      "Workforce & Ethics": "Belegschaft & Ethik",
+      Workforce: "Belegschaft",
       Curriculum: "Curriculum",
-      "Internal News & Networking": "Interne Nachrichten & Netzwerke",
+      Network: "Netzwerk",
       Personnel: "Personal",
       "Workers' Union": "Arbeitnehmervertretung",
       Welfare: "Fürsorge",
       South: "Süd",
       "Media Library": "Medienbibliothek",
       "Membership Portal": "Mitgliederportal",
-      "Money In": "Einnahmen",
-      "Money Out": "Ausgaben",
-      "Value for Money": "Wirtschaftlichkeit",
-      "Bank Vault": "Tresor",
+      "-> $": "-> $",
+      "$ ->": "$ ->",
+      Value: "Wert",
+      Vault: "Tresor",
       "Jump to…": "Direkt zu…",
-      "Frontline Crew Portal": "Frontline Crew Portal",
+      "Meetings and coordination": "Besprechungen und Koordination",
+      "Crew portal": "Crew-Portal",
+      "Advertising, Marketing & Sales Wiki":
+        "Advertising, Marketing & Sales Wiki",
     };
     for (const [english, german] of Object.entries(hubLabels)) {
       expect(translateText(english, "de")).toBe(german);
       expect(translateText(english, "en")).toBe(english);
     }
     expect(translateText("Staff Service Operations workspace", "de")).toBe(
-      "Arbeitsbereich Büroservices",
+      "Arbeitsbereich Services",
     );
-    expect(translateText("Office Services workspace", "de")).toBe(
-      "Arbeitsbereich Büroservices",
+    expect(translateText("Services workspace", "de")).toBe(
+      "Arbeitsbereich Services",
     );
     expect(translateText("Legal workspace", "de")).toBe("Arbeitsbereich Recht");
-    expect(translateText("Client Relations workspace", "de")).toBe(
-      "Arbeitsbereich Kundenbeziehungen",
+    expect(translateText("Relations workspace", "de")).toBe(
+      "Arbeitsbereich Beziehungen",
     );
     expect(translateText("Customer Care & Relations workspace", "de")).toBe(
       "Arbeitsbereich Beziehungen zu Auftraggebern und Kunden",
     );
-    expect(
-      translateText("Office Services → Purchasing & Suppliers", "de"),
-    ).toBe("Büroservices → Einkauf & Lieferanten");
+    expect(translateText("Services → Purchasing & Suppliers", "de")).toBe(
+      "Services → Einkauf & Lieferanten",
+    );
+    expect(translateText("Search -> $", "de")).toBe("-> $ durchsuchen");
+    expect(translateText("$ -> documents", "de")).toBe("Dokumente – $ ->");
+    for (const legacy of ["Money In", "Money-In", "Income & Reconciliation"])
+      expect(translateText(legacy, "de")).toBe("-> $");
+    for (const legacy of ["Money Out", "Money-Out", "Payments & Close"])
+      expect(translateText(legacy, "de")).toBe("$ ->");
   });
   it("translates confidential personnel work and independent representation clearly", () => {
     const protectedLabels = {

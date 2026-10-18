@@ -17,7 +17,7 @@ describe("Frontline legacy entrance", () => {
       );
       const html = renderToStaticMarkup(createElement(FrontlineApp));
       expect(html).toContain('data-environment="frontline"');
-      expect(html).toContain("Frontline Crew Portal");
+      expect(html).toContain("Crew portal");
       expect(html).toContain("COMING SOON");
       expect(html).toContain(
         "In development — a separate experience for frontline crew",

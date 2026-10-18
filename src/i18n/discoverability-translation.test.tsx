@@ -144,7 +144,9 @@ describe("German discoverability review after English implementation was final",
     expect(german(studioPosts["education-skills"][0].text)).toContain(
       german("Future Skills Week"),
     );
-    expect(german("Sales & Marketing Wiki")).toBe("Sales & Marketing Wiki");
+    expect(german("Advertising, Marketing & Sales Wiki")).toBe(
+      "Advertising, Marketing & Sales Wiki",
+    );
   });
 
   it("translates the actual Studio Home groups and the Demo User global helper", () => {

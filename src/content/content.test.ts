@@ -34,7 +34,7 @@ describe("Connected content production", () => {
       "/tools",
     ])
       expect(prototypeForPath("/content-delivery" + suffix)).toBe("content");
-    expect(pageTitle("/content-delivery")).toBe("Creative Studio");
+    expect(pageTitle("/content-delivery")).toBe("Studio");
     expect(prototypeForPath("/audience-innovation")).toBe("audience");
     expect(prototypeForPath("/services")).toBe("services");
     expect(prototypeForPath("/logistics/teams")).toBe("logistics");

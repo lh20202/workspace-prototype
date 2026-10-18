@@ -4,13 +4,13 @@ import { files, fileContext } from "./data";
 export const libraries = [
   {
     id: "income-documents",
-    name: "Money In",
+    name: "-> $",
     areas: ["income", "reconciliation"],
   },
-  { id: "payment-documents", name: "Money Out", areas: ["payments"] },
+  { id: "payment-documents", name: "$ ->", areas: ["payments"] },
   {
     id: "planning-documents",
-    name: "Value for Money",
+    name: "Value",
     areas: ["planning"],
   },
   {
@@ -18,7 +18,7 @@ export const libraries = [
     name: "Accounting & Reporting",
     areas: ["accounting"],
   },
-  { id: "treasury-documents", name: "Bank Vault", areas: ["treasury"] },
+  { id: "treasury-documents", name: "Vault", areas: ["treasury"] },
 ];
 export const folderNames: Record<string, string> = {
   income: "Income guidance",

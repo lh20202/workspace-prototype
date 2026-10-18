@@ -139,15 +139,22 @@ describe("SharePoint library navigation", () => {
 
   it("preserves folder and file bookmarks only for reviewed library title renames", () => {
     const renamedLibraries = [
-      ["Workforce & Culture", "Workforce & Ethics"],
+      ["Workforce & Culture", "Workforce"],
+      ["Workforce & Ethics", "Workforce"],
       ["Capability & Learning", "Curriculum"],
-      ["Quality & Monitoring", "Quality Monitoring"],
-      ["Income & Reconciliation", "Money In"],
-      ["Income & Reconciliation", "Money Out"],
-      ["Payments & Close", "Money Out"],
-      ["Planning & Analysis", "Value for Money"],
-      ["Treasury & Banking", "Bank Vault"],
-      ["Research & Insight", "Research Lab"],
+      ["Quality & Monitoring", "Quality"],
+      ["Quality Monitoring", "Quality"],
+      ["Income & Reconciliation", "-> $"],
+      ["Money In", "-> $"],
+      ["Income & Reconciliation", "$ ->"],
+      ["Payments & Close", "$ ->"],
+      ["Money Out", "$ ->"],
+      ["Planning & Analysis", "Value"],
+      ["Value for Money", "Value"],
+      ["Treasury & Banking", "Vault"],
+      ["Bank Vault", "Vault"],
+      ["Research & Insight", "Laboratory"],
+      ["Research Lab", "Laboratory"],
     ];
     for (const [previousTitle, title] of renamedLibraries) {
       expect(libraryTitleMatches(title, title)).toBe(true);
@@ -174,9 +181,7 @@ describe("SharePoint library navigation", () => {
       "Workforce & Culture ",
       "workforce & culture",
     ]) {
-      expect(libraryTitleMatches(unrelatedTitle, "Workforce & Ethics")).toBe(
-        false,
-      );
+      expect(libraryTitleMatches(unrelatedTitle, "Workforce")).toBe(false);
       expect(
         libraryLocation(
           new URLSearchParams({
@@ -184,7 +189,7 @@ describe("SharePoint library navigation", () => {
             folder: "Campaigns/Previous",
             file: "DOC-101",
           }),
-          "Workforce & Ethics",
+          "Workforce",
           files,
         ),
       ).toEqual({ folder: "", file: undefined });

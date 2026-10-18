@@ -70,12 +70,8 @@ describe("search matches the same canonical records in English and German", () =
         "  GENEHMIGT   Planung und Analyse ",
       ),
     ).toBe(true);
-    expect(
-      matchesDisplayText(
-        "Office Services",
-        "Büroservices",
-      ),
-    ).toBe(true);
+    expect(matchesDisplayText("Laboratory", "Labor")).toBe(true);
+    expect(matchesDisplayText("Relations", "Beziehungen")).toBe(true);
     expect(
       matchesDisplayText(
         "Welfare & Employee Representation",

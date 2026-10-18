@@ -88,7 +88,9 @@ describe("German access-matrix review after the English surfaces were final", ()
       "Andere Vorschaurolle ausprobieren",
     );
     expect(german("Access required")).toBe("Zugriff erforderlich");
-    expect(german("Sales & Marketing Wiki")).toBe("Sales & Marketing Wiki");
+    expect(german("Advertising, Marketing & Sales Wiki")).toBe(
+      "Advertising, Marketing & Sales Wiki",
+    );
   });
 
   it("translates every actual Finance review while keeping denied views free of review content", () => {

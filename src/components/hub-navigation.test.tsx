@@ -28,14 +28,14 @@ function links(html: string) {
 describe("shared SharePoint hub navigation", () => {
   it("keeps Sales workspaces separate from the Wiki and Portal in their agreed order", () => {
     const workspaces = [
-      ["Research Lab", "/audience-innovation"],
-      ["Creative Studio", "/content-delivery"],
+      ["Laboratory", "/audience-innovation"],
+      ["Studio", "/content-delivery"],
       ["Acquisitions", "/logistics"],
-      ["Client Relations", "/customer-relations"],
+      ["Relations", "/customer-relations"],
     ];
     const related = [
-      ["Sales & Marketing Wiki", "/sales-marketing/wiki"],
-      ["Frontline Crew Portal", "/frontline-sales"],
+      ["Advertising, Marketing & Sales Wiki", "/sales-marketing/wiki"],
+      ["Crew portal", "/frontline-sales"],
       ["Media Library", "/external/media-library"],
     ];
     for (const [, pathname] of [...workspaces, related[0]]) {

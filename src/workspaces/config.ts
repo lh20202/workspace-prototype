@@ -117,7 +117,7 @@ const seeds = {
     areas: [
       [
         "monitoring",
-        "Quality Monitoring",
+        "Quality",
         "Quality reviews, recurring issues, corrective actions and cross-company follow-up.",
         "safetyculture",
       ],
@@ -505,7 +505,7 @@ const seeds = {
       ],
       [
         "culture",
-        "Workforce & Ethics",
+        "Workforce",
         "Leadership, inclusive working practices and culture development.",
       ],
       [
@@ -526,7 +526,7 @@ const seeds = {
       ],
       [
         "communities",
-        "Internal News & Networking",
+        "Network",
         "Opt-in networks, open events, programme planning and staff experience.",
       ],
       [

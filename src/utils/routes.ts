@@ -97,17 +97,14 @@ export function pageTitle(pathname: string) {
   if (pathname === "/") return "Welcome | Digital Workspace demo site";
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
-  if (pathname.startsWith("/logistics/teams"))
-    return "Acquisitions | Teams";
+  if (pathname.startsWith("/logistics/teams")) return "Acquisitions | Teams";
   const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
   );
   if (registered) return registered.title;
-  if (pathname.startsWith("/employee-council"))
-    return "Welfare";
+  if (pathname.startsWith("/employee-council")) return "Welfare";
   if (pathname.startsWith("/executive")) return "CEO";
-  if (pathname.startsWith("/governance"))
-    return "Membership Portal";
+  if (pathname.startsWith("/governance")) return "Membership Portal";
   if (pathname.startsWith("/emergency-response"))
     return "Emergency Response | Demo preview";
   if (pathname === "/teams") return "Digital workspaces | Teams";
@@ -117,32 +114,26 @@ export function pageTitle(pathname: string) {
     pathname === "/content-delivery" ||
     pathname.startsWith("/content-delivery/")
   )
-    return "Creative & Editorial Studio";
+    return "Studio";
   if (
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")
   )
-    return "Research Lab";
+    return "Laboratory";
   if (pathname === "/services" || pathname.startsWith("/services/"))
-    return "Office Services";
+    return "Services";
   if (pathname === "/service-desk/it-support")
     return "IT requests | Service Desk";
   if (pathname.startsWith("/service-desk/"))
     return "Access request | Service Desk";
-  if (pathname.startsWith("/logistics/teams"))
-    return "Acquisitions | Teams";
-  if (pathname.startsWith("/logistics"))
-    return "Acquisitions";
+  if (pathname.startsWith("/logistics/teams")) return "Acquisitions | Teams";
+  if (pathname.startsWith("/logistics")) return "Acquisitions";
   return pathname === "/"
     ? "Digital Workspaces | Company intranet"
-    : "Organisational Planning & Reporting";
+    : "Planning";
 }
 export function accessRequestHref(folder = "") {
-  const path = [
-    "Organisational Planning & Reporting",
-    "Restricted Planning",
-    folder,
-  ]
+  const path = ["Planning", "Restricted Planning", folder]
     .filter(Boolean)
     .join(" / ");
   return (

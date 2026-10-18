@@ -139,7 +139,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Confidential",
       destination: "/audience-innovation/analytics",
-      destinationName: "Research Lab → Measurement & Analytics",
+      destinationName: "Laboratory → Measurement & Analytics",
     },
     reply:
       "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.",
@@ -153,7 +153,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/content-delivery/creative",
-      destinationName: "Creative Studio → Creative & Multimedia",
+      destinationName: "Studio → Creative & Multimedia",
       removed: true,
     },
     reply:
@@ -168,10 +168,10 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/financial-operations/planning",
-      destinationName: "Income & Financial Operations → Planning & Analysis",
+      destinationName: "Income & Financial Operations → Value",
     },
     reply:
-      "Ah, this one's part of the Q4 forecast. Can you put it in Planning & Analysis and link it here? Fine to keep the discussion in this thread.",
+      "Ah, this one's part of the Q4 forecast. Can you put it in Value and link it here? Fine to keep the discussion in this thread.",
   },
   "strategy-technology": {
     author: "Casey Blake",
@@ -182,7 +182,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/services/purchasing",
-      destinationName: "Office Services → Purchasing & Suppliers",
+      destinationName: "Services → Purchasing & Suppliers",
       removed: true,
     },
     reply:
@@ -197,11 +197,11 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Internal",
       destination: "/people-culture/learning",
-      destinationName: "People & Culture → Capability & Learning",
+      destinationName: "People & Culture → Curriculum",
       removed: true,
     },
     reply:
-      "Could you keep the feedback in Capability & Learning and post the link here? Then the learning team can add to the same copy.",
+      "Could you keep the feedback in Curriculum and post the link here? Then the learning team can add to the same copy.",
   },
   "executive-office": {
     author: "Robin Avery",
@@ -393,7 +393,7 @@ const departmentReplies: Record<
     misfiled: [
       {
         author: "Elena Rossi",
-        text: "Done — the feedback is in Capability & Learning now. I've updated the link in my post too.",
+        text: "Done — the feedback is in Curriculum now. I've updated the link in my post too.",
         time: "10:51",
         link: {
           href: functionalFileHref(configById.get("people")!, "people-F5"),
@@ -586,8 +586,7 @@ export const departments: Department[] = departmentDefinitions.map(
           kind: "Misplaced business upload",
           sensitivity: "Internal",
           destination: "/employment-admin/recruitment-administration",
-          destinationName:
-            "Personnel → Recruitment Administration",
+          destinationName: "Personnel → Recruitment Administration",
         },
         moderatorReply:
           "Could you put this in Personnel → Recruitment Administration and link it here? Let's keep candidate details in the restricted recruitment areas.",

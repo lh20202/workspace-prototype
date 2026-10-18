@@ -1,7 +1,7 @@
 import type { LibraryDocument, LibraryDefinition } from "../sharepoint/library";
 import { initiatives, journey, segments, type WorkingFile } from "./data";
 export const libraries = [
-  { id: "research", title: "Research Lab" },
+  { id: "research", title: "Laboratory" },
   { id: "experiments", title: "Experiments & Testing" },
   { id: "analytics", title: "Analysis & Reporting" },
 ];
@@ -89,7 +89,7 @@ export const documentFor = (file: WorkingFile): LibraryDocument => ({
 export const definitions: Record<string, LibraryDefinition> = {
   research: {
     id: "research",
-    name: "Research Lab",
+    name: "Laboratory",
     columns: [
       { key: "name", label: "Name" },
       { key: "contentType", label: "Document type" },

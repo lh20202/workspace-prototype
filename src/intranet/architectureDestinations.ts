@@ -27,9 +27,9 @@ export interface ArchitectureDestination {
 }
 
 const peopleSections = [
-  ["culture", "Workforce & Ethics"],
+  ["culture", "Workforce"],
   ["learning", "Curriculum"],
-  ["communities", "Internal News & Networking"],
+  ["communities", "Network"],
 ] as const;
 
 const people = environmentRegistry.find(
@@ -109,10 +109,10 @@ export const orgCentralGroups = [
 ];
 
 export const financeJumpLinks = [
-  { label: "Money In", href: "/financial-operations/income" },
-  { label: "Money Out", href: "/financial-operations/reconciliation" },
-  { label: "Value for Money", href: "/financial-operations/planning" },
-  { label: "Bank Vault", href: "/financial-operations/treasury" },
+  { label: "-> $", href: "/financial-operations/income" },
+  { label: "$ ->", href: "/financial-operations/reconciliation" },
+  { label: "Value", href: "/financial-operations/planning" },
+  { label: "Vault", href: "/financial-operations/treasury" },
 ];
 
 export function destinationsForHub(id: HubId): ArchitectureDestination[] {

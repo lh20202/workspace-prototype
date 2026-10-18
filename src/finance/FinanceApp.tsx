@@ -205,7 +205,7 @@ export default function FinanceApp() {
           ? "Reconciliation Issues"
           : page === "restricted"
             ? "Restricted"
-            : library?.name || area?.name || system?.name || "Home";
+            : area?.name || library?.name || system?.name || "Home";
   return (
     <div className="app-shell services-app finance-app">
       <StaffLink className="skip-link" href="#finance-main">

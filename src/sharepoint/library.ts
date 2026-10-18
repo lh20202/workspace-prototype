@@ -329,14 +329,14 @@ export function queryLibrary(
 // Exact legacy display names remain valid for bookmarks after a destination
 // rename. These aliases do not change the supplied library's files or scope.
 const legacyLibraryTitles = new Map<string, readonly string[]>([
-  ["Workforce & Ethics", ["Workforce & Culture"]],
+  ["Workforce", ["Workforce & Culture", "Workforce & Ethics"]],
   ["Curriculum", ["Capability & Learning"]],
-  ["Quality Monitoring", ["Quality & Monitoring"]],
-  ["Money In", ["Income & Reconciliation"]],
-  ["Money Out", ["Income & Reconciliation", "Payments & Close"]],
-  ["Value for Money", ["Planning & Analysis"]],
-  ["Bank Vault", ["Treasury & Banking"]],
-  ["Research Lab", ["Research & Insight"]],
+  ["Quality", ["Quality & Monitoring", "Quality Monitoring"]],
+  ["-> $", ["Income & Reconciliation", "Money In"]],
+  ["$ ->", ["Income & Reconciliation", "Payments & Close", "Money Out"]],
+  ["Value", ["Planning & Analysis", "Value for Money"]],
+  ["Vault", ["Treasury & Banking", "Bank Vault"]],
+  ["Laboratory", ["Research & Insight", "Research Lab"]],
 ]);
 
 export function libraryTitleMatches(

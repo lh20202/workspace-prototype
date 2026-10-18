@@ -49,7 +49,7 @@ describe("Planning & Reporting uses the existing Planning Team and working files
       ).toBe(expected);
       if (expected) {
         expect(planning?.kind).toBe("workspace");
-        expect(planning?.label).toBe("Planning Cycle");
+        expect(planning?.label).toBe("Planning");
       }
     }
     expect(canAccessArea("sam", "planning", "restricted")).toBe(false);

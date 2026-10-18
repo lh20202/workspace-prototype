@@ -4,7 +4,7 @@ import {
 } from "../environments/catalog";
 import type { OperationalFile } from "../logistics/data";
 import { matchesDisplayText } from "../i18n/search";
-export const title = "Creative Studio";
+export const title = "Studio";
 export const description =
   "Shared production space where channel teams and topic specialists plan, create, review and release public-facing work.";
 export const demoToday = "2026-10-16";

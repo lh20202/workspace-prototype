@@ -4,8 +4,8 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Shared services": "Zentrale Dienste",
   "Controlled access": "Geschützter Zugriff",
   "Jump to": "Direkt zu",
-  "Income & Booking": "Einnahmen & Buchung",
-  "Payments & Close": "Zahlungen & Abschluss",
+  "Income & Booking": "-> $",
+  "Payments & Close": "$ ->",
   "Planning & Reporting": "Planung & Berichterstattung",
   "Cost benefit analysis": "Analyse von Kosten und Nutzen",
   Treasury: "Liquiditätsmanagement",
@@ -36,8 +36,8 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Demo item": "Demovorgang",
 
   // Current display names; legacy keys above remain available for saved content.
-  "Money In": "Einnahmen",
-  "Money Out": "Ausgaben",
-  "Value for Money": "Wirtschaftlichkeit",
-  "Bank Vault": "Tresor",
+  "-> $": "-> $",
+  "$ ->": "$ ->",
+  Value: "Wert",
+  Vault: "Tresor",
 };

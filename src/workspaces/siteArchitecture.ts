@@ -175,7 +175,7 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
   quality: [
     library(
       "quality-documents",
-      "Quality Monitoring",
+      "Quality",
       ["monitoring", "reviews"],
       "Review service quality, evidence and corrective actions.",
       [
@@ -381,7 +381,7 @@ export const functionalLibraries: Record<string, FunctionalLibrary[]> = {
   people: [
     library(
       "workforce-documents",
-      "Workforce & Ethics",
+      "Workforce",
       [
         "workforce",
         "culture",

@@ -5,12 +5,12 @@ export const title = "Income & Financial Operations";
 export const description =
   "Shared workspace for administering incoming revenue, reconciling transactions, processing financial obligations, maintaining accounts, planning finances and managing cash.";
 export const areas = [
-  { id: "income", name: "Money In" },
-  { id: "reconciliation", name: "Money Out" },
+  { id: "income", name: "-> $" },
+  { id: "reconciliation", name: "$ ->" },
   { id: "payments", name: "Payments & Settlement" },
-  { id: "planning", name: "Value for Money" },
+  { id: "planning", name: "Value" },
   { id: "accounting", name: "Accounting & Reporting" },
-  { id: "treasury", name: "Bank Vault" },
+  { id: "treasury", name: "Vault" },
   { id: "calendar", name: "Financial Calendar" },
 ];
 export const systems = [
@@ -234,7 +234,7 @@ const seed: [string, string, string, string, string, string, string, string][] =
       "Robin Wells",
       "Scheduled",
       "netsuite",
-      "Office Services",
+      "Services",
       "Purchasing → validate obligation → settle",
     ],
     [

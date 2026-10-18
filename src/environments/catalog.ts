@@ -109,7 +109,7 @@ export function adminPlatformsForHub(hub: AdminHubId) {
 export const externalEnvironments: ExternalEnvironment[] = [
   {
     id: "frontline",
-    name: "Frontline Crew Portal",
+    name: "Crew portal",
     theme: "teal",
     variant: "frontline",
   },

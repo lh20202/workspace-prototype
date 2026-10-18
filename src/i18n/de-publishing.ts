@@ -128,8 +128,8 @@ export const germanPublishing: Record<string, string> = {
     "Für die Planung gibt es eine neue freigegebene Berichtsansicht. Kann jemand prüfen, ob der Intranet-Link noch auf den alten Speicherort verweist?",
   "I’ll confirm the published link with the page owner today.":
     "Ich stimme den veröffentlichten Link heute mit der seitenverantwortlichen Person ab.",
-  "The Sales & Marketing Wiki has three pages due for review this month. The owners are listed in the register.":
-    "Im Sales & Marketing Wiki stehen diesen Monat drei Seiten zur Überprüfung an. Die Verantwortlichen sind in der Prüfübersicht eingetragen.",
+  "The Advertising, Marketing & Sales Wiki has three pages due for review this month. The owners are listed in the register.":
+    "Im Advertising, Marketing & Sales Wiki stehen diesen Monat drei Seiten zur Überprüfung an. Die Verantwortlichen sind in der Prüfübersicht eingetragen.",
   "I’ve asked them to confirm their review dates before the next publishing handoff.":
     "Ich habe sie gebeten, ihre Prüftermine vor der nächsten Veröffentlichungsübergabe zu bestätigen.",
   "The page owner will approve the updated guidance before publication. Please keep the working draft linked from its workspace rather than uploading a second copy here.":

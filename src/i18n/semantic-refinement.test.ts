@@ -12,7 +12,7 @@ describe("final German semantic interpretation", () => {
     const labels = {
       South: "Süd",
       East: "Ost",
-      "Money In": "Einnahmen",
+      "-> $": "-> $",
       Tools: "Tools",
       Archives: "Archiv",
       Personnel: "Personal",

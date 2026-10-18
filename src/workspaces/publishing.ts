@@ -20,7 +20,7 @@ export interface EnvironmentReview {
 export const environmentReviews: EnvironmentReview[] = [
   {
     id: "PUB-101",
-    environment: "Organisational Planning & Reporting",
+    environment: "Planning",
     area: "Approved reporting link",
     owner: "Casey Blake",
     moderator: "Jordan Lee",
@@ -32,7 +32,7 @@ export const environmentReviews: EnvironmentReview[] = [
   },
   {
     id: "PUB-102",
-    environment: "Sales & Marketing Wiki",
+    environment: "Advertising, Marketing & Sales Wiki",
     area: "October page reviews",
     owner: "Taylor Brooks",
     moderator: "Elena Rossi",
@@ -44,7 +44,7 @@ export const environmentReviews: EnvironmentReview[] = [
   },
   {
     id: "PUB-103",
-    environment: "Client Relations",
+    environment: "Relations",
     area: "Private library request",
     owner: "Maya Chen",
     moderator: "Jordan Lee",
@@ -180,7 +180,7 @@ export const migratedPublishingFiles: WorkingFile[] = fileSeeds.map(
     metadata: {
       Environment:
         area === "wiki-publishing"
-          ? "Sales & Marketing Wiki"
+          ? "Advertising, Marketing & Sales Wiki"
           : area === "intranet-publishing" || area === "page-ownership"
             ? "Company intranet"
             : "Digital workspaces",

@@ -1,6 +1,6 @@
 /** Final knowledge-language refinements after the English Wiki structure was settled. */
 export const germanWikiRefinement: Record<string, string> = {
-  "Open Creative Studio": "Kreativstudio öffnen",
+  "Open Studio": "Studio öffnen",
   "This knowledge area is outside the frontline view.":
     "Dieser Wissensbereich gehört nicht zur Ansicht für den direkten Kundenvertrieb.",
   "Need access to this Wiki area instead?":

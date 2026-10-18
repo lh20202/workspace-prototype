@@ -122,7 +122,7 @@ describe("launcher and service desk routes", () => {
     );
     expect(url.pathname).toBe("/service-desk/access-request");
     expect(url.searchParams.get("location")).toBe(
-      "Organisational Planning & Reporting / Restricted Planning / Scenario reviews/Current cycle",
+      "Planning / Restricted Planning / Scenario reviews/Current cycle",
     );
   });
 });

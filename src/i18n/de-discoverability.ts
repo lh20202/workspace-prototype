@@ -12,8 +12,7 @@ export const germanDiscoverability: Record<string, string> = {
   "Open all studio channels": "Alle Studiokanäle öffnen",
   "Discuss production with channel desks and topic specialists. Shared files stay in the workspace.":
     "Besprechen Sie die Produktion mit den Kanalredaktionen und Themenverantwortlichen. Gemeinsam genutzte Dateien bleiben im Arbeitsbereich.",
-  "Opening Creative Studio channels…":
-    "Die Kanäle des Kreativstudios werden geöffnet …",
+  "Opening Studio channels…": "Die Kanäle des Studios werden geöffnet …",
   "Technical coordination": "Technische Abstimmung",
   "Operational coordination": "Operative Abstimmung",
   "Open project channels": "Projektkanäle öffnen",
