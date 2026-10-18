@@ -153,16 +153,16 @@ function ArchitectureProjectStrip() {
         </StaffLink>
         {architectureProjects.map((project) => (
           <StaffLink
-            className="architecture-project-link"
+            className="architecture-project-link architecture-project-item"
             key={project.code}
             href={projectHref(project)}
             title={`${project.name} (${project.code})`}
           >
             <ArchitectureWorkspaceIcon />
-            <span className="architecture-project-copy">
-              <span>{project.name}</span>
-              <small>{project.code}</small>
-            </span>
+            <small className="architecture-project-code" data-no-translate>
+              {project.code}
+            </small>
+            <span className="architecture-project-name">{project.name}</span>
           </StaffLink>
         ))}
         <StaffLink
