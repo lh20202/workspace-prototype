@@ -557,7 +557,7 @@ export default function ContentApp() {
                   <div className="content-room-handoffs">
                     <StaffLink href={toolHref("planable")}>
                       <ExternalBrandMark id="slotline" size={24} /> Publishing
-                      approvals in Slotline <ArrowUpRight20Regular />
+                      approvals in ReelPoster <ArrowUpRight20Regular />
                     </StaffLink>
                     <StaffLink
                       href={externalPreviewHref("media-library", base)}
@@ -980,7 +980,7 @@ function ProductionCalendar({
           })}
         </h3>
         <StaffLink href={toolHref("planable")}>
-          <ExternalBrandMark id="slotline" size={24} /> Open in Slotline{" "}
+          <ExternalBrandMark id="slotline" size={24} /> Open in ReelPoster{" "}
           <ArrowUpRight20Regular />
         </StaffLink>
       </div>
@@ -1072,7 +1072,7 @@ function ProductionCalendar({
                   </Button>{" "}
                   <StaffLink href={toolHref("planable", p.id, ref?.id || "")}>
                     <ExternalBrandMark id="slotline" size={24} /> Open in
-                    Slotline {ref?.id}
+                    ReelPoster {ref?.id}
                   </StaffLink>
                 </div>
               );

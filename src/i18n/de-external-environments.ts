@@ -56,15 +56,17 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Personalakten und Bewerbungsprozesse verwalten.",
   "Manage accounting, financial planning and treasury records.":
     "Buchhaltung, Finanzplanung und Liquiditätsunterlagen verwalten.",
-  "Publishing approvals in Slotline": "Veröffentlichungsfreigaben in Slotline",
-  "Open in Slotline": "In Slotline öffnen",
-  "Open in Framevia": "In Framevia öffnen",
-  "Open in Relovia": "In Relovia öffnen",
-  "Open in Teralink": "In Teralink öffnen",
-  "Open in Recorda": "In Recorda öffnen",
-  "Open in Pathory": "In Pathory öffnen",
+  "Publishing approvals in ReelPoster":
+    "Veröffentlichungsfreigaben in ReelPoster",
+  "Open in ReelPoster": "In ReelPoster öffnen",
+  "Open in VidPhotoEditor": "In VidPhotoEditor öffnen",
+  "Open in TheCRM": "In TheCRM öffnen",
+  "Open in RaiseTicket": "In RaiseTicket öffnen",
+  "Open in Invoicer": "In Invoicer öffnen",
+  "Open in PMtool": "In PMtool öffnen",
+  "Open in DataHub": "In DataHub öffnen",
   "Open in PeopleHarbour": "In PeopleHarbour öffnen",
-  "Open in Velora": "In Velora öffnen",
+  "Open in MoneyTool": "In MoneyTool öffnen",
   "Day-to-day frontline information and tools":
     "Informationen und Werkzeuge für den direkten Kundenkontakt",
   "Global media and approved visual resources":

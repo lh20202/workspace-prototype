@@ -20,8 +20,8 @@ export interface AdminPlatform extends ExternalEnvironment {
 export const adminPlatforms: AdminPlatform[] = [
   {
     id: "framevia",
-    name: "Framevia",
-    logo: "/images/admin-logins/framevia.svg",
+    name: "VidPhotoEditor",
+    logo: "/images/admin-logins/vidphotoeditor.svg",
     category: "Media & photo editing",
     purpose: "Create and edit production imagery and visual assets.",
     hubs: ["sales-marketing"],
@@ -29,8 +29,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "slotline",
-    name: "Slotline",
-    logo: "/images/admin-logins/slotline.svg",
+    name: "ReelPoster",
+    logo: "/images/admin-logins/reelposter.svg",
     category: "Social content scheduling",
     purpose: "Plan, review and schedule social content.",
     hubs: ["sales-marketing"],
@@ -38,8 +38,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "relovia",
-    name: "Relovia",
-    logo: "/images/admin-logins/relovia.svg",
+    name: "TheCRM",
+    logo: "/images/admin-logins/thecrm.svg",
     category: "Customer relationship management",
     purpose: "Maintain customer relationships and account context.",
     hubs: ["sales-marketing", "finance"],
@@ -47,8 +47,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "teralink",
-    name: "Teralink",
-    logo: "/images/admin-logins/teralink.svg",
+    name: "RaiseTicket",
+    logo: "/images/admin-logins/raiseticket.svg",
     category: "IT & service support",
     purpose: "Manage service requests, support and workplace technology.",
     hubs: ["infrastructure"],
@@ -56,8 +56,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "recorda",
-    name: "Recorda",
-    logo: "/images/admin-logins/recorda.svg",
+    name: "Invoicer",
+    logo: "/images/admin-logins/invoicer.svg",
     category: "Invoice & document workflow",
     purpose: "Route documents and invoices through review and approval.",
     hubs: ["infrastructure"],
@@ -65,8 +65,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "pathory",
-    name: "Pathory",
-    logo: "/images/admin-logins/pathory.svg",
+    name: "PMtool",
+    logo: "/images/admin-logins/pmtool.svg",
     category: "Project management",
     purpose: "Coordinate project tasks, milestones and delivery.",
     hubs: ["infrastructure"],
@@ -74,8 +74,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "metriva",
-    name: "Metriva",
-    logo: "/images/admin-logins/metriva.svg",
+    name: "DataHub",
+    logo: "/images/admin-logins/datahub.svg",
     category: "Data analytics & reporting",
     purpose: "Explore data, monitor performance and build analytical reports.",
     hubs: ["sales-marketing", "infrastructure", "finance"],
@@ -92,8 +92,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "velora",
-    name: "Velora",
-    logo: "/images/admin-logins/velora-dollar.svg",
+    name: "MoneyTool",
+    logo: "/images/admin-logins/moneytool.svg",
     category: "Financial administration",
     purpose: "Manage accounting, financial planning and treasury records.",
     hubs: ["finance"],
@@ -169,6 +169,15 @@ export function externalEnvironmentForTool(id: string | undefined) {
 }
 
 const legacyBrandPatterns: [RegExp, string][] = [
+  // Previously displayed names can still appear in saved demo content.
+  [/\bFramevia\b/g, "framevia"],
+  [/\bSlotline\b/g, "slotline"],
+  [/\bRelovia\b/g, "relovia"],
+  [/\bMetriva\b/g, "metriva"],
+  [/\bTeralink\b/g, "teralink"],
+  [/\bRecorda\b/g, "recorda"],
+  [/\bPathory\b/g, "pathory"],
+  [/\bVelora\b/g, "velora"],
   [
     /\bSalesforce(?: Sales Cloud| Platform)?\b|\bHubSpot(?: CRM)?\b|\bGainsight\b|\bQuorum\b|\bZendesk\b/g,
     "relovia",

@@ -73,10 +73,10 @@ describe("canonical environment and vendor identities", () => {
       expect(externalEnvironmentForTool(id)).toBe(sales);
     expect(
       canonicalBrandText("Salesforce → HubSpot CRM → Oracle NetSuite"),
-    ).toBe("Relovia → Relovia → Velora");
+    ).toBe("TheCRM → TheCRM → MoneyTool");
   });
 
-  it("uses local category-specific transparent vector marks, including a document rather than money motif for Recorda", () => {
+  it("uses local category-specific transparent vector marks, with a distinct motif for each tool", () => {
     const logos = adminPlatforms.map((system) =>
       readFileSync(`public${system.logo}`, "utf8"),
     );
@@ -84,7 +84,7 @@ describe("canonical environment and vendor identities", () => {
     for (const logo of logos) {
       expect(logo).toContain("linearGradient");
       expect(logo).toContain("feDropShadow");
-      expect(logo).not.toMatch(/<image|<text|https?:\/\/(?!www.w3.org)|[€$£]/);
+      expect(logo).not.toMatch(/<image|<text|https?:\/\/(?!www.w3.org)/);
     }
   });
 

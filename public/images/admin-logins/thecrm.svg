@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#56c6bf"/>
+      <stop offset="1" stop-color="#167b8f"/>
+    </linearGradient>
+    <filter id="depth" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation=".8" flood-color="#167b8f" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <g filter="url(#depth)">
+    <path d="M8 16v34c0 6 11 10 24 10s24-4 24-10V16Z" fill="#14627b"/>
+    <path d="M8 13v34c0 6 11 10 24 10s24-4 24-10V13Z" fill="url(#face)"/>
+    <ellipse cx="32" cy="13" rx="24" ry="9" fill="#9ce6dc"/>
+    <ellipse cx="32" cy="13" rx="17" ry="5" fill="#65c9c2"/>
+    <path d="M9 28c7 11 39 11 46 0M9 41c7 11 39 11 46 0" fill="none" stroke="#b9eee5" stroke-width="3"/>
+    <path d="M15 21v4m0 10v3m0 10v2" stroke="#d6faf2" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

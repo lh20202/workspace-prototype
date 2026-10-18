@@ -56,9 +56,21 @@ describe("final German semantic interpretation", () => {
       canonicalBrandText(
         "Salesforce / HubSpot / Oracle NetSuite / Planable / Freshservice",
       ),
-    ).toBe("Relovia / Relovia / Velora / Slotline / Teralink");
-    expect(translateText("Open in Planable", "en")).toBe("Open in Slotline");
-    expect(translateText("Open in Planable", "de")).toBe("In Slotline öffnen");
+    ).toBe("TheCRM / TheCRM / MoneyTool / ReelPoster / RaiseTicket");
+    expect(translateText("Open in Planable", "en")).toBe("Open in ReelPoster");
+    expect(translateText("Open in Planable", "de")).toBe(
+      "In ReelPoster öffnen",
+    );
+    expect(
+      canonicalBrandText(
+        "Framevia / Slotline / Relovia / Metriva / Teralink / Recorda / Pathory / Velora",
+      ),
+    ).toBe(
+      "VidPhotoEditor / ReelPoster / TheCRM / DataHub / RaiseTicket / Invoicer / PMtool / MoneyTool",
+    );
+    expect(translateText("Open in ReelPoster", "de")).toBe(
+      "In ReelPoster öffnen",
+    );
     expect(translateText("Post options for Maya Chen", "de")).toBe(
       "Beitragsoptionen für Maya Chen",
     );
