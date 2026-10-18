@@ -65,7 +65,7 @@ describe("English and German display language", () => {
       North: "Nord",
       East: "Ost",
       West: "West",
-      Laboratory: "Labor",
+      Lab: "Lab",
       Studio: "Studio",
       Acquisitions: "Akquise",
       Relations: "Beziehungen",

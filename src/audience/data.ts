@@ -1,6 +1,6 @@
 import type { OperationalFile } from "../logistics/data";
 import { matchesDisplayText } from "../i18n/search";
-export const title = "Laboratory";
+export const title = "Lab";
 export const description =
   "Shared workspace for researching audiences, developing and testing new approaches, analysing performance and turning evidence into future outreach decisions.";
 export const navigation = [

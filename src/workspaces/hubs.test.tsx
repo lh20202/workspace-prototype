@@ -87,7 +87,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(
       environmentsForHub("sales-marketing").map((item) => item.hubLabel),
     ).toEqual([
-      "Laboratory",
+      "Lab",
       "Studio",
       "Acquisitions",
       "Relations",

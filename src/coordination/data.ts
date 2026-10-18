@@ -139,7 +139,7 @@ const misfiled: Record<
       kind: "Misplaced business upload",
       sensitivity: "Confidential",
       destination: "/audience-innovation/analytics",
-      destinationName: "Laboratory → Measurement & Analytics",
+      destinationName: "Lab → Measurement & Analytics",
     },
     reply:
       "Could you pop the working file into Measurement & Analytics and link it back here? That'll keep everyone on the same copy. Happy to help with the move.",

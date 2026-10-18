@@ -71,7 +71,7 @@ export const architectureSections: (
   { type: "workspace", id: "finance" },
 ];
 const hubLabels: Record<string, string> = {
-  audience: "Laboratory",
+  audience: "Lab",
   content: "Studio",
   logistics: "Acquisitions",
   customer: "Relations",

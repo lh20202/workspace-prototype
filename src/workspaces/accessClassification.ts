@@ -43,7 +43,7 @@ export const workspaceSeed: [
   ],
   [
     "audience",
-    "Laboratory",
+    "Lab",
     "/audience-innovation",
     "Audience research, segmentation, journeys, behavioural insight, analysis, experimentation and marketing-automation ideation.",
     "Audience & experience",

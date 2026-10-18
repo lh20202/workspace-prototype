@@ -3038,6 +3038,7 @@ export const germanMessages: Record<string, string> = {
   Welfare: "Fürsorge",
   "Welfare workspace": "Arbeitsbereich Fürsorge",
   Acquisitions: "Akquise",
+  Lab: "Lab",
   Laboratory: "Labor",
   Relations: "Beziehungen",
   Quality: "Qualität",
@@ -3053,6 +3054,8 @@ export const germanMessages: Record<string, string> = {
   Vault: "Tresor",
   Workforce: "Belegschaft",
   "Record held in the Membership Portal.": "Akte im Mitgliederportal geführt.",
+  "Return performance evidence to Lab":
+    "Leistungsnachweise an Lab zurückgeben",
   "Return performance evidence to Laboratory":
     "Leistungsnachweise an das Labor zurückgeben",
   "Dev / Security Engineering": "Dev/Sicherheitstechnik",
@@ -3062,6 +3065,7 @@ export const germanMessages: Record<string, string> = {
     "Seitentexte, Barrierefreiheit und Inhaltsabnahme. CMS-Entwicklung bleibt bei Dev.",
   "Acquisitions workspace": "Arbeitsbereich Akquise",
   "Laboratory workspace": "Arbeitsbereich Labor",
+  "Lab workspace": "Arbeitsbereich Lab",
   "Relations workspace": "Arbeitsbereich Beziehungen",
   "Quality workspace": "Arbeitsbereich Qualität",
   "Dev workspace": "Arbeitsbereich Dev",

@@ -48,6 +48,8 @@ export const germanSimplifiedNames: Record<string, string> = {
     "Ergebnisnachweise an Forschung & Analyse zurückgeben",
 
   // Current display names; legacy keys above remain available for saved content.
+  Lab: "Lab",
+  "Lab workspace": "Arbeitsbereich Lab",
   Laboratory: "Labor",
   Acquisitions: "Akquise",
   Relations: "Beziehungen",
@@ -64,6 +66,8 @@ export const germanSimplifiedNames: Record<string, string> = {
   Personnel: "Personal",
   Welfare: "Fürsorge",
   "CMS engineering in Dev": "Technische CMS-Umsetzung in Dev",
+  "Return performance evidence to Lab":
+    "Leistungsnachweise an Lab zurückgeben",
   "Return performance evidence to Laboratory":
     "Ergebnisnachweise an das Labor zurückgeben",
   "Media Library": "Medienbibliothek",

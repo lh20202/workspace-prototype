@@ -28,7 +28,7 @@ function links(html: string) {
 describe("shared SharePoint hub navigation", () => {
   it("keeps Sales workspaces separate from the Wiki and Portal in their agreed order", () => {
     const workspaces = [
-      ["Laboratory", "/audience-innovation"],
+      ["Lab", "/audience-innovation"],
       ["Studio", "/content-delivery"],
       ["Acquisitions", "/logistics"],
       ["Relations", "/customer-relations"],

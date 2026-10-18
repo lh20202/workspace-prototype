@@ -119,7 +119,7 @@ export function pageTitle(pathname: string) {
     pathname === "/audience-innovation" ||
     pathname.startsWith("/audience-innovation/")
   )
-    return "Laboratory";
+    return "Lab";
   if (pathname === "/services" || pathname.startsWith("/services/"))
     return "Services";
   if (pathname === "/service-desk/it-support")

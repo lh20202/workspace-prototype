@@ -336,7 +336,7 @@ const legacyLibraryTitles = new Map<string, readonly string[]>([
   ["$ ->", ["Income & Reconciliation", "Payments & Close", "Money Out"]],
   ["Value", ["Planning & Analysis", "Value for Money"]],
   ["Vault", ["Treasury & Banking", "Bank Vault"]],
-  ["Laboratory", ["Research & Insight", "Research Lab"]],
+  ["Lab", ["Laboratory", "Research & Insight", "Research Lab"]],
 ]);
 
 export function libraryTitleMatches(

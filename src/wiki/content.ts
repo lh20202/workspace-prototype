@@ -161,7 +161,7 @@ article(
         "Betrachten Sie ein Segment als Planungshilfe, nicht als Vorhersage über eine einzelne Person.",
       ],
       [
-        "Take new research questions to Laboratory; retain the source and its limitations.",
+        "Take new research questions to Lab; retain the source and its limitations.",
         "Neue Forschungsfragen gehen an das Labor. Bewahren Sie die Quelle und ihre Einschränkungen auf.",
       ],
     ],
@@ -549,7 +549,7 @@ article(
         "Klären Sie, was sich verändert hat, ob der Unterschied bedeutsam ist und was als Nächstes untersucht werden sollte.",
       ],
       [
-        "Current reporting and analysis remain in Laboratory and approved dashboards.",
+        "Current reporting and analysis remain in Lab and approved dashboards.",
         "Aktuelle Berichte und Analysen verbleiben im Labor und den freigegebenen Dashboards.",
       ],
     ],
@@ -582,7 +582,7 @@ article(
         "Beschreiben Sie wahrscheinliche Bedürfnisse und Hürden und prüfen Sie, ob die Belege zur Aufgabe passen.",
       ],
       [
-        "Ask Laboratory before changing a definition or combining small groups.",
+        "Ask Lab before changing a definition or combining small groups.",
         "Stimmen Sie Änderungen einer Definition oder die Zusammenfassung kleiner Gruppen mit dem Labor ab.",
       ],
     ],
@@ -615,7 +615,7 @@ article(
         "Konzentrieren Sie sich auf die anstehende Entscheidung, statt jedes denkbare Beispiel zu sammeln.",
       ],
       [
-        "Commission or update competitor research through Laboratory.",
+        "Commission or update competitor research through Lab.",
         "Beauftragen oder aktualisieren Sie Wettbewerbsrecherchen über das Labor.",
       ],
     ],
@@ -681,7 +681,7 @@ article(
         "Vergleichen Sie einen definierten Schritt und Zeitraum und prüfen Sie anschließend Größe und Beständigkeit des Unterschieds.",
       ],
       [
-        "Digital & Technology manages tracking implementation; Laboratory manages interpretation.",
+        "Digital & Technology manages tracking implementation; Lab manages interpretation.",
         "Technik betreut die technische Messung. Das Labor verantwortet die Auswertung.",
       ],
     ],
@@ -714,7 +714,7 @@ article(
         "Halten Sie fest, was beibehalten und verändert werden sollte und was unklar bleibt.",
       ],
       [
-        "Keep the live evaluation in Laboratory and link to its approved conclusion.",
+        "Keep the live evaluation in Lab and link to its approved conclusion.",
         "Führen Sie die laufende Auswertung im Labor und verlinken Sie ihr freigegebenes Fazit.",
       ],
     ],
@@ -747,7 +747,7 @@ article(
         "Vermeiden Sie suggestive Fragen und dokumentieren Sie Rekrutierung, Stichprobe und Auswertungsmethode.",
       ],
       [
-        "Ask Laboratory to review the method before participant contact.",
+        "Ask Lab to review the method before participant contact.",
         "Lassen Sie die Methode vor der Kontaktaufnahme mit Teilnehmenden durch das Labor prüfen.",
       ],
     ],
@@ -1082,7 +1082,7 @@ article(
         "Nutzen Sie Interviews zur Erkundung möglicher Erklärungen und ein geeignetes Messdesign zur Prüfung ihrer Verbreitung.",
       ],
       [
-        "Ask Laboratory for a method review before recruiting participants.",
+        "Ask Lab for a method review before recruiting participants.",
         "Bitten Sie das Labor vor der Rekrutierung von Teilnehmenden um eine Methodenprüfung.",
       ],
     ],
@@ -1148,7 +1148,7 @@ article(
         "Priorisieren Sie eine konkrete Hürde und benennen Sie das für die Übergabe zuständige Team.",
       ],
       [
-        "Check the proposed change with Customer Care and Laboratory before broader rollout.",
+        "Check the proposed change with Customer Care and Lab before broader rollout.",
         "Prüfen Sie die geplante Änderung vor einer breiteren Einführung mit Kundenbetreuung und dem Labor.",
       ],
     ],
@@ -1281,7 +1281,7 @@ article(
         "Achten Sie auf Volumenänderungen, fehlende Daten und Unterschiede im Zielgruppen- oder Kanalmix.",
       ],
       [
-        "Take unexplained movement to Laboratory with the same filters and reporting period.",
+        "Take unexplained movement to Lab with the same filters and reporting period.",
         "Bringen Sie unerklärte Veränderungen mit denselben Filtern und demselben Zeitraum zum Labor.",
       ],
     ],
@@ -1310,7 +1310,7 @@ article(
     [
       ["Review and report", "Prüfen und berichten"],
       [
-        "Ask Laboratory to check the design and the approved contact route.",
+        "Ask Lab to check the design and the approved contact route.",
         "Lassen Sie Design und freigegebenen Kontaktweg durch das Labor prüfen.",
       ],
       [

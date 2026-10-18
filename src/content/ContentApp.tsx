@@ -840,7 +840,7 @@ export default function ContentApp() {
               </StaffLink>
               <p>
                 <StaffLink href="/audience-innovation/analytics">
-                  Return performance evidence to Laboratory
+                  Return performance evidence to Lab
                 </StaffLink>
               </p>
               {selected.id === "PKG-102" && (

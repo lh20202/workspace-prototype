@@ -153,8 +153,9 @@ describe("SharePoint library navigation", () => {
       ["Value for Money", "Value"],
       ["Treasury & Banking", "Vault"],
       ["Bank Vault", "Vault"],
-      ["Research & Insight", "Laboratory"],
-      ["Research Lab", "Laboratory"],
+      ["Laboratory", "Lab"],
+      ["Research & Insight", "Lab"],
+      ["Research Lab", "Lab"],
     ];
     for (const [previousTitle, title] of renamedLibraries) {
       expect(libraryTitleMatches(title, title)).toBe(true);
