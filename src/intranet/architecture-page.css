@@ -17,7 +17,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
   align-items: start;
-  gap: 24px;
+  gap: 16px 24px;
 }
 .architecture-main {
   min-width: 0;
@@ -52,7 +52,10 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 12px;
-  margin-bottom: 12px;
+}
+.architecture-panels {
+  display: grid;
+  gap: 12px;
 }
 .architecture-tone-sales-marketing {
   --hub-accent: #246a77;
@@ -156,9 +159,6 @@
   padding-left: 18px;
   border-left: 1px solid #dddfe7;
 }
-.architecture-jump-groups section + section {
-  margin-top: 24px;
-}
 :root .architecture-poc-page .architecture-jump-groups h2 {
   margin: 0 0 8px;
   font-size: 18px;
@@ -200,20 +200,70 @@
 .architecture-jump-link > svg:last-child {
   color: #7b838b;
 }
+.architecture-projects {
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding-top: 12px;
+  border-top: 1px solid #dddfe7;
+}
+.architecture-projects > p {
+  margin: 0 0 8px;
+  color: #616161;
+  font-size: 13px;
+  line-height: 20px;
+}
+.architecture-project-strip {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) repeat(5, minmax(0, 1fr)) auto;
+  align-items: stretch;
+  gap: 8px;
+}
+.architecture-project-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  color: #2d5362;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 550;
+  text-decoration: none;
+  border-radius: 4px;
+}
+.architecture-project-copy {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.architecture-project-copy small {
+  display: block;
+  margin-top: 3px;
+  color: #616161;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 400;
+}
+.architecture-portfolio {
+  background: #eef4f6;
+  border-left: 3px solid #397482;
+}
 .architecture-all-projects {
   display: flex;
   align-items: center;
   gap: 6px;
-  width: fit-content;
-  margin-top: 12px;
+  justify-content: center;
+  padding: 8px;
+  white-space: nowrap;
   color: #2d5362;
   font-size: 13px;
   text-decoration: none;
 }
-.architecture-jump-link:hover {
+.architecture-jump-link:hover,
+.architecture-project-link:hover {
   background: #f6f8f9;
 }
 .architecture-destination:hover,
+.architecture-project-link:hover .architecture-project-copy > span,
 .architecture-panel-heading > a:hover,
 .architecture-all-projects:hover {
   text-decoration: underline;
@@ -230,15 +280,29 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .architecture-jump-groups {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
+    grid-row: 3;
     padding: 18px 0 0;
     border-left: 0;
     border-top: 1px solid #dddfe7;
   }
-  .architecture-jump-groups section + section {
-    margin: 0;
+  .architecture-jump-groups section {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 20px;
+  }
+  .architecture-jump-groups p {
+    grid-column: 1 / -1;
+  }
+  .architecture-project-strip {
+    display: flex;
+    overflow-x: auto;
+    padding: 3px 3px 10px;
+  }
+  .architecture-project-link {
+    flex: 0 0 180px;
+  }
+  .architecture-all-projects {
+    flex: 0 0 auto;
   }
 }
 @media (max-width: 760px) {
@@ -257,24 +321,83 @@
 }
 @media (max-width: 480px) {
   .architecture-destination-grid,
-  .architecture-jump-groups {
+  .architecture-jump-groups section {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .architecture-jump-groups {
-    gap: 24px;
   }
 }
 
-.architecture-jump-groups > h2 {
-  grid-column: 1 / -1;
-}
-@media (max-width: 1100px) {
-  .architecture-jump-groups {
-    row-gap: 0;
+/* Keep the full directory in view on shorter laptop screens. */
+@media (min-width: 1101px) and (max-height: 960px) {
+  :root .architecture-poc-page .directory-main:has(.architecture-exploration) {
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
-}
-@media (max-width: 480px) {
-  .architecture-jump-groups section + section {
-    margin-top: 24px;
+  :root .architecture-poc-page .intranet-directory .directory-heading {
+    margin-bottom: 8px;
+  }
+  :root .architecture-poc-page .directory-heading h1 {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  .architecture-poc-page .directory-heading p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .architecture-exploration {
+    --architecture-icon: 24px;
+    --architecture-row-height: 26px;
+    row-gap: 6px;
+  }
+  .architecture-panels {
+    gap: 8px;
+  }
+  .architecture-workspace-icon,
+  .architecture-workspace-icon img {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+  .architecture-panel {
+    padding: 8px 12px;
+  }
+  .architecture-panel-heading {
+    padding-bottom: 4px;
+  }
+  :root .architecture-poc-page .architecture-panel-heading h2 {
+    line-height: 24px;
+  }
+  .architecture-destination {
+    padding: 0;
+    line-height: 20px;
+  }
+  :root .architecture-exploration .directory-admin-logins {
+    padding-top: 6px;
+  }
+  :root .architecture-exploration .directory-admin-logins h3 {
+    margin-bottom: 2px;
+  }
+  :root .architecture-exploration .directory-admin-list a {
+    min-height: 24px;
+  }
+  .architecture-jump-link {
+    min-height: 54px;
+    padding: 6px 0;
+  }
+  .architecture-projects {
+    padding-top: 8px;
+  }
+  .architecture-projects > p {
+    margin-bottom: 4px;
+  }
+  .architecture-project-link {
+    padding-block: 6px;
+  }
+  .architecture-project-link:not(.architecture-portfolio) small {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

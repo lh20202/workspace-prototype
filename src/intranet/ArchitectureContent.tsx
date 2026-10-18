@@ -132,26 +132,51 @@ function ArchitectureJumpGroups() {
           />
         ))}
       </section>
-      <section aria-labelledby="architecture-project-title">
-        <p id="architecture-project-title">Project workspaces</p>
+    </aside>
+  );
+}
+
+function ArchitectureProjectStrip() {
+  return (
+    <section
+      className="architecture-projects"
+      aria-labelledby="architecture-project-title"
+    >
+      <p id="architecture-project-title">Project workspaces</p>
+      <div className="architecture-project-strip">
+        <StaffLink
+          className="architecture-project-link architecture-portfolio"
+          href={architectureDestinationById.get("projects")!.href}
+        >
+          <ArchitectureWorkspaceIcon />
+          <span className="architecture-project-copy">
+            <span>Portfolio</span>
+            <small>Project management</small>
+          </span>
+        </StaffLink>
         {architectureProjects.map((project) => (
-          <JumpLink
+          <StaffLink
+            className="architecture-project-link"
             key={project.code}
             href={projectHref(project)}
-            icon={<ArchitectureWorkspaceIcon />}
-            label={project.name}
-            detail={project.code}
-          />
+            title={`${project.name} (${project.code})`}
+          >
+            <ArchitectureWorkspaceIcon />
+            <span className="architecture-project-copy">
+              <span>{project.name}</span>
+              <small>{project.code}</small>
+            </span>
+          </StaffLink>
         ))}
         <StaffLink
           className="architecture-all-projects"
-          href={architectureDestinationById.get("projects")!.href}
+          href="/projects/current"
         >
-          All projects
+          See all
           <ChevronRight16Regular aria-hidden="true" />
         </StaffLink>
-      </section>
-    </aside>
+      </div>
+    </section>
   );
 }
 
@@ -173,6 +198,7 @@ export default function ArchitectureContent() {
         </div>
       </div>
       <ArchitectureJumpGroups />
+      <ArchitectureProjectStrip />
     </div>
   );
 }

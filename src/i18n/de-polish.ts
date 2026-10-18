@@ -25,6 +25,8 @@ export const germanPolish: Record<string, string> = {
   "Payments & reconciliation": "Zahlungen & Abstimmung",
   "Cash & treasury": "Liquidität & Finanzen",
   "Project workspaces": "Projektarbeitsbereiche",
+  "Portfolio": "Portfolio",
+  "Project management": "Projektmanagement",
   "All projects": "Alle Projekte",
   "Media editing": "Medien bearbeiten",
   "Social media planning": "Social-Media-Planung",

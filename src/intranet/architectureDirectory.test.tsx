@@ -175,11 +175,30 @@ describe("architecture directory", () => {
   it("localises the directory labels", () => {
     for (const text of [
       "Project workspaces",
-      "All projects",
+      "See all",
+      "Project management",
       "Meetings and coordination",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);
     }
+  });
+
+  it("places Portfolio before the projects in a separate strip, with See all last", () => {
+    const html = renderDirectory();
+    const rail = html.match(/<aside class="architecture-jump-groups"[\s\S]*?<\/aside>/)?.[0];
+    expect(rail).toContain("Meetings and coordination");
+    expect(rail).not.toContain("Project workspaces");
+    const strip = html.slice(html.indexOf('<section class="architecture-projects"'));
+    const links = hrefs(strip);
+    expect(links).toEqual([
+      "/projects?staff=devon",
+      ...architectureProjects.map((project) => `${projectHref(project)}?staff=devon`),
+      "/projects/current?staff=devon",
+    ]);
+    expect(strip).toContain('architecture-project-link architecture-portfolio');
+    expect(strip).toContain("Portfolio");
+    expect(strip).toContain("Project management");
+    expect(strip).toContain("See all");
   });
 
   it("keeps supporting links inside their hubs and only one Jump to heading", () => {
