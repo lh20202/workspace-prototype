@@ -113,7 +113,7 @@ export const externalEnvironments: ExternalEnvironment[] = [
     theme: "teal",
     variant: "frontline",
   },
-  { id: "taskforce", name: "International Crew Portal", theme: "navy" },
+  { id: "taskforce", name: "Global Crew Portal", theme: "navy" },
   {
     id: "members",
     name: "Membership Portal",

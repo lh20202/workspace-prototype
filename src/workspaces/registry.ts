@@ -172,7 +172,7 @@ export const environmentRegistry: WorkspaceDefinition[] = [
     ],
     [
       "taskforce",
-      "International Crew Portal",
+      "Global Crew Portal",
       "/external/taskforce",
       "personnel",
       "International crew information and coordination",
