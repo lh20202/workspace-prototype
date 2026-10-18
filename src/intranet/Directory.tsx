@@ -130,17 +130,19 @@ export default function Directory() {
                           <h2 id="hub-finance">{destination.label}</h2>
                         </StaffLink>
                       </header>
-                      <div className="directory-finance-jumps">
-                        <h3 className="directory-subheading">Jump to</h3>
+                      <nav
+                        className="directory-finance-destinations"
+                        aria-label="Financial destinations"
+                      >
                         <div>
                           {financeJumpLinks.map((link) => (
                             <StaffLink href={link.href} key={link.href}>
-                              {link.label}
-                              <ChevronRight16Regular aria-hidden="true" />
+                              <WorkspaceIcon size={20} />
+                              <span>{link.label}</span>
                             </StaffLink>
                           ))}
                         </div>
-                      </div>
+                      </nav>
                       <AdminLogins hubId="finance" />
                     </section>
                   );

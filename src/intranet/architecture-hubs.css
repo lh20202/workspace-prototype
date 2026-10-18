@@ -231,28 +231,26 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-:root .architecture-poc-page .directory-finance-jumps > div {
+:root .architecture-poc-page .directory-finance-destinations > div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px 14px;
 }
-:root .architecture-poc-page .directory-finance-jumps a {
+:root .architecture-poc-page .directory-finance-destinations a {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   font-size: 14px;
   line-height: 21px;
   color: #743e51;
   text-decoration: none;
 }
-:root .architecture-poc-page .directory-finance-jumps a:hover {
+:root .architecture-poc-page .directory-finance-destinations .workspace-icon {
+  color: var(--hub-accent);
+}
+:root .architecture-poc-page .directory-finance-destinations a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-:root .architecture-poc-page .directory-finance-jumps a > svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
 }
 :root
   .architecture-poc-page
@@ -323,7 +321,7 @@
     .directory-knowledge a,
     .directory-controlled-links a,
     .directory-finance-title,
-    .directory-finance-jumps a
+    .directory-finance-destinations a
   ):focus-visible {
   outline: 2px solid #0078d4;
   outline-offset: 3px;
@@ -400,7 +398,7 @@
   :root .architecture-poc-page .directory-knowledge,
   :root .architecture-poc-page .directory-hub-grid,
   :root .architecture-poc-page .directory-org-groups,
-  :root .architecture-poc-page .directory-finance-jumps > div {
+  :root .architecture-poc-page .directory-finance-destinations > div {
     grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -70,7 +70,7 @@ describe("compact Architecture destination links", () => {
           `<a(?![^>]*directory-workspace-link)[^>]*href="${destination.href}\\?staff=robin"`,
         ),
       );
-    expect(html).toContain('class="directory-finance-jumps"');
+    expect(html).toContain('class="directory-finance-destinations"');
     expect(html).not.toMatch(
       /directory-workspace-link[^>]*href="\/financial-operations/,
     );
