@@ -54,7 +54,7 @@
 :root .workspace-faq-dialog-body {
   display: flex;
   flex-direction: column;
-  height: min(680px, calc(100svh - 88px));
+  max-height: calc(100svh - 88px);
   min-height: 0;
   overflow: hidden;
   gap: 0;
@@ -63,21 +63,11 @@
 .workspace-faq-footer {
   flex-shrink: 0;
 }
-.workspace-faq-intro,
-.workspace-faq-example-note {
-  margin: 0 0 20px;
-  color: #616161;
-  font-size: 13px;
-  line-height: 1.6;
-}
-.workspace-faq-example-note {
-  margin: 12px 0 0;
-}
 .workspace-faq-title {
   padding-bottom: 16px;
 }
 :root .workspace-faq-scroll {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -89,21 +79,10 @@
   align-self: flex-end;
   padding-top: 16px;
 }
-.workspace-faq-group + .workspace-faq-group {
-  margin-top: 26px;
-}
-.workspace-faq-group > h3 {
-  margin: 0 0 7px;
-  color: #616b70;
-  font-size: 11px;
-  line-height: 18px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-}
 .workspace-faq-question {
   border-bottom: 1px solid #e8e8e8;
 }
-.workspace-faq-question h4 {
+.workspace-faq-question h3 {
   margin: 0;
 }
 :root .workspace-faq-question .fui-AccordionHeader__button {
@@ -136,131 +115,52 @@
   font-size: 14px;
   line-height: 1.65;
 }
-.workspace-faq-answer > p + p {
-  margin-top: 12px;
-}
-.workspace-faq-answer > .workspace-faq-example {
-  margin-top: 12px;
-}
 @media (prefers-reduced-motion: no-preference) {
   .workspace-faq-question .fui-AccordionHeader__button {
     transition: background-color 120ms ease;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .workspace-faq-accordion *,
-  .workspace-faq-example svg {
+  .workspace-faq-accordion * {
     animation: none !important;
     transition: none !important;
   }
 }
-.workspace-faq-example {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #0067a8;
-  font: inherit;
-  font-size: 14px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-.workspace-faq-example[aria-expanded="true"] svg {
-  transform: rotate(180deg);
-}
-.workspace-faq-example:focus-visible,
-.workspace-faq-full-demo:focus-visible {
-  outline: 2px solid #0078d4;
-  outline-offset: 3px;
-}
-.workspace-faq-thread {
-  margin-top: 16px;
-  border: 1px solid #dedde7;
-  border-radius: 4px;
-  background: #f5f5fa;
-  overflow: hidden;
-}
-.workspace-faq-thread-channel {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #dedde7;
-  font-size: 13px;
-  line-height: 20px;
-}
-.workspace-faq-thread-channel span {
+.workspace-faq-submitted {
   display: block;
+  margin-bottom: 2px;
   color: #616161;
   font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
 }
-.workspace-faq-thread-post {
-  margin: 10px;
-  padding: 14px;
-  background: #fff;
-}
-.workspace-faq-thread-author {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  font-size: 13px;
-  line-height: 20px;
-}
-.workspace-faq-thread-author time {
-  color: #616161;
-  font-size: 12px;
-}
-.workspace-faq-thread-avatar {
+.workspace-faq-form {
   display: grid;
-  place-items: center;
-  flex: 0 0 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e8e4f0;
-  color: #4e4775;
-  font-size: 10px;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e8e8e8;
+}
+.workspace-faq-form h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
   font-weight: 600;
 }
-.workspace-faq-thread p {
-  margin: 8px 0;
-  font-size: 14px;
-  line-height: 1.55;
-}
-.workspace-faq-thread-reply {
-  display: flex;
-  gap: 8px;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid #ededed;
-}
-.workspace-faq-thread-reply > div {
-  min-width: 0;
-}
-.workspace-faq-thread-moderator {
-  padding: 0 5px;
-  border-radius: 2px;
-  background: #f0f0f0;
+.workspace-faq-form > p {
+  margin: 0;
   color: #616161;
-  font-size: 10px;
-  line-height: 16px;
-}
-.workspace-faq-thread a {
-  color: #4f52b2;
   font-size: 13px;
-  overflow-wrap: anywhere;
-  text-underline-offset: 3px;
+  line-height: 20px;
 }
-.workspace-faq-full-demo {
-  display: inline-flex;
-  gap: 6px;
-  margin-top: 16px;
-  color: #0067a8;
-  font-size: 14px;
-  text-underline-offset: 3px;
+.workspace-faq-form > button {
+  justify-self: start;
+}
+.workspace-faq-form .workspace-faq-success {
+  color: #315c3b;
+}
+.workspace-faq-success:empty {
+  display: none;
 }
 :root .prototype-launcher .launcher-secondary-links {
   display: flex;

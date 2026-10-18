@@ -2,51 +2,13 @@
 
 This remains an exploratory Digital Workspace proof of concept. The current working tree, established architecture and role boundaries were preserved. The polish-website skill was not used.
 
-## FAQ (revised 18 October 2026)
+## FAQ (simplified 19 October 2026)
 
-Welcome and Demo Controls open the same accessible FAQ dialog. Its 23 questions start collapsed, multiple answers can stay open, and the fixed title and Close action remain outside the scrolling content.
+Welcome and Demo Controls open the same compact FAQ popup. Two normal questions cover external collaboration and focal points; one fictional submitted question demonstrates sharing a link across departments. All three use the same expandable pattern, with no categories or introductory design note.
 
-The revised copy follows the supplied staff FAQ: it separates established design principles from the proposed approach and arrangements still being developed or approved. It explains shared work, approved knowledge, protected information and specialist systems without implying that everything will migrate to SharePoint. Personal data is not automatically Strictly Confidential. Most administrative responsibilities sit with designated colleagues, IKM, IT and specialists.
+The anonymous form accepts only a question. Submitting a nonblank question clears the field and displays a local success message. It sends no network request, writes no storage and does not insert new FAQ entries. Nothing is retained after the acknowledgement. English and German use the same concise structure.
 
-Welcome now explains the early design stage and demonstration content. “What am I looking at?” describes the simulated experience. The same early-design note appears inside the FAQ for visitors opening it from another page.
-
-### Files & access
-
-- Is this replacing our existing sites, channels and folders on the shared drive?
-- Who can see my files?
-- Where do personal drives fit in?
-- What if someone shares a personal drive file anyway?
-- What happens when someone joins, leaves or changes roles?
-- How do I know how sensitive a document is?
-- Where do I save personal data or Strictly Confidential information?
-- Do I need to make a copy before sharing a document with another team?
-- What happens if I accidentally delete or overwrite something?
-- What happens to files when a project or piece of work finishes?
-- What happens to files in our current shared drive?
-- What happens to my existing links, bookmarks and synced folders?
-
-### Working with others
-
-- Can I work with colleagues in other countries?
-- Can I work with people outside the company?
-- What's the difference between channels and a workspace?
-- What's the difference between a Workspace and a Wiki?
-- I work with lots of different tools and platforms. How do they fit in?
-- I already work in lots of sites and channels. Will this add even more?
-
-### Getting started & support
-
-- Who are focal points?
-- What if I don't know which workspace something belongs in?
-- How do I create a new workspace if I need one?
-- Will my team and I get training?
-- Do I need to learn the technical settings?
-
-### Language and examples
-
-All questions, answers and orientation copy have reviewed German equivalents. Organisation references use “the company” or the natural German equivalent. The FAQ uses the shared technology agnostic display wording: sites, channels, libraries and personal drives. A build check prevents real organisation names from being reintroduced into shipped copy or asset names. Routes and access rules are unchanged.
-
-“See an example” still expands the existing Ari Morgan / Devon Park conversation and links to the same authorised Dev. channel post. A new note identifies it as a fictional illustration, not an agreed support process. The canonical file, post, Preview Role and access checks are unchanged.
+The former long FAQ, embedded channel example and FAQ-only links have been removed. The original personal-drive correction conversation remains available in its channel; broader access logic and workspace features are unchanged.
 
 ## Planning & Reporting
 
@@ -78,6 +40,8 @@ Posts span 12–16 October 2026, with short replies and named thumbs-up reaction
 The guided Logframe is an illustrative view of the existing file; edits remain in page memory until reload. The fictional registration form sends and stores nothing and exposes no responses. Neither connects to live Microsoft 365 or a business system.
 
 ## Verification
+
+FAQ reset (19 October 2026): all 928 tests across 89 suites passed, together with full lint, type checking and a production build. Local browser checks covered both popup entry points, keyboard expansion, all three answers, blank-submission prevention, successful acknowledgement and field clearing in English and German. At a 1280 × 720 laptop viewport, the collapsed questions and complete form fit without scrolling. Live deployment verification is recorded in the final response.
 
 Anonymity and technology agnostic correction (18 October 2026): all 931 tests across 90 suites passed, plus type checking, lint and a production build. Automated scans found no real organisation-name references in 223 production source text files, 12 public text assets or 72 built text files. Both languages were checked in all 23 expanded FAQ answers, the inline personal-drive example, loaded workspace and Wiki pages, the portal, directory and nine tool destinations, including accessible labels. Neutral site and channel marks replace the product logos. Anonymity and source-wide display terminology checks now gate each production build.
 

@@ -15,12 +15,12 @@ import SiteSettingsButton, {
   siteAdministrationOptions,
 } from "../components/SiteSettingsButton";
 import { WorkspaceFAQContent } from "../components/WorkspaceFAQ";
-import {
-  creationExplanation,
-  workspaceFAQExampleHref,
-} from "../components/workspaceFAQContent";
+import { creationExplanation } from "../components/workspaceFAQContent";
 import { displayText } from "./displayText";
 import type { Language } from "./translate";
+
+const technicalConversationHref =
+  "/teams?staff=devon&workspace=digital&channel=M365%20%26%20SPFx&tab=Posts&post=digital-onedrive-review";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -108,7 +108,7 @@ const surfaces = [
   },
   {
     name: "technical channel with its canonical platform name",
-    path: workspaceFAQExampleHref,
+    path: technicalConversationHref,
     element: () => createElement(TeamsPreview),
   },
   {
@@ -194,7 +194,7 @@ describe("public rendered surfaces use generic workplace terminology", () => {
         onOpenSharePoint: noAction,
         children: "Current channel conversation",
       }),
-      workspaceFAQExampleHref,
+      technicalConversationHref,
     );
     expect(shell).toContain('src="/images/channels-mark.svg"');
     expect(shell).toContain('src="/images/site-mark.svg"');
@@ -219,9 +219,10 @@ describe("public rendered surfaces use generic workplace terminology", () => {
       ),
     ).toBe(true);
     expect(
-      new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
-        "channel",
-      ),
+      new URL(
+        technicalConversationHref,
+        "https://example.test",
+      ).searchParams.get("channel"),
     ).toBe("M365 & SPFx");
   });
 

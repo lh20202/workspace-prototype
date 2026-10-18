@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { germanFAQRolesSensitivity } from "./de-faq-roles-sensitivity";
 import { translateText } from "./translate";
-import {
-  creationExplanation,
-  workspaceFAQQuestions,
-  workspaceFAQExampleHref,
-} from "../components/workspaceFAQContent";
+import { creationExplanation } from "../components/workspaceFAQContent";
 import { proofOfConceptInfoText } from "../components/DemoInfo";
 import { siteAdministrationOptions } from "../components/SiteSettingsButton";
 import { previewRoles, previewRoleGroups } from "../access/policy";
@@ -14,7 +10,7 @@ import { sensitivityLabels } from "../sharepoint/sensitivity";
 const german = (source: string) => translateText(source, "de");
 
 describe("final staff-facing German interpretation", () => {
-  it("explains the demo limits and the role of personal storage", () => {
+  it("explains the demo limits", () => {
     expect(german(proofOfConceptInfoText)).toContain(
       "keine echten Dateien des Unternehmens",
     );
@@ -27,21 +23,6 @@ describe("final staff-facing German interpretation", () => {
     expect(german(creationExplanation)).toContain(
       "keine Unternehmensdaten verwendet",
     );
-    const answer = (id: string) =>
-      german(workspaceFAQQuestions.find((entry) => entry.id === id)!.answer);
-    expect(answer("personal-drives")).toContain(
-      "eigene Arbeitsdateien und Entwürfe",
-    );
-    expect(answer("personal-drive-shared")).toContain("dauerhafte Zugriff");
-    expect(answer("personal-drive-shared")).toContain(
-      "gemeinsamer Ablageort verlässlicher",
-    );
-    expect(german("See an example")).toBe("Beispiel ansehen");
-    expect(
-      new URL(workspaceFAQExampleHref, "https://example.test").searchParams.get(
-        "post",
-      ),
-    ).toBe("digital-onedrive-review");
   });
 
   it("uses clear role names and never translates SharePoint site administration as a physical location", () => {

@@ -1,5 +1,8 @@
+import { useId, useReducer } from "react";
 import {
   Button,
+  Field,
+  Textarea,
   Accordion,
   AccordionItem,
   AccordionHeader,
@@ -13,62 +16,99 @@ import {
   DialogTrigger,
 } from "@fluentui/react-components";
 import { QuestionCircle16Regular } from "@fluentui/react-icons";
-import WorkspaceFAQExample from "./WorkspaceFAQExample";
 import { useTranslation } from "../i18n/Language";
 import {
-  workspaceFAQGroups,
-  workspaceFAQExampleHref,
-  workspaceDemoStage,
+  workspaceFAQQuestions,
+  workspaceFAQSubmittedQuestion,
+  workspaceFAQForm,
 } from "./workspaceFAQContent";
+import {
+  emptyFAQQuestion,
+  faqQuestionSubmission,
+} from "./faqQuestionSubmission";
 import "./workspace-faq.css";
 
 export function WorkspaceFAQContent() {
-  const { t: faqText } = useTranslation();
+  const { t } = useTranslation();
+  const [draft, dispatch] = useReducer(faqQuestionSubmission, emptyFAQQuestion);
+  const formId = useId();
   return (
     <>
-      <p className="workspace-faq-intro" data-no-translate>
-        {faqText(workspaceDemoStage)}
-      </p>
-      {workspaceFAQGroups.map((group) => (
-        <section
-          className="workspace-faq-group"
-          aria-labelledby={`faq-group-${group.id}`}
-          key={group.id}
-        >
-          <h3 id={`faq-group-${group.id}`}>{group.title}</h3>
-          <Accordion
-            collapsible
-            multiple
-            defaultOpenItems={[]}
-            className="workspace-faq-accordion"
-          >
-            {group.questions.map(({ id, question, answer }) => (
-              <AccordionItem
-                value={id}
-                key={id}
-                className="workspace-faq-question"
-                data-faq-id={id}
-              >
-                <AccordionHeader as="h4" size="small" expandIconPosition="end">
-                  <span data-no-translate>{faqText(question)}</span>
-                </AccordionHeader>
-                <AccordionPanel className="workspace-faq-answer">
-                  {faqText(answer)
-                    .split("\n\n")
-                    .map((paragraph, index) => (
-                      <p key={index} data-no-translate>
-                        {paragraph}
-                      </p>
-                    ))}
-                  {id === "personal-drive-shared" && (
-                    <WorkspaceFAQExample href={workspaceFAQExampleHref} />
+      <Accordion
+        collapsible
+        multiple
+        defaultOpenItems={[]}
+        className="workspace-faq-accordion"
+      >
+        {[...workspaceFAQQuestions, workspaceFAQSubmittedQuestion].map(
+          ({ id, question, answer }) => (
+            <AccordionItem
+              value={id}
+              key={id}
+              className="workspace-faq-question"
+              data-faq-id={id}
+            >
+              <AccordionHeader as="h3" size="small" expandIconPosition="end">
+                <span data-no-translate>
+                  {id === workspaceFAQSubmittedQuestion.id && (
+                    <span className="workspace-faq-submitted">
+                      {t("Submitted question")}
+                    </span>
                   )}
-                </AccordionPanel>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </section>
-      ))}
+                  {t(question)}
+                </span>
+              </AccordionHeader>
+              <AccordionPanel className="workspace-faq-answer">
+                <p data-no-translate>{t(answer)}</p>
+              </AccordionPanel>
+            </AccordionItem>
+          ),
+        )}
+      </Accordion>
+      <form
+        className="workspace-faq-form"
+        aria-labelledby={`${formId}-heading`}
+        onSubmit={(event) => {
+          event.preventDefault();
+          dispatch({ type: "submit" });
+        }}
+      >
+        <h3 id={`${formId}-heading`} data-no-translate>
+          {t(workspaceFAQForm.heading)}
+        </h3>
+        <p id={`${formId}-help`} data-no-translate>
+          {t(workspaceFAQForm.support)}
+        </p>
+        <Field label={t(workspaceFAQForm.label)}>
+          <Textarea
+            value={draft.question}
+            onChange={(_, data) =>
+              dispatch({ type: "edit", question: data.value })
+            }
+            placeholder={t(workspaceFAQForm.placeholder)}
+            aria-describedby={`${formId}-help`}
+            rows={3}
+            resize="vertical"
+            required
+            data-no-translate
+          />
+        </Field>
+        <Button
+          type="submit"
+          appearance="primary"
+          disabled={!draft.question.trim()}
+        >
+          <span data-no-translate>{t(workspaceFAQForm.submit)}</span>
+        </Button>
+        <p
+          className="workspace-faq-success"
+          role="status"
+          aria-live="polite"
+          data-no-translate
+        >
+          {draft.submitted ? t(workspaceFAQForm.success) : ""}
+        </p>
+      </form>
     </>
   );
 }
@@ -97,7 +137,7 @@ export default function WorkspaceFAQ() {
           </DialogContent>
           <DialogActions className="workspace-faq-footer">
             <DialogTrigger disableButtonEnhancement>
-              <Button appearance="primary">Close</Button>
+              <Button>Close</Button>
             </DialogTrigger>
           </DialogActions>
         </DialogBody>

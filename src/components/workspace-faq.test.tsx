@@ -3,21 +3,20 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import WorkspaceFAQ, { WorkspaceFAQContent } from "./WorkspaceFAQ";
 import {
-  creationExplanation,
-  workspaceDemoStage,
   workspaceFAQQuestions,
-  workspaceFAQGroups,
-  workspaceFAQExampleHref,
+  workspaceFAQSubmittedQuestion,
 } from "./workspaceFAQContent";
-import { technicalPosts } from "../workspaces/technicalTeams";
-import { canAccessChannel } from "../access/policy";
+import {
+  emptyFAQQuestion,
+  faqQuestionSubmission,
+} from "./faqQuestionSubmission";
 import Launcher from "../intranet/Launcher";
 import PrototypeNavigator from "./PrototypeNavigator";
-import { proofOfConceptInfoText } from "./DemoInfo";
 
 afterEach(() => vi.unstubAllGlobals());
-describe("shared staff-facing Workspace FAQ", () => {
-  it("offers the same named dialog trigger on Welcome and immediately after All workspaces", () => {
+
+describe("the deliberately small Workspace FAQ popup", () => {
+  it("keeps the popup trigger on Welcome and beside All workspaces in Demo controls", () => {
     vi.stubGlobal("location", new URL("https://example.test/planning"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const launcher = renderToStaticMarkup(createElement(Launcher));
@@ -32,149 +31,84 @@ describe("shared staff-facing Workspace FAQ", () => {
     expect(controls.indexOf('class="workspace-faq-link"')).toBeLessThan(
       controls.indexOf("prototype-utilities"),
     );
-    const trigger = renderToStaticMarkup(createElement(WorkspaceFAQ));
-    expect(trigger).toContain("Workspace FAQ");
-    expect(trigger).not.toContain(workspaceFAQQuestions[0].question);
+    const closed = renderToStaticMarkup(createElement(WorkspaceFAQ));
+    expect(closed).not.toContain(workspaceFAQQuestions[0].question);
+    expect(closed).not.toContain("<textarea");
   });
-  it("keeps answers short and staff-focused without an automation section", () => {
+
+  it("shows two normal questions and one submitted example in the same collapsed accordion", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
-    for (const entry of workspaceFAQQuestions) {
-      const sentences = entry.answer
-        .split(/[.!?]+/)
-        .filter((part) => part.trim());
-      expect(sentences.length).toBeGreaterThanOrEqual(1);
-      expect(sentences.length).toBeLessThanOrEqual(4);
-      const question = renderToStaticMarkup(
-        createElement("span", null, entry.question),
-      ).replace(/<\/?span>/g, "");
-      expect(html).toContain(question);
+    expect(workspaceFAQQuestions).toHaveLength(2);
+    expect(html.match(/data-faq-id=/g)).toHaveLength(3);
+    expect(html.match(/class="[^"]*\bworkspace-faq-question\b/g)).toHaveLength(
+      3,
+    );
+    expect(html.match(/aria-expanded="false"/g)).toHaveLength(3);
+    expect(html.match(/class="workspace-faq-submitted"/g)).toHaveLength(1);
+    for (const entry of [
+      ...workspaceFAQQuestions,
+      workspaceFAQSubmittedQuestion,
+    ]) {
+      expect(html).toContain(entry.question);
+      expect(
+        entry.answer.split(/[.!?]+/).filter((part) => part.trim()).length,
+      ).toBeLessThanOrEqual(2);
     }
-    expect(html).not.toContain("Could this be automated?");
-    expect(html).not.toContain("<details");
-    expect(proofOfConceptInfoText).not.toMatch(/prototype/i);
-    expect(creationExplanation).toContain("No company data was used");
-    expect(html).toContain(workspaceDemoStage);
+    expect(html).not.toMatch(
+      /FILES &amp; ACCESS|WORKING WITH OTHERS|GETTING STARTED &amp; SUPPORT|early design examples|Who can see my files|personal-drives|workspace-faq-example|See an example|Could this be automated/,
+    );
   });
-  it("groups all requested questions into a repeatable, initially collapsed accordion", () => {
+
+  it("offers only an anonymous multiline question field and an initially disabled submit button", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
-    expect(workspaceFAQGroups.map((group) => group.title)).toEqual([
-      "FILES & ACCESS",
-      "WORKING WITH OTHERS",
-      "GETTING STARTED & SUPPORT",
-    ]);
-    expect(workspaceFAQGroups.map((group) => group.questions.length)).toEqual([
-      12, 6, 5,
-    ]);
-    expect(workspaceFAQQuestions.map((entry) => entry.id)).toEqual([
-      "existing-locations",
-      "file-access",
-      "personal-drives",
-      "personal-drive-shared",
-      "role-changes",
-      "sensitivity",
-      "protected-information",
-      "sharing-copies",
-      "file-recovery",
-      "finished-work",
-      "shared-drive-migration",
-      "existing-links",
-      "international-colleagues",
-      "external-collaboration",
-      "teams-workspace-difference",
-      "workspace-wiki-difference",
-      "specialist-tools",
-      "fewer-places",
-      "focal-points",
-      "finding-the-right-place",
-      "new-workspace",
-      "training",
-      "technical-settings",
-    ]);
-    expect(new Set(workspaceFAQQuestions.map((entry) => entry.id)).size).toBe(
-      23,
+    expect(html).toContain("Have a question?");
+    expect(html).toContain("Your question");
+    expect(html.match(/<textarea\b/g)).toHaveLength(1);
+    expect(html).toMatch(/<label[^>]+for="[^"]+"/);
+    expect(html).toContain('rows="3"');
+    expect(html).toMatch(
+      /<button[^>]*type="submit"[^>]*disabled|<button[^>]*disabled[^>]*type="submit"/,
     );
-    expect(html.match(/data-faq-id=/g)).toHaveLength(23);
-    expect(html.match(/aria-expanded="false"/g)).toHaveLength(23);
-    expect(html).not.toContain('aria-expanded="true"');
-    expect(html).not.toContain("What if a document is confidential?");
-    expect(
-      workspaceFAQQuestions.filter((entry) => entry.id === "sensitivity"),
-    ).toHaveLength(1);
-    expect(
-      workspaceFAQQuestions.filter(
-        (entry) => entry.id === "protected-information",
-      ),
-    ).toHaveLength(1);
+    expect(html).toContain("Submit question");
+    expect(html).toContain('role="status"');
+    expect(html).not.toMatch(/<input\b|<form[^>]*\baction=/);
   });
-  it("distinguishes proposed processes from established principles without promising automatic fixes", () => {
-    const answer = (id: string) =>
-      workspaceFAQQuestions.find((entry) => entry.id === id)!.answer;
-    expect(answer("existing-locations")).toContain("Not immediately.");
-    expect(answer("shared-drive-migration")).toContain(
-      "Any migration will require preparation",
-    );
-    expect(answer("existing-links")).toContain(
-      "need to be assessed as part of migration planning",
-    );
-    expect(answer("file-access")).toContain("still being developed");
-    expect(answer("file-recovery")).toContain("depending on its configuration");
-    expect(answer("file-recovery")).toContain("Contact IT support promptly");
-    expect(answer("finished-work")).toContain(
-      "is developing the retention rules",
-    );
-    expect(answer("protected-information")).toContain(
-      "not automatically Strictly Confidential",
-    );
-    expect(answer("training")).toContain("developed alongside implementation");
-    expect(answer("new-workspace")).toContain("still being defined");
-    expect(answer("technical-settings")).toContain(
-      "designated colleagues and IT support",
-    );
+
+  it("prevents empty and whitespace-only submissions", () => {
+    for (const question of ["", "   ", "\n\t"]) {
+      const draft = faqQuestionSubmission(emptyFAQQuestion, {
+        type: "edit",
+        question,
+      });
+      expect(faqQuestionSubmission(draft, { type: "submit" }).submitted).toBe(
+        false,
+      );
+    }
   });
-  it("keeps different responsibilities and authoritative information locations distinct", () => {
-    const answer = (id: string) =>
-      workspaceFAQQuestions.find((entry) => entry.id === id)!.answer;
-    expect(answer("focal-points")).toContain(
-      "Different responsibilities may be assigned to different people",
-    );
-    expect(answer("finding-the-right-place")).toContain("IKM team");
-    expect(answer("specialist-tools")).toContain(
-      "not intended to replace every system",
-    );
-    expect(answer("workspace-wiki-difference")).toContain(
-      "rather than storing another copy",
-    );
-    expect(answer("workspace-wiki-difference").split("\n\n")).toHaveLength(2);
-  });
-  it("links to a real authorised human correction thread instead of a separate demo", () => {
-    const url = new URL(workspaceFAQExampleHref, "https://example.test");
-    expect(url.pathname).toBe("/teams");
-    expect(url.searchParams.has("department")).toBe(false);
+
+  it("acknowledges a valid question and discards its text without network or storage", () => {
+    const forbidden = vi.fn(() => {
+      throw new Error("Question must stay local");
+    });
+    vi.stubGlobal("fetch", forbidden);
+    vi.stubGlobal("XMLHttpRequest", forbidden);
+    vi.stubGlobal("navigator", { sendBeacon: forbidden });
+    vi.stubGlobal("localStorage", { setItem: forbidden });
+    vi.stubGlobal("sessionStorage", { setItem: forbidden });
+    const draft = faqQuestionSubmission(emptyFAQQuestion, {
+      type: "edit",
+      question: "Can I bookmark a workspace?",
+    });
+    const submitted = faqQuestionSubmission(draft, { type: "submit" });
+    expect(submitted.submitted).toBe(true);
+    expect(submitted.question).toBe("");
+    expect(forbidden).not.toHaveBeenCalled();
     expect(
-      canAccessChannel(
-        url.searchParams.get("staff")!,
-        url.searchParams.get("workspace")!,
-        url.searchParams.get("channel")!,
-      ),
-    ).toBe(true);
-    const post = technicalPosts.find(
-      (entry) => entry.id === url.searchParams.get("post"),
-    );
-    expect(post?.channel).toBe(url.searchParams.get("channel"));
-    expect(post?.fileLink?.correctedFrom).toBe("onedrive");
-    expect(post?.replies?.[0]).toMatchObject({ moderator: true });
-    expect(post?.replies?.[0].text).toContain(
-      "link points to your personal OneDrive",
-    );
-    expect(
-      post?.replies?.some((reply) =>
-        reply.text.includes("didn't realise I'd shared the OneDrive link"),
-      ),
-    ).toBe(true);
-    expect(
-      post?.replies?.some((reply) =>
-        reply.link?.href.includes("file=digital-F17"),
-      ),
-    ).toBe(true);
+      faqQuestionSubmission(submitted, {
+        type: "edit",
+        question: "Another question",
+      }).submitted,
+    ).toBe(false);
+    expect(emptyFAQQuestion).toEqual({ question: "", submitted: false });
   });
 });

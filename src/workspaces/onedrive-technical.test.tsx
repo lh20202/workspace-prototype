@@ -13,11 +13,13 @@ import {
 import { germanOneDriveTechnical } from "../i18n/de-onedrive-technical";
 import TechnicalConversation from "./TechnicalConversation";
 import TeamsPreview from "../intranet/TeamsPreview";
-import { workspaceFAQExampleHref } from "../components/workspaceFAQContent";
 
 const oneDrivePosts = technicalPosts.filter(
   (post) => post.fileLink?.correctedFrom === "onedrive",
 );
+const technicalConversationHref =
+  "/teams?staff=devon&workspace=digital&channel=M365%20%26%20SPFx&tab=Posts&post=digital-onedrive-review";
+
 afterEach(() => vi.unstubAllGlobals());
 
 describe("occasional OneDrive sharing in a functional Team", () => {
@@ -91,10 +93,10 @@ describe("occasional OneDrive sharing in a functional Team", () => {
     );
   });
 
-  it("opens the FAQ's exact thread in the full Teams view", () => {
+  it("keeps the personal-drive correction thread available in the full channel view", () => {
     vi.stubGlobal(
       "location",
-      new URL(workspaceFAQExampleHref, "https://example.test"),
+      new URL(technicalConversationHref, "https://example.test"),
     );
     vi.stubGlobal("sessionStorage", { getItem: () => "devon" });
     const html = renderToStaticMarkup(createElement(TeamsPreview));
