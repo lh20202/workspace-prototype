@@ -312,8 +312,9 @@
   margin-right: -14px;
 }
 :root .intranet-directory .directory-nav > button:disabled {
-  opacity: 0.45;
+  opacity: 0.7;
   color: #777;
+  filter: blur(1.3px);
   border-color: transparent;
   background: transparent;
   cursor: default;
