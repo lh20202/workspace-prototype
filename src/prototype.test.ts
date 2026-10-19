@@ -167,7 +167,7 @@ describe("operational schedules share source records", () => {
 describe("Daisy content", () => {
   it("makes Daisy the first Pet photos post with the exact wording", () => {
     const first = posts.find((p) => p.channel === "pets")!;
-    expect(first.text).toBe("important mews coming in live");
+    expect(first.text).toBe("Look into my eyes");
     expect(first.image).toEqual({
       src: "/images/pets/daisy.jpg",
       alt: "Daisy the cat",

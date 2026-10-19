@@ -47,6 +47,49 @@ function panelLinks(html: string) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe("ordinary contextual channel previews and real private boundaries", () => {
+  it("renders Pet photos replies inside their original posts with compact root reactions", () => {
+    const html = logisticsChannel(
+      "/logistics/teams?staff=taylor&channel=pets&tab=Posts&context=department:communications&demo=beta",
+    );
+    const rootPost = (id: string) => {
+      const idIndex = html.indexOf(`id="${id}"`);
+      expect(idIndex).toBeGreaterThan(-1);
+      const start = html.lastIndexOf("<article", idIndex);
+      const nextPost = html.indexOf(
+        '<article class="teams-post',
+        idIndex + id.length,
+      );
+      return html.slice(start, nextPost < 0 ? undefined : nextPost);
+    };
+    const daisy = rootPost("post-daisy");
+    expect(daisy).toContain("Look into my eyes");
+    expect(daisy).toContain("I feel her staring into the depths of my soul.");
+    expect(daisy.indexOf("take me to your leader")).toBeLessThan(
+      daisy.indexOf("I feel her staring into the depths of my soul."),
+    );
+
+    const goats = rootPost("post-goats");
+    expect(goats).toContain(
+      "this channel is discriminatory against people who don&#x27;t own goats as pets.",
+    );
+    expect(goats).toContain("+1 we need more goats");
+
+    const dachshund = rootPost("post-puppy");
+    expect(dachshund.match(/post-reaction-chip/g)).toHaveLength(4);
+    expect(dachshund).toContain("❤️");
+    expect(dachshund).toContain("😍");
+    expect(dachshund).toContain("🐶");
+    expect(dachshund).toContain("😭");
+    expect(dachshund).toContain("HALP. I can&#x27;t. Too cute.");
+
+    const mosquito = rootPost("post-serenade");
+    expect(
+      mosquito.indexOf("Have you checked the battery in your dog?"),
+    ).toBeLessThan(mosquito.indexOf("Have you tried a manual reboot?"));
+    expect(mosquito).toContain("Snuffles@IT.service.");
+    expect(html.match(/<article class="teams-post/g)).toHaveLength(11);
+  });
+
   it("renders every ordinary operational channel for every role without expanding the sidebar", () => {
     for (const person of staff)
       for (const channel of channels.filter(

@@ -772,6 +772,8 @@ export interface Post {
   fileIds: string[];
   reply?: string;
   replyTime?: string;
+  replies?: PostReply[];
+  reactions?: { emoji: string; count: number }[];
   locationLink?: boolean;
   image?: {
     src: string;
@@ -781,6 +783,26 @@ export interface Post {
     /** Visible photo area, in source pixels; keeps screenshot controls out of the chat. */
     frame?: [number, number, number, number];
   };
+}
+export interface PostReply {
+  author: string;
+  text: string;
+  time?: string;
+}
+export function postReplies(post: Post): PostReply[] {
+  if (post.replies) return post.replies;
+  if (!post.reply) return [];
+  const separator = post.reply.indexOf(":");
+  return [
+    {
+      author: separator < 0 ? "" : post.reply.slice(0, separator),
+      text: (separator < 0
+        ? post.reply
+        : post.reply.slice(separator + 1)
+      ).trim(),
+      time: post.replyTime || post.time,
+    },
+  ];
 }
 export const posts: Post[] = [
   {
@@ -917,9 +939,15 @@ export const posts: Post[] = [
     channel: "pets",
     author: "Maya Chen",
     time: "10:20",
-    text: "important mews coming in live",
-    replyTime: "10:24",
-    reply: "Alex Morgan: take me to your leader",
+    text: "Look into my eyes",
+    replies: [
+      { author: "Alex Morgan", text: "take me to your leader", time: "10:24" },
+      {
+        author: "Jamie Brooks",
+        text: "I feel her staring into the depths of my soul.",
+        time: "10:28",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/daisy.jpg",
@@ -934,8 +962,18 @@ export const posts: Post[] = [
     author: "Maya Chen",
     time: "10:05",
     text: "Does Louis look more sophisticated with this bow tie?",
-    replyTime: "10:08",
-    reply: "Alex Morgan: He looks like he wants to discuss my mortgage.",
+    replies: [
+      {
+        author: "Alex Morgan",
+        text: "He looks like he wants to discuss my mortgage.",
+        time: "10:08",
+      },
+      {
+        author: "Sam Patel",
+        text: "Sophisticated, dignified and refined.",
+        time: "10:11",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/louis.jpg",
@@ -951,8 +989,19 @@ export const posts: Post[] = [
     author: "Sam Patel",
     time: "17 October 2026, 15:30",
     text: "A whole dachshund. In one hand.",
-    replyTime: "17 October 2026, 15:34",
-    reply: "Jamie Brooks: HALP. I can't. Too cute.",
+    replies: [
+      {
+        author: "Jamie Brooks",
+        text: "HALP. I can't. Too cute.",
+        time: "17 October 2026, 15:34",
+      },
+    ],
+    reactions: [
+      { emoji: "❤️", count: 5 },
+      { emoji: "😍", count: 4 },
+      { emoji: "🐶", count: 3 },
+      { emoji: "😭", count: 2 },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/dachshund.jpg",
@@ -967,10 +1016,19 @@ export const posts: Post[] = [
     channel: "pets",
     author: "Jordan Lee",
     time: "17 October 2026, 14:10",
-    text: "These aren't my pets. I'd like to point out that Pet photos is discriminatory towards those of us who don't own these goats, yet clearly had to post them here.",
-    replyTime: "17 October 2026, 14:14",
-    reply:
-      "Alex Morgan: Thank you for bringing this important information to our attention.",
+    text: "These aren't my pets. I'd like to point out that this channel is discriminatory against people who don't own goats as pets.",
+    replies: [
+      {
+        author: "Alex Morgan",
+        text: "Thank you for bringing this important information to our attention.",
+        time: "17 October 2026, 14:14",
+      },
+      {
+        author: "Maya Chen",
+        text: "+1 we need more goats",
+        time: "17 October 2026, 14:17",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/goats.jpg",
@@ -986,8 +1044,18 @@ export const posts: Post[] = [
     author: "Jamie Brooks",
     time: "17 October 2026, 13:15",
     text: "the devil walks among us",
-    replyTime: "17 October 2026, 13:18",
-    reply: "Maya Chen: And apparently sleeps on the good pillows.",
+    replies: [
+      {
+        author: "Maya Chen",
+        text: "And apparently sleeps on the good pillows.",
+        time: "17 October 2026, 13:18",
+      },
+      {
+        author: "Alex Morgan",
+        text: "What's wrong with your chicken? Call a vet.",
+        time: "17 October 2026, 13:22",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/greyhound-glowing-eyes.jpg",
@@ -1003,8 +1071,18 @@ export const posts: Post[] = [
     author: "Alex Morgan",
     time: "16 October 2026, 16:10",
     text: "Not a pet but still...",
-    replyTime: "16 October 2026, 16:12",
-    reply: "Sam Patel: the noot has spoken",
+    replies: [
+      {
+        author: "Sam Patel",
+        text: "the noot has spoken",
+        time: "16 October 2026, 16:12",
+      },
+      {
+        author: "Jamie Brooks",
+        text: "#science",
+        time: "16 October 2026, 16:15",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/hypotenoot.jpg",
@@ -1019,9 +1097,19 @@ export const posts: Post[] = [
     channel: "pets",
     author: "Sam Patel",
     time: "16 October 2026, 15:20",
-    text: "Focus on what you are naturally drawn to. Use that simply clue to cut through the noise and find your rhythm. The frequency is there...",
-    replyTime: "16 October 2026, 15:24",
-    reply: "Jordan Lee: I am naturally drawn to closing my laptop.",
+    text: "Focus on what you're naturally drawn to. Use that simple clue to cut through the noise and find your rhythm. The frequency is there...",
+    replies: [
+      {
+        author: "Jordan Lee",
+        text: "I am naturally drawn to closing my laptop.",
+        time: "16 October 2026, 15:24",
+      },
+      {
+        author: "Maya Chen",
+        text: "Is that a raw chicken?",
+        time: "16 October 2026, 15:27",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/metaverse.jpg",
@@ -1037,8 +1125,18 @@ export const posts: Post[] = [
     author: "Maya Chen",
     time: "16 October 2026, 14:05",
     text: "The garden has a new head of security. References available on request.",
-    replyTime: "16 October 2026, 14:09",
-    reply: "Jamie Brooks: I've been refused entry to my own house.",
+    replies: [
+      {
+        author: "Jamie Brooks",
+        text: "I've been refused entry to my own house.",
+        time: "16 October 2026, 14:09",
+      },
+      {
+        author: "Sam Patel",
+        text: "Firm but fair policy.",
+        time: "16 October 2026, 14:12",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/garden-cat.jpg",
@@ -1053,9 +1151,14 @@ export const posts: Post[] = [
     channel: "pets",
     author: "Sam Patel",
     time: "16 October 2026, 12:20",
-    text: "Performance review came back.",
-    replyTime: "16 October 2026, 12:23",
-    reply: "Alex Morgan: No notes. Just prolonged eye contact.",
+    text: "Performance review came back. It's not that she dislikes you, she just judges you and your life choices.",
+    replies: [
+      {
+        author: "Alex Morgan",
+        text: "No notes. Just prolonged eye contact.",
+        time: "16 October 2026, 12:23",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/judgement.jpg",
@@ -1071,8 +1174,18 @@ export const posts: Post[] = [
     author: "Jordan Lee",
     time: "16 October 2026, 11:10",
     text: "Anyone know how to switch this mosquito to silent?",
-    replyTime: "16 October 2026, 11:13",
-    reply: "Jamie Brooks: Have you checked the battery in your dog?",
+    replies: [
+      {
+        author: "Jamie Brooks",
+        text: "Have you checked the battery in your dog?",
+        time: "16 October 2026, 11:13",
+      },
+      {
+        author: "Ari Morgan",
+        text: "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.",
+        time: "16 October 2026, 11:18",
+      },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/greyhound-serenade.jpg",

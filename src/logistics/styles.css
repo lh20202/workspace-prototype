@@ -1310,6 +1310,24 @@
   flex-wrap: wrap;
   gap: 5px;
 }
+.post-reactions {
+  margin: 10px 0 4px;
+}
+.post-reaction-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 39px;
+  padding: 3px 7px;
+  border: 1px solid #e1dfe8;
+  background: white;
+  border-radius: 14px;
+  font-size: 11px;
+  color: #605e5c;
+}
+.post-reaction-chip > span:first-child {
+  font-size: 14px;
+}
 .thread-reactions button {
   display: flex;
   align-items: center;

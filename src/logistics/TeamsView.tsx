@@ -20,6 +20,7 @@ import {
   files,
   filesById,
   initialTasks,
+  postReplies,
   workspaceTitle,
   type OperationalFile,
   type TaskState,
@@ -284,6 +285,19 @@ export default function TeamsView({
                 {p.image && (
                   <PostPhoto image={p.image} first={p.id === "post-daisy"} />
                 )}
+                {!!p.reactions?.length && (
+                  <div
+                    className="thread-reactions post-reactions"
+                    aria-label="Post reactions"
+                  >
+                    {p.reactions.map(({ emoji, count }) => (
+                      <span className="post-reaction-chip" key={emoji}>
+                        <span aria-hidden="true">{emoji}</span>
+                        {count}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 {p.fileIds.length > 0 && (
                   <div className="post-file-links">
                     {p.fileIds.map((id) => {
@@ -311,14 +325,15 @@ export default function TeamsView({
                     Open Locations & Permits
                   </StaffLink>
                 )}
-                {p.reply && (
+                {postReplies(p).map((postReply, index) => (
                   <ThreadReply
-                    author={p.reply.split(":")[0]}
-                    text={p.reply.slice(p.reply.indexOf(":") + 1).trim()}
-                    time={p.replyTime || p.time}
-                    reactions={p.id === "post-daisy"}
+                    key={`${postReply.author}-${postReply.time || index}`}
+                    author={postReply.author}
+                    text={postReply.text}
+                    time={postReply.time || p.time}
+                    reactions={p.id === "post-daisy" && index === 0}
                   />
-                )}
+                ))}
                 {localReplies[p.id]?.map((text, i) => (
                   <ThreadReply
                     key={i}

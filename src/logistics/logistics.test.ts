@@ -4,6 +4,7 @@ import {
   filesById,
   channels,
   posts,
+  postReplies,
   quickLinks,
   campaigns,
   permits,
@@ -56,6 +57,103 @@ describe("one shared document model", () => {
     expect(url.pathname).toBe("/logistics/operations");
     expect(url.searchParams.get("document")).toBe(f.id);
     expect(url.searchParams.get("folder")).toBe(f.folder);
+  });
+});
+describe("Pet photos threads", () => {
+  const petPosts = posts.filter((post) => post.channel === "pets");
+  const byId = (id: string) => petPosts.find((post) => post.id === id)!;
+
+  it("keeps the existing post order and photo assets", () => {
+    expect(petPosts.map((post) => post.id)).toEqual([
+      "post-daisy",
+      "post-miso",
+      "post-puppy",
+      "post-goats",
+      "post-greyhound",
+      "post-pingu",
+      "post-metaverse",
+      "post-garden-cat",
+      "post-judgement",
+      "post-serenade",
+      "history-pets-chair",
+    ]);
+    expect(
+      petPosts.filter((post) => post.image).map((post) => post.image?.src),
+    ).toEqual([
+      "/images/pets/daisy.jpg",
+      "/images/pets/louis.jpg",
+      "/images/pets/dachshund.jpg",
+      "/images/pets/goats.jpg",
+      "/images/pets/greyhound-glowing-eyes.jpg",
+      "/images/pets/hypotenoot.jpg",
+      "/images/pets/metaverse.jpg",
+      "/images/pets/garden-cat.jpg",
+      "/images/pets/judgement.jpg",
+      "/images/pets/greyhound-serenade.jpg",
+    ]);
+  });
+
+  it("adds the requested replies to the existing threads", () => {
+    expect(byId("post-daisy").text).toBe("Look into my eyes");
+    expect(postReplies(byId("post-daisy")).map(({ text }) => text)).toEqual([
+      "take me to your leader",
+      "I feel her staring into the depths of my soul.",
+    ]);
+    expect(postReplies(byId("post-miso")).map(({ text }) => text)).toEqual([
+      "He looks like he wants to discuss my mortgage.",
+      "Sophisticated, dignified and refined.",
+    ]);
+    expect(postReplies(byId("post-goats")).map(({ text }) => text)).toEqual([
+      "Thank you for bringing this important information to our attention.",
+      "+1 we need more goats",
+    ]);
+    expect(postReplies(byId("post-greyhound")).map(({ text }) => text)).toEqual(
+      [
+        "And apparently sleeps on the good pillows.",
+        "What's wrong with your chicken? Call a vet.",
+      ],
+    );
+    expect(postReplies(byId("post-pingu")).map(({ text }) => text)).toEqual([
+      "the noot has spoken",
+      "#science",
+    ]);
+    expect(byId("post-metaverse").text).toBe(
+      "Focus on what you're naturally drawn to. Use that simple clue to cut through the noise and find your rhythm. The frequency is there...",
+    );
+    expect(postReplies(byId("post-metaverse")).map(({ text }) => text)).toEqual(
+      ["I am naturally drawn to closing my laptop.", "Is that a raw chicken?"],
+    );
+    expect(
+      postReplies(byId("post-garden-cat")).map(({ text }) => text),
+    ).toEqual([
+      "I've been refused entry to my own house.",
+      "Firm but fair policy.",
+    ]);
+    expect(byId("post-judgement").text).toBe(
+      "Performance review came back. It's not that she dislikes you, she just judges you and your life choices.",
+    );
+    expect(postReplies(byId("post-serenade")).map(({ text }) => text)).toEqual([
+      "Have you checked the battery in your dog?",
+      "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.",
+    ]);
+  });
+
+  it("shows small dachshund reactions and keeps legacy single replies readable", () => {
+    expect(byId("post-puppy").reactions).toEqual([
+      { emoji: "❤️", count: 5 },
+      { emoji: "😍", count: 4 },
+      { emoji: "🐶", count: 3 },
+      { emoji: "😭", count: 2 },
+    ]);
+    expect(
+      postReplies(posts.find((post) => post.id === "post-general")!),
+    ).toEqual([
+      {
+        author: "Maya Chen",
+        text: "Got it. I’ve passed the handover on to the calling team.",
+        time: "09:17",
+      },
+    ]);
   });
 });
 describe("operational views and lists", () => {
