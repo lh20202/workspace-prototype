@@ -58,9 +58,9 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Personalakten und Bewerbungsprozesse verwalten.",
   "Manage accounting, financial planning and treasury records.":
     "Buchhaltung, Finanzplanung und Liquiditätsunterlagen verwalten.",
-  "Publishing approvals in ReelPoster":
-    "Veröffentlichungsfreigaben in ReelPoster",
-  "Open in ReelPoster": "In ReelPoster öffnen",
+  "Publishing approvals in Scheduler":
+    "Veröffentlichungsfreigaben in Scheduler",
+  "Open in Scheduler": "In Scheduler öffnen",
   "Open in VidPhotoEditor": "In VidPhotoEditor öffnen",
   "Open in TheCRM": "In TheCRM öffnen",
   "Open in RaiseTicket": "In RaiseTicket öffnen",

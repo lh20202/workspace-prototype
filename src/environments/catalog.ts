@@ -29,8 +29,8 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "slotline",
-    name: "ReelPoster",
-    logo: "/images/admin-logins/reelposter.svg",
+    name: "Scheduler",
+    logo: "/images/admin-logins/scheduler.svg",
     category: "Social content scheduling",
     purpose: "Plan, review and schedule social content.",
     hubs: ["sales-marketing"],
