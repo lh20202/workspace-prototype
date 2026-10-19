@@ -50,6 +50,8 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain('src="/images/site-mark.svg"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
     expect(launcher).toContain("Browse all company workspaces and wikis.");
+    expect(launcher).toContain(">Tour</a>");
+    expect(launcher).not.toContain(">What is a workspace?</a>");
     expect(launcher).toContain("BETA TEST");
     expect(launcher).toContain('aria-label="About beta test"');
     expect(launcher).toContain('aria-label="Proof of concept"');
