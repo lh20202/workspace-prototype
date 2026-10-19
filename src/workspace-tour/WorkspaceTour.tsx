@@ -339,7 +339,7 @@ function ActivityDirectory() {
       title: "Channels for live coordination",
       body: "Talk through day-to-day work while shared files stay in the workspace.",
       className: "annotation-channels",
-      path: "M760 72 C815 68 872 70 930 77",
+      path: "M860 72 C884 68 907 71 930 77",
       mobilePath: "M312 66 C315 69 319 73 322 78",
     },
     {
@@ -348,23 +348,23 @@ function ActivityDirectory() {
       body: "Clear names make documents easier to recognise and search.",
       className: "annotation-naming",
       path: "M320 307 C311 329 300 352 290 378",
-      mobilePath: "M145 461 C149 467 152 473 155 480",
+      mobilePath: "M226 510 C205 503 180 490 155 480",
     },
     {
       id: "status",
       title: "Status",
       body: "See whether a document is draft, in review or complete.",
       className: "annotation-status",
-      path: "M710 307 C719 329 728 353 738 378",
-      mobilePath: "M160 532 C201 515 245 493 286 480",
+      path: "M710 307 C705 329 699 353 700 378",
+      mobilePath: "M164 592 C205 566 246 520 286 480",
     },
     {
       id: "metadata",
       title: "Automatic metadata",
       body: "Useful details are applied consistently, making files easier to organise, filter and find.",
       className: "annotation-metadata",
-      path: "M520 420 C525 406 530 392 535 378",
-      mobilePath: "M230 461 C227 467 224 474 221 480",
+      path: "M558 302 C561 315 564 328 567 340",
+      mobilePath: "M164 470 C184 473 204 477 221 480",
     },
     {
       id: "sensitivity",
@@ -372,7 +372,7 @@ function ActivityDirectory() {
       body: "Clear labels show how information should be handled.",
       className: "annotation-sensitivity",
       path: "M900 418 C915 405 930 390 944 378",
-      mobilePath: "M310 532 C324 516 337 497 350 480",
+      mobilePath: "M226 592 C264 561 308 520 350 480",
     },
   ];
   return (
@@ -535,23 +535,23 @@ function ActivityDirectory() {
             <defs>
               <marker
                 id="tour-arrowhead-mobile"
-                  markerWidth="6"
-                  markerHeight="6"
-                  markerUnits="userSpaceOnUse"
-                  refX="5"
-                  refY="3"
+                markerWidth="6"
+                markerHeight="6"
+                markerUnits="userSpaceOnUse"
+                refX="5"
+                refY="3"
                 orient="auto"
               >
-                  <path d="M1 1 L5 3 L1 5" />
+                <path d="M1 1 L5 3 L1 5" />
               </marker>
             </defs>
-              {annotations.map((annotation) => (
-                <path
-                  key={annotation.id}
-                  d={annotation.mobilePath}
-                  markerEnd="url(#tour-arrowhead-mobile)"
-                />
-              ))}
+            {annotations.map((annotation) => (
+              <path
+                key={annotation.id}
+                d={annotation.mobilePath}
+                markerEnd="url(#tour-arrowhead-mobile)"
+              />
+            ))}
           </svg>
           <div
             className="workspace-tour-annotations"
