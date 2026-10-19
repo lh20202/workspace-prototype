@@ -1,11 +1,9 @@
 import { workspaceRegistry } from "../workspaces/registry";
 import {
-  aaaDemoView,
   previewRoles,
   defaultPreviewRoleId,
   type PreviewRole,
 } from "../access/policy";
-import { isStandaloneDemo } from "../utils/demoMode";
 export const workspaces = workspaceRegistry;
 const baseStaff = [
   {
@@ -312,7 +310,6 @@ export const recordContacts = [
   { id: "morgan", name: "Morgan Reed", role: "Records Adviser" },
 ];
 export function resolveStaffPerson(id?: string | null): StaffPerson {
-  if (id === aaaDemoView.id && !isStandaloneDemo()) return aaaDemoView;
   return (
     staff.find((person) => person.id === (id || selectedStaffId())) ||
     staff.find((person) => person.id === defaultPreviewRoleId)!

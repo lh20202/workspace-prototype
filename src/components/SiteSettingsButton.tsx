@@ -5,6 +5,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { previewRoleChangingEvent } from "./demoControls";
 import {
   Button,
   Drawer,
@@ -37,7 +38,6 @@ import {
   siteSurfaceTitles,
   type SiteSurface,
 } from "../administration/SitePanels";
-import { previewRoleChangingEvent } from "./demoControls";
 import { siteAdministrationHref } from "../administration/routes";
 import "../administration/site-administration.css";
 

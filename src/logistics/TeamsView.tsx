@@ -127,7 +127,6 @@ export default function TeamsView({
             : item.onSelect,
         })),
       }))}
-      showRoleDiscovery={navigation.showRoleDiscovery}
       selectedChannelId={`${channel.team}:${channel.id}`}
       activeTab={tab}
       tabs={

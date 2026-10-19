@@ -395,7 +395,6 @@ export const germanMessages: Record<string, string> = {
   "Demonstration response": "Beispiel für eine Krisenreaktion",
   "Preview as": "Vorschau als",
   "Preview controls": "Vorschausteuerung",
-  "Preview role": "Vorschaurolle",
   "Preview note": "Hinweis zur Vorschau",
   "About this proof of concept": "Über diesen Machbarkeitsnachweis",
   "This proof of concept uses fictional content.":
@@ -1751,7 +1750,6 @@ export const germanMessages: Record<string, string> = {
   "Formal governance · Separate controlled environment":
     "Formelle Gremienarbeit · Gesonderte kontrollierte Umgebung",
   "Governance access preview": "Gremienzugriff in der Vorschau",
-  "Governance preview role": "Gremienrolle in der Vorschau",
   "Rowan Blake · Committee Member": "Rowan Blake · Gremienmitglied",
   "Skyler Lane · Member Representative": "Skyler Lane · Mitgliedervertretung",
   "Governance navigation": "Gremiennavigation",

@@ -21,7 +21,6 @@ import {
   previewRoleFor,
   departmentPreviewFor,
   defaultPreviewRoleId,
-  isAaaDemoView,
   isProjectPinnedForRole,
 } from "../access/policy";
 import { resolveContentChannel, contentDefaultTab } from "../content/channels";
@@ -201,7 +200,7 @@ export function channelNavigationFor({
       context
         ? context.kind !== "department" || context.id !== department.id
         : person.id === defaultPreviewRoleId ||
-          (role?.departmentId !== department.id && !isAaaDemoView(person))
+          role?.departmentId !== department.id
     )
       continue;
     groups.push({
@@ -267,7 +266,7 @@ export function channelNavigationFor({
   return {
     entryContext: context,
     groups: groups.filter((group) => group.channels.length > 0),
-    showRoleDiscovery: !context && person.id === defaultPreviewRoleId,
+    showRoleDiscovery: !context && person.id === "taylor",
   };
 }
 

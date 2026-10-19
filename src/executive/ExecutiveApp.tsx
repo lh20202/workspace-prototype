@@ -42,7 +42,10 @@ export default function ExecutiveApp() {
     return target.pathname + target.search;
   };
   const area = navigation.find((a) => a.id === page);
-  const allowed = validRoute && canAccessArea(staffPerson, "executive", page);
+  const allowed =
+    validRoute &&
+    (canAccessArea(staffPerson, "executive", page) ||
+      (page === "home" && workspaceAllowed));
   const safeFiles = files.filter(
     (file) =>
       workspaceAllowed &&
@@ -160,11 +163,9 @@ export default function ExecutiveApp() {
             workspaceId="executive"
             area={title}
             resource={
-              validRoute && page === "home"
+              validRoute
                 ? { kind: "workspace", workspaceId: "executive" }
-                : validRoute && area
-                  ? { kind: "area", workspaceId: "executive", areaId: page }
-                  : undefined
+                : undefined
             }
             personId={staffPerson.id}
             strict

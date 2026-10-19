@@ -97,6 +97,10 @@
 .access-boundary > .fui-Button {
   margin-top: 10px;
 }
+.access-boundary .access-boundary-reveal {
+  margin-block: 6px 12px;
+  font-weight: 600;
+}
 .access-boundary-urgent {
   margin: 22px 0 18px;
   font-size: 12px;

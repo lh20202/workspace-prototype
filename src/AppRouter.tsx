@@ -24,6 +24,7 @@ const SiteAdministrationPage = lazy(
   () => import("./administration/SiteAdministrationPage"),
 );
 import { siteAdministrationPage } from "./administration/routes";
+import { defaultPreviewRoleId } from "./access/policy";
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   const external = externalPreviewForPath(location.pathname);
@@ -31,13 +32,22 @@ export default function AppRouter() {
   const redirect =
     publishingLegacyHref(location.pathname, location.search) ||
     (oldRoute ? oldRoute + location.search : undefined);
+  const legacyDemoView =
+    new URLSearchParams(location.search).get("staff") === "aaa";
   useEffect(() => {
     if (redirect) location.replace(redirect);
   }, [redirect]);
   useEffect(() => {
+    if (!legacyDemoView || redirect) return;
+    const params = new URLSearchParams(location.search);
+    params.set("staff", defaultPreviewRoleId);
+    params.delete("demoReveal");
+    location.replace(`${location.pathname}?${params.toString()}${location.hash}`);
+  }, [legacyDemoView, redirect]);
+  useEffect(() => {
     document.title = pageTitle(location.pathname);
   }, [prototype]);
-  if (redirect)
+  if (redirect || legacyDemoView)
     return (
       <div className="workspace-loading" role="status">
         Opening the owning workspace…

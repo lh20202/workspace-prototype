@@ -48,7 +48,6 @@ import {
   defaultTeamsContext,
   readChannelEntryContext,
   channelContextValue,
-  channelNavigationFor,
 } from "../teams/navigation";
 import {
   canSeeDepartment,
@@ -418,9 +417,6 @@ export default function TeamsPreview() {
       teamName={department?.name || workspace.title}
       channelName={department ? "General" : channel}
       groups={groups}
-      showRoleDiscovery={
-        channelNavigationFor({ person, entryContext }).showRoleDiscovery
-      }
       selectedChannelId={
         department ? `${department.id}:General` : `${workspace.id}:${channel}`
       }
@@ -454,14 +450,27 @@ export default function TeamsPreview() {
           resource={
             department
               ? { kind: "department", departmentId: department.id }
-              : {
-                  kind: "channel",
-                  workspaceId: workspace.id,
-                  channelId:
-                    workspace.id === "content"
-                      ? resolveContentChannel(channel)?.id || channel
-                      : channel,
-                }
+              : workspaceDenied
+                ? hasWorkspaceTeams(workspace.id) &&
+                  canAccessWorkspace(person, workspace.id)
+                  ? undefined
+                  : hasWorkspaceTeams(workspace.id)
+                    ? { kind: "workspace", workspaceId: workspace.id }
+                    : undefined
+                : {
+                    kind: "channel",
+                    workspaceId: workspace.id,
+                    channelId:
+                      workspace.id === "content"
+                        ? resolveContentChannel(channel)?.id || channel
+                        : workspace.id === "logistics"
+                          ? logisticsChannels.find(
+                              (item) =>
+                                item.team === workspace.id &&
+                                (item.id === channel || item.name === channel),
+                            )?.id || channel
+                          : channel,
+                  }
           }
           personId={person.id}
           area={department ? `${department.name} / General` : channel}

@@ -6,25 +6,11 @@ import {
 } from "@fluentui/react-icons";
 import PocAnnotation from "./PocAnnotation";
 import BetaBadge from "./BetaBadge";
-import DemoInfo, {
-  aaaDemoViewText,
-  demoUserInfoText,
-  roleAccessInfoText,
-} from "./DemoInfo";
 import { useTranslation } from "../i18n/Language";
-import { resolveStaffPerson } from "../intranet/catalog";
 import WorkspaceFAQ from "./WorkspaceFAQ";
-import {
-  defaultPreviewRoleId,
-  demoSiteViews,
-  isAaaDemoView,
-} from "../access/policy";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { isStandaloneDemo } from "../utils/demoMode";
-import { usePreviewRoleContext } from "./PreviewRoleContext";
-import "./preview-role.css";
 import {
-  changePreviewRole,
   consumeWelcomeEntry,
   revealDemoControlsEvent,
 } from "./demoControls";
@@ -37,12 +23,6 @@ export default function PrototypeNavigator({
   const { t } = useTranslation();
   const standalone = isStandaloneDemo();
   const emergency = location.pathname.startsWith("/emergency-response");
-  const person = resolveStaffPerson(
-    new URLSearchParams(location.search).get("staff"),
-  );
-  const isAaaView = isAaaDemoView(person);
-  const currentSiteViewId = isAaaView ? "aaa" : defaultPreviewRoleId;
-  const preview = usePreviewRoleContext();
   const [expanded, setExpanded] = useState(false);
   const [intro, setIntro] = useState(false);
   const frame = useRef<HTMLDivElement>(null);
@@ -185,59 +165,6 @@ export default function PrototypeNavigator({
             <WorkspaceFAQ />
           </div>
           <div className="prototype-utilities">
-            {!standalone && (
-              <div className="preview-role-control">
-                <div className="preview-role-heading">
-                  <label htmlFor="preview-role">Site view</label>
-                  <span className="preview-role-cue">
-                    Demo exploration only
-                  </span>
-                  <DemoInfo label="About site views">
-                    {roleAccessInfoText}
-                  </DemoInfo>
-                </div>
-                <div className="preview-role-selection">
-                  <select
-                    id="preview-role"
-                    ref={preview?.roleSelectorRef}
-                    className={
-                      preview?.roleSelectorHighlighted
-                        ? "preview-role-highlighted"
-                        : undefined
-                    }
-                    aria-label="Site view"
-                    aria-describedby="preview-role-description"
-                    title={t(
-                      isAaaView
-                        ? demoSiteViews[1].label
-                        : demoSiteViews[0].label,
-                    )}
-                    value={currentSiteViewId}
-                    onChange={(e) => changePreviewRole(e.target.value)}
-                  >
-                    {demoSiteViews.map((view) => (
-                      <option key={view.id} value={view.id}>
-                        {t(view.label)}
-                      </option>
-                    ))}
-                  </select>
-                  <p
-                    id="preview-role-description"
-                    className="preview-role-description"
-                  >
-                    {t(isAaaView ? aaaDemoViewText : demoUserInfoText)}
-                  </p>
-                  <a
-                    className="preview-role-channels"
-                    href={withExplicitStaff(
-                      `/teams?staff=${encodeURIComponent(currentSiteViewId)}`,
-                    )}
-                  >
-                    View channels in this site view
-                  </a>
-                </div>
-              </div>
-            )}
             {emergency && (
               <div className="response-preview">
                 <a href={withExplicitStaff("/executive")}>Leave response</a>

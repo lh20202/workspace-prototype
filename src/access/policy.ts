@@ -17,6 +17,7 @@ import {
   unitId as canonicalUnitId,
   unitOnly as privateUnitNames,
 } from "../coordination/definitions";
+import { isDemoContentRevealed } from "./demoContentReveal";
 
 /**
  * Fictional preview entitlements. This is the only source of role membership;
@@ -335,55 +336,6 @@ export const previewRoles: PreviewRole[] = [
   },
 ];
 
-/**
- * A clearly labelled, demo-only site view for exploring areas hidden from
- * regular staff. It is deliberately kept outside the fictional staff roster.
- */
-export const aaaDemoView: PreviewRole = (() => {
-  const regularStaff = previewRoles.find(
-    (role) => role.id === defaultPreviewRoleId,
-  )!;
-  const workspaceChannels = Object.fromEntries([
-    ["content", channelDefinitions.map(({ id }) => id)],
-    ["digital", technicalChannelDefinitions.map(({ name }) => name)],
-    ["planning", [...planningChannels]],
-    ...Array.from(new Set(operationalChannels.map(({ team }) => team)))
-      .filter((team) => team !== "company")
-      .map((team) => [
-        team,
-        operationalChannels
-          .filter((channel) => channel.team === team)
-          .map(({ id }) => id),
-      ]),
-  ]) as Record<string, string[]>;
-  return {
-    ...regularStaff,
-    id: "aaa",
-    role: "AAA demo site view",
-    workspaceMemberships: Object.keys(workspaceAccessLevels),
-    restrictedAreas: Object.fromEntries(
-      Object.entries(protectedAreaDefinitions).map(([workspaceId, areas]) => [
-        workspaceId,
-        [...areas],
-      ]),
-    ),
-    teamChannels: workspaceChannels,
-    projectMemberships: Object.keys(projectAccessLevels),
-    projectTeamMemberships: Object.keys(projectAccessLevels),
-    emergencyMemberships: Array.from(
-      new Set(previewRoles.flatMap((role) => role.emergencyMemberships)),
-    ),
-  };
-})();
-
-export const demoSiteViews = [
-  { id: defaultPreviewRoleId, label: "General staff" },
-  { id: aaaDemoView.id, label: "AAA · All Areas (demo)" },
-] as const;
-
-export const isAaaDemoView = (person: PolicyPerson) =>
-  (typeof person === "string" ? person : person.id) === aaaDemoView.id;
-
 export const previewRoleGroups = [
   {
     label: "GENERAL / BUSINESS",
@@ -403,11 +355,12 @@ export type PolicyPerson =
   string | { id: string; departmentPreviewId?: string };
 export function previewRoleFor(person: PolicyPerson) {
   const id = typeof person === "string" ? person : person.id;
-  if (id === aaaDemoView.id) return aaaDemoView;
   return previewRoles.find((role) => role.id === id);
 }
 
 export function canAccessWorkspace(person: PolicyPerson, workspaceId: string) {
+  if (isDemoContentRevealed({ kind: "workspace", workspaceId }, person))
+    return true;
   const role = previewRoleFor(person);
   if (!role) return false;
   if (workspaceAccessLevels[workspaceId] === "internal") return true;
@@ -430,6 +383,13 @@ export function canAccessArea(
   workspaceId: string,
   areaId: string,
 ) {
+  if (
+    areaId === "home" &&
+    isDemoContentRevealed({ kind: "workspace", workspaceId }, person)
+  )
+    return true;
+  if (isDemoContentRevealed({ kind: "area", workspaceId, areaId }, person))
+    return true;
   const role = previewRoleFor(person);
   if (!role || !canAccessWorkspace(role, workspaceId)) return false;
   if (protectedAreaDefinitions[workspaceId]?.includes(areaId))
@@ -438,6 +398,7 @@ export function canAccessArea(
 }
 
 export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
+  if (isDemoContentRevealed({ kind: "wiki", areaId }, person)) return true;
   const role = previewRoleFor(person);
   if (!role) return false;
   return [
@@ -452,8 +413,10 @@ export function canAccessWikiArea(person: PolicyPerson, areaId: string) {
   ].includes(areaId);
 }
 export const canAccessPortal = (person: PolicyPerson) =>
-  !!previewRoleFor(person);
+  isDemoContentRevealed({ kind: "portal" }, person) || !!previewRoleFor(person);
 export const canAccessProject = (person: PolicyPerson, projectId: string) => {
+  if (isDemoContentRevealed({ kind: "project", projectId }, person))
+    return true;
   const role = previewRoleFor(person);
   return (
     !!role &&
@@ -466,6 +429,8 @@ export const canAccessProjectTeam = (
   person: PolicyPerson,
   projectId: string,
 ) => {
+  if (isDemoContentRevealed({ kind: "project-team", projectId }, person))
+    return true;
   const role = previewRoleFor(person);
   return (
     !!role &&
@@ -484,6 +449,8 @@ export function canAccessProjectSecurityReview(
   person: PolicyPerson,
   projectId: string,
 ) {
+  if (isDemoContentRevealed({ kind: "project-security", projectId }, person))
+    return true;
   const role = previewRoleFor(person);
   return (
     !!role &&
@@ -506,7 +473,8 @@ export const canAccessDepartment = (
   person: PolicyPerson,
   departmentId: string,
 ) => {
-  if (isAaaDemoView(person)) return knownDepartments.includes(departmentId);
+  if (isDemoContentRevealed({ kind: "department", departmentId }, person))
+    return true;
   const preview = departmentPreviewFor(person);
   return preview
     ? preview === departmentId
@@ -518,12 +486,18 @@ export function canAccessUnit(
   unitId: string,
   unitOnly = true,
 ) {
+  if (
+    isDemoContentRevealed(
+      { kind: "unit", departmentId, unitId, unitOnly },
+      person,
+    )
+  )
+    return true;
   const role = previewRoleFor(person);
   const unitName = departmentDefinitions
     .find(([id]) => id === departmentId)?.[6]
     .find((name) => canonicalUnitId(name) === unitId);
   const privateUnit = !!unitName && privateUnitNames.has(unitName);
-  if (isAaaDemoView(person)) return !!unitName;
   return (
     !!role &&
     !!unitName &&
@@ -590,6 +564,10 @@ export function canAccessChannel(
   workspaceId: string,
   channelId: string,
 ) {
+  if (
+    isDemoContentRevealed({ kind: "channel", workspaceId, channelId }, person)
+  )
+    return true;
   const role = previewRoleFor(person);
   if (!role) return false;
   const id = canonicalChannel(workspaceId, channelId);
@@ -604,6 +582,7 @@ export function canAccessChannel(
   return !restricted || canAccessRestrictedChannel(role, workspaceId, id);
 }
 export const canAccessEmergency = (person: PolicyPerson, incidentId: string) =>
+  isDemoContentRevealed({ kind: "emergency", incidentId }, person) ||
   !!previewRoleFor(person)?.emergencyMemberships.includes(incidentId);
 
 export type AccessResource =
@@ -650,10 +629,8 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
       return canAccessEmergency(person, resource.incidentId);
   }
 }
-export const allowedPreviewRoles = (resource: AccessResource) => [
-  ...previewRoles.filter((role) => resourceAccess(role, resource)),
-  ...(resourceAccess(aaaDemoView, resource) ? [aaaDemoView] : []),
-];
+export const allowedPreviewRoles = (resource: AccessResource) =>
+  previewRoles.filter((role) => resourceAccess(role, resource));
 /** A role cue requires entitlement to the precise denied destination. */
 export function hasAlternativePreviewAccess(
   resource: AccessResource,

@@ -5,7 +5,6 @@ export const germanAccessUpdate: Record<string, string> = {
     "Die Überprüfung privilegierter Zugriffsrechte ist bereit zur fachlichen Gegenprüfung. Bitte gleichen Sie die Serviceverantwortlichen mit den genehmigten Änderungsreferenzen ab. Zugangsdaten und Angaben zu Sicherheitslücken verbleiben in den separat geschützten Systemen.",
   "Ari Morgan: I’ll check the review checklist and the recorded approval references before the change window.":
     "Ari Morgan: Ich prüfe die Checkliste und die dokumentierten Freigabereferenzen vor dem Änderungsfenster.",
-  "Preview role": "Vorschaurolle",
   "Demo User": "Demo User",
   "Frontline Sales Adviser": "Vertriebsberaterin im direkten Kundenkontakt",
   "Executive Director": "Geschäftsführung",
@@ -20,8 +19,6 @@ export const germanAccessUpdate: Record<string, string> = {
     "Personaladministratorin — Jamie Ellis",
   "Technology & Engineering Administrator — Devon Park":
     "Administrator für Technologie und Engineering — Devon Park",
-  "Change your role to change your access permissions":
-    "Ändern Sie die Vorschaurolle, um andere Zugriffsberechtigungen zu sehen",
   "Are you frontline sales staff?": "Arbeiten Sie im direkten Kundenvertrieb?",
   "Go to the Frontline Sales Portal for the information and tools used in day-to-day frontline work.":
     "Im Frontline Sales Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",

@@ -488,22 +488,10 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
           <AccessBoundary
             workspaceId={workspace.id}
             resource={
-              subject
-                ? {
-                    kind: "area",
-                    workspaceId: workspace.id,
-                    areaId: subject.id,
-                  }
-                : deniedWorkingArea && validRouteShape
-                  ? {
-                      kind: "area",
-                      workspaceId: workspace.id,
-                      areaId: deniedWorkingArea,
-                    }
-                  : validRouteShape &&
-                      (page === "home" || library || area || tool || isList)
-                    ? { kind: "workspace", workspaceId: workspace.id }
-                    : undefined
+              validRouteShape &&
+              (page === "home" || library || area || tool || isList)
+                ? { kind: "workspace", workspaceId: workspace.id }
+                : undefined
             }
             area={subject?.name || displayTitle}
             personId={contextStaffId}

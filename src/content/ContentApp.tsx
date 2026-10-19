@@ -277,8 +277,8 @@ export default function ContentApp() {
         workspaceId="content"
         known={!!valid}
         resource={
-          topic
-            ? { kind: "area", workspaceId: "content", areaId: topic.id }
+          valid
+            ? { kind: "workspace", workspaceId: "content" }
             : undefined
         }
       />

@@ -1,23 +1,8 @@
 /** Final semantic review after the English FAQ, roles and classifications settled. */
 export const germanFAQRolesSensitivity: Record<string, string> = {
-  "Site view": "Demoansicht",
-  "About site views": "Informationen zu den Demoansichten",
-  "General staff": "Allgemeine Mitarbeitende",
-  "AAA · All Areas (demo)": "AAA · Alle Bereiche (Demo)",
-  "Demo exploration only": "Nur zur Erkundung der Demo",
-  "General staff shows the regular staff experience. Areas restricted by access rules stay hidden.":
-    "Die Ansicht „Allgemeine Mitarbeitende“ zeigt die übliche Arbeitsumgebung. Geschützte Bereiche bleiben ausgeblendet.",
-  "AAA means All Areas Access. This demo-only site view reveals restricted areas so you can explore what sits behind them. It is not a staff role or a real access level.":
-    "AAA steht für Zugriff auf alle Bereiche. Diese Demoansicht zeigt geschützte Bereiche, damit Sie deren Inhalte erkunden können. Sie ist keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
-  "General staff shows the usual restricted view. AAA means All Areas Access: a demo-only site view for exploring hidden areas. It is not a staff role or a real access level.":
-    "Die Ansicht für allgemeine Mitarbeitende zeigt die üblichen Zugriffsbeschränkungen. AAA steht für Zugriff auf alle Bereiche: eine Demoansicht zum Erkunden ausgeblendeter Bereiche. Sie ist keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
-  "View channels in this site view": "Kanäle in dieser Demoansicht ansehen",
-  "Explore this area in the AAA demo view":
-    "Diesen Bereich in der AAA-Demoansicht erkunden",
-  "AAA is a demo-only site view, not a staff role or real access level.":
-    "AAA ist eine Demoansicht, keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
-  "Choose a site view": "Demoansicht auswählen",
-  "Explore another site view": "Andere Demoansicht erkunden",
+  "Your role determines whether you can see this content. For this demo, you can reveal it here.":
+    "Ihre Rolle bestimmt, ob Sie diese Inhalte sehen können. Für diese Demo können Sie sie hier einblenden.",
+  "Reveal restricted content": "Geschützte Inhalte anzeigen",
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
     "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
   "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.":
@@ -37,14 +22,7 @@ export const germanFAQRolesSensitivity: Record<string, string> = {
   "Go to full channel demo": "Vollständige Kanaldemo öffnen",
   "Channel coordination": "Abstimmung in Kanälen",
   "Open channel": "Kanal öffnen",
-  "Access follows the role. Switch roles and the demo updates the workspaces, channels and restricted areas that role can use.":
-    "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Kanäle und geschützten Bereiche.",
-  "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.":
-    "Wechseln Sie die Vorschaurolle, um persönliche Kanalansichten, geschützte Inhalte und Fachanwendungen zu erkunden. Die normalen Arbeitsbereiche bleiben verfügbar.",
   "Back to all workspaces": "Zurück zu allen Arbeitsbereichen",
-  "Try another preview role": "Andere Vorschaurolle ausprobieren",
-  "Some preview roles can access this area.":
-    "Einige Vorschaurollen haben Zugriff auf diesen Bereich.",
   "GENERAL / BUSINESS": "ALLGEMEIN / FACHBEREICHE",
   "SPECIALIST / ADMIN": "SPEZIALFUNKTIONEN / ADMINISTRATION",
   "Demo User": "Demo User",

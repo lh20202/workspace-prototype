@@ -326,13 +326,7 @@ export default function AudienceApp() {
         workspaceId="audience"
         known={!!known}
         resource={
-          protectedStudy
-            ? {
-                kind: "area",
-                workspaceId: "audience",
-                areaId: "participant-administration",
-              }
-            : undefined
+          known ? { kind: "workspace", workspaceId: "audience" } : undefined
         }
       />
     );

@@ -4,7 +4,10 @@ import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { useEffect, useState } from "react";
 import AccessBoundary from "../access/AccessBoundary";
-import { canAccessProjectSecurityReview } from "../access/policy";
+import {
+  canAccessArea,
+  canAccessProjectSecurityReview,
+} from "../access/policy";
 import { PeopleTeam20Regular, Chat20Regular } from "@fluentui/react-icons";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
@@ -30,8 +33,6 @@ import {
   projectHref,
   activePerson,
   canOpenProject,
-  controlRoles,
-  supportRoles,
   projectFiles,
   projectLibraryDefinition,
   reviewRows,
@@ -126,8 +127,8 @@ export default function ProjectsApp() {
     location.search,
   );
   const mode = project ? projectNav : centralNav;
-  const canControl = controlRoles.includes(person.id),
-    canSupport = supportRoles.includes(person.id);
+  const canControl = canAccessArea(person, "projects", "control"),
+    canSupport = canAccessArea(person, "projects", "support");
   const blockedCentral =
     !project &&
     (((page === "control" || page === "reviews") && !canControl) ||
@@ -306,10 +307,7 @@ export default function ProjectsApp() {
         !knownProjectDestination
           ? undefined
           : project
-            ? {
-                kind: teams ? "project-team" : "project",
-                projectId: project.code,
-              }
+            ? { kind: "project", projectId: project.code }
             : { kind: "area", workspaceId: "projects", areaId: page }
       }
       personId={person.id}

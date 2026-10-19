@@ -10,12 +10,11 @@ import { Dismiss20Regular } from "@fluentui/react-icons";
 import { selectedStaffId } from "../intranet/catalog";
 import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
-import { usePreviewRoleContext } from "../components/PreviewRoleContext";
-import PreviewRolePrompt from "../components/PreviewRolePrompt";
 import { workspaceDisplayName } from "../workspaces/presentation";
 import AccessLock from "../components/AccessLock";
 import EnvironmentIcon from "../components/EnvironmentIcon";
-import { hasAlternativePreviewAccess, type AccessResource } from "./policy";
+import type { AccessResource } from "./policy";
+import { useDemoContentReveal } from "./demoContentReveal";
 import {
   accessFocalPoint,
   accessWorkspace,
@@ -63,12 +62,7 @@ export default function AccessBoundary({
   const focal = accessFocalPoint(context);
   const sales = isSalesAccessContext(context);
   const wiki = context.workspaceId === "sales-wiki";
-  const preview = usePreviewRoleContext();
-  const showRoleHelper = !!(
-    preview &&
-    resource &&
-    hasAlternativePreviewAccess(resource, context.personId)
-  );
+  const { revealed, reveal } = useDemoContentReveal(resource, context.personId);
   const [contactOpen, setContactOpen] = useState(false);
   const [contact, setContact] = useState<AccessFocalPoint>(focal);
   const [message, setMessage] = useState(`I need access to ${context.area}. `);
@@ -146,10 +140,21 @@ export default function AccessBoundary({
             <Heading>Access required</Heading>
             <p className="access-boundary-area">{context.area}</p>
             <p>
-              {wiki
-                ? "This knowledge area is outside the frontline view."
-                : "This area is limited to authorised participants."}
+              {resource
+                ? t(
+                    "Your role determines whether you can see this content. For this demo, you can reveal it here.",
+                  )
+                : "This location is unavailable."}
             </p>
+            {resource && !revealed && (
+              <Button
+                appearance="secondary"
+                className="access-boundary-reveal"
+                onClick={reveal}
+              >
+                {t("Reveal restricted content")}
+              </Button>
+            )}
             {!sales && (
               <>
                 {workspaceContact}
@@ -163,12 +168,6 @@ export default function AccessBoundary({
               {returnLabel}
             </a>
           </section>
-          {showRoleHelper && (
-            <PreviewRolePrompt
-              actionLabel="Explore this area in the AAA demo view"
-              description="AAA is a demo-only site view, not a staff role or real access level."
-            />
-          )}
         </div>
         {sales && (
           <aside

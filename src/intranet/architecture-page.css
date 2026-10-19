@@ -29,6 +29,10 @@
   width: 28px;
   height: 28px;
   flex: 0 0 28px;
+  justify-content: center;
+  border: 1px solid #e1e5e9;
+  border-radius: 2px;
+  background: #fff;
 }
 .architecture-workspace-icon img {
   display: block;
@@ -48,23 +52,23 @@
 }
 .architecture-tone-sales-marketing {
   --hub-accent: #246a77;
-  --hub-border: #c7dde1;
-  --hub-surface: #eaf4f5;
+  --hub-border: #d8e4e7;
+  --hub-surface: #f5f9fa;
 }
 .architecture-tone-infrastructure {
   --hub-accent: #4c647e;
-  --hub-border: #d0dae4;
-  --hub-surface: #edf1f6;
+  --hub-border: #dce2e8;
+  --hub-surface: #f6f8fa;
 }
 .architecture-tone-personnel {
   --hub-accent: #765b83;
-  --hub-border: #ded0e4;
-  --hub-surface: #f3edf6;
+  --hub-border: #e4dce8;
+  --hub-surface: #faf8fb;
 }
 .architecture-tone-finance {
   --hub-accent: #873f56;
-  --hub-border: #e7ccd5;
-  --hub-surface: #f8edf0;
+  --hub-border: #eadde1;
+  --hub-surface: #fcf8f9;
 }
 .architecture-panel {
   min-width: 0;
@@ -72,8 +76,10 @@
   flex-direction: column;
   padding: 16px;
   border: 1px solid var(--hub-border);
-  border-radius: 6px;
+  border-top: 3px solid var(--hub-accent);
+  border-radius: 2px;
   background: var(--hub-surface);
+  box-shadow: 0 1px 2px #0000000a;
 }
 .architecture-panel-heading,
 .architecture-panel-heading > a {
@@ -105,12 +111,14 @@
   gap: var(--architecture-link-gap);
   min-width: 0;
   min-height: var(--architecture-row-height);
-  padding: 3px 0;
+  padding: 2px 4px;
+  border-radius: 2px;
   color: #2d5362;
   font-size: 14px;
   font-weight: 550;
   line-height: 21px;
   text-decoration: none;
+  transition: background-color 120ms ease;
 }
 .architecture-destination > :first-child {
   width: var(--architecture-icon);
@@ -174,6 +182,7 @@
   font-weight: 500;
   line-height: 21px;
   text-decoration: none;
+  transition: background-color 120ms ease;
 }
 .architecture-jump-copy {
   min-width: 0;
@@ -213,12 +222,18 @@
   gap: 8px;
   min-width: 0;
   padding: 8px;
+  border: 1px solid #edebe9;
+  background: #fff;
   color: #2d5362;
   font-size: 13px;
   line-height: 18px;
   font-weight: 550;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px #00000008;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
 }
 .architecture-project-copy {
   min-width: 0;
@@ -257,7 +272,8 @@
   line-height: 16px;
 }
 .architecture-portfolio {
-  background: #eef4f6;
+  background: #f3f8f9;
+  border-color: #d8e4e7;
   border-left: 3px solid #397482;
 }
 .architecture-all-projects {
@@ -272,8 +288,12 @@
   text-decoration: none;
 }
 .architecture-jump-link:hover,
+.architecture-destination:hover {
+  background: #ffffffc9;
+}
 .architecture-project-link:hover {
-  background: #f6f8f9;
+  border-color: #c8d1d8;
+  background: #f8f9fa;
 }
 .architecture-destination:hover,
 .architecture-project-link:hover .architecture-project-copy > span,
@@ -284,9 +304,17 @@
   text-underline-offset: 3px;
 }
 .architecture-exploration a:focus-visible {
-  outline: 2px solid #0078d4;
+  outline: 2px solid #0f6cbd;
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-destination,
+  .architecture-jump-link,
+  .architecture-project-link {
+    transition: none;
+  }
 }
 
 @media (max-width: 1100px) {

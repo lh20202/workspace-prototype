@@ -1,6 +1,6 @@
-import { rememberStaff, resolveStaffPerson, staff } from "../intranet/catalog";
-import { teamsPreviewHrefForStaff } from "../teams/navigation";
 import { isStandaloneDemo } from "../utils/demoMode";
+import { rememberStaff, staff } from "../intranet/catalog";
+import { teamsPreviewHrefForStaff } from "../teams/navigation";
 
 const entryKey = "workspace-demo-welcome-entry";
 const seenKey = "workspace-demo-controls-seen";
@@ -30,16 +30,12 @@ export function consumeWelcomeEntry() {
     return false;
   }
 }
-
+/** Internal fixture navigation; no top-level role switch is exposed to visitors. */
 export function changePreviewRole(nextId: string) {
   if (isStandaloneDemo()) return;
-  const nextPerson =
-    nextId === "aaa"
-      ? resolveStaffPerson(nextId)
-      : staff.find((member) => member.id === nextId);
+  const nextPerson = staff.find((member) => member.id === nextId);
   if (!nextPerson) return;
-  if (typeof window !== "undefined")
-    window.dispatchEvent(new Event(previewRoleChangingEvent));
+  window.dispatchEvent(new Event(previewRoleChangingEvent));
   rememberStaff(nextId);
   const teams =
     location.pathname === "/teams" ||

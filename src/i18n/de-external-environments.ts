@@ -102,14 +102,10 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Arbeiten Sie im Vertrieb mit direktem Kundenkontakt?",
   "Need access to this workspace instead?":
     "Benötigen Sie Zugriff auf diesen Arbeitsbereich?",
-  "Change your role to change your access permissions":
-    "Vorschaurolle wechseln, um andere Zugriffsrechte zu erkunden",
   "Workspace navigation": "Navigation der Arbeitsbereiche",
   "Hub navigation": "Navigation der Funktionsgruppe",
   "Proof of concept navigation": "Navigation der Demo",
   Language: "Sprache",
-  "Preview role": "Vorschaurolle",
-  "Explore as": "Erkunden als",
   "Risk & Assurance": "Risikomanagement & Kontrollprüfung",
   "Reward & Employment Frameworks": "Vergütung & Beschäftigungsbedingungen",
   "Recruitment Administration": "Bewerbungsmanagement",

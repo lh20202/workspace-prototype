@@ -1,11 +1,5 @@
 /** Semantic review completed only after the English discovery/context implementation was final. */
 export const germanDiscoverability: Record<string, string> = {
-  "See a role-based channel view": "Rollenbezogene Kanalansicht erkunden",
-  "See a role based channel view": "Rollenbezogene Kanalansicht erkunden",
-  "Choose a preview role to see the department, workspace and project channels that would normally appear here.":
-    "Wählen Sie eine Vorschaurolle aus, um zu sehen, welche Kanäle aus Abteilungen, Arbeitsbereichen und Projekten dieser Rolle im Alltag angezeigt würden.",
-  "Choose a preview role": "Vorschaurolle auswählen",
-  "View channels for this role": "Kanäle für diese Rolle ansehen",
   "Browse available channels": "Verfügbare Kanäle ansehen",
   "Channel desks": "Kanalredaktionen",
   "Topic specialists": "Themenverantwortliche",

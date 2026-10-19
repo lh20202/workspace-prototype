@@ -2,9 +2,6 @@ import { LanguageToggle } from "../i18n/Language";
 import TeamsMark from "../components/TeamsMark";
 import TeamIdentity, { type TeamKind } from "./TeamIdentity";
 import AccessLock from "../components/AccessLock";
-import PreviewRolePrompt from "../components/PreviewRolePrompt";
-import { roleAccessInfoText } from "../components/DemoInfo";
-import { isStandaloneDemo } from "../utils/demoMode";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import {
@@ -59,6 +56,7 @@ export interface TeamsShellProps {
   searchResults?: ReactNode;
   headerActions?: ReactNode;
   navigationFooter?: ReactNode;
+  /** Retained for fixture compatibility; no role discovery control is shown. */
   showRoleDiscovery?: boolean;
   children: ReactNode;
 }
@@ -92,7 +90,6 @@ function TeamsShellSession({
   searchResults,
   headerActions,
   navigationFooter,
-  showRoleDiscovery,
   children,
 }: TeamsShellProps) {
   const visibleGroups = groups.filter((group) => group.channels.length > 0);
@@ -393,15 +390,6 @@ function TeamsShellSession({
                 </div>
               );
             })}
-            {showRoleDiscovery && !isStandaloneDemo() && (
-              <div className="m365-teams-role-discovery">
-                <PreviewRolePrompt
-                  heading="Explore another site view"
-                  description={roleAccessInfoText}
-                  actionLabel="Choose a site view"
-                />
-              </div>
-            )}
             {navigationFooter && (
               <div className="m365-teams-navigation-footer">
                 {navigationFooter}

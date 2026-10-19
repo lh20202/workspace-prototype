@@ -1,8 +1,6 @@
 /** Plain-language guidance for the outer demo site, separate from product content. */
 export const germanOrientation: Record<string, string> = {
   "Demo controls": "Demo-Steuerung",
-  "Explore what your new workspaces could look and feel like. Switch roles to see how the experience changes.":
-    "Entdecken Sie, wie Ihre neuen Arbeitsbereiche aussehen und funktionieren könnten. Wechseln Sie die Rolle und erleben Sie die Unterschiede.",
   "A proof of concept tests whether an idea works. A prototype usually tests a more defined design. This site is exploring the workspace approach rather than showing a finished design.":
     "Ein Proof of Concept zeigt, ob eine Idee funktioniert. Mit einem Prototyp wird meist ein konkreterer Entwurf erprobt. Diese Seite erprobt den Ansatz für die Arbeitsbereiche und zeigt noch kein fertiges Design.",
   "This demo was built with AI-assisted coding. The AI was given generic descriptions of typical work and asked to create fictional files, conversations and workflows that feel realistic. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
@@ -14,12 +12,8 @@ export const germanOrientation: Record<string, string> = {
     "Entdecken Sie alle Arbeitsbereiche und Wikis des Unternehmens.",
   "Still being tested. You may spot rough edges or things that change.":
     "Wird noch getestet. Manche Stellen sind noch nicht ganz ausgereift oder können sich ändern.",
-  "Access follows the role. Switch roles and the demo updates the workspaces, Teams channels and restricted areas that role can use.":
-    "Die verfügbaren Bereiche hängen von der Vorschaurolle ab. Wenn Sie die Rolle wechseln, zeigt die Demo die entsprechenden Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche.",
   "Welcome to the Digital Workspace demo site!":
     "Willkommen auf der Demoseite für digitale Arbeitsbereiche!",
-  "Explore what your new Digital Workspaces could look and feel like. Try the examples below, switch roles and see how access changes.":
-    "Entdecken Sie, wie Ihre neuen digitalen Arbeitsbereiche aussehen und funktionieren könnten. Probieren Sie die Beispiele aus, wechseln Sie die Rolle und sehen Sie, wie sich der Zugriff verändert.",
   "No company data was used to create this demo site.":
     "Für diese Demoseite wurden keine Unternehmensdaten verwendet.",
   "Proof of concept": "Proof of Concept",
@@ -33,8 +27,6 @@ export const germanOrientation: Record<string, string> = {
     "Die an Microsoft angelehnten Oberflächen sind Simulationen – sie sind nicht mit produktivem SharePoint, Teams oder anderen Unternehmenssystemen verbunden.",
   "Explore this workspace": "Diesen Arbeitsbereich erkunden",
   "Explore all workspaces & wikis": "Alle Arbeitsbereiche und Wikis entdecken",
-  "Browse the complete demo, including workspaces, Wikis, portals and role-based access.":
-    "Erkunden Sie die vollständige Demo mit Arbeitsbereichen, Wikis, Portalen und rollenabhängigem Zugriff.",
   BETA: "BETA",
   "BETA TEST": "BETATEST",
   "About beta test": "Informationen zum Betatest",
@@ -47,12 +39,6 @@ export const germanOrientation: Record<string, string> = {
     "Willkommen | Demoseite für digitale Arbeitsbereiche",
   "All workspaces | Digital Workspace demo site":
     "Alle Arbeitsbereiche | Demoseite für digitale Arbeitsbereiche",
-  "Explore as": "Erkunden als",
-  "Switch roles to explore access":
-    "Rolle wechseln und Zugriffsrechte erkunden",
-  "About role access": "Informationen zum rollenabhängigen Zugriff",
-  "Access follows the role. Switch roles and the demo automatically updates the workspaces, Teams channels and restricted areas that role can use.":
-    "Die Rolle bestimmt den Zugriff. Wenn Sie die Rolle wechseln, zeigt die Demo automatisch die Arbeitsbereiche, Teams-Kanäle und geschützten Bereiche an, auf die diese Rolle zugreifen darf.",
   "Fictional names & content": "Fiktive Namen und Inhalte",
   "No company data used": "Keine Unternehmensdaten verwendet",
 };
