@@ -1,8 +1,14 @@
 /** Display translations for the separate Activity Workspace walkthrough. */
 export const germanWorkspaceTour: Record<string, string> = {
   "What is a workspace?": "Was ist ein Arbeitsbereich?",
+  "Interactive tour": "Interaktive Tour",
+  "Interactive tour guide": "Anleitung zur interaktiven Tour",
+  "Coming soon": "Demnächst verfügbar",
   "See how workspaces, files and channels fit together.":
     "Erfahren Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
+  "Explore how workspaces, files and channels fit together.":
+    "Entdecken Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
+  "Opening the interactive tour…": "Die interaktive Tour wird geöffnet …",
   "How to find your way": "So finden Sie sich zurecht",
   "Development betas": "Entwicklungs-Betas",
   "Guided example": "Geführtes Beispiel",

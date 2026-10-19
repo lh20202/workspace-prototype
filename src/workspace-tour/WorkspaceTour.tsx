@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight20Regular,
   BookOpen24Regular,
@@ -108,7 +108,7 @@ function WorkspaceTourGuide({
       {visible ? (
         <aside
           className="workspace-tour-guide"
-          aria-label="Workspace tour guide"
+          aria-label="Interactive tour guide"
         >
           <div className="workspace-tour-guide-heading">
             <span>Guided example</span>
@@ -334,9 +334,14 @@ function ActivityDirectory() {
         <div className="directory-heading">
           <div>
             <h1>What is a workspace?</h1>
-            <p>See how workspaces, files and channels fit together.</p>
+            <p className="workspace-tour-directory-subtitle">
+              Interactive tour
+            </p>
+            <p>
+              Explore how workspaces, files and channels fit together.
+            </p>
           </div>
-          <span className="workspace-tour-in-development">In development</span>
+          <span className="workspace-tour-in-development">Coming soon</span>
         </div>
         <section
           className="workspace-tour-directory-stage"
@@ -366,12 +371,6 @@ function ActivityDirectory() {
               </div>
             </div>
             <p>A sample workspace for everyday project activity.</p>
-            <a
-              className="workspace-tour-primary-link"
-              href={destination("/workspace-tour/workspace")}
-            >
-              Enter workspace <ArrowRight20Regular aria-hidden="true" />
-            </a>
           </div>
           <aside
             className="workspace-tour-directory-guide"

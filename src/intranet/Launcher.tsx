@@ -122,7 +122,10 @@ export default function Launcher() {
                       className="launcher-complete-link"
                       onClick={markWelcomeEntry}
                     >
-                      Tour
+                      What is a workspace?
+                      <span className="launcher-tour-subtitle">
+                        Interactive tour
+                      </span>
                     </a>
                   </h3>
                   <BetaBadge />

@@ -45,6 +45,13 @@
 .workspace-tour-directory-main .directory-heading p {
   font-size: 15px;
 }
+.workspace-tour-directory-main .directory-heading p.workspace-tour-directory-subtitle {
+  margin: 0 0 3px;
+  color: #424242;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 23px;
+}
 .workspace-tour-in-development {
   align-self: center;
   padding: 5px 10px;
@@ -54,6 +61,8 @@
   background: #f7f9fb;
   font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .workspace-tour-directory-stage {
   position: relative;

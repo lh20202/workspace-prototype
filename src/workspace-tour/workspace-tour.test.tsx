@@ -34,16 +34,17 @@ describe("Activity Workspace walkthrough", () => {
   it("anchors the tour on the live directory while making its background inert", () => {
     const html = renderTour("/workspace-tour?staff=taylor&demo=standalone");
     expect(html).toContain("What is a workspace?");
+    expect(html).toContain("Interactive tour");
     expect(html).toContain(
-      "See how workspaces, files and channels fit together.",
+      "Explore how workspaces, files and channels fit together.",
     );
+    expect(html).toContain(">Coming soon</span>");
+    expect(html).not.toContain(">Enter workspace");
     expect(html).toContain(
       'class="workspace-tour-architecture-context" aria-hidden="true" inert=""',
     );
     expect(html).toContain("Activity Workspace");
-    expect(html).toContain(
-      'href="/workspace-tour/workspace?staff=taylor&amp;demo=standalone"',
-    );
+    expect(html).not.toContain(">Enter workspace");
     expect(html).toContain(
       "During rollout, support will help update important links",
     );
@@ -123,10 +124,14 @@ describe("Activity Workspace walkthrough", () => {
   it("provides a complete human German rendering for the new tour copy", () => {
     for (const [source, german] of [
       ["What is a workspace?", "Was ist ein Arbeitsbereich?"],
+      ["Interactive tour", "Interaktive Tour"],
+      ["Interactive tour guide", "Anleitung zur interaktiven Tour"],
+      ["Coming soon", "Demnächst verfügbar"],
       [
-        "See how workspaces, files and channels fit together.",
-        "Erfahren Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
+        "Explore how workspaces, files and channels fit together.",
+        "Entdecken Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
       ],
+      ["Opening the interactive tour…", "Die interaktive Tour wird geöffnet …"],
       [
         "You can find all workspaces directly from the intranet.",
         "Alle Arbeitsbereiche finden Sie direkt im Intranet.",

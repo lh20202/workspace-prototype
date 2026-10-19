@@ -65,7 +65,7 @@ export default function AppRouter() {
         <Suspense
           fallback={
             <div className="workspace-loading" role="status">
-              Opening the workspace tour…
+              Opening the interactive tour…
             </div>
           }
         >

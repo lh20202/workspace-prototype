@@ -50,8 +50,9 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain('src="/images/site-mark.svg"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
     expect(launcher).toContain("Browse all company workspaces and wikis.");
-    expect(launcher).toContain(">Tour</a>");
-    expect(launcher).not.toContain(">What is a workspace?</a>");
+    expect(launcher).toContain("What is a workspace?");
+    expect(launcher).toContain("Interactive tour");
+    expect(launcher).not.toContain(">Tour</a>");
     expect(launcher).toContain("BETA TEST");
     expect(launcher).toContain('aria-label="About beta test"');
     expect(launcher).toContain('aria-label="Proof of concept"');
@@ -66,6 +67,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).not.toContain("Work in progress · expect rough edges");
     expect(launcher).toContain('href="/planning?demo=standalone"');
     expect(launcher).toContain('href="/logistics?demo=standalone"');
+    expect(launcher).toContain('href="/workspace-tour?demo=standalone"');
     expect(launcher).toContain('href="/architecture?demo=beta"');
     for (const anchor of launcher.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)) {
       expect(anchor[0]).not.toContain("<button");
