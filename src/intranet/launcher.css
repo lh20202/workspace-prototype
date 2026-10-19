@@ -15,8 +15,8 @@
   max-width: none;
 }
 :root .prototype-launcher > .launcher-content {
-  width: min(760px, 100%);
-  max-width: 760px;
+  width: min(1120px, 100%);
+  max-width: 1120px;
 }
 :root .prototype-launcher .launcher-content > h1 {
   font-size: 28px;
@@ -78,7 +78,7 @@
   margin-bottom: 0;
 }
 :root .prototype-launcher .launcher-demos-heading {
-  margin: 28px 0 12px;
+  margin: 0 0 12px;
   font-size: 18px;
   line-height: 24px;
   font-weight: 600;
@@ -87,11 +87,53 @@
   border-top: 1px solid #deddda;
 }
 :root .prototype-launcher .launcher-development-heading {
-  margin: 28px 0 10px;
+  margin: 0 0 10px;
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
   color: #616161;
+}
+:root .prototype-launcher .launcher-home-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.9fr);
+  align-items: start;
+  gap: 36px;
+  margin-top: 26px;
+}
+:root .prototype-launcher .launcher-beta-column {
+  padding: 16px;
+  border: 1px solid #e3e1de;
+  border-radius: 6px;
+  background: #f4f3f1;
+}
+:root .prototype-launcher .launcher-beta-column .launcher-development-heading {
+  margin-bottom: 6px;
+  color: #414141;
+}
+:root .prototype-launcher .launcher-beta-column .launcher-beta-choice {
+  grid-template-columns: 24px minmax(0, 1fr) 18px;
+  gap: 13px;
+  padding: 15px 3px;
+  border-bottom-color: #d8d6d2;
+}
+:root .prototype-launcher .launcher-beta-choice > svg:first-child {
+  width: 22px;
+  height: 22px;
+}
+:root .prototype-launcher .launcher-beta-choice .launcher-choice-title {
+  gap: 8px;
+}
+:root .prototype-launcher .launcher-beta-choice h3 {
+  font-size: 16px;
+  line-height: 21px;
+}
+:root .prototype-launcher .launcher-beta-choice .launcher-action {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 17px;
+}
+:root .prototype-launcher .launcher-beta-choice .beta-badge {
+  font-size: 10px;
 }
 :root .prototype-launcher .launcher-choice {
   display: grid;
@@ -179,6 +221,15 @@
   :root .prototype-launcher .launcher-choice h3 {
     font-size: 18px;
     line-height: 24px;
+  }
+}
+@media (max-width: 820px) {
+  :root .prototype-launcher .launcher-home-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  :root .prototype-launcher .launcher-beta-column {
+    padding: 12px 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

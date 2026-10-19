@@ -1,4 +1,13 @@
-import { useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
 import {
   ArrowRight20Regular,
   BookOpen24Regular,
@@ -63,53 +72,105 @@ function channelDestination(channel = "coordination", tab = "Posts") {
   return withExplicitStaff(`/workspace-tour/channels?${params}`);
 }
 
-function GuidePanel({
-  title = "A few things to notice",
-  notes,
-}: {
-  title?: string;
-  notes: string[];
-}) {
-  const [hidden, setHidden] = useState(() => {
-    try {
-      return sessionStorage.getItem("workspace-tour-guidance-hidden") === "yes";
-    } catch {
-      return false;
-    }
-  });
-  function toggle() {
-    setHidden((current) => {
-      const next = !current;
-      try {
-        sessionStorage.setItem(
-          "workspace-tour-guidance-hidden",
-          next ? "yes" : "no",
-        );
-      } catch {
-        // Guidance still works if session storage is unavailable.
-      }
-      return next;
-    });
-  }
+type TourHint = {
+  key: string;
+  title: string;
+  body: string;
+  top: number;
+  left: number;
+};
+const TourHintContext = createContext<{
+  activeKey: string;
+  show: (key: string, title: string, body: string, anchor: HTMLElement) => void;
+  close: () => void;
+}>({ activeKey: "", show: () => {}, close: () => {} });
+
+function TourHintProvider({ children }: { children: ReactNode }) {
+  const [hint, setHint] = useState<TourHint | null>(null);
+  const close = () => setHint(null);
+  const show = (
+    key: string,
+    title: string,
+    body: string,
+    anchor: HTMLElement,
+  ) => {
+    const bounds = anchor.getBoundingClientRect();
+    const width = Math.max(200, Math.min(320, window.innerWidth - 32));
+    const left = Math.max(
+      16,
+      Math.min(bounds.left, window.innerWidth - width - 16),
+    );
+    const below = bounds.bottom + 10;
+    const top =
+      below + 140 < window.innerHeight ? below : Math.max(64, bounds.top - 150);
+    setHint({ key, title, body, left, top });
+  };
+  useEffect(() => {
+    if (!hint) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setHint(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [hint]);
   return (
-    <aside className="workspace-tour-guide" aria-label={title}>
-      <div className="workspace-tour-guide-heading">
-        <div>
-          <Info20Regular aria-hidden="true" />
-          <h2>{title}</h2>
-        </div>
-        <button type="button" onClick={toggle} aria-expanded={!hidden}>
-          {hidden ? "Show guidance" : "Hide guidance"}
-        </button>
-      </div>
-      {!hidden && (
-        <ul>
-          {notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-      )}
-    </aside>
+    <TourHintContext.Provider
+      value={{ activeKey: hint?.key ?? "", show, close }}
+    >
+      {children}
+      {hint &&
+        createPortal(
+          <aside
+            className="workspace-tour-annotation"
+            role="note"
+            aria-label={hint.title}
+            aria-live="polite"
+            style={{ top: hint.top, left: hint.left }}
+          >
+            <div>
+              <strong>{hint.title}</strong>
+              <button
+                type="button"
+                aria-label="Close explanation"
+                onClick={close}
+              >
+                ×
+              </button>
+            </div>
+            <p>{hint.body}</p>
+          </aside>,
+          document.body,
+        )}
+    </TourHintContext.Provider>
+  );
+}
+
+function WorkspaceTip({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: string;
+}) {
+  const anchor = useRef<HTMLButtonElement>(null);
+  const { activeKey, show, close } = useContext(TourHintContext);
+  const active = activeKey === id;
+  return (
+    <button
+      ref={anchor}
+      type="button"
+      className="workspace-tour-tip-trigger"
+      aria-label={`About ${title}`}
+      aria-expanded={active}
+      onClick={() => {
+        if (active) close();
+        else if (anchor.current) show(id, title, children, anchor.current);
+      }}
+    >
+      <Info20Regular aria-hidden="true" />
+    </button>
   );
 }
 
@@ -290,6 +351,7 @@ function WorkspaceLayout({
   children: ReactNode;
 }) {
   const [message, setMessage] = useState("");
+  const { show } = useContext(TourHintContext);
   const handleOpen = (file: OperationalFile) =>
     location.assign(libraryDestination(file.id));
   return (
@@ -301,8 +363,16 @@ function WorkspaceLayout({
         searchFiles={activitySearchFiles}
         onOpen={handleOpen}
         onTeams={() => location.assign(channelDestination())}
+        onHelp={(anchor) =>
+          show(
+            "workspace-help",
+            "About this workspace",
+            "Use the links on the left to move between work, files and reference material. Open channels for the conversation around the work.",
+            anchor,
+          )
+        }
         onMessage={setMessage}
-        helpText="Use the workspace home to orient yourself, shared documents for files, and channels for coordination."
+        helpText=""
         memberCount={18}
       />
       <div className="workspace workspace-tour-workspace">
@@ -353,16 +423,14 @@ function WorkspaceLayout({
 function WorkspaceHome() {
   return (
     <>
-      <GuidePanel
-        notes={[
-          "The home page brings together the information and shortcuts people need most.",
-          "Use the navigation on the left to move between the workspace home, files and reference material.",
-          "The workspace header keeps search, channels and workspace details close at hand.",
-          "Bookmark this workspace or a folder you use often; support can help keep important shortcuts working during rollout.",
-        ]}
-      />
       <div className="workspace-tour-page-heading">
-        <span>Workspace home</span>
+        <span>
+          Workspace home
+          <WorkspaceTip id="home" title="Workspace home">
+            The home page brings together key information, useful shortcuts and
+            recent files.
+          </WorkspaceTip>
+        </span>
         <h1>Activity Workspace</h1>
         <p>
           A shared place for the work, its files and the conversations around
@@ -385,6 +453,10 @@ function WorkspaceHome() {
           <div className="workspace-tour-card-heading">
             <Document24Regular aria-hidden="true" />
             <h2>Working documents</h2>
+            <WorkspaceTip id="home-files" title="Working documents">
+              Browse the files for this workspace. Folders, ownership and
+              metadata help people keep work clear and easy to find.
+            </WorkspaceTip>
           </div>
           <p>Current plans, checklists and meeting notes.</p>
           <a href={destination("/workspace-tour/workspace/documents")}>
@@ -395,6 +467,10 @@ function WorkspaceHome() {
           <div className="workspace-tour-card-heading">
             <People24Regular aria-hidden="true" />
             <h2>Channels</h2>
+            <WorkspaceTip id="home-channels" title="Channels">
+              Channels keep conversations focused by topic. Shared files stay in
+              the workspace library.
+            </WorkspaceTip>
           </div>
           <p>Conversations and coordination for this workspace.</p>
           <a href={channelDestination()}>
@@ -405,6 +481,10 @@ function WorkspaceHome() {
           <div className="workspace-tour-card-heading">
             <BookOpen24Regular aria-hidden="true" />
             <h2>Reference & guidance</h2>
+            <WorkspaceTip id="home-reference" title="Reference & guidance">
+              Keep reusable templates and guidance separate from active work so
+              people can find them again.
+            </WorkspaceTip>
           </div>
           <p>Reusable templates and practical information.</p>
           <a href={destination("/workspace-tour/workspace/reference")}>
@@ -460,7 +540,6 @@ function WorkspaceLibrary({
       : kind === "completed"
         ? "Completed work"
         : "";
-  const selectedFileId = new URLSearchParams(location.search).get("file");
   const [bookmarkedFolders, setBookmarkedFolders] = useState<string[]>(() => {
     try {
       return JSON.parse(
@@ -486,30 +565,16 @@ function WorkspaceLibrary({
       return next;
     });
   };
-  const notes = selectedFileId
-    ? [
-        "Open a file’s details to check its owner, status and sensitivity.",
-        "Version history shows earlier versions and the notes attached to each change.",
-        "A sensitivity label describes how information should be handled; access still follows the relevant rules.",
-      ]
-    : kind === "documents"
-      ? [
-          "Keep folders shallow and name files so their purpose is clear.",
-          "Search this workspace to find a file by its name, owner, status or metadata.",
-          "Use columns to sort and filter by owner, status, sensitivity or other useful metadata.",
-          "Open a file’s details for its owner, status and sensitivity; version history keeps earlier versions available.",
-        ]
-      : [
-          "Reference material is kept apart from active work so reusable guidance is easy to find.",
-          "Search and columns help narrow the files shown in this library.",
-          "Open a file’s details to see its owner, status and sensitivity, or review its version history.",
-        ];
   return (
     <>
-      <GuidePanel title="Working with files" notes={notes} />
       <div className="workspace-tour-page-heading">
         <span>
           {kind === "documents" ? "Shared files" : "Workspace library"}
+          <WorkspaceTip id={`library-${kind}`} title={title}>
+            Files include an owner, status and sensitivity label. Use search or
+            columns to narrow the list, and open a file for its details and
+            version history.
+          </WorkspaceTip>
         </span>
         <h1>{title}</h1>
         <p>
@@ -518,13 +583,11 @@ function WorkspaceLibrary({
         </p>
       </div>
       {kind === "documents" && (
-        <div className="workspace-tour-library-bookmark">
-          <Info20Regular aria-hidden="true" />
-          <span>
-            You can bookmark the workspace and the folders you use most. Support
-            can help update important links, bookmarks and synced folders during
-            rollout.
-          </span>
+        <div className="workspace-tour-context-anchor">
+          <WorkspaceTip id="folder-bookmarks" title="Folder bookmarks">
+            Save folders you use often for quick access. Support can help keep
+            important links and shortcuts working during rollout.
+          </WorkspaceTip>
         </div>
       )}
       {kind === "documents" && (
@@ -574,15 +637,14 @@ function WorkspaceLibrary({
 function WorkspaceCalendar() {
   return (
     <>
-      <GuidePanel
-        title="Shared calendar"
-        notes={[
-          "The shared calendar helps people see key dates and coordination points.",
-          "Keep working files in the library and use channels for the conversation around them.",
-        ]}
-      />
       <div className="workspace-tour-page-heading">
-        <span>Workspace schedule</span>
+        <span>
+          Workspace schedule
+          <WorkspaceTip id="calendar" title="Shared calendar">
+            The shared calendar highlights key dates. Keep working files in the
+            library and use channels for the discussion around them.
+          </WorkspaceTip>
+        </span>
         <h1>Shared calendar</h1>
         <p>Upcoming moments for the Activity Workspace.</p>
       </div>
@@ -625,14 +687,12 @@ function ChannelPosts({ channel }: { channel: string }) {
   ]);
   return (
     <div className="workspace-tour-channel-posts">
-      <GuidePanel
-        title="How channels fit in"
-        notes={[
-          "Channels are for conversations and coordination; the shared files stay in the workspace.",
-          "Use a focused channel for each ongoing topic, and keep channels you do not use out of the way.",
-          "Open the Shared tab to see the same workspace files shown in the library.",
-        ]}
-      />
+      <div className="workspace-tour-context-anchor">
+        <WorkspaceTip id="channel-posts" title="Channels">
+          Use channels for conversations and coordination. The Shared tab shows
+          the same files as the workspace library.
+        </WorkspaceTip>
+      </div>
       <div className="workspace-tour-post-list">
         {posts.map((post, index) => (
           <article
@@ -756,13 +816,12 @@ function ActivityChannels() {
         <ChannelPosts channel={channel.id} />
       ) : (
         <div className="workspace-tour-shared">
-          <GuidePanel
-            title="Files shared in this workspace"
-            notes={[
-              "These are the same files available from Working documents.",
-              "Use the workspace library for folders, search, metadata, file details and version history.",
-            ]}
-          />
+          <div className="workspace-tour-context-anchor">
+            <WorkspaceTip id="channel-files" title="Shared files">
+              These are the same files available from Working documents. Use
+              that library for folders, search, metadata and version history.
+            </WorkspaceTip>
+          </div>
           <DocumentLibrary
             title="Shared files"
             definition={activityLibrary}
@@ -786,25 +845,32 @@ function ActivityChannels() {
 
 export default function WorkspaceTour() {
   const path = location.pathname.replace(/\/+$/, "") || "/workspace-tour";
-  if (path === "/workspace-tour") return <ActivityDirectory />;
-  if (path === "/workspace-tour/channels") return <ActivityChannels />;
-  const section = path.split("/")[3] ?? "home";
-  const current = ["documents", "reference", "calendar", "completed"].includes(
-    section,
-  )
-    ? section
-    : "home";
-  return (
-    <WorkspaceLayout current={current}>
-      {current === "home" ? (
-        <WorkspaceHome />
-      ) : current === "calendar" ? (
-        <WorkspaceCalendar />
-      ) : (
-        <WorkspaceLibrary
-          kind={current as "documents" | "reference" | "completed"}
-        />
-      )}
-    </WorkspaceLayout>
-  );
+  let content: ReactNode;
+  if (path === "/workspace-tour") content = <ActivityDirectory />;
+  else if (path === "/workspace-tour/channels") content = <ActivityChannels />;
+  else {
+    const section = path.split("/")[3] ?? "home";
+    const current = [
+      "documents",
+      "reference",
+      "calendar",
+      "completed",
+    ].includes(section)
+      ? section
+      : "home";
+    content = (
+      <WorkspaceLayout current={current}>
+        {current === "home" ? (
+          <WorkspaceHome />
+        ) : current === "calendar" ? (
+          <WorkspaceCalendar />
+        ) : (
+          <WorkspaceLibrary
+            kind={current as "documents" | "reference" | "completed"}
+          />
+        )}
+      </WorkspaceLayout>
+    );
+  }
+  return <TourHintProvider>{content}</TourHintProvider>;
 }

@@ -151,18 +151,18 @@
   box-shadow: 0 1px 3px #0000000a;
 }
 .workspace-tour-steps-heading,
-.workspace-tour-guide-heading > div {
+.workspace-tour-annotation > div {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .workspace-tour-steps-heading svg,
-.workspace-tour-guide-heading svg {
+.workspace-tour-annotation svg {
   color: #2675a8;
   flex: 0 0 auto;
 }
 .workspace-tour-steps-heading h2,
-.workspace-tour-guide-heading h2 {
+.workspace-tour-annotation h2 {
   margin: 0;
   font-size: 16px;
   line-height: 22px;
@@ -253,41 +253,77 @@
   min-width: 0;
   padding: 20px 24px 40px;
 }
-.workspace-tour-guide {
-  margin: 0 0 20px;
-  padding: 13px 16px;
-  border: 1px solid #dce4ea;
-  border-left: 3px solid #23739f;
-  border-radius: 3px;
-  background: #f8fbfd;
+.workspace-tour-tip-trigger {
+  display: inline-grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  margin-left: 7px;
+  border: 1px solid #8ea8b9;
+  border-radius: 50%;
+  padding: 0;
+  color: #315f7b;
+  background: #fff;
+  vertical-align: 1px;
+  cursor: pointer;
 }
-.workspace-tour-guide-heading {
+.workspace-tour-tip-trigger svg {
+  width: 15px;
+  height: 15px;
+}
+.workspace-tour-tip-trigger:hover,
+.workspace-tour-tip-trigger[aria-expanded="true"] {
+  color: #fff;
+  background: #315f7b;
+}
+.workspace-tour-annotation {
+  position: fixed;
+  z-index: 10000;
+  width: min(320px, calc(100vw - 32px));
+  padding: 13px 15px;
+  border: 1px solid #d2dce4;
+  border-top: 3px solid #2675a8;
+  border-radius: 4px;
+  color: #242424;
+  background: #fff;
+  box-shadow: 0 8px 24px #172b3a33;
+}
+.workspace-tour-annotation > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
-.workspace-tour-guide-heading h2 {
+.workspace-tour-annotation strong {
   font-size: 14px;
 }
-.workspace-tour-guide-heading button {
+.workspace-tour-annotation button {
   border: 0;
-  padding: 4px 6px;
-  color: #175d87;
+  padding: 0 2px;
+  color: #59646d;
   background: transparent;
   font: inherit;
-  font-size: 12px;
+  font-size: 20px;
   cursor: pointer;
 }
-.workspace-tour-guide ul {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px 22px;
-  margin: 12px 0 0;
-  padding-left: 19px;
-  color: #4c5660;
+.workspace-tour-annotation p {
+  margin: 8px 0 0;
+  color: #4d5861;
   font-size: 13px;
   line-height: 1.45;
+}
+.workspace-tour-page-heading > span {
+  display: flex;
+  align-items: center;
+}
+.workspace-tour-card-heading .workspace-tour-tip-trigger {
+  margin-left: auto;
+  flex: 0 0 23px;
+}
+.workspace-tour-context-anchor {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 8px;
 }
 .workspace-tour-page-heading {
   margin: 0 0 18px;
@@ -379,22 +415,6 @@
   color: #676f76;
   font-size: 11px;
   font-weight: 400;
-}
-.workspace-tour-library-bookmark {
-  display: flex;
-  gap: 9px;
-  margin: 0 0 12px;
-  padding: 10px 12px;
-  border: 1px solid #e2e7eb;
-  border-radius: 3px;
-  color: #505a62;
-  background: #f8fafb;
-  font-size: 12px;
-  line-height: 1.45;
-}
-.workspace-tour-library-bookmark svg {
-  flex: 0 0 auto;
-  color: #2675a8;
 }
 .workspace-tour-folder-bookmarks {
   display: grid;
@@ -491,10 +511,6 @@
 .workspace-tour-shared {
   width: min(920px, 100%);
   margin: 0 auto;
-}
-.workspace-tour-channel-posts .workspace-tour-guide,
-.workspace-tour-shared .workspace-tour-guide {
-  margin: 16px 0;
 }
 .workspace-tour-post-list {
   display: grid;
@@ -632,7 +648,6 @@
   .workspace-tour-main {
     padding: 15px 14px 30px;
   }
-  .workspace-tour-guide ul,
   .workspace-tour-home-grid {
     grid-template-columns: minmax(0, 1fr);
   }

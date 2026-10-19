@@ -4,6 +4,7 @@ export const germanWorkspaceTour: Record<string, string> = {
   "See how workspaces, files and channels fit together.":
     "Erfahren Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
   "How to find your way": "So finden Sie sich zurecht",
+  "Development betas": "Entwicklungs-Betas",
   "Guided example": "Geführtes Beispiel",
   "Guided workspace example": "Beispiel für einen Arbeitsbereich",
   "Activity Workspace": "Aktivitätsarbeitsbereich",
@@ -29,6 +30,32 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Show guidance": "Hinweise anzeigen",
   "How to find and use workspaces": "Arbeitsbereiche finden und nutzen",
   "Workspace home": "Startseite des Arbeitsbereichs",
+  "About this workspace": "Über diesen Arbeitsbereich",
+  "About Workspace home": "Über die Startseite des Arbeitsbereichs",
+  "About Working documents": "Über die Arbeitsdokumente",
+  "About Channels": "Über die Channels",
+  "Channel list filters": "Filter für die Channel-Liste",
+  "About Reference & guidance": "Über Referenzmaterial und Anleitungen",
+  "About Shared calendar": "Über den gemeinsamen Kalender",
+  "About Folder bookmarks": "Über die Ordnerfavoriten",
+  "About Shared files": "Über die gemeinsamen Dateien",
+  "Close explanation": "Erklärung schließen",
+  "Use the links on the left to move between work, files and reference material. Open channels for the conversation around the work.":
+    "Über die Navigation wechseln Sie zwischen Arbeit, Dateien und Referenzmaterial. In den Channels findet der Austausch zur Arbeit statt.",
+  "The home page brings together key information, useful shortcuts and recent files.":
+    "Auf der Startseite finden Sie wichtige Informationen, nützliche Verknüpfungen und aktuelle Dateien.",
+  "Browse the files for this workspace. Folders, ownership and metadata help people keep work clear and easy to find.":
+    "Durchsuchen Sie die Dateien dieses Arbeitsbereichs. Ordner, Zuständigkeiten und Metadaten sorgen für Übersicht und erleichtern die Suche.",
+  "Channels keep conversations focused by topic. Shared files stay in the workspace library.":
+    "In Channels bleibt der Austausch nach Themen geordnet. Gemeinsame Dateien liegen weiterhin in der Bibliothek des Arbeitsbereichs.",
+  "Keep reusable templates and guidance separate from active work so people can find them again.":
+    "Trennen Sie wiederverwendbare Vorlagen und Anleitungen von der laufenden Arbeit, damit sie leicht wiederzufinden sind.",
+  "Files include an owner, status and sensitivity label. Use search or columns to narrow the list, and open a file for its details and version history.":
+    "Zu jeder Datei gehören Angaben zu Zuständigkeit, Status und Vertraulichkeit. Grenzen Sie die Liste über die Suche oder Spalten ein. In den Dateidetails finden Sie auch den Versionsverlauf.",
+  "Save folders you use often for quick access. Support can help keep important links and shortcuts working during rollout.":
+    "Speichern Sie häufig genutzte Ordner für den Schnellzugriff. Der Support hilft während der Einführung dabei, wichtige Links und Verknüpfungen aktuell zu halten.",
+  "The shared calendar highlights key dates. Keep working files in the library and use channels for the discussion around them.":
+    "Der gemeinsame Kalender zeigt wichtige Termine. Laufende Dateien bleiben in der Bibliothek; für den Austausch dazu dienen die Channels.",
   "A shared place for the work, its files and the conversations around it.":
     "Ein gemeinsamer Ort für die Arbeit, die zugehörigen Dateien und den Austausch dazu.",
   "The home page brings together the information and shortcuts people need most.":
@@ -106,12 +133,15 @@ export const germanWorkspaceTour: Record<string, string> = {
   Online: "Online",
   "Updates channel": "Channel „Updates“",
   "How channels fit in": "So ergänzen Channels die Arbeit",
+  "About channels": "Über Channels",
   "Channels are for conversations and coordination; the shared files stay in the workspace.":
     "Channels dienen dem Austausch und der Abstimmung. Die gemeinsamen Dateien bleiben im Arbeitsbereich.",
   "Use a focused channel for each ongoing topic, and keep channels you do not use out of the way.":
     "Nutzen Sie für jedes laufende Thema einen eigenen Channel und blenden Sie nicht benötigte Channels aus.",
   "Open the Shared tab to see the same workspace files shown in the library.":
     "Im Reiter „Geteilt“ sehen Sie dieselben Dateien wie in der Bibliothek des Arbeitsbereichs.",
+  "These are the same files available from Working documents. Use that library for folders, search, metadata and version history.":
+    "Dieselben Dateien finden Sie auch unter „Arbeitsdokumente“. Dort stehen Ordner, Suche, Metadaten und Versionsverlauf zur Verfügung.",
   "Files shared in this workspace": "Dateien in diesem Arbeitsbereich",
   "These are the same files available from Working documents.":
     "Dieselben Dateien finden Sie auch unter „Arbeitsdokumente“.",

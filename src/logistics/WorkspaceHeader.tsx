@@ -28,6 +28,7 @@ export default function WorkspaceHeader({
   userName = "Maya Chen",
   userRole = "Workspace member and contributor",
   onTeams,
+  onHelp,
   onMessage,
   title = workspaceTitle,
   searchFiles = files,
@@ -38,6 +39,7 @@ export default function WorkspaceHeader({
   onSearchChange?: (query: string) => void;
   onOpen: (f: OperationalFile) => void;
   onTeams?: () => void;
+  onHelp?: (anchor: HTMLElement) => void;
   onMessage: (m: string) => void;
   title?: string;
   userName?: string;
@@ -144,7 +146,9 @@ export default function WorkspaceHeader({
           <button
             className="global-icon"
             aria-label="Help"
-            onClick={() => onMessage(helpText)}
+            onClick={(event) =>
+              onHelp ? onHelp(event.currentTarget) : onMessage(helpText)
+            }
           >
             <QuestionCircle24Regular />
           </button>

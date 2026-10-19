@@ -83,70 +83,79 @@ export default function Launcher() {
           </Dialog>
           <WorkspaceFAQ />
         </div>
-        <h2 className="launcher-demos-heading">
-          Explore these workspace demos
-        </h2>
-        <div className="launcher-choices">
-          {choices.map(({ title, href, action }) => (
-            <a
-              href={withExplicitStaff(`${href}?demo=standalone`)}
-              key={href}
-              className="launcher-choice"
-              onClick={markWelcomeEntry}
-            >
-              <WorkspaceIcon />
+        <div className="launcher-home-columns">
+          <section className="launcher-primary-workspaces">
+            <h2 className="launcher-demos-heading">
+              Explore these workspace demos
+            </h2>
+            <div className="launcher-choices">
+              {choices.map(({ title, href, action }) => (
+                <a
+                  href={withExplicitStaff(`${href}?demo=standalone`)}
+                  key={href}
+                  className="launcher-choice"
+                  onClick={markWelcomeEntry}
+                >
+                  <WorkspaceIcon />
+                  <div>
+                    <div className="launcher-choice-title">
+                      <h3>{title}</h3>
+                    </div>
+                    <span className="launcher-action">{action}</span>
+                  </div>
+                  <ArrowRight24Regular aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </section>
+          <section className="launcher-beta-column">
+            <h2 className="launcher-development-heading">Development betas</h2>
+            <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
+              <BookOpen24Regular aria-hidden="true" />
               <div>
                 <div className="launcher-choice-title">
-                  <h3>{title}</h3>
+                  <h3>
+                    <a
+                      href={withExplicitStaff(
+                        "/workspace-tour?demo=standalone",
+                      )}
+                      className="launcher-complete-link"
+                      onClick={markWelcomeEntry}
+                    >
+                      What is a workspace?
+                    </a>
+                  </h3>
+                  <BetaBadge />
                 </div>
-                <span className="launcher-action">{action}</span>
+                <span className="launcher-action">
+                  See how workspaces, files and channels fit together.
+                </span>
               </div>
               <ArrowRight24Regular aria-hidden="true" />
-            </a>
-          ))}
+            </article>
+            <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
+              <Organization24Regular aria-hidden="true" />
+              <div>
+                <div className="launcher-choice-title">
+                  <h3>
+                    <a
+                      href={withExplicitStaff("/architecture?demo=beta")}
+                      className="launcher-complete-link"
+                      onClick={markWelcomeEntry}
+                    >
+                      Explore all workspaces &amp; wikis
+                    </a>
+                  </h3>
+                  <BetaBadge />
+                </div>
+                <span className="launcher-action">
+                  Browse all company workspaces and wikis.
+                </span>
+              </div>
+              <ArrowRight24Regular aria-hidden="true" />
+            </article>
+          </section>
         </div>
-        <h2 className="launcher-development-heading">In development</h2>
-        <article className="launcher-choice launcher-complete-choice launcher-workspace-tour-choice">
-          <BookOpen24Regular aria-hidden="true" />
-          <div>
-            <div className="launcher-choice-title">
-              <h3>
-                <a
-                  href={withExplicitStaff("/workspace-tour?demo=standalone")}
-                  className="launcher-complete-link"
-                  onClick={markWelcomeEntry}
-                >
-                  What is a workspace?
-                </a>
-              </h3>
-            </div>
-            <span className="launcher-action">
-              See how workspaces, files and channels fit together.
-            </span>
-          </div>
-          <ArrowRight24Regular aria-hidden="true" />
-        </article>
-        <article className="launcher-choice launcher-complete-choice">
-          <Organization24Regular aria-hidden="true" />
-          <div>
-            <div className="launcher-choice-title">
-              <h3>
-                <a
-                  href={withExplicitStaff("/architecture?demo=beta")}
-                  className="launcher-complete-link"
-                  onClick={markWelcomeEntry}
-                >
-                  Explore all workspaces &amp; wikis
-                </a>
-              </h3>
-              <BetaBadge />
-            </div>
-            <span className="launcher-action">
-              Browse all company workspaces and wikis.
-            </span>
-          </div>
-          <ArrowRight24Regular aria-hidden="true" />
-        </article>
       </div>
     </main>
   );

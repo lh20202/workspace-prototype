@@ -70,8 +70,10 @@ describe("Activity Workspace walkthrough", () => {
     const shared = renderTour(
       "/workspace-tour/channels?channel=coordination&tab=Shared&staff=taylor",
     );
-    expect(shared).toContain("Files shared in this workspace");
-    expect(shared).toContain("Working documents");
+    expect(shared).toContain('aria-label="About Shared files"');
+    expect(shared).toContain('aria-label="Channel list filters"');
+    expect(shared).not.toContain('aria-label="Chat list filters"');
+    expect(shared).toContain("Open all working documents");
     expect(shared).toContain("Weekly priorities.docx");
     expect(shared).toContain("Project summary.docx");
     expect(shared.replace(/<[^>]*>/g, "")).not.toMatch(
@@ -87,6 +89,25 @@ describe("Activity Workspace walkthrough", () => {
       expect(renderDocuments(staff)).toContain("Project brief template.docx");
       expect(renderDocuments(staff)).toContain("Completed work");
     }
+  });
+
+  it("keeps workspace instructions out of the site until a contextual help button is used", () => {
+    const home = renderTour("/workspace-tour/workspace?staff=taylor");
+    expect(home).toContain('aria-label="About Workspace home"');
+    expect(home).toContain('aria-label="About Working documents"');
+    expect(home).not.toContain(
+      "The home page brings together key information, useful shortcuts and recent files.",
+    );
+    expect(home).not.toContain('class="workspace-tour-guide"');
+
+    const library = renderTour(
+      "/workspace-tour/workspace/documents?staff=taylor",
+    );
+    expect(library).toContain('aria-label="About Working documents"');
+    expect(library).not.toContain(
+      "Files include an owner, status and sensitivity label.",
+    );
+    expect(library).not.toContain('class="workspace-tour-guide"');
   });
 
   it("provides a complete human German rendering for the new tour copy", () => {

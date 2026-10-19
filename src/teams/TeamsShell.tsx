@@ -303,7 +303,14 @@ function TeamsShellSession({
               </div>
             )}
           </div>
-          <div className="m365-teams-filters" aria-label="Chat list filters">
+          <div
+            className="m365-teams-filters"
+            aria-label={
+              channelLabel === "Channels"
+                ? "Channel list filters"
+                : "Chat list filters"
+            }
+          >
             {["Unread", "Channels"].map((name) => (
               <button
                 key={name}
