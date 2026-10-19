@@ -74,6 +74,7 @@ export interface DocumentLibraryProps {
   folders?: string[];
   readOnly?: boolean;
   embedded?: boolean;
+  maxEmbeddedRows?: number;
   headingLevel?: 1 | 2;
   initialFolder?: string;
   onOpen?: (file: LibraryDocument) => void;
@@ -90,6 +91,7 @@ export default function DocumentLibrary({
   folders = [],
   readOnly = false,
   embedded = false,
+  maxEmbeddedRows = 5,
   headingLevel,
   initialFolder = "",
   onOpen,
@@ -194,7 +196,7 @@ export default function DocumentLibrary({
     embedded,
     definition,
   });
-  const visibleRows = embedded ? rows.slice(0, 5) : rows;
+  const visibleRows = embedded ? rows.slice(0, maxEmbeddedRows) : rows;
   const statuses = [
     ...new Set([
       ...allFiles.map((file) => file.status ?? "Draft"),

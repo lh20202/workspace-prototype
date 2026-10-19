@@ -23,6 +23,7 @@ const WikiApp = lazy(() => import("./wiki/WikiApp"));
 const SiteAdministrationPage = lazy(
   () => import("./administration/SiteAdministrationPage"),
 );
+const WorkspaceTour = lazy(() => import("./workspace-tour/WorkspaceTour"));
 import { siteAdministrationPage } from "./administration/routes";
 import { defaultPreviewRoleId } from "./access/policy";
 export default function AppRouter() {
@@ -42,7 +43,9 @@ export default function AppRouter() {
     const params = new URLSearchParams(location.search);
     params.set("staff", defaultPreviewRoleId);
     params.delete("demoReveal");
-    location.replace(`${location.pathname}?${params.toString()}${location.hash}`);
+    location.replace(
+      `${location.pathname}?${params.toString()}${location.hash}`,
+    );
   }, [legacyDemoView, redirect]);
   useEffect(() => {
     document.title = pageTitle(location.pathname);
@@ -55,6 +58,21 @@ export default function AppRouter() {
     );
   if (prototype === "launcher") return <Launcher />;
   if (prototype === "architecture") return <Directory />;
+  if (prototype === "workspace-tour")
+    return (
+      <div className="prototype-frame workspace-tour-frame">
+        <PrototypeNavigator allowWelcomeInvitation={false} />
+        <Suspense
+          fallback={
+            <div className="workspace-loading" role="status">
+              Opening the workspace tour…
+            </div>
+          }
+        >
+          <WorkspaceTour />
+        </Suspense>
+      </div>
+    );
   if (siteAdministrationPage(location.search))
     return (
       <Suspense fallback={<div role="status">Opening settings…</div>}>

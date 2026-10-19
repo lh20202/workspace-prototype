@@ -1,5 +1,6 @@
 import {
   ArrowRight24Regular,
+  BookOpen24Regular,
   Organization24Regular,
 } from "@fluentui/react-icons";
 import {
@@ -105,6 +106,26 @@ export default function Launcher() {
           ))}
         </div>
         <h2 className="launcher-development-heading">In development</h2>
+        <article className="launcher-choice launcher-complete-choice launcher-workspace-tour-choice">
+          <BookOpen24Regular aria-hidden="true" />
+          <div>
+            <div className="launcher-choice-title">
+              <h3>
+                <a
+                  href={withExplicitStaff("/workspace-tour?demo=standalone")}
+                  className="launcher-complete-link"
+                  onClick={markWelcomeEntry}
+                >
+                  What is a workspace?
+                </a>
+              </h3>
+            </div>
+            <span className="launcher-action">
+              See how workspaces, files and channels fit together.
+            </span>
+          </div>
+          <ArrowRight24Regular aria-hidden="true" />
+        </article>
         <article className="launcher-choice launcher-complete-choice">
           <Organization24Regular aria-hidden="true" />
           <div>

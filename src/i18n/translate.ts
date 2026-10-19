@@ -34,6 +34,7 @@ import {
 import { germanDiscoverability } from "./de-discoverability";
 import { germanAccessMatrix } from "./de-access-matrix";
 import { germanPolish } from "./de-polish";
+import { germanWorkspaceTour } from "./de-workspace-tour";
 
 export type Language = "en" | "de";
 const messages = {
@@ -68,6 +69,7 @@ const messages = {
   ...germanDiscoverability,
   ...germanAccessMatrix,
   ...germanPolish,
+  ...germanWorkspaceTour,
 };
 const englishMonths = [
   "January",

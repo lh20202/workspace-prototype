@@ -43,6 +43,7 @@ export interface TeamsShellProps {
   userName: string;
   teamName: string;
   channelName: string;
+  channelLabel?: string;
   groups: TeamsGroup[];
   selectedChannelId: string;
   activeTab: string;
@@ -77,6 +78,7 @@ function TeamsShellSession({
   userName,
   teamName,
   channelName,
+  channelLabel = "Chat",
   groups,
   selectedChannelId,
   activeTab,
@@ -225,7 +227,7 @@ function TeamsShellSession({
         <nav className="m365-teams-rail" aria-label="Digital workplace apps">
           {[
             ["Activity", Alert24Regular],
-            ["Chat", Chat24Regular],
+            [channelLabel, Chat24Regular],
             ["Calendar", Calendar24Regular],
             ["Calls", Call24Regular],
             ["Apps", Apps24Regular],
@@ -234,9 +236,9 @@ function TeamsShellSession({
             return (
               <button
                 key={String(name)}
-                aria-current={name === "Chat" ? "page" : undefined}
+                aria-current={name === channelLabel ? "page" : undefined}
                 onClick={() => {
-                  if (name === "Chat") setPanel("");
+                  if (name === channelLabel) setPanel("");
                   else setPanel(String(name));
                 }}
               >
@@ -248,10 +250,12 @@ function TeamsShellSession({
         </nav>
         <aside
           className={`m365-teams-navigation${navigationOpen ? " is-open" : ""}`}
-          aria-label="Chat and channels"
+          aria-label={
+            channelLabel === "Channels" ? "Channels" : "Chat and channels"
+          }
         >
           <div className="m365-teams-nav-heading">
-            <h2>Chat</h2>
+            <h2>{channelLabel}</h2>
             <button
               className="m365-teams-mobile-navigation"
               aria-label="Hide channels"
@@ -260,7 +264,11 @@ function TeamsShellSession({
               <Dismiss20Regular />
             </button>
             <button
-              aria-label="Chat list options"
+              aria-label={
+                channelLabel === "Channels"
+                  ? "Channel list options"
+                  : "Chat list options"
+              }
               aria-expanded={listOptions}
               onClick={() => setListOptions(!listOptions)}
             >

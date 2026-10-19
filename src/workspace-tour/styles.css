@@ -1,0 +1,649 @@
+.workspace-tour-frame {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+.workspace-tour-directory-page {
+  min-height: calc(100vh - 1px);
+  background: #fff;
+  color: #242424;
+}
+.workspace-tour-intranet-chrome .directory-brand {
+  height: 46px;
+  background: #e00;
+}
+.workspace-tour-app-grid {
+  font-size: 9px;
+  line-height: 5px;
+  letter-spacing: 2px;
+  width: 18px;
+  overflow: hidden;
+}
+.workspace-tour-intranet-chrome .directory-nav > a {
+  color: #9b9b9b;
+  font-size: 13px;
+  text-decoration: none;
+  padding: 8px 0;
+}
+.workspace-tour-intranet-chrome .directory-nav > a[aria-current="page"] {
+  border-bottom: 3px solid #e00;
+  color: #242424;
+  font-weight: 600;
+}
+.workspace-tour-directory-main {
+  max-width: 1480px;
+  margin: auto;
+  padding: 22px 28px 36px;
+}
+.workspace-tour-directory-main > .directory-heading {
+  margin-bottom: 20px;
+}
+.workspace-tour-directory-main .directory-heading h1 {
+  margin: 0 0 5px;
+  font-size: 28px;
+  line-height: 36px;
+}
+.workspace-tour-directory-main .directory-heading p {
+  font-size: 15px;
+}
+.workspace-tour-in-development {
+  align-self: center;
+  padding: 5px 10px;
+  border: 1px solid #d5dbe3;
+  border-radius: 20px;
+  color: #526273;
+  background: #f7f9fb;
+  font-size: 12px;
+  font-weight: 600;
+}
+.workspace-tour-directory-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(290px, 0.8fr);
+  align-items: start;
+  gap: 20px;
+  min-height: 495px;
+}
+.workspace-tour-architecture-context {
+  grid-area: 1 / 1 / 2 / 2;
+  max-height: 490px;
+  overflow: hidden;
+  pointer-events: none;
+  filter: blur(2px);
+  opacity: 0.33;
+  user-select: none;
+}
+.workspace-tour-architecture-context .directory-main {
+  max-width: none;
+  padding: 0;
+}
+.workspace-tour-entry-card {
+  z-index: 1;
+  grid-area: 1 / 1 / 2 / 2;
+  align-self: start;
+  justify-self: center;
+  width: min(420px, 75%);
+  margin-top: 112px;
+  padding: 22px;
+  border: 1px solid #c8d9e8;
+  border-top: 3px solid #2675a8;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 12px 32px #202b3633;
+}
+.workspace-tour-entry-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.workspace-tour-entry-icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  background: #eff6fb;
+}
+.workspace-tour-entry-icon img {
+  width: 36px;
+  height: 36px;
+}
+.workspace-tour-entry-heading > div > span,
+.workspace-tour-page-heading > span,
+.workspace-tour-card-eyebrow {
+  color: #626f7b;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.workspace-tour-entry-heading h2 {
+  margin: 3px 0 0;
+  font-size: 20px;
+}
+.workspace-tour-entry-card > p {
+  margin: 14px 0 18px;
+  color: #4c5660;
+  font-size: 14px;
+}
+.workspace-tour-primary-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 13px;
+  border-radius: 3px;
+  color: #fff;
+  background: #176da0;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.workspace-tour-primary-link:hover {
+  background: #115d8b;
+}
+.workspace-tour-directory-guide {
+  grid-area: 1 / 2 / 2 / 3;
+  position: relative;
+  z-index: 2;
+  padding: 18px 18px 16px;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 1px 3px #0000000a;
+}
+.workspace-tour-steps-heading,
+.workspace-tour-guide-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.workspace-tour-steps-heading svg,
+.workspace-tour-guide-heading svg {
+  color: #2675a8;
+  flex: 0 0 auto;
+}
+.workspace-tour-steps-heading h2,
+.workspace-tour-guide-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+}
+.workspace-tour-directory-guide ol {
+  display: grid;
+  gap: 11px;
+  margin: 17px 0;
+  padding: 0;
+  list-style: none;
+}
+.workspace-tour-directory-guide li {
+  display: grid;
+  grid-template-columns: 23px 1fr;
+  gap: 9px;
+  align-items: start;
+}
+.workspace-tour-directory-guide li > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #165d82;
+  background: #e6f3fa;
+  font-size: 12px;
+  font-weight: 700;
+}
+.workspace-tour-directory-guide li p,
+.workspace-tour-bookmark-note {
+  margin: 1px 0 0;
+  color: #454f59;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.workspace-tour-bookmark-note {
+  padding-top: 13px;
+  border-top: 1px solid #e4e7ea;
+  color: #626970;
+}
+.workspace-tour-fiction-note {
+  margin: 12px 0;
+  color: #737b83;
+  font-size: 12px;
+}
+
+.workspace-tour-shell {
+  min-height: 100vh;
+}
+.workspace-tour-workspace {
+  align-items: stretch;
+}
+.workspace-tour-sidebar nav {
+  display: grid;
+  gap: 3px;
+}
+.workspace-tour-sidebar nav > a,
+.workspace-tour-sidebar .sidebar-footer > a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 3px;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+}
+.workspace-tour-sidebar nav > a:hover,
+.workspace-tour-sidebar .sidebar-footer > a:hover {
+  background: #efefef;
+}
+.workspace-tour-sidebar nav > a.nav-active {
+  color: #174c73;
+  background: #e8f2f8;
+  font-weight: 600;
+}
+.workspace-tour-sidebar nav svg,
+.workspace-tour-sidebar .sidebar-footer svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+.workspace-tour-main {
+  position: relative;
+  min-width: 0;
+  padding: 20px 24px 40px;
+}
+.workspace-tour-guide {
+  margin: 0 0 20px;
+  padding: 13px 16px;
+  border: 1px solid #dce4ea;
+  border-left: 3px solid #23739f;
+  border-radius: 3px;
+  background: #f8fbfd;
+}
+.workspace-tour-guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.workspace-tour-guide-heading h2 {
+  font-size: 14px;
+}
+.workspace-tour-guide-heading button {
+  border: 0;
+  padding: 4px 6px;
+  color: #175d87;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.workspace-tour-guide ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 22px;
+  margin: 12px 0 0;
+  padding-left: 19px;
+  color: #4c5660;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.workspace-tour-page-heading {
+  margin: 0 0 18px;
+}
+.workspace-tour-page-heading h1 {
+  margin: 4px 0;
+  font-size: 27px;
+  line-height: 1.25;
+}
+.workspace-tour-page-heading p {
+  margin: 0;
+  color: #5f666d;
+  font-size: 14px;
+}
+.workspace-tour-home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.workspace-tour-home-card {
+  min-height: 155px;
+  padding: 18px;
+  border: 1px solid #e0e3e6;
+  border-radius: 4px;
+  background: #fff;
+}
+.workspace-tour-home-card h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.workspace-tour-home-card > p {
+  margin: 10px 0 15px;
+  color: #59636c;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.workspace-tour-home-card > a,
+.workspace-tour-latest > a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #175d87;
+  font-size: 13px;
+  font-weight: 550;
+  text-decoration: none;
+}
+.workspace-tour-home-card > a svg,
+.workspace-tour-latest > a > svg:last-child {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+.workspace-tour-home-card > a:hover,
+.workspace-tour-latest > a:hover,
+.workspace-tour-text-link:hover {
+  text-decoration: underline;
+}
+.workspace-tour-welcome-card {
+  background: #f2f8fb;
+  border-color: #cbdfe9;
+}
+.workspace-tour-welcome-card h2 {
+  margin: 6px 0 0;
+  font-size: 21px;
+}
+.workspace-tour-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #285c75;
+}
+.workspace-tour-latest {
+  margin-top: 22px;
+  border-top: 1px solid #e1e3e5;
+}
+.workspace-tour-latest h2 {
+  margin: 16px 0 5px;
+  font-size: 17px;
+}
+.workspace-tour-latest > a {
+  min-height: 47px;
+  border-bottom: 1px solid #eaebec;
+  color: #30383f;
+}
+.workspace-tour-latest > a > span {
+  display: grid;
+  gap: 3px;
+}
+.workspace-tour-latest > a small {
+  color: #676f76;
+  font-size: 11px;
+  font-weight: 400;
+}
+.workspace-tour-library-bookmark {
+  display: flex;
+  gap: 9px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #e2e7eb;
+  border-radius: 3px;
+  color: #505a62;
+  background: #f8fafb;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.workspace-tour-library-bookmark svg {
+  flex: 0 0 auto;
+  color: #2675a8;
+}
+.workspace-tour-folder-bookmarks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.workspace-tour-folder-bookmarks > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid #e1e5e8;
+  border-radius: 3px;
+  background: #fff;
+}
+.workspace-tour-folder-bookmarks a {
+  overflow: hidden;
+  color: #315d74;
+  font-size: 12px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workspace-tour-folder-bookmarks button {
+  flex: 0 0 auto;
+  border: 0;
+  padding: 3px 4px;
+  color: #426c82;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.workspace-tour-folder-bookmarks button[aria-pressed="true"] {
+  color: #7c5300;
+}
+.workspace-tour-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: min(480px, calc(100vw - 48px));
+  padding: 13px 16px;
+  border-radius: 4px;
+  color: #fff;
+  background: #343a40;
+  box-shadow: 0 4px 18px #0003;
+  font-size: 13px;
+}
+.workspace-tour-toast button {
+  border: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+.workspace-tour-calendar {
+  max-width: 800px;
+  border-top: 1px solid #e1e4e6;
+}
+.workspace-tour-calendar article {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 5px;
+  border-bottom: 1px solid #e1e4e6;
+}
+.workspace-tour-calendar time {
+  color: #35627b;
+  font-size: 13px;
+  font-weight: 600;
+}
+.workspace-tour-calendar h2 {
+  margin: 0;
+  font-size: 15px;
+}
+.workspace-tour-calendar p {
+  margin: 4px 0 0;
+  color: #626a71;
+  font-size: 12px;
+}
+.workspace-tour-calendar svg {
+  color: #557d91;
+}
+
+.workspace-tour-channel-posts,
+.workspace-tour-shared {
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+.workspace-tour-channel-posts .workspace-tour-guide,
+.workspace-tour-shared .workspace-tour-guide {
+  margin: 16px 0;
+}
+.workspace-tour-post-list {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0;
+}
+.workspace-tour-post {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e4e5e7;
+  border-radius: 4px;
+  background: #fff;
+}
+.workspace-tour-post-avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #315b72;
+  background: #dcecf3;
+  font-size: 12px;
+  font-weight: 700;
+}
+.workspace-tour-post header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+}
+.workspace-tour-post time {
+  color: #6b7075;
+  font-size: 11px;
+}
+.workspace-tour-post p {
+  margin: 9px 0;
+  color: #383e43;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.workspace-tour-post a,
+.workspace-tour-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #17638e;
+  font-size: 12px;
+  text-decoration: none;
+}
+.workspace-tour-post .m365-teams-composer {
+  grid-column: 1 / -1;
+}
+.workspace-tour-text-link {
+  margin: 8px 0 18px;
+}
+.workspace-tour-channel-search-results {
+  display: grid;
+  gap: 5px;
+  max-height: 300px;
+  overflow: auto;
+  padding: 10px;
+  background: #fff;
+}
+.workspace-tour-channel-search-results strong {
+  margin-top: 4px;
+  color: #58616a;
+  font-size: 11px;
+}
+.workspace-tour-channel-search-results button {
+  display: grid;
+  gap: 2px;
+  border: 0;
+  padding: 7px;
+  text-align: left;
+  background: #f6f8f9;
+  cursor: pointer;
+}
+.workspace-tour-channel-search-results button:hover {
+  background: #eaf1f5;
+}
+.workspace-tour-channel-search-results small {
+  color: #687078;
+}
+
+@media (max-width: 900px) {
+  .workspace-tour-directory-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .workspace-tour-architecture-context {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .workspace-tour-entry-card {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .workspace-tour-directory-guide {
+    grid-area: 2 / 1 / 3 / 2;
+  }
+  .workspace-tour-directory-stage {
+    min-height: 0;
+  }
+  .workspace-tour-architecture-context {
+    height: 410px;
+  }
+  .workspace-tour-entry-card {
+    margin-top: 100px;
+  }
+}
+@media (max-width: 680px) {
+  .workspace-tour-directory-main {
+    padding: 18px 16px 28px;
+  }
+  .workspace-tour-directory-main > .directory-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .workspace-tour-directory-main .directory-heading h1 {
+    font-size: 24px;
+  }
+  .workspace-tour-in-development {
+    flex: 0 0 auto;
+    font-size: 10px;
+  }
+  .workspace-tour-entry-card {
+    width: calc(100% - 40px);
+    margin-top: 60px;
+  }
+  .workspace-tour-architecture-context {
+    height: 365px;
+  }
+  .workspace-tour-directory-guide {
+    padding: 16px;
+  }
+  .workspace-tour-main {
+    padding: 15px 14px 30px;
+  }
+  .workspace-tour-guide ul,
+  .workspace-tour-home-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .workspace-tour-home-card {
+    min-height: 0;
+  }
+  .workspace-tour-calendar article {
+    grid-template-columns: 83px minmax(0, 1fr) 20px;
+    gap: 8px;
+  }
+  .workspace-tour-folder-bookmarks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

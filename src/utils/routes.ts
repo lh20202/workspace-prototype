@@ -18,6 +18,7 @@ export function prototypeForPath(
   | "projects"
   | "launcher"
   | "architecture"
+  | "workspace-tour"
   | "planning"
   | "logistics"
   | "service-desk"
@@ -35,6 +36,8 @@ export function prototypeForPath(
   if (pathname === "/") return "launcher";
   if (pathname === "/architecture" || pathname === "/architecture/")
     return "architecture";
+  if (pathname === "/workspace-tour" || pathname.startsWith("/workspace-tour/"))
+    return "workspace-tour";
   if (
     pathname === "/sales-marketing/wiki" ||
     pathname.startsWith("/sales-marketing/wiki/")
@@ -98,6 +101,20 @@ export function pageTitle(pathname: string) {
   if (pathname === "/") return "Welcome | Digital Workspace demo site";
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
+  if (pathname === "/workspace-tour")
+    return "What is a workspace? | Digital Workspace demo site";
+  if (pathname === "/workspace-tour/channels")
+    return "Channels | Activity Workspace";
+  if (pathname.startsWith("/workspace-tour/workspace/documents"))
+    return "Working documents | Activity Workspace";
+  if (pathname.startsWith("/workspace-tour/workspace/reference"))
+    return "Reference & guidance | Activity Workspace";
+  if (pathname.startsWith("/workspace-tour/workspace/calendar"))
+    return "Shared calendar | Activity Workspace";
+  if (pathname.startsWith("/workspace-tour/workspace/completed"))
+    return "Completed work | Activity Workspace";
+  if (pathname.startsWith("/workspace-tour"))
+    return "Activity Workspace | Digital Workspace demo site";
   if (pathname.startsWith("/logistics/teams")) return "Acquisitions | Teams";
   const registered = environmentRegistry.find(
     (w) => pathname === w.href || pathname.startsWith(w.href + "/"),
