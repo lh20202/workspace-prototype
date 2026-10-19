@@ -39,6 +39,18 @@ import {
   readChannelEntryContext,
   type ChannelEntryContext,
 } from "./context";
+
+export function companyChannelIdFromRequest(
+  requestedChannel: string | null,
+): string | undefined {
+  if (!requestedChannel) return undefined;
+  return channels.find(
+    (channel) =>
+      channel.team === "company" &&
+      (channel.id === requestedChannel || channel.name === requestedChannel),
+  )?.id;
+}
+
 export {
   channelContextValue,
   readChannelEntryContext,

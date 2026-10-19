@@ -46,6 +46,7 @@ import DocumentLibrary, {
 import {
   teamsGroups,
   defaultTeamsContext,
+  companyChannelIdFromRequest,
   readChannelEntryContext,
   channelContextValue,
 } from "../teams/navigation";
@@ -100,6 +101,9 @@ export default function TeamsPreview() {
       : null
     : params.get("workspace");
   const defaultContext = defaultTeamsContext(person);
+  const requestedCompanyChannelId = companyChannelIdFromRequest(
+    params.get("channel"),
+  );
   const workspace =
     workspaces.find((item) => item.id === requestedWorkspace) ||
     workspaces.find(
@@ -116,7 +120,7 @@ export default function TeamsPreview() {
         : undefined);
   const companyFallback =
     !requestedWorkspace && !department
-      ? defaultContext.companyChannelId
+      ? requestedCompanyChannelId || defaultContext.companyChannelId
       : undefined;
   const workspaceUnavailable = !department && !hasWorkspaceTeams(workspace.id);
   const requested =

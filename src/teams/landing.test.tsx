@@ -3,7 +3,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import TeamsPreview from "../intranet/TeamsPreview";
 import TeamsShell from "./TeamsShell";
 import { staff } from "../intranet/catalog";
-import { defaultTeamsContext, teamsPreviewHrefForStaff } from "./navigation";
+import {
+  companyChannelIdFromRequest,
+  defaultTeamsContext,
+  teamsPreviewHrefForStaff,
+} from "./navigation";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -30,6 +34,12 @@ describe("role-specific Teams landing and shell", () => {
       departmentId: undefined,
       channel: "general",
     });
+  });
+
+  it("keeps an explicitly requested company channel when entering from Teams", () => {
+    expect(companyChannelIdFromRequest("pets")).toBe("pets");
+    expect(companyChannelIdFromRequest("🐾 Pet photos")).toBe("pets");
+    expect(companyChannelIdFromRequest("unrecognised-channel")).toBeUndefined();
   });
 
   it("does not render empty Team groups even if a caller supplies one", () => {
