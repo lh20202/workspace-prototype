@@ -70,7 +70,12 @@ describe("Activity Workspace walkthrough", () => {
     const shared = renderTour(
       "/workspace-tour/channels?channel=coordination&tab=Shared&staff=taylor",
     );
-    expect(shared).toContain('aria-label="About Shared files"');
+    expect(shared).toContain('class="workspace-tour-guide"');
+    expect(shared).toContain("Document library");
+    expect(shared).toContain("Columns");
+    expect(shared).toContain("Owners");
+    expect(shared).toContain("Metadata");
+    expect(shared).toContain("Links out");
     expect(shared).toContain('aria-label="Channel list filters"');
     expect(shared).not.toContain('aria-label="Chat list filters"');
     expect(shared).toContain("Open all working documents");
@@ -91,23 +96,28 @@ describe("Activity Workspace walkthrough", () => {
     }
   });
 
-  it("keeps workspace instructions out of the site until a contextual help button is used", () => {
+  it("opens a page guide beside the workspace with several clear topics", () => {
     const home = renderTour("/workspace-tour/workspace?staff=taylor");
-    expect(home).toContain('aria-label="About Workspace home"');
-    expect(home).toContain('aria-label="About Working documents"');
-    expect(home).not.toContain(
-      "The home page brings together key information, useful shortcuts and recent files.",
-    );
-    expect(home).not.toContain('class="workspace-tour-guide"');
+    expect(home).toContain('class="workspace-tour-guide"');
+    expect(home).toContain("Explore this page");
+    expect(home).toContain("Choose a label to see what each part does.");
+    expect(home).toContain("Recent files");
+    expect(home).toContain("Channels");
+    expect(home).toContain("workspace-tour-guide-detail");
+    expect(home).toContain('data-tour-target="workspace-navigation"');
 
     const library = renderTour(
       "/workspace-tour/workspace/documents?staff=taylor",
     );
-    expect(library).toContain('aria-label="About Working documents"');
-    expect(library).not.toContain(
-      "Files include an owner, status and sensitivity label.",
-    );
-    expect(library).not.toContain('class="workspace-tour-guide"');
+    expect(library).toContain("Document library");
+    expect(library).toContain("Columns");
+    expect(library).toContain("Owners");
+    expect(library).toContain("Metadata");
+    expect(library).toContain("Links out");
+    expect(library).toContain('data-tour-target="library-columns"');
+    expect(library).toContain('data-tour-target="library-owner"');
+    expect(library).toContain("Read only");
+    expect(library).not.toContain('aria-label="About Working documents"');
   });
 
   it("provides a complete human German rendering for the new tour copy", () => {

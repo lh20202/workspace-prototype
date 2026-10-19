@@ -28,6 +28,64 @@ export const germanWorkspaceTour: Record<string, string> = {
   "A few things to notice": "Ein paar Hinweise",
   "Hide guidance": "Hinweise ausblenden",
   "Show guidance": "Hinweise anzeigen",
+  "Explore this page": "Diese Seite erkunden",
+  "This guide sits outside the workspace. Choose a label to see what each part does.":
+    "Diese Hinweise stehen außerhalb des Arbeitsbereichs. Wählen Sie einen Punkt, um mehr über den jeweiligen Bereich zu erfahren.",
+  "About this part": "Zu diesem Bereich",
+  Workspace: "Arbeitsbereich",
+  Navigation: "Navigation",
+  Channels: "Channels",
+  "Recent files": "Aktuelle Dateien",
+  "Document library": "Dokumentbibliothek",
+  Columns: "Spalten",
+  Owners: "Zuständige Personen",
+  Metadata: "Metadaten",
+  "File details": "Dateidetails",
+  "Links out": "Weiterführende Links",
+  Settings: "Einstellungen",
+  "Search and views": "Suche und Ansichten",
+  Folders: "Ordner",
+  "Shared calendar": "Gemeinsamer Kalender",
+  "Channel posts": "Channel-Beiträge",
+  "Shared files": "Gemeinsame Dateien",
+  "A shared starting point for current work, useful links and recent files.":
+    "Ein gemeinsamer Ausgangspunkt für aktuelle Arbeit, nützliche Links und kürzlich verwendete Dateien.",
+  "Use the menu inside the workspace to move between its home, files, reference material and calendar.":
+    "Über das Menü im Arbeitsbereich wechseln Sie zwischen Startseite, Dateien, Referenzmaterial und Kalender.",
+  "Open Channels for conversations and coordination. Shared files remain in the workspace library.":
+    "Öffnen Sie Channels für Gespräche und Abstimmungen. Gemeinsame Dateien bleiben in der Bibliothek des Arbeitsbereichs.",
+  "Recently updated files link directly to the relevant document in the library.":
+    "Links zu kürzlich aktualisierten Dateien führen direkt zum jeweiligen Dokument in der Bibliothek.",
+  "The library is the shared home for working files. Folders, search and saved views help people find the right item.":
+    "Die Bibliothek ist der gemeinsame Ablageort für Arbeitsdateien. Ordner, Suche und gespeicherte Ansichten erleichtern das Finden.",
+  "Columns organise the list. Each file shows its name, owner, status, sensitivity and last modified date.":
+    "Spalten ordnen die Liste. Zu jeder Datei werden Name, zuständige Person, Status, Vertraulichkeit und Änderungsdatum angezeigt.",
+  "The Owner column shows who is responsible for each file. Open its details for the complete set of properties.":
+    "Die Spalte „Zuständig“ zeigt, wer für eine Datei verantwortlich ist. In den Dateidetails finden Sie alle Eigenschaften.",
+  "Status, sensitivity, workstream and period describe a file and make it easier to sort, filter and search.":
+    "Status, Vertraulichkeit, Arbeitsbereich und Zeitraum beschreiben eine Datei und erleichtern Sortierung, Filterung und Suche.",
+  "Use a file’s action menu and choose Details to see its owner, metadata and version history.":
+    "Öffnen Sie über das Aktionsmenü einer Datei die Details, um Zuständigkeit, Metadaten und Versionsverlauf zu sehen.",
+  "Use Channels for the discussion around a file. The file itself stays in this library, with its properties and versions together.":
+    "Nutzen Sie Channels für den Austausch zu einer Datei. Die Datei bleibt mit ihren Eigenschaften und Versionen in dieser Bibliothek.",
+  "The site settings and language controls are available in the workspace header.":
+    "Die Website-Einstellungen und die Sprachauswahl finden Sie in der Kopfzeile des Arbeitsbereichs.",
+  "Search finds files by name, owner, status or metadata. Saved views show useful subsets of the same library.":
+    "Über die Suche finden Sie Dateien nach Name, zuständiger Person, Status oder Metadaten. Gespeicherte Ansichten zeigen passende Teilmengen derselben Bibliothek.",
+  "Folders group working files, reference material and completed work while the library keeps them together.":
+    "Ordner bündeln Arbeitsdateien, Referenzmaterial und abgeschlossene Arbeiten in einer gemeinsamen Bibliothek.",
+  "The calendar highlights key dates connected to the work in this workspace.":
+    "Der Kalender zeigt wichtige Termine für die Arbeit in diesem Arbeitsbereich.",
+  "Open Channels to discuss dates and coordinate next steps with the group.":
+    "Öffnen Sie Channels, um Termine zu besprechen und die nächsten Schritte mit der Gruppe abzustimmen.",
+  "Posts keep updates and questions together by topic. Use the channel list to switch conversations.":
+    "Beiträge bündeln Neuigkeiten und Fragen nach Thema. Über die Channel-Liste wechseln Sie zwischen den Gesprächen.",
+  "The Shared tab shows the same workspace files as the library, so the conversation and documents stay connected.":
+    "Die Registerkarte „Gemeinsam“ zeigt dieselben Dateien wie die Bibliothek des Arbeitsbereichs. So bleiben Austausch und Dokumente verbunden.",
+  "Open Working documents to use folders, saved views and the full file details.":
+    "Öffnen Sie „Arbeitsdokumente“ für Ordner, gespeicherte Ansichten und vollständige Dateidetails.",
+  "These files are shared with Working documents. Open that library for folders, saved views and full details.":
+    "Diese Dateien werden auch unter „Arbeitsdokumente“ angezeigt. Dort finden Sie Ordner, gespeicherte Ansichten und alle Details.",
   "How to find and use workspaces": "Arbeitsbereiche finden und nutzen",
   "Workspace home": "Startseite des Arbeitsbereichs",
   "About this workspace": "Über diesen Arbeitsbereich",

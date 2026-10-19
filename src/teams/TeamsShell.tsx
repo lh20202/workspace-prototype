@@ -50,6 +50,7 @@ export interface TeamsShellProps {
   onTabChange: (tab: string) => void;
   tabs?: string[];
   privateChannel?: boolean;
+  guidedExample?: boolean;
   onOpenSharePoint?: () => void;
   onChannelInfo?: () => void;
   searchValue?: string;
@@ -85,6 +86,7 @@ function TeamsShellSession({
   onTabChange,
   tabs = ["Posts", "Shared"],
   privateChannel,
+  guidedExample = false,
   onOpenSharePoint,
   onChannelInfo,
   searchValue,
@@ -199,6 +201,7 @@ function TeamsShellSession({
             className="m365-teams-profile"
             aria-label={`Signed in as ${userName}`}
             aria-expanded={panel === "profile"}
+            disabled={guidedExample}
             onClick={() => setPanel(panel === "profile" ? "" : "profile")}
           >
             {initials(userName)}
@@ -237,6 +240,7 @@ function TeamsShellSession({
               <button
                 key={String(name)}
                 aria-current={name === channelLabel ? "page" : undefined}
+                disabled={guidedExample && name !== channelLabel}
                 onClick={() => {
                   if (name === channelLabel) setPanel("");
                   else setPanel(String(name));
@@ -473,6 +477,7 @@ function TeamsShellSession({
             className="m365-teams-tabs"
             role="tablist"
             aria-label="Channel tabs"
+            data-tour-target="channel-tabs"
           >
             {tabs.map((name) => (
               <button

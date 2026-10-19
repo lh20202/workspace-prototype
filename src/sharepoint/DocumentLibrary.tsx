@@ -73,6 +73,7 @@ export interface DocumentLibraryProps {
   files: LibraryDocument[];
   folders?: string[];
   readOnly?: boolean;
+  tourTargets?: boolean;
   embedded?: boolean;
   maxEmbeddedRows?: number;
   headingLevel?: 1 | 2;
@@ -90,6 +91,7 @@ export default function DocumentLibrary({
   files,
   folders = [],
   readOnly = false,
+  tourTargets = false,
   embedded = false,
   maxEmbeddedRows = 5,
   headingLevel,
@@ -479,6 +481,7 @@ export default function DocumentLibrary({
     <section
       className={`sp-document-library${embedded ? " sp-library-embedded" : ""}`}
       aria-labelledby={headingId}
+      data-tour-target={tourTargets ? "document-library" : undefined}
     >
       <div className="sp-library-heading">
         <Heading id={headingId}>{title}</Heading>
@@ -488,7 +491,10 @@ export default function DocumentLibrary({
         <p className="sp-library-purpose">{definition.purpose}</p>
       )}
       {!embedded && definition?.defaultSensitivity && (
-        <p className="sp-library-default-label">
+        <p
+          className="sp-library-default-label"
+          data-tour-target={tourTargets ? "library-metadata" : undefined}
+        >
           Default sensitivity for new files:{" "}
           <SensitivityBadge value={definition.defaultSensitivity} />
         </p>
@@ -624,7 +630,10 @@ export default function DocumentLibrary({
                 </Button>
               )}
             </div>
-            <label className="sp-library-view">
+            <label
+              className="sp-library-view"
+              data-tour-target={tourTargets ? "library-views" : undefined}
+            >
               <span className="sr-only">Library view</span>
               <TextBulletList20Regular aria-hidden="true" />
               <select
@@ -652,7 +661,10 @@ export default function DocumentLibrary({
               <ChevronDown16Regular aria-hidden="true" />
             </label>
           </div>
-          <div className="sp-library-filters">
+          <div
+            className="sp-library-filters"
+            data-tour-target={tourTargets ? "library-search" : undefined}
+          >
             <Input
               aria-label={`Search ${title}`}
               placeholder="Search this library"
@@ -717,7 +729,10 @@ export default function DocumentLibrary({
           />
         </div>
       )}
-      <div className="sp-library-table-scroll">
+      <div
+        className="sp-library-table-scroll"
+        data-tour-target={tourTargets ? "library-columns" : undefined}
+      >
         <table className="sp-library-table" aria-label={`${title} documents`}>
           <thead>
             <tr>
@@ -749,6 +764,13 @@ export default function DocumentLibrary({
                 <th
                   key={key}
                   className={`sp-library-column-${["name", "modified", "owner", "status", "sensitivity"].includes(key) ? key : "metadata"}`}
+                  data-tour-target={
+                    tourTargets && key === "owner"
+                      ? "library-owner"
+                      : tourTargets && key === "sensitivity"
+                        ? "library-metadata"
+                        : undefined
+                  }
                   aria-sort={
                     sort === key
                       ? descending
@@ -855,7 +877,14 @@ export default function DocumentLibrary({
                     )}
                   </td>
                 ))}
-                <td className="sp-library-actions">{fileActions(file)}</td>
+                <td
+                  className="sp-library-actions"
+                  data-tour-target={
+                    tourTargets ? "library-file-actions" : undefined
+                  }
+                >
+                  {fileActions(file)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -941,7 +970,9 @@ export default function DocumentLibrary({
                   </Button>
                 )}
               </div>
-              <dl>
+              <dl
+                data-tour-target={tourTargets ? "library-metadata" : undefined}
+              >
                 {documentProperties(active, definition).map(([key, value]) => (
                   <div key={key}>
                     <dt>{key}</dt>

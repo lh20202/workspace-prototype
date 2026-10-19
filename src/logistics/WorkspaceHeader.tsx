@@ -34,6 +34,7 @@ export default function WorkspaceHeader({
   searchFiles = files,
   memberCount = 42,
   restricted,
+  guidedExample = false,
   helpText = "Use campaign folders for operational files, the shared location list for permits, and channels for coordination.",
 }: {
   onSearchChange?: (query: string) => void;
@@ -51,6 +52,7 @@ export default function WorkspaceHeader({
   })[];
   memberCount?: number | null;
   restricted?: boolean;
+  guidedExample?: boolean;
   helpText?: string;
 }) {
   const [query, setQuery] = useState("");
@@ -83,6 +85,7 @@ export default function WorkspaceHeader({
         <button
           className="global-icon"
           aria-label="Digital workplace apps"
+          disabled={guidedExample}
           onClick={() =>
             onMessage(
               "The digital workplace app launcher is illustrative in this proof of concept.",
@@ -139,6 +142,7 @@ export default function WorkspaceHeader({
           <button
             className="global-icon"
             aria-label="Notifications"
+            disabled={guidedExample}
             onClick={() => onMessage("No new notifications in this demo.")}
           >
             <Alert24Regular />
@@ -152,11 +156,16 @@ export default function WorkspaceHeader({
           >
             <QuestionCircle24Regular />
           </button>
-          <SiteSettingsButton onMessage={onMessage} />
+          <span
+            data-tour-target={guidedExample ? "workspace-settings" : undefined}
+          >
+            <SiteSettingsButton onMessage={onMessage} />
+          </span>
           <LanguageToggle />
           <button
             className="profile-button"
             aria-label={`Signed in as ${userName}`}
+            disabled={guidedExample}
             onClick={() => onMessage(`${userName} · ${userRole}`)}
           >
             {userName === "Maya Chen" ? (
@@ -185,6 +194,7 @@ export default function WorkspaceHeader({
               className="teams-button"
               aria-label="Open channels"
               title="Channels"
+              data-tour-target={guidedExample ? "open-channels" : undefined}
               onClick={onTeams}
             >
               <TeamsMark />
@@ -195,6 +205,7 @@ export default function WorkspaceHeader({
           {restrictedWorkspace && <span>Private group</span>}
           <button
             aria-pressed={favorite}
+            disabled={guidedExample}
             onClick={() => setFavorite(!favorite)}
           >
             <Star20Filled />
@@ -202,6 +213,7 @@ export default function WorkspaceHeader({
           </button>
           {memberCount !== null && (
             <button
+              disabled={guidedExample}
               onClick={() =>
                 onMessage(
                   `${memberCount} members coordinate shared workspace activity.`,
