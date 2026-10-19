@@ -10,14 +10,14 @@
   padding: 20px 28px 28px;
 }
 .architecture-exploration {
-  --architecture-icon: 28px;
-  --architecture-link-gap: 8px;
-  --architecture-row-height: 30px;
-  --architecture-column-gap: 14px;
+  --architecture-icon: 32px;
+  --architecture-link-gap: 10px;
+  --architecture-row-height: 42px;
+  --architecture-column-gap: 22px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
   align-items: start;
-  gap: 16px 24px;
+  gap: 28px 32px;
 }
 .architecture-main {
   min-width: 0;
@@ -41,11 +41,11 @@
 .architecture-panel-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 12px;
+  gap: 0 20px;
 }
 .architecture-panels {
   display: grid;
-  gap: 12px;
+  gap: 20px;
 }
 .architecture-tone-sales-marketing {
   --hub-accent: #246a77;
@@ -71,7 +71,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 22px;
   border: 1px solid var(--hub-border);
   border-top: 3px solid var(--hub-accent);
   border-radius: 2px;
@@ -87,7 +87,7 @@
   text-decoration: none;
 }
 .architecture-panel-heading {
-  padding-bottom: 10px;
+  padding-bottom: 16px;
 }
 :root .architecture-poc-page .architecture-panel-heading h2 {
   margin: 0;
@@ -100,7 +100,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
-  gap: 2px var(--architecture-column-gap);
+  gap: 10px var(--architecture-column-gap);
 }
 .architecture-destination {
   display: flex;
@@ -108,7 +108,7 @@
   gap: var(--architecture-link-gap);
   min-width: 0;
   min-height: var(--architecture-row-height);
-  padding: 2px 4px;
+  padding: 6px 8px;
   border-radius: 2px;
   color: #2d5362;
   font-size: 14px;
@@ -144,23 +144,23 @@
 :root .architecture-exploration .directory-admin-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2px 14px;
+  gap: 8px 18px;
 }
 :root .architecture-exploration .directory-admin-list a {
-  min-height: 32px;
+  min-height: 40px;
 }
 .architecture-jump-groups {
-  padding-left: 18px;
+  padding-left: 24px;
   border-left: 1px solid #dddfe7;
 }
 :root .architecture-poc-page .architecture-jump-groups h2 {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
   font-size: 18px;
   line-height: 26px;
   font-weight: 650;
 }
 .architecture-jump-groups p {
-  margin: 0 0 12px;
+  margin: 0 0 18px;
   color: #616161;
   font-weight: 400;
   font-size: 13px;
@@ -171,8 +171,8 @@
   grid-template-columns: var(--architecture-icon) minmax(0, 1fr) 16px;
   align-items: center;
   gap: var(--architecture-link-gap);
-  min-height: 62px;
-  padding: 10px 0;
+  min-height: 72px;
+  padding: 14px 0;
   border-bottom: 1px solid #e4e5e8;
   color: #343a40;
   font-size: 14px;
@@ -198,11 +198,11 @@
 .architecture-projects {
   grid-column: 1 / -1;
   min-width: 0;
-  padding-top: 12px;
+  padding-top: 20px;
   border-top: 1px solid #dddfe7;
 }
 .architecture-projects > p {
-  margin: 0 0 8px;
+  margin: 0 0 14px;
   color: #616161;
   font-size: 13px;
   line-height: 20px;
@@ -211,14 +211,14 @@
   display: grid;
   grid-template-columns: minmax(140px, 1fr) repeat(5, minmax(0, 1fr)) auto;
   align-items: stretch;
-  gap: 8px;
+  gap: 12px;
 }
 .architecture-project-link {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
-  padding: 8px;
+  padding: 12px;
   border: 1px solid #edebe9;
   background: #fff;
   color: #2d5362;
@@ -248,8 +248,8 @@
   display: grid;
   grid-template-columns: var(--architecture-icon, 28px) minmax(0, 1fr);
   align-content: start;
-  gap: 2px 6px;
-  padding-block: 4px;
+  gap: 6px 8px;
+  padding-block: 10px;
 }
 .architecture-project-code {
   justify-self: start;
@@ -320,14 +320,14 @@
   }
   .architecture-jump-groups {
     grid-row: 3;
-    padding: 18px 0 0;
+    padding: 24px 0 0;
     border-left: 0;
     border-top: 1px solid #dddfe7;
   }
   .architecture-jump-groups section {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 20px;
+    gap: 0 24px;
   }
   .architecture-jump-groups p {
     grid-column: 1 / -1;
@@ -355,90 +355,12 @@
   }
   .architecture-panel-row {
     grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
+    gap: 20px;
   }
 }
 @media (max-width: 480px) {
   .architecture-destination-grid,
   .architecture-jump-groups section {
     grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* Keep the full directory in view on shorter laptop screens. */
-@media (min-width: 1101px) and (max-height: 960px) {
-  :root .architecture-poc-page .directory-main:has(.architecture-exploration) {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  :root .architecture-poc-page .intranet-directory .directory-heading {
-    margin-bottom: 8px;
-  }
-  :root .architecture-poc-page .directory-heading h1 {
-    font-size: 26px;
-    line-height: 32px;
-  }
-  .architecture-poc-page .directory-heading p {
-    font-size: 13px;
-    line-height: 18px;
-  }
-  .architecture-exploration {
-    --architecture-icon: 24px;
-    --architecture-row-height: 26px;
-    row-gap: 6px;
-  }
-  .architecture-panels {
-    gap: 8px;
-  }
-  .architecture-workspace-icon,
-  .architecture-workspace-icon img {
-    width: 24px;
-    height: 24px;
-    flex-basis: 24px;
-  }
-  .architecture-panel {
-    padding: 8px 12px;
-  }
-  .architecture-panel-heading {
-    padding-bottom: 4px;
-  }
-  :root .architecture-poc-page .architecture-panel-heading h2 {
-    line-height: 24px;
-  }
-  .architecture-destination {
-    padding: 0;
-    line-height: 20px;
-  }
-  :root .architecture-exploration .directory-admin-logins {
-    padding-top: 6px;
-  }
-  :root .architecture-exploration .directory-admin-logins h3 {
-    margin-bottom: 2px;
-  }
-  :root .architecture-exploration .directory-admin-list a {
-    min-height: 24px;
-  }
-  .architecture-jump-link {
-    min-height: 54px;
-    padding: 6px 0;
-  }
-  .architecture-projects {
-    padding-top: 8px;
-  }
-  .architecture-projects > p {
-    margin-bottom: 4px;
-  }
-  .architecture-project-link {
-    padding-block: 6px;
-  }
-}
-
-/* Leave room for the project codes and longer translated names on short screens. */
-@media (min-width: 1101px) and (max-height: 760px) {
-  .architecture-exploration {
-    --architecture-row-height: 24px;
-  }
-  .architecture-panel {
-    padding-block: 6px;
   }
 }
