@@ -29,7 +29,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "slotline",
-    name: "Scheduler",
+    name: "MediaScheduler",
     logo: "/images/admin-logins/scheduler.svg",
     category: "Social content scheduling",
     purpose: "Plan, review and schedule social content.",
@@ -38,7 +38,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "relovia",
-    name: "TheCRM",
+    name: "CRMsystem",
     logo: "/images/admin-logins/thecrm.svg",
     category: "Customer relationship management",
     purpose: "Maintain customer relationships and account context.",
@@ -47,7 +47,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "teralink",
-    name: "RaiseTicket",
+    name: "TicketManager",
     logo: "/images/admin-logins/raiseticket.svg",
     category: "IT & service support",
     purpose: "Manage service requests, support and workplace technology.",
@@ -56,7 +56,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "recorda",
-    name: "Invoicer",
+    name: "InvoiceApprover",
     logo: "/images/admin-logins/invoicer.svg",
     category: "Invoice & document workflow",
     purpose: "Route documents and invoices through review and approval.",
@@ -74,7 +74,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "metriva",
-    name: "DataAnalystica",
+    name: "DataAnalytica",
     logo: "/images/admin-logins/datahub.svg",
     category: "Data analytics & reporting",
     purpose: "Explore data, monitor performance and build analytical reports.",
@@ -92,7 +92,7 @@ export const adminPlatforms: AdminPlatform[] = [
   },
   {
     id: "velora",
-    name: "MoneyTool",
+    name: "MoneyManager",
     logo: "/images/admin-logins/moneytool.svg",
     category: "Financial administration",
     purpose: "Manage accounting, financial planning and treasury records.",

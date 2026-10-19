@@ -25,15 +25,15 @@ export const workspaceFAQQuestions: readonly WorkspaceFAQQuestion[] = [
 
 export const workspaceFAQSubmittedQuestion: WorkspaceFAQQuestion = {
   id: "submitted-link-sharing",
-  question: "Can I still share a link with someone in another department?",
+  question: "Can I easily share information with other departments?",
   answer:
-    "Yes, share the workspace link instead of making another copy of the file. If the person needs access, your focal point can help.",
+    "Yes. Save it in the right place and share the link; access is handled in the background.",
 };
 
 export const workspaceFAQForm = {
   heading: "Have a question?",
   support:
-    "Submit a question anonymously. Useful questions can be added to the FAQ for everyone.",
+    "Submit a question anonymously. Useful questions will be added to the FAQ for everyone.",
   label: "Your question",
   placeholder: "Type your question here…",
   submit: "Submit question",

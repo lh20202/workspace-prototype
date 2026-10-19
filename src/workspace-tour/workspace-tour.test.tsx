@@ -31,23 +31,36 @@ describe("Activity Workspace walkthrough", () => {
     );
   });
 
-  it("anchors the tour on the live directory while making its background inert", () => {
+  it("shows an annotated planning-library scene behind the guided example", () => {
     const html = renderTour("/workspace-tour?staff=taylor&demo=standalone");
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
     expect(html).toContain(
       "Explore how workspaces, files and channels fit together.",
     );
-    expect(html).toContain(">Coming soon</span>");
-    expect(html).not.toContain(">Enter workspace");
+    expect(html).toContain(">COMING SOON</span>");
+    expect(html).toContain("Explore Activity Workspace");
     expect(html).toContain(
-      'class="workspace-tour-architecture-context" aria-hidden="true" inert=""',
+      'href="/workspace-tour/workspace?staff=taylor&amp;demo=standalone"',
     );
+    expect(html).toContain(
+      'class="workspace-tour-planning-scene" aria-hidden="true" inert=""',
+    );
+    expect(html).toContain("2026 Year End Review");
+    expect(html).toContain("Planning Cycles");
+    expect(html).toContain("Sensitivity");
+    expect(html).toContain('class="workspace-tour-annotation-arrows"');
+    for (const label of [
+      "Automatic metadata",
+      "Status",
+      "Sensitivity",
+      "Naming convention",
+      "Consistent navigation",
+      "Channels for live coordination",
+    ])
+      expect(html).toContain(label);
+    expect(html).not.toContain("How to find your way");
     expect(html).toContain("Activity Workspace");
-    expect(html).not.toContain(">Enter workspace");
-    expect(html).toContain(
-      "During rollout, support will help update important links",
-    );
     expect(html).not.toContain('href="/activity-workspace');
     expect(
       environmentRegistry.some((item) => item.id === "activity-workspace"),

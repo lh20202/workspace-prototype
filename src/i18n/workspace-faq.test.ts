@@ -10,7 +10,7 @@ import { displayText } from "./displayText";
 const entries = [...workspaceFAQQuestions, workspaceFAQSubmittedQuestion];
 const sources = [
   "Workspace FAQ",
-  "Submitted question",
+  "This feature will be available soon!",
   ...Object.values(workspaceFAQForm),
   ...entries.flatMap((entry) => [entry.question, entry.answer]),
 ];

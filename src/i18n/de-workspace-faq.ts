@@ -8,14 +8,14 @@ export const germanWorkspaceFAQ: Record<string, string> = {
   "Who are focal points?": "Wer sind die Ansprechpersonen?",
   "Focal points are people in your department who receive extra training to help colleagues use their workspaces and channels. They're the first people to ask about access, where things belong, or everyday workspace questions.":
     "Das sind Kolleginnen und Kollegen in Ihrer Abteilung, die zusätzlich geschult werden, um bei der Nutzung von Arbeitsbereichen und Kanälen zu helfen. Sie sind die erste Anlaufstelle bei Fragen zum Zugriff, zum richtigen Ablageort oder zur Nutzung im Alltag.",
-  "Submitted question": "Eingereichte Frage",
-  "Can I still share a link with someone in another department?":
-    "Kann ich weiterhin einen Link mit jemandem aus einer anderen Abteilung teilen?",
-  "Yes, share the workspace link instead of making another copy of the file. If the person needs access, your focal point can help.":
-    "Ja, teilen Sie den Link aus dem Arbeitsbereich, statt eine weitere Kopie der Datei zu erstellen. Wenn die Person Zugriff benötigt, hilft Ihre Ansprechperson weiter.",
+  "Can I easily share information with other departments?":
+    "Kann ich Informationen problemlos mit anderen Abteilungen teilen?",
+  "Yes. Save it in the right place and share the link; access is handled in the background.":
+    "Ja. Speichern Sie die Informationen am richtigen Ort und teilen Sie den Link; der Zugriff wird im Hintergrund geregelt.",
   "Have a question?": "Haben Sie eine Frage?",
-  "Submit a question anonymously. Useful questions can be added to the FAQ for everyone.":
-    "Stellen Sie Ihre Frage anonym. Fragen, die auch anderen helfen, können wir hier für alle beantworten.",
+  "This feature will be available soon!": "Diese Funktion ist bald verfügbar!",
+  "Submit a question anonymously. Useful questions will be added to the FAQ for everyone.":
+    "Stellen Sie Ihre Frage anonym. Nützliche Fragen werden hier für alle in die FAQ aufgenommen.",
   "Your question": "Ihre Frage",
   "Type your question here…": "Schreiben Sie hier Ihre Frage…",
   "Submit question": "Frage einreichen",

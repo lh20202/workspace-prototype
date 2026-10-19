@@ -1,8 +1,6 @@
-import { useId, useReducer } from "react";
+import { useId } from "react";
 import {
   Button,
-  Field,
-  Textarea,
   Accordion,
   AccordionItem,
   AccordionHeader,
@@ -22,15 +20,10 @@ import {
   workspaceFAQSubmittedQuestion,
   workspaceFAQForm,
 } from "./workspaceFAQContent";
-import {
-  emptyFAQQuestion,
-  faqQuestionSubmission,
-} from "./faqQuestionSubmission";
 import "./workspace-faq.css";
 
 export function WorkspaceFAQContent() {
   const { t } = useTranslation();
-  const [draft, dispatch] = useReducer(faqQuestionSubmission, emptyFAQQuestion);
   const formId = useId();
   return (
     <>
@@ -49,14 +42,7 @@ export function WorkspaceFAQContent() {
               data-faq-id={id}
             >
               <AccordionHeader as="h3" size="small" expandIconPosition="end">
-                <span data-no-translate>
-                  {id === workspaceFAQSubmittedQuestion.id && (
-                    <span className="workspace-faq-submitted">
-                      {t("Submitted question")}
-                    </span>
-                  )}
-                  {t(question)}
-                </span>
+                <span data-no-translate>{t(question)}</span>
               </AccordionHeader>
               <AccordionPanel className="workspace-faq-answer">
                 <p data-no-translate>{t(answer)}</p>
@@ -70,34 +56,42 @@ export function WorkspaceFAQContent() {
         aria-labelledby={`${formId}-heading`}
         onSubmit={(event) => {
           event.preventDefault();
-          dispatch({ type: "submit" });
         }}
       >
-        <h3 id={`${formId}-heading`} data-no-translate>
-          {t(workspaceFAQForm.heading)}
-        </h3>
+        <div className="workspace-faq-form-heading">
+          <h3 id={`${formId}-heading`} data-no-translate>
+            {t(workspaceFAQForm.heading)}
+          </h3>
+          <span className="workspace-faq-coming-soon">COMING SOON</span>
+        </div>
         <p id={`${formId}-help`} data-no-translate>
           {t(workspaceFAQForm.support)}
         </p>
-        <Field label={t(workspaceFAQForm.label)}>
-          <Textarea
-            value={draft.question}
-            onChange={(_, data) =>
-              dispatch({ type: "edit", question: data.value })
-            }
+        <label
+          className="workspace-faq-label"
+          htmlFor={`${formId}-question`}
+          data-no-translate
+        >
+          {t(workspaceFAQForm.label)}
+        </label>
+        <div className="workspace-faq-coming-soon-field">
+          <textarea
+            id={`${formId}-question`}
+            className="workspace-faq-coming-soon-input"
+            value=""
+            readOnly
+            aria-disabled="true"
+            aria-describedby={`${formId}-help ${formId}-tooltip`}
             placeholder={t(workspaceFAQForm.placeholder)}
-            aria-describedby={`${formId}-help`}
+            title={t("This feature will be available soon!").toUpperCase()}
             rows={3}
-            resize="vertical"
-            required
             data-no-translate
           />
-        </Field>
-        <Button
-          type="submit"
-          appearance="primary"
-          disabled={!draft.question.trim()}
-        >
+          <span id={`${formId}-tooltip`} role="tooltip" data-no-translate>
+            {t("This feature will be available soon!").toUpperCase()}
+          </span>
+        </div>
+        <Button type="submit" appearance="primary" disabled>
           <span data-no-translate>{t(workspaceFAQForm.submit)}</span>
         </Button>
         <p
@@ -106,7 +100,7 @@ export function WorkspaceFAQContent() {
           aria-live="polite"
           data-no-translate
         >
-          {draft.submitted ? t(workspaceFAQForm.success) : ""}
+          {""}
         </p>
       </form>
     </>

@@ -12,7 +12,6 @@ import {
   People24Regular,
 } from "@fluentui/react-icons";
 import WorkspaceIcon from "../components/WorkspaceIcon";
-import ArchitectureContent from "../intranet/ArchitectureContent";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import type { OperationalFile } from "../logistics/data";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
@@ -327,6 +326,50 @@ function IntranetHeader({ active = false }: { active?: boolean }) {
 }
 
 function ActivityDirectory() {
+  const annotations = [
+    {
+      id: "navigation",
+      title: "Consistent navigation",
+      body: "A familiar menu makes it easy to move around.",
+      className: "annotation-navigation",
+      path: "M160 120 C135 145 115 166 87 190",
+    },
+    {
+      id: "channels",
+      title: "Channels for live coordination",
+      body: "Talk through day-to-day work while files stay here.",
+      className: "annotation-channels",
+      path: "M850 84 C890 90 922 96 946 105",
+    },
+    {
+      id: "naming",
+      title: "Naming convention",
+      body: "Clear names make documents easier to recognise and search.",
+      className: "annotation-naming",
+      path: "M430 176 C430 222 411 290 395 368",
+    },
+    {
+      id: "status",
+      title: "Status",
+      body: "See whether a document is draft, in review or complete.",
+      className: "annotation-status",
+      path: "M742 222 C760 265 780 322 797 366",
+    },
+    {
+      id: "metadata",
+      title: "Automatic metadata",
+      body: "Labels help organise, filter and find files.",
+      className: "annotation-metadata",
+      path: "M520 520 C548 475 572 420 585 371",
+    },
+    {
+      id: "sensitivity",
+      title: "Sensitivity",
+      body: "Clear labels help people handle files appropriately.",
+      className: "annotation-sensitivity",
+      path: "M840 500 C880 458 915 408 944 365",
+    },
+  ];
   return (
     <div className="workspace-tour-directory-page">
       <IntranetHeader active />
@@ -337,28 +380,160 @@ function ActivityDirectory() {
             <p className="workspace-tour-directory-subtitle">
               Interactive tour
             </p>
-            <p>
-              Explore how workspaces, files and channels fit together.
-            </p>
+            <p>Explore how workspaces, files and channels fit together.</p>
           </div>
-          <span className="workspace-tour-in-development">Coming soon</span>
+          <span className="workspace-tour-in-development">COMING SOON</span>
         </div>
         <section
           className="workspace-tour-directory-stage"
           aria-label="Guided workspace example"
         >
           <div
-            className="workspace-tour-architecture-context"
+            className="workspace-tour-planning-scene"
             aria-hidden="true"
             inert
           >
-            <div className="architecture-poc-page">
-              <div className="intranet-directory">
-                <main className="directory-main">
-                  <ArchitectureContent />
-                </main>
+            <div className="tour-scene-topbar">
+              <span className="tour-scene-apps">⠿</span>
+              <b>Site</b>
+              <span className="tour-scene-search" />
+            </div>
+            <div className="tour-scene-titlebar">
+              <span className="tour-scene-mark">⌁</span>
+              <b>Planning</b>
+              <span className="tour-scene-channels">▣ Channels</span>
+            </div>
+            <div className="tour-scene-layout">
+              <nav className="tour-scene-nav">
+                <b>Home</b>
+                <small>DOCUMENT LIBRARIES</small>
+                <b className="selected">▱ Planning Cycles</b>
+                <b>▱ Strategy Development</b>
+                <b>▱ Performance &amp; Reporting</b>
+                <b>▱ Approved Plans &amp; Reports</b>
+                <small>JUMP TO</small>
+                <b>▱ Department submissions</b>
+              </nav>
+              <div className="tour-scene-library">
+                <small>
+                  Workspace / Planning Cycles / 2026 Year End Review
+                </small>
+                <div className="tour-scene-heading">
+                  <div>
+                    <h3>2026 Year End Review</h3>
+                    <span>
+                      Active annual planning and review. Contribute, coordinate
+                      and develop the next organisational plan.
+                    </span>
+                  </div>
+                  <span>□ Working information</span>
+                </div>
+                <div className="tour-scene-toolbar">
+                  <b>＋ New</b>
+                  <span>↑ Upload</span>
+                  <span>↗ Copy link</span>
+                  <span className="view">All Documents ⌄ ≡ Filters</span>
+                </div>
+                <div className="tour-scene-search-library">
+                  ⌕ Search this library
+                </div>
+                <div className="tour-scene-table">
+                  <div className="tour-scene-row tour-scene-columns">
+                    <span>Name ↑</span>
+                    <span>Planning cycle</span>
+                    <span>Document type</span>
+                    <span>Status</span>
+                    <span>Owner</span>
+                    <span>Sensitivity</span>
+                  </div>
+                  <div className="tour-scene-row">
+                    <span>
+                      <i className="file-icon ppt">P</i> Organisational outcomes
+                      map.pptx
+                    </span>
+                    <span>2026 Year End Review</span>
+                    <span>Presentation</span>
+                    <span>
+                      <i className="status review">In review</i>
+                    </span>
+                    <span>Alex Morgan</span>
+                    <span>
+                      <i className="sensitivity">Internal</i>
+                    </span>
+                  </div>
+                  <div className="tour-scene-row">
+                    <span>
+                      <i className="file-icon xls">X</i> Planning assumptions
+                      register.xlsx
+                    </span>
+                    <span>2026 Year End Review</span>
+                    <span>Supporting data</span>
+                    <span>
+                      <i className="status progress">In progress</i>
+                    </span>
+                    <span>Alex Morgan</span>
+                    <span>
+                      <i className="sensitivity">Internal</i>
+                    </span>
+                  </div>
+                  <div className="tour-scene-row">
+                    <span>
+                      <i className="file-icon doc">W</i> Year end planning
+                      lessons 2026.docx
+                    </span>
+                    <span>2026 Year End Review</span>
+                    <span>Analysis</span>
+                    <span>
+                      <i className="status draft">Draft</i>
+                    </span>
+                    <span>Alex Morgan</span>
+                    <span>
+                      <i className="sensitivity">Internal</i>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+          <svg
+            className="workspace-tour-annotation-arrows"
+            viewBox="0 0 1000 620"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <marker
+                id="tour-arrowhead"
+                markerWidth="8"
+                markerHeight="8"
+                refX="7"
+                refY="4"
+                orient="auto"
+              >
+                <path d="M1 1 L7 4 L1 7" />
+              </marker>
+            </defs>
+            {annotations.map((annotation) => (
+              <path
+                key={annotation.id}
+                d={annotation.path}
+                markerEnd="url(#tour-arrowhead)"
+              />
+            ))}
+          </svg>
+          <div
+            className="workspace-tour-annotations"
+            aria-label="Workspace guidance annotations"
+          >
+            {annotations.map((annotation) => (
+              <div
+                className={`workspace-tour-annotation ${annotation.className}`}
+                key={annotation.id}
+              >
+                <strong>{annotation.title}</strong>
+                <span>{annotation.body}</span>
+              </div>
+            ))}
           </div>
           <div className="workspace-tour-entry-card">
             <div className="workspace-tour-entry-heading">
@@ -371,46 +546,14 @@ function ActivityDirectory() {
               </div>
             </div>
             <p>A sample workspace for everyday project activity.</p>
+            <a
+              className="workspace-tour-primary-link"
+              href={destination("/workspace-tour/workspace")}
+            >
+              Explore Activity Workspace
+              <ArrowRight20Regular aria-hidden="true" />
+            </a>
           </div>
-          <aside
-            className="workspace-tour-directory-guide"
-            aria-label="How to find and use workspaces"
-          >
-            <div className="workspace-tour-steps-heading">
-              <Info20Regular aria-hidden="true" />
-              <h2>How to find your way</h2>
-            </div>
-            <ol>
-              <li>
-                <span>1</span>
-                <p>You can find all workspaces directly from the intranet.</p>
-              </li>
-              <li>
-                <span>2</span>
-                <p>
-                  Choose the workspace for the activity you want to work on.
-                </p>
-              </li>
-              <li>
-                <span>3</span>
-                <p>
-                  Tools you need for the work can be linked from the same place.
-                </p>
-              </li>
-              <li>
-                <span>4</span>
-                <p>
-                  You can see where work happens, while restricted areas still
-                  follow access rules.
-                </p>
-              </li>
-            </ol>
-            <p className="workspace-tour-bookmark-note">
-              You can bookmark the workspaces and folders you use most. During
-              rollout, support will help update important links, bookmarks and
-              synced folders so your usual shortcuts still work.
-            </p>
-          </aside>
         </section>
         <p className="workspace-tour-fiction-note">
           Fictional names and sample content for this walkthrough.

@@ -56,20 +56,24 @@ describe("final German semantic interpretation", () => {
       canonicalBrandText(
         "Salesforce / HubSpot / Oracle NetSuite / Planable / Freshservice",
       ),
-    ).toBe("TheCRM / TheCRM / MoneyTool / Scheduler / RaiseTicket");
-    expect(translateText("Open in Planable", "en")).toBe("Open in Scheduler");
+    ).toBe(
+      "CRMsystem / CRMsystem / MoneyManager / MediaScheduler / TicketManager",
+    );
+    expect(translateText("Open in Planable", "en")).toBe(
+      "Open in MediaScheduler",
+    );
     expect(translateText("Open in Planable", "de")).toBe(
-      "In Scheduler öffnen",
+      "In MediaScheduler öffnen",
     );
     expect(
       canonicalBrandText(
         "Framevia / Slotline / Relovia / Metriva / Teralink / Recorda / Pathory / Velora / PeopleHarbour",
       ),
     ).toBe(
-      "VidPhotoEditor / Scheduler / TheCRM / DataAnalystica / RaiseTicket / Invoicer / PMtool / MoneyTool / HRSystem",
+      "VidPhotoEditor / MediaScheduler / CRMsystem / DataAnalytica / TicketManager / InvoiceApprover / PMtool / MoneyManager / HRSystem",
     );
-    expect(translateText("Open in Scheduler", "de")).toBe(
-      "In Scheduler öffnen",
+    expect(translateText("Open in MediaScheduler", "de")).toBe(
+      "In MediaScheduler öffnen",
     );
     expect(translateText("Post options for Maya Chen", "de")).toBe(
       "Beitragsoptionen für Maya Chen",

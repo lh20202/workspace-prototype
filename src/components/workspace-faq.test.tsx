@@ -36,7 +36,7 @@ describe("the deliberately small Workspace FAQ popup", () => {
     expect(closed).not.toContain("<textarea");
   });
 
-  it("shows two normal questions and one submitted example in the same collapsed accordion", () => {
+  it("shows two normal questions and one additional sharing question in the same collapsed accordion", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
     expect(workspaceFAQQuestions).toHaveLength(2);
     expect(html.match(/data-faq-id=/g)).toHaveLength(3);
@@ -44,7 +44,13 @@ describe("the deliberately small Workspace FAQ popup", () => {
       3,
     );
     expect(html.match(/aria-expanded="false"/g)).toHaveLength(3);
-    expect(html.match(/class="workspace-faq-submitted"/g)).toHaveLength(1);
+    expect(html).toContain(
+      "Can I easily share information with other departments?",
+    );
+    expect(workspaceFAQSubmittedQuestion.answer).toBe(
+      "Yes. Save it in the right place and share the link; access is handled in the background.",
+    );
+    expect(html).not.toContain("Submitted question");
     for (const entry of [
       ...workspaceFAQQuestions,
       workspaceFAQSubmittedQuestion,
@@ -59,13 +65,20 @@ describe("the deliberately small Workspace FAQ popup", () => {
     );
   });
 
-  it("offers only an anonymous multiline question field and an initially disabled submit button", () => {
+  it("shows the coming-soon anonymous question field as a real but read-only input", () => {
     const html = renderToStaticMarkup(createElement(WorkspaceFAQContent));
     expect(html).toContain("Have a question?");
     expect(html).toContain("Your question");
     expect(html.match(/<textarea\b/g)).toHaveLength(1);
     expect(html).toMatch(/<label[^>]+for="[^"]+"/);
     expect(html).toContain('rows="3"');
+    expect(html).toContain("COMING SOON");
+    expect(html).toMatch(/(?:readOnly|readonly)=""/);
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain("THIS FEATURE WILL BE AVAILABLE SOON!");
+    expect(html).toContain(
+      "Useful questions will be added to the FAQ for everyone.",
+    );
     expect(html).toMatch(
       /<button[^>]*type="submit"[^>]*disabled|<button[^>]*disabled[^>]*type="submit"/,
     );

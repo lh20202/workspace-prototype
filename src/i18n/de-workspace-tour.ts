@@ -4,6 +4,25 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Interactive tour": "Interaktive Tour",
   "Interactive tour guide": "Anleitung zur interaktiven Tour",
   "Coming soon": "Demnächst verfügbar",
+  "COMING SOON": "DEMNÄCHST VERFÜGBAR",
+  "Consistent navigation": "Einheitliche Navigation",
+  "A familiar menu makes it easy to move around.":
+    "Ein vertrautes Menü erleichtert die Orientierung.",
+  "Channels for live coordination": "Channels für die tägliche Abstimmung",
+  "Talk through day-to-day work while files stay here.":
+    "Stimmen Sie die tägliche Arbeit hier ab; die Dateien bleiben im Arbeitsbereich.",
+  "Naming convention": "Einheitliche Dateinamen",
+  "Clear names make documents easier to recognise and search.":
+    "Klare Namen erleichtern das Erkennen und Finden von Dokumenten.",
+  Status: "Status",
+  "See whether a document is draft, in review or complete.":
+    "Der Status zeigt, ob ein Dokument im Entwurf, in Prüfung oder abgeschlossen ist.",
+  "Automatic metadata": "Automatische Metadaten",
+  "Labels help organise, filter and find files.":
+    "Kennzeichnungen erleichtern das Ordnen, Filtern und Finden von Dateien.",
+  Sensitivity: "Vertraulichkeit",
+  "Clear labels help people handle files appropriately.":
+    "Klare Kennzeichnungen helfen beim angemessenen Umgang mit Dateien.",
   "See how workspaces, files and channels fit together.":
     "Erfahren Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
   "Explore how workspaces, files and channels fit together.":
@@ -16,6 +35,7 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Activity Workspace": "Aktivitätsarbeitsbereich",
   "A sample workspace for everyday project activity.":
     "Ein Beispielarbeitsbereich für die tägliche Projektarbeit.",
+  "Explore Activity Workspace": "Aktivitätsarbeitsbereich erkunden",
   "Enter workspace": "Arbeitsbereich öffnen",
   "You can find all workspaces directly from the intranet.":
     "Alle Arbeitsbereiche finden Sie direkt im Intranet.",

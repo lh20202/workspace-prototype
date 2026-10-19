@@ -10,14 +10,14 @@
   padding: 20px 28px 28px;
 }
 .architecture-exploration {
-  --architecture-icon: 32px;
-  --architecture-link-gap: 10px;
-  --architecture-row-height: 42px;
-  --architecture-column-gap: 22px;
+  --architecture-icon: 30px;
+  --architecture-link-gap: 9px;
+  --architecture-row-height: 39px;
+  --architecture-column-gap: 20px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
   align-items: start;
-  gap: 28px 32px;
+  gap: 25px 29px;
 }
 .architecture-main {
   min-width: 0;
@@ -41,11 +41,11 @@
 .architecture-panel-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 20px;
+  gap: 0 18px;
 }
 .architecture-panels {
   display: grid;
-  gap: 20px;
+  gap: 18px;
 }
 .architecture-tone-sales-marketing {
   --hub-accent: #246a77;
@@ -71,7 +71,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 22px;
+  padding: 20px;
   border: 1px solid var(--hub-border);
   border-top: 3px solid var(--hub-accent);
   border-radius: 2px;
@@ -87,7 +87,7 @@
   text-decoration: none;
 }
 .architecture-panel-heading {
-  padding-bottom: 16px;
+  padding-bottom: 14px;
 }
 :root .architecture-poc-page .architecture-panel-heading h2 {
   margin: 0;
@@ -100,7 +100,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
-  gap: 10px var(--architecture-column-gap);
+  gap: 8px var(--architecture-column-gap);
 }
 .architecture-destination {
   display: flex;

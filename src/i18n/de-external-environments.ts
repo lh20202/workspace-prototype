@@ -58,19 +58,18 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Personalakten und Bewerbungsprozesse verwalten.",
   "Manage accounting, financial planning and treasury records.":
     "Buchhaltung, Finanzplanung und Liquiditätsunterlagen verwalten.",
-  "Publishing approvals in Scheduler":
-    "Veröffentlichungsfreigaben in Scheduler",
-  "Open in Scheduler": "In Scheduler öffnen",
+  "Publishing approvals in MediaScheduler":
+    "Veröffentlichungsfreigaben in MediaScheduler",
+  "Open in MediaScheduler": "In MediaScheduler öffnen",
   "Open in VidPhotoEditor": "In VidPhotoEditor öffnen",
-  "Open in TheCRM": "In TheCRM öffnen",
-  "Open in RaiseTicket": "In RaiseTicket öffnen",
-  "Open in Invoicer": "In Invoicer öffnen",
+  "Open in CRMsystem": "In CRMsystem öffnen",
+  "Open in TicketManager": "In TicketManager öffnen",
+  "Open in InvoiceApprover": "In InvoiceApprover öffnen",
   "Open in PMtool": "In PMtool öffnen",
-  "Open in DataAnalystica": "In DataAnalystica öffnen",
-  "Open in DataHub": "In DataAnalystica öffnen",
+  "Open in DataAnalytica": "In DataAnalytica öffnen",
   "Open in HRSystem": "In HRSystem öffnen",
   "Open in PeopleHarbour": "In HRSystem öffnen",
-  "Open in MoneyTool": "In MoneyTool öffnen",
+  "Open in MoneyManager": "In MoneyManager öffnen",
   "Day-to-day frontline information and tools":
     "Informationen und Werkzeuge für den direkten Kundenkontakt",
   "Global media and approved visual resources":

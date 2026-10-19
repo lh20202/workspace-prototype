@@ -73,7 +73,7 @@ describe("canonical environment and vendor identities", () => {
       expect(externalEnvironmentForTool(id)).toBe(sales);
     expect(
       canonicalBrandText("Salesforce → HubSpot CRM → Oracle NetSuite"),
-    ).toBe("TheCRM → TheCRM → MoneyTool");
+    ).toBe("CRMsystem → CRMsystem → MoneyManager");
   });
 
   it("uses local category-specific transparent vector marks, with a distinct motif for each tool", () => {

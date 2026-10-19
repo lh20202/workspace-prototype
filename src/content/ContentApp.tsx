@@ -277,9 +277,7 @@ export default function ContentApp() {
         workspaceId="content"
         known={!!valid}
         resource={
-          valid
-            ? { kind: "workspace", workspaceId: "content" }
-            : undefined
+          valid ? { kind: "workspace", workspaceId: "content" } : undefined
         }
       />
     );
@@ -307,12 +305,7 @@ export default function ContentApp() {
         </>
       ) : (
         <header className="content-scoped-header">
-          <img
-            src="/images/site-mark.svg"
-            alt="Site"
-            width="32"
-            height="32"
-          />
+          <img src="/images/site-mark.svg" alt="Site" width="32" height="32" />
           <div>
             <strong>{routePackage!.name}</strong>
             <small>Shared production area · {routePackage!.partner}</small>
@@ -557,7 +550,7 @@ export default function ContentApp() {
                   <div className="content-room-handoffs">
                     <StaffLink href={toolHref("planable")}>
                       <ExternalBrandMark id="slotline" size={24} /> Publishing
-                      approvals in Scheduler <ArrowUpRight20Regular />
+                      approvals in MediaScheduler <ArrowUpRight20Regular />
                     </StaffLink>
                     <StaffLink
                       href={externalPreviewHref("media-library", base)}
@@ -980,7 +973,7 @@ function ProductionCalendar({
           })}
         </h3>
         <StaffLink href={toolHref("planable")}>
-          <ExternalBrandMark id="slotline" size={24} /> Open in Scheduler{" "}
+          <ExternalBrandMark id="slotline" size={24} /> Open in MediaScheduler{" "}
           <ArrowUpRight20Regular />
         </StaffLink>
       </div>
@@ -1072,7 +1065,7 @@ function ProductionCalendar({
                   </Button>{" "}
                   <StaffLink href={toolHref("planable", p.id, ref?.id || "")}>
                     <ExternalBrandMark id="slotline" size={24} /> Open in
-                    Scheduler {ref?.id}
+                    MediaScheduler {ref?.id}
                   </StaffLink>
                 </div>
               );

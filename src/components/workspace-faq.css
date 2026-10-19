@@ -147,11 +147,86 @@
   line-height: 22px;
   font-weight: 600;
 }
+.workspace-faq-form-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.workspace-faq-coming-soon {
+  padding: 5px 9px;
+  border: 1px solid #b9d4e1;
+  border-radius: 3px;
+  color: #174f68;
+  background: #eaf4f7;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+.workspace-faq-coming-soon-field {
+  position: relative;
+}
+.workspace-faq-coming-soon-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  padding: 8px 10px;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+  color: #242424;
+  font: inherit;
+  cursor: not-allowed;
+  background: #fff;
+}
+.workspace-faq-coming-soon-field textarea:focus {
+  border-color: #8a8a8a;
+  outline: none;
+}
+.workspace-faq-coming-soon-field [role="tooltip"] {
+  position: absolute;
+  z-index: 5;
+  left: 12px;
+  bottom: calc(100% + 7px);
+  padding: 8px 10px;
+  border-radius: 3px;
+  color: #fff;
+  background: #273946;
+  box-shadow: 0 3px 10px #0003;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(3px);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  white-space: nowrap;
+}
+.workspace-faq-coming-soon-field [role="tooltip"]::after {
+  position: absolute;
+  top: 100%;
+  left: 15px;
+  border: 5px solid transparent;
+  border-top-color: #273946;
+  content: "";
+}
+.workspace-faq-coming-soon-field:hover [role="tooltip"],
+.workspace-faq-coming-soon-field:focus-within [role="tooltip"] {
+  opacity: 1;
+  transform: translateY(0);
+}
 .workspace-faq-form > p {
   margin: 0;
   color: #616161;
   font-size: 13px;
   line-height: 20px;
+}
+.workspace-faq-label {
+  margin-bottom: -8px;
+  font-size: 14px;
+  font-weight: 500;
 }
 .workspace-faq-form > button {
   justify-self: start;
