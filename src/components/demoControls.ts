@@ -1,4 +1,4 @@
-import { rememberStaff, staff } from "../intranet/catalog";
+import { rememberStaff, resolveStaffPerson, staff } from "../intranet/catalog";
 import { teamsPreviewHrefForStaff } from "../teams/navigation";
 import { isStandaloneDemo } from "../utils/demoMode";
 
@@ -33,7 +33,10 @@ export function consumeWelcomeEntry() {
 
 export function changePreviewRole(nextId: string) {
   if (isStandaloneDemo()) return;
-  const nextPerson = staff.find((member) => member.id === nextId);
+  const nextPerson =
+    nextId === "aaa"
+      ? resolveStaffPerson(nextId)
+      : staff.find((member) => member.id === nextId);
   if (!nextPerson) return;
   if (typeof window !== "undefined")
     window.dispatchEvent(new Event(previewRoleChangingEvent));

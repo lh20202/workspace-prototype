@@ -10,9 +10,11 @@ import "./demo-info.css";
 export const proofOfConceptInfoText =
   "A proof of concept is a simple way to try out an idea and see whether it works. It lets people explore, ask questions and suggest improvements before anything is final.";
 export const roleAccessInfoText =
-  "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.";
+  "General staff shows the usual restricted view. AAA means All Areas Access: a demo-only site view for exploring hidden areas. It is not a staff role or a real access level.";
 export const demoUserInfoText =
-  "Explore the ordinary workspace experience. Restricted content still follows access rules.";
+  "General staff shows the regular staff experience. Areas restricted by access rules stay hidden.";
+export const aaaDemoViewText =
+  "AAA means All Areas Access. This demo-only site view reveals restricted areas so you can explore what sits behind them. It is not a staff role or a real access level.";
 
 /** Small, non-interactive guidance, available on hover, keyboard focus and tap. */
 export function DemoInfo({

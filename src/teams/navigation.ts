@@ -21,6 +21,7 @@ import {
   previewRoleFor,
   departmentPreviewFor,
   defaultPreviewRoleId,
+  isAaaDemoView,
   isProjectPinnedForRole,
 } from "../access/policy";
 import { resolveContentChannel, contentDefaultTab } from "../content/channels";
@@ -200,7 +201,7 @@ export function channelNavigationFor({
       context
         ? context.kind !== "department" || context.id !== department.id
         : person.id === defaultPreviewRoleId ||
-          role?.departmentId !== department.id
+          (role?.departmentId !== department.id && !isAaaDemoView(person))
     )
       continue;
     groups.push({

@@ -335,6 +335,55 @@ export const previewRoles: PreviewRole[] = [
   },
 ];
 
+/**
+ * A clearly labelled, demo-only site view for exploring areas hidden from
+ * regular staff. It is deliberately kept outside the fictional staff roster.
+ */
+export const aaaDemoView: PreviewRole = (() => {
+  const regularStaff = previewRoles.find(
+    (role) => role.id === defaultPreviewRoleId,
+  )!;
+  const workspaceChannels = Object.fromEntries([
+    ["content", channelDefinitions.map(({ id }) => id)],
+    ["digital", technicalChannelDefinitions.map(({ name }) => name)],
+    ["planning", [...planningChannels]],
+    ...Array.from(new Set(operationalChannels.map(({ team }) => team)))
+      .filter((team) => team !== "company")
+      .map((team) => [
+        team,
+        operationalChannels
+          .filter((channel) => channel.team === team)
+          .map(({ id }) => id),
+      ]),
+  ]) as Record<string, string[]>;
+  return {
+    ...regularStaff,
+    id: "aaa",
+    role: "AAA demo site view",
+    workspaceMemberships: Object.keys(workspaceAccessLevels),
+    restrictedAreas: Object.fromEntries(
+      Object.entries(protectedAreaDefinitions).map(([workspaceId, areas]) => [
+        workspaceId,
+        [...areas],
+      ]),
+    ),
+    teamChannels: workspaceChannels,
+    projectMemberships: Object.keys(projectAccessLevels),
+    projectTeamMemberships: Object.keys(projectAccessLevels),
+    emergencyMemberships: Array.from(
+      new Set(previewRoles.flatMap((role) => role.emergencyMemberships)),
+    ),
+  };
+})();
+
+export const demoSiteViews = [
+  { id: defaultPreviewRoleId, label: "General staff" },
+  { id: aaaDemoView.id, label: "AAA · All Areas (demo)" },
+] as const;
+
+export const isAaaDemoView = (person: PolicyPerson) =>
+  (typeof person === "string" ? person : person.id) === aaaDemoView.id;
+
 export const previewRoleGroups = [
   {
     label: "GENERAL / BUSINESS",
@@ -354,6 +403,7 @@ export type PolicyPerson =
   string | { id: string; departmentPreviewId?: string };
 export function previewRoleFor(person: PolicyPerson) {
   const id = typeof person === "string" ? person : person.id;
+  if (id === aaaDemoView.id) return aaaDemoView;
   return previewRoles.find((role) => role.id === id);
 }
 
@@ -456,6 +506,7 @@ export const canAccessDepartment = (
   person: PolicyPerson,
   departmentId: string,
 ) => {
+  if (isAaaDemoView(person)) return knownDepartments.includes(departmentId);
   const preview = departmentPreviewFor(person);
   return preview
     ? preview === departmentId
@@ -472,6 +523,7 @@ export function canAccessUnit(
     .find(([id]) => id === departmentId)?.[6]
     .find((name) => canonicalUnitId(name) === unitId);
   const privateUnit = !!unitName && privateUnitNames.has(unitName);
+  if (isAaaDemoView(person)) return !!unitName;
   return (
     !!role &&
     !!unitName &&
@@ -598,8 +650,10 @@ export function resourceAccess(person: PolicyPerson, resource: AccessResource) {
       return canAccessEmergency(person, resource.incidentId);
   }
 }
-export const allowedPreviewRoles = (resource: AccessResource) =>
-  previewRoles.filter((role) => resourceAccess(role, resource));
+export const allowedPreviewRoles = (resource: AccessResource) => [
+  ...previewRoles.filter((role) => resourceAccess(role, resource)),
+  ...(resourceAccess(aaaDemoView, resource) ? [aaaDemoView] : []),
+];
 /** A role cue requires entitlement to the precise denied destination. */
 export function hasAlternativePreviewAccess(
   resource: AccessResource,

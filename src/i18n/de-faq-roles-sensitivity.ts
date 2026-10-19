@@ -1,5 +1,23 @@
 /** Final semantic review after the English FAQ, roles and classifications settled. */
 export const germanFAQRolesSensitivity: Record<string, string> = {
+  "Site view": "Demoansicht",
+  "About site views": "Informationen zu den Demoansichten",
+  "General staff": "Allgemeine Mitarbeitende",
+  "AAA · All Areas (demo)": "AAA · Alle Bereiche (Demo)",
+  "Demo exploration only": "Nur zur Erkundung der Demo",
+  "General staff shows the regular staff experience. Areas restricted by access rules stay hidden.":
+    "Die Ansicht „Allgemeine Mitarbeitende“ zeigt die übliche Arbeitsumgebung. Geschützte Bereiche bleiben ausgeblendet.",
+  "AAA means All Areas Access. This demo-only site view reveals restricted areas so you can explore what sits behind them. It is not a staff role or a real access level.":
+    "AAA steht für Zugriff auf alle Bereiche. Diese Demoansicht zeigt geschützte Bereiche, damit Sie deren Inhalte erkunden können. Sie ist keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
+  "General staff shows the usual restricted view. AAA means All Areas Access: a demo-only site view for exploring hidden areas. It is not a staff role or a real access level.":
+    "Die Ansicht für allgemeine Mitarbeitende zeigt die üblichen Zugriffsbeschränkungen. AAA steht für Zugriff auf alle Bereiche: eine Demoansicht zum Erkunden ausgeblendeter Bereiche. Sie ist keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
+  "View channels in this site view": "Kanäle in dieser Demoansicht ansehen",
+  "Explore this area in the AAA demo view":
+    "Diesen Bereich in der AAA-Demoansicht erkunden",
+  "AAA is a demo-only site view, not a staff role or real access level.":
+    "AAA ist eine Demoansicht, keine Mitarbeitendenrolle und bildet keine echten Zugriffsrechte ab.",
+  "Choose a site view": "Demoansicht auswählen",
+  "Explore another site view": "Andere Demoansicht erkunden",
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
     "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",
   "This demo was built with AI-assisted coding. No company data was used, and nothing is connected to company tools or systems.":

@@ -165,8 +165,8 @@ export default function AccessBoundary({
           </section>
           {showRoleHelper && (
             <PreviewRolePrompt
-              actionLabel="Try another preview role"
-              description="Some preview roles can access this area."
+              actionLabel="Explore this area in the AAA demo view"
+              description="AAA is a demo-only site view, not a staff role or real access level."
             />
           )}
         </div>
