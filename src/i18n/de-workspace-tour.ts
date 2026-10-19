@@ -5,6 +5,7 @@ export const germanWorkspaceTour: Record<string, string> = {
     "Erfahren Sie, wie Arbeitsbereiche, Dateien und Channels zusammengehören.",
   "How to find your way": "So finden Sie sich zurecht",
   "Guided example": "Geführtes Beispiel",
+  "Guided workspace example": "Beispiel für einen Arbeitsbereich",
   "Activity Workspace": "Aktivitätsarbeitsbereich",
   "A sample workspace for everyday project activity.":
     "Ein Beispielarbeitsbereich für die tägliche Projektarbeit.",
