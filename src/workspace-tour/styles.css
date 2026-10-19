@@ -256,18 +256,21 @@
 .workspace-tour-annotation-arrows-mobile {
   display: none;
 }
-.workspace-tour-annotation-arrows path {
+.workspace-tour-annotation-arrows > path {
   fill: none;
   stroke: #8c352a;
-  stroke-width: 2.4px;
+  stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
   marker-end: url(#tour-arrowhead);
   vector-effect: non-scaling-stroke;
 }
 .workspace-tour-annotation-arrows marker path {
-  fill: #8c352a;
-  stroke: none;
+  fill: none;
+  stroke: #8c352a;
+  stroke-width: 1.35px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .workspace-tour-annotations {
   position: absolute;
@@ -304,33 +307,33 @@
   font-size: 12px;
 }
 .annotation-navigation {
-  top: 18%;
+  top: 20%;
   left: 1.5%;
   transform: rotate(-2deg);
 }
 .annotation-channels {
-  top: 2%;
-  right: 13%;
+  top: 4%;
+  right: 24%;
   transform: rotate(1deg);
 }
 .annotation-naming {
-  top: 43%;
-  left: 20%;
+  top: 41%;
+  left: 18%;
   transform: rotate(-1deg);
 }
 .annotation-status {
-  top: 43%;
-  right: 1.5%;
+  top: 41%;
+  left: 62%;
   transform: rotate(1deg);
 }
 .annotation-metadata {
-  bottom: 3%;
-  left: 39%;
+  top: 66%;
+  left: 40%;
   transform: rotate(1deg);
 }
 .annotation-sensitivity {
   right: 1.5%;
-  bottom: 3%;
+  top: 66%;
   transform: rotate(-1deg);
 }
 .workspace-tour-coming-soon {
@@ -1032,29 +1035,28 @@
     font-size: 10px;
   }
   .annotation-navigation {
-    top: 5%;
+    top: 15%;
     left: 2%;
   }
   .annotation-channels {
-    top: 13%;
+    top: 1%;
     right: 2%;
+    width: 48%;
   }
   .annotation-naming {
-    top: 43%;
-    right: 2%;
+    top: 39%;
+    left: 2%;
   }
   .annotation-status {
-    top: 54%;
+    top: 49%;
     left: 2%;
   }
   .annotation-metadata {
-    top: 70%;
-    bottom: auto;
-    left: 2%;
+    top: 39%;
+    left: 58%;
   }
   .annotation-sensitivity {
-    top: 70%;
-    bottom: auto;
+    top: 49%;
     right: 2%;
   }
   .workspace-tour-annotation-arrows:not(.workspace-tour-annotation-arrows-mobile) {

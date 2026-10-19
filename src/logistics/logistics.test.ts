@@ -69,6 +69,7 @@ describe("Pet photos threads", () => {
       "post-miso",
       "post-puppy",
       "post-goats",
+      "post-goat-poll",
       "post-greyhound",
       "post-pingu",
       "post-metaverse",
@@ -107,6 +108,27 @@ describe("Pet photos threads", () => {
       "Thank you for bringing this important information to our attention.",
       "+1 we need more goats",
     ]);
+    expect(byId("post-goat-poll")).toMatchObject({
+      author: "Jordan Lee",
+      poll: {
+        question: "Vote — make Pet photos more inclusive of goats",
+        options: [
+          { label: "Rename channel to “Pets & Goats”", votes: 4 },
+          {
+            label: "Rename channel to “Pet Photos & Other Animals”",
+            votes: 9,
+          },
+          {
+            label:
+              "Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”",
+            votes: 6,
+          },
+        ],
+      },
+    });
+    expect(postReplies(byId("post-goat-poll")).map(({ text }) => text)).toEqual(
+      ["Finally, justice."],
+    );
     expect(postReplies(byId("post-greyhound")).map(({ text }) => text)).toEqual(
       [
         "And apparently sleeps on the good pillows.",

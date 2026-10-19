@@ -773,6 +773,10 @@ export interface Post {
   reply?: string;
   replyTime?: string;
   replies?: PostReply[];
+  poll?: {
+    question: string;
+    options: { label: string; votes: number }[];
+  };
   reactions?: { emoji: string; count: number }[];
   locationLink?: boolean;
   image?: {
@@ -1037,6 +1041,36 @@ export const posts: Post[] = [
       height: 960,
       frame: [0, 57, 374, 692],
     },
+  },
+  {
+    id: "post-goat-poll",
+    channel: "pets",
+    author: "Jordan Lee",
+    time: "17 October 2026, 14:22",
+    text: "Vote — make Pet photos more inclusive of goats",
+    poll: {
+      question: "Vote — make Pet photos more inclusive of goats",
+      options: [
+        { label: "Rename channel to “Pets & Goats”", votes: 4 },
+        {
+          label: "Rename channel to “Pet Photos & Other Animals”",
+          votes: 9,
+        },
+        {
+          label:
+            "Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”",
+          votes: 6,
+        },
+      ],
+    },
+    replies: [
+      {
+        author: "Alex Morgan",
+        text: "Finally, justice.",
+        time: "17 October 2026, 14:25",
+      },
+    ],
+    fileIds: [],
   },
   {
     id: "post-greyhound",

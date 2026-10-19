@@ -281,7 +281,60 @@ export default function TeamsView({
                   </Menu>
                 </div>
                 {p.title && <h3>{p.title}</h3>}
-                <p>{p.text}</p>
+                {p.poll ? (
+                  (() => {
+                    const highestVotes = Math.max(
+                      ...p.poll.options.map(({ votes }) => votes),
+                    );
+                    const totalVotes = p.poll.options.reduce(
+                      (sum, item) => sum + item.votes,
+                      0,
+                    );
+                    return (
+                      <section
+                        className="channel-poll"
+                        aria-label="Poll results"
+                      >
+                        <h3>{p.poll.question}</h3>
+                        <div className="channel-poll-options">
+                          {p.poll.options.map((option) => {
+                            const winning = option.votes === highestVotes;
+                            return (
+                              <div
+                                className={`channel-poll-option${winning ? " is-leading" : ""}`}
+                                key={option.label}
+                              >
+                                <div className="channel-poll-option-label">
+                                  <span>{option.label}</span>
+                                  <strong>
+                                    {option.votes}{" "}
+                                    {option.votes === 1 ? "vote" : "votes"}
+                                  </strong>
+                                </div>
+                                <div
+                                  className="channel-poll-track"
+                                  role="img"
+                                  aria-label={`${option.votes} of ${totalVotes} votes`}
+                                >
+                                  <span
+                                    style={{
+                                      width: `${(option.votes / totalVotes) * 100}%`,
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <small className="channel-poll-total">
+                          {totalVotes} votes
+                        </small>
+                      </section>
+                    );
+                  })()
+                ) : (
+                  <p>{p.text}</p>
+                )}
                 {p.image && (
                   <PostPhoto image={p.image} first={p.id === "post-daisy"} />
                 )}

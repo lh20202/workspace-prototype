@@ -74,6 +74,36 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     );
     expect(goats).toContain("+1 we need more goats");
 
+    const goatPoll = rootPost("post-goat-poll");
+    expect(goats).not.toContain(
+      "Vote — make Pet photos more inclusive of goats",
+    );
+    expect(goatPoll).toContain("Jordan Lee");
+    expect(goatPoll).toContain(
+      "Vote — make Pet photos more inclusive of goats",
+    );
+    expect(goatPoll).toContain("Rename channel to “Pets &amp; Goats”");
+    expect(goatPoll).toContain(
+      "Rename channel to “Pet Photos &amp; Other Animals”",
+    );
+    expect(goatPoll).toContain(
+      "Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”",
+    );
+    expect(goatPoll).toContain("4 votes");
+    expect(goatPoll).toContain("9 votes");
+    expect(goatPoll).toContain("6 votes");
+    const leadingOption = goatPoll.match(
+      /<div class="channel-poll-option is-leading">([\s\S]*?)<\/div>/,
+    )?.[1];
+    expect(leadingOption).toContain("Pet Photos &amp; Other Animals");
+    expect(goatPoll).toContain("Finally, justice.");
+    expect(html.indexOf('id="post-goats"')).toBeLessThan(
+      html.indexOf('id="post-goat-poll"'),
+    );
+    expect(html.indexOf('id="post-goat-poll"')).toBeLessThan(
+      html.indexOf('id="post-greyhound"'),
+    );
+
     const dachshund = rootPost("post-puppy");
     expect(dachshund.match(/post-reaction-chip/g)).toHaveLength(4);
     expect(dachshund).toContain("❤️");
@@ -87,7 +117,7 @@ describe("ordinary contextual channel previews and real private boundaries", () 
       mosquito.indexOf("Have you checked the battery in your dog?"),
     ).toBeLessThan(mosquito.indexOf("Have you tried a manual reboot?"));
     expect(mosquito).toContain("Snuffles@IT.service.");
-    expect(html.match(/<article class="teams-post/g)).toHaveLength(11);
+    expect(html.match(/<article class="teams-post/g)).toHaveLength(12);
   });
 
   it("renders every ordinary operational channel for every role without expanding the sidebar", () => {

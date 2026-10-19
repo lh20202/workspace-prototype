@@ -719,6 +719,66 @@
   line-height: 1.8;
   margin-bottom: 17px;
 }
+.channel-poll {
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fafafa;
+}
+.channel-poll h3 {
+  margin: 0 0 14px;
+  color: #242424;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.channel-poll-options {
+  display: grid;
+  gap: 13px;
+}
+.channel-poll-option-label {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  color: #323130;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.channel-poll-option-label > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.channel-poll-option-label strong {
+  flex: 0 0 auto;
+  color: #605e5c;
+  font-size: 11px;
+  font-weight: 500;
+}
+.channel-poll-track {
+  height: 5px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #e6e6e6;
+}
+.channel-poll-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #8a8886;
+}
+.channel-poll-option.is-leading .channel-poll-track > span {
+  background: #167c80;
+}
+.channel-poll-total {
+  display: block;
+  margin-top: 14px;
+  color: #797775;
+  font-size: 10px;
+}
 .post-file-links {
   display: flex;
   gap: 10px;

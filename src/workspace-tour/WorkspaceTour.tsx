@@ -331,42 +331,48 @@ function ActivityDirectory() {
       title: "Consistent navigation",
       body: "A familiar menu makes it easy to find your way around.",
       className: "annotation-navigation",
-      path: "M205 170 C165 175 118 188 76 207",
+      path: "M160 158 C137 172 108 192 78 216",
+      mobilePath: "M151 207 C127 211 101 220 75 232",
     },
     {
       id: "channels",
       title: "Channels for live coordination",
       body: "Talk through day-to-day work while shared files stay in the workspace.",
       className: "annotation-channels",
-      path: "M850 82 C888 67 920 69 950 76",
+      path: "M760 72 C815 68 872 70 930 77",
+      mobilePath: "M312 66 C315 69 319 73 322 78",
     },
     {
       id: "naming",
       title: "Naming convention",
       body: "Clear names make documents easier to recognise and search.",
       className: "annotation-naming",
-      path: "M365 315 C350 338 335 360 320 380",
+      path: "M320 307 C311 329 300 352 290 378",
+      mobilePath: "M145 461 C149 467 152 473 155 480",
     },
     {
       id: "status",
       title: "Status",
       body: "See whether a document is draft, in review or complete.",
       className: "annotation-status",
-      path: "M890 315 C850 339 795 361 735 380",
+      path: "M710 307 C719 329 728 353 738 378",
+      mobilePath: "M160 532 C201 515 245 493 286 480",
     },
     {
       id: "metadata",
       title: "Automatic metadata",
       body: "Useful details are applied consistently, making files easier to organise, filter and find.",
       className: "annotation-metadata",
-      path: "M510 570 C535 520 560 445 585 380",
+      path: "M520 420 C525 406 530 392 535 378",
+      mobilePath: "M230 461 C227 467 224 474 221 480",
     },
     {
       id: "sensitivity",
       title: "Sensitivity",
       body: "Clear labels show how information should be handled.",
       className: "annotation-sensitivity",
-      path: "M815 570 C850 515 900 438 930 380",
+      path: "M900 418 C915 405 930 390 944 378",
+      mobilePath: "M310 532 C324 516 337 497 350 480",
     },
   ];
   return (
@@ -502,13 +508,14 @@ function ActivityDirectory() {
             <defs>
               <marker
                 id="tour-arrowhead"
-                markerWidth="8"
-                markerHeight="8"
-                refX="7"
-                refY="4"
+                markerWidth="6"
+                markerHeight="6"
+                markerUnits="userSpaceOnUse"
+                refX="5"
+                refY="3"
                 orient="auto"
               >
-                <path d="M1 1 L7 4 L1 7" />
+                <path d="M1 1 L5 3 L1 5" />
               </marker>
             </defs>
             {annotations.map((annotation) => (
@@ -528,39 +535,23 @@ function ActivityDirectory() {
             <defs>
               <marker
                 id="tour-arrowhead-mobile"
-                markerWidth="8"
-                markerHeight="8"
-                refX="7"
-                refY="4"
+                  markerWidth="6"
+                  markerHeight="6"
+                  markerUnits="userSpaceOnUse"
+                  refX="5"
+                  refY="3"
                 orient="auto"
               >
-                <path d="M1 1 L7 4 L1 7" />
+                  <path d="M1 1 L5 3 L1 5" />
               </marker>
             </defs>
-            <path
-              d="M145 105 C120 135 90 180 65 218"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
-            <path
-              d="M260 132 C290 112 315 94 330 80"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
-            <path
-              d="M220 490 C210 486 195 482 180 480"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
-            <path
-              d="M145 555 C185 535 240 500 278 480"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
-            <path
-              d="M145 730 C165 675 185 565 205 480"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
-            <path
-              d="M340 730 C355 675 350 565 335 480"
-              markerEnd="url(#tour-arrowhead-mobile)"
-            />
+              {annotations.map((annotation) => (
+                <path
+                  key={annotation.id}
+                  d={annotation.mobilePath}
+                  markerEnd="url(#tour-arrowhead-mobile)"
+                />
+              ))}
           </svg>
           <div
             className="workspace-tour-annotations"
