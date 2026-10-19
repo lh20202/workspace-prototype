@@ -374,6 +374,12 @@
   font-weight: 600;
   letter-spacing: 0;
 }
+.m365-teams-channel-description {
+  margin: 1px 0 0;
+  color: #616161;
+  font-size: 12px;
+  line-height: 16px;
+}
 .m365-teams-channel-actions {
   display: flex;
   align-items: center;

@@ -1,58 +1,13 @@
-import { germanFAQRolesSensitivity } from "../i18n/de-faq-roles-sensitivity";
-import { germanExternalEnvironments } from "../i18n/de-external-environments";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import PrototypeNavigator from "./PrototypeNavigator";
-import { PreviewRoleProvider } from "./PreviewRoleContext";
-import { germanAccessUpdate } from "../i18n/de-access-update";
+import { changePreviewRole } from "./demoControls";
 import { translateText } from "../i18n/translate";
-import * as teamsNavigation from "../teams/navigation";
-import { changePreviewRole, previewRoleChangingEvent } from "./demoControls";
 
-const hint = vi.hoisted(() => ({
-  value: null as null | {
-    roleSelectorRef: { current: HTMLSelectElement | null };
-    roleSelectorHighlighted: boolean;
-    focusRoleSelector: () => void;
-  },
-}));
-vi.mock("./PreviewRoleContext", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("./PreviewRoleContext")>()),
-  usePreviewRoleContext: () => hint.value,
-}));
-vi.mock("../i18n/Language", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../i18n/Language")>()),
-  // The handler tests call the component directly to inspect its native select.
-  useTranslation: () => ({ language: "en", t: (source: string) => source }),
-}));
+afterEach(() => vi.unstubAllGlobals());
 
-afterEach(() => {
-  hint.value = null;
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
-});
-
-describe("external role-preview controls", () => {
-  it("closes settings before switching roles and removes the administrative page query", () => {
-    const events: string[] = [];
-    const target = new EventTarget();
-    target.addEventListener(previewRoleChangingEvent, () =>
-      events.push("close"),
-    );
-    vi.stubGlobal("window", target);
-    vi.stubGlobal("sessionStorage", { getItem: () => null, setItem: vi.fn() });
-    vi.stubGlobal("location", {
-      href: "https://example.test/planning?staff=elliot&siteSettings=permissions",
-      pathname: "/planning",
-      search: "?staff=elliot&siteSettings=permissions",
-      assign: (href: string) => {
-        events.push(href);
-      },
-    });
-    changePreviewRole("taylor");
-    expect(events).toEqual(["close", "/planning?staff=taylor"]);
-  });
+describe("outer demo navigation", () => {
   it.each([
     "/planning",
     "/teams",
@@ -60,53 +15,21 @@ describe("external role-preview controls", () => {
     "/frontline-sales",
     "/architecture",
     "/emergency-response/incidents/INC-104",
-  ])("offers the same nine role-first choices on %s", (pathname) => {
+  ])("keeps demo navigation separate from role selection on %s", (pathname) => {
     vi.stubGlobal("location", new URL(pathname, "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
-    const html = renderToStaticMarkup(
-      createElement(
-        PreviewRoleProvider,
-        null,
-        createElement(PrototypeNavigator),
-      ),
-    );
+    const html = renderToStaticMarkup(createElement(PrototypeNavigator));
     expect(html).toContain('aria-label="Proof of concept navigation"');
-    expect(html).toContain('aria-label="Preview role"');
-    expect(html).toContain('aria-describedby="preview-role-description"');
-    expect(html.match(/<option\b/g)).toHaveLength(9);
-    expect(html).toContain('title="Demo User — Taylor Brooks"');
-    expect(html).toMatch(
-      /<option[^>]*value="taylor"[^>]*selected=""[^>]*>Demo User<\/option>/,
-    );
-    expect(html).toContain(
-      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
-    );
-    expect(html).not.toContain("General Staff Member");
-    const options = [...html.matchAll(/<option\b[^>]*>(.*?)<\/option>/g)].map(
-      (match) => match[1],
-    );
-    expect(options).toEqual([
-      "Demo User",
-      "Sales &amp; Marketing Specialist",
-      "Frontline Sales Adviser",
-      "Finance Operations Specialist",
-      "Executive Director",
-      "Personnel Administrator",
-      "Technology &amp; Engineering Administrator",
-      "Information Advisory Specialist",
-      "Site Administrator",
-    ]);
-    expect(html).toContain('label="GENERAL / BUSINESS"');
-    expect(html).toContain('label="SPECIALIST / ADMIN"');
-    expect(html).toContain("Preview role");
-    expect(html).toContain("Switch roles to explore access");
-    expect(html).toContain('aria-label="About role access"');
-    expect(html).not.toContain("Teams staff preview");
-    expect(html).not.toContain("Preview as");
+    expect(html).toContain('aria-label="Demo controls"');
+    expect(html).toContain('aria-expanded="false"');
+    expect(html).toContain("Workspace FAQ");
+    expect(html).not.toContain('aria-label="Preview role"');
+    expect(html).not.toContain("Switch roles to explore access");
     expect(html).not.toContain("Try another preview role");
+    expect(html).not.toContain("Preview role");
   });
 
-  it("preserves the explicit selected role in proof-layer navigation", () => {
+  it("preserves the selected demo identity on Welcome and architecture links", () => {
     vi.stubGlobal(
       "location",
       new URL("/planning?staff=jamie", "https://example.test"),
@@ -115,54 +38,9 @@ describe("external role-preview controls", () => {
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
     expect(html).toContain('href="/?staff=jamie"');
     expect(html).toContain('href="/architecture?staff=jamie"');
-    expect(html).toMatch(
-      /<option[^>]*value="jamie"[^>]*selected=""[^>]*>Personnel Administrator<\/option>/,
-    );
   });
 
-  it("preserves the remembered Demo User identity without changing the session key", () => {
-    const readStoredRole = vi.fn(() => "taylor");
-    vi.stubGlobal("location", new URL("/planning", "https://example.test"));
-    vi.stubGlobal("sessionStorage", { getItem: readStoredRole });
-    const html = renderToStaticMarkup(createElement(PrototypeNavigator));
-    expect(readStoredRole).toHaveBeenCalledWith("workspace-preview-staff");
-    expect(html).toMatch(
-      /<option[^>]*value="taylor"[^>]*selected=""[^>]*>Demo User<\/option>/,
-    );
-    expect(html).toContain('href="/"');
-    expect(html).toContain('title="Demo User — Taylor Brooks"');
-  });
-
-  it("keeps the longest role label intact and exposes its fictional person separately", () => {
-    vi.stubGlobal(
-      "location",
-      new URL("/teams?staff=devon&workspace=digital", "https://example.test"),
-    );
-    vi.stubGlobal("sessionStorage", { getItem: () => null });
-    const html = renderToStaticMarkup(createElement(PrototypeNavigator));
-    expect(html).toMatch(
-      /<option[^>]*value="devon"[^>]*selected=""[^>]*>Technology &amp; Engineering Administrator<\/option>/,
-    );
-    expect(html).toContain(
-      'title="Technology &amp; Engineering Administrator — Devon Park"',
-    );
-  });
-
-  it.each(["/planning", "/teams", "/sales-marketing/wiki", "/frontline-sales"])(
-    "does not present outer navigation as the current product location on %s",
-    (pathname) => {
-      vi.stubGlobal("location", new URL(pathname, "https://example.test"));
-      vi.stubGlobal("sessionStorage", { getItem: () => null });
-      const html = renderToStaticMarkup(createElement(PrototypeNavigator));
-      const nav = html.match(/<nav\b[\s\S]*?<\/nav>/)?.[0] ?? "";
-      expect(nav).toContain('href="/"');
-      expect(nav).toContain('href="/architecture"');
-      expect(nav).not.toContain('aria-current="page"');
-      expect(nav).not.toContain("Architecture");
-    },
-  );
-
-  it("separates the noninteractive fictional-content note from the action navigation", () => {
+  it("keeps fictional-content guidance outside the navigation actions", () => {
     vi.stubGlobal("location", new URL("/architecture", "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
@@ -175,90 +53,96 @@ describe("external role-preview controls", () => {
     expect(note).toContain("Fictional names &amp; content");
     expect(note).toContain("No company data used");
     expect(note).not.toMatch(/<(?:a|button|select)\b/);
-    expect(note).not.toContain("Proof of concept");
+  });
+
+  it("keeps role switching inert when the internal fixture helper runs outside a browser", () => {
+    vi.stubGlobal("window", undefined);
+    vi.stubGlobal("location", {
+      href: "https://example.test/planning?staff=taylor",
+      pathname: "/planning",
+      search: "?staff=taylor",
+      assign: vi.fn(),
+    });
+    expect(() => changePreviewRole("jamie")).not.toThrow();
+  });
+
+  it("updates internal fixture identity and removes an open settings destination", () => {
+    const events: string[] = [];
+    const window = new EventTarget();
+    window.addEventListener("workspace:preview-role-changing", () =>
+      events.push("close transient panels"),
+    );
+    const assign = vi.fn((href: string) => events.push(href));
+    const setItem = vi.fn();
+    vi.stubGlobal("window", window);
+    vi.stubGlobal("location", {
+      href: "https://example.test/planning?staff=elliot&siteSettings=permissions",
+      pathname: "/planning",
+      search: "?staff=elliot&siteSettings=permissions",
+      assign,
+    });
+    vi.stubGlobal("sessionStorage", { getItem: () => null, setItem });
+
+    changePreviewRole("taylor");
+
+    expect(setItem).toHaveBeenCalledWith("workspace-preview-staff", "taylor");
+    expect(events).toEqual([
+      "close transient panels",
+      "/planning?staff=taylor",
+    ]);
   });
 
   it.each([
-    "/teams?staff=devon&workspace=digital&channel=AI+Lab",
-    "/logistics/teams?staff=maya&channel=central-city",
-    "/projects/PRJ-2026-014/teams?staff=devon",
-    "/emergency-response/incidents/INC-104?staff=devon",
-  ])("uses membership-aware role switching from %s", (href) => {
-    const current = new URL(href, "https://example.test");
-    const assign = vi.fn();
-    vi.stubGlobal("location", {
-      href: current.href,
-      pathname: current.pathname,
-      search: current.search,
-      assign,
-    });
-    vi.stubGlobal("sessionStorage", {
-      getItem: () => null,
-      setItem: vi.fn(),
-    });
-    const destination = vi
-      .spyOn(teamsNavigation, "teamsPreviewHrefForStaff")
-      .mockReturnValue("/teams?staff=jamie");
+    ["/teams?staff=devon&workspace=digital&channel=AI+Lab", "/teams?"],
+    ["/logistics/teams?staff=maya&channel=central-city", "/logistics/teams?"],
+    [
+      "/projects/PRJ-2026-014/teams?staff=devon",
+      "/projects/PRJ-2026-014/teams?",
+    ],
+    [
+      "/emergency-response/incidents/INC-104?staff=devon",
+      "/emergency-response/incidents/INC-104?",
+    ],
+  ])(
+    "retains contextual channel routing for internal fixture %s",
+    (path, prefix) => {
+      const current = new URL(path, "https://example.test");
+      const assign = vi.fn();
+      vi.stubGlobal("window", new EventTarget());
+      vi.stubGlobal("location", {
+        href: current.href,
+        pathname: current.pathname,
+        search: current.search,
+        assign,
+      });
+      vi.stubGlobal("sessionStorage", {
+        getItem: () => null,
+        setItem: vi.fn(),
+      });
 
-    changePreviewRole("jamie");
+      changePreviewRole("jamie");
 
-    expect(destination).toHaveBeenCalledWith(
-      expect.objectContaining({ id: "jamie" }),
-      current.pathname,
-      current.search,
-    );
-    expect(assign).toHaveBeenCalledWith("/teams?staff=jamie");
-  });
+      expect(assign).toHaveBeenCalledOnce();
+      expect(assign.mock.calls[0][0]).toContain(prefix);
+      const destination = new URL(assign.mock.calls[0][0], current.origin);
+      expect(destination.searchParams.get("staff")).toBe("jamie");
+      if (current.searchParams.has("channel"))
+        expect(destination.searchParams.get("channel")).toBe(
+          current.searchParams.get("channel"),
+        );
+    },
+  );
 
-  it("highlights the selector when an access-page prompt points to it", () => {
-    vi.stubGlobal(
-      "location",
-      new URL("/executive?staff=taylor", "https://example.test"),
-    );
-    vi.stubGlobal("sessionStorage", { getItem: () => null });
-    hint.value = {
-      roleSelectorRef: { current: null },
-      roleSelectorHighlighted: true,
-      focusRoleSelector: vi.fn(),
-    };
-    const html = renderToStaticMarkup(createElement(PrototypeNavigator));
-    expect(html).toContain('class="preview-role-highlighted"');
-    expect(html).not.toContain("Try another preview role");
-    hint.value.roleSelectorHighlighted = false;
-    expect(
-      renderToStaticMarkup(createElement(PrototypeNavigator)),
-    ).not.toContain('class="preview-role-highlighted"');
-  });
-
-  it("provides professional German for the new external and access-control labels", () => {
-    expect(translateText("Demo User", "de")).toBe("Demo User");
+  it("translates current demo and restricted-content labels into German", () => {
     for (const source of [
-      "Preview role",
-      "Demo User",
-      "Frontline Sales Adviser",
-      "Executive Director",
-      "Personnel Administrator",
-      "Technology & Engineering Administrator",
-      "Change your role to change your access permissions",
-      "Are you frontline sales staff?",
-      "Frontline sales focal point",
-      "Contact workspace focal point",
-      "Return to Wiki",
-      "Controlled working methods for authorised participants.",
-      "Individual records, credentials and live system data are not held in this demonstration.",
-      "Administration working methods",
-      "Working methods",
-      "Frontline role required",
-      "This portal supports colleagues in day-to-day frontline sales work.",
-      "Approved governance outcomes",
+      "Demo controls",
+      "Fictional names & content",
+      "No company data used",
+      "Reveal restricted content",
+      "Your role determines whether you can see this content. For this demo, you can reveal it here.",
     ]) {
-      expect(germanAccessUpdate[source]).toBeTruthy();
-      expect(translateText(source, "de")).toBe(
-        germanFAQRolesSensitivity[source] ||
-          germanExternalEnvironments[source] ||
-          germanAccessUpdate[source],
-      );
-      expect(translateText(source, "en")).toBe(source);
+      expect(translateText(source, "de"), source).not.toBe(source);
+      expect(translateText(source, "en"), source).toBe(source);
     }
   });
 });

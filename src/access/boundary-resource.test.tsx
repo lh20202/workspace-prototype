@@ -5,41 +5,36 @@ import AudienceApp from "../audience/AudienceApp";
 import ContentApp from "../content/ContentApp";
 import AccessBoundary from "./AccessBoundary";
 import { PreviewRoleProvider } from "../components/PreviewRoleContext";
+import { isDemoContentRevealed, revealDemoContent } from "./demoContentReveal";
 import type { AccessResource } from "./policy";
 
 afterEach(() => vi.unstubAllGlobals());
-const prompt = "Try another preview role";
+const revealAction = "Reveal restricted content";
+const explanation =
+  "Your role determines whether you can see this content. For this demo, you can reveal it here.";
 
-/** Whole-site membership must not advertise access to a narrower closed subject. */
-describe("the role signpost uses the actual denied destination", () => {
+function renderBoundary(resource: AccessResource, area = "Protected area") {
+  return renderToStaticMarkup(
+    <PreviewRoleProvider>
+      <AccessBoundary
+        workspaceId="digital"
+        area={area}
+        personId="taylor"
+        resource={resource}
+      />
+    </PreviewRoleProvider>,
+  );
+}
+
+describe("page-local restricted-content reveal", () => {
   it.each([
-    [
-      "/digital-tech/protected/credentials?staff=taylor",
-      "digital",
-      "credentials",
-      false,
-    ],
-    [
-      "/digital-tech/protected/security?staff=taylor",
-      "digital",
-      "security",
-      true,
-    ],
-    [
-      "/employment-admin/protected/payroll-inputs?staff=taylor",
-      "employment",
-      "payroll-inputs",
-      false,
-    ],
-    [
-      "/employment-admin/protected/employee-records?staff=taylor",
-      "employment",
-      "employee-records",
-      true,
-    ],
-  ] as const)(
-    "checks the precise protected subject at %s",
-    (path, _workspaceId, _areaId, alternative) => {
+    ["/digital-tech/protected/credentials?staff=taylor", "credentials"],
+    ["/digital-tech/protected/security?staff=taylor", "security"],
+    ["/employment-admin/protected/payroll-inputs?staff=taylor", "payroll"],
+    ["/employment-admin/protected/employee-records?staff=taylor", "records"],
+  ])(
+    "shows the reveal action at the protected destination %s",
+    (path, area) => {
       vi.stubGlobal("location", new URL(path, "https://example.test"));
       vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
       const html = renderToStaticMarkup(
@@ -48,23 +43,24 @@ describe("the role signpost uses the actual denied destination", () => {
         </PreviewRoleProvider>,
       );
       expect(html).toContain("Access required");
-      expect(html.includes(prompt)).toBe(alternative);
+      expect(html).toContain(revealAction);
+      expect(html).toContain(explanation);
+      expect(html.toLowerCase()).not.toContain(`${area} details`);
     },
   );
+
   it.each([
     [
       "/audience-innovation/research/website-usability/participant-administration?staff=maya",
-      "audience",
       AudienceApp,
     ],
     [
       "/content-delivery/packages/PKG-107/protected/participant-administration?staff=maya",
-      "content",
       ContentApp,
     ],
   ] as const)(
-    "does not offer specialist-workspace membership as access to closed participant administration",
-    (path, _workspaceId, App) => {
+    "keeps specialist membership separate from the page-local reveal at %s",
+    (path, App) => {
       vi.stubGlobal("location", new URL(path, "https://example.test"));
       vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
       const html = renderToStaticMarkup(
@@ -73,102 +69,89 @@ describe("the role signpost uses the actual denied destination", () => {
         </PreviewRoleProvider>,
       );
       expect(html).toContain("Access required");
-      expect(html).not.toContain(prompt);
+      expect(html).toContain(revealAction);
+      expect(html).not.toContain("Try another preview role");
     },
   );
 
-  it("places the shared role action directly after a genuine access box", () => {
-    vi.stubGlobal(
-      "location",
-      new URL("/executive?staff=taylor", "https://example.test"),
-    );
-    vi.stubGlobal("sessionStorage", { getItem: () => "taylor" });
+  it("places the reveal directly inside the access message", () => {
+    vi.stubGlobal("location", new URL("https://example.test/executive"));
+    vi.stubGlobal("sessionStorage", { getItem: () => null });
+    const html = renderBoundary({
+      kind: "workspace",
+      workspaceId: "executive",
+    });
+    const boundary = html.match(
+      /<section class="access-boundary[\s\S]*?<\/section>/,
+    )?.[0];
+    expect(boundary).toBeTruthy();
+    expect(boundary).toContain(revealAction);
+    expect(boundary).toContain(explanation);
+    expect(boundary).not.toContain("preview-role");
+  });
+
+  it("does not offer a reveal for a location without a real restricted resource", () => {
+    vi.stubGlobal("location", new URL("https://example.test/"));
+    vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderToStaticMarkup(
       <PreviewRoleProvider>
         <AccessBoundary
-          workspaceId="executive"
-          area="CEO"
+          workspaceId="digital"
+          area="Unavailable location"
           personId="taylor"
-          resource={{ kind: "workspace", workspaceId: "executive" }}
         />
       </PreviewRoleProvider>,
     );
-    expect(html).toContain('aria-controls="preview-role"');
-    expect(html.indexOf("</section>")).toBeLessThan(html.indexOf(prompt));
-    expect(html).toContain('class="preview-role-prompt access-preview-role"');
+    expect(html).toContain("This location is unavailable.");
+    expect(html).not.toContain(revealAction);
   });
 
-  it.each<AccessResource>([
-    { kind: "area", workspaceId: "welfare", areaId: "employee-representation" },
-    {
+  it("scopes a session reveal to the same person and exact destination", () => {
+    const values = new Map<string, string>();
+    const storage = {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+    };
+    vi.stubGlobal("window", { sessionStorage: storage });
+    vi.stubGlobal("sessionStorage", storage);
+    const security: AccessResource = {
       kind: "area",
       workspaceId: "digital",
-      areaId: "nonexistent-private-area",
-    },
-    { kind: "department", departmentId: "communications" },
-  ])(
-    "does not suggest role access when no role can open the destination",
-    (resource) => {
-      const html = renderToStaticMarkup(
-        <PreviewRoleProvider>
-          <AccessBoundary
-            workspaceId="welfare"
-            area="Protected area"
-            personId="taylor"
-            resource={resource}
-          />
-        </PreviewRoleProvider>,
-      );
-      expect(html).not.toContain(prompt);
-    },
-  );
+      areaId: "security",
+    };
+    const credentials: AccessResource = {
+      kind: "area",
+      workspaceId: "digital",
+      areaId: "credentials",
+    };
 
-  it.each([
-    [
-      { kind: "channel", workspaceId: "logistics", channelId: "general" },
-      false,
-    ],
-    [{ kind: "channel", workspaceId: "digital", channelId: "AI Lab" }, false],
-    [
-      {
-        kind: "channel",
-        workspaceId: "digital",
-        channelId: "Security Engineering",
+    expect(isDemoContentRevealed(security, "taylor")).toBe(false);
+    expect(revealDemoContent(security, "taylor")).toBe(true);
+    expect(isDemoContentRevealed(security, "taylor")).toBe(true);
+    expect(isDemoContentRevealed(credentials, "taylor")).toBe(false);
+    expect(isDemoContentRevealed(security, "maya")).toBe(false);
+  });
+
+  it("keeps the boundary closed when browser storage cannot save a reveal", () => {
+    const storage = {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("storage unavailable");
       },
-      true,
-    ],
-    [
-      {
-        kind: "channel",
-        workspaceId: "digital",
-        channelId: "Workspace & Wiki Moderators",
-      },
-      false,
-    ],
-    [
-      { kind: "channel", workspaceId: "content", channelId: "editorial" },
-      false,
-    ],
-    [
-      { kind: "channel", workspaceId: "logistics", channelId: "north-city" },
-      false,
-    ],
-    [{ kind: "project-team", projectId: "PRJ-2026-021" }, false],
-    [{ kind: "project-team", projectId: "PRJ-2026-027" }, true],
-  ] as [AccessResource, boolean][])(
-    "offers a Teams role cue only for actual participation: %j",
-    (resource, alternative) => {
-      const html = renderToStaticMarkup(
-        <PreviewRoleProvider>
-          <AccessBoundary
-            workspaceId="logistics"
-            area="Team conversation"
-            personId="taylor"
-            resource={resource}
-          />
-        </PreviewRoleProvider>,
-      );
-      expect(html.includes(prompt)).toBe(alternative);
-    },
-  );
+    };
+    vi.stubGlobal("window", { sessionStorage: storage });
+    vi.stubGlobal("sessionStorage", storage);
+    expect(
+      revealDemoContent(
+        { kind: "workspace", workspaceId: "executive" },
+        "taylor",
+      ),
+    ).toBe(false);
+    expect(
+      isDemoContentRevealed(
+        { kind: "workspace", workspaceId: "executive" },
+        "taylor",
+      ),
+    ).toBe(false);
+  });
 });

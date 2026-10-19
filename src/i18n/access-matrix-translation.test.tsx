@@ -84,8 +84,8 @@ describe("German access-matrix review after the English surfaces were final", ()
     expect(german("Planning coordination")).toBe("Planungskoordination");
     expect(german("Confidential")).toBe("Vertraulich");
     expect(german("Strictly confidential")).toBe("Streng vertraulich");
-    expect(german("Try another preview role")).toBe(
-      "Andere Vorschaurolle ausprobieren",
+    expect(german("Reveal restricted content")).toBe(
+      "Geschützte Inhalte anzeigen",
     );
     expect(german("Access required")).toBe("Zugriff erforderlich");
     expect(german("Advertising, Marketing & Sales Wiki")).toBe(
@@ -112,11 +112,11 @@ describe("German access-matrix review after the English surfaces were final", ()
       expect(allowed).not.toContain(summary);
       expect(allowed).toContain("Zugehörige Arbeitsdokumente");
       expect(allowed).toContain("Vorgang");
-      expect(allowed).not.toContain("Andere Vorschaurolle ausprobieren");
+      expect(allowed).not.toContain("Geschützte Inhalte anzeigen");
       generic(allowed);
       const denied = exposedCopy(render(FinanceApp, entry.href, "taylor"));
       expect(denied, subjectId).toContain("Zugriff erforderlich");
-      expect(denied).toContain("Andere Vorschaurolle ausprobieren");
+      expect(denied).toContain("Geschützte Inhalte anzeigen");
       expect(denied).not.toContain(german(summary));
       expect(denied).not.toContain("Zugehörige Arbeitsdokumente");
       generic(denied);
@@ -172,11 +172,11 @@ describe("German access-matrix review after the English surfaces were final", ()
       "Die Freigabe von Lieferantenzahlungen bleibt beim Finanzbereich.",
     );
     expect(allowed).toContain("Vertraulich");
-    expect(allowed).not.toContain("Andere Vorschaurolle ausprobieren");
+    expect(allowed).not.toContain("Geschützte Inhalte anzeigen");
     generic(allowed);
     const denied = exposedCopy(render(ContentApp, href, "taylor"));
     expect(denied).toContain("Zugriff erforderlich");
-    expect(denied).toContain("Andere Vorschaurolle ausprobieren");
+    expect(denied).toContain("Geschützte Inhalte anzeigen");
     expect(denied).not.toContain("Zugehörige Produktionsdokumente");
     expect(denied).not.toContain(
       "Die Freigabe von Lieferantenzahlungen bleibt beim Finanzbereich.",

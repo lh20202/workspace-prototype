@@ -14,6 +14,7 @@ import { departments } from "../coordination/data";
 import { channels, posts } from "../logistics/data";
 import { contentChannels } from "../content/channels";
 import { PreviewRoleProvider } from "../components/PreviewRoleContext";
+import { canAccessChannel } from "../access/policy";
 
 function at(path: string, stored = "taylor") {
   vi.stubGlobal("location", new URL(path, "https://example.test"));
@@ -51,6 +52,10 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     const html = logisticsChannel(
       "/logistics/teams?staff=taylor&channel=pets&tab=Posts&context=department:communications&demo=beta",
     );
+    expect(html).toContain("<h1>🐾 Pet photos</h1>");
+    expect(html).toContain(
+      '<p class="m365-teams-channel-description">&amp; Other Animals</p>',
+    );
     const rootPost = (id: string) => {
       const idIndex = html.indexOf(`id="${id}"`);
       expect(idIndex).toBeGreaterThan(-1);
@@ -87,13 +92,13 @@ describe("ordinary contextual channel previews and real private boundaries", () 
       "Rename channel to “Pet Photos &amp; Other Animals”",
     );
     expect(goatPoll).toContain(
-      "Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”",
+      'Raise a ticket to request a new <span data-no-translate="true">SharePoint site</span>: “Goat Appreciation Society”',
     );
     expect(goatPoll).toContain(
-      '<h3 data-no-translate="true">Vote — make Pet photos more inclusive of goats</h3>',
+      "<h3>Vote — make Pet photos more inclusive of goats</h3>",
     );
     expect(goatPoll).toContain(
-      '<span data-no-translate="true">Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”</span>',
+      '<span data-no-translate="true">SharePoint site</span>',
     );
     expect(goatPoll).toContain("4 votes");
     expect(goatPoll).toContain("9 votes");
@@ -127,48 +132,51 @@ describe("ordinary contextual channel previews and real private boundaries", () 
   });
 
   it("renders every ordinary operational channel for every role without expanding the sidebar", () => {
+    const ordinaryChannels = channels.filter(
+      (item) => item.team === "logistics",
+    );
     for (const person of staff)
-      for (const channel of channels.filter(
-        (item) => item.team === "logistics",
-      )) {
-        for (const tab of ["Posts", "Shared", "Notes", "Planner"]) {
-          const html = logisticsChannel(
-            `/logistics/teams?staff=${person.id}&channel=${channel.id}&tab=${tab}&context=workspace:logistics`,
-          );
-          expect(html.includes("Access required")).toBe(false);
-          expect(html).toContain('data-team-id="logistics"');
-          expect(html).not.toContain('data-team-id="digital"');
-          expect(html).not.toContain('data-team-kind="department"');
-          if (tab === "Posts")
-            for (const post of posts.filter(
-              (item) => item.channel === channel.id,
-            ))
-              expect(
-                html.includes(
-                  post.text
-                    .replaceAll("&", "&amp;")
-                    .replaceAll("'", "&#x27;")
-                    .replaceAll('"', "&quot;"),
-                ),
-              ).toBe(true);
-        }
+      for (const channel of ordinaryChannels)
+        expect(canAccessChannel(person.id, "logistics", channel.id)).toBe(true);
+
+    // The access policy covers every role above. Render every tab once per
+    // channel to check the actual page and its sidebar without repeating the
+    // full React tree hundreds of times.
+    for (const channel of ordinaryChannels) {
+      for (const tab of ["Posts", "Shared", "Notes", "Planner"]) {
+        const html = logisticsChannel(
+          `/logistics/teams?staff=taylor&channel=${channel.id}&tab=${tab}&context=workspace:logistics`,
+        );
+        expect(html.includes("Access required")).toBe(false);
+        expect(html).toContain('data-team-id="logistics"');
+        expect(html).not.toContain('data-team-id="digital"');
+        expect(html).not.toContain('data-team-kind="department"');
+        if (tab === "Posts")
+          for (const post of posts.filter(
+            (item) => item.channel === channel.id,
+          ))
+            expect(
+              html.includes(
+                post.text
+                  .replaceAll("&", "&amp;")
+                  .replaceAll("'", "&#x27;")
+                  .replaceAll('"', "&quot;"),
+              ),
+            ).toBe(true);
       }
+    }
   });
-  it("keeps Demo User global company navigation separate and shows the prominent role helper", () => {
+  it("keeps Demo User global company navigation separate without role guidance", () => {
     const html = logisticsChannel(
       "/logistics/teams?staff=taylor&channel=important&context=global",
     );
     expect(html).toContain('data-team-id="company"');
     expect(html).not.toContain('data-team-id="logistics"');
     expect(html).not.toContain('data-team-kind="department"');
-    expect(html).toContain("See a role based channel view");
-    expect(html).toContain(
-      "Explore the ordinary workspace experience. Restricted content still follows access rules.",
-    );
+    expect(html).not.toContain("See a role based channel view");
+    expect(html).not.toContain("View channels for this role");
+    expect(html).not.toContain("Try another preview role");
     expect(html).not.toContain("General Staff Member");
-    expect(html).toContain("Choose a preview role");
-    expect(html).toContain('aria-controls="preview-role"');
-    expect(html).toContain('class="preview-role-prompt access-preview-role"');
   });
   it("allows normal Logistics file deep links while rejecting files outside the chosen channel", () => {
     for (const person of staff)

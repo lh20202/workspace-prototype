@@ -4,7 +4,7 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Interactive tour": "Interaktive Tour",
   "Interactive tour guide": "Anleitung zur interaktiven Tour",
   "Coming soon": "Demnächst verfügbar",
-  "COMING SOON": "DEMNÄCHST VERFÜGBAR",
+  "COMING SOON": "IN VORBEREITUNG",
   "Consistent navigation": "Einheitliche Navigation",
   "A familiar menu makes it easy to move around.":
     "Ein vertrautes Menü erleichtert die Orientierung.",
@@ -64,7 +64,7 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Recent files": "Aktuelle Dateien",
   "Document library": "Dokumentbibliothek",
   Columns: "Spalten",
-  Owners: "Zuständige Personen",
+  "File owners": "Zuständige Personen",
   Metadata: "Metadaten",
   "File details": "Dateidetails",
   "Links out": "Weiterführende Links",

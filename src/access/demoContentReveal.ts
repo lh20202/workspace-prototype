@@ -19,10 +19,28 @@ export function isDemoContentRevealed(
   resource: AccessResource,
   person: string | { id: string },
 ) {
-  const key = revealKey(resource, typeof person === "string" ? person : person.id);
+  const key = revealKey(
+    resource,
+    typeof person === "string" ? person : person.id,
+  );
   if (!key || typeof window === "undefined") return false;
   try {
     return sessionStorage.getItem(key) === "1";
+  } catch {
+    return false;
+  }
+}
+
+/** Records a reveal only for this browser session, person and exact resource. */
+export function revealDemoContent(
+  resource: AccessResource | undefined,
+  personId: string,
+) {
+  const key = revealKey(resource, personId);
+  if (!key || typeof window === "undefined") return false;
+  try {
+    window.sessionStorage.setItem(key, "1");
+    return true;
   } catch {
     return false;
   }
@@ -36,12 +54,8 @@ export function useDemoContentReveal(
   const key = revealKey(resource, personId);
   const revealed = !!key && isDemoContentRevealed(resource!, personId);
   const reveal = () => {
-    if (!key || revealed) return;
-    try {
-      sessionStorage.setItem(key, "1");
-    } finally {
-      location.reload();
-    }
+    if (!key || revealed || !revealDemoContent(resource, personId)) return;
+    window.location.reload();
   };
   return { revealed, reveal };
 }

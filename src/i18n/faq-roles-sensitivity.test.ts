@@ -11,9 +11,7 @@ const german = (source: string) => translateText(source, "de");
 
 describe("final staff-facing German interpretation", () => {
   it("explains the idea in plain language and preserves the separate creation note", () => {
-    expect(german(proofOfConceptInfoText)).toContain(
-      "eine Idee ausprobieren",
-    );
+    expect(german(proofOfConceptInfoText)).toContain("ob eine Idee funktioniert");
     expect(german(proofOfConceptInfoText)).not.toMatch(
       /Migration|Zugriffsregelungen/i,
     );
@@ -47,8 +45,8 @@ describe("final staff-facing German interpretation", () => {
     expect(german("Information Advisory Specialist")).toBe(
       "Fachreferentin für Informationsmanagement",
     );
-    expect(german("Some preview roles can access this area.")).toContain(
-      "Vorschaurollen",
+    expect(german("Reveal restricted content")).toBe(
+      "Geschützte Inhalte anzeigen",
     );
   });
 

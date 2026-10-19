@@ -40,7 +40,9 @@ describe("Sales & Marketing knowledge navigation", () => {
     const specialist = wikiArticles.find(
       (article) => article.areaId === "insight",
     )!;
-    for (const { id } of previewRoles) {
+    for (const { id } of previewRoles)
+      expect(canAccessWikiArea(id, specialist.areaId)).toBe(true);
+    for (const id of ["taylor", "maya"]) {
       const permitted = markup(wikiArticleHref(specialist), `?staff=${id}`);
       expect(permitted).toContain('aria-label="Wiki article"');
       expect(permitted).toContain(specialist.introduction);

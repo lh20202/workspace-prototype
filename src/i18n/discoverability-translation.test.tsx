@@ -66,13 +66,6 @@ describe("German discoverability review after English implementation was final",
   });
 
   it("explains ordinary exploration and the separate restrictions on protected content", () => {
-    expect(german("See a role-based channel view")).toBe(
-      "Rollenbezogene Kanalansicht erkunden",
-    );
-    expect(german("Choose a preview role")).toBe("Vorschaurolle auswählen");
-    expect(german("View channels for this role")).toBe(
-      "Kanäle für diese Rolle ansehen",
-    );
     expect(german("Browse available channels")).toBe(
       "Verfügbare Kanäle ansehen",
     );
@@ -81,16 +74,6 @@ describe("German discoverability review after English implementation was final",
     );
     expect(description).toBe(
       "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
-    );
-    expect(
-      german(
-        "Switch preview roles to explore personal channel views, protected content and specialist tools. Ordinary workspace areas stay available.",
-      ),
-    ).toBe(
-      "Wechseln Sie die Vorschaurolle, um persönliche Kanalansichten, geschützte Inhalte und Fachanwendungen zu erkunden. Die normalen Arbeitsbereiche bleiben verfügbar.",
-    );
-    expect(german("Try another preview role")).toBe(
-      "Andere Vorschaurolle ausprobieren",
     );
     expect(german("Private channel")).toBe("Privater Kanal");
   });
@@ -154,7 +137,7 @@ describe("German discoverability review after English implementation was final",
     );
   });
 
-  it("translates the actual Studio Home groups and the Demo User global helper", () => {
+  it("translates the actual Studio Home groups and keeps global channel navigation free of role prompts", () => {
     at("/content-delivery?staff=taylor");
     const home = exposedCopy(renderToStaticMarkup(createElement(ContentApp)));
     expect(home).toContain("Kanalredaktionen");
@@ -174,7 +157,6 @@ describe("German discoverability review after English implementation was final",
           channelName: "Important updates",
           selectedChannelId: "company:important",
           groups: navigation.groups,
-          showRoleDiscovery: navigation.showRoleDiscovery,
           activeTab: "Posts",
           onTabChange: () => {},
           children: null,
@@ -183,11 +165,8 @@ describe("German discoverability review after English implementation was final",
     );
     const helper = exposedCopy(html);
     expect(helper).toContain("Unternehmensnachrichten");
-    expect(helper).toContain("Rollenbezogene Kanalansicht erkunden");
-    expect(helper).toContain(
-      "Erkunden Sie die normalen Funktionen der Arbeitsbereiche. Für geschützte Inhalte gelten weiterhin die Zugriffsregeln.",
-    );
-    expect(helper).toContain("Vorschaurolle auswählen");
+    expect(helper).not.toContain("Rollenbezogene Kanalansicht erkunden");
+    expect(helper).not.toContain("Vorschaurolle auswählen");
     expect(helper).not.toContain("Eigene Kanalansicht öffnen");
     expect(helper).not.toMatch(/\b(?:Teams|SharePoint|Microsoft|M365)\b/);
   });

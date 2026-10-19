@@ -27,8 +27,6 @@ export const germanTeamsTechnical: Record<string, string> = {
     "Ich würde Qdrant für den Chatbot erst lokal testen, bevor wir für einen gehosteten Vektorspeicher zahlen. Die Embeddings können ebenfalls lokal bleiben. Der RAG-Testlauf bewertet Retrieval und Antworten jetzt getrennt; der Testdatensatz enthält keine echten Kundendaten.",
   "Added privacy-safe fixtures, prompt changes and licence notes to the issue. Can we keep the run manifest the same when we compare inference settings?":
     "Datenschutzgerechte Testdaten, Prompt-Änderungen und Lizenzhinweise sind im Issue ergänzt. Können wir beim Vergleich der Inferenz-Einstellungen dasselbe Laufmanifest verwenden?",
-  "CRM webhook retries are ready for contract review in release 2026.10. Content acceptance from Creative & Editorial is linked in the Deployment Checklist; deploy and runtime checks are still ours.":
-    "Die Wiederholungslogik für CRM-Webhooks ist in Release 2026.10 bereit für die Vertragsprüfung. Die Inhaltsfreigabe von Kreation & Redaktion ist in der Deployment-Checkliste verlinkt; Deployment und Laufzeitprüfungen liegen weiterhin bei uns.",
   "Can you add the synthetic event replay result to the release review? We don’t need any CRM customer records there.":
     "Kannst du das Ergebnis des synthetischen Event-Replays im Release-Review ergänzen? CRM-Kundendatensätze brauchen wir dort nicht.",
   "Metadata provisioning PR is up: configuration and migration mapping. I’ve used the functional owners’ taxonomy and Archives’ retention requirements. @Devon, could you check the rollback path?":
@@ -37,18 +35,12 @@ export const germanTeamsTechnical: Record<string, string> = {
     "Ja, und ich prüfe auch den Umfang der Graph-Berechtigungen. Keine Mandanten-Zugangsdaten in die Review-Notizen aufnehmen.",
   "Reviews this week: customer platform integration, local classification evals and M365 search. Bring the repo issue and working design to each review so we’re looking at the same version.":
     "Reviews diese Woche: Kundenplattform-Integration, lokale Klassifikations-Evaluationen und M365-Suche. Bringt jeweils das Repo-Issue und den Arbeitsentwurf mit, damit wir dieselbe Version vor uns haben.",
-  "API contract review is open. Can someone check pagination, error semantics and event versioning before we lock the first consumer interface?":
-    "Der API-Vertrag ist bereit für das Review. Kann jemand Paginierung, Fehlerverhalten und Event-Versionierung prüfen, bevor wir die erste Schnittstelle für die angebundene Anwendung festlegen?",
-  "I’ve added a small Python consumer fixture to test the contract boundary.":
-    "Ich habe einen kleinen Python-Testclient ergänzt, um die Vertragsgrenze zu testen.",
   "Thanks. I’ll use that for the pagination check.":
     "Danke. Den nehme ich für die Paginierungsprüfung.",
   "Managed hosting or containers for the new service? I’ve put the trade-offs in the Architecture Decision Record. We still need to agree who runs it and how we recover if it fails.":
     "Managed Hosting oder Container für den neuen Service? Die Vor- und Nachteile stehen im Architecture Decision Record. Offen ist noch, wer den Betrieb übernimmt und wie wir den Service im Fehlerfall wiederherstellen.",
   "Agreed. I’ll keep the investment decision linked to the executive paper rather than copying it into the record.":
     "Einverstanden. Ich verlinke die Investitionsentscheidung mit der Vorlage für die Geschäftsleitung, statt sie in den Record zu kopieren.",
-  "Service workflow change is ready for review. Request and approvals are in Freshservice; the Service Change — Handoff Checklist is in Shared.":
-    "Die Änderung am Service-Workflow ist bereit für das Review. Antrag und Freigaben stehen in Freshservice; die Service Change — Handoff Checklist liegt unter Geteilt.",
   "I’ll check the authorised account and device handoff with the new-starter owner.":
     "Ich kläre die freigegebene Konto- und Geräteübergabe mit der verantwortlichen Person für den neuen Mitarbeitenden.",
   "This week’s reviews are in the register. Can we settle the owner and audience before sending the changes to Digital? It’ll save another round of questions.":

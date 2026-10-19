@@ -108,7 +108,6 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Risk & Assurance": "Risikomanagement & Kontrollprüfung",
   "Reward & Employment Frameworks": "Vergütung & Beschäftigungsbedingungen",
   "Recruitment Administration": "Bewerbungsmanagement",
-  "Global Archives": "Weltweite Archivbestände",
   "Supplier sourcing": "Lieferantenauswahl",
   "Prepare sourcing decisions, supplier onboarding and renewal reviews.":
     "Beschaffungsentscheidungen, die Aufnahme neuer Lieferanten und Vertragsverlängerungen vorbereiten.",

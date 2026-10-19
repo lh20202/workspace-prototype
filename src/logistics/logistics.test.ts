@@ -136,7 +136,6 @@ describe("Pet photos threads", () => {
       ],
     );
     expect(postReplies(byId("post-pingu")).map(({ text }) => text)).toEqual([
-      "the noot has spoken",
       "#science",
     ]);
     expect(byId("post-metaverse").text).toBe(

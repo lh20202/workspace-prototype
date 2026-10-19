@@ -209,7 +209,7 @@ const libraryTopics: TourTopic[] = [
   },
   {
     id: "owners",
-    label: "Owners",
+    label: "File owners",
     body: "The Owner column shows who is responsible for each file. Open its details for the complete set of properties.",
     target: "library-owner",
   },

@@ -22,5 +22,5 @@ export const germanWorkspaceFAQ: Record<string, string> = {
   "Thanks, your question was submitted anonymously.":
     "Danke, Ihre Frage wurde anonym eingereicht.",
   "A proof of concept is a simple way to try out an idea and see whether it works. It lets people explore, ask questions and suggest improvements before anything is final.":
-    "Mit einem Proof of Concept kann man eine Idee ausprobieren und sehen, ob sie funktioniert. So können alle Fragen stellen und Verbesserungen vorschlagen, bevor etwas endgültig feststeht.",
+    "Mit einer einfachen Demoversion können alle ausprobieren, ob eine Idee funktioniert. So lassen sich Fragen stellen und Verbesserungen vorschlagen, bevor etwas endgültig feststeht.",
 };

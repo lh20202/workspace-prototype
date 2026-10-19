@@ -43,6 +43,7 @@ export interface TeamsShellProps {
   userName: string;
   teamName: string;
   channelName: string;
+  channelDescription?: string;
   channelLabel?: string;
   groups: TeamsGroup[];
   selectedChannelId: string;
@@ -58,8 +59,6 @@ export interface TeamsShellProps {
   searchResults?: ReactNode;
   headerActions?: ReactNode;
   navigationFooter?: ReactNode;
-  /** Retained for fixture compatibility; no role discovery control is shown. */
-  showRoleDiscovery?: boolean;
   children: ReactNode;
 }
 export function initials(name: string) {
@@ -79,6 +78,7 @@ function TeamsShellSession({
   userName,
   teamName,
   channelName,
+  channelDescription,
   channelLabel = "Chat",
   groups,
   selectedChannelId,
@@ -446,6 +446,11 @@ function TeamsShellSession({
                   {teamName}
                 </span>
                 <h1>{channelName}</h1>
+                {channelDescription && (
+                  <p className="m365-teams-channel-description">
+                    {channelDescription}
+                  </p>
+                )}
               </div>
             </div>
             <div className="m365-teams-channel-actions">

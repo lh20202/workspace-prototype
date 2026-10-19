@@ -29,7 +29,8 @@ describe("the unobtrusive external demo controls", () => {
       /<button[^>]*aria-label="Demo controls"[^>]*aria-expanded="false"[^>]*aria-controls="demo-controls-panel"/,
     );
     expect(html).toMatch(/id="demo-controls-panel"[^>]*hidden=""/);
-    expect(html).toContain('id="preview-role"');
+    expect(html).not.toContain('id="preview-role"');
+    expect(html).not.toContain('aria-label="Preview role"');
   });
   it("still leaves the handle usable when session storage is unavailable", () => {
     vi.stubGlobal("sessionStorage", {

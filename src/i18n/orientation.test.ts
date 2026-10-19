@@ -11,15 +11,14 @@ describe("Welcome and outer demo guidance translations", () => {
     }
   });
 
-  it("uses unambiguous destinations and plain-language role guidance", () => {
+  it("uses unambiguous destinations and plain-language demo guidance", () => {
     expect(translateText("← Welcome", "de")).toBe("← Willkommen");
     expect(translateText("All workspaces", "de")).toBe("Alle Arbeitsbereiche");
     expect(translateText("Explore all workspaces & wikis", "de")).toBe(
       "Alle Arbeitsbereiche und Wikis entdecken",
     );
-    expect(translateText("Explore as", "de")).toBe("Erkunden als");
-    expect(translateText("Switch roles to explore access", "de")).toBe(
-      "Rolle wechseln und Zugriffsrechte erkunden",
+    expect(translateText("Reveal restricted content", "de")).toBe(
+      "Geschützte Inhalte anzeigen",
     );
     expect(translateText("Technology & Engineering Administrator", "de")).toBe(
       "Administrator für IT und Entwicklung",
@@ -48,7 +47,7 @@ describe("Welcome and outer demo guidance translations", () => {
   });
 
   it("keeps beta state distinct from the proof-of-concept explanation", () => {
-    expect(translateText("Proof of concept", "de")).toBe("Proof of Concept");
+    expect(translateText("Proof of concept", "de")).toBe("Idee testen");
     expect(translateText("BETA TEST", "de")).toBe("BETATEST");
     const explanation =
       "Ready to explore, but still being refined. Some labels, layouts or interactions may change.";

@@ -25,7 +25,7 @@ import { items as financeItems, protectedSubjects } from "../finance/data";
 
 afterEach(() => vi.unstubAllGlobals());
 const boundary = /<section class="access-boundary(?: |")/;
-const prompt = "Try another preview role";
+const revealAction = "Reveal restricted content";
 
 function routeApp(resource: AccessResource): ComponentType {
   if (["department", "unit", "channel"].includes(resource.kind))
@@ -70,7 +70,7 @@ describe("canonical controlled destinations use the same boundary and role polic
   for (const entry of controlledResourceInventory.filter(
     (entry) => entry.resource && !entry.contentId,
   )) {
-    it(`${entry.id} resolves for every selectable role with an exact, genuine role alternative`, () => {
+    it(`${entry.id} resolves for every role with a page-local reveal at restricted destinations`, () => {
       const resource = entry.resource!;
       const href = entry.href;
       for (const role of previewRoles) {
@@ -79,9 +79,10 @@ describe("canonical controlled destinations use the same boundary and role polic
         expect(boundary.test(html), `${entry.id} / ${role.id}`).toBe(
           !expectedAllowed,
         );
-        expect(html.includes(prompt), `${entry.id} CTA / ${role.id}`).toBe(
-          !expectedAllowed && entry.expectedRoleIds.length > 0,
-        );
+        expect(
+          html.includes(revealAction),
+          `${entry.id} reveal / ${role.id}`,
+        ).toBe(!expectedAllowed);
         if (expectedAllowed)
           expect(html, `${entry.id} / ${role.id}`).not.toMatch(
             /Page not found|This location is unavailable|Opening channels/,
@@ -161,9 +162,7 @@ describe("canonical controlled destinations use the same boundary and role polic
           !expectedAllowed,
         );
         expect(html).toContain("Production Security Review");
-        expect(html.includes(prompt)).toBe(
-          !expectedAllowed && entry.expectedRoleIds.length > 0,
-        );
+        expect(html.includes(revealAction)).toBe(!expectedAllowed);
         expect(html).not.toContain("Project Brief.docx");
         expect(html.includes("Design Options.pptx")).toBe(expectedAllowed);
         expect(html.includes("Transition Checklist.docx")).toBe(
@@ -205,7 +204,7 @@ describe("canonical controlled destinations use the same boundary and role polic
       );
       expect(html).toContain("Supporting working documents");
       expect(html).toContain(protectedReviewSummaries[resource.areaId]);
-      expect(html).not.toContain(prompt);
+      expect(html).not.toContain("Try another preview role");
     }
     expect(
       Object.values(protectedSubjects)
@@ -247,7 +246,9 @@ describe("canonical controlled destinations use the same boundary and role polic
     for (const [path, App] of paths) {
       for (const role of previewRoles) {
         const html = renderRoute(path, role.id, App);
-        expect(html, `${role.id} ${path}`).not.toContain(prompt);
+        expect(html, `${role.id} ${path}`).not.toContain(
+          "Try another preview role",
+        );
         expect(html, `${role.id} ${path}`).not.toContain(
           "Controlled working methods for authorised participants.",
         );

@@ -42,10 +42,6 @@ export const germanContent: Record<string, string> = {
     "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische CMS-Entwicklung bleibt bei Digitales und Technologie.",
   "Work through publication layouts, email copy, image selections and release checks in Shared.":
     "Bearbeiten Sie Publikationslayouts, E-Mail-Texte, Bildauswahl und Freigabeprüfungen unter „Freigegeben“.",
-  "Topic specialists check city and transport context before the channel desks adapt it for publication.":
-    "Die Themenverantwortlichen prüfen den Stadt- und Verkehrskontext, bevor die Kanalredaktionen die Inhalte für die Veröffentlichung aufbereiten.",
-  "Check public-facing language about digital services and pass useful context to Editorial and Web.":
-    "Prüfen Sie die öffentlich verwendeten Formulierungen zu digitalen Diensten und geben Sie hilfreichen Kontext an Redaktion und Web weiter.",
   "Editorial, topic and customer-liaison colleagues coordinate a time-sensitive public update. Operational briefings stay in their protected location.":
     "Redaktion, Themenverantwortliche und Kundenbetreuung koordinieren eine zeitkritische öffentliche Mitteilung. Operative Lageinformationen bleiben am geschützten Ablageort.",
   "Coverage closed on 30 September. The conversation is read-only; final outputs and delivery evidence remain in SharePoint.":
@@ -220,14 +216,6 @@ export const germanContent: Record<string, string> = {
     "Der Service Desk holt die fachliche Genehmigung ein und setzt den Zugriff bei Bedarf um oder eskaliert die Anfrage.",
   "Describe the request or incident. First-level support will triage and hand over to a specialist where needed.":
     "Beschreiben Sie die Anfrage oder Störung. Der First-Level-Support prüft das Anliegen und übergibt es bei Bedarf an eine Fachkraft.",
-  "Historical reference location. Continue active work in its functional workspace.":
-    "Historischer Referenzbereich. Setzen Sie aktive Arbeiten im zuständigen fachlichen Arbeitsbereich fort.",
-  "View-only synthetic historical summary. No current personnel, customer or transaction records are included.":
-    "Schreibgeschützte, fiktive historische Zusammenfassung. Keine aktuellen Personal-, Kunden- oder Transaktionsdaten enthalten.",
-  "Review format risk, preservation copies, checksums, metadata completeness, digitisation and audio-visual media. Infrastructure implementation links to Digital & Technology.":
-    "Formatrisiken, Erhaltungskopien, Prüfsummen, vollständige Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung ist mit „Digitales und Technologie“ verknüpft.",
-  "Selected approved final closure report transferred after appraisal. Project working drafts remain in the closed project workspace.":
-    "Ausgewählter freigegebener Abschlussbericht, nach Bewertung übernommen. Projektentwürfe verbleiben im abgeschlossenen Projektarbeitsbereich.",
   "Technical configuration, integrations, authentication and releases for customer, People and finance platforms.":
     "Technische Konfiguration, Integrationen, Authentifizierung und Releases für Kunden-, Personal- und Finanzplattformen.",
   "Digital environment design: sites, libraries, metadata, navigation, access and migration implementation.":
@@ -274,8 +262,6 @@ export const germanContent: Record<string, string> = {
     "Prozesszuständigkeiten, Bereitschaftsprüfungen und Übergabe an das autorisierte System; keine Bewerberdaten",
   "Shared change-control methods and employment-system handoffs. Individual contracts, employment changes and payroll inputs remain restricted.":
     "Gemeinsame Änderungskontrollverfahren und Übergaben an Personalsysteme. Individuelle Verträge, Beschäftigungsänderungen und Entgelteingaben bleiben geschützt.",
-  "Working appraisal, description and preservation documents, separate from the controlled catalogue.":
-    "Arbeitsunterlagen zu Bewertung, Erschließung und Bestandserhaltung, getrennt vom kontrollierten Katalog.",
   "Release readiness, local AI evaluation and the M365 search rollout are the current engineering focus.":
     "Aktuelle technische Schwerpunkte sind Release-Vorbereitung, lokale KI-Evaluierung und die Einführung der M365-Suche.",
   "Prepare the manager capability pilot, October all-staff meeting and shared workforce contributions.":
@@ -328,8 +314,6 @@ export const germanContent: Record<string, string> = {
   // Current display names; legacy keys above remain available for saved content.
   "Open wellbeing events and programme communications; confidential support and duty-of-care follow-up belong to Welfare.":
     "Offene Veranstaltungen für das Wohlbefinden und die zugehörige Kommunikation. Vertrauliche Unterstützung und die Wahrnehmung der Fürsorgepflicht liegen im Arbeitsbereich „Fürsorge“.",
-  "Page copy, accessibility and content acceptance. CMS engineering stays in Dev.":
-    "Seitentexte, Barrierefreiheit und inhaltliche Abnahme. Die technische CMS-Entwicklung bleibt bei Dev.",
   "Copy acceptance is separate from the CMS release. The platform colleagues will handle configuration, source changes and deployment in Dev.; our review stays on wording, content order and accessibility.":
     "Inhaltliche Abnahme und CMS-Veröffentlichung sind getrennte Schritte. Das Plattformteam übernimmt Konfiguration, Quellcodeänderungen und Bereitstellung in Dev.; wir prüfen Formulierungen, Inhaltsreihenfolge und Barrierefreiheit.",
   "Readers should understand the digital service before they reach the sign-up form. The brief now separates the public explanation from the copy needed inside the journey; technical requirements stay with Dev.":
@@ -342,8 +326,6 @@ export const germanContent: Record<string, string> = {
     "Danke. Die gemeinsame Verwaltung des Bewerbungsprozesses gehört in „Personal“. Bitte legt die Prozesscheckliste dort ab und verlinkt sie hier. Bewerbungen, Beurteilungen, Referenzen und Einzelentscheidungen müssen an gesondert autorisierten Ablageorten bleiben. Führungs- und Kulturprogramme bleiben bei „Personal und Kultur“.",
   "Thanks, Devon — the API, authentication and integration work belongs in Dev. Please keep the technical review there and link it here. Personnel owns the business process and individual employment records, with their separate access controls.":
     "Danke, Devon. API-, Authentifizierungs- und Integrationsarbeiten gehören zu Dev. Bitte legt die technische Prüfung dort ab und verlinkt sie hier. „Personal“ verantwortet den Geschäftsprozess und die individuellen Personalunterlagen mit ihren gesonderten Zugriffsrechten.",
-  "Review format risk, preservation copies, checksums, metadata completeness, digitisation and audio-visual media. Infrastructure implementation links to Dev.":
-    "Formatrisiken, Erhaltungskopien, Prüfsummen, vollständige Metadaten, Digitalisierung und audiovisuelle Medien prüfen. Die technische Umsetzung ist mit Dev. verknüpft.",
   "Review technical API change; employment records remain in Personnel":
     "Technische API-Änderung prüfen; Personalunterlagen verbleiben im Arbeitsbereich „Personal“",
   "Organisation-wide reward principles and employment-framework design; individual administration belongs to Personnel.":

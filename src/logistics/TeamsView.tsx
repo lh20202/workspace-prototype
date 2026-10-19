@@ -42,6 +42,23 @@ import DocumentIcon from "../components/DocumentIcon";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { matchesDisplayText } from "../i18n/search";
+import { useTranslation } from "../i18n/Language";
+
+function PollOptionLabel({ label }: { label: string }) {
+  const { t } = useTranslation();
+  const protectedPhrase = "SharePoint site";
+  const phraseStart = label.indexOf(protectedPhrase);
+  if (phraseStart < 0) return <span>{t(label)}</span>;
+
+  return (
+    <span>
+      {t(label.slice(0, phraseStart))}
+      <span data-no-translate>{protectedPhrase}</span>
+      {t(label.slice(phraseStart + protectedPhrase.length))}
+    </span>
+  );
+}
+
 export default function TeamsView({
   channelId,
   activeTab,
@@ -58,6 +75,7 @@ export default function TeamsView({
   onMessage: (m: string) => void;
 }) {
   const person = teamsPersonForSearch(location.search);
+  const { language, t } = useTranslation();
   const entryContext = readChannelEntryContext(
     location.pathname,
     location.search,
@@ -119,6 +137,7 @@ export default function TeamsView({
         channel.team === "logistics" ? workspaceTitle : "Company Updates"
       }
       channelName={requestedChannel?.name || channelId}
+      channelDescription={channel.id === "pets" ? "& Other Animals" : undefined}
       groups={teamsGroups(person, entryContext).map((group) => ({
         ...group,
         channels: group.channels.map((item) => ({
@@ -295,7 +314,7 @@ export default function TeamsView({
                         className="channel-poll"
                         aria-label="Poll results"
                       >
-                        <h3 data-no-translate>{p.poll.question}</h3>
+                        <h3>{p.poll.question}</h3>
                         <div className="channel-poll-options">
                           {p.poll.options.map((option) => {
                             const winning = option.votes === highestVotes;
@@ -305,16 +324,20 @@ export default function TeamsView({
                                 key={option.label}
                               >
                                 <div className="channel-poll-option-label">
-                                  <span data-no-translate>{option.label}</span>
+                                  <PollOptionLabel label={option.label} />
                                   <strong>
                                     {option.votes}{" "}
-                                    {option.votes === 1 ? "vote" : "votes"}
+                                    {t(option.votes === 1 ? "vote" : "votes")}
                                   </strong>
                                 </div>
                                 <div
                                   className="channel-poll-track"
                                   role="img"
-                                  aria-label={`${option.votes} of ${totalVotes} votes`}
+                                  aria-label={
+                                    language === "de"
+                                      ? `${option.votes} von ${totalVotes} ${t("votes")}`
+                                      : `${option.votes} of ${totalVotes} votes`
+                                  }
                                 >
                                   <span
                                     style={{
@@ -327,7 +350,7 @@ export default function TeamsView({
                           })}
                         </div>
                         <small className="channel-poll-total">
-                          {totalVotes} votes
+                        {totalVotes} {t(totalVotes === 1 ? "vote" : "votes")}
                         </small>
                       </section>
                     );

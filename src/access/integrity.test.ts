@@ -335,7 +335,6 @@ describe("controlled access does not undo ordinary exploration or curated channe
       person: previewRoles.find((role) => role.id === "taylor")!,
     });
     expect(baseline.groups.map((group) => group.id)).toEqual(["company"]);
-    expect(baseline.showRoleDiscovery).toBe(true);
     for (const role of previewRoles)
       for (const workspaceId of [
         "planning",

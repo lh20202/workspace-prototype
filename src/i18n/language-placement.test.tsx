@@ -55,7 +55,8 @@ describe("language controls belong to the current product", () => {
     expect(html).not.toContain('aria-label="Language"');
     expect(html).not.toContain('aria-label="English"');
     expect(html).not.toContain('aria-label="Deutsch"');
-    expect(html).toContain('id="preview-role"');
+    expect(html).not.toContain('id="preview-role"');
+    expect(html).not.toContain('aria-label="Preview role"');
     expect(html).toContain("Workspace FAQ");
   });
 

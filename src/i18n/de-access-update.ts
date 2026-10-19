@@ -8,31 +8,17 @@ export const germanAccessUpdate: Record<string, string> = {
   "Demo User": "Demo User",
   "Frontline Sales Adviser": "Vertriebsberaterin im direkten Kundenkontakt",
   "Executive Director": "Geschäftsführung",
-  "Personnel Administrator": "Personaladministratorin",
-  "Technology & Engineering Administrator":
-    "Administrator für Technologie und Engineering",
   "Demo User — Taylor Brooks": "Demo User — Taylor Brooks",
   "Frontline Sales Adviser — Maya Chen":
     "Vertriebsberaterin im direkten Kundenkontakt — Maya Chen",
   "Executive Director — Robin Avery": "Geschäftsführung — Robin Avery",
-  "Personnel Administrator — Jamie Ellis":
-    "Personaladministratorin — Jamie Ellis",
-  "Technology & Engineering Administrator — Devon Park":
-    "Administrator für Technologie und Engineering — Devon Park",
-  "Are you frontline sales staff?": "Arbeiten Sie im direkten Kundenvertrieb?",
   "Go to the Frontline Sales Portal for the information and tools used in day-to-day frontline work.":
     "Im Frontline Sales Portal finden Sie die Informationen und Werkzeuge für den täglichen direkten Kundenkontakt.",
   "Open Frontline Sales Portal": "Frontline Sales Portal öffnen",
-  "Frontline sales focal point":
-    "Ansprechperson für den direkten Kundenvertrieb",
   "Frontline Sales Coordinator": "Koordination des direkten Kundenvertriebs",
-  "Need access to this workspace instead?":
-    "Benötigen Sie stattdessen Zugriff auf diesen Arbeitsbereich?",
   "Contact workspace focal point":
     "Ansprechperson des Arbeitsbereichs kontaktieren",
   "Workspace focal point": "Ansprechperson für den Arbeitsbereich",
-  "Frontline sales alternative and access contacts":
-    "Alternative für den direkten Kundenvertrieb und Ansprechpersonen für den Zugriff",
   "I have a question about the Frontline Sales Portal.":
     "Ich habe eine Frage zum Frontline Sales Portal.",
   "Return to Wiki": "Zurück zum Wiki",

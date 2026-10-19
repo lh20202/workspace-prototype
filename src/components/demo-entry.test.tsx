@@ -67,11 +67,11 @@ describe("standalone workspace demos and the beta entry", () => {
   );
 
   it.each(["planning", "logistics"])(
-    "retains beta navigation in %s after entering the beta",
+    "retains beta navigation without offering role selection in %s",
     (workspace) => {
       visit(`/${workspace}?staff=taylor&demo=beta`);
       const controls = renderToStaticMarkup(<PrototypeNavigator />);
-      expect(controls).toContain('id="preview-role"');
+      expect(controls).not.toContain('id="preview-role"');
       expect(controls).toContain(
         'href="/architecture?staff=taylor&amp;demo=beta"',
       );
@@ -124,7 +124,7 @@ describe("standalone workspace demos and the beta entry", () => {
   );
 
   it.each(["standalone", "beta"])(
-    "only offers role-switching prompts at a restricted boundary in the beta (%s)",
+    "offers the same page-local reveal at restricted destinations in %s mode",
     (mode) => {
       visit(`/planning/restricted?staff=taylor&demo=${mode}`);
       const html = renderToStaticMarkup(
@@ -141,7 +141,11 @@ describe("standalone workspace demos and the beta entry", () => {
           />
         </PreviewRoleProvider>,
       );
-      expect(html.includes("Try another preview role")).toBe(mode === "beta");
+      expect(html).toContain("Reveal restricted content");
+      expect(html).toContain(
+        "Your role determines whether you can see this content. For this demo, you can reveal it here.",
+      );
+      expect(html).not.toContain("Try another preview role");
       expect(html).toContain("Contact focal point");
     },
   );
@@ -198,7 +202,7 @@ describe("standalone workspace demos and the beta entry", () => {
   );
 
   it.each(["standalone", "beta"])(
-    "keeps role exploration in beta demo controls and out of the conversation sidebar (%s)",
+    "keeps channel guidance out of the conversation sidebar in %s mode",
     (mode) => {
       visit(
         `/teams?demo=${mode}&workspace=planning&context=workspace:planning`,
@@ -220,16 +224,8 @@ describe("standalone workspace demos and the beta entry", () => {
       expect(html).not.toContain("View channels for this role");
       expect(html).toContain("Conversation");
       const controls = renderToStaticMarkup(<PrototypeNavigator />);
-      expect(controls.includes("View channels for this role")).toBe(
-        mode === "beta",
-      );
-      if (mode === "beta") {
-        expect(controls).toContain('href="/teams?staff=taylor&amp;demo=beta"');
-        const selection = controls.slice(
-          controls.indexOf('class="preview-role-selection"'),
-        );
-        expect(selection).toContain("View channels for this role");
-      }
+      expect(controls).not.toContain("View channels for this role");
+      expect(controls).not.toContain('aria-label="Preview role"');
     },
   );
 });

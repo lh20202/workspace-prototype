@@ -1107,11 +1107,6 @@ export const posts: Post[] = [
     text: "Not a pet but still...",
     replies: [
       {
-        author: "Sam Patel",
-        text: "the noot has spoken",
-        time: "16 October 2026, 16:12",
-      },
-      {
         author: "Jamie Brooks",
         text: "#science",
         time: "16 October 2026, 16:15",

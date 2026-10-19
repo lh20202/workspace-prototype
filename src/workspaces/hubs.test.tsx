@@ -251,7 +251,7 @@ describe("confidential membership remains separate from hub association", () => 
   it("retains the explicitly selected colleague when returning to Architecture", () => {
     at("/architecture?staff=devon", "maya");
     const html = renderToStaticMarkup(createElement(Directory));
-    expect(html).toContain('<option value="devon" selected=""');
+    expect(html).not.toContain('id="preview-role"');
     expect(html).toContain('href="/digital-tech?staff=devon"');
     expect(html).toContain('href="/sales-marketing/wiki?staff=devon"');
     expect(html).toContain(

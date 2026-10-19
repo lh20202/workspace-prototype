@@ -42,6 +42,7 @@ import WorkspaceHeader from "./WorkspaceHeader";
 import FileTable, { FileStatus, shortDate } from "./FileTable";
 import LocationsList from "./LocationsList";
 import TeamsView from "./TeamsView";
+import { useTranslation } from "../i18n/Language";
 import { resolveStaffPerson } from "../intranet/catalog";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
@@ -102,6 +103,7 @@ export function documentFromLocation() {
     : null;
 }
 export default function LogisticsApp() {
+  const { t } = useTranslation();
   const teamsPerson = resolveStaffPerson(
     new URLSearchParams(location.search).get("staff"),
   );
@@ -135,9 +137,12 @@ export default function LogisticsApp() {
     return () => window.removeEventListener("popstate", listener);
   }, []);
   useEffect(() => {
+    const channel = channels.find((item) => item.id === route.channel);
     document.title =
-      route.page === "teams" ? `${workspaceTitle} | Channels` : workspaceTitle;
-  }, [route.page]);
+      route.page === "teams"
+        ? `${channel ? t(channel.name) : t(workspaceTitle)} | Channels`
+        : t(workspaceTitle);
+  }, [route.channel, route.page, t]);
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 5000);

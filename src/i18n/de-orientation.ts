@@ -2,7 +2,7 @@
 export const germanOrientation: Record<string, string> = {
   "Demo controls": "Demo-Steuerung",
   "A proof of concept tests whether an idea works. A prototype usually tests a more defined design. This site is exploring the workspace approach rather than showing a finished design.":
-    "Ein Proof of Concept zeigt, ob eine Idee funktioniert. Mit einem Prototyp wird meist ein konkreterer Entwurf erprobt. Diese Seite erprobt den Ansatz für die Arbeitsbereiche und zeigt noch kein fertiges Design.",
+    "Mit einer einfachen Demoversion lässt sich ausprobieren, ob eine Idee funktioniert. Ein ausgereifter Entwurf zeigt meist schon genauer, wie sie aussehen könnte.",
   "This demo was built with AI-assisted coding. The AI was given generic descriptions of typical work and asked to create fictional files, conversations and workflows that feel realistic. No company data was used, and nothing is connected to live Microsoft 365 or business systems.":
     "Diese Demo wurde mit KI-gestützter Programmierung erstellt. Die KI erhielt allgemeine Beschreibungen typischer Aufgaben und entwickelte dazu frei erfundene Dateien, Gespräche und Abläufe, die realistisch wirken. Es wurden keine Unternehmensdaten verwendet. Die Demo ist weder mit produktivem Microsoft 365 noch mit anderen Unternehmenssystemen verbunden.",
   "Explore workspace": "Arbeitsbereich erkunden",
@@ -16,10 +16,10 @@ export const germanOrientation: Record<string, string> = {
     "Willkommen auf der Demoseite für digitale Arbeitsbereiche!",
   "No company data was used to create this demo site.":
     "Für diese Demoseite wurden keine Unternehmensdaten verwendet.",
-  "Proof of concept": "Proof of Concept",
-  "Proof of concept info": "Informationen zum Proof of Concept",
+  "Proof of concept": "Idee testen",
+  "Proof of concept info": "Informationen zum Test einer Idee",
   "A proof of concept tests whether an approach works and feels useful. A prototype usually tests a more defined design. Here, we're testing the workspace approach and interactions; the names and content are fictional.":
-    "Ein Proof of Concept zeigt, ob ein Ansatz funktioniert und nützlich ist. Mit einem Prototyp wird meist ein konkreterer Entwurf erprobt. Hier testen wir den Ansatz für die Arbeitsbereiche und ihre Bedienung; Namen und Inhalte sind frei erfunden.",
+    "Mit einer einfachen Demoversion lässt sich prüfen, ob ein Ansatz funktioniert und nützlich ist. Hier probieren wir aus, wie Arbeitsbereiche und ihre Funktionen wirken; Namen und Inhalte sind erfunden.",
   "How was this created?": "Wie ist diese Demo entstanden?",
   "This demo was built with AI-assisted coding and standard web technology. The AI was given generic descriptions of how an organisation might work and used fictional names, files, conversations and workflows to make the examples feel realistic. No company data was used.":
     "Diese Demo wurde mit KI-gestützter Programmierung und gängiger Webtechnologie erstellt. Die KI erhielt allgemeine Beschreibungen dazu, wie eine Organisation arbeiten könnte. Daraus entstanden frei erfundene Namen, Dateien, Gespräche und Abläufe, die die Beispiele realistisch wirken lassen. Es wurden keine Unternehmensdaten verwendet.",

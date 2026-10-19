@@ -44,7 +44,7 @@ describe("curated global channels and explicit entry context", () => {
     vi.stubGlobal("sessionStorage", { getItem: () => "unknown" });
     expect(selectedStaffId()).toBe("taylor");
   });
-  it("gives Demo User only Company Updates plus the personalisation helper globally", () => {
+  it("gives Demo User only Company Updates globally", () => {
     const model = channelNavigationFor({ person: person("taylor") });
     expect(model.groups.map((group) => group.id)).toEqual(["company"]);
     expect(model.groups[0].channels.map((channel) => channel.id)).toEqual(
@@ -52,7 +52,6 @@ describe("curated global channels and explicit entry context", () => {
         .filter((channel) => channel.team === "company")
         .map((channel) => `company:${channel.id}`),
     );
-    expect(model.showRoleDiscovery).toBe(true);
   });
   it("keeps every other global view curated from existing role participation", () => {
     const expected = {
@@ -83,7 +82,6 @@ describe("curated global channels and explicit entry context", () => {
       expect(model.groups.map((group) => group.id)).toEqual(
         expected[member.id as keyof typeof expected],
       );
-      expect(model.showRoleDiscovery).toBe(false);
       for (const workspaceId of Object.keys(workspaceChannels)) {
         expect(
           model.groups
@@ -122,7 +120,6 @@ describe("curated global channels and explicit entry context", () => {
         expect(
           model.groups[1].channels.map((channel) => channel.label),
         ).toEqual(["General"]);
-        expect(model.showRoleDiscovery).toBe(false);
       }
   });
   it("shows complete canonical workspace channels in context without unrelated groups", () => {
@@ -139,7 +136,6 @@ describe("curated global channels and explicit entry context", () => {
         expect(
           model.groups[1].channels.map((channel) => channel.label),
         ).toEqual(workspaceChannels[workspaceId]);
-        expect(model.showRoleDiscovery).toBe(false);
       }
     for (const channel of contentChannels)
       expect(

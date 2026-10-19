@@ -9,10 +9,6 @@ import "./demo-info.css";
 
 export const proofOfConceptInfoText =
   "A proof of concept is a simple way to try out an idea and see whether it works. It lets people explore, ask questions and suggest improvements before anything is final.";
-export const roleAccessInfoText =
-  "Access to restricted content depends on a person's role.";
-export const demoUserInfoText =
-  "Restricted areas stay hidden unless someone chooses to reveal them for this demonstration.";
 /** Small, non-interactive guidance, available on hover, keyboard focus and tap. */
 export function DemoInfo({
   label,

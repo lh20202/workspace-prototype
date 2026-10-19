@@ -116,11 +116,12 @@ describe("Teams editorial fixture integrity", () => {
       if (post.replyTime && /^\d\d:\d\d$/.test(post.time))
         expect(post.replyTime > post.time).toBe(true);
     }
-    expect(posts.find((post) => post.id === "post-daisy")?.text).toBe(
-      "important mews coming in live",
-    );
-    expect(posts.find((post) => post.id === "post-daisy")?.reply).toContain(
+    const daisy = posts.find((post) => post.id === "post-daisy")!;
+    expect(daisy.text).toBe("Look into my eyes");
+    expect(daisy.replies?.map((reply) => reply.text)).toEqual([
       "take me to your leader",
-    );
+      "I feel her staring into the depths of my soul.",
+    ]);
+    expect(daisy.image?.src).toBe("/images/pets/daisy.jpg");
   });
 });

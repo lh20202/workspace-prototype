@@ -16,7 +16,6 @@ export const germanDirectoryRedesign: Record<string, string> = {
   "Account setup": "Kontoeinrichtung",
   "Workplace equipment": "Arbeitsplatzausstattung",
   "Application support": "Anwendungsbetreuung",
-  "Financial administration": "Finanzadministration",
   "Administration queue": "Offene Vorgänge",
   "Payment review": "Zahlungsprüfung",
   "Monthly reconciliation": "Monatliche Abstimmung",

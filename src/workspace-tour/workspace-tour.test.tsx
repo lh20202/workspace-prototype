@@ -104,7 +104,7 @@ describe("Activity Workspace walkthrough", () => {
     expect(shared).toContain('class="workspace-tour-guide"');
     expect(shared).toContain("Document library");
     expect(shared).toContain("Columns");
-    expect(shared).toContain("Owners");
+    expect(shared).toContain("File owners");
     expect(shared).toContain("Metadata");
     expect(shared).toContain("Links out");
     expect(shared).toContain('aria-label="Channel list filters"');
@@ -142,7 +142,7 @@ describe("Activity Workspace walkthrough", () => {
     );
     expect(library).toContain("Document library");
     expect(library).toContain("Columns");
-    expect(library).toContain("Owners");
+    expect(library).toContain("File owners");
     expect(library).toContain("Metadata");
     expect(library).toContain("Links out");
     expect(library).toContain('data-tour-target="library-columns"');

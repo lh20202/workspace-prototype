@@ -28,7 +28,6 @@ export const germanMessages: Record<string, string> = {
   "Shared list": "Gemeinsame Liste",
   "Knowledge & frontline": "Wissen & Vertriebsalltag",
   "Article navigation": "Artikelnavigation",
-  "Hub navigation": "Hub-Navigation",
   "Employment & Hiring": "Personal- und Einstellungsverwaltung",
   "JUMP TO": "DIREKT ZU",
   "Department submissions": "Abteilungsbeiträge",
@@ -136,14 +135,12 @@ export const germanMessages: Record<string, string> = {
   Modified: "Geändert",
   "Modified by": "Geändert von",
   Created: "Erstellt",
-  "Created by": "Erstellt von",
   Date: "Datum",
   date: "Datum",
   Status: "Status",
   status: "Status",
   Period: "Zeitraum",
   Review: "Prüfung",
-  "Review due": "Prüfung fällig",
   "Review date": "Prüfdatum",
   Reviewer: "Prüfverantwortlich",
   "Review type": "Prüfungsart",
@@ -182,7 +179,6 @@ export const germanMessages: Record<string, string> = {
   "Read only": "Schreibgeschützt",
   "Read-only": "Schreibgeschützt",
   "Read-only library": "Schreibgeschützte Bibliothek",
-  "VIEW ONLY": "NUR LESEZUGRIFF",
   Restricted: "Zugriffsbeschränkt",
   "Strictly confidential": "Streng vertraulich",
   "Strictly confidential; protected areas require separate participation":
@@ -211,7 +207,6 @@ export const germanMessages: Record<string, string> = {
   Action: "Maßnahme",
   Actions: "Maßnahmen",
   "Next action": "Nächste Maßnahme",
-  Outcome: "Ergebnis",
   "Follow-up": "Nachverfolgung",
   "Follow-up due": "Nachverfolgung fällig",
   Due: "Fällig",
@@ -244,7 +239,6 @@ export const germanMessages: Record<string, string> = {
   "All activities": "Alle Aktivitäten",
   "All campaigns": "Alle Kampagnen",
   "All Initiatives": "Alle Initiativen",
-  "All issues": "Alle offenen Punkte",
   "All Locations": "Alle Standorte",
   "All Packages": "Alle Produktionspakete",
   "All projects": "Alle Projekte",
@@ -305,8 +299,6 @@ export const germanMessages: Record<string, string> = {
   "No actions in this view.": "Keine Maßnahmen in dieser Ansicht.",
   "No activities": "Keine Aktivitäten",
   "No activities on this day.": "Keine Aktivitäten an diesem Tag.",
-  "No catalogue records match these filters.":
-    "Keine Katalogeinträge entsprechen diesen Filtern.",
   "No current local administration files in this folder.":
     "Keine aktuellen Verwaltungsdateien in diesem Ordner.",
   "No accessible coordination items found.":
@@ -347,8 +339,6 @@ export const germanMessages: Record<string, string> = {
   "Clipboard is unavailable in this browser.":
     "Die Zwischenablage ist in diesem Browser nicht verfügbar.",
   "Properties updated.": "Eigenschaften aktualisiert.",
-  "Your explanation was saved for review.":
-    "Ihre Erläuterung wurde zur Prüfung gespeichert.",
   "Message saved.": "Nachricht gespeichert.",
   "Opening workspace…": "Arbeitsbereich wird geöffnet …",
   "Opening SharePoint…": "SharePoint wird geöffnet …",
@@ -396,7 +386,6 @@ export const germanMessages: Record<string, string> = {
   "Preview as": "Vorschau als",
   "Preview controls": "Vorschausteuerung",
   "Preview note": "Hinweis zur Vorschau",
-  "About this proof of concept": "Über diesen Machbarkeitsnachweis",
   "This proof of concept uses fictional content.":
     "Dieser Machbarkeitsnachweis verwendet fiktive Inhalte.",
   "Preview only. No message is sent.":
@@ -427,7 +416,6 @@ export const germanMessages: Record<string, string> = {
   "Local meetings, planning and team coordination.":
     "Besprechungen, Planung und Koordination innerhalb der Abteilung.",
   Workspace: "Arbeitsbereich",
-  "Workspace navigation": "Arbeitsbereichsnavigation",
   "Workspace search results": "Suchergebnisse im Arbeitsbereich",
   "Workspace member and contributor": "Mitglied mit Bearbeitungsrechten",
   "Microsoft 365 apps": "Microsoft 365-Apps",
@@ -473,7 +461,6 @@ export const germanMessages: Record<string, string> = {
   "Dismiss notification": "Benachrichtigung schließen",
   Chat: "Chat",
   Chats: "Chats",
-  Channels: "Kanäle",
   Unread: "Ungelesen",
   "Teams and channels": "Teams und Kanäle",
   "Chat and channels": "Chats und Kanäle",
@@ -493,7 +480,6 @@ export const germanMessages: Record<string, string> = {
   general: "Allgemein",
   Posts: "Beiträge",
   Shared: "Freigegeben",
-  "Shared files": "Freigegebene Dateien",
   "Shared documents": "Freigegebene Dokumente",
   "Keep current files in Shared and discuss changes in Posts.":
     "Aktuelle Dateien finden Sie unter „Freigegeben“. Besprechen Sie Änderungen unter „Beiträge“.",
@@ -553,7 +539,6 @@ export const germanMessages: Record<string, string> = {
   "AI Lab": "KI-Labor",
   "M365 & SPFx": "M365 und SPFx",
   "Platform Operations": "Plattformbetrieb",
-  "Security Engineering": "Sicherheitstechnik",
   "Architecture & Governance": "Architektur und Governance",
   "Live studio coordination": "Aktuelle Studiokoordination",
   "Team coordination": "Teamkoordination",
@@ -659,7 +644,6 @@ export const germanMessages: Record<string, string> = {
   "Creative & Editorial Studio": "Kreativ- und Redaktionsstudio",
   "Customer Care & Relations": "Kundenbetreuung und Beziehungsmanagement",
   "Income & Financial Operations": "Einnahmen und Finanzprozesse",
-  "Staff Service Operations": "Interne Serviceprozesse",
   "Quality, Monitoring & Improvement": "Qualität, Monitoring und Verbesserung",
   "Digital & Technology": "Digitales und Technologie",
   "Legal, Privacy & Compliance": "Recht, Datenschutz und Compliance",
@@ -667,16 +651,12 @@ export const germanMessages: Record<string, string> = {
   "Employment & Hiring Administration": "Personal- und Einstellungsverwaltung",
   "CEO & Executive Committee": "Geschäftsleitung und Leitungsausschuss",
   "Company Archives": "Unternehmensarchiv",
-  "Governance & Members Portal": "Gremien- und Mitgliederportal",
-  "Governance & Members Portal ↗": "Gremien- und Mitgliederportal ↗",
   "Emergency Response": "Krisenreaktion",
   "Emergency Response · Strictly confidential ↗":
     "Krisenreaktion · Streng vertraulich ↗",
   "Employee Representative Council": "Personalvertretung",
   "Employee Representative Council ↗": "Personalvertretung ↗",
   "Project delivery": "Projektdurchführung",
-  "Strategy & planning": "Strategie und Planung",
-  "Campaign operations": "Kampagnenbetrieb",
   "Audience & experience": "Zielgruppen und Nutzererlebnis",
   "Customer relationships": "Kundenbeziehungen",
   "Financial operations": "Finanzprozesse",
@@ -728,7 +708,6 @@ export const germanMessages: Record<string, string> = {
   "Absence & Cover Calendar": "Abwesenheits- und Vertretungskalender",
   "Local administration": "Lokale Verwaltung",
   "Department-wide": "Abteilungsweit",
-  "Organisation-wide": "Organisationsweit",
   "Marketing Department Assistant": "Assistenz der Marketingabteilung",
   "Communications Department Assistant":
     "Assistenz der Kommunikationsabteilung",
@@ -761,10 +740,8 @@ export const germanMessages: Record<string, string> = {
   "IT Services": "IT-Services",
   "Data & Analytics": "Daten und Analysen",
   "Information & Knowledge Management": "Informations- und Wissensmanagement",
-  "Project & Change Office": "Projekt- und Veränderungsbüro",
   "People Operations": "Personalservice",
   "Talent & Hiring": "Talentgewinnung und Einstellung",
-  "Learning & Capability": "Lernen und Kompetenzentwicklung",
   "Organisation & Culture": "Organisation und Kultur",
   "Reward & Employment": "Vergütung und Beschäftigung",
   "CEO Office": "Büro der Geschäftsführung",
@@ -807,7 +784,6 @@ export const germanMessages: Record<string, string> = {
   "Department Roadmaps": "Abteilungs-Roadmaps",
   "Department roadmaps": "Abteilungs-Roadmaps",
   Archive: "Archiv",
-  Archives: "Archive",
   "Current strategy period": "Aktueller Strategiezeitraum",
   Logframe: "Logischer Rahmen",
   "Budget & staffing submission": "Budget- und Personalbeitrag",
@@ -907,8 +883,6 @@ export const germanMessages: Record<string, string> = {
   "Travel Campaigns": "Kampagnen mit Reiseeinsätzen",
   "Important news": "Wichtige Nachrichten",
   "Important mews coming in live": "Wichtige Miau-Nachrichten – live",
-  "Pet Photos": "Tierfotos",
-  "Pet photos": "Tierfotos",
   Pets: "Haustiere",
   "New Starters": "Neue Mitarbeitende",
   "New starters": "Neue Mitarbeitende",
@@ -1026,14 +1000,9 @@ export const germanMessages: Record<string, string> = {
   "Close Checklist": "Abschlusscheckliste",
   "Reconciliation Issues": "Abstimmungspunkte",
   Reconciliation: "Abstimmung",
-  "Approved budget baseline": "Genehmigtes Basisbudget",
   Budget: "Budget",
   Actual: "Ist",
   Variance: "Abweichung",
-  "Forecast contributions": "Forecast-Beiträge",
-  "Explain the aggregate variance.":
-    "Erläutern Sie die aggregierte Abweichung.",
-  "Your explanation · Incoming revenue": "Ihre Erläuterung · Einnahmen",
   "Save explanation": "Erläuterung speichern",
   "Simulate budget-owner approval":
     "Genehmigung der Budgetverantwortlichen simulieren",
@@ -1193,7 +1162,6 @@ export const germanMessages: Record<string, string> = {
   "Quarterly organisational performance review":
     "Vierteljährliche Leistungsbewertung der Organisation",
   "Approved reporting follow-up": "Nachverfolgung genehmigter Berichte",
-  CEO: "Geschäftsleitung",
   "Three-year investment outlook": "Dreijähriger Investitionsausblick",
   "Executive review coordination":
     "Koordination der Prüfung durch die Geschäftsleitung",
@@ -1302,16 +1270,12 @@ export const germanMessages: Record<string, string> = {
     "Einsatz abgeschlossen · Kanal schreibgeschützt/archiviert",
   Activity: "Aktivität",
   "Meeting Brief": "Besprechungsvorlage",
-  "Supplier Onboarding Redesign": "Neugestaltung des Lieferanten-Onboardings",
   "Service & Platform Operations": "Service- und Plattformbetrieb",
   "Record series": "Aktenserie",
   "Legacy P: drive": "Altes Laufwerk P:",
-  "Global Archives": "Übergreifendes Archiv",
-  "Archive Practice & Transfers": "Archivpraxis und Übernahmen",
   "Office Maintenance & Equipment": "Büroinstandhaltung und Ausstattung",
   "Repairs, meeting rooms, furniture, equipment and office moves.":
     "Reparaturen, Besprechungsräume, Möbel, Ausstattung und Büroumzüge.",
-  "Purchasing & Suppliers": "Einkauf und Lieferanten",
   "Sourcing, supplier evaluation, renewals and contract handoffs.":
     "Beschaffung, Lieferantenbewertung, Verlängerungen und Vertragsübergaben.",
   "Travel Services": "Reiseservices",
@@ -1361,7 +1325,6 @@ export const germanMessages: Record<string, string> = {
   "Purchasing transactions": "Beschaffungsvorgänge",
   "Travel bookings": "Reisebuchungen",
   "Visitor coordination": "Besuchskoordination",
-  "Quality & Monitoring": "Qualität und Monitoring",
   "Process Management": "Prozessmanagement",
   "Improvement Initiatives": "Verbesserungsinitiativen",
   "Eco Practice": "Umweltgerechte Arbeitsweisen",
@@ -1494,7 +1457,6 @@ export const germanMessages: Record<string, string> = {
   "Compliance Reviews": "Compliance-Prüfungen",
   "Track obligations, evidence requests and review decisions.":
     "Pflichten, Nachweisanforderungen und Prüfentscheidungen nachverfolgen.",
-  "Risk & Assurance": "Risiko und Prüfungssicherheit",
   "Organisational risk methods, assurance and escalation.":
     "Organisatorische Risikomethoden, Prüfungssicherheit und Eskalation.",
   "Contract Review": "Vertragsprüfung",
@@ -1533,10 +1495,7 @@ export const germanMessages: Record<string, string> = {
   Investigations: "Untersuchungen",
   "Formal Cases": "Formelle Fälle",
   "Sensitive Risk Reviews": "Vertrauliche Risikoprüfungen",
-  "Workforce & Organisation": "Personalbestand und Organisation",
-  "Leadership, Culture & Inclusion": "Führung, Kultur und Inklusion",
   "Capability & Learning": "Kompetenzentwicklung und Lernen",
-  "Reward & Employment Frameworks": "Vergütungs- und Beschäftigungsrahmen",
   "Internal Communications": "Interne Kommunikation",
   "Staff Communities & Company Events":
     "Mitarbeitendennetzwerke und Unternehmensveranstaltungen",
@@ -1586,7 +1545,6 @@ export const germanMessages: Record<string, string> = {
     "Netzwerkmitgliedschaften und private Kanäle",
   "Internal communications publishing":
     "Veröffentlichung interner Mitteilungen",
-  "Recruitment Administration": "Einstellungsverwaltung",
   "Employment Operations": "Personaladministration",
   "Shared employment-change methods and authorised system handoffs.":
     "Gemeinsame Verfahren für Beschäftigungsänderungen und autorisierte Systemübergaben.",
@@ -1714,8 +1672,6 @@ export const germanMessages: Record<string, string> = {
   "Response decision recorded": "Einsatzentscheidung dokumentiert",
   "Current response group ·": "Aktuelle Einsatzgruppe ·",
   "· This incident only": "· Nur für diesen Vorfall",
-  "Use fictional, low-detail values. No channel or membership is created outside this browser.":
-    "Verwenden Sie fiktive, knapp gehaltene Angaben. Außerhalb dieses Browsers werden weder Kanäle noch Mitgliedschaften erstellt.",
   "Incident ID": "Vorfall-ID",
   "Short working title": "Kurzer Arbeitstitel",
   Severity: "Schweregrad",
@@ -1784,7 +1740,6 @@ export const germanMessages: Record<string, string> = {
   Policy: "Richtlinie",
   Compliance: "Compliance",
   "Publication date": "Veröffentlichungsdatum",
-  "Vacancy setup": "Stelleneinrichtung",
   "Recruitment stage": "Einstellungsphase",
   Handoff: "Übergabe",
   "System of record": "Führendes System",
@@ -1795,8 +1750,6 @@ export const germanMessages: Record<string, string> = {
   "Service Operations": "Servicebetrieb",
   "Maintain office equipment and keep front-desk services ready.":
     "Büroausstattung instand halten und Empfangsservices sicherstellen.",
-  "Prepare sourcing decisions, supplier onboarding and renewal reviews.":
-    "Beschaffungsentscheidungen, Lieferanten-Onboarding und Verlängerungsprüfungen vorbereiten.",
   Supplier: "Lieferant",
   "Supplier Evaluation": "Lieferantenbewertung",
   "Evaluation criteria, evidence and commercial comparison":
@@ -1873,11 +1826,7 @@ export const germanMessages: Record<string, string> = {
     "Mitarbeitendenversammlungen vorbereiten und Intranetaktualisierungen veröffentlichen.",
   "By channel": "Nach Kanal",
   "Vacancy Coordination": "Stellenkoordination",
-  "Vacancy setup, approval route, panel preparation and shared milestones; no candidate details":
-    "Stelleneinrichtung, Genehmigungsweg, Gremienvorbereitung und gemeinsame Meilensteine; keine Bewerbungsdetails",
   "Recruitment Handoff": "Übergabe im Einstellungsverfahren",
-  "Process responsibilities, readiness checks and the authorised system handoff; no candidate details":
-    "Prozessverantwortung, Bereitschaftsprüfungen und autorisierte Systemübergabe; keine Bewerbungsdetails",
   "By recruitment stage": "Nach Einstellungsphase",
   "Employment Process": "Beschäftigungsprozess",
   "Authorisation route, process checks and system responsibilities; no individual records":
@@ -1895,8 +1844,6 @@ export const germanMessages: Record<string, string> = {
   "Negotiation Plan": "Verhandlungsplan",
   "Objectives, options, authority and escalation route":
     "Ziele, Optionen, Befugnisse und Eskalationsweg",
-  "Working appraisal, description and preservation documents, separate from the controlled catalogue.":
-    "Arbeitsunterlagen zu Bewertung, Erschließung und Bestandserhaltung, getrennt vom kontrollierten Katalog.",
   "By activity": "Nach Aktivität",
   "Private Staff Communities": "Private Mitarbeitendennetzwerke",
   "Restricted Information": "Zugriffsbeschränkte Informationen",
@@ -1931,8 +1878,6 @@ export const germanMessages: Record<string, string> = {
   "Supplier sourcing context": "Kontext zur Lieferantenauswahl",
   "Learning & staff programme planning":
     "Planung von Lern- und Mitarbeitendenprogrammen",
-  "Prepare the manager capability pilot, October all-staff meeting and shared workforce contributions.":
-    "Führungskräftepilot, Mitarbeitendenversammlung im Oktober und gemeinsame Personalplanungsbeiträge vorbereiten.",
   "Upcoming programme material": "Anstehende Programmunterlagen",
   "Prepare an all-staff update":
     "Unternehmensweite Mitarbeitendeninformation vorbereiten",
@@ -1949,8 +1894,6 @@ export const germanMessages: Record<string, string> = {
   "Learning & induction programmes": "Lern- und Einführungsprogramme",
   "Care review & relationship continuity":
     "Betreuungsprüfung und Beziehungskontinuität",
-  "Review recurring enquiry themes and the next coaching cycle, then prepare relationship follow-up.":
-    "Wiederkehrende Anfragethemen und den nächsten Coaching-Zyklus prüfen, anschließend die Beziehungspflege vorbereiten.",
   "Methods for the next conversation": "Methoden für das nächste Gespräch",
   "Open authorised care cases": "Autorisierte Betreuungsfälle öffnen",
   "Review relationship follow-up": "Nachverfolgung der Beziehungspflege prüfen",
@@ -1958,62 +1901,10 @@ export const germanMessages: Record<string, string> = {
   Collections: "Sammlungen",
   "Browse historical collections and record series.":
     "Historische Sammlungen und Aktenserien durchsuchen.",
-  "View-only legacy folders and historical material.":
-    "Alte Ordner und historisches Material mit reinem Lesezugriff.",
-  "Distinct branch archive catalogues.":
-    "Getrennte Archivkataloge der Niederlassungen.",
-  "Records & Retention": "Schriftgut und Aufbewahrung",
-  "Retention schedules, triggers, appraisal and final actions.":
-    "Aufbewahrungspläne, Fristauslöser, Bewertung und abschließende Maßnahmen.",
-  "Appraisal & Transfer": "Bewertung und Übernahme",
-  "Owner review, transfer approval, description and preservation.":
-    "Prüfung durch Verantwortliche, Übernahmegenehmigung, Erschließung und Bestandserhaltung.",
-  "Description & Cataloguing": "Erschließung und Katalogisierung",
-  "Record series, creator context and catalogue description.":
-    "Aktenserien, Provenienzkontext und Katalogbeschreibung.",
   "Digital Preservation": "Digitale Langzeitarchivierung",
-  "Format risk, checksums, preservation copies, digitisation and media care.":
-    "Formatrisiken, Prüfsummen, Sicherungskopien, Digitalisierung und Medienerhaltung.",
-  "Access Requests": "Zugriffsanträge",
-  "Coordinate archive access decisions.":
-    "Entscheidungen über Archivzugriff koordinieren.",
   "Archive Projects": "Archivprojekte",
-  "Collection description and preservation improvement work.":
-    "Erschließung von Sammlungen und Verbesserungen der Bestandserhaltung.",
-  "Retention Schedule Review": "Prüfung des Aufbewahrungsplans",
-  "Review record-series triggers and final action":
-    "Fristauslöser und abschließende Maßnahme für Aktenserien prüfen",
-  "2022 Executive Papers": "Unterlagen der Geschäftsleitung 2022",
-  "Confirm owner review before controlled transfer":
-    "Prüfung durch die Verantwortlichen vor kontrollierter Übernahme bestätigen",
-  "Legacy Marketing Campaign Records": "Historische Marketingkampagnenakten",
-  "Appraise historical value and describe record series":
-    "Historischen Wert bewerten und Aktenserie erschließen",
-  "Completed System Migration Records":
-    "Akten abgeschlossener Systemmigrationen",
-  "Review business evidence for archive transfer":
-    "Fachliche Nachweise für die Archivübernahme prüfen",
   "Historical Annual Reports": "Historische Jahresberichte",
-  "Confirm preservation and catalogue completeness":
-    "Bestandserhaltung und Vollständigkeit des Katalogs bestätigen",
   "Closed Project Documentation": "Dokumentation abgeschlossener Projekte",
-  "Confirm retention and appraisal decision":
-    "Aufbewahrungs- und Bewertungsentscheidung bestätigen",
-  "Historical Collection Description": "Erschließung historischer Sammlungen",
-  "Review creator context and series description":
-    "Provenienzkontext und Serienbeschreibung prüfen",
-  "Audio-visual Preservation Review":
-    "Prüfung der audiovisuellen Bestandserhaltung",
-  "Review format risk, checksums and preservation copies":
-    "Formatrisiken, Prüfsummen und Sicherungskopien prüfen",
-  "Archive access requests": "Archivzugriffsanträge",
-  "Confirm authorised access decision":
-    "Autorisierte Zugriffsentscheidung bestätigen",
-  "Institutional Memory Collection": "Sammlung zum Organisationsgedächtnis",
-  "Plan description and digitisation priorities":
-    "Erschließungs- und Digitalisierungsprioritäten planen",
-  "Restricted Historical Collection":
-    "Zugriffsbeschränkte historische Sammlung",
   "Catalogue and description": "Katalog und Erschließung",
   "Digital preservation": "Digitale Langzeitarchivierung",
   "Eco improvement": "Umweltverbesserung",
@@ -2021,29 +1912,13 @@ export const germanMessages: Record<string, string> = {
   "Working review": "Laufende Prüfung",
   "Archive catalogue": "Archivkatalog",
   "Archive record preview": "Vorschau des Archiveintrags",
-  "Archive review": "Archivprüfung",
-  "Archive transfer": "Archivübernahme",
-  "Archive working queue": "Archivarbeitsliste",
-  "Current archive work": "Aktuelle Archivarbeit",
-  Appraisal: "Bewertung",
-  "Appraisal & Transfer queue": "Bewertungs- und Übernahmeliste",
   "Appraisal and transfer": "Bewertung und Übernahme",
-  "Appraisal pending": "Bewertung ausstehend",
-  Preservation: "Bestandserhaltung",
-  "Preservation review": "Prüfung der Bestandserhaltung",
   "Description and catalogue work": "Erschließung und Katalogarbeit",
   "Featured collections": "Ausgewählte Sammlungen",
-  "Legacy P drive folders": "Alte Ordner auf Laufwerk P:",
-  "Select a legacy folder": "Alten Ordner auswählen",
-  "VIEW ONLY · Browse historical folders":
-    "NUR LESEZUGRIFF · Historische Ordner durchsuchen",
   "Historical reference": "Historische Referenz",
   "Retention Schedule": "Aufbewahrungsplan",
   "Retention period": "Aufbewahrungsfrist",
   "Retention requirements ↗": "Aufbewahrungsvorgaben ↗",
-  "Records & Retention →": "Schriftgut und Aufbewahrung →",
-  "Restricted Historical Collection · Controlled access →":
-    "Zugriffsbeschränkte historische Sammlung · Kontrollierter Zugriff →",
   "Transferred to Archive": "An das Archiv übergeben",
   "Workspace preferences use the default reading and document view.":
     "Für diesen Arbeitsbereich werden die standardmäßige Lese- und Dokumentansicht verwendet.",
@@ -2141,8 +2016,6 @@ export const germanMessages: Record<string, string> = {
   "2027 approved baseline · AP-271": "Genehmigtes Basisbudget 2027 · AP-271",
   "2026 approved baseline · AP-270": "Genehmigtes Basisbudget 2026 · AP-270",
   "Related documents →": "Zugehörige Dokumente →",
-  "Digital & Technology / Security Engineering":
-    "Digitales und Technologie/Sicherheitstechnik",
   "Microsoft Lists": "Microsoft Lists",
   "New item": "Neuer Eintrag",
   Notes: "Notizen",
@@ -2170,8 +2043,6 @@ export const germanMessages: Record<string, string> = {
   Done: "Erledigt",
   "No new notifications. Check current operations for this week’s handover.":
     "Keine neuen Benachrichtigungen. Prüfen Sie die aktuellen Einsätze für die Übergabe dieser Woche.",
-  "Workspace preferences use the default document and reading views.":
-    "Für diesen Arbeitsbereich werden die standardmäßige Dokument- und Leseansicht verwendet.",
   "Needs attention": "Handlungsbedarf",
   "Business area": "Fachbereich",
   "Open delivery owner ↗": "Zuständigen Umsetzungsbereich öffnen ↗",
@@ -2223,19 +2094,9 @@ export const germanMessages: Record<string, string> = {
   "Title, creator, description or reference":
     "Titel, Urheber, Beschreibung oder Referenz",
   Format: "Format",
-  "— Approved Historical Summary.pdf":
-    "– Genehmigte historische Zusammenfassung.pdf",
-  "2012 · Historical reference · VIEW ONLY":
-    "2012 · Historische Referenz · NUR LESEZUGRIFF",
-  "Fictional schedule for records-specialist review":
-    "Fiktiver Plan zur Prüfung durch die Schriftgutverwaltung",
   "Business activity": "Geschäftstätigkeit",
-  Trigger: "Fristauslöser",
-  "Final action": "Abschließende Maßnahme",
   Basis: "Grundlage",
   "Proposed transfer": "Vorgeschlagene Übernahme",
-  "Technical storage implementation handoff ↗":
-    "Übergabe zur technischen Speicherimplementierung ↗",
   "Close preview": "Vorschau schließen",
   "Black, Indigenous & People of Colour Network":
     "Netzwerk für Schwarze Menschen, indigene Menschen und People of Colour",
@@ -2267,8 +2128,6 @@ export const germanMessages: Record<string, string> = {
   "Add a note": "Notiz hinzufügen",
   "Anyone joining the department lunch on Thursday? I’ve booked a table for 12:30.":
     "Wer kommt am Donnerstag zum gemeinsamen Mittagessen der Abteilung? Ich habe für 12:30 Uhr einen Tisch reserviert.",
-  "Friday lunch is booked for 13:00. Anyone else joining?":
-    "Für Freitag ist das Mittagessen um 13:00 Uhr reserviert. Kommt noch jemand mit?",
   "Agenda for Tuesday’s Unit Directors meeting is up — please add anything you want covered.":
     "Die Tagesordnung für das Bereichsleitungstreffen am Dienstag ist verfügbar. Ergänzt bitte eure Themen.",
   "Quick heads-up that a few colleagues are away next week. Cover arrangements are updated.":
@@ -2322,24 +2181,14 @@ export const germanMessages: Record<string, string> = {
   "Strategic Initiatives Office": "Büro für strategische Initiativen",
   "Story planning, working copy and editorial review.":
     "Themenplanung, Textarbeit und redaktionelle Prüfung.",
-  "Page copy, accessibility and content acceptance. CMS engineering stays in Digital & Technology.":
-    "Seitentexte, Barrierefreiheit und Inhaltsabnahme. CMS-Entwicklung bleibt bei Digitales und Technologie.",
   "Channel adaptations, publishing windows and social copy.":
     "Kanalanpassungen, Veröffentlichungsfenster und Social-Media-Texte.",
   "Public release drafting and approved publication coordination.":
     "Entwürfe öffentlicher Mitteilungen und Koordination genehmigter Veröffentlichungen.",
-  "Work through publication layouts, email copy, image selections and release checks in Shared.":
-    "Bearbeitet Publikationslayouts, E-Mail-Texte, Bildauswahl und Freigabeprüfungen unter „Freigegeben“.",
   "Storyboards, review cuts, captions and accessible delivery.":
     "Storyboards, Prüfschnitte, Untertitel und barrierefreie Auslieferung.",
   "Priorities, review handoffs and the next publishing window.":
     "Prioritäten, Prüfungsübergaben und das nächste Veröffentlichungsfenster.",
-  "Bring learning and skills context into briefs, email copy and accessible explainers.":
-    "Lern- und Kompetenzthemen in Briefings, E-Mail-Texte und barrierefreie Erklärformate einbringen.",
-  "Check public-facing language about digital services and pass useful context to Editorial and Web.":
-    "Öffentliche Texte zu digitalen Services prüfen und hilfreichen Kontext an Redaktion und Webredaktion weitergeben.",
-  "Review programme context and credits for print, event and multimedia production.":
-    "Programmkontext und Urheberangaben für Print-, Veranstaltungs- und Multimediaproduktionen prüfen.",
   "Temporary city-topic and channel collaboration for the summit's public-facing coverage.":
     "Befristete Zusammenarbeit von Stadtfachleuten und Kanalteams für die öffentliche Berichterstattung zum Gipfel.",
   Editorial: "Redaktion",
@@ -2348,7 +2197,6 @@ export const germanMessages: Record<string, string> = {
   "Video & Multimedia": "Video und Multimedia",
   "Production coordination": "Produktionskoordination",
   "Service Explainer": "Service-Erklärformat",
-  "Q4 Forecast Assumptions": "Forecast-Annahmen für das 4. Quartal",
   Management: "Management",
   "Planning Cycle Submission Tracker.xlsx":
     "Übersicht der Planungszyklusbeiträge.xlsx",
@@ -2655,7 +2503,6 @@ export const germanMessages: Record<string, string> = {
     "Analyse zur Personalisierung und nächsten geeigneten Aktion",
   "Which message option should the experiment compare?":
     "Welche Nachrichtenvarianten soll das Experiment vergleichen?",
-  "Research & Insight": "Recherche & Analyse",
   "Experiments & Testing": "Experimente und Tests",
   "Analysis & Reporting": "Analyse und Berichtswesen",
   Study: "Studie",
@@ -2885,7 +2732,6 @@ export const germanMessages: Record<string, string> = {
   "Unit colleague": "Mitglied der Organisationseinheit",
   Guidance: "Leitfaden",
   "Final record": "Abschlussakte",
-  "Executive coordination": "Koordination der Geschäftsleitung",
   "Strategic initiatives": "Strategische Initiativen",
   "Governance liaison": "Gremienkoordination",
   "Leadership meetings": "Führungssitzungen",
@@ -2908,7 +2754,6 @@ export const germanMessages: Record<string, string> = {
   "Institutional funding": "Institutionelle Finanzierung",
   "Missing customer reference": "Fehlende Kundenreferenz",
   "Partner income": "Partnereinnahmen",
-  "Returned bank payment": "Zurückgegebene Bankzahlung",
   "Other operating income": "Sonstige betriebliche Erträge",
   "Receipt correction": "Zahlungseingangskorrektur",
   Prepared: "Vorbereitet",
@@ -2916,7 +2761,6 @@ export const germanMessages: Record<string, string> = {
     "Abweichung in der Zahlungsanbieterabrechnung",
   "Exception resolution": "Klärung von Sonderfällen",
   Reconciling: "In Abstimmung",
-  Treasury: "Treasury",
   "Department inputs due": "Abteilungsbeiträge fällig",
   "Annual budget": "Jahresbudget",
   "Scenario review": "Szenarioprüfung",
@@ -2940,7 +2784,6 @@ export const germanMessages: Record<string, string> = {
     "Prüfung von Journal- und Buchungskorrekturen",
   "General ledger coordination": "Hauptbuchkoordination",
   "Ready for approval": "Bereit zur Genehmigung",
-  "Cash forecast": "Liquiditätsforecast",
   "Inter-entity transfer confirmation":
     "Bestätigung konzerninterner Überweisungen",
   "Awaiting accounting confirmation": "Buchhaltungsbestätigung ausstehend",
@@ -2950,7 +2793,6 @@ export const germanMessages: Record<string, string> = {
   "Bank transfer": "Banküberweisung",
   Bank: "Bank",
   "Linked financial process": "Verknüpfter Finanzprozess",
-  Baseline: "Planungsgrundlage",
   "Cost pressure": "Kostendruck",
   Growth: "Wachstum",
   "Delayed investment": "Verzögerte Investition",
@@ -2959,7 +2801,6 @@ export const germanMessages: Record<string, string> = {
   "Supplier cost increase": "Steigende Lieferantenkosten",
   "Revenue downside": "Einnahmenrückgang",
   "Incoming revenue reconciled": "Einnahmen abgestimmt",
-  "Payables complete": "Verbindlichkeiten vollständig",
   "Bank reconciliation complete": "Bankabstimmung abgeschlossen",
   "Payroll posted": "Entgeltabrechnung gebucht",
   "Intercompany balances checked": "Konzerninterne Salden geprüft",
@@ -2977,14 +2818,10 @@ export const germanMessages: Record<string, string> = {
   "Customer Payment Exceptions": "Sonderfälle bei Kundenzahlungen",
   "Refund & Chargeback Review":
     "Prüfung von Rückerstattungen und Rückbuchungen",
-  "High-Value Payment Review": "Prüfung hoher Zahlungen",
   "Payment Data Correction": "Korrektur von Zahlungsdaten",
   "Payroll Settlement": "Abwicklung der Entgeltabrechnung",
-  "Employee Reimbursements — Sensitive Cases":
-    "Erstattungen an Mitarbeitende – Vertrauliche Fälle",
   "Disputed Supplier Payment": "Strittige Lieferantenzahlung",
   "Exceptional Payment Authorisation": "Außerordentliche Zahlungsgenehmigung",
-  "Draft Management Forecast": "Management-Forecast im Entwurf",
   workspace: "Arbeitsbereich",
   workspaces: "Arbeitsbereiche",
   Workspaces: "Arbeitsbereiche",
@@ -3009,17 +2846,11 @@ export const germanMessages: Record<string, string> = {
     "Arbeitsbereich Zielgruppenforschung und Marketinganalysen",
   "Creative & Editorial Studio workspace":
     "Arbeitsbereich Kreativ- und Redaktionsstudio",
-  "Customer Care & Relations workspace":
-    "Arbeitsbereich Kundenbetreuung und Beziehungsmanagement",
   "Income & Financial Operations workspace":
     "Arbeitsbereich Einnahmen und Finanzprozesse",
-  "Staff Service Operations workspace":
-    "Arbeitsbereich Interne Serviceprozesse",
   "Quality, Monitoring & Improvement workspace":
     "Arbeitsbereich Qualität, Monitoring und Verbesserung",
   "Digital & Technology workspace": "Arbeitsbereich Digitales und Technologie",
-  "Legal, Privacy & Compliance workspace":
-    "Arbeitsbereich Recht, Datenschutz und Compliance",
   "People & Culture workspace": "Arbeitsbereich Personal und Kultur",
   "Employment & Hiring Administration workspace":
     "Arbeitsbereich Personal- und Einstellungsverwaltung",
@@ -3049,19 +2880,13 @@ export const germanMessages: Record<string, string> = {
   Edu: "Edu",
   Curriculum: "Edu",
   "Edu workspace": "Arbeitsbereich Edu",
-  "CMS engineering in Dev.": "CMS-Entwicklung in Dev.",
   "$ ->": "$ ->",
   Vault: "Tresor",
   Workforce: "Belegschaft",
   "Record held in the Membership Portal.": "Akte im Mitgliederportal geführt.",
   "Return performance evidence to Lab": "Leistungsnachweise an Lab zurückgeben",
-  "Return performance evidence to Laboratory":
-    "Leistungsnachweise an das Labor zurückgeben",
-  "Dev. / Security Engineering": "Dev./Sicherheitstechnik",
   "Archives · Appraisal, retention and preservation ↗":
     "Archiv · Bewertung, Aufbewahrung und Bestandserhaltung ↗",
-  "Page copy, accessibility and content acceptance. CMS engineering stays in Dev.":
-    "Seitentexte, Barrierefreiheit und Inhaltsabnahme. CMS-Entwicklung bleibt bei Dev.",
   "Acquisitions workspace": "Arbeitsbereich Akquise",
   "Laboratory workspace": "Arbeitsbereich Labor",
   "Lab workspace": "Arbeitsbereich Lab",

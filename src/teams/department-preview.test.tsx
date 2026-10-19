@@ -156,7 +156,7 @@ describe("deliberate Department introductions", () => {
       );
       const permitted = id === "jamie";
       expect(html.includes("Access required")).toBe(!permitted);
-      expect(html.includes("Try another preview role")).toBe(!permitted);
+      expect(html.includes("Reveal restricted content")).toBe(!permitted);
       expect(html.includes(unit.files[0].name)).toBe(permitted);
     }
   });

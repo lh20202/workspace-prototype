@@ -32,7 +32,6 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Culture & Inclusion": "Kultur & Inklusion",
   "Learning Management": "Lernmanagement",
   "Internal Events & Networking": "Interne Veranstaltungen & Netzwerke",
-  "Personnel Admin": "Personaladministration",
   Council: "Council",
   "Workers' Union": "Council",
   "Welfare & Safeguarding": "Fürsorge & Schutz",
@@ -73,7 +72,6 @@ export const germanSimplifiedNames: Record<string, string> = {
   "Return performance evidence to Laboratory":
     "Ergebnisnachweise an das Labor zurückgeben",
   "Media Library": "Medienbibliothek",
-  Archives: "Archiv",
   "Membership Portal": "Mitgliederportal",
   "-> $": "-> $",
   "$ ->": "$ ->",
@@ -86,7 +84,6 @@ export const germanSimplifiedNames: Record<string, string> = {
   // Historical display names in saved content remain interpretable.
   "Sales & Marketing Wiki": "Advertising, Marketing & Sales Wiki",
   "Frontline Crew Portal": "Lokales Crew-Portal",
-  "Crew portal": "Lokales Crew-Portal",
   "Research Lab": "Labor",
   "Research Lab workspace": "Arbeitsbereich Labor",
   "Creative Studio": "Studio",

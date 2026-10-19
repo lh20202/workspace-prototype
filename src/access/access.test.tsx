@@ -99,8 +99,9 @@ describe("business focal point before technical access escalation", () => {
       }),
     );
     expect(html).toContain(
-      "This knowledge area is outside the frontline view.",
+      "Your role determines whether you can see this content. For this demo, you can reveal it here.",
     );
+    expect(html).toContain("Reveal restricted content");
     expect(html).toContain("Need access to this Wiki area instead?");
     expect(html).toContain("is the focal point for this Wiki.");
     expect(html).toContain("Contact Wiki focal point");

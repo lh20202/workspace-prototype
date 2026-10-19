@@ -32,7 +32,12 @@ export function consumeWelcomeEntry() {
 }
 /** Internal fixture navigation; no top-level role switch is exposed to visitors. */
 export function changePreviewRole(nextId: string) {
-  if (isStandaloneDemo()) return;
+  if (
+    isStandaloneDemo() ||
+    typeof window === "undefined" ||
+    typeof location === "undefined"
+  )
+    return;
   const nextPerson = staff.find((member) => member.id === nextId);
   if (!nextPerson) return;
   window.dispatchEvent(new Event(previewRoleChangingEvent));

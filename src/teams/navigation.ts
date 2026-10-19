@@ -278,7 +278,6 @@ export function channelNavigationFor({
   return {
     entryContext: context,
     groups: groups.filter((group) => group.channels.length > 0),
-    showRoleDiscovery: !context && person.id === "taylor",
   };
 }
 

@@ -1,35 +1,61 @@
 /** Short, conversational captions and replies for the shared pet-photo channel. */
 export const germanPetPhotos: Record<string, string> = {
+  "& Other Animals": "& andere Tiere",
+  "Look into my eyes": "Sieh mir in die Augen.",
+  "take me to your leader": "Bring mich zu eurer Anführerin.",
+  "I feel her staring into the depths of my soul.":
+    "Ich habe das Gefühl, sie blickt mir bis in die Seele.",
   "Does Louis look more sophisticated with this bow tie?":
     "Sieht Louis mit dieser Fliege vornehmer aus?",
   "He looks like he wants to discuss my mortgage.":
     "Er sieht aus, als wollte er mit mir über meine Baufinanzierung sprechen.",
+  "Sophisticated, dignified and refined.":
+    "Vornehm, würdevoll und kultiviert.",
   "A whole dachshund. In one hand.": "Ein ganzer Dackel. In einer Hand.",
   "HALP. I can't. Too cute.": "HILFE. Ich kann nicht mehr. Zu süß.",
-  "These aren't my pets. I'd like to point out that Pet photos is discriminatory towards those of us who don't own these goats, yet clearly had to post them here.":
-    "Das sind nicht meine Haustiere. Ich möchte darauf hinweisen, dass Haustierfotos all jene diskriminiert, denen diese Ziegen nicht gehören und die sie trotzdem ganz offensichtlich hier posten mussten.",
+  "These aren't my pets. I'd like to point out that this channel is discriminatory against people who don't own goats as pets.":
+    "Das sind nicht meine Haustiere. Ich möchte darauf hinweisen, dass dieser Kanal Menschen ausschließt, die keine Ziegen als Haustiere haben.",
   "Thank you for bringing this important information to our attention.":
     "Vielen Dank für diesen wichtigen Hinweis.",
+  "+1 we need more goats": "+1 – wir brauchen mehr Ziegen.",
+  "Vote — make Pet photos more inclusive of goats":
+    "Abstimmung: Haustierfotos auch für Ziegen öffnen",
+  vote: "Stimme",
+  votes: "Stimmen",
+  "Rename channel to “Pets & Goats”":
+    "Kanal in „Haustiere & Ziegen“ umbenennen",
+  "Rename channel to “Pet Photos & Other Animals”":
+    "Kanal in „Haustierfotos & andere Tiere“ umbenennen",
+  "Raise a ticket to request a new": "Ticket für eine neue",
+  ": “Goat Appreciation Society”": "anfordern: „Goat Appreciation Society“",
+  "Finally, justice.": "Endlich Gerechtigkeit.",
   "the devil walks among us": "der teufel ist unter uns",
   "And apparently sleeps on the good pillows.":
     "Und schläft offenbar auf den guten Kissen.",
+  "What's wrong with your chicken? Call a vet.":
+    "Was stimmt mit deinem Huhn nicht? Ruf eine Tierarztpraxis an.",
   "Not a pet but still...": "Kein Haustier, aber trotzdem...",
-  "the noot has spoken": "das noot hat gesprochen",
-  "Focus on what you are naturally drawn to. Use that simply clue to cut through the noise and find your rhythm. The frequency is there...":
+  "Focus on what you're naturally drawn to. Use that simple clue to cut through the noise and find your rhythm. The frequency is there...":
     "Konzentriere dich auf das, was dich von Natur aus anzieht. Nutze diesen einfachen Hinweis, um den Lärm auszublenden und deinen Rhythmus zu finden. Die Frequenz ist da...",
   "I am naturally drawn to closing my laptop.":
     "Mich zieht es von Natur aus dazu, meinen Laptop zuzuklappen.",
+  "Is that a raw chicken?": "Ist das ein rohes Huhn?",
   "The garden has a new head of security. References available on request.":
     "Der Garten hat eine neue Sicherheitsleitung. Referenzen auf Anfrage.",
   "I've been refused entry to my own house.":
     "Mir wurde der Zutritt zu meinem eigenen Haus verweigert.",
+  "Firm but fair policy.": "Konsequent, aber fair.",
   "Performance review came back.": "Die Leistungsbeurteilung ist da.",
   "No notes. Just prolonged eye contact.":
     "Keine Anmerkungen. Nur anhaltender Blickkontakt.",
+  "Performance review came back. It's not that she dislikes you, she just judges you and your life choices.":
+    "Die Leistungsbeurteilung ist da. Sie mag dich nicht etwa nicht – sie beurteilt nur dich und deine Lebensentscheidungen.",
   "Anyone know how to switch this mosquito to silent?":
     "Weiß jemand, wie man diese Mücke stummschaltet?",
   "Have you checked the battery in your dog?":
     "Hast du die Batterie in deinem Hund geprüft?",
+  "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.":
+    "Hast du einen Neustart versucht? Stups die Nase an und halte sie drei Sekunden gedrückt. Wenn es dann noch nicht klappt, melde es über Snuffles@IT.service.",
   "Louis, a black and white Devon Rex cat wearing a checked bow tie":
     "Louis, ein schwarz-weißer Devon-Rex-Kater mit karierter Fliege",
   "A tiny black and tan dachshund puppy resting in a hand":
