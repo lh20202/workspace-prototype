@@ -54,21 +54,9 @@
   font-weight: 600;
   line-height: 23px;
 }
-.workspace-tour-in-development {
-  align-self: center;
-  padding: 9px 15px;
-  border: 1px solid #b9d4e1;
-  border-radius: 3px;
-  color: #174f68;
-  background: #eaf4f7;
-  font-size: 14px;
-  font-weight: 750;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
 .workspace-tour-directory-stage {
   position: relative;
-  min-height: 660px;
+  min-height: 700px;
   overflow: hidden;
   isolation: isolate;
   border: 1px solid #c9d4db;
@@ -265,16 +253,20 @@
   overflow: visible;
   pointer-events: none;
 }
+.workspace-tour-annotation-arrows-mobile {
+  display: none;
+}
 .workspace-tour-annotation-arrows path {
   fill: none;
-  stroke: #b23d2c;
-  stroke-width: 2.3px;
+  stroke: #8c352a;
+  stroke-width: 2.4px;
   stroke-linecap: round;
   stroke-linejoin: round;
   marker-end: url(#tour-arrowhead);
+  vector-effect: non-scaling-stroke;
 }
 .workspace-tour-annotation-arrows marker path {
-  fill: #b23d2c;
+  fill: #8c352a;
   stroke: none;
 }
 .workspace-tour-annotations {
@@ -312,62 +304,68 @@
   font-size: 12px;
 }
 .annotation-navigation {
-  top: 22%;
-  left: 1%;
+  top: 18%;
+  left: 1.5%;
   transform: rotate(-2deg);
 }
 .annotation-channels {
-  top: 1%;
-  right: 2%;
+  top: 2%;
+  right: 13%;
   transform: rotate(1deg);
 }
 .annotation-naming {
-  top: 18%;
-  left: 38%;
+  top: 43%;
+  left: 20%;
   transform: rotate(-1deg);
 }
 .annotation-status {
-  top: 29%;
-  right: 15%;
+  top: 43%;
+  right: 1.5%;
   transform: rotate(1deg);
 }
 .annotation-metadata {
-  bottom: 2%;
-  left: 43%;
+  bottom: 3%;
+  left: 39%;
   transform: rotate(1deg);
 }
 .annotation-sensitivity {
-  right: 1%;
-  bottom: 4%;
+  right: 1.5%;
+  bottom: 3%;
   transform: rotate(-1deg);
 }
-.workspace-tour-directory-stage .workspace-tour-entry-card {
+.workspace-tour-coming-soon {
   position: absolute;
-  top: 45%;
+  top: 16%;
   left: 50%;
   z-index: 4;
-  width: min(400px, 38%);
-  margin: 0;
-  transform: translate(-50%, -50%);
-}
-.workspace-tour-entry-heading {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.workspace-tour-entry-icon {
   display: grid;
-  place-items: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 4px;
-  background: #eff6fb;
+  justify-items: center;
+  width: min(460px, calc(100% - 40px));
+  min-height: 150px;
+  padding: 30px 34px 26px;
+  border: 1px solid #c7d3dc;
+  border-top: 4px solid #176da0;
+  border-radius: 5px;
+  color: #242424;
+  background: #fff;
+  box-shadow: 0 14px 34px #172b3a38, 0 3px 8px #172b3a1c;
+  text-align: center;
+  margin: 0;
+  transform: translate(-50%, 0);
 }
-.workspace-tour-entry-icon img {
-  width: 36px;
-  height: 36px;
+.workspace-tour-coming-soon > span {
+  color: #174f68;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.25;
 }
-.workspace-tour-entry-heading > div > span,
+.workspace-tour-coming-soon p {
+  margin: 12px 0 0;
+  color: #4a5660;
+  font-size: 15px;
+  line-height: 1.45;
+}
 .workspace-tour-page-heading > span,
 .workspace-tour-card-eyebrow {
   color: #626f7b;
@@ -375,30 +373,6 @@
   font-weight: 650;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-}
-.workspace-tour-entry-heading h2 {
-  margin: 3px 0 0;
-  font-size: 20px;
-}
-.workspace-tour-entry-card > p {
-  margin: 14px 0 18px;
-  color: #4c5660;
-  font-size: 14px;
-}
-.workspace-tour-primary-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px 13px;
-  border-radius: 3px;
-  color: #fff;
-  background: #176da0;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.workspace-tour-primary-link:hover {
-  background: #115d8b;
 }
 .workspace-tour-directory-guide {
   display: none;
@@ -970,7 +944,7 @@
 
 @media (max-width: 900px) {
   .workspace-tour-directory-stage {
-    min-height: 600px;
+    min-height: 760px;
   }
   .tour-scene-layout {
     grid-template-columns: 170px minmax(0, 1fr);
@@ -982,8 +956,9 @@
     grid-template-columns: minmax(210px, 1.8fr) 1fr 0.75fr 0.7fr 0.7fr 0.7fr;
     font-size: 10px;
   }
-  .workspace-tour-directory-stage .workspace-tour-entry-card {
-    width: min(380px, 46%);
+  .workspace-tour-coming-soon {
+    top: 15%;
+    width: min(440px, calc(100% - 40px));
   }
 }
 @media (max-width: 680px) {
@@ -997,13 +972,8 @@
   .workspace-tour-directory-main .directory-heading h1 {
     font-size: 24px;
   }
-  .workspace-tour-in-development {
-    flex: 0 0 auto;
-    padding: 7px 9px;
-    font-size: 9px;
-  }
   .workspace-tour-directory-stage {
-    min-height: 810px;
+    min-height: 1020px;
   }
   .tour-scene-layout {
     grid-template-columns: 125px minmax(0, 1fr);
@@ -1036,13 +1006,22 @@
   .tour-scene-toolbar .view {
     display: none;
   }
-  .workspace-tour-directory-stage .workspace-tour-entry-card {
-    top: 48%;
-    width: calc(100% - 48px);
-    max-width: 400px;
+  .workspace-tour-coming-soon {
+    top: 28%;
+    width: calc(100% - 40px);
+    min-height: 132px;
+    padding: 23px 16px 20px;
+  }
+  .workspace-tour-coming-soon > span {
+    font-size: 20px;
+  }
+  .workspace-tour-coming-soon p {
+    max-width: 290px;
+    font-size: 13px;
   }
   .workspace-tour-annotation {
-    max-width: 146px;
+    width: 40%;
+    max-width: none;
     gap: 2px;
     padding: 4px 6px;
   }
@@ -1053,31 +1032,40 @@
     font-size: 10px;
   }
   .annotation-navigation {
-    top: 16%;
-    left: 1%;
+    top: 5%;
+    left: 2%;
   }
   .annotation-channels {
-    top: 2%;
-    right: 1%;
+    top: 13%;
+    right: 2%;
   }
   .annotation-naming {
-    top: 31%;
-    left: 1%;
+    top: 43%;
+    right: 2%;
   }
   .annotation-status {
-    top: 47%;
-    right: 1%;
+    top: 54%;
+    left: 2%;
   }
   .annotation-metadata {
-    bottom: 16%;
-    left: 1%;
+    top: 70%;
+    bottom: auto;
+    left: 2%;
   }
   .annotation-sensitivity {
-    right: 1%;
-    bottom: 2%;
+    top: 70%;
+    bottom: auto;
+    right: 2%;
   }
-  .workspace-tour-annotation-arrows {
-    transform: scaleY(1.2);
+  .workspace-tour-annotation-arrows:not(.workspace-tour-annotation-arrows-mobile) {
+    display: none;
+  }
+  .workspace-tour-annotation-arrows-mobile {
+    display: block;
+  }
+  .tour-scene-table {
+    transform: scaleX(0.32);
+    transform-origin: left top;
   }
   .workspace-tour-main {
     padding: 15px 14px 30px;

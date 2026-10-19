@@ -11,7 +11,6 @@ import {
   Info20Regular,
   People24Regular,
 } from "@fluentui/react-icons";
-import WorkspaceIcon from "../components/WorkspaceIcon";
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import type { OperationalFile } from "../logistics/data";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
@@ -330,44 +329,44 @@ function ActivityDirectory() {
     {
       id: "navigation",
       title: "Consistent navigation",
-      body: "A familiar menu makes it easy to move around.",
+      body: "A familiar menu makes it easy to find your way around.",
       className: "annotation-navigation",
-      path: "M160 120 C135 145 115 166 87 190",
+      path: "M205 170 C165 175 118 188 76 207",
     },
     {
       id: "channels",
       title: "Channels for live coordination",
-      body: "Talk through day-to-day work while files stay here.",
+      body: "Talk through day-to-day work while shared files stay in the workspace.",
       className: "annotation-channels",
-      path: "M850 84 C890 90 922 96 946 105",
+      path: "M850 82 C888 67 920 69 950 76",
     },
     {
       id: "naming",
       title: "Naming convention",
       body: "Clear names make documents easier to recognise and search.",
       className: "annotation-naming",
-      path: "M430 176 C430 222 411 290 395 368",
+      path: "M365 315 C350 338 335 360 320 380",
     },
     {
       id: "status",
       title: "Status",
       body: "See whether a document is draft, in review or complete.",
       className: "annotation-status",
-      path: "M742 222 C760 265 780 322 797 366",
+      path: "M890 315 C850 339 795 361 735 380",
     },
     {
       id: "metadata",
       title: "Automatic metadata",
-      body: "Labels help organise, filter and find files.",
+      body: "Useful details are applied consistently, making files easier to organise, filter and find.",
       className: "annotation-metadata",
-      path: "M520 520 C548 475 572 420 585 371",
+      path: "M510 570 C535 520 560 445 585 380",
     },
     {
       id: "sensitivity",
       title: "Sensitivity",
-      body: "Clear labels help people handle files appropriately.",
+      body: "Clear labels show how information should be handled.",
       className: "annotation-sensitivity",
-      path: "M840 500 C880 458 915 408 944 365",
+      path: "M815 570 C850 515 900 438 930 380",
     },
   ];
   return (
@@ -382,11 +381,10 @@ function ActivityDirectory() {
             </p>
             <p>Explore how workspaces, files and channels fit together.</p>
           </div>
-          <span className="workspace-tour-in-development">COMING SOON</span>
         </div>
         <section
           className="workspace-tour-directory-stage"
-          aria-label="Guided workspace example"
+          aria-label="Preview of a workspace with explanatory annotations"
         >
           <div
             className="workspace-tour-planning-scene"
@@ -521,6 +519,49 @@ function ActivityDirectory() {
               />
             ))}
           </svg>
+          <svg
+            className="workspace-tour-annotation-arrows workspace-tour-annotation-arrows-mobile"
+            viewBox="0 0 390 1020"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <marker
+                id="tour-arrowhead-mobile"
+                markerWidth="8"
+                markerHeight="8"
+                refX="7"
+                refY="4"
+                orient="auto"
+              >
+                <path d="M1 1 L7 4 L1 7" />
+              </marker>
+            </defs>
+            <path
+              d="M145 105 C120 135 90 180 65 218"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+            <path
+              d="M260 132 C290 112 315 94 330 80"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+            <path
+              d="M220 490 C210 486 195 482 180 480"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+            <path
+              d="M145 555 C185 535 240 500 278 480"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+            <path
+              d="M145 730 C165 675 185 565 205 480"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+            <path
+              d="M340 730 C355 675 350 565 335 480"
+              markerEnd="url(#tour-arrowhead-mobile)"
+            />
+          </svg>
           <div
             className="workspace-tour-annotations"
             aria-label="Workspace guidance annotations"
@@ -535,24 +576,9 @@ function ActivityDirectory() {
               </div>
             ))}
           </div>
-          <div className="workspace-tour-entry-card">
-            <div className="workspace-tour-entry-heading">
-              <span className="workspace-tour-entry-icon">
-                <WorkspaceIcon />
-              </span>
-              <div>
-                <span>Guided example</span>
-                <h2>Activity Workspace</h2>
-              </div>
-            </div>
-            <p>A sample workspace for everyday project activity.</p>
-            <a
-              className="workspace-tour-primary-link"
-              href={destination("/workspace-tour/workspace")}
-            >
-              Explore Activity Workspace
-              <ArrowRight20Regular aria-hidden="true" />
-            </a>
+          <div className="workspace-tour-coming-soon" role="status">
+            <span>COMING SOON</span>
+            <p>The interactive walkthrough is currently in development.</p>
           </div>
         </section>
         <p className="workspace-tour-fiction-note">

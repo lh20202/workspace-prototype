@@ -31,18 +31,21 @@ describe("Activity Workspace walkthrough", () => {
     );
   });
 
-  it("shows an annotated planning-library scene behind the guided example", () => {
+  it("shows the coming-soon workspace teaser with six explanatory annotations", () => {
     const html = renderTour("/workspace-tour?staff=taylor&demo=standalone");
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
     expect(html).toContain(
       "Explore how workspaces, files and channels fit together.",
     );
-    expect(html).toContain(">COMING SOON</span>");
-    expect(html).toContain("Explore Activity Workspace");
+    expect(html).toContain('class="workspace-tour-coming-soon" role="status"');
+    expect(html).toContain("COMING SOON");
     expect(html).toContain(
-      'href="/workspace-tour/workspace?staff=taylor&amp;demo=standalone"',
+      "The interactive walkthrough is currently in development.",
     );
+    expect(html).not.toContain("Explore Activity Workspace");
+    expect(html).not.toContain("Guided example");
+    expect(html).not.toContain('class="workspace-tour-entry-card"');
     expect(html).toContain(
       'class="workspace-tour-planning-scene" aria-hidden="true" inert=""',
     );
@@ -50,6 +53,19 @@ describe("Activity Workspace walkthrough", () => {
     expect(html).toContain("Planning Cycles");
     expect(html).toContain("Sensitivity");
     expect(html).toContain('class="workspace-tour-annotation-arrows"');
+    expect(html).toContain(
+      'class="workspace-tour-annotation-arrows" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"',
+    );
+    const arrowLayers = html.match(
+      /<svg class="workspace-tour-annotation-arrows[^>]*>[\s\S]*?<\/svg>/g,
+    );
+    expect(arrowLayers).toHaveLength(2);
+    for (const layer of arrowLayers ?? [])
+      expect(layer.match(/marker-end="url\(#tour-arrowhead(?:-mobile)?\)"/g))
+        .toHaveLength(6);
+    expect(
+      html.match(/class="workspace-tour-annotation annotation-/g),
+    ).toHaveLength(6);
     for (const label of [
       "Automatic metadata",
       "Status",
@@ -60,7 +76,7 @@ describe("Activity Workspace walkthrough", () => {
     ])
       expect(html).toContain(label);
     expect(html).not.toContain("How to find your way");
-    expect(html).toContain("Activity Workspace");
+    expect(html).not.toContain("Activity Workspace");
     expect(html).not.toContain('href="/activity-workspace');
     expect(
       environmentRegistry.some((item) => item.id === "activity-workspace"),
