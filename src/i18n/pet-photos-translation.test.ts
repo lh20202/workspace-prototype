@@ -29,11 +29,16 @@ describe("Pet photos German copy", () => {
     expect(
       displayText("Rename channel to “Pet Photos & Other Animals”", "de"),
     ).toBe("Kanal in „Haustierfotos & andere Tiere“ umbenennen");
-    expect(displayText("Raise a ticket to request a new ", "de")).toBe(
-      "Ticket für eine neue ",
+    expect(displayText("Raise a ticket to request a new", "de")).toBe(
+      "Ticket für eine neue",
+    );
+    expect(displayText(": “Goat Appreciation Society”", "de")).toBe(
+      "anfordern: „Goat Appreciation Society“",
     );
     expect(
-      displayText(": “Goat Appreciation Society”", "de"),
-    ).toBe("anfordern: „Goat Appreciation Society“");
+      `${displayText("Raise a ticket to request a new", "de")} SharePoint site ${displayText(": “Goat Appreciation Society”", "de")}`,
+    ).toBe(
+      "Ticket für eine neue SharePoint site anfordern: „Goat Appreciation Society“",
+    );
   });
 });

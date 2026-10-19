@@ -45,16 +45,17 @@ import { matchesDisplayText } from "../i18n/search";
 import { useTranslation } from "../i18n/Language";
 
 function PollOptionLabel({ label }: { label: string }) {
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
   const protectedPhrase = "SharePoint site";
   const phraseStart = label.indexOf(protectedPhrase);
   if (phraseStart < 0) return <span>{t(label)}</span>;
 
   return (
     <span>
-      {t(label.slice(0, phraseStart))}
+      {t(label.slice(0, phraseStart).trim())}{" "}
       <span data-no-translate>{protectedPhrase}</span>
-      {t(label.slice(phraseStart + protectedPhrase.length))}
+      {language === "de" ? " " : ""}
+      {t(label.slice(phraseStart + protectedPhrase.length).trim())}
     </span>
   );
 }
@@ -350,7 +351,7 @@ export default function TeamsView({
                           })}
                         </div>
                         <small className="channel-poll-total">
-                        {totalVotes} {t(totalVotes === 1 ? "vote" : "votes")}
+                          {totalVotes} {t(totalVotes === 1 ? "vote" : "votes")}
                         </small>
                       </section>
                     );
