@@ -54,7 +54,11 @@ function PollOptionLabel({ label }: { label: string }) {
     <span>
       {t(label.slice(0, phraseStart).trim())}{" "}
       <span data-no-translate>{protectedPhrase}</span>
-      {language === "de" ? " " : ""}
+      {language === "de" && (
+        <span data-no-translate aria-hidden="true">
+          {" "}
+        </span>
+      )}
       {t(label.slice(phraseStart + protectedPhrase.length).trim())}
     </span>
   );
