@@ -89,6 +89,12 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     expect(goatPoll).toContain(
       "Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”",
     );
+    expect(goatPoll).toContain(
+      '<h3 data-no-translate="true">Vote — make Pet photos more inclusive of goats</h3>',
+    );
+    expect(goatPoll).toContain(
+      '<span data-no-translate="true">Raise a ticket to request a new SharePoint site: “Goat Appreciation Society”</span>',
+    );
     expect(goatPoll).toContain("4 votes");
     expect(goatPoll).toContain("9 votes");
     expect(goatPoll).toContain("6 votes");

@@ -295,7 +295,7 @@ export default function TeamsView({
                         className="channel-poll"
                         aria-label="Poll results"
                       >
-                        <h3>{p.poll.question}</h3>
+                        <h3 data-no-translate>{p.poll.question}</h3>
                         <div className="channel-poll-options">
                           {p.poll.options.map((option) => {
                             const winning = option.votes === highestVotes;
@@ -305,7 +305,7 @@ export default function TeamsView({
                                 key={option.label}
                               >
                                 <div className="channel-poll-option-label">
-                                  <span>{option.label}</span>
+                                  <span data-no-translate>{option.label}</span>
                                   <strong>
                                     {option.votes}{" "}
                                     {option.votes === 1 ? "vote" : "votes"}
