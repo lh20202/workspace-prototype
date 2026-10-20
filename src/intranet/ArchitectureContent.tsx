@@ -193,22 +193,29 @@ export const frontlineDestinations = [
   },
 ];
 
-// UN M49 regions are mutually exclusive; representative country memberships
-// are verified against the UN Statistics Division's regional grouping.
-export const countryRegions = [
-  { name: "Africa", countries: ["Egypt", "Kenya", "Nigeria", "South Africa"] },
+export const frontlineBranches = [
+  { continent: "Africa", city: "Maseru", detail: "Lesotho · Capital city" },
+  { continent: "Asia", city: "Thimphu", detail: "Bhutan · Capital city" },
+  { continent: "Europe", city: "Vaduz", detail: "Liechtenstein · Capital city" },
   {
-    name: "Americas",
-    countries: ["Argentina", "Brazil", "Canada", "Mexico", "United States"],
-  },
-  { name: "Asia", countries: ["China", "India", "Japan", "Singapore"] },
-  {
-    name: "Europe",
-    countries: ["France", "Germany", "Italy", "United Kingdom"],
+    continent: "North America",
+    city: "Belmopan",
+    detail: "Belize · Capital city",
   },
   {
-    name: "Oceania",
-    countries: ["Australia", "Fiji", "New Zealand", "Papua New Guinea"],
+    continent: "South America",
+    city: "Paramaribo",
+    detail: "Suriname · Capital city",
+  },
+  {
+    continent: "Oceania",
+    city: "Ngerulmud",
+    detail: "Palau · Capital city",
+  },
+  {
+    continent: "Antarctica",
+    city: "McMurdo Station",
+    detail: "Research station · No capital cities",
   },
 ];
 
@@ -242,29 +249,17 @@ function FrontlineSection() {
           </StaffLink>
         ))}
       </div>
-      <details className="architecture-countries">
-        <summary>Countries</summary>
-        <div className="architecture-country-regions">
-          {countryRegions.map((region) => (
-            <section key={region.name} aria-label={region.name}>
-              <h3>{region.name}</h3>
-              <ul>
-                {region.countries.map((country) => (
-                  <li key={country}>{country}</li>
-                ))}
-              </ul>
+      <details className="architecture-branches">
+        <summary>Branches</summary>
+        <div className="architecture-branch-list">
+          {frontlineBranches.map((branch) => (
+            <section key={branch.continent} aria-label={branch.continent}>
+              <h3>{branch.continent}</h3>
+              <p>{branch.city}</p>
+              <small>{branch.detail}</small>
             </section>
           ))}
         </div>
-        <p className="architecture-countries-source">
-          <a
-            href="https://unstats.un.org/unsd/methodology/m49"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Regional grouping follows the UN M49 geographic classification.
-          </a>
-        </p>
       </details>
     </section>
   );

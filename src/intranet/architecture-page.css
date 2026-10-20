@@ -277,47 +277,49 @@
 .architecture-frontline-link span {
   min-width: 0;
 }
-.architecture-countries {
+.architecture-branches {
   margin-top: 18px;
   border-top: 1px solid #dfe6e3;
 }
-.architecture-countries summary {
+.architecture-branches summary {
   width: fit-content;
   padding: 14px 4px 8px;
   color: #344c49;
   font-weight: 600;
   cursor: pointer;
 }
-.architecture-countries summary:focus-visible {
+.architecture-branches summary:focus-visible {
   outline: 2px solid #0f6cbd;
   outline-offset: 3px;
 }
-.architecture-country-regions {
+.architecture-branch-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
   padding: 12px 4px 2px;
   border-top: 1px solid #edf0ee;
 }
-.architecture-country-regions h3 {
+.architecture-branch-list section {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e2e8e5;
+  background: #fff;
+}
+.architecture-branch-list h3 {
   margin: 0 0 6px;
   color: #365e59;
   font-size: 13px;
 }
-.architecture-country-regions ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.architecture-branch-list p {
+  margin: 0 0 3px;
+  color: #263c39;
+  font-size: 15px;
+  font-weight: 600;
+}
+.architecture-branch-list small {
   color: #46514e;
   font-size: 13px;
-  line-height: 1.8;
-}
-.architecture-countries-source {
-  margin: 14px 4px 0;
-  font-size: 12px;
-}
-.architecture-countries-source a {
-  color: #526d61;
+  line-height: 1.5;
 }
 .architecture-projects > p {
   margin: 0 0 14px;
@@ -478,7 +480,7 @@
   .architecture-frontline-destinations {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .architecture-country-regions {
+  .architecture-branch-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -488,7 +490,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .architecture-frontline-destinations,
-  .architecture-country-regions {
+  .architecture-branch-list {
     grid-template-columns: minmax(0, 1fr);
   }
 }

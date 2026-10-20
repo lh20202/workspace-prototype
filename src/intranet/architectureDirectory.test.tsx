@@ -77,11 +77,11 @@ describe("architecture directory", () => {
     const projects = html.indexOf('class="architecture-projects"');
     const scope = html.indexOf("OUT OF SCOPE");
     const frontline = html.indexOf('id="architecture-frontline-title"');
-    const countries = html.indexOf("<summary>Countries</summary>");
+    const branches = html.indexOf("<summary>Branches</summary>");
     expect(projects).toBeGreaterThan(-1);
     expect(scope).toBeGreaterThan(projects);
     expect(frontline).toBeGreaterThan(scope);
-    expect(countries).toBeGreaterThan(frontline);
+    expect(branches).toBeGreaterThan(frontline);
     expect(html).toContain('class="architecture-frontline-heading"><svg');
     expect(html).toContain("Biology, Chemistry &amp; Physiology Wiki");
     expect(html).toContain(
@@ -94,10 +94,15 @@ describe("architecture directory", () => {
       'href="/external/frontline-warehouses?returnTo=%2Farchitecture&amp;staff=devon"',
     );
     expect(html).toContain('href="/frontline/science-wiki?staff=devon"');
-    expect(html).toContain('class="architecture-countries"');
-    expect(html).toContain(
-      'href="https://unstats.un.org/unsd/methodology/m49"',
-    );
+    expect(html).toContain('class="architecture-branches"');
+    expect(html).toContain("Maseru");
+    expect(html).toContain("Thimphu");
+    expect(html).toContain("Vaduz");
+    expect(html).toContain("Belmopan");
+    expect(html).toContain("Paramaribo");
+    expect(html).toContain("Ngerulmud");
+    expect(html).toContain("McMurdo Station");
+    expect(html).not.toContain("unstats.un.org");
   });
 
   it("keeps all six East workspaces and moves Projects and Archives without losing their routes", () => {
@@ -196,10 +201,12 @@ describe("architecture directory", () => {
       "Meetings and coordination",
       "OUT OF SCOPE",
       "Frontline",
-      "Countries",
+      "Branches",
+      "North America",
+      "South America",
+      "Lesotho · Capital city",
       "Biology, Chemistry & Physiology Wiki",
-      "Regional grouping follows the UN M49 geographic classification.",
-      "United States",
+      "Research station · No capital cities",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);
     }
