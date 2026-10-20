@@ -1328,7 +1328,8 @@ tbody tr:hover {
 }
 .confidential-route-badge {
   position: absolute;
-  top: 8px;
+  /* Keep the cue below the global masthead and navigation, above page content. */
+  top: 176px;
   right: 12px;
   padding: 3px 8px;
   border: 1px solid #e2c8cf;
