@@ -87,8 +87,18 @@ describe("department coordination architecture", () => {
     for (const d of departments) {
       expect(new Set(d.library.map((f) => f.folder)).size).toBe(7);
       expect(d.units.map((unit) => unit.label)).toEqual(
-        d.units.map((_, index) => `Unit ${index + 1}`),
+        d.units.map((_, index) => `Unit ${index + 1} drafts`),
       );
+      for (const folder of unitParentFolders) {
+        expect(
+          d.library.filter(
+            (file) =>
+              file.folder === folder &&
+              file.name === "All units - final version.xlsx" &&
+              file.unitId === undefined,
+          ),
+        ).toHaveLength(1);
+      }
       for (const u of d.units) {
         expect(
           u.files.every(

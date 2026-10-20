@@ -110,16 +110,19 @@ const folderFiles: Record<string, string[]> = {
     "Planning Cycle Submission Tracker.xlsx",
     "Planning Workshop Schedule.docx",
     "Unit Input Checklist.xlsx",
+    "All units - final version.xlsx",
   ],
   "Budget Administration": [
     "Budget Input Deadline.docx",
     "Cost Centre Submission Tracker.xlsx",
     "Budget Meeting Agenda.docx",
+    "All units - final version.xlsx",
   ],
   "Travel & Expense Coordination": [
     "Travel Overview.xlsx",
     "Conference Attendees.docx",
     "Expense Submission Checklist.docx",
+    "All units - final version.xlsx",
   ],
   "Workload & Capacity": [
     "Weekly Capacity View.xlsx",
@@ -129,6 +132,7 @@ const folderFiles: Record<string, string[]> = {
     "Department Retreat 2027 — Agenda.docx",
     "Venue Comparison.xlsx",
     "Summer Picnic — Activity Ideas.docx",
+    "All units - final version.xlsx",
   ],
 };
 const misfiled: Record<
@@ -484,7 +488,7 @@ export const departments: Department[] = departmentDefinitions.map(
       return {
         id: uid,
         name,
-        label: `Unit ${index + 1}`,
+        label: `Unit ${index + 1} drafts`,
         access: unitOnly.has(name) ? "Unit-only" : "Department-wide",
         files,
         calendarItems: [

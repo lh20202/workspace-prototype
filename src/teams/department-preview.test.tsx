@@ -104,7 +104,7 @@ describe("deliberate Department introductions", () => {
       ).toEqual(["company", "communications"]);
     }
   });
-  it("shows the same generic Unit 1, Unit 2 folder labels without exposing unit names", () => {
+  it("shows generic draft folders and the shared final workbook without exposing unit names", () => {
     vi.stubGlobal(
       "location",
       new URL(
@@ -114,8 +114,9 @@ describe("deliberate Department introductions", () => {
     );
     vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
     const html = renderToStaticMarkup(<TeamsPreview />);
-    expect(html).toContain("Unit 1");
-    expect(html).toContain("Unit 2");
+    expect(html).toContain("Unit 1 drafts");
+    expect(html).toContain("Unit 2 drafts");
+    expect(html).toContain("All units - final version.xlsx");
     expect(html).not.toContain("Acquisition &amp; Direct Engagement");
     expect(html).not.toContain("Marketing Insight &amp; Performance");
   });
