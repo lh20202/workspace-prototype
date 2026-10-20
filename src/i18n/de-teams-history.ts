@@ -35,6 +35,7 @@ export const germanTeamsHistory: Record<string, string> = {
   "📢 Important updates": "📢 Wichtige Mitteilungen",
   "Important updates": "Wichtige Mitteilungen",
   Bulletin: "Kurzmeldungen",
+  "📰 Bulletin": "📰 Kurzmeldungen",
   "Office news": "Neues aus dem Büro",
   "🐾 Pet photos": "🐾 Haustierfotos",
   "Pet photos": "Haustierfotos",

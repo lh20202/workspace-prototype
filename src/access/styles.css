@@ -97,8 +97,57 @@
 .access-boundary > .fui-Button {
   margin-top: 10px;
 }
+.access-boundary-reveal-guide {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 64px auto;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  margin-block: 16px 20px;
+}
+.access-boundary-reveal-note {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  padding: 6px 9px 7px;
+  color: #263a47;
+  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  line-height: 1.25;
+  text-shadow: 0 1px 0 #fff;
+  transform: rotate(-1deg);
+}
+.access-boundary-reveal-note::before {
+  position: absolute;
+  inset: 2px 0 1px;
+  z-index: -1;
+  border-radius: 2px 7px 3px 5px;
+  background: #fff9e8dc;
+  content: "";
+  transform: rotate(-1deg);
+}
+.access-boundary-reveal-note strong {
+  color: #8c352a;
+  font-size: 14px;
+  font-weight: 700;
+}
+.access-boundary-reveal-note span {
+  font-size: 12px;
+}
+.access-boundary-reveal-arrow {
+  width: 64px;
+  height: 48px;
+  overflow: visible;
+}
+.access-boundary-reveal-arrow path {
+  fill: none;
+  stroke: #8c352a;
+  stroke-width: 1.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .access-boundary .access-boundary-reveal {
-  margin-block: 6px 12px;
+  justify-self: start;
+  margin: 0;
   font-weight: 600;
 }
 .access-boundary-urgent {
@@ -153,6 +202,20 @@
 @media (max-width: 600px) {
   .access-boundary {
     padding: 20px;
+  }
+  .access-boundary-reveal-guide {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 4px 8px;
+  }
+  .access-boundary-reveal-note {
+    grid-column: 1 / -1;
+  }
+  .access-boundary-reveal-arrow {
+    width: 48px;
+    transform: rotate(30deg);
+  }
+  .access-boundary .access-boundary-reveal {
+    width: 100%;
   }
 }
 @media (max-width: 900px) {

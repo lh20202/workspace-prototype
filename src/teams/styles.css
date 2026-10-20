@@ -270,6 +270,26 @@
   color: #616161;
   padding: 4px 12px 8px;
 }
+.m365-teams-chats-label {
+  margin-top: 16px;
+  border-top: 1px solid #e1dfdd;
+  padding-top: 12px;
+}
+.m365-teams-chat-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 10px 6px 24px;
+  color: #424242;
+  border-radius: 4px;
+}
+.m365-teams-chat-entry > svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #616161;
+}
 .m365-teams-group {
   margin-bottom: 4px;
 }

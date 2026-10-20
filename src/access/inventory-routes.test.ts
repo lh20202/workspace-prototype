@@ -8,7 +8,8 @@ import { siteSettingsOptions } from "../components/SiteSettingsButton";
 import { workspaceSeed } from "../workspaces/accessClassification";
 import { allProjects, projectHref } from "../projects/data";
 import { initialIncidents } from "../executive/incidentData";
-import { previewRoles } from "./policy";
+import { canAccessArea, previewRoles } from "./policy";
+import { libraries as financeLibraries } from "../finance/libraries";
 import { readChannelEntryContext } from "../teams/context";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -95,7 +96,7 @@ describe("inventory destinations resolve through the real application routes", (
           expect(url.searchParams.get("unit"), entry.id).toBe(resource.unitId);
           expect(url.searchParams.get("tab"), entry.id).toBe("Shared");
           expect(url.searchParams.get("folder"), entry.id).toBe(
-            "Unit Coordination",
+            "Planning Cycle Coordination",
           );
         }
         continue;
@@ -156,19 +157,31 @@ describe("delegated library and list administration follows every canonical cont
           });
       }
     }
-    expect(contexts.size).toBe(42);
+    expect(contexts.size).toBe(39);
     for (const context of contexts.values()) {
       const url = new URL(context.href, "https://example.test");
       for (const role of previewRoles) {
         const model = getSiteAdminModel(role, url.pathname, url.search)!;
-        const expected = ["leonie", "elliot"].includes(role.id);
+        const financeLibrary =
+          context.siteId === "finance"
+            ? financeLibraries.find((library) => library.id === context.id)
+            : undefined;
+        const businessAllowed =
+          !financeLibrary ||
+          financeLibrary.areas.every((areaId) =>
+            canAccessArea(role, "finance", areaId),
+          );
+        const expected =
+          ["leonie", "elliot"].includes(role.id) && businessAllowed;
         expect(model?.id, `${context.href} ${role.id}`).toBe(context.siteId);
-        expect(model.canAccess, `${context.href} ${role.id}`).toBe(true);
+        expect(model.canAccess, `${context.href} ${role.id}`).toBe(
+          businessAllowed,
+        );
         expect(model.current?.id, `${context.href} ${role.id}`).toBe(
-          context.id,
+          businessAllowed ? context.id : undefined,
         );
         expect(model.current?.kind, `${context.href} ${role.id}`).toBe(
-          context.kind,
+          businessAllowed ? context.kind : undefined,
         );
         expect(model.canManage, `${context.href} ${role.id}`).toBe(expected);
         const setting = siteSettingsOptions(model).find(

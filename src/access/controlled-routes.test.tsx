@@ -22,6 +22,7 @@ import {
   protectedReviewSummaries,
 } from "../finance/protectedReviews";
 import { items as financeItems, protectedSubjects } from "../finance/data";
+import { revealDemoContent } from "./demoContentReveal";
 
 afterEach(() => vi.unstubAllGlobals());
 const boundary = /<section class="access-boundary(?: |")/;
@@ -67,6 +68,90 @@ function renderRoute(href: string, personId: string, App: ComponentType) {
 }
 
 describe("canonical controlled destinations use the same boundary and role policy", () => {
+  it.each([
+    ["research-participant-data", "Research participant data"],
+    ["customer-data-analytics", "Customer data analytics"],
+  ])(
+    "shows %s as a locked Lab library with page-local demo reveal",
+    (areaId, title) => {
+      const href = `/audience-innovation/restricted/${areaId}`;
+      const staffHtml = renderRoute(href, "taylor", AudienceApp);
+      expect(staffHtml).toContain(title);
+      expect(staffHtml).toContain("Access required");
+      expect(staffHtml).toContain(revealAction);
+      expect(staffHtml).not.toContain("synthetic.xlsx");
+
+      const storage = new Map<string, string>();
+      const session = {
+        getItem: (key: string) => storage.get(key) ?? null,
+        setItem: (key: string, value: string) => storage.set(key, value),
+      };
+      vi.stubGlobal("window", { sessionStorage: session });
+      vi.stubGlobal("sessionStorage", session);
+      revealDemoContent(
+        { kind: "area", workspaceId: "audience", areaId },
+        "taylor",
+      );
+      const url = new URL(href, "https://example.test");
+      url.searchParams.set("staff", "taylor");
+      vi.stubGlobal("location", url);
+      const revealedHtml = renderToStaticMarkup(
+        createElement(PreviewRoleProvider, null, createElement(AudienceApp)),
+      );
+      expect(revealedHtml).not.toContain("Access required");
+      expect(revealedHtml).toContain(`${title} documents`);
+      expect(revealedHtml).toContain(
+        "Fictional sample records for this restricted library.",
+      );
+    },
+  );
+
+  it.each([
+    ["income", "Unmatched card payment"],
+    ["reconciliation", "Bank → general ledger"],
+    ["planning", "Q4 Forecast Assumptions.xlsx"],
+    ["treasury", "Cash Forecast Contribution Guide.docx"],
+    ["income-documents", "Income Matching Guidance.docx"],
+    ["planning-documents", "2027 Budget Commentary.docx"],
+    ["treasury-documents", "Cash Forecast Contribution Guide.docx"],
+    ["reconciliation-issues", "Unmatched card payment"],
+  ])(
+    "uses the restricted landing page for South destination %s",
+    (destination, hiddenContent) => {
+      const href = `/financial-operations/${destination}`;
+      const staffHtml = renderRoute(href, "taylor", FinanceApp);
+      expect(staffHtml).toContain("Access required");
+      expect(staffHtml).toContain(revealAction);
+      expect(staffHtml).not.toContain(hiddenContent);
+
+      const financeHtml = renderRoute(href, "sam", FinanceApp);
+      expect(financeHtml).not.toContain("Access required");
+    },
+  );
+
+  it("keeps South finance landing-page links and calendar entries within each role's access", () => {
+    const staffHome = renderRoute(
+      "/financial-operations",
+      "taylor",
+      FinanceApp,
+    );
+    expect(staffHome).not.toContain("2027 budget commentary");
+    expect(staffHome).not.toContain("Q4 Forecast");
+    expect(staffHome).not.toContain("Income reconciliation review");
+
+    const financeHome = renderRoute("/financial-operations", "sam", FinanceApp);
+    expect(financeHome).toContain("2027 budget commentary");
+    expect(financeHome).toContain("Q4 Forecast");
+
+    const staffCalendar = renderRoute(
+      "/financial-operations/calendar",
+      "taylor",
+      FinanceApp,
+    );
+    expect(staffCalendar).not.toContain("Income reconciliation review");
+    expect(staffCalendar).not.toContain("Q4 Forecast");
+  });
+
   for (const entry of controlledResourceInventory.filter(
     (entry) => entry.resource && !entry.contentId,
   )) {
@@ -185,7 +270,8 @@ describe("canonical controlled destinations use the same boundary and role polic
       (entry) =>
         entry.resource?.kind === "area" &&
         entry.resource.workspaceId === "finance" &&
-        entry.expectedRoleIds.length,
+        entry.expectedRoleIds.length &&
+        !!protectedReviewSummaries[entry.resource.areaId],
     )) {
       const resource = entry.resource as Extract<
         AccessResource,
@@ -239,7 +325,7 @@ describe("canonical controlled destinations use the same boundary and role polic
       ["/projects/PRJ-unknown", ProjectsApp],
       ["/emergency-response/incidents/INC-104/unknown", EmergencyApp],
       [
-        "/teams?department=marketing-growth&unit=unknown&context=department:marketing-growth&tab=Shared&folder=Unit+Coordination",
+        "/teams?department=marketing-growth&unit=unknown&context=department:marketing-growth&tab=Shared&folder=Planning+Cycle+Coordination",
         TeamsPreview,
       ],
     ];

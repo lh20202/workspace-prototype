@@ -114,6 +114,15 @@ describe("the nine role access matrix", () => {
     expect(resolveStaffPerson("alex").id).toBe("taylor");
     expect(canAccessWorkspace("alex", "content")).toBe(false);
   });
+
+  it("keeps the Legal site behind its own restricted-content boundary", () => {
+    for (const role of previewRoles)
+      expect(canAccessWorkspace(role, "legal"), role.id).toBe(false);
+    expect(
+      workspaceRegistry.find((workspace) => workspace.id === "legal")
+        ?.accessLevel,
+    ).toBe("strictly-confidential");
+  });
   it("grants the same delegated site-management capability to the two specified roles without broadening business access", () => {
     for (const person of previewRoles) {
       const elevated = ["leonie", "elliot"].includes(person.id);
@@ -266,7 +275,7 @@ describe("the nine role access matrix", () => {
     expect(
       canAccessChannel("devon", "digital", "Workspace & Wiki Moderators"),
     ).toBe(true);
-    for (const workspace of ["executive", "employment", "welfare"])
+    for (const workspace of ["executive", "employment", "legal", "welfare"])
       expect(canAccessWorkspace("devon", workspace)).toBe(false);
     expect(canAccessWorkspace("devon", "audience")).toBe(true);
     expect(canAccessWorkspace("devon", "content")).toBe(true);

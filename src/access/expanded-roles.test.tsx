@@ -45,7 +45,7 @@ describe("business and delegated site administration roles", () => {
     ).toEqual(["Editorial Desk", "Social Desk", "Production Coordination"]);
     expect(
       teamsGroups(resolveStaffPerson("nadia")).map((group) => group.id),
-    ).toEqual(["company", "content", "marketing-growth"]);
+    ).toEqual(["company", "marketing-growth"]);
   });
   it("gives Finance normal operations and selected exception handling without protected authority", () => {
     for (const area of [
@@ -82,7 +82,7 @@ describe("business and delegated site administration roles", () => {
       expect(canAccessArea("sam", "finance", area)).toBe(false);
     expect(
       teamsGroups(resolveStaffPerson("sam")).map((group) => group.id),
-    ).toEqual(["company", "planning", "finance-services", "PRJ-2026-038"]);
+    ).toEqual(["company", "finance-services", "PRJ-2026-038"]);
     vi.stubGlobal(
       "location",
       new URL(
@@ -121,7 +121,7 @@ describe("business and delegated site administration roles", () => {
     expect(canAccessProject("elliot", "PRJ-2026-027")).toBe(false);
     expect(
       teamsGroups(resolveStaffPerson("elliot")).map((group) => group.id),
-    ).toEqual(["company", "digital", "strategy-technology"]);
+    ).toEqual(["company", "strategy-technology"]);
     expect(
       visibleWorkspaceChannels(resolveStaffPerson("elliot"), "digital"),
     ).toEqual([

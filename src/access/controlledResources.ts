@@ -21,7 +21,7 @@ import {
 } from "../projects/accessClassification";
 import { allProjects, projectHref } from "../projects/data";
 import { technicalChannelDefinitions } from "../workspaces/technicalChannelDefinitions";
-import { departments } from "../coordination/data";
+import { departments, unitParentFolders } from "../coordination/data";
 import {
   canManageSiteSettings,
   hasAlternativePreviewAccess,
@@ -200,6 +200,13 @@ const protectedExpectations: Record<string, Record<string, Expectation>> = {
   },
   finance: {
     ...grouped(
+      ["income", "reconciliation", "planning", "treasury"],
+      expectation(
+        ["sam"],
+        "The finance operations specialist owns the shared financial work areas; other roles use the page-local demo reveal to explore the example.",
+      ),
+    ),
+    ...grouped(
       [
         "payment-exceptions",
         "refund-chargeback",
@@ -262,6 +269,12 @@ const protectedExpectations: Record<string, Record<string, Expectation>> = {
   audience: {
     "participant-administration": outside(
       "Raw or identifiable research participant administration is reserved for the authorised research-administration group.",
+    ),
+    "research-participant-data": outside(
+      "Research participant records require the specific study and data-handling authorisation, which is not represented by a preview role.",
+    ),
+    "customer-data-analytics": outside(
+      "Customer-level analytics require the specific data access authorisation, which is not represented by a preview role.",
     ),
   },
   planning: {
@@ -330,6 +343,7 @@ const workspaceHref = (id: string) =>
 const confidentialWorkspaceRoles: Record<string, readonly string[]> = {
   executive: ["robin"],
   employment: ["jamie"],
+  legal: [],
   welfare: ["jamie"],
 };
 const restrictedProjectRoles: Record<string, readonly string[]> = {
@@ -497,6 +511,14 @@ export const controlledResourceInventory: ControlledResourceDefinition[] = [
       ),
     ),
   ),
+  ...[
+    ["income", "-> $"],
+    ["reconciliation", "$ ->"],
+    ["planning", "Value"],
+    ["treasury", "Vault"],
+  ].map(([id, label]) =>
+    areaDefinition("finance", id, label, `${workspaceHref("finance")}/${id}`),
+  ),
   ...protectedTopics.map((topic) =>
     areaDefinition("content", topic.id, topic.name, protectedHref(topic)),
   ),
@@ -505,6 +527,18 @@ export const controlledResourceInventory: ControlledResourceDefinition[] = [
     "participant-administration",
     "Research participant administration",
     "/audience-innovation/research/website-usability/participant-administration",
+  ),
+  areaDefinition(
+    "audience",
+    "research-participant-data",
+    "Research participant data",
+    "/audience-innovation/restricted/research-participant-data",
+  ),
+  areaDefinition(
+    "audience",
+    "customer-data-analytics",
+    "Customer data analytics",
+    "/audience-innovation/restricted/customer-data-analytics",
   ),
   areaDefinition(
     "planning",
@@ -629,8 +663,8 @@ export const controlledResourceInventory: ControlledResourceDefinition[] = [
         {
           id: `unit:${department.id}:${unit.id}`,
           category: "unit",
-          label: `${department.name} / ${unit.name}`,
-          href: `/teams?department=${department.id}&unit=${unit.id}&context=department:${department.id}&tab=Shared&folder=Unit+Coordination`,
+          label: `${department.name} / ${unit.label}`,
+          href: `/teams?department=${department.id}&unit=${unit.id}&context=department:${department.id}&tab=Shared&folder=${encodeURIComponent(unitParentFolders[0])}`,
           resource: {
             kind: "unit",
             departmentId: department.id,

@@ -55,7 +55,6 @@ const ordinaryWorkspaces = [
   "planning",
   "projects",
   "quality",
-  "legal",
   "services",
   "archives",
   "people",
@@ -283,6 +282,10 @@ export const previewRoles: PreviewRole[] = [
     workspaceMemberships: [...ordinaryWorkspaces],
     restrictedAreas: {
       finance: [
+        "income",
+        "reconciliation",
+        "planning",
+        "treasury",
         "payment-exceptions",
         "refund-chargeback",
         "high-value-payment",

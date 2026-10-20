@@ -104,6 +104,21 @@ describe("deliberate Department introductions", () => {
       ).toEqual(["company", "communications"]);
     }
   });
+  it("shows the same generic Unit 1, Unit 2 folder labels without exposing unit names", () => {
+    vi.stubGlobal(
+      "location",
+      new URL(
+        "/teams?staff=maya&department=marketing-growth&context=department:marketing-growth&tab=Shared&folder=Planning+Cycle+Coordination",
+        "https://example.test",
+      ),
+    );
+    vi.stubGlobal("sessionStorage", { getItem: () => "maya" });
+    const html = renderToStaticMarkup(<TeamsPreview />);
+    expect(html).toContain("Unit 1");
+    expect(html).toContain("Unit 2");
+    expect(html).not.toContain("Acquisition &amp; Direct Engagement");
+    expect(html).not.toContain("Marketing Insight &amp; Performance");
+  });
   it("validates context and clears Department preview when global channels are explicitly opened", () => {
     expect(
       readDepartmentPreview("?staff=robin&context=department:communications")
@@ -128,7 +143,7 @@ describe("deliberate Department introductions", () => {
       (unit) => unit.id === "people-operations",
     )!;
     let url = new URL(
-      "/teams?staff=taylor&department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=people-operations&section=Unit+Meetings&file=stale-file&post=stale-post",
+      "/teams?staff=taylor&department=PAC&context=department:people-culture&tab=Shared&folder=Planning+Cycle+Coordination&unit=people-operations&section=Unit+Meetings&file=stale-file&post=stale-post",
       "https://example.test",
     );
     for (const id of ["taylor", "jamie", "taylor"]) {
@@ -141,7 +156,9 @@ describe("deliberate Department introductions", () => {
       expect(url.searchParams.get("context")).toBe(
         `department:${department.id}`,
       );
-      expect(url.searchParams.get("folder")).toBe("Unit Coordination");
+      expect(url.searchParams.get("folder")).toBe(
+        "Planning Cycle Coordination",
+      );
       expect(url.searchParams.get("unit")).toBe(unit.id);
       expect(url.searchParams.get("section")).toBe("Unit Meetings");
       expect(url.searchParams.get("tab")).toBe("Shared");
@@ -166,7 +183,7 @@ describe("deliberate Department introductions", () => {
       for (const unit of department.units)
         for (const next of staff) {
           const source = new URL(
-            `/teams?staff=taylor&department=${department.id}&context=department:${department.id}&tab=Shared&folder=Unit+Coordination&unit=${unit.id}&section=Absence+%26+Cover+Calendar`,
+            `/teams?staff=taylor&department=${department.id}&context=department:${department.id}&tab=Shared&folder=Planning+Cycle+Coordination&unit=${unit.id}&section=Absence+%26+Cover+Calendar`,
             "https://example.test",
           );
           const target = new URL(
@@ -190,10 +207,10 @@ describe("deliberate Department introductions", () => {
   it("clears stale, foreign or invalid unit state and keeps file and post selections transient", () => {
     const next = staff.find((person) => person.id === "jamie")!;
     for (const query of [
-      "department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=unknown",
-      "department=PAC&context=department:people-culture&tab=Shared&folder=Unit+Coordination&unit=it-services",
-      "department=PAC&context=department:people-culture&tab=Posts&folder=Unit+Coordination&unit=people-operations",
-      "department=PAC&context=global&tab=Shared&folder=Unit+Coordination&unit=people-operations",
+      "department=PAC&context=department:people-culture&tab=Shared&folder=Planning+Cycle+Coordination&unit=unknown",
+      "department=PAC&context=department:people-culture&tab=Shared&folder=Planning+Cycle+Coordination&unit=it-services",
+      "department=PAC&context=department:people-culture&tab=Posts&folder=Planning+Cycle+Coordination&unit=people-operations",
+      "department=PAC&context=global&tab=Shared&folder=Planning+Cycle+Coordination&unit=people-operations",
     ]) {
       const target = new URL(
         teamsPreviewHrefForStaff(

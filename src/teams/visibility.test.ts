@@ -17,11 +17,7 @@ import {
   teamsStaffForWorkspace,
   readChannelEntryContext,
 } from "./navigation";
-import {
-  canSeeWorkspaceChannel,
-  visibleWorkspaceChannels,
-  workspaceChannels,
-} from "./visibility";
+import { canSeeWorkspaceChannel, workspaceChannels } from "./visibility";
 
 const person = (id: string) => staff.find((member) => member.id === id)!;
 afterEach(() => vi.unstubAllGlobals());
@@ -49,46 +45,41 @@ describe("curated global channels and explicit entry context", () => {
     expect(model.groups.map((group) => group.id)).toEqual(["company"]);
     expect(model.groups[0].channels.map((channel) => channel.id)).toEqual(
       channels
-        .filter((channel) => channel.team === "company")
+        .filter(
+          (channel) =>
+            channel.team === "company" &&
+            ["important", "bulletin", "pets"].includes(channel.id),
+        )
         .map((channel) => `company:${channel.id}`),
     );
   });
-  it("keeps every other global view curated from existing role participation", () => {
+  it("keeps workspace channels out of global views while retaining department and project relevance", () => {
     const expected = {
-      maya: ["company", "logistics", "marketing-growth", "PRJ-2026-014"],
-      robin: [
-        "company",
-        "planning",
-        "executive-office",
-        "PRJ-2026-027",
-        "emergency",
-      ],
+      maya: ["company", "marketing-growth", "PRJ-2026-014"],
+      robin: ["company", "executive-office", "PRJ-2026-027", "emergency"],
       jamie: ["company", "people-culture", "PRJ-2026-034", "emergency"],
       devon: [
         "company",
-        "digital",
         "strategy-technology",
         "PRJ-2026-014",
         "PRJ-2026-042",
         "emergency",
       ],
-      leonie: ["company", "digital", "strategy-technology"],
-      nadia: ["company", "content", "marketing-growth"],
-      sam: ["company", "planning", "finance-services", "PRJ-2026-038"],
-      elliot: ["company", "digital", "strategy-technology"],
+      leonie: ["company", "strategy-technology"],
+      nadia: ["company", "marketing-growth"],
+      sam: ["company", "finance-services", "PRJ-2026-038"],
+      elliot: ["company", "strategy-technology"],
     };
     for (const member of staff.filter((item) => item.id !== "taylor")) {
       const model = channelNavigationFor({ person: member });
       expect(model.groups.map((group) => group.id)).toEqual(
         expected[member.id as keyof typeof expected],
       );
-      for (const workspaceId of Object.keys(workspaceChannels)) {
-        expect(
-          model.groups
-            .find((group) => group.id === workspaceId)
-            ?.channels.map((channel) => channel.label) || [],
-        ).toEqual(visibleWorkspaceChannels(member, workspaceId));
-      }
+      expect(
+        model.groups.some((group) =>
+          Object.keys(workspaceChannels).includes(group.id),
+        ),
+      ).toBe(false);
       for (const project of currentProjects)
         expect(model.groups.some((group) => group.id === project.code)).toBe(
           !!previewRoleFor(member)?.projectTeamMemberships.includes(
@@ -251,7 +242,7 @@ describe("curated global channels and explicit entry context", () => {
     const assign = vi.fn();
     vi.stubGlobal("location", { assign });
     teamsGroups(person("sam"))
-      .find((group) => group.id === "planning")!
+      .find((group) => group.id === "finance-services")!
       .channels[0].onSelect();
     const selected = new URL(assign.mock.calls[0][0], "https://example.test");
     expect(selected.searchParams.get("context")).toBe("global");
@@ -260,7 +251,6 @@ describe("curated global channels and explicit entry context", () => {
     ).toBeUndefined();
     expect(teamsGroups(person("sam")).map((group) => group.id)).toEqual([
       "company",
-      "planning",
       "finance-services",
       "PRJ-2026-038",
     ]);

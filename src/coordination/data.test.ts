@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   departments,
   departmentFolders,
+  unitParentFolders,
   unitFolders,
   canOpenDepartment,
   canOpenUnit,
@@ -69,13 +70,25 @@ describe("department coordination architecture", () => {
     expect(canOpenDepartment(departments[4], maya)).toBe(false);
   });
   it("uses the same local administration folder structure everywhere", () => {
-    expect(departmentFolders).toHaveLength(9);
+    expect(departmentFolders).toHaveLength(7);
+    expect(unitParentFolders).toEqual([
+      "Planning Cycle Coordination",
+      "Budget Administration",
+      "Travel & Expense Coordination",
+      "Retreats & Team Activities",
+    ]);
+    expect(departmentFolders).not.toContain("Unit Coordination");
+    expect(departmentFolders).not.toContain("Retreats & Away Days");
+    expect(departmentFolders).not.toContain("Social & Team Activities");
     expect(unitFolders).toHaveLength(6);
     for (const d of departments)
       for (const u of d.units)
         expect(u.calendarItems.every((c) => c.person !== c.cover)).toBe(true);
     for (const d of departments) {
-      expect(new Set(d.library.map((f) => f.folder)).size).toBe(8);
+      expect(new Set(d.library.map((f) => f.folder)).size).toBe(7);
+      expect(d.units.map((unit) => unit.label)).toEqual(
+        d.units.map((_, index) => `Unit ${index + 1}`),
+      );
       for (const u of d.units) {
         expect(
           u.files.every(

@@ -87,6 +87,12 @@ describe("page-local restricted-content reveal", () => {
     expect(boundary).toBeTruthy();
     expect(boundary).toContain(revealAction);
     expect(boundary).toContain(explanation);
+    expect(boundary).toContain('class="access-boundary-reveal-guide"');
+    expect(boundary).toContain('class="access-boundary-reveal-arrow"');
+    expect(boundary).toContain("Demo only");
+    expect(boundary).toContain(
+      "See what this role would normally not be able to see.",
+    );
     expect(boundary).not.toContain("preview-role");
   });
 

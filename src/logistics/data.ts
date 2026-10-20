@@ -718,7 +718,7 @@ export const channels: Channel[] = [
   },
   {
     id: "bulletin",
-    name: "Bulletin",
+    name: "📰 Bulletin",
     purpose: "A short weekly roundup.",
     fileIds: [],
     notes: [],

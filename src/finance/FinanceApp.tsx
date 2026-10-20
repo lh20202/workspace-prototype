@@ -10,6 +10,7 @@ import { matchesDisplayText } from "../i18n/search";
 import { useState } from "react";
 import SimulationMessage from "../components/SimulationMessage";
 import { canAccessArea } from "../access/policy";
+import { protectedAreaDefinitions } from "../access/areaDefinitions";
 import AccessBoundary from "../access/AccessBoundary";
 import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import {
@@ -63,11 +64,43 @@ export default function FinanceApp() {
   const protectedName = protectedSubjects[page]?.find(
     (s) => s[0] === subject,
   )?.[1];
+  const restrictedArea = protectedAreaDefinitions.finance.includes(page)
+    ? page
+    : page === "reconciliation-issues"
+      ? "reconciliation"
+      : undefined;
+  const restrictedLibraryArea = library?.areas.find(
+    (areaId) =>
+      protectedAreaDefinitions.finance.includes(areaId) &&
+      !canAccessArea(person, "finance", areaId),
+  );
+  const boundaryAreaId = protectedName
+    ? subject
+    : restrictedArea || restrictedLibraryArea;
+  const boundaryAreaName =
+    protectedName ||
+    (restrictedArea
+      ? area?.name ||
+        (page === "reconciliation-issues" ? "Reconciliation Issues" : undefined)
+      : undefined) ||
+    (restrictedLibraryArea ? library?.name : undefined);
   const unknown = parts.length > 3 || (!!subject && !protectedName && !system);
+  const boundaryDenied =
+    !!boundaryAreaId && !canAccessArea(person, "finance", boundaryAreaId);
   const protectedSensitivity = strictlyConfidentialFinanceSubjects.has(subject)
     ? "Strictly confidential"
     : "Confidential";
+  const accessibleFiles = files.filter((file) =>
+    canAccessArea(person, "finance", file.folder),
+  );
+  const accessibleLibraries = libraries.filter((item) =>
+    item.areas.every((areaId) => canAccessArea(person, "finance", areaId)),
+  );
   const [records, setRecords] = useState(items);
+  const accessibleCalendar = calendar.filter((entry) => {
+    const item = records.find((record) => record.id === entry.item);
+    return !item || canAccessArea(person, "finance", item.area);
+  });
   const protectedReviewItems = records.filter((item) =>
     protectedReviewItemIds[subject]?.includes(item.id),
   );
@@ -215,7 +248,7 @@ export default function FinanceApp() {
         title={title}
         userName={person.name}
         userRole={person.role}
-        searchFiles={files}
+        searchFiles={accessibleFiles}
         memberCount={28}
         onOpen={(f) => {
           const l = libraries.find((x) => x.areas.includes(f.folder));
@@ -280,8 +313,8 @@ export default function FinanceApp() {
         >
           <div className="finance-breadcrumb">
             <StaffLink href={base}>Workspace</StaffLink> /{" "}
-            {protectedName
-              ? canAccessArea(person, "finance", subject)
+            {protectedName || boundaryDenied
+              ? !boundaryDenied
                 ? protectedName
                 : "Access required"
               : activeName}
@@ -292,22 +325,31 @@ export default function FinanceApp() {
               <button onClick={() => setNotice("")}>Dismiss</button>
             </div>
           )}
-          {(protectedName && !canAccessArea(person, "finance", subject)) ||
-          unknown ? (
+          {boundaryDenied || unknown ? (
             <AccessBoundary
               workspaceId="finance"
               resource={
-                protectedName && !unknown
-                  ? { kind: "area", workspaceId: "finance", areaId: subject }
+                boundaryAreaId && !unknown
+                  ? {
+                      kind: "area",
+                      workspaceId: "finance",
+                      areaId: boundaryAreaId,
+                    }
                   : undefined
               }
-              area={protectedName || "Unavailable location"}
+              area={boundaryAreaName || "Unavailable location"}
               location={[title, area?.name, protectedName]
                 .filter(Boolean)
                 .join(" / ")}
               personId={person.id}
               returnHref={withExplicitStaff(base)}
-              sensitivity={protectedName ? protectedSensitivity : undefined}
+              sensitivity={
+                protectedName
+                  ? protectedSensitivity
+                  : restrictedArea
+                    ? "Confidential"
+                    : undefined
+              }
             />
           ) : protectedName ? (
             <section>
@@ -371,15 +413,17 @@ export default function FinanceApp() {
                 <StaffLink href={`${base}/close-checklist`}>
                   Continue the close checklist →
                 </StaffLink>
-                <p>
-                  <StaffLink href={`${base}/planning-documents?file=FIN-05`}>
-                    2027 budget commentary →
-                  </StaffLink>
-                </p>
+                {canAccessArea(person, "finance", "planning") && (
+                  <p>
+                    <StaffLink href={`${base}/planning-documents?file=FIN-05`}>
+                      2027 budget commentary →
+                    </StaffLink>
+                  </p>
+                )}
               </section>
               <section>
                 <h2>Upcoming deadlines</h2>
-                {calendar.slice(0, 3).map((e) => (
+                {accessibleCalendar.slice(0, 3).map((e) => (
                   <p key={e.day}>
                     <span>Oct {e.day}</span> · {rowLink(e.item)}
                   </p>
@@ -390,7 +434,7 @@ export default function FinanceApp() {
               </section>
               <DocumentLibrary
                 title="Recently updated documents"
-                files={libraries.flatMap(libraryFiles)}
+                files={accessibleLibraries.flatMap(libraryFiles)}
                 embedded
               />
             </>
@@ -438,7 +482,7 @@ export default function FinanceApp() {
                         {day > 0 && day <= 31 && (
                           <>
                             <span>{day}</span>
-                            {calendar
+                            {accessibleCalendar
                               .filter((e) => e.day === day)
                               .map((e) => (
                                 <button

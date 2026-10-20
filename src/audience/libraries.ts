@@ -5,6 +5,113 @@ export const libraries = [
   { id: "experiments", title: "Experiments & Testing" },
   { id: "analytics", title: "Analysis & Reporting" },
 ];
+export const restrictedLibraries = [
+  {
+    id: "research-participant-data",
+    title: "Research participant data",
+    sensitivity: "Strictly confidential",
+    description:
+      "Restricted research records for participant contact, consent and study responses.",
+  },
+  {
+    id: "customer-data-analytics",
+    title: "Customer data analytics",
+    sensitivity: "Confidential",
+    description:
+      "Restricted customer-level analysis used to understand journeys and service patterns.",
+  },
+] as const;
+export const restrictedLibraryDefinitions: Record<string, LibraryDefinition> = {
+  "research-participant-data": {
+    id: "research-participant-data",
+    name: "Research participant data",
+    purpose: "Restricted study records and participant information.",
+    defaultSensitivity: "Strictly confidential",
+    columns: [
+      { key: "name", label: "Name" },
+      { key: "contentType", label: "Document type" },
+      { key: "status", label: "Review" },
+      { key: "modified", label: "Modified", type: "date" },
+    ],
+    fields: [
+      { key: "owner", label: "Owner" },
+      { key: "Study", label: "Study" },
+    ],
+    views: [{ id: "all", name: "All Documents" }],
+  },
+  "customer-data-analytics": {
+    id: "customer-data-analytics",
+    name: "Customer data analytics",
+    purpose: "Restricted customer-level analysis and service insights.",
+    defaultSensitivity: "Confidential",
+    columns: [
+      { key: "name", label: "Name" },
+      { key: "contentType", label: "Document type" },
+      { key: "Period", label: "Period" },
+      { key: "status", label: "Review" },
+      { key: "modified", label: "Modified", type: "date" },
+    ],
+    fields: [
+      { key: "owner", label: "Owner" },
+      { key: "Study", label: "Analysis" },
+    ],
+    views: [{ id: "all", name: "All Documents" }],
+  },
+};
+export const restrictedLibraryDocuments: Record<string, LibraryDocument[]> = {
+  "research-participant-data": [
+    {
+      id: "participant-response-sample",
+      name: "Participant response sample — synthetic.xlsx",
+      folder: "Website Usability Study/Responses",
+      sensitivity: "Strictly confidential",
+      contentType: "Research data",
+      status: "Study team review",
+      modified: "19 Oct 2026",
+      owner: "Priya Shah",
+      metadata: { Study: "Website Usability Study" },
+      summary: "Illustrative, fictional response records for the demo.",
+    },
+    {
+      id: "participant-consent-sample",
+      name: "Consent register — synthetic.xlsx",
+      folder: "Website Usability Study/Administration",
+      sensitivity: "Strictly confidential",
+      contentType: "Study administration",
+      status: "Current",
+      modified: "16 Oct 2026",
+      owner: "Priya Shah",
+      metadata: { Study: "Website Usability Study" },
+      summary: "Illustrative, fictional consent tracking for the demo.",
+    },
+  ],
+  "customer-data-analytics": [
+    {
+      id: "customer-journey-cohorts",
+      name: "Customer journey cohorts — synthetic.xlsx",
+      folder: "Customer Journeys/Cohorts",
+      sensitivity: "Confidential",
+      contentType: "Customer analysis",
+      status: "Ready for review",
+      modified: "20 Oct 2026",
+      owner: "Priya Shah",
+      metadata: { Study: "Customer Journey Analysis", Period: "2026 Q4" },
+      summary: "Illustrative, fictional customer-level analysis for the demo.",
+    },
+    {
+      id: "customer-feedback-sample",
+      name: "Feedback analysis — synthetic.pptx",
+      folder: "Customer Journeys/Feedback",
+      sensitivity: "Confidential",
+      contentType: "Customer analysis",
+      status: "Working draft",
+      modified: "17 Oct 2026",
+      owner: "Priya Shah",
+      metadata: { Study: "Customer Journey Analysis", Period: "2026 Q4" },
+      summary: "Illustrative, fictional feedback patterns for the demo.",
+    },
+  ],
+};
 export const libraryFor = (file: WorkingFile) =>
   file.area === "experiments"
     ? "experiments"

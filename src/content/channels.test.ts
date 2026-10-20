@@ -88,8 +88,13 @@ describe("Creative & Editorial Studio desk and temporary coverage membership", (
     expect(groups.map((group) => group.id)).toEqual(["company"]);
     for (const person of staff)
       expect(teamsGroups(person).some((group) => group.id === "content")).toBe(
-        person.id === "nadia",
+        false,
       );
+    expect(
+      teamsGroups(taylor, { kind: "workspace", id: "content" }).some(
+        (group) => group.id === "content",
+      ),
+    ).toBe(true);
     expect(
       resolveContentChannel("Special Coverage · City Innovation Summit")?.kind,
     ).toBe("temporary");

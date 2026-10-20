@@ -1,6 +1,6 @@
 import SensitivityBadge from "../sharepoint/SensitivityBadge";
 import AccessLock from "../components/AccessLock";
-import { canAccessWorkspace } from "../access/policy";
+import { canAccessArea, canAccessWorkspace } from "../access/policy";
 import WorkspaceDenied from "../access/WorkspaceDenied";
 import StaffLink from "../components/StaffLink";
 import { withExplicitStaff } from "../utils/staffNavigation";
@@ -28,6 +28,7 @@ import {
 import WorkspaceHeader from "../logistics/WorkspaceHeader";
 import { resolveStaffPerson } from "../intranet/catalog";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
+import NavigationIcon from "../components/NavigationIcon";
 import {
   title,
   description,
@@ -58,6 +59,9 @@ import {
   folderFor,
   documentFor,
   definitions,
+  restrictedLibraries,
+  restrictedLibraryDefinitions,
+  restrictedLibraryDocuments,
 } from "./libraries";
 const fileLink = (file: WorkingFile) =>
   `${base}/${libraryFor(file)}?file=${file.id}`;
@@ -92,6 +96,10 @@ export default function AudienceApp() {
   const protectedStudy =
     parsed.pathname ===
     `${base}/research/website-usability/participant-administration`;
+  const restrictedLibrary =
+    page === "restricted"
+      ? restrictedLibraries.find((library) => library.id === parts[2])
+      : undefined;
   const system =
     page === "systems" &&
     ["website-analytics", "performance"].includes(parts[2]);
@@ -110,6 +118,7 @@ export default function AudienceApp() {
     (page === "decisions" && !!params.get("initiative"));
   const known =
     protectedStudy ||
+    !!restrictedLibrary ||
     (parts.length === 3 && system) ||
     (parts.length <= 2 &&
       (page === "home" ||
@@ -367,6 +376,18 @@ export default function AudienceApp() {
                 {library.title}
               </StaffLink>
             ))}
+            {restrictedLibraries.map((library) => (
+              <StaffLink
+                key={library.id}
+                href={`${base}/restricted/${library.id}`}
+                aria-current={
+                  restrictedLibrary?.id === library.id ? "page" : undefined
+                }
+              >
+                <NavigationIcon kind="restricted" />
+                {library.title}
+              </StaffLink>
+            ))}
             <StaffLink
               href={`${base}/register`}
               aria-current={register ? "page" : undefined}
@@ -387,7 +408,8 @@ export default function AudienceApp() {
                   ? "Participant administration"
                   : register
                     ? "Research & Experiment Register"
-                    : activeLibrary?.title ||
+                    : restrictedLibrary?.title ||
+                      activeLibrary?.title ||
                       (page === "automation"
                         ? "Marketing automation concepts"
                         : page === "calendar"
@@ -400,6 +422,36 @@ export default function AudienceApp() {
             <>
               <h2>Page not found</h2>
               <StaffLink href={base}>Return to workspace</StaffLink>
+            </>
+          ) : restrictedLibrary &&
+            !canAccessArea(person, "audience", restrictedLibrary.id) ? (
+            <AccessBoundary
+              workspaceId="audience"
+              resource={{
+                kind: "area",
+                workspaceId: "audience",
+                areaId: restrictedLibrary.id,
+              }}
+              area={restrictedLibrary.title}
+              location={`${title} / ${restrictedLibrary.title}`}
+              personId={person.id}
+              sensitivity={restrictedLibrary.sensitivity}
+              strict={restrictedLibrary.sensitivity === "Strictly confidential"}
+              returnHref={withExplicitStaff(base)}
+            />
+          ) : restrictedLibrary ? (
+            <>
+              <h2>{restrictedLibrary.title}</h2>
+              <p>{restrictedLibrary.description}</p>
+              <PocAnnotation title="Demo content" variant="inline">
+                Fictional sample records for this restricted library.
+              </PocAnnotation>
+              <DocumentLibrary
+                key={restrictedLibrary.id}
+                title={restrictedLibrary.title}
+                definition={restrictedLibraryDefinitions[restrictedLibrary.id]}
+                files={restrictedLibraryDocuments[restrictedLibrary.id]}
+              />
             </>
           ) : protectedStudy ? (
             <AccessBoundary

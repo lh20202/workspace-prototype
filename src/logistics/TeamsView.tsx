@@ -107,11 +107,26 @@ export default function TeamsView({
   );
   const [liked, setLiked] = useState<string[]>([]);
   const [saved, setSaved] = useState<string[]>([]);
-  const allowed = !!requestedChannel && canSeeLogisticsChannel(person, channel);
   const navigation = channelNavigationFor({ person, entryContext });
   const navigationIds = new Set(
     navigation.groups.flatMap((group) => group.channels.map((item) => item.id)),
   );
+  const companyChannelVisible =
+    !!requestedChannel && navigationIds.has(`company:${requestedChannel.id}`);
+  useEffect(() => {
+    if (requestedChannel?.team === "company" && !companyChannelVisible) {
+      const params = new URLSearchParams(location.search);
+      params.set("channel", "important");
+      params.set("tab", "Posts");
+      params.delete("post");
+      params.delete("file");
+      location.replace(`/logistics/teams?${params}`);
+    }
+  }, [requestedChannel, companyChannelVisible]);
+  const allowed =
+    !!requestedChannel &&
+    canSeeLogisticsChannel(person, channel) &&
+    (channel.team !== "company" || companyChannelVisible);
   const permittedChannels = channels.filter(
     (c) =>
       navigationIds.has(`${c.team}:${c.id}`) &&

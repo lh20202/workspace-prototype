@@ -70,11 +70,19 @@ describe("canonical controlled-resource matrix integrity", () => {
     ).toEqual([
       "workspace:employment",
       "workspace:executive",
+      "workspace:legal",
       "workspace:welfare",
     ]);
   });
 
   it("distinguishes Finance operations work from banking mandates, payroll and executive scenarios", () => {
+    for (const id of ["income", "reconciliation", "planning", "treasury"]) {
+      expect(canAccessArea("sam", "finance", id), id).toBe(true);
+      for (const role of previewRoles.filter((role) => role.id !== "sam"))
+        expect(canAccessArea(role, "finance", id), `${role.id}:${id}`).toBe(
+          false,
+        );
+    }
     for (const id of [
       "payment-exceptions",
       "refund-chargeback",

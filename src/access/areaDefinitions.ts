@@ -36,7 +36,11 @@ export const protectedAreaDefinitions: Record<string, string[]> = {
   customer: ["platinum", "customer-cases", "commercial-account"],
   archives: ["historical"],
   planning: ["restricted"],
-  audience: ["participant-administration"],
+  audience: [
+    "participant-administration",
+    "research-participant-data",
+    "customer-data-analytics",
+  ],
   content: [
     "participant-administration",
     "pre-release-briefing",
@@ -44,6 +48,10 @@ export const protectedAreaDefinitions: Record<string, string[]> = {
     "commercial-proposal",
   ],
   finance: [
+    "income",
+    "reconciliation",
+    "planning",
+    "treasury",
     "payment-exceptions",
     "refund-chargeback",
     "high-value-payment",
@@ -177,16 +185,7 @@ export const ordinaryAreaDefinitions: Record<string, string[]> = {
     "partners",
     "topics",
   ],
-  finance: [
-    "home",
-    "income",
-    "reconciliation",
-    "payments",
-    "planning",
-    "accounting",
-    "treasury",
-    "calendar",
-  ],
+  finance: ["home", "payments", "accounting", "calendar"],
   logistics: [
     "home",
     "operations",

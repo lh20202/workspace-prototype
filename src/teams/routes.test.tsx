@@ -177,6 +177,33 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     expect(html).not.toContain("View channels for this role");
     expect(html).not.toContain("Try another preview role");
     expect(html).not.toContain("General Staff Member");
+    expect(html).toContain('aria-expanded="true"');
+    expect(html).toContain("📰 Bulletin");
+    expect(html).toContain("Unit chat");
+    expect(html).not.toContain("Learning &amp; Development");
+    expect(html).not.toContain("Office news");
+  });
+  it("keeps Company Updates open and shows the same Unit chat in a workspace view", () => {
+    const html = logisticsChannel(
+      "/logistics/teams?staff=maya&channel=central-city&context=workspace:logistics",
+    );
+    expect(html).toContain('data-team-id="company"');
+    expect(html).toContain('data-team-id="logistics"');
+    const companyStart = html.lastIndexOf(
+      '<div class="m365-teams-group"',
+      html.indexOf('data-team-id="company"'),
+    );
+    const nextGroup = html.indexOf(
+      '<div class="m365-teams-group"',
+      html.indexOf('data-team-id="company"'),
+    );
+    expect(html.slice(companyStart, nextGroup)).toContain(
+      'aria-expanded="true"',
+    );
+    expect(html).toContain("Unit chat");
+    expect(html).toContain("📰 Bulletin");
+    expect(html).not.toContain("Learning &amp; Development");
+    expect(html).not.toContain("Office news");
   });
   it("allows normal Logistics file deep links while rejecting files outside the chosen channel", () => {
     for (const person of staff)

@@ -147,13 +147,28 @@ export default function AccessBoundary({
                 : "This location is unavailable."}
             </p>
             {resource && !revealed && (
-              <Button
-                appearance="secondary"
-                className="access-boundary-reveal"
-                onClick={reveal}
-              >
-                {t("Reveal restricted content")}
-              </Button>
+              <div className="access-boundary-reveal-guide">
+                <div className="access-boundary-reveal-note">
+                  <strong>{t("Demo only")}</strong>
+                  <span>
+                    {t("See what this role would normally not be able to see.")}
+                  </span>
+                </div>
+                <svg
+                  className="access-boundary-reveal-arrow"
+                  viewBox="0 0 72 48"
+                  aria-hidden="true"
+                >
+                  <path d="M3 8 C24 2 45 12 64 36 M54 27 L64 36 L52 39" />
+                </svg>
+                <Button
+                  appearance="secondary"
+                  className="access-boundary-reveal"
+                  onClick={reveal}
+                >
+                  {t("Reveal restricted content")}
+                </Button>
+              </div>
             )}
             {!sales && (
               <>

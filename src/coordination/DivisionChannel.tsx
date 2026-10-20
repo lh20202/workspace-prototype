@@ -28,6 +28,7 @@ import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import {
   departmentFolders,
   departmentCodes,
+  unitParentFolders,
   unitFolders,
   canOpenDepartment,
   canOpenUnit,
@@ -108,7 +109,11 @@ export default function DepartmentChannel({
         }
       : undefined,
   );
-  const [folder, setFolder] = useState(params.get("folder") || ""),
+  const [folder, setFolder] = useState(
+      params.get("folder") === "Unit Coordination"
+        ? unitParentFolders[0]
+        : params.get("folder") || "",
+    ),
     [unit, setUnit] = useState(initialUnit),
     [section, setSection] = useState(params.get("section") || "");
   const [denied, setDenied] = useState(""),
@@ -504,8 +509,8 @@ export default function DepartmentChannel({
                 {unit && (
                   <>
                     <span>/</span>
-                    <button onClick={() => navigate("Unit Coordination", unit)}>
-                      {unit.name}
+                    <button onClick={() => navigate(folder, unit)}>
+                      {unit.label}
                     </button>
                   </>
                 )}
@@ -518,17 +523,15 @@ export default function DepartmentChannel({
               </nav>
               {!folder ? (
                 <div className="coord-folders">
-                  {departmentFolders
-                    .filter((f) => !genericPreview || f !== "Unit Coordination")
-                    .map((f) => (
-                      <button key={f} onClick={() => navigate(f)}>
-                        <Folder20Regular />
-                        {f}
-                        <span>›</span>
-                      </button>
-                    ))}
+                  {departmentFolders.map((f) => (
+                    <button key={f} onClick={() => navigate(f)}>
+                      <Folder20Regular />
+                      {f}
+                      <span>›</span>
+                    </button>
+                  ))}
                 </div>
-              ) : folder === "Unit Coordination" ? (
+              ) : unitParentFolders.includes(folder) ? (
                 unknownUnit ? (
                   <AccessBoundary
                     workspaceId="department"
@@ -541,25 +544,32 @@ export default function DepartmentChannel({
                     returnLabel="Open your channel view"
                   />
                 ) : !unit ? (
-                  <div className="coord-folders">
-                    {department.units.map((u) => (
-                      <button
-                        key={u.id}
-                        onClick={() => navigate("Unit Coordination", u)}
-                      >
-                        <Folder20Regular />
-                        <span>
-                          {u.name}
-                          <small>{u.access}</small>
-                        </span>
-                        {u.access === "Unit-only" ? (
-                          <AccessLock />
-                        ) : (
-                          <span>›</span>
+                  <>
+                    <div className="coord-folders">
+                      {department.units.map((u) => (
+                        <button key={u.id} onClick={() => navigate(folder, u)}>
+                          <Folder20Regular />
+                          <span>
+                            {u.label}
+                            <small>{u.access}</small>
+                          </span>
+                          {u.access === "Unit-only" ? (
+                            <AccessLock />
+                          ) : (
+                            <span>›</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                    {department.library.some((f) => f.folder === folder) && (
+                      <>
+                        <h2>Department files</h2>
+                        {fileRows(
+                          department.library.filter((f) => f.folder === folder),
                         )}
-                      </button>
-                    ))}
-                  </div>
+                      </>
+                    )}
+                  </>
                 ) : !unitAllowed ? (
                   <AccessBoundary
                     workspaceId="department"
@@ -570,7 +580,7 @@ export default function DepartmentChannel({
                       unitId: unit.id,
                       unitOnly: unit.access === "Unit-only",
                     }}
-                    area={unit.name}
+                    area={unit.label}
                     personId={person.id}
                     headingLevel={2}
                     compact
@@ -580,10 +590,7 @@ export default function DepartmentChannel({
                 ) : !section ? (
                   <div className="coord-folders">
                     {unitFolders.map((f) => (
-                      <button
-                        key={f}
-                        onClick={() => navigate("Unit Coordination", unit, f)}
-                      >
+                      <button key={f} onClick={() => navigate(folder, unit, f)}>
                         <Folder20Regular />
                         {f}
                         <span>›</span>
@@ -663,7 +670,7 @@ export default function DepartmentChannel({
                   sensitivity: f.sensitivity,
                   name: f.name,
                   folder: f.unitId
-                    ? `Unit Coordination/${department.units.find((u) => u.id === f.unitId)?.name}/${f.folder}`
+                    ? `${f.folder}/${department.units.find((u) => u.id === f.unitId)?.label}`
                     : f.folder,
                   owner: f.owner,
                   status: "Current",
@@ -699,7 +706,7 @@ export default function DepartmentChannel({
               <Button
                 onClick={() => {
                   setDenied("");
-                  if (unit && !unitAllowed) navigate("Unit Coordination");
+                  if (unit && !unitAllowed) navigate(folder);
                 }}
               >
                 Close

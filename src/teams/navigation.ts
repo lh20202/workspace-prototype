@@ -5,7 +5,11 @@ import {
   type StaffPerson,
 } from "../intranet/catalog";
 import { channels, workspaceTitle } from "../logistics/data";
-import { departments, unitFolders } from "../coordination/data";
+import {
+  departments,
+  unitFolders,
+  unitParentFolders,
+} from "../coordination/data";
 import {
   allProjects,
   currentProjects,
@@ -139,6 +143,7 @@ export function channelNavigationFor({
       .filter(
         (channel) =>
           channel.team === "company" &&
+          ["important", "bulletin", "pets"].includes(channel.id) &&
           canAccessChannel(person, "company", channel.id),
       )
       .map((channel) => ({
@@ -155,7 +160,7 @@ export function channelNavigationFor({
   for (const workspace of workspaces) {
     const selected =
       context?.kind === "workspace" && context.id === workspace.id;
-    if (context ? !selected : !canSeeWorkspace(person, workspace.id)) continue;
+    if (!selected) continue;
     const names = selected
       ? workspaceChannels[workspace.id] || []
       : visibleWorkspaceChannels(person, workspace.id);
@@ -304,11 +309,13 @@ export function teamsPreviewHrefForStaff(
 ) {
   const params = new URLSearchParams(search);
   const context = readChannelEntryContext(pathname, search);
+  const selectedFolder = params.get("folder") || "";
   const selectedUnit =
     pathname === "/teams" &&
     context?.kind === "department" &&
     ["Shared", "Files"].includes(params.get("tab") || "") &&
-    params.get("folder") === "Unit Coordination"
+    (unitParentFolders.includes(selectedFolder) ||
+      selectedFolder === "Unit Coordination")
       ? departments
           .find((department) => department.id === context.id)
           ?.units.find((unit) => unit.id === params.get("unit"))
@@ -347,7 +354,12 @@ export function teamsPreviewHrefForStaff(
     params.set("department", context.id);
     if (selectedUnit) {
       params.set("tab", "Shared");
-      params.set("folder", "Unit Coordination");
+      params.set(
+        "folder",
+        unitParentFolders.includes(selectedFolder)
+          ? selectedFolder
+          : unitParentFolders[0],
+      );
       params.set("unit", selectedUnit.id);
       if (selectedSection && unitFolders.includes(selectedSection))
         params.set("section", selectedSection);

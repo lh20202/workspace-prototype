@@ -290,7 +290,11 @@ function TeamsShellSession({
                 </button>
                 <button
                   onClick={() => {
-                    setClosed(visibleGroups.map((g) => g.id));
+                    setClosed(
+                      visibleGroups
+                        .filter((g) => g.id !== "company")
+                        .map((g) => g.id),
+                    );
                     setListOptions(false);
                   }}
                 >
@@ -337,14 +341,16 @@ function TeamsShellSession({
               );
               if (!channels.length) return null;
               const expanded =
-                !closed.includes(group.id) &&
-                (active || closed.includes(`open:${group.id}`));
+                group.id === "company" ||
+                (!closed.includes(group.id) &&
+                  (active || closed.includes(`open:${group.id}`)));
               return (
                 <div className="m365-teams-group" key={group.id}>
                   <button
                     className="m365-teams-team"
                     aria-expanded={expanded}
-                    onClick={() =>
+                    onClick={() => {
+                      if (group.id === "company") return;
                       setClosed((items) =>
                         expanded
                           ? [
@@ -357,8 +363,8 @@ function TeamsShellSession({
                               ...items.filter((id) => id !== group.id),
                               `open:${group.id}`,
                             ],
-                      )
-                    }
+                      );
+                    }}
                   >
                     {expanded ? (
                       <ChevronDown16Regular />
@@ -409,6 +415,13 @@ function TeamsShellSession({
                 </div>
               );
             })}
+            <div className="m365-teams-section-label m365-teams-chats-label">
+              Chats
+            </div>
+            <div className="m365-teams-chat-entry">
+              <Chat24Regular />
+              <span>Unit chat</span>
+            </div>
             {navigationFooter && (
               <div className="m365-teams-navigation-footer">
                 {navigationFooter}

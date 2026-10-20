@@ -26,9 +26,13 @@ export const departmentFolders = [
   "Budget Administration",
   "Travel & Expense Coordination",
   "Workload & Capacity",
-  "Retreats & Away Days",
-  "Social & Team Activities",
-  "Unit Coordination",
+  "Retreats & Team Activities",
+];
+export const unitParentFolders = [
+  "Planning Cycle Coordination",
+  "Budget Administration",
+  "Travel & Expense Coordination",
+  "Retreats & Team Activities",
 ];
 export const unitFolders = [
   "Unit Meetings",
@@ -51,6 +55,7 @@ export interface AdminFile {
 export interface Unit {
   id: string;
   name: string;
+  label: string;
   access: "Department-wide" | "Unit-only";
   files: AdminFile[];
   calendarItems: {
@@ -120,11 +125,11 @@ const folderFiles: Record<string, string[]> = {
     "Weekly Capacity View.xlsx",
     "Cover Plan — October.docx",
   ],
-  "Retreats & Away Days": [
+  "Retreats & Team Activities": [
     "Department Retreat 2027 — Agenda.docx",
     "Venue Comparison.xlsx",
+    "Summer Picnic — Activity Ideas.docx",
   ],
-  "Social & Team Activities": ["Summer Picnic — Activity Ideas.docx"],
 };
 const misfiled: Record<
   string,
@@ -447,7 +452,7 @@ export const departments: Department[] = departmentDefinitions.map(
               : ("Internal" as const),
         })),
     );
-    const units: Unit[] = unitNames.map((name) => {
+    const units: Unit[] = unitNames.map((name, index) => {
       const uid = unitId(name);
       const files: AdminFile[] = [
         { folder: "Unit Meetings", name: "Weekly Meeting — 19 October.docx" },
@@ -479,6 +484,7 @@ export const departments: Department[] = departmentDefinitions.map(
       return {
         id: uid,
         name,
+        label: `Unit ${index + 1}`,
         access: unitOnly.has(name) ? "Unit-only" : "Department-wide",
         files,
         calendarItems: [
@@ -552,7 +558,7 @@ export const departments: Department[] = departmentDefinitions.map(
         author: coordinatorName,
         text: departmentConversation[id][4],
         time: "11:00",
-        attachmentId: byFolder("Retreats & Away Days"),
+        attachmentId: byFolder("Retreats & Team Activities"),
       },
       {
         id: `${id}-P6`,
@@ -613,7 +619,7 @@ export const departments: Department[] = departmentDefinitions.map(
       author: coordinatorName,
       text: departmentConversation[id][6],
       time: "12:05",
-      attachmentId: byFolder("Social & Team Activities"),
+      attachmentId: byFolder("Retreats & Team Activities"),
     });
     for (const post of posts) {
       const key = post.id.slice(id.length + 1);

@@ -3,6 +3,7 @@ export type WorkspaceAccessLevel = "internal" | "strictly-confidential";
 export const strictlyConfidentialWorkspaceIds = [
   "executive",
   "employment",
+  "legal",
   "welfare",
 ];
 export const workspaceSeed: [

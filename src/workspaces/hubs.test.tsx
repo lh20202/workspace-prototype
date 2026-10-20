@@ -182,6 +182,7 @@ describe("hub families retain one canonical owner for every environment", () => 
     expect(strictlyConfidentialWorkspaceIds.slice().sort()).toEqual([
       "employment",
       "executive",
+      "legal",
       "welfare",
     ]);
     expect(html).not.toMatch(

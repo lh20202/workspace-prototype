@@ -96,6 +96,10 @@ describe("task-oriented architecture destinations", () => {
       href: "/financial-operations",
       type: "workspace",
     });
+    expect(architectureDestinationById.get("legal")).toMatchObject({
+      label: "Legal",
+      accessLevel: "strictly-confidential",
+    });
     expect(
       financeJumpLinks.map(({ label, href }) => ({ label, href })),
     ).toEqual([

@@ -35,22 +35,20 @@ afterEach(() => vi.unstubAllGlobals());
 describe("Planning & Reporting uses the existing Planning Team and working files", () => {
   it("curates the durable channel for executive and finance roles without broadening protected access", () => {
     for (const person of staff) {
-      const expected = ["robin", "sam"].includes(person.id);
       expect(
         canSeeWorkspaceChannel(person, "planning", planningReportingChannel),
       ).toBe(true);
-      const planning = teamsGroups(person).find(
-        (group) => group.id === "planning",
-      );
+      const planning = teamsGroups(person, {
+        kind: "workspace",
+        id: "planning",
+      }).find((group) => group.id === "planning");
       expect(
         !!planning?.channels.some(
           (channel) => channel.label === planningReportingChannel,
         ),
-      ).toBe(expected);
-      if (expected) {
-        expect(planning?.kind).toBe("workspace");
-        expect(planning?.label).toBe("Planning");
-      }
+      ).toBe(true);
+      expect(planning?.kind).toBe("workspace");
+      expect(planning?.label).toBe("Planning");
     }
     expect(canAccessArea("sam", "planning", "restricted")).toBe(false);
     expect(canAccessArea("robin", "planning", "restricted")).toBe(true);

@@ -489,7 +489,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
             workspaceId={workspace.id}
             resource={
               validRouteShape &&
-              (page === "home" || library || area || tool || isList)
+              (page === "home" || library || area || subject || tool || isList)
                 ? { kind: "workspace", workspaceId: workspace.id }
                 : undefined
             }

@@ -417,6 +417,13 @@ export function getSiteAdminModel(
       const subject = financeProtectedSubjects[page]?.find(
         ([id]) => parts.length === 2 && id === parts[1],
       );
+      const area = financeAreas.find((item) => item.id === page);
+      const library = financeLibraries.find(
+        (item) => item.id === page || item.areas.includes(page),
+      );
+      const deniedLibraryArea = library?.areas.find(
+        (areaId) => !canAccessArea(person, "finance", areaId),
+      );
       denied = subject
         ? !canAccessArea(person, "finance", subject[0])
         : parts.length > 1 ||
@@ -428,7 +435,9 @@ export function getSiteAdminModel(
             "restricted",
             ...financeLibraries.map((library) => library.id),
             ...financeAreas.map((area) => area.id),
-          ].includes(page);
+          ].includes(page) ||
+          (!!area && !canAccessArea(person, "finance", area.id)) ||
+          !!deniedLibraryArea;
     } else if (wiki) {
       denied = !resolveWikiPath(pathname).valid;
       contents = [

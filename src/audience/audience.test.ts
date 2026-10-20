@@ -28,6 +28,8 @@ describe("Audience R&D connected working data", () => {
       "/audience-innovation/analytics",
       "/audience-innovation/decisions",
       "/audience-innovation/calendar",
+      "/audience-innovation/restricted/research-participant-data",
+      "/audience-innovation/restricted/customer-data-analytics",
     ])
       expect(prototypeForPath(p)).toBe("audience");
     expect(pageTitle("/audience-innovation")).toBe("Lab");
