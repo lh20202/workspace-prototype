@@ -23,6 +23,10 @@ describe("Frontline science Wiki", () => {
     );
     expect(html).toContain("Learning reference");
     expect(html).toContain("Skip to article");
+    expect(html).toContain('aria-controls="science-area-nav"');
+    expect(html).toContain('aria-controls="science-article-nav"');
+    expect(html).toContain("Browse knowledge areas");
+    expect(html).toContain("Browse articles");
   });
 
   it("supports search across knowledge areas and articles", () => {
@@ -43,6 +47,8 @@ describe("Frontline science Wiki", () => {
       "How cells organise life",
       "The respiratory system and gas exchange",
       "Learning reference · For general education",
+      "Browse knowledge areas",
+      "Browse articles",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);
     }

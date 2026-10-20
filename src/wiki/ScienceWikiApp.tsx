@@ -160,6 +160,8 @@ export default function ScienceWikiApp() {
   const [area, setArea] = useState(areas[0]);
   const [articleTitle, setArticleTitle] = useState(articles[0].title);
   const [query, setQuery] = useState("");
+  const [areasOpen, setAreasOpen] = useState(false);
+  const [articlesOpen, setArticlesOpen] = useState(false);
   const selected =
     articles.find((article) => article.title === articleTitle) || articles[0];
   const matches = useMemo(() => searchScienceWiki(query), [query]);
@@ -217,8 +219,20 @@ export default function ScienceWikiApp() {
       </header>
       <div className="wiki-layout science-wiki-layout">
         <aside className="wiki-primary-rail">
+          <button
+            className="wiki-mobile-nav"
+            aria-expanded={areasOpen}
+            aria-controls="science-area-nav"
+            onClick={() => setAreasOpen(!areasOpen)}
+          >
+            {t("Browse knowledge areas")}
+          </button>
           <div className="wiki-rail-label">{t("Knowledge areas")}</div>
-          <nav aria-label={t("Knowledge areas")}>
+          <nav
+            id="science-area-nav"
+            className={areasOpen ? "is-open" : ""}
+            aria-label={t("Knowledge areas")}
+          >
             {areas.map((item) => (
               <button
                 key={item}
@@ -235,9 +249,21 @@ export default function ScienceWikiApp() {
           </nav>
         </aside>
         <aside className="wiki-chapter-rail">
+          <button
+            className="wiki-mobile-nav"
+            aria-expanded={articlesOpen}
+            aria-controls="science-article-nav"
+            onClick={() => setArticlesOpen(!articlesOpen)}
+          >
+            {t("Browse articles")}
+          </button>
           <div className="wiki-rail-label">{t("Articles")}</div>
           <h2>{t(area)}</h2>
-          <nav aria-label={t("Articles")}>
+          <nav
+            id="science-article-nav"
+            className={articlesOpen ? "is-open" : ""}
+            aria-label={t("Articles")}
+          >
             {articles
               .filter((item) => item.area === area)
               .map((item) => (

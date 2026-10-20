@@ -35,6 +35,8 @@ export const germanFrontlineScience: Record<string, string> = {
     "Wiki zu Biologie, Chemie & Physiologie",
   "Knowledge areas": "Wissensbereiche",
   Articles: "Artikel",
+  "Browse knowledge areas": "Wissensbereiche anzeigen",
+  "Browse articles": "Artikel durchsuchen",
   "Key idea": "Kernaussage",
   "Learning reference · For general education":
     "Lernmaterial · Zur allgemeinen Bildung",
