@@ -221,7 +221,7 @@ export default function DepartmentChannel({
               <td>
                 <button onClick={() => openFile(f)}>
                   <DocumentIcon name={f.name} />
-                  {f.name}
+                  <span data-no-translate>{f.name}</span>
                   <SensitivityBadge value={f.sensitivity} />
                 </button>
               </td>
