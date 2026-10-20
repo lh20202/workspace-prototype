@@ -5,6 +5,7 @@ import StaffLink from "../components/StaffLink";
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
+import "./styles.css";
 import "./science-wiki.css";
 
 export const scienceWikiArticles = [
