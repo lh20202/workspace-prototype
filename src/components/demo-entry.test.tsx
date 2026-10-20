@@ -142,9 +142,7 @@ describe("standalone workspace demos and the beta entry", () => {
         </PreviewRoleProvider>,
       );
       expect(html).toContain("Reveal restricted content");
-      expect(html).toContain(
-        "Your role determines whether you can see this content. For this demo, you can reveal it here.",
-      );
+      expect(html).toContain("Access to this content depends on your role.");
       expect(html).not.toContain("Try another preview role");
       expect(html).toContain("Contact focal point");
     },

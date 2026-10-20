@@ -1,4 +1,8 @@
-import { Archive20Regular, ChevronRight16Regular } from "@fluentui/react-icons";
+import {
+  Archive20Regular,
+  ChevronRight16Regular,
+  Stethoscope24Regular,
+} from "@fluentui/react-icons";
 import type { ReactNode } from "react";
 import StaffLink from "../components/StaffLink";
 import ArchitectureWorkspaceIcon from "./ArchitectureWorkspaceIcon";
@@ -10,6 +14,7 @@ import { projectHref } from "../projects/data";
 import AdminLogins from "./AdminLogins";
 import HubHeadingIcon from "./HubHeadingIcon";
 import { architectureDestinationById } from "./architectureDestinations";
+import { externalPreviewHref } from "../environments/catalog";
 import {
   architectureHubViews,
   architectureProjects,
@@ -177,6 +182,94 @@ function ArchitectureProjectStrip() {
   );
 }
 
+export const frontlineDestinations = [
+  { id: "frontline-logistics", label: "Logistics" },
+  { id: "frontline-supply", label: "Supply" },
+  { id: "frontline-warehouses", label: "Warehouses A–Z" },
+  {
+    id: "frontline-science-wiki",
+    label: "Biology, Chemistry & Physiology Wiki",
+    wiki: true,
+  },
+];
+
+// UN M49 regions are mutually exclusive; representative country memberships
+// are verified against the UN Statistics Division's regional grouping.
+export const countryRegions = [
+  { name: "Africa", countries: ["Egypt", "Kenya", "Nigeria", "South Africa"] },
+  {
+    name: "Americas",
+    countries: ["Argentina", "Brazil", "Canada", "Mexico", "United States"],
+  },
+  { name: "Asia", countries: ["China", "India", "Japan", "Singapore"] },
+  {
+    name: "Europe",
+    countries: ["France", "Germany", "Italy", "United Kingdom"],
+  },
+  {
+    name: "Oceania",
+    countries: ["Australia", "Fiji", "New Zealand", "Papua New Guinea"],
+  },
+];
+
+function FrontlineSection() {
+  return (
+    <section
+      className="architecture-frontline"
+      aria-labelledby="architecture-frontline-title"
+    >
+      <header className="architecture-frontline-heading">
+        <Stethoscope24Regular aria-hidden="true" />
+        <h2 id="architecture-frontline-title">Frontline</h2>
+      </header>
+      <div className="architecture-frontline-destinations">
+        {frontlineDestinations.map(({ id, label, wiki }) => (
+          <StaffLink
+            key={id}
+            className="architecture-frontline-link"
+            href={
+              wiki
+                ? "/frontline/science-wiki"
+                : externalPreviewHref(id, "/architecture")
+            }
+          >
+            {wiki ? (
+              <EnvironmentIcon type="wiki" size={22} />
+            ) : (
+              <ArchitectureWorkspaceIcon />
+            )}
+            <span>{label}</span>
+          </StaffLink>
+        ))}
+      </div>
+      <details className="architecture-countries">
+        <summary>Countries</summary>
+        <div className="architecture-country-regions">
+          {countryRegions.map((region) => (
+            <section key={region.name} aria-label={region.name}>
+              <h3>{region.name}</h3>
+              <ul>
+                {region.countries.map((country) => (
+                  <li key={country}>{country}</li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+        <p className="architecture-countries-source">
+          <a
+            href="https://unstats.un.org/unsd/methodology/m49"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Regional grouping follows the UN M49 geographic classification.
+          </a>
+        </p>
+      </details>
+    </section>
+  );
+}
+
 export default function ArchitectureContent() {
   return (
     <div className="architecture-exploration">
@@ -196,6 +289,14 @@ export default function ArchitectureContent() {
       </div>
       <ArchitectureJumpGroups />
       <ArchitectureProjectStrip />
+      <div
+        className="architecture-scope-divider"
+        role="separator"
+        aria-label="Out of scope"
+      >
+        <span>OUT OF SCOPE</span>
+      </div>
+      <FrontlineSection />
     </div>
   );
 }

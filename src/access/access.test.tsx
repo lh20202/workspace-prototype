@@ -98,9 +98,7 @@ describe("business focal point before technical access escalation", () => {
         resource: { kind: "wiki", areaId: "insight" },
       }),
     );
-    expect(html).toContain(
-      "Your role determines whether you can see this content. For this demo, you can reveal it here.",
-    );
+    expect(html).toContain("Access to this content depends on your role.");
     expect(html).toContain("Reveal restricted content");
     expect(html).toContain("Need access to this Wiki area instead?");
     expect(html).toContain("is the focal point for this Wiki.");

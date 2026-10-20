@@ -1,9 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Directory from "./Directory";
-import {
-  architectureDestinationById,
-} from "./architectureDestinations";
+import { architectureDestinationById } from "./architectureDestinations";
 import {
   architectureHubViews,
   architectureProjects,
@@ -72,6 +70,34 @@ describe("architecture directory", () => {
         departmentPreviewHref(department.id).replaceAll("&", "&amp;"),
       );
     }
+  });
+
+  it("adds a neutral scope break after Projects and Frontline destinations below it", () => {
+    const html = renderDirectory();
+    const projects = html.indexOf('class="architecture-projects"');
+    const scope = html.indexOf("OUT OF SCOPE");
+    const frontline = html.indexOf('id="architecture-frontline-title"');
+    const countries = html.indexOf("<summary>Countries</summary>");
+    expect(projects).toBeGreaterThan(-1);
+    expect(scope).toBeGreaterThan(projects);
+    expect(frontline).toBeGreaterThan(scope);
+    expect(countries).toBeGreaterThan(frontline);
+    expect(html).toContain('class="architecture-frontline-heading"><svg');
+    expect(html).toContain("Biology, Chemistry &amp; Physiology Wiki");
+    expect(html).toContain(
+      'href="/external/frontline-logistics?returnTo=%2Farchitecture&amp;staff=devon"',
+    );
+    expect(html).toContain(
+      'href="/external/frontline-supply?returnTo=%2Farchitecture&amp;staff=devon"',
+    );
+    expect(html).toContain(
+      'href="/external/frontline-warehouses?returnTo=%2Farchitecture&amp;staff=devon"',
+    );
+    expect(html).toContain('href="/frontline/science-wiki?staff=devon"');
+    expect(html).toContain('class="architecture-countries"');
+    expect(html).toContain(
+      'href="https://unstats.un.org/unsd/methodology/m49"',
+    );
   });
 
   it("keeps all six East workspaces and moves Projects and Archives without losing their routes", () => {
@@ -168,6 +194,12 @@ describe("architecture directory", () => {
       "See all",
       "Project management",
       "Meetings and coordination",
+      "OUT OF SCOPE",
+      "Frontline",
+      "Countries",
+      "Biology, Chemistry & Physiology Wiki",
+      "Regional grouping follows the UN M49 geographic classification.",
+      "United States",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);
     }
@@ -175,17 +207,24 @@ describe("architecture directory", () => {
 
   it("places Portfolio before the projects in a separate strip, with See all last", () => {
     const html = renderDirectory();
-    const rail = html.match(/<aside class="architecture-jump-groups"[\s\S]*?<\/aside>/)?.[0];
+    const rail = html.match(
+      /<aside class="architecture-jump-groups"[\s\S]*?<\/aside>/,
+    )?.[0];
     expect(rail).toContain("Meetings and coordination");
     expect(rail).not.toContain("Project workspaces");
-    const strip = html.slice(html.indexOf('<section class="architecture-projects"'));
+    const strip = html.slice(
+      html.indexOf('<section class="architecture-projects"'),
+      html.indexOf('<div class="architecture-scope-divider"'),
+    );
     const links = hrefs(strip);
     expect(links).toEqual([
       "/projects?staff=devon",
-      ...architectureProjects.map((project) => `${projectHref(project)}?staff=devon`),
+      ...architectureProjects.map(
+        (project) => `${projectHref(project)}?staff=devon`,
+      ),
       "/projects/current?staff=devon",
     ]);
-    expect(strip).toContain('architecture-project-link architecture-portfolio');
+    expect(strip).toContain("architecture-project-link architecture-portfolio");
     expect(strip).toContain("Portfolio");
     expect(strip).toContain("Project management");
     expect(strip).toContain("See all");

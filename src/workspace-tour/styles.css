@@ -297,6 +297,9 @@
   background: #fff9e8dc;
   content: "";
   transform: rotate(-1deg);
+  box-shadow:
+    0 5px 13px #25374624,
+    0 1px 3px #25374618;
 }
 .workspace-tour-annotation strong {
   color: #8c352a;

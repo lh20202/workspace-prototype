@@ -6,7 +6,7 @@ import {
   DrawerHeaderTitle,
   DrawerBody,
 } from "@fluentui/react-components";
-import { Dismiss20Regular } from "@fluentui/react-icons";
+import { Dismiss20Regular, LockOpen20Regular } from "@fluentui/react-icons";
 import { selectedStaffId } from "../intranet/catalog";
 import { useTranslation } from "../i18n/Language";
 import { withExplicitStaff } from "../utils/staffNavigation";
@@ -117,15 +117,11 @@ export default function AccessBoundary({
   return (
     <>
       <div
-        className={
-          sales
-            ? "access-boundary-layout access-boundary-sales"
-            : "access-boundary-layout"
-        }
+        className={`access-boundary-layout${sales ? " access-boundary-sales" : ""}`}
       >
         <div className="access-boundary-main">
           <section
-            className={`access-boundary${strict ? " access-boundary-strict" : ""}${compact ? " access-boundary-compact" : ""}`}
+            className={`access-boundary${classification ? " access-boundary-confidential" : ""}${strict ? " access-boundary-strict" : ""}${compact ? " access-boundary-compact" : ""}`}
           >
             <AccessLock
               size={28}
@@ -141,35 +137,9 @@ export default function AccessBoundary({
             <p className="access-boundary-area">{context.area}</p>
             <p>
               {resource
-                ? t(
-                    "Your role determines whether you can see this content. For this demo, you can reveal it here.",
-                  )
+                ? t("Access to this content depends on your role.")
                 : "This location is unavailable."}
             </p>
-            {resource && !revealed && (
-              <div className="access-boundary-reveal-guide">
-                <div className="access-boundary-reveal-note">
-                  <strong>{t("Demo only")}</strong>
-                  <span>
-                    {t("See what this role would normally not be able to see.")}
-                  </span>
-                </div>
-                <svg
-                  className="access-boundary-reveal-arrow"
-                  viewBox="0 0 72 48"
-                  aria-hidden="true"
-                >
-                  <path d="M3 8 C24 2 45 12 64 36 M54 27 L64 36 L52 39" />
-                </svg>
-                <Button
-                  appearance="secondary"
-                  className="access-boundary-reveal"
-                  onClick={reveal}
-                >
-                  {t("Reveal restricted content")}
-                </Button>
-              </div>
-            )}
             {!sales && (
               <>
                 {workspaceContact}
@@ -184,46 +154,70 @@ export default function AccessBoundary({
             </a>
           </section>
         </div>
-        {sales && (
+        {((resource && !revealed) || sales) && (
           <aside
-            className="access-sales-alternative"
-            aria-label="Frontline sales alternative and access contacts"
+            className={`access-boundary-aside${sales ? " access-sales-alternative" : ""}`}
+            aria-label={
+              sales
+                ? "Frontline sales alternative and access contacts"
+                : "Demo access note"
+            }
           >
-            <h2>Are you frontline sales staff?</h2>
-            <p>
-              Go to the Local Crew Portal for the information and tools used in
-              day-to-day frontline work.
-            </p>
-            <a
-              className="access-sales-portal-link"
-              href={withExplicitStaff("/frontline-sales")}
-            >
-              <EnvironmentIcon type="portal" size={18} />
-              Open Local Crew Portal <span aria-hidden="true">→</span>
-            </a>
-            <div className="access-sales-contact">
-              <h3>Frontline sales focal point</h3>
-              <p>
-                <strong>{frontlineSalesFocalPoint.name}</strong>
-                <br />
-                {frontlineSalesFocalPoint.role}
-              </p>
-              <Button
-                appearance="secondary"
-                onClick={() => openContact(frontlineSalesFocalPoint)}
-              >
-                Contact focal point
-              </Button>
-            </div>
-            <div className="access-sales-contact">
-              <h3>
-                {wiki
-                  ? "Need access to this Wiki area instead?"
-                  : "Need access to this workspace instead?"}
-              </h3>
-              {workspaceContact}
-              {urgent}
-            </div>
+            {resource && !revealed && (
+              <div className="access-demo-sticky demo-paper-surface">
+                <strong>{t("DEMO ONLY")}</strong>
+                <span>
+                  {t("See what this role would normally not be able to see.")}
+                </span>
+                <Button
+                  appearance="secondary"
+                  className="access-boundary-reveal"
+                  icon={<LockOpen20Regular aria-hidden="true" />}
+                  onClick={reveal}
+                >
+                  {t("Reveal restricted content")}
+                </Button>
+              </div>
+            )}
+            {sales && (
+              <>
+                <h2>Are you frontline sales staff?</h2>
+                <p>
+                  Go to the Local Crew Portal for the information and tools used
+                  in day-to-day frontline work.
+                </p>
+                <a
+                  className="access-sales-portal-link"
+                  href={withExplicitStaff("/frontline-sales")}
+                >
+                  <EnvironmentIcon type="portal" size={18} />
+                  Open Local Crew Portal <span aria-hidden="true">→</span>
+                </a>
+                <div className="access-sales-contact">
+                  <h3>Frontline sales focal point</h3>
+                  <p>
+                    <strong>{frontlineSalesFocalPoint.name}</strong>
+                    <br />
+                    {frontlineSalesFocalPoint.role}
+                  </p>
+                  <Button
+                    appearance="secondary"
+                    onClick={() => openContact(frontlineSalesFocalPoint)}
+                  >
+                    Contact focal point
+                  </Button>
+                </div>
+                <div className="access-sales-contact">
+                  <h3>
+                    {wiki
+                      ? "Need access to this Wiki area instead?"
+                      : "Need access to this workspace instead?"}
+                  </h3>
+                  {workspaceContact}
+                  {urgent}
+                </div>
+              </>
+            )}
           </aside>
         )}
       </div>

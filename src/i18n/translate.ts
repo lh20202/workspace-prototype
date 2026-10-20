@@ -35,6 +35,7 @@ import { germanDiscoverability } from "./de-discoverability";
 import { germanAccessMatrix } from "./de-access-matrix";
 import { germanPolish } from "./de-polish";
 import { germanWorkspaceTour } from "./de-workspace-tour";
+import { germanFrontlineScience } from "./de-frontline-science";
 
 export type Language = "en" | "de";
 export const germanTranslationLayers = [
@@ -70,6 +71,7 @@ export const germanTranslationLayers = [
   germanAccessMatrix,
   germanPolish,
   germanWorkspaceTour,
+  germanFrontlineScience,
 ] as const;
 const messages: Record<string, string> = Object.assign(
   {},

@@ -559,7 +559,7 @@ function ActivityDirectory() {
           >
             {annotations.map((annotation) => (
               <div
-                className={`workspace-tour-annotation ${annotation.className}`}
+                className={`workspace-tour-annotation demo-paper-surface ${annotation.className}`}
                 key={annotation.id}
               >
                 <strong>{annotation.title}</strong>

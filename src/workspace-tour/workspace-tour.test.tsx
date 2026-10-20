@@ -65,7 +65,9 @@ describe("Activity Workspace walkthrough", () => {
         layer.match(/marker-end="url\(#tour-arrowhead(?:-mobile)?\)"/g),
       ).toHaveLength(6);
     expect(
-      html.match(/class="workspace-tour-annotation annotation-/g),
+      html.match(
+        /class="workspace-tour-annotation demo-paper-surface annotation-/g,
+      ),
     ).toHaveLength(6);
     for (const label of [
       "Automatic metadata",

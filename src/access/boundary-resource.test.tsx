@@ -10,8 +10,7 @@ import type { AccessResource } from "./policy";
 
 afterEach(() => vi.unstubAllGlobals());
 const revealAction = "Reveal restricted content";
-const explanation =
-  "Your role determines whether you can see this content. For this demo, you can reveal it here.";
+const explanation = "Access to this content depends on your role.";
 
 function renderBoundary(resource: AccessResource, area = "Protected area") {
   return renderToStaticMarkup(
@@ -74,7 +73,7 @@ describe("page-local restricted-content reveal", () => {
     },
   );
 
-  it("places the reveal directly inside the access message", () => {
+  it("places the demo reveal in a separate sticky beside the access message", () => {
     vi.stubGlobal("location", new URL("https://example.test/executive"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderBoundary({
@@ -85,14 +84,18 @@ describe("page-local restricted-content reveal", () => {
       /<section class="access-boundary[\s\S]*?<\/section>/,
     )?.[0];
     expect(boundary).toBeTruthy();
-    expect(boundary).toContain(revealAction);
+    expect(boundary).not.toContain(revealAction);
     expect(boundary).toContain(explanation);
-    expect(boundary).toContain('class="access-boundary-reveal-guide"');
-    expect(boundary).toContain('class="access-boundary-reveal-arrow"');
-    expect(boundary).toContain("Demo only");
-    expect(boundary).toContain(
-      "See what this role would normally not be able to see.",
-    );
+    expect(boundary).not.toContain("DEMO ONLY");
+    expect(html).toContain('class="access-demo-sticky demo-paper-surface"');
+    expect(html).toContain(revealAction);
+    expect(html).toContain("DEMO ONLY");
+    expect(
+      html.match(
+        /<button[^>]*class="[^"]*access-boundary-reveal"[^>]*>[\s\S]*?<svg/,
+      )?.[0],
+    ).toBeTruthy();
+    expect(html).not.toContain("access-boundary-reveal-arrow");
     expect(boundary).not.toContain("preview-role");
   });
 

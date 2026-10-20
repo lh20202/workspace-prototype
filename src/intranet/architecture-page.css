@@ -201,6 +201,124 @@
   padding-top: 20px;
   border-top: 1px solid #dddfe7;
 }
+.architecture-scope-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+  color: #686c70;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+}
+.architecture-scope-divider::before,
+.architecture-scope-divider::after {
+  height: 1px;
+  flex: 1;
+  background: #d7d9dc;
+  content: "";
+}
+.architecture-scope-divider span {
+  padding: 9px 13px;
+  border: 1px solid #d7d9dc;
+  background: #f7f7f6;
+}
+.architecture-frontline {
+  grid-column: 1 / -1;
+  --frontline-accent: #43716d;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #d7e2df;
+  border-top: 3px solid var(--frontline-accent);
+  background: #f8fbfa;
+}
+.architecture-frontline-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--frontline-accent);
+}
+.architecture-frontline-heading > svg {
+  width: 30px;
+  height: 30px;
+}
+.architecture-frontline-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 28px;
+}
+.architecture-frontline-destinations {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.architecture-frontline-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 10px 12px;
+  border: 1px solid #e3e9e7;
+  background: white;
+  color: #2d5362;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 20px;
+  text-decoration: none;
+}
+.architecture-frontline-link > :first-child {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+}
+.architecture-frontline-link span {
+  min-width: 0;
+}
+.architecture-countries {
+  margin-top: 18px;
+  border-top: 1px solid #dfe6e3;
+}
+.architecture-countries summary {
+  width: fit-content;
+  padding: 14px 4px 8px;
+  color: #344c49;
+  font-weight: 600;
+  cursor: pointer;
+}
+.architecture-countries summary:focus-visible {
+  outline: 2px solid #0f6cbd;
+  outline-offset: 3px;
+}
+.architecture-country-regions {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  padding: 12px 4px 2px;
+  border-top: 1px solid #edf0ee;
+}
+.architecture-country-regions h3 {
+  margin: 0 0 6px;
+  color: #365e59;
+  font-size: 13px;
+}
+.architecture-country-regions ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #46514e;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.architecture-countries-source {
+  margin: 14px 4px 0;
+  font-size: 12px;
+}
+.architecture-countries-source a {
+  color: #526d61;
+}
 .architecture-projects > p {
   margin: 0 0 14px;
   color: #616161;
@@ -357,10 +475,20 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
   }
+  .architecture-frontline-destinations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .architecture-country-regions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 @media (max-width: 480px) {
   .architecture-destination-grid,
   .architecture-jump-groups section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .architecture-frontline-destinations,
+  .architecture-country-regions {
     grid-template-columns: minmax(0, 1fr);
   }
 }

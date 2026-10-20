@@ -31,6 +31,7 @@ export function prototypeForPath(
   | "governance"
   | "emergency"
   | "wiki"
+  | "science-wiki"
   | "frontline"
   | "functional" {
   if (pathname === "/") return "launcher";
@@ -43,6 +44,11 @@ export function prototypeForPath(
     pathname.startsWith("/sales-marketing/wiki/")
   )
     return "wiki";
+  if (
+    pathname === "/frontline/science-wiki" ||
+    pathname.startsWith("/frontline/science-wiki/")
+  )
+    return "science-wiki";
   if (
     pathname === "/frontline-sales" ||
     pathname.startsWith("/frontline-sales/")
@@ -99,6 +105,8 @@ export function pageTitle(pathname: string) {
   const external = externalPreviewForPath(pathname);
   if (external) return `${external.name} | Demo`;
   if (pathname === "/") return "Welcome | Digital Workspace demo site";
+  if (pathname.startsWith("/frontline/science-wiki"))
+    return "Biology, Chemistry & Physiology Wiki | Demo";
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
   if (pathname === "/workspace-tour")

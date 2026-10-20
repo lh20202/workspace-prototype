@@ -20,12 +20,14 @@ const TeamsPreview = lazy(() => import("./intranet/TeamsPreview"));
 const ExecutiveApp = lazy(() => import("./executive/ExecutiveApp"));
 const EmergencyApp = lazy(() => import("./executive/EmergencyApp"));
 const WikiApp = lazy(() => import("./wiki/WikiApp"));
+const ScienceWikiApp = lazy(() => import("./wiki/ScienceWikiApp"));
 const SiteAdministrationPage = lazy(
   () => import("./administration/SiteAdministrationPage"),
 );
 const WorkspaceTour = lazy(() => import("./workspace-tour/WorkspaceTour"));
 import { siteAdministrationPage } from "./administration/routes";
 import { defaultPreviewRoleId } from "./access/policy";
+import { confidentialClassificationForRoute } from "./access/confidentialRoute";
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   const external = externalPreviewForPath(location.pathname);
@@ -86,6 +88,40 @@ export default function AppRouter() {
         <ExternalEnvironmentPreview environment={external} />
       </div>
     );
+  const classification = confidentialClassificationForRoute(
+    location.pathname,
+    location.search,
+  );
+  const routedApp =
+    prototype === "wiki" ? (
+      <WikiApp />
+    ) : prototype === "science-wiki" ? (
+      <ScienceWikiApp />
+    ) : prototype === "projects" ? (
+      <ProjectsApp />
+    ) : prototype === "functional" ? (
+      <FunctionalApp />
+    ) : prototype === "executive" ? (
+      <ExecutiveApp />
+    ) : prototype === "emergency" ? (
+      <EmergencyApp />
+    ) : prototype === "finance" ? (
+      <FinanceApp />
+    ) : prototype === "teams" ? (
+      <TeamsPreview />
+    ) : prototype === "content" ? (
+      <ContentApp />
+    ) : prototype === "audience" ? (
+      <AudienceApp />
+    ) : prototype === "services" ? (
+      <ServicesApp />
+    ) : prototype === "service-desk" ? (
+      <AccessRequest />
+    ) : prototype === "planning" ? (
+      <App />
+    ) : (
+      <LogisticsApp />
+    );
   return (
     <div className="prototype-frame">
       <PrototypeNavigator />
@@ -96,32 +132,13 @@ export default function AppRouter() {
           </div>
         }
       >
-        {prototype === "wiki" ? (
-          <WikiApp />
-        ) : prototype === "projects" ? (
-          <ProjectsApp />
-        ) : prototype === "functional" ? (
-          <FunctionalApp />
-        ) : prototype === "executive" ? (
-          <ExecutiveApp />
-        ) : prototype === "emergency" ? (
-          <EmergencyApp />
-        ) : prototype === "finance" ? (
-          <FinanceApp />
-        ) : prototype === "teams" ? (
-          <TeamsPreview />
-        ) : prototype === "content" ? (
-          <ContentApp />
-        ) : prototype === "audience" ? (
-          <AudienceApp />
-        ) : prototype === "services" ? (
-          <ServicesApp />
-        ) : prototype === "service-desk" ? (
-          <AccessRequest />
-        ) : prototype === "planning" ? (
-          <App />
+        {classification ? (
+          <div className="confidential-route-zone">
+            <span className="confidential-route-badge">{classification}</span>
+            {routedApp}
+          </div>
         ) : (
-          <LogisticsApp />
+          routedApp
         )}
       </Suspense>
     </div>
