@@ -1329,7 +1329,7 @@ tbody tr:hover {
 .confidential-route-badge {
   position: absolute;
   /* Keep the cue below the workspace header, in the breathing room before content. */
-  top: 232px;
+  top: 226px;
   right: 12px;
   padding: 3px 8px;
   border: 1px solid #e2c8cf;
