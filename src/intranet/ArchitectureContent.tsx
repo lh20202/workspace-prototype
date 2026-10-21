@@ -198,43 +198,43 @@ export const frontlineBranches = [
     id: "frontline-branch-maseru",
     continent: "Africa",
     city: "Maseru",
-    detail: "Lesotho · Capital city",
+    detail: "Lesotho",
   },
   {
     id: "frontline-branch-thimphu",
     continent: "Asia",
     city: "Thimphu",
-    detail: "Bhutan · Capital city",
+    detail: "Bhutan",
   },
   {
     id: "frontline-branch-vaduz",
     continent: "Europe",
     city: "Vaduz",
-    detail: "Liechtenstein · Capital city",
+    detail: "Liechtenstein",
   },
   {
     id: "frontline-branch-belmopan",
     continent: "North America",
     city: "Belmopan",
-    detail: "Belize · Capital city",
+    detail: "Belize",
   },
   {
     id: "frontline-branch-paramaribo",
     continent: "South America",
     city: "Paramaribo",
-    detail: "Suriname · Capital city",
+    detail: "Suriname",
   },
   {
     id: "frontline-branch-ngerulmud",
     continent: "Oceania",
     city: "Ngerulmud",
-    detail: "Palau · Capital city",
+    detail: "Palau",
   },
   {
     id: "frontline-branch-mcmurdo",
     continent: "Antarctica",
     city: "McMurdo Station",
-    detail: "Research station · No capital cities",
+    detail: "Research station",
   },
 ];
 
@@ -269,7 +269,7 @@ function FrontlineSection() {
         ))}
       </div>
       <details className="architecture-branches">
-        <summary>Branches</summary>
+        <summary>Partner offices</summary>
         <div className="architecture-branch-list">
           {frontlineBranches.map((branch) => (
             <section key={branch.id} aria-label={branch.continent}>

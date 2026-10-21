@@ -80,7 +80,7 @@ describe("architecture directory", () => {
     const projects = html.indexOf('class="architecture-projects"');
     const scope = html.indexOf("OUT OF SCOPE");
     const frontline = html.indexOf('id="architecture-frontline-title"');
-    const branches = html.indexOf("<summary>Branches</summary>");
+    const branches = html.indexOf("<summary>Partner offices</summary>");
     expect(projects).toBeGreaterThan(-1);
     expect(scope).toBeGreaterThan(projects);
     expect(frontline).toBeGreaterThan(scope);
@@ -209,15 +209,16 @@ describe("architecture directory", () => {
       "Meetings and coordination",
       "OUT OF SCOPE",
       "Frontline",
-      "Branches",
+      "Partner offices",
       "North America",
       "South America",
-      "Lesotho · Capital city",
       "Biochemistry & Physiology Wiki",
-      "Research station · No capital cities",
+      "Research station",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);
     }
+    expect(renderDirectory()).not.toContain("Capital city");
+    expect(renderDirectory()).not.toContain("capital cities");
   });
 
   it("places Portfolio before the projects in a separate strip, with See all last", () => {
