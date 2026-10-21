@@ -82,3 +82,18 @@ export function externalReturnHref(
   }
   return "/architecture";
 }
+
+/** Use browser history only when this preview was opened from another local page. */
+export function canReturnToReferrer(referrer: string, origin: string) {
+  if (!referrer) return false;
+  try {
+    const url = new URL(referrer, origin);
+    return (
+      url.origin === origin &&
+      !url.pathname.startsWith("/external") &&
+      !externalPreviewForPath(url.pathname)
+    );
+  } catch {
+    return false;
+  }
+}

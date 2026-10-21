@@ -2,9 +2,9 @@
 export const germanFAQRolesSensitivity: Record<string, string> = {
   "Your role determines whether you can see this content. For this demo, you can reveal it here.":
     "Ihre Rolle bestimmt, ob Sie diese Inhalte sehen können. Für diese Demo können Sie sie hier einblenden.",
-  "Demo only": "Nur in der Demo",
-  "See what this role would normally not be able to see.":
-    "Hier sehen Sie Inhalte, die für diese Rolle normalerweise ausgeblendet sind.",
+  "RESTRICTED ACCESS": "ZUGRIFF BESCHRÄNKT",
+  "Sensitive information is restricted to certain roles":
+    "Sensible Informationen sind nur für bestimmte Rollen zugänglich.",
   "Reveal restricted content": "Geschützte Inhalte anzeigen",
   "A proof of concept tests whether an idea works by letting people explore the approach before anything is finalised. This demo tests how Digital Workspaces could work in practice, using a fictional company and examples of everyday work.":
     "Mit einem Proof of Concept lässt sich ausprobieren, ob eine Idee funktioniert, bevor etwas endgültig festgelegt wird. Diese Demo erprobt anhand eines fiktiven Unternehmens und typischer Arbeitsabläufe, wie digitale Arbeitsbereiche im Alltag funktionieren könnten.",

@@ -106,6 +106,7 @@ function TeamsShellSession({
   const [panel, setPanel] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [listOptions, setListOptions] = useState(false);
+  const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const searchInput = useRef<HTMLInputElement>(null);
   const selectedChannel = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -341,16 +342,16 @@ function TeamsShellSession({
               );
               if (!channels.length) return null;
               const expanded =
-                group.id === "company" ||
-                (!closed.includes(group.id) &&
-                  (active || closed.includes(`open:${group.id}`)));
+                group.id === "company"
+                  ? !closed.includes(group.id)
+                  : !closed.includes(group.id) &&
+                    (active || closed.includes(`open:${group.id}`));
               return (
                 <div className="m365-teams-group" key={group.id}>
                   <button
                     className="m365-teams-team"
                     aria-expanded={expanded}
                     onClick={() => {
-                      if (group.id === "company") return;
                       setClosed((items) =>
                         expanded
                           ? [
@@ -393,6 +394,7 @@ function TeamsShellSession({
                         }
                         onClick={() => {
                           setPanel("");
+                          setSelectedChat(null);
                           setNavigationOpen(false);
                           updateSearch("");
                           channel.onSelect();
@@ -418,10 +420,25 @@ function TeamsShellSession({
             <div className="m365-teams-section-label m365-teams-chats-label">
               Chats
             </div>
-            <div className="m365-teams-chat-entry">
-              <Chat24Regular />
-              <span>Unit chat</span>
-            </div>
+            {[
+              { id: "unit", label: "Unit chat" },
+              { id: "maya", label: "Maya Chen" },
+              { id: "jordan", label: "Jordan Lee" },
+            ].map((chat) => (
+              <button
+                key={chat.id}
+                className={`m365-teams-chat-entry${selectedChat === chat.id ? " is-selected" : ""}`}
+                aria-current={selectedChat === chat.id ? "page" : undefined}
+                onClick={() => {
+                  setSelectedChat(chat.id);
+                  setPanel("");
+                  setNavigationOpen(false);
+                }}
+              >
+                <Chat24Regular />
+                <span>{chat.label}</span>
+              </button>
+            ))}
             {navigationFooter && (
               <div className="m365-teams-navigation-footer">
                 {navigationFooter}
@@ -456,10 +473,16 @@ function TeamsShellSession({
                       size={18}
                     />
                   )}
-                  {teamName}
+                  {selectedChat
+                    ? selectedChat === "unit"
+                      ? "Unit chat"
+                      : selectedChat === "maya"
+                        ? "Maya Chen"
+                        : "Jordan Lee"
+                    : teamName}
                 </span>
-                <h1>{channelName}</h1>
-                {channelDescription && (
+                <h1>{selectedChat ? "Chat" : channelName}</h1>
+                {!selectedChat && channelDescription && (
                   <p className="m365-teams-channel-description">
                     {channelDescription}
                   </p>
@@ -491,58 +514,65 @@ function TeamsShellSession({
               </button>
             </div>
           </header>
-          <div
-            className="m365-teams-tabs"
-            role="tablist"
-            aria-label="Channel tabs"
-            data-tour-target="channel-tabs"
-          >
-            {tabs.map((name) => (
-              <button
-                key={name}
-                id={`teams-tab-${name.replaceAll(" ", "-")}`}
-                role="tab"
-                aria-selected={activeTab === name}
-                aria-controls="teams-channel-panel"
-                onClick={() => {
-                  updateSearch("");
-                  onTabChange(name);
-                }}
-                onKeyDown={(event) => {
-                  const offset =
-                    event.key === "ArrowRight"
-                      ? 1
-                      : event.key === "ArrowLeft"
-                        ? -1
-                        : 0;
-                  const index =
-                    event.key === "Home"
-                      ? 0
-                      : event.key === "End"
-                        ? tabs.length - 1
-                        : (tabs.indexOf(name) + offset + tabs.length) %
-                          tabs.length;
-                  if (offset || event.key === "Home" || event.key === "End") {
-                    event.preventDefault();
+          {!selectedChat && (
+            <div
+              className="m365-teams-tabs"
+              role="tablist"
+              aria-label="Channel tabs"
+              data-tour-target="channel-tabs"
+            >
+              {tabs.map((name) => (
+                <button
+                  key={name}
+                  id={`teams-tab-${name.replaceAll(" ", "-")}`}
+                  role="tab"
+                  aria-selected={activeTab === name}
+                  aria-controls="teams-channel-panel"
+                  onClick={() => {
                     updateSearch("");
-                    onTabChange(tabs[index]);
-                    document
-                      .getElementById(
-                        `teams-tab-${tabs[index].replaceAll(" ", "-")}`,
-                      )
-                      ?.focus();
-                  }
-                }}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
+                    onTabChange(name);
+                  }}
+                  onKeyDown={(event) => {
+                    const offset =
+                      event.key === "ArrowRight"
+                        ? 1
+                        : event.key === "ArrowLeft"
+                          ? -1
+                          : 0;
+                    const index =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? tabs.length - 1
+                          : (tabs.indexOf(name) + offset + tabs.length) %
+                            tabs.length;
+                    if (offset || event.key === "Home" || event.key === "End") {
+                      event.preventDefault();
+                      updateSearch("");
+                      onTabChange(tabs[index]);
+                      document
+                        .getElementById(
+                          `teams-tab-${tabs[index].replaceAll(" ", "-")}`,
+                        )
+                        ?.focus();
+                    }
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          )}
           <div
             className="m365-teams-canvas"
             id="teams-channel-panel"
             role="tabpanel"
-            aria-labelledby={`teams-tab-${activeTab.replaceAll(" ", "-")}`}
+            aria-label={selectedChat ? "Chat conversation" : undefined}
+            aria-labelledby={
+              selectedChat
+                ? undefined
+                : `teams-tab-${activeTab.replaceAll(" ", "-")}`
+            }
           >
             {panel && !["profile", "settings"].includes(panel) && (
               <section
@@ -573,13 +603,110 @@ function TeamsShellSession({
                 )}
               </section>
             )}
-            {children}
+            {selectedChat ? (
+              <ChatConversation chatId={selectedChat} userName={userName} />
+            ) : (
+              children
+            )}
           </div>
         </main>
       </div>
     </FluentProvider>
   );
 }
+
+function ChatConversation({
+  chatId,
+  userName,
+}: {
+  chatId: string;
+  userName: string;
+}) {
+  const conversations: Record<string, { sender: string; text: string }[]> = {
+    unit: [
+      {
+        sender: "Maya Chen",
+        text: "Has everyone added their notes to the planning pack?",
+      },
+      {
+        sender: userName,
+        text: "Mine are in. I also flagged the two dates that need a decision.",
+      },
+      {
+        sender: "Jordan Lee",
+        text: "Thanks — I’ll pull those into the agenda for tomorrow.",
+      },
+      { sender: userName, text: "Perfect. I’ll bring the updated version." },
+    ],
+    maya: [
+      {
+        sender: "Maya Chen",
+        text: "I’ve added the latest campaign schedule to the shared files.",
+      },
+      {
+        sender: userName,
+        text: "Thanks. I’ll review the dates this afternoon.",
+      },
+      {
+        sender: "Maya Chen",
+        text: "Great — let me know if anything needs shifting.",
+      },
+      { sender: userName, text: "Will do. The timing looks good so far." },
+    ],
+    jordan: [
+      {
+        sender: "Jordan Lee",
+        text: "Do you have a moment to check the handover notes?",
+      },
+      {
+        sender: userName,
+        text: "Yes, they’re clear. I left one question beside the final section.",
+      },
+      {
+        sender: "Jordan Lee",
+        text: "Seen it — I’ll update that before lunch.",
+      },
+      {
+        sender: userName,
+        text: "Thanks, that should be everything from my side.",
+      },
+    ],
+  };
+  const chatName =
+    chatId === "unit"
+      ? "Unit chat"
+      : chatId === "maya"
+        ? "Maya Chen"
+        : "Jordan Lee";
+  return (
+    <section
+      className="m365-teams-chat-view"
+      aria-label={`${chatName} messages`}
+    >
+      <div className="m365-teams-chat-messages">
+        {(conversations[chatId] || conversations.unit).map((message, index) => (
+          <article
+            className="m365-teams-chat-message"
+            key={`${index}-${message.sender}`}
+          >
+            <strong>{message.sender}</strong>
+            <p>{message.text}</p>
+          </article>
+        ))}
+      </div>
+      <label className="m365-teams-chat-compose">
+        <span>Message {chatName}</span>
+        <input
+          aria-label={`Message ${chatName}`}
+          placeholder="Type a message"
+          disabled
+        />
+      </label>
+      <p className="m365-teams-chat-demo-note">Sample conversation</p>
+    </section>
+  );
+}
+
 export function TeamsComposer({
   value,
   onChange,

@@ -106,7 +106,7 @@ export function pageTitle(pathname: string) {
   if (external) return `${external.name} | Demo`;
   if (pathname === "/") return "Welcome | Digital Workspace demo site";
   if (pathname.startsWith("/frontline/science-wiki"))
-    return "Biology, Chemistry & Physiology Wiki | Demo";
+    return "Biochemistry & Physiology Wiki | Demo";
   if (pathname.startsWith("/architecture"))
     return "All workspaces | Digital Workspace demo site";
   if (pathname === "/workspace-tour")

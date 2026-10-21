@@ -664,16 +664,10 @@ export default function ProjectsApp() {
     if (blockedCentral) return denied();
     if (page === "control")
       return (
-        <>
-          <DocumentLibrary
-            title="Project Control"
-            files={centralFiles("control")}
-          />
-          <p>
-            <StaffLink href="/projects/reviews">Project Reviews</StaffLink> ·{" "}
-            <StaffLink href="/projects/current">Current Projects</StaffLink>
-          </p>
-        </>
+        <DocumentLibrary
+          title="Project Control"
+          files={centralFiles("control")}
+        />
       );
     if (page === "reviews")
       return (

@@ -134,13 +134,6 @@ export default function FinanceApp() {
       </StaffLink>
     );
   };
-  const protectedAreas = library?.areas || [];
-  const subjects = protectedAreas.flatMap((id) =>
-    (protectedSubjects[id] || []).map(([subjectId, name]) => ({
-      href: `${base}/${id}/${subjectId}`,
-      name,
-    })),
-  );
   function issuesList() {
     const rows = records.filter(
       (x) =>
@@ -239,6 +232,12 @@ export default function FinanceApp() {
           : page === "restricted"
             ? "Restricted"
             : area?.name || library?.name || system?.name || "Home";
+  const relatedToolByLibrary: Record<string, string> = {
+    "income-documents": "blackline",
+    "payment-documents": "netsuite",
+    "treasury-documents": "kyriba",
+    "accounting-documents": "netsuite",
+  };
   return (
     <div className="app-shell services-app finance-app">
       <StaffLink className="skip-link" href="#finance-main">
@@ -282,6 +281,12 @@ export default function FinanceApp() {
                 {l.name}
               </StaffLink>
             ))}
+            {library && relatedToolByLibrary[library.id] && (
+              <details className="finance-navigation-tools" open>
+                <summary>Related tools</summary>
+                {systemLink(relatedToolByLibrary[library.id])}
+              </details>
+            )}
             {[
               ["close-checklist", "Close Checklist"],
               ["reconciliation-issues", "Reconciliation Issues"],
@@ -515,32 +520,6 @@ export default function FinanceApp() {
                 files={libraryFiles(library)}
                 initialFolder={area ? folderNames[area.id] : undefined}
               />
-              {library.id === "income-documents" && (
-                <p>
-                  <StaffLink href={`${base}/reconciliation-issues`}>
-                    Reconciliation Issues
-                  </StaffLink>{" "}
-                  · {systemLink("blackline")}
-                </p>
-              )}
-              {library.id === "payment-documents" && (
-                <p>
-                  <StaffLink href={`${base}/close-checklist`}>
-                    Close Checklist
-                  </StaffLink>{" "}
-                  ·{" "}
-                  <StaffLink href="/services/purchasing">
-                    Purchasing & Suppliers ↗
-                  </StaffLink>{" "}
-                  · {systemLink("netsuite")}
-                </p>
-              )}
-              {library.id === "treasury-documents" && (
-                <p>{systemLink("kyriba")}</p>
-              )}
-              {library.id === "accounting-documents" && (
-                <p>{systemLink("netsuite")}</p>
-              )}
               {library.id === "planning-documents" && (
                 <>
                   <section>
@@ -637,18 +616,6 @@ export default function FinanceApp() {
                     </details>
                   </section>
                 </>
-              )}
-              {subjects.length > 0 && (
-                <section>
-                  <div className="finance-protected-links">
-                    {subjects.map((s) => (
-                      <StaffLink key={s.href} href={s.href}>
-                        <AccessLock size={20} labelled={false} />
-                        {s.name}
-                      </StaffLink>
-                    ))}
-                  </div>
-                </section>
               )}
             </>
           ) : (

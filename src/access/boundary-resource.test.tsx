@@ -86,10 +86,10 @@ describe("page-local restricted-content reveal", () => {
     expect(boundary).toBeTruthy();
     expect(boundary).not.toContain(revealAction);
     expect(boundary).toContain(explanation);
-    expect(boundary).not.toContain("DEMO ONLY");
+    expect(boundary).not.toContain("RESTRICTED ACCESS");
     expect(html).toContain('class="access-demo-sticky demo-paper-surface"');
     expect(html).toContain(revealAction);
-    expect(html).toContain("DEMO ONLY");
+    expect(html).toContain("RESTRICTED ACCESS");
     expect(
       html.match(
         /<button[^>]*class="[^"]*access-boundary-reveal"[^>]*>[\s\S]*?<svg/,

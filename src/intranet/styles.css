@@ -16,6 +16,19 @@
   margin-left: auto;
   font-size: 12px;
 }
+.directory-language-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 28px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  color: #424242;
+}
+.directory-language-row .language-toggle {
+  min-height: 28px;
+}
 .directory-nav {
   display: flex;
   align-items: center;

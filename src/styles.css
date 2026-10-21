@@ -1309,11 +1309,12 @@ tbody tr:hover {
 }
 /* A canonical sensitivity cue remains visible when a controlled page is opened. */
 .demo-paper-surface {
+  border: 1px solid #c5aa58;
   border-radius: 2px 6px 3px 5px;
-  background: #fff9e8;
+  background: #fff7d9;
   box-shadow:
-    0 5px 13px #25374624,
-    0 1px 3px #25374618;
+    0 7px 18px #2537462b,
+    0 2px 4px #25374620;
 }
 .confidential-route-zone {
   position: relative;

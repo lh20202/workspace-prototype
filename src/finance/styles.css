@@ -183,6 +183,26 @@
   gap: 6px;
   font-size: 12px;
 }
+.finance-navigation-tools {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-top: 1px solid #e5e5e5;
+}
+.finance-navigation-tools summary {
+  margin-bottom: 8px;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.finance-navigation-tools a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 0;
+  line-height: 1.35;
+}
 .finance-protected {
   max-width: 690px;
   padding: 35px;

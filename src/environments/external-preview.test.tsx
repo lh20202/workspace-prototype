@@ -7,7 +7,11 @@ import {
   externalEnvironments,
   externalPreviewHref,
 } from "./catalog";
-import { externalPreviewForPath, externalReturnHref } from "./previewRoutes";
+import {
+  canReturnToReferrer,
+  externalPreviewForPath,
+  externalReturnHref,
+} from "./previewRoutes";
 import GovernanceApp from "../executive/GovernanceApp";
 import { pageTitle } from "../utils/routes";
 import { functionalConfigs } from "../workspaces/config";
@@ -74,9 +78,7 @@ describe("shared external boundary", () => {
       "/governance/meeting-papers",
     ]) {
       expect(externalPreviewForPath(route)?.id).toBe("members");
-      expect(pageTitle(route)).toBe(
-        "Membership Portal | Demo",
-      );
+      expect(pageTitle(route)).toBe("Membership Portal | Demo");
     }
     for (const route of ["/frontline-sales", "/frontline-sales/briefing"])
       expect(externalPreviewForPath(route)?.variant).toBe("frontline");
@@ -140,5 +142,24 @@ describe("shared external boundary", () => {
           origin,
         ),
       ).toBe("/architecture");
+  });
+  it("uses browser history only for a same-site non-preview referrer", () => {
+    const origin = "https://example.test";
+    expect(
+      canReturnToReferrer(`${origin}/financial-operations/income`, origin),
+    ).toBe(true);
+    expect(canReturnToReferrer(`${origin}/external/velora`, origin)).toBe(
+      false,
+    );
+    expect(
+      canReturnToReferrer(
+        `${origin}/financial-operations/systems/netsuite`,
+        origin,
+      ),
+    ).toBe(false);
+    expect(canReturnToReferrer("https://outside.test/page", origin)).toBe(
+      false,
+    );
+    expect(canReturnToReferrer("", origin)).toBe(false);
   });
 });

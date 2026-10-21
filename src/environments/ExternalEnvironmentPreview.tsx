@@ -1,8 +1,9 @@
 import { ArrowLeft20Regular, Toolbox24Regular } from "@fluentui/react-icons";
+import type { MouseEvent } from "react";
 import StaffLink from "../components/StaffLink";
 import EnvironmentIcon from "../components/EnvironmentIcon";
 import { getExternalEnvironment, type ExternalEnvironment } from "./catalog";
-import { externalReturnHref } from "./previewRoutes";
+import { canReturnToReferrer, externalReturnHref } from "./previewRoutes";
 import { LanguageToggle } from "../i18n/Language";
 import "./external-preview.css";
 
@@ -22,6 +23,16 @@ export default function ExternalEnvironmentPreview({
     typeof document === "undefined" ? "" : document.referrer,
     typeof location === "undefined" ? undefined : location.origin,
   );
+  const returnToPreviousPage = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      typeof window !== "undefined" &&
+      window.history.length > 1 &&
+      canReturnToReferrer(document.referrer, window.location.origin)
+    ) {
+      event.preventDefault();
+      window.history.back();
+    }
+  };
   return (
     <main
       className={`external-preview external-preview-${destination.theme}${frontline ? " external-preview-frontline" : ""}`}
@@ -93,7 +104,11 @@ export default function ExternalEnvironmentPreview({
             This linked environment is represented at a high level in this demo.
           </p>
         )}
-        <StaffLink className="external-return" href={returnHref}>
+        <StaffLink
+          className="external-return"
+          href={returnHref}
+          onClick={returnToPreviousPage}
+        >
           <ArrowLeft20Regular aria-hidden="true" />
           Back to demo
         </StaffLink>

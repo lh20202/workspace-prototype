@@ -129,9 +129,6 @@
   :root .directory-brand-end {
     display: none;
   }
-  :root .directory-brand > .language-toggle {
-    margin-left: auto;
-  }
   :root .m365-header {
     display: grid;
     grid-template-columns: 32px minmax(0, 1fr) auto;

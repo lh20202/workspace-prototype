@@ -1,5 +1,7 @@
 export const germanFrontlineScience: Record<string, string> = {
-  "DEMO ONLY": "NUR DEMO",
+  "RESTRICTED ACCESS": "ZUGRIFF BESCHRÄNKT",
+  "Sensitive information is restricted to certain roles":
+    "Sensible Informationen sind nur für bestimmte Rollen zugänglich.",
   "Access to this content depends on your role.":
     "Der Zugriff auf diesen Inhalt hängt von Ihrer Rolle ab.",
   "OUT OF SCOPE": "AUSSERHALB DES UMFANGS",
@@ -27,38 +29,39 @@ export const germanFrontlineScience: Record<string, string> = {
   "McMurdo Station": "McMurdo-Station",
   "Research station · No capital cities":
     "Forschungsstation · keine Hauptstädte",
-  "Biology, Chemistry & Physiology Wiki":
-    "Wiki zu Biologie, Chemie & Physiologie",
+  "Biochemistry & Physiology Wiki": "Wiki zu Biochemie & Physiologie",
   "Knowledge areas": "Wissensbereiche",
   Articles: "Artikel",
   "Browse knowledge areas": "Wissensbereiche anzeigen",
   "Browse articles": "Artikel durchsuchen",
   "Key idea": "Kernaussage",
-  "Learning reference · For general education":
-    "Lernmaterial · Zur allgemeinen Bildung",
-  Biology: "Biologie",
-  Chemistry: "Chemie",
+  "On this page": "Auf dieser Seite",
+  "Related reading": "Weiterführende Artikel",
+  "Last reviewed": "Zuletzt geprüft",
+  "Article owner": "Artikelverantwortung",
+  "Frontline science team": "Wissenschaftsteam Frontline",
+  Biochemistry: "Biochemie",
   Physiology: "Physiologie",
-  "How cells organise life": "Wie Zellen Leben organisieren",
-  "A cell is the smallest unit that can carry out the processes associated with life. Its membrane separates the cell from its surroundings, while internal structures perform specialised roles.":
-    "Eine Zelle ist die kleinste Einheit, die lebensbezogene Prozesse ausführen kann. Ihre Membran trennt sie von der Umgebung; innere Strukturen übernehmen spezialisierte Aufgaben.",
-  "Plant and animal cells are eukaryotic: their DNA is enclosed in a nucleus. Plant cells also have a cellulose cell wall and chloroplasts, which capture light energy for photosynthesis.":
-    "Pflanzen- und Tierzellen sind Eukaryoten: Ihre DNA befindet sich in einem Zellkern. Pflanzenzellen besitzen außerdem eine Zellwand aus Zellulose und Chloroplasten, die Lichtenergie für die Fotosynthese aufnehmen.",
-  "Photosynthesis in brief": "Fotosynthese kurz erklärt",
-  "Plants, algae and some bacteria use light energy to make sugars from carbon dioxide and water.":
-    "Pflanzen, Algen und manche Bakterien nutzen Lichtenergie, um aus Kohlenstoffdioxid und Wasser Zucker herzustellen.",
-  "In plants, photosynthesis takes place in chloroplasts. Oxygen is released as a by-product. The simplified equation is carbon dioxide + water + light energy → glucose + oxygen.":
-    "Bei Pflanzen findet die Fotosynthese in den Chloroplasten statt. Dabei wird Sauerstoff freigesetzt. Die vereinfachte Gleichung lautet: Kohlenstoffdioxid + Wasser + Lichtenergie → Glucose + Sauerstoff.",
-  "Acids, bases and the pH scale": "Säuren, Basen und die pH-Skala",
-  "The pH scale describes how acidic or alkaline an aqueous solution is. Values below 7 are acidic, 7 is neutral at room temperature, and values above 7 are alkaline.":
-    "Die pH-Skala beschreibt, wie sauer oder basisch eine wässrige Lösung ist. Werte unter 7 sind sauer, 7 ist bei Raumtemperatur neutral und Werte über 7 sind basisch.",
-  "The scale is logarithmic: a change of one pH unit corresponds to a tenfold change in hydrogen-ion concentration. A measured pH depends on conditions such as temperature and concentration.":
-    "Die Skala ist logarithmisch: Eine pH-Stufe entspricht einer zehnfachen Änderung der Wasserstoffionenkonzentration. Der gemessene pH-Wert hängt unter anderem von Temperatur und Konzentration ab.",
-  "Atoms and elements": "Atome und Elemente",
-  "An atom has a nucleus containing protons and usually neutrons, surrounded by electrons. The number of protons defines the element.":
-    "Ein Atom besitzt einen Kern mit Protonen und meist Neutronen, der von Elektronen umgeben ist. Die Anzahl der Protonen bestimmt das Element.",
-  "Atoms can join through chemical bonds to form molecules. In ordinary chemical reactions, atoms are rearranged; the nuclei and element identities remain unchanged.":
-    "Atome können sich durch chemische Bindungen zu Molekülen verbinden. Bei gewöhnlichen chemischen Reaktionen werden Atome neu angeordnet; Atomkerne und Elemente bleiben unverändert.",
+  "Proteins and enzymes": "Proteine und Enzyme",
+  "Proteins are built from amino acids and fold into shapes that help them do particular jobs. Some proteins act as enzymes, speeding up chemical reactions in cells.":
+    "Proteine bestehen aus Aminosäuren und falten sich in Formen, die bestimmte Aufgaben ermöglichen. Einige Proteine wirken als Enzyme und beschleunigen chemische Reaktionen in Zellen.",
+  "A reactant an enzyme acts on is called a substrate. It binds at the enzyme's active site, is converted into product, and then leaves. The enzyme can take part in another reaction; it is not used up by the process.":
+    "Ein Ausgangsstoff, auf den ein Enzym wirkt, heißt Substrat. Es bindet an das aktive Zentrum des Enzyms, wird in ein Produkt umgewandelt und löst sich wieder. Das Enzym kann erneut reagieren und wird dabei nicht verbraucht.",
+  "How cells use ATP": "Wie Zellen ATP nutzen",
+  "Cells use adenosine triphosphate (ATP) to transfer energy to many of the reactions and processes that need it.":
+    "Zellen nutzen Adenosintriphosphat (ATP), um Energie auf viele energiebedürftige Reaktionen und Prozesse zu übertragen.",
+  "When ATP is converted to ADP and phosphate, the change can be coupled to an energy-requiring reaction. Cells continually rebuild ATP using energy captured from nutrients or, in photosynthetic organisms, light.":
+    "Wenn ATP in ADP und Phosphat umgewandelt wird, kann diese Reaktion mit einem energiebedürftigen Prozess gekoppelt werden. Zellen bilden ATP fortlaufend neu – mithilfe von Energie aus Nährstoffen oder bei photosynthetischen Organismen aus Licht.",
+  "pH in living systems": "Der pH-Wert in lebenden Systemen",
+  "Cells rely on carefully regulated pH. Enzymes and other proteins work best within particular conditions, so even small changes can affect cell processes.":
+    "Zellen sind auf einen sorgfältig regulierten pH-Wert angewiesen. Enzyme und andere Proteine funktionieren unter bestimmten Bedingungen am besten, sodass selbst kleine Veränderungen Zellprozesse beeinflussen können.",
+  "The pH scale is logarithmic: a change of one unit corresponds to a tenfold change in hydrogen-ion concentration. Cells use buffers and other controls to keep conditions within a useful range.":
+    "Die pH-Skala ist logarithmisch: Eine Stufe entspricht einer zehnfachen Änderung der Wasserstoffionenkonzentration. Zellen nutzen Puffersysteme und weitere Mechanismen, um Bedingungen in einem geeigneten Bereich zu halten.",
+  "Biomolecules and chemical bonds": "Biomoleküle und chemische Bindungen",
+  "Proteins, carbohydrates, lipids and nucleic acids are biomolecules built from atoms joined by chemical bonds.":
+    "Proteine, Kohlenhydrate, Lipide und Nukleinsäuren sind Biomoleküle, deren Atome durch chemische Bindungen verbunden sind.",
+  "The shape and properties of a biomolecule depend on its atoms and bonds. Cells assemble, break down and modify these molecules as part of everyday processes.":
+    "Form und Eigenschaften eines Biomoleküls hängen von seinen Atomen und Bindungen ab. Zellen setzen diese Moleküle im Alltag zusammen, bauen sie ab und verändern sie.",
   "How blood circulates through the heart": "Der Blutkreislauf durch das Herz",
   "The right side of the heart sends blood to the lungs. The left side sends oxygenated blood to the body.":
     "Die rechte Herzhälfte pumpt Blut zur Lunge. Die linke Herzhälfte pumpt sauerstoffreiches Blut in den Körper.",
@@ -69,19 +72,28 @@ export const germanFrontlineScience: Record<string, string> = {
     "Die Luft gelangt zu winzigen Lungenstrukturen, den Alveolen. Dort diffundieren Sauerstoff und Kohlenstoffdioxid über dünne Oberflächen zwischen Luft und Blut.",
   "Diffusion moves particles down their concentration gradients. Circulation carries oxygen from the lungs to tissues and returns carbon dioxide to the lungs.":
     "Bei der Diffusion bewegen sich Teilchen entlang ihres Konzentrationsgefälles. Der Blutkreislauf transportiert Sauerstoff von der Lunge ins Gewebe und Kohlenstoffdioxid zurück zur Lunge.",
-  "Simplified animal cell": "Vereinfachte Tierzelle",
-  "A nucleus sits within a cell surrounded by a membrane; mitochondria are shown in the cytoplasm.":
-    "Der Zellkern liegt in einer von einer Membran umgebenen Zelle; Mitochondrien befinden sich im Zytoplasma.",
-  "Photosynthesis inputs and outputs":
-    "Ausgangsstoffe und Produkte der Fotosynthese",
-  "Light, carbon dioxide and water lead to glucose and oxygen in photosynthesis.":
-    "Licht, Kohlenstoffdioxid und Wasser führen bei der Fotosynthese zu Glucose und Sauerstoff.",
+  "How an enzyme catalyses a reaction":
+    "Wie ein Enzym eine Reaktion katalysiert",
+  "A substrate binds to an enzyme, is converted into product, and leaves the enzyme available for another reaction.":
+    "Ein Substrat bindet an ein Enzym, wird in ein Produkt umgewandelt und löst sich wieder; das Enzym kann erneut reagieren.",
+  "ATP transfers energy in cells": "ATP überträgt Energie in Zellen",
+  "ATP transfers energy to cell processes as it becomes ADP and phosphate; energy from nutrients or light helps rebuild ATP.":
+    "ATP überträgt Energie auf Zellprozesse und wird dabei zu ADP und Phosphat. Energie aus Nährstoffen oder Licht hilft, ATP wieder aufzubauen.",
+  "Energy source": "Energiequelle",
+  "ADP + phosphate → ATP": "ADP + Phosphat → ATP",
+  "Cell process → ADP": "Zellprozess → ADP",
+  "Enzyme + substrate": "Enzym + Substrat",
+  "Bound at active site": "Gebunden am aktiven Zentrum",
+  "Product + enzyme": "Produkt + Enzym",
   "A simplified pH scale": "Vereinfachte pH-Skala",
   "Acidic values are below seven, seven is neutral, and alkaline values are above seven.":
     "Saure Werte liegen unter sieben, sieben ist neutral und basische Werte liegen über sieben.",
-  "Simplified atom": "Vereinfachtes Atom",
-  "A central nucleus contains protons and neutrons, with electrons around it.":
-    "Ein zentraler Kern enthält Protonen und Neutronen; Elektronen befinden sich außen.",
+  "Building a biomolecule": "Aufbau eines Biomoleküls",
+  "Cells join smaller building blocks through chemical bonds to make larger biomolecules.":
+    "Zellen verbinden kleinere Bausteine durch chemische Bindungen zu größeren Biomolekülen.",
+  "Building blocks": "Bausteine",
+  "Chemical bonds": "Chemische Bindungen",
+  Biomolecule: "Biomolekül",
   "Pulmonary and systemic circulation": "Lungen- und Körperkreislauf",
   "Blood travels from the right heart to the lungs, returns to the left heart, then travels to the body.":
     "Das Blut fließt von der rechten Herzhälfte zur Lunge, zurück zur linken Herzhälfte und dann in den Körper.",

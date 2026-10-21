@@ -9,6 +9,25 @@
 .content-reference-list > a {
   line-height: 20px;
 }
+.content-navigation-group {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-top: 1px solid #e5e5e5;
+}
+.content-navigation-group > summary {
+  margin-bottom: 8px;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.content-navigation-group > a {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 0;
+  line-height: 1.35;
+}
 .content-reference-list > a,
 .content-protected-link {
   display: inline-flex;

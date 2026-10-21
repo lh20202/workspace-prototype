@@ -246,6 +246,74 @@
   flex-wrap: wrap;
   font-size: 12px;
 }
+.functional-navigation-group,
+.services-sidebar nav > details {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-top: 1px solid #e5e5e5;
+}
+.functional-navigation-group > summary,
+.services-sidebar nav > details > summary {
+  margin-bottom: 8px;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.functional-navigation-group > a,
+.services-sidebar nav > details > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 0;
+  color: inherit;
+  text-decoration: none;
+  line-height: 1.35;
+}
+.services-sidebar nav > details .functional-context-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-size: 13px;
+}
+.services-sidebar nav > details .functional-context-links > a {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 0;
+  line-height: 1.35;
+}
+.functional-action-details {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  padding: 8px 4px 20px;
+  line-height: 1.5;
+}
+.functional-action-details h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.functional-action-details h3 {
+  margin: 8px 0 -6px;
+  font-size: 15px;
+}
+.functional-action-details p,
+.functional-action-details label {
+  margin: 0;
+  line-height: 1.55;
+}
+.functional-action-details textarea {
+  min-height: 96px;
+  margin: 8px 0 0;
+}
+.functional-action-details > button {
+  align-self: flex-start;
+}
 .functional-community {
   padding: 15px 0;
   border-bottom: 1px solid #eee;

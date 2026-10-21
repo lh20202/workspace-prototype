@@ -29,10 +29,11 @@ function expectOneLanguageToggle(html: string) {
   expect(html).toContain(">DE</button>");
 }
 function productHeader(html: string, className: string) {
+  const tagName = className === "directory-language-row" ? "div" : "header";
   return (
     html.match(
       new RegExp(
-        `<header\\b[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>[\\s\\S]*?<\\/header>`,
+        `<${tagName}\\b[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>[\\s\\S]*?<\\/${tagName}>`,
       ),
     )?.[0] || ""
   );
@@ -64,7 +65,7 @@ describe("language controls belong to the current product", () => {
     {
       name: "Architecture",
       path: "/architecture?staff=maya",
-      header: "directory-brand",
+      header: "directory-language-row",
       element: () => createElement(Directory),
     },
     {

@@ -41,34 +41,46 @@
 .access-demo-sticky {
   display: grid;
   justify-items: start;
-  gap: 8px;
-  padding: 16px 18px 18px;
-  border: 1px solid #eadfbd;
+  gap: 14px;
+  padding: 24px 24px 26px;
+  border: 1px solid #b59a4a;
   border-radius: 2px 6px 3px 5px;
-  background: #fff9e8;
+  background: #fff7d9;
   color: #263a47;
   box-shadow:
-    0 5px 13px #25374620,
-    0 1px 3px #25374618;
+    0 8px 20px #2537462b,
+    0 2px 4px #25374620;
   transform: rotate(0.7deg);
 }
-.access-demo-sticky > strong,
-.access-demo-sticky > span {
-  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  line-height: 1.35;
-}
 .access-demo-sticky > strong {
-  color: #8c352a;
-  font-size: 14px;
-  letter-spacing: 0.03em;
+  color: #702e25;
+  font-family: "Patrick Hand", "Bradley Hand", "Segoe Print", cursive;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
 }
 .access-demo-sticky > span {
-  font-size: 13px;
+  color: #263a47;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.55;
 }
 .access-demo-sticky .access-boundary-reveal {
-  min-height: 34px;
-  font-family: "Inter Variable", Inter, "Segoe UI", system-ui, sans-serif;
+  min-height: 44px;
+  padding: 8px 13px;
+  border: 1px solid #315f6b;
+  background: #fff;
+  color: #174b58;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
   transform: rotate(-0.7deg);
+}
+.access-demo-sticky .access-boundary-reveal:focus-visible {
+  outline: 3px solid #174b58;
+  outline-offset: 3px;
 }
 .access-boundary-aside .access-boundary-urgent {
   margin: 12px 0 0;

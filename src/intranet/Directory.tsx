@@ -23,8 +23,10 @@ export default function Directory() {
           <GridDots24Regular aria-hidden="true" />
           <strong>Site</strong>
           <span className="directory-brand-end">Company intranet</span>
-          <LanguageToggle />
         </header>
+        <div className="directory-language-row">
+          <LanguageToggle />
+        </div>
         <nav
           className="directory-nav"
           aria-label="Intranet navigation"

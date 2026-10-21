@@ -395,6 +395,29 @@ export default function AudienceApp() {
               <List24Regular />
               Research & Experiment Register
             </StaffLink>
+            {activeLibrary?.id === "research" && (
+              <details className="functional-navigation-group" open>
+                <summary>Restricted content</summary>
+                <StaffLink
+                  className="rd-protected-link"
+                  href={`${base}/research/website-usability/participant-administration`}
+                >
+                  <AccessLock />
+                  Participant administration
+                </StaffLink>
+              </details>
+            )}
+            {activeLibrary?.id === "analytics" && (
+              <details className="functional-navigation-group" open>
+                <summary>Related tools</summary>
+                <StaffLink href={`${base}/systems/website-analytics`}>
+                  Website Analytics
+                </StaffLink>
+                <StaffLink href={`${base}/systems/performance`}>
+                  Performance analytics
+                </StaffLink>
+              </details>
+            )}
           </nav>
         </aside>
         <main className="services-main" id="audience-main">
@@ -624,27 +647,6 @@ export default function AudienceApp() {
                   .map(documentFor)}
                 initialFolder={initialFolder}
               />
-              {activeLibrary.id === "research" && (
-                <p>
-                  <StaffLink
-                    className="rd-protected-link"
-                    href={`${base}/research/website-usability/participant-administration`}
-                  >
-                    <AccessLock />
-                    Participant administration
-                  </StaffLink>
-                </p>
-              )}
-              {activeLibrary.id === "analytics" && (
-                <div className="audience-simple-links">
-                  <StaffLink href={`${base}/systems/website-analytics`}>
-                    Website Analytics
-                  </StaffLink>
-                  <StaffLink href={`${base}/systems/performance`}>
-                    Performance analytics
-                  </StaffLink>
-                </div>
-              )}
             </>
           ) : null}
         </main>

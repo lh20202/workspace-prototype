@@ -160,14 +160,14 @@ export default function AccessBoundary({
             aria-label={
               sales
                 ? "Frontline sales alternative and access contacts"
-                : "Demo access note"
+                : "Restricted access note"
             }
           >
             {resource && !revealed && (
               <div className="access-demo-sticky demo-paper-surface">
-                <strong>{t("DEMO ONLY")}</strong>
+                <strong>{t("RESTRICTED ACCESS")}</strong>
                 <span>
-                  {t("See what this role would normally not be able to see.")}
+                  {t("Sensitive information is restricted to certain roles")}
                 </span>
                 <Button
                   appearance="secondary"

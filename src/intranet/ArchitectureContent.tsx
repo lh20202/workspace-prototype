@@ -188,7 +188,7 @@ export const frontlineDestinations = [
   { id: "frontline-warehouses", label: "Warehouses A–Z" },
   {
     id: "frontline-science-wiki",
-    label: "Biology, Chemistry & Physiology Wiki",
+    label: "Biochemistry & Physiology Wiki",
     wiki: true,
   },
 ];
@@ -196,7 +196,11 @@ export const frontlineDestinations = [
 export const frontlineBranches = [
   { continent: "Africa", city: "Maseru", detail: "Lesotho · Capital city" },
   { continent: "Asia", city: "Thimphu", detail: "Bhutan · Capital city" },
-  { continent: "Europe", city: "Vaduz", detail: "Liechtenstein · Capital city" },
+  {
+    continent: "Europe",
+    city: "Vaduz",
+    detail: "Liechtenstein · Capital city",
+  },
   {
     continent: "North America",
     city: "Belmopan",

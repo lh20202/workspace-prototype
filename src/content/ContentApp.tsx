@@ -346,6 +346,27 @@ export default function ContentApp() {
                 <Calendar24Regular />
                 Production Calendar
               </StaffLink>
+              {activeLibrary && (
+                <details className="content-navigation-group" open>
+                  <summary>Related destinations</summary>
+                  <StaffLink href={`${base}/production-register`}>
+                    Production Register
+                  </StaffLink>
+                  {page === "digital" && (
+                    <StaffLink href="/digital-tech/web-crm">Dev.</StaffLink>
+                  )}
+                  {packageContext &&
+                    partnerShares.some(
+                      (share) => share.packageId === packageContext.id,
+                    ) && (
+                      <StaffLink
+                        href={`${base}/packages/${packageContext.id}/shared`}
+                      >
+                        Partner collaboration · {packageContext.partner}
+                      </StaffLink>
+                    )}
+                </details>
+              )}
             </nav>
           </aside>
         )}
@@ -678,25 +699,6 @@ export default function ContentApp() {
                 initialFolder={initialFolder}
                 readOnly={activeLibrary.id === "published"}
               />
-              <div className="content-simple-links">
-                <StaffLink href={`${base}/production-register`}>
-                  Production Register
-                </StaffLink>
-                {page === "digital" && (
-                  <StaffLink href="/digital-tech/web-crm">Dev.</StaffLink>
-                )}
-                {packageContext &&
-                  partnerShares
-                    .filter((share) => share.packageId === packageContext.id)
-                    .map((share) => (
-                      <StaffLink
-                        href={`${base}/packages/${share.packageId}/shared`}
-                        key={share.packageId}
-                      >
-                        Partner collaboration · {packageContext.partner}
-                      </StaffLink>
-                    ))}
-              </div>
             </>
           ) : null}
         </main>

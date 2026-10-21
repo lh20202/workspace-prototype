@@ -83,7 +83,7 @@ describe("architecture directory", () => {
     expect(frontline).toBeGreaterThan(scope);
     expect(branches).toBeGreaterThan(frontline);
     expect(html).toContain('class="architecture-frontline-heading"><svg');
-    expect(html).toContain("Biology, Chemistry &amp; Physiology Wiki");
+    expect(html).toContain("Biochemistry &amp; Physiology Wiki");
     expect(html).toContain(
       'href="/external/frontline-logistics?returnTo=%2Farchitecture&amp;staff=devon"',
     );
@@ -205,7 +205,7 @@ describe("architecture directory", () => {
       "North America",
       "South America",
       "Lesotho · Capital city",
-      "Biology, Chemistry & Physiology Wiki",
+      "Biochemistry & Physiology Wiki",
       "Research station · No capital cities",
     ]) {
       expect(translateText(text, "de"), text).not.toBe(text);

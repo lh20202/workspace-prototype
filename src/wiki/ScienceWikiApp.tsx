@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Search20Regular } from "@fluentui/react-icons";
 import { LanguageToggle, useTranslation } from "../i18n/Language";
 import StaffLink from "../components/StaffLink";
+import EnvironmentIcon from "../components/EnvironmentIcon";
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
@@ -10,40 +11,40 @@ import "./science-wiki.css";
 
 export const scienceWikiArticles = [
   {
-    area: "Biology",
-    title: "How cells organise life",
+    area: "Biochemistry",
+    title: "Proteins and enzymes",
     summary:
-      "A cell is the smallest unit that can carry out the processes associated with life. Its membrane separates the cell from its surroundings, while internal structures perform specialised roles.",
+      "Proteins are built from amino acids and fold into shapes that help them do particular jobs. Some proteins act as enzymes, speeding up chemical reactions in cells.",
     detail:
-      "Plant and animal cells are eukaryotic: their DNA is enclosed in a nucleus. Plant cells also have a cellulose cell wall and chloroplasts, which capture light energy for photosynthesis.",
-    diagram: "cell",
+      "A reactant an enzyme acts on is called a substrate. It binds at the enzyme's active site, is converted into product, and then leaves. The enzyme can take part in another reaction; it is not used up by the process.",
+    diagram: "enzyme",
   },
   {
-    area: "Biology",
-    title: "Photosynthesis in brief",
+    area: "Biochemistry",
+    title: "How cells use ATP",
     summary:
-      "Plants, algae and some bacteria use light energy to make sugars from carbon dioxide and water.",
+      "Cells use adenosine triphosphate (ATP) to transfer energy to many of the reactions and processes that need it.",
     detail:
-      "In plants, photosynthesis takes place in chloroplasts. Oxygen is released as a by-product. The simplified equation is carbon dioxide + water + light energy → glucose + oxygen.",
-    diagram: "photosynthesis",
+      "When ATP is converted to ADP and phosphate, the change can be coupled to an energy-requiring reaction. Cells continually rebuild ATP using energy captured from nutrients or, in photosynthetic organisms, light.",
+    diagram: "atp",
   },
   {
-    area: "Chemistry",
-    title: "Acids, bases and the pH scale",
+    area: "Biochemistry",
+    title: "pH in living systems",
     summary:
-      "The pH scale describes how acidic or alkaline an aqueous solution is. Values below 7 are acidic, 7 is neutral at room temperature, and values above 7 are alkaline.",
+      "Cells rely on carefully regulated pH. Enzymes and other proteins work best within particular conditions, so even small changes can affect cell processes.",
     detail:
-      "The scale is logarithmic: a change of one pH unit corresponds to a tenfold change in hydrogen-ion concentration. A measured pH depends on conditions such as temperature and concentration.",
+      "The pH scale is logarithmic: a change of one unit corresponds to a tenfold change in hydrogen-ion concentration. Cells use buffers and other controls to keep conditions within a useful range.",
     diagram: "ph",
   },
   {
-    area: "Chemistry",
-    title: "Atoms and elements",
+    area: "Biochemistry",
+    title: "Biomolecules and chemical bonds",
     summary:
-      "An atom has a nucleus containing protons and usually neutrons, surrounded by electrons. The number of protons defines the element.",
+      "Proteins, carbohydrates, lipids and nucleic acids are biomolecules built from atoms joined by chemical bonds.",
     detail:
-      "Atoms can join through chemical bonds to form molecules. In ordinary chemical reactions, atoms are rearranged; the nuclei and element identities remain unchanged.",
-    diagram: "atom",
+      "The shape and properties of a biomolecule depend on its atoms and bonds. Cells assemble, break down and modify these molecules as part of everyday processes.",
+    diagram: "biomolecule",
   },
   {
     area: "Physiology",
@@ -63,9 +64,9 @@ export const scienceWikiArticles = [
       "Diffusion moves particles down their concentration gradients. Circulation carries oxygen from the lungs to tissues and returns carbon dioxide to the lungs.",
     diagram: "lungs",
   },
-];
+] as const;
 const articles = scienceWikiArticles;
-const areas = ["Biology", "Chemistry", "Physiology"];
+const areas = ["Biochemistry", "Physiology"];
 export function searchScienceWiki(query: string) {
   const normalized = query.trim().toLocaleLowerCase();
   return normalized
@@ -77,41 +78,43 @@ export function searchScienceWiki(query: string) {
     : [];
 }
 
-function Diagram({ kind }: { kind: string }) {
-  const diagram = {
-    cell: {
-      title: "Simplified animal cell",
-      desc: "A nucleus sits within a cell surrounded by a membrane; mitochondria are shown in the cytoplasm.",
-      nodes: ["Cell membrane", "Cytoplasm", "Nucleus", "Mitochondria"],
-    },
-    photosynthesis: {
-      title: "Photosynthesis inputs and outputs",
-      desc: "Light, carbon dioxide and water lead to glucose and oxygen in photosynthesis.",
-      nodes: ["Light + CO₂ + water", "Chloroplast", "Glucose + oxygen"],
-    },
-    ph: {
-      title: "A simplified pH scale",
-      desc: "Acidic values are below seven, seven is neutral, and alkaline values are above seven.",
-      nodes: ["Acidic · 0–6", "Neutral · 7", "Alkaline · 8–14"],
-    },
-    atom: {
-      title: "Simplified atom",
-      desc: "A central nucleus contains protons and neutrons, with electrons around it.",
-      nodes: ["Electrons", "Protons + neutrons", "Nucleus"],
-    },
-    circulation: {
-      title: "Pulmonary and systemic circulation",
-      desc: "Blood travels from the right heart to the lungs, returns to the left heart, then travels to the body.",
-      nodes: ["Right heart", "Lungs", "Left heart", "Body"],
-    },
-    lungs: {
-      title: "Gas exchange at the lungs",
-      desc: "Oxygen diffuses from alveolar air into blood, while carbon dioxide diffuses from blood into the alveolus.",
-      nodes: ["Alveolar air", "Thin exchange surface", "Blood"],
-    },
-  }[kind as "cell"];
+const diagrams = {
+  enzyme: {
+    title: "How an enzyme catalyses a reaction",
+    desc: "A substrate binds to an enzyme, is converted into product, and leaves the enzyme available for another reaction.",
+    nodes: ["Enzyme + substrate", "Bound at active site", "Product + enzyme"],
+  },
+  atp: {
+    title: "ATP transfers energy in cells",
+    desc: "ATP transfers energy to cell processes as it becomes ADP and phosphate; energy from nutrients or light helps rebuild ATP.",
+    nodes: ["Energy source", "ADP + phosphate → ATP", "Cell process → ADP"],
+  },
+  ph: {
+    title: "A simplified pH scale",
+    desc: "Acidic values are below seven, seven is neutral, and alkaline values are above seven.",
+    nodes: ["Acidic · 0–6", "Neutral · 7", "Alkaline · 8–14"],
+  },
+  biomolecule: {
+    title: "Building a biomolecule",
+    desc: "Cells join smaller building blocks through chemical bonds to make larger biomolecules.",
+    nodes: ["Building blocks", "Chemical bonds", "Biomolecule"],
+  },
+  circulation: {
+    title: "Pulmonary and systemic circulation",
+    desc: "Blood travels from the right heart to the lungs, returns to the left heart, then travels to the body.",
+    nodes: ["Right heart", "Lungs", "Left heart", "Body"],
+  },
+  lungs: {
+    title: "Gas exchange at the lungs",
+    desc: "Oxygen diffuses from alveolar air into blood, while carbon dioxide diffuses from blood into the alveolus.",
+    nodes: ["Alveolar air", "Thin exchange surface", "Blood"],
+  },
+};
+
+function Diagram({ kind }: { kind: keyof typeof diagrams }) {
+  const diagram = diagrams[kind];
   return (
-    <figure className="science-diagram">
+    <figure className="wiki-figure science-diagram">
       <svg
         viewBox="0 0 720 145"
         role="img"
@@ -120,8 +123,10 @@ function Diagram({ kind }: { kind: string }) {
         <title>{diagram.title}</title>
         <desc>{diagram.desc}</desc>
         {diagram.nodes.map((node, i) => {
-          const width = 150;
-          const x = 20 + i * (680 / diagram.nodes.length);
+          const count = diagram.nodes.length;
+          const width = count > 3 ? 150 : 190;
+          const gap = (680 - width * count) / (count - 1);
+          const x = 20 + i * (width + gap);
           return (
             <g key={node}>
               <rect x={x} y="42" width={width} height="58" rx="8" />
@@ -130,7 +135,7 @@ function Diagram({ kind }: { kind: string }) {
               </text>
               {i < diagram.nodes.length - 1 && (
                 <path
-                  d={`M ${x + width + 4} 71 h ${680 / diagram.nodes.length - width - 14}`}
+                  d={`M ${x + width + 4} 71 h ${gap - 14}`}
                   markerEnd="url(#science-arrow)"
                 />
               )}
@@ -157,8 +162,8 @@ function Diagram({ kind }: { kind: string }) {
 
 export default function ScienceWikiApp() {
   const { t } = useTranslation();
-  const [area, setArea] = useState(areas[0]);
-  const [articleTitle, setArticleTitle] = useState(articles[0].title);
+  const [area, setArea] = useState<string>(areas[0]);
+  const [articleTitle, setArticleTitle] = useState<string>(articles[0].title);
   const [query, setQuery] = useState("");
   const [areasOpen, setAreasOpen] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(false);
@@ -179,10 +184,8 @@ export default function ScienceWikiApp() {
       </a>
       <header className="wiki-header">
         <StaffLink className="wiki-identity" href="/architecture">
-          <span className="science-wiki-mark" aria-hidden="true">
-            ＋
-          </span>
-          <span>{t("Biology, Chemistry & Physiology Wiki")}</span>
+          <EnvironmentIcon type="wiki" size={34} />
+          <span>{t("Biochemistry & Physiology Wiki")}</span>
         </StaffLink>
         <div className="wiki-search">
           <label>
@@ -193,11 +196,19 @@ export default function ScienceWikiApp() {
               placeholder={t("Search this Wiki")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setQuery("");
+              }}
+              aria-controls={
+                query.trim() ? "science-search-results" : undefined
+              }
+              aria-expanded={!!query.trim()}
             />
           </label>
-          {query && (
+          {query.trim() && (
             <nav
               className="wiki-search-results"
+              id="science-search-results"
               aria-label={t("Search results")}
             >
               {matches.length ? (
@@ -285,17 +296,51 @@ export default function ScienceWikiApp() {
             {t(selected.area)}
           </p>
           <article className="wiki-article">
-            <p className="science-wiki-kicker">{t(selected.area)}</p>
-            <h1>{t(selected.title)}</h1>
-            <p className="wiki-lede">{t(selected.summary)}</p>
+            <header>
+              <h1>{t(selected.title)}</h1>
+              <p className="wiki-lede">{t(selected.summary)}</p>
+              <dl className="wiki-metadata">
+                <div>
+                  <dt>{t("Last reviewed")}</dt>
+                  <dd>
+                    <time dateTime="2026-10-12">12 October 2026</time>
+                  </dd>
+                </div>
+                <div>
+                  <dt>{t("Article owner")}</dt>
+                  <dd>{t("Frontline science team")}</dd>
+                </div>
+              </dl>
+            </header>
+            <nav
+              className="wiki-on-this-page"
+              aria-label={t("Article sections")}
+            >
+              <strong>{t("On this page")}</strong>
+              <a href="#science-key-idea">{t("Key idea")}</a>
+              <a href="#science-related-reading">{t("Related reading")}</a>
+            </nav>
             <Diagram kind={selected.diagram} />
-            <section>
+            <section id="science-key-idea">
               <h2>{t("Key idea")}</h2>
               <p>{t(selected.detail)}</p>
             </section>
-            <p className="science-wiki-note">
-              {t("Learning reference · For general education")}
-            </p>
+            <section className="wiki-related" id="science-related-reading">
+              <h2>{t("Related reading")}</h2>
+              <div>
+                {articles
+                  .filter(
+                    (item) =>
+                      item.area === selected.area &&
+                      item.title !== selected.title,
+                  )
+                  .map((item) => (
+                    <button key={item.title} onClick={() => choose(item.title)}>
+                      {t(item.title)}
+                    </button>
+                  ))}
+              </div>
+            </section>
           </article>
         </main>
       </div>

@@ -707,6 +707,31 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                 {protectedNavigation[workspace.id]}
               </StaffLink>
             )}
+            {workspace.id === "people" && activePeopleSection === "culture" && (
+              <details className="functional-navigation-group" open>
+                <summary>Related destinations</summary>
+                <StaffLink href={href("workforce")}>
+                  Workforce planning & organisation
+                </StaffLink>
+                <StaffLink href={href("frameworks")}>
+                  Reward frameworks
+                </StaffLink>
+                <StaffLink href={href("analytics")}>People Analytics</StaffLink>
+                <StaffLink href={href("wellbeing")}>
+                  Wellbeing Programmes
+                </StaffLink>
+              </details>
+            )}
+            {workspace.id === "people" &&
+              activePeopleSection === "communities" && (
+                <details className="functional-navigation-group" open>
+                  <summary>Related destinations</summary>
+                  <StaffLink href={href("communications")}>
+                    Internal communications
+                  </StaffLink>
+                </details>
+              )}
+            {relatedLinks(library)}
           </nav>
         </aside>
         <main className="services-main functional-main" id="functional-main">
@@ -978,38 +1003,14 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
                     : 1
                 }
               />
-              {workspace.id === "people" &&
-                activePeopleSection === "culture" && (
-                  <div className="functional-context-links">
-                    <StaffLink href={href("workforce")}>
-                      Workforce planning & organisation
-                    </StaffLink>
-                    <StaffLink href={href("frameworks")}>
-                      Reward frameworks
-                    </StaffLink>
-                    <StaffLink href={href("analytics")}>
-                      People Analytics
-                    </StaffLink>
-                    <StaffLink href={href("wellbeing")}>
-                      Wellbeing Programmes
-                    </StaffLink>
-                  </div>
-                )}
-              {workspace.id === "people" &&
-                activePeopleSection === "communities" && (
-                  <div className="functional-context-links">
-                    <StaffLink href={href("communications")}>
-                      Internal communications
-                    </StaffLink>
-                  </div>
-                )}
-              {relatedLinks(library)}
             </>
           ) : null}
         </main>
       </div>
       <Drawer
         open={!!selected}
+        position="end"
+        size="medium"
         onOpenChange={(_, d) => {
           if (!d.open) setSelected(undefined);
         }}
@@ -1029,7 +1030,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
         </DrawerHeader>
         <DrawerBody>
           {selected && (
-            <>
+            <div className="functional-action-details">
               <h2>{selected.name}</h2>
               <p>
                 {selected.owner} · Due {selected.due}
@@ -1063,7 +1064,7 @@ function StandardFunctionalApp({ id: providedId }: { id?: string }) {
               >
                 Add note
               </Button>
-            </>
+            </div>
           )}
         </DrawerBody>
       </Drawer>

@@ -281,33 +281,37 @@
 .workspace-tour-annotation {
   position: absolute;
   display: grid;
-  max-width: 205px;
-  gap: 3px;
-  padding: 5px 8px 6px;
+  max-width: 270px;
+  gap: 8px;
+  padding: 13px 16px 14px;
   color: #263a47;
-  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  line-height: 1.25;
-  text-shadow: 0 1px 0 #fff;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  line-height: 1.4;
 }
 .workspace-tour-annotation::before {
   position: absolute;
-  inset: 2px 0 1px;
+  inset: 0;
   z-index: -1;
+  border: 1px solid #c5aa58;
   border-radius: 2px 7px 3px 5px;
-  background: #fff9e8dc;
+  background: #fff7d9;
   content: "";
   transform: rotate(-1deg);
   box-shadow:
-    0 5px 13px #25374624,
-    0 1px 3px #25374618;
+    0 7px 18px #2537462b,
+    0 2px 4px #25374620;
 }
 .workspace-tour-annotation strong {
-  color: #8c352a;
-  font-size: 14px;
+  color: #702e25;
+  font-family: "Patrick Hand", "Bradley Hand", "Segoe Print", cursive;
+  font-size: 24px;
   font-weight: 700;
+  line-height: 1.2;
 }
 .workspace-tour-annotation span {
-  font-size: 12px;
+  color: #263a47;
+  font-size: 18px;
+  line-height: 1.55;
 }
 .annotation-navigation {
   top: 20%;
@@ -1028,16 +1032,17 @@
     font-size: 13px;
   }
   .workspace-tour-annotation {
-    width: 40%;
+    width: 46%;
     max-width: none;
-    gap: 2px;
-    padding: 4px 6px;
+    gap: 6px;
+    padding: 11px 12px;
   }
   .workspace-tour-annotation strong {
-    font-size: 11px;
+    font-size: 21px;
   }
   .workspace-tour-annotation span {
-    font-size: 10px;
+    font-size: 17px;
+    line-height: 1.5;
   }
   .annotation-navigation {
     top: 15%;
