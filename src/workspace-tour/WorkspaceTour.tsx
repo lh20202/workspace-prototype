@@ -326,6 +326,7 @@ function IntranetHeader({ active = false }: { active?: boolean }) {
 
 function ActivityDirectory() {
   const [activeAnnotation, setActiveAnnotation] = useState(0);
+  const [annotationVisible, setAnnotationVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -336,12 +337,23 @@ function ActivityDirectory() {
     return () => preference.removeEventListener("change", updatePreference);
   }, []);
   useEffect(() => {
-    if (reducedMotion) return;
-    const timer = window.setInterval(
-      () => setActiveAnnotation((current) => (current + 1) % 6),
-      4600,
-    );
-    return () => window.clearInterval(timer);
+    if (reducedMotion) {
+      setAnnotationVisible(true);
+      return;
+    }
+    let transitionTimer: number | undefined;
+    const timer = window.setInterval(() => {
+      setAnnotationVisible(false);
+      transitionTimer = window.setTimeout(() => {
+        setActiveAnnotation((current) => (current + 1) % 6);
+        setAnnotationVisible(true);
+      }, 820);
+    }, 5200);
+    return () => {
+      window.clearInterval(timer);
+      if (transitionTimer !== undefined)
+        window.clearTimeout(transitionTimer);
+    };
   }, [reducedMotion]);
   const annotations = [
     {
@@ -581,7 +593,9 @@ function ActivityDirectory() {
             aria-label="Workspace guidance annotations"
           >
             {annotations.map((annotation, index) => {
-              const visible = reducedMotion || index === activeAnnotation;
+              const visible =
+                reducedMotion ||
+                (index === activeAnnotation && annotationVisible);
               return (
                 <div
                   className={`workspace-tour-annotation demo-paper-surface ${annotation.className}${visible ? " is-current" : ""}`}
