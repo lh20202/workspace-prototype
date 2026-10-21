@@ -185,7 +185,7 @@ function ArchitectureProjectStrip() {
 export const frontlineDestinations = [
   { id: "frontline-logistics", label: "Logistics" },
   { id: "frontline-supply", label: "Supply" },
-  { id: "frontline-warehouses", label: "Distribution Centres" },
+  { id: "frontline-warehouses", label: "Distribution" },
   {
     id: "frontline-science-wiki",
     label: "Biochemistry & Physiology Wiki",

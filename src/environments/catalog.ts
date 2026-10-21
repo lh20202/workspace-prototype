@@ -135,7 +135,7 @@ export const externalEnvironments: ExternalEnvironment[] = [
   },
   {
     id: "frontline-warehouses",
-    name: "Distribution Centres",
+    name: "Distribution",
     theme: "burgundy",
     variant: "frontline",
   },
