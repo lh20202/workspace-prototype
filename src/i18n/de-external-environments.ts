@@ -118,7 +118,7 @@ export const germanExternalEnvironments: Record<string, string> = {
   "Media Library": "Medienbibliothek",
   Logistics: "Logistik",
   Supply: "Versorgung",
-  "Warehouses A–Z": "Lager A–Z",
+  "Distribution Centres": "Verteilzentren",
   Personnel: "Personal",
   "-> $": "-> $",
   Archives: "Archiv",
