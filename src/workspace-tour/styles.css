@@ -251,7 +251,10 @@
   width: 100%;
   height: 100%;
   overflow: visible;
+  opacity: 0.42;
+  filter: blur(0.3px);
   pointer-events: none;
+  transition: opacity 800ms ease;
 }
 .workspace-tour-annotation-arrows-mobile {
   display: none;
@@ -287,6 +290,17 @@
   color: #263a47;
   font-family: "IBM Plex Sans", system-ui, sans-serif;
   line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  filter: blur(0.45px);
+  transition:
+    opacity 760ms ease,
+    visibility 760ms;
+  will-change: opacity;
+}
+.workspace-tour-annotation.is-current {
+  opacity: 0.9;
+  visibility: visible;
 }
 .workspace-tour-annotation::before {
   position: absolute;
@@ -377,6 +391,31 @@
   color: #4a5660;
   font-size: 15px;
   line-height: 1.45;
+}
+.workspace-tour-planning-scene {
+  animation: workspace-tour-soft-focus 1.35s cubic-bezier(0.2, 0.7, 0.3, 1)
+    both;
+}
+@keyframes workspace-tour-soft-focus {
+  from {
+    filter: blur(0);
+    opacity: 1;
+  }
+  to {
+    filter: blur(1.15px);
+    opacity: 0.76;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-tour-planning-scene {
+    animation: none;
+    filter: blur(1.15px);
+    opacity: 0.76;
+  }
+  .workspace-tour-annotation,
+  .workspace-tour-annotation-arrows {
+    transition: none;
+  }
 }
 .workspace-tour-page-heading > span,
 .workspace-tour-card-eyebrow {

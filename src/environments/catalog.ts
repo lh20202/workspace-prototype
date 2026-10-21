@@ -139,6 +139,29 @@ export const externalEnvironments: ExternalEnvironment[] = [
     theme: "burgundy",
     variant: "frontline",
   },
+  { id: "frontline-branch-maseru", name: "Maseru Branch", theme: "teal" },
+  { id: "frontline-branch-thimphu", name: "Thimphu Branch", theme: "navy" },
+  { id: "frontline-branch-vaduz", name: "Vaduz Branch", theme: "violet" },
+  {
+    id: "frontline-branch-belmopan",
+    name: "Belmopan Branch",
+    theme: "burgundy",
+  },
+  {
+    id: "frontline-branch-paramaribo",
+    name: "Paramaribo Branch",
+    theme: "teal",
+  },
+  {
+    id: "frontline-branch-ngerulmud",
+    name: "Ngerulmud Branch",
+    theme: "navy",
+  },
+  {
+    id: "frontline-branch-mcmurdo",
+    name: "McMurdo Station",
+    theme: "violet",
+  },
 ];
 export const externalEnvironmentById = new Map(
   externalEnvironments.map((environment) => [environment.id, environment]),

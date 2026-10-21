@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight20Regular,
   BookOpen24Regular,
@@ -325,6 +325,24 @@ function IntranetHeader({ active = false }: { active?: boolean }) {
 }
 
 function ActivityDirectory() {
+  const [activeAnnotation, setActiveAnnotation] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(preference.matches);
+    const updatePreference = (event: MediaQueryListEvent) =>
+      setReducedMotion(event.matches);
+    preference.addEventListener("change", updatePreference);
+    return () => preference.removeEventListener("change", updatePreference);
+  }, []);
+  useEffect(() => {
+    if (reducedMotion) return;
+    const timer = window.setInterval(
+      () => setActiveAnnotation((current) => (current + 1) % 6),
+      4600,
+    );
+    return () => window.clearInterval(timer);
+  }, [reducedMotion]);
   const annotations = [
     {
       id: "navigation",
@@ -518,13 +536,15 @@ function ActivityDirectory() {
                 <path d="M1 1 L5 3 L1 5" />
               </marker>
             </defs>
-            {annotations.map((annotation) => (
-              <path
-                key={annotation.id}
-                d={annotation.path}
-                markerEnd="url(#tour-arrowhead)"
-              />
-            ))}
+            {annotations
+              .filter((_, index) => reducedMotion || index === activeAnnotation)
+              .map((annotation) => (
+                <path
+                  key={annotation.id}
+                  d={annotation.path}
+                  markerEnd="url(#tour-arrowhead)"
+                />
+              ))}
           </svg>
           <svg
             className="workspace-tour-annotation-arrows workspace-tour-annotation-arrows-mobile"
@@ -545,27 +565,34 @@ function ActivityDirectory() {
                 <path d="M1 1 L5 3 L1 5" />
               </marker>
             </defs>
-            {annotations.map((annotation) => (
-              <path
-                key={annotation.id}
-                d={annotation.mobilePath}
-                markerEnd="url(#tour-arrowhead-mobile)"
-              />
-            ))}
+            {annotations
+              .filter((_, index) => reducedMotion || index === activeAnnotation)
+              .map((annotation) => (
+                <path
+                  key={annotation.id}
+                  d={annotation.mobilePath}
+                  markerEnd="url(#tour-arrowhead-mobile)"
+                />
+              ))}
           </svg>
           <div
             className="workspace-tour-annotations"
+            role="group"
             aria-label="Workspace guidance annotations"
           >
-            {annotations.map((annotation) => (
-              <div
-                className={`workspace-tour-annotation demo-paper-surface ${annotation.className}`}
-                key={annotation.id}
-              >
-                <strong>{annotation.title}</strong>
-                <span>{annotation.body}</span>
-              </div>
-            ))}
+            {annotations.map((annotation, index) => {
+              const visible = reducedMotion || index === activeAnnotation;
+              return (
+                <div
+                  className={`workspace-tour-annotation demo-paper-surface ${annotation.className}${visible ? " is-current" : ""}`}
+                  key={annotation.id}
+                  aria-hidden={!visible}
+                >
+                  <strong>{annotation.title}</strong>
+                  <span>{annotation.body}</span>
+                </div>
+              );
+            })}
           </div>
           <div className="workspace-tour-coming-soon" role="status">
             <span>COMING SOON</span>

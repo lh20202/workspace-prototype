@@ -310,11 +310,22 @@
   color: #365e59;
   font-size: 13px;
 }
-.architecture-branch-list p {
+.architecture-branch-list .architecture-branch-link {
+  display: inline-block;
   margin: 0 0 3px;
   color: #263c39;
   font-size: 15px;
   font-weight: 600;
+  text-decoration: none;
+}
+.architecture-branch-list .architecture-branch-link:hover {
+  color: #0f6cbd;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.architecture-branch-list .architecture-branch-link:focus-visible {
+  outline: 2px solid #0f6cbd;
+  outline-offset: 3px;
 }
 .architecture-branch-list small {
   color: #46514e;

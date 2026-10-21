@@ -2,6 +2,36 @@
 export const germanContent: Record<string, string> = {
   "Strictly confidential coordination for staff welfare, safeguarding and independent employee representation.":
     "Streng vertrauliche Koordination der Mitarbeitendenfürsorge, des Schutzes von Mitarbeitenden und der unabhängigen Personalvertretung.",
+  "Coordinate local workforce needs and global workforce planning, management and shared people programmes. Individual recruitment and employment records stay restricted to Personnel.":
+    "Koordiniert lokale Personalbedarfe sowie globale Personalplanung, Personalmanagement und gemeinsame Personalprogramme. Individuelle Einstellungen und Beschäftigtendaten bleiben im geschützten Bereich Personal.",
+  "Coordinate local workforce support and shared global workforce management, careers and talent-acquisition planning. Individual vacancies, candidate details and employment records stay restricted to Personnel.":
+    "Koordiniert lokale Personalunterstützung sowie globales Personalmanagement, Karrierewege und die übergreifende Planung der Talentgewinnung. Einzelne Stellen, Bewerberdaten und Beschäftigtendaten bleiben im geschützten Bereich Personal.",
+  "Local workforce support model": "Modell zur lokalen Personalunterstützung",
+  "Coordinate practical workforce support with local teams":
+    "Die praktische Personalunterstützung mit den lokalen Teams abstimmen",
+  "Global workforce management framework":
+    "Rahmen für das globale Personalmanagement",
+  "Review shared approaches to workforce planning across regions":
+    "Gemeinsame Ansätze zur Personalplanung in verschiedenen Regionen prüfen",
+  "Careers and talent acquisition framework":
+    "Rahmen für Karrierewege und Talentgewinnung",
+  "Coordinate career pathways and high-level talent acquisition planning":
+    "Karrierewege und übergreifende Planung der Talentgewinnung abstimmen",
+  "Local Workforce — Support and Management Guide.docx":
+    "Lokale Belegschaft — Leitfaden für Unterstützung und Management.docx",
+  "Global Workforce — Management Framework.docx":
+    "Globale Belegschaft — Rahmen für das Management.docx",
+  "Careers & Talent Acquisition — Shared Framework.docx":
+    "Karrierewege und Talentgewinnung — gemeinsamer Rahmen.docx",
+  "Workforce Planning — Local and Global Roles.xlsx":
+    "Personalplanung — lokale und globale Rollen.xlsx",
+  "Local workforce": "Lokale Belegschaft",
+  "Management and support": "Management und Unterstützung",
+  "Global workforce": "Globale Belegschaft",
+  "Management framework": "Managementrahmen",
+  "Careers and talent acquisition": "Karrierewege und Talentgewinnung",
+  "Workforce planning": "Personalplanung",
+  "Local and global roles": "Lokale und globale Rollen",
   "Access is limited to authorised participants and remains separate for each protected area.":
     "Nur autorisierte Beteiligte haben Zugriff. Die Berechtigungen werden für jeden geschützten Bereich getrennt vergeben.",
   "Working methods and aggregate coordination only. Individual support and representation records are not held in this demonstration.":

@@ -83,7 +83,34 @@ describe("People & Culture keeps functional entrances in one existing workspace"
 
   it("uses the existing shared libraries with folder scopes, including both communications channels", () => {
     expect(render("/people-culture/workforce")).toContain("2027 contributions");
-    expect(render("/people-culture/culture")).toContain("Pilot design");
+    const workforce = render("/people-culture/culture");
+    expect(workforce).toContain("Workforce");
+    expect(workforce).toContain("Current work");
+    const cultureFiles = functionalLibraryDocuments(
+      configById.get("people")!,
+      functionalLibraries.people.find((library) =>
+        library.areas.includes("culture"),
+      )!,
+    );
+    const workforceFiles = cultureFiles.filter((file) =>
+      ["people-R17", "people-R18", "people-R19", "people-R20"].includes(
+        file.id,
+      ),
+    );
+    expect(workforceFiles.map(({ name }) => name)).toEqual([
+      "Local Workforce — Support and Management Guide.docx",
+      "Global Workforce — Management Framework.docx",
+      "Careers & Talent Acquisition — Shared Framework.docx",
+      "Workforce Planning — Local and Global Roles.xlsx",
+    ]);
+    expect(workforceFiles.every(({ folder }) => folder.startsWith("Workforce/Current work/"))).toBe(true);
+    const peopleConfig = configById.get("people")!;
+    expect(
+      peopleConfig.areas.find(({ id }) => id === "culture")?.summary,
+    ).toContain("local workforce support");
+    expect(
+      peopleConfig.areas.find(({ id }) => id === "culture")?.summary,
+    ).toContain("careers and talent-acquisition planning");
     expect(render("/people-culture/frameworks")).toContain(
       "Organisation-wide design",
     );

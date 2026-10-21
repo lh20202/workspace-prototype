@@ -194,29 +194,44 @@ export const frontlineDestinations = [
 ];
 
 export const frontlineBranches = [
-  { continent: "Africa", city: "Maseru", detail: "Lesotho · Capital city" },
-  { continent: "Asia", city: "Thimphu", detail: "Bhutan · Capital city" },
   {
+    id: "frontline-branch-maseru",
+    continent: "Africa",
+    city: "Maseru",
+    detail: "Lesotho · Capital city",
+  },
+  {
+    id: "frontline-branch-thimphu",
+    continent: "Asia",
+    city: "Thimphu",
+    detail: "Bhutan · Capital city",
+  },
+  {
+    id: "frontline-branch-vaduz",
     continent: "Europe",
     city: "Vaduz",
     detail: "Liechtenstein · Capital city",
   },
   {
+    id: "frontline-branch-belmopan",
     continent: "North America",
     city: "Belmopan",
     detail: "Belize · Capital city",
   },
   {
+    id: "frontline-branch-paramaribo",
     continent: "South America",
     city: "Paramaribo",
     detail: "Suriname · Capital city",
   },
   {
+    id: "frontline-branch-ngerulmud",
     continent: "Oceania",
     city: "Ngerulmud",
     detail: "Palau · Capital city",
   },
   {
+    id: "frontline-branch-mcmurdo",
     continent: "Antarctica",
     city: "McMurdo Station",
     detail: "Research station · No capital cities",
@@ -257,9 +272,14 @@ function FrontlineSection() {
         <summary>Branches</summary>
         <div className="architecture-branch-list">
           {frontlineBranches.map((branch) => (
-            <section key={branch.continent} aria-label={branch.continent}>
+            <section key={branch.id} aria-label={branch.continent}>
               <h3>{branch.continent}</h3>
-              <p>{branch.city}</p>
+              <StaffLink
+                className="architecture-branch-link"
+                href={externalPreviewHref(branch.id, "/architecture")}
+              >
+                {branch.city}
+              </StaffLink>
               <small>{branch.detail}</small>
             </section>
           ))}

@@ -63,7 +63,10 @@ describe("Activity Workspace walkthrough", () => {
     for (const layer of arrowLayers ?? [])
       expect(
         layer.match(/marker-end="url\(#tour-arrowhead(?:-mobile)?\)"/g),
-      ).toHaveLength(6);
+      ).toHaveLength(1);
+    expect(html.match(/workspace-tour-annotation[^\"]* is-current/g)).toHaveLength(
+      1,
+    );
     expect(
       html.match(
         /class="workspace-tour-annotation demo-paper-surface annotation-/g,

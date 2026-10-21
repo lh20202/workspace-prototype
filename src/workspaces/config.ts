@@ -501,12 +501,12 @@ const seeds = {
       [
         "workforce",
         "Workforce & Organisation",
-        "Workforce planning, organisation design and organisation-wide people programmes.",
+        "Coordinate local workforce needs and global workforce planning, management and shared people programmes. Individual recruitment and employment records stay restricted to Personnel.",
       ],
       [
         "culture",
         "Workforce",
-        "Leadership, inclusive working practices and culture development.",
+        "Coordinate local workforce support and shared global workforce management, careers and talent-acquisition planning. Individual vacancies, candidate details and employment records stay restricted to Personnel.",
       ],
       [
         "learning",
@@ -552,6 +552,24 @@ const seeds = {
         "Inclusive leadership programme",
         "Review programme design and participation methods",
         "PEOPLE-102",
+      ],
+      [
+        "culture",
+        "Local workforce support model",
+        "Coordinate practical workforce support with local teams",
+        "PEOPLE-110",
+      ],
+      [
+        "culture",
+        "Global workforce management framework",
+        "Review shared approaches to workforce planning across regions",
+        "PEOPLE-111",
+      ],
+      [
+        "culture",
+        "Careers and talent acquisition framework",
+        "Coordinate career pathways and high-level talent acquisition planning",
+        "PEOPLE-112",
       ],
       [
         "learning",

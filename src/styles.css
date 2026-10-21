@@ -1318,10 +1318,22 @@ tbody tr:hover {
 }
 .confidential-route-zone {
   position: relative;
+  isolation: isolate;
   min-height: 100%;
   padding: 34px 12px 12px;
   border: 1px solid #ead7dc;
   background: #fdf8f9;
+}
+.confidential-route-zone::before {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 0%, #bf34421c, transparent 68%),
+    linear-gradient(118deg, #9f173210, transparent 38%, #ba26350d);
+  mix-blend-mode: multiply;
+  content: "";
 }
 .confidential-route-zone[data-classification="Strictly confidential"] {
   border-color: #dec0c9;

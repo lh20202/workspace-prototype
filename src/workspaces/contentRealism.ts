@@ -96,6 +96,26 @@ const additions: Record<string, AddedFile[]> = {
     ],
     ["culture", "Leadership Programme — Aggregate Feedback.xlsx", "people-R04"],
     [
+      "culture",
+      "Local Workforce — Support and Management Guide.docx",
+      "people-R17",
+    ],
+    [
+      "culture",
+      "Global Workforce — Management Framework.docx",
+      "people-R18",
+    ],
+    [
+      "culture",
+      "Careers & Talent Acquisition — Shared Framework.docx",
+      "people-R19",
+    ],
+    [
+      "culture",
+      "Workforce Planning — Local and Global Roles.xlsx",
+      "people-R20",
+    ],
+    [
       "learning",
       "Manager Capability Programme — Learning Plan.docx",
       "people-R08",
@@ -191,7 +211,7 @@ const areaFolders: Record<string, Record<string, string>> = {
   },
   people: {
     workforce: "Workforce planning/2027 contributions",
-    culture: "Leadership programme/Pilot design",
+    culture: "Workforce/Current work",
     learning: "Learning programmes/Manager capability",
     frameworks: "Employment frameworks/Organisation-wide design",
     communications: "All-staff meetings/October 2026",
@@ -245,6 +265,16 @@ export function folderForFunctionalFile(
     name.startsWith("Intranet")
   )
     return "Intranet & Wiki/Publishing";
+  if (id === "people" && area === "culture") {
+    if (/Local Workforce/.test(name))
+      return "Workforce/Current work/Local workforce/Management and support";
+    if (/Global Workforce/.test(name))
+      return "Workforce/Current work/Global workforce/Management framework";
+    if (/Careers|Talent Acquisition/.test(name))
+      return "Workforce/Current work/Global workforce/Careers and talent acquisition";
+    if (/Local and Global Roles/.test(name))
+      return "Workforce/Current work/Workforce planning/Local and global roles";
+  }
   if (id === "people" && area === "learning" && /Onboarding/.test(name))
     return "Learning programmes/New starter induction";
   return areaFolders[id]?.[area] || `${area}/Current work`;

@@ -6,7 +6,10 @@ import {
   architectureHubViews,
   architectureProjects,
 } from "./architectureModel";
-import { ArchitectureDestinationLink } from "./ArchitectureContent";
+import {
+  ArchitectureDestinationLink,
+  frontlineBranches,
+} from "./ArchitectureContent";
 import { currentProjects, projectHref } from "../projects/data";
 import { departments } from "../coordination/data";
 import { departmentPreviewHref } from "../teams/departmentPreview";
@@ -95,6 +98,11 @@ describe("architecture directory", () => {
     );
     expect(html).toContain('href="/frontline/science-wiki?staff=devon"');
     expect(html).toContain('class="architecture-branches"');
+    for (const branch of frontlineBranches) {
+      expect(html).toContain(
+        `href="/external/${branch.id}?returnTo=%2Farchitecture&amp;staff=devon"`,
+      );
+    }
     expect(html).toContain("Maseru");
     expect(html).toContain("Thimphu");
     expect(html).toContain("Vaduz");
