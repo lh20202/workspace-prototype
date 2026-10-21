@@ -30,7 +30,6 @@ export const architectureHubViews: ArchitectureHubView[] =
       return {
         id: "finance",
         label: site.label,
-        href: site.href,
         primary: financeJumpLinks.map((link) => ({
           ...site,
           ...link,

@@ -75,6 +75,19 @@ describe("architecture directory", () => {
     }
   });
 
+  it("keeps the South heading static while its workspace links remain available", () => {
+    const finance = architectureHubViews.find(({ id }) => id === "finance")!;
+    const html = renderDirectory();
+    const panel = html
+      .slice(html.indexOf('class="architecture-panel architecture-tone-finance"'))
+      .split("</section>")[0];
+
+    expect(finance.href).toBeUndefined();
+    expect(panel).toContain('<h2 id="layout-hub-finance">South</h2>');
+    expect(panel).not.toContain('href="/financial-operations?staff=devon"');
+    expect(panel).toContain('href="/financial-operations/income?staff=devon"');
+  });
+
   it("adds a neutral scope break after Projects and Frontline destinations below it", () => {
     const html = renderDirectory();
     const projects = html.indexOf('class="architecture-projects"');
