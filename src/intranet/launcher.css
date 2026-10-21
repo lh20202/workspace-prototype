@@ -50,12 +50,6 @@
   line-height: 22px;
   color: #424242;
 }
-:root .prototype-launcher .launcher-data-note {
-  font-size: 13px;
-  line-height: 20px;
-  color: #616161;
-  margin: 12px 0 2px;
-}
 :root .prototype-launcher .launcher-created-link {
   border: 0;
   background: transparent;

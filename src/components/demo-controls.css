@@ -46,29 +46,36 @@
 .demo-controls-reveal .demo-controls-panel[hidden] {
   display: none;
 }
-:root .demo-controls-panel > .demo-fictional-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 3px 8px;
-  min-height: 26px;
-  padding: 3px 14px;
-  border: 1px solid #bdd4df;
-  border-top: 0;
-  border-radius: 0 0 3px 3px;
-  background: #eaf3f8;
-  color: #31566a;
+.demo-fictional-label {
+  position: fixed;
+  z-index: 29;
+  top: 28px;
+  right: 16px;
+  width: min(320px, calc(100vw - 32px));
+  padding: 10px 14px;
+  color: #263a47;
   font:
-    12px/18px "Inter Variable",
-    Inter,
-    "Segoe UI",
-    system-ui,
-    sans-serif;
+    600 16px/21px "Patrick Hand",
+    "Bradley Hand",
+    "Segoe Print",
+    cursive;
+  text-align: center;
+  pointer-events: none;
+  transform: rotate(-0.6deg);
 }
 @media (max-width: 800px) {
   .demo-controls-reveal .demo-controls-panel {
     padding-inline: 8px;
+  }
+}
+@media (max-width: 600px) {
+  .demo-fictional-label {
+    top: 27px;
+    right: 8px;
+    width: min(260px, calc(100vw - 16px));
+    padding: 8px 11px;
+    font-size: 14px;
+    line-height: 18px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

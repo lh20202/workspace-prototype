@@ -21,6 +21,7 @@ import { withExplicitStaff } from "../utils/staffNavigation";
 import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
 import WorkspaceFAQ from "../components/WorkspaceFAQ";
+import IllustrativeContentLabel from "../components/IllustrativeContentLabel";
 import { creationExplanation } from "../components/workspaceFAQContent";
 const choices = [
   {
@@ -37,6 +38,7 @@ const choices = [
 export default function Launcher() {
   return (
     <main className="prototype-launcher">
+      <IllustrativeContentLabel />
       <div className="launcher-language">
         <LanguageToggle />
       </div>
@@ -57,9 +59,6 @@ export default function Launcher() {
             {proofOfConceptInfoText}
           </DemoInfo>
         </div>
-        <p className="launcher-data-note">
-          No company data was used to create this demo site.
-        </p>
         <div className="launcher-secondary-links">
           <Dialog>
             <DialogTrigger disableButtonEnhancement>

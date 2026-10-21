@@ -58,7 +58,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain('aria-label="Proof of concept"');
     expect(launcher).toContain("How was this created?");
     expect(launcher).toContain(
-      "No company data was used to create this demo site.",
+      "Illustrative, fictional content. No company data used",
     );
     expect(launcher).not.toContain("Full Architecture Proof of Concept");
     expect(launcher).not.toContain("Reference proof of concept");
@@ -89,8 +89,9 @@ describe("launcher and service desk routes", () => {
       expect(controls).toContain("← Welcome");
       expect(controls).toContain("All workspaces");
       expect(controls).not.toContain("Fictional names &amp; content");
-      expect(directory).toContain("Fictional names &amp; content");
-      expect(directory).toContain("No company data used");
+      expect(directory).toContain(
+        "Illustrative, fictional content. No company data used",
+      );
       expect(controls).not.toContain("Architecture");
       expect(controls).toMatch(
         /<a[^>]*href="\/architecture"[^>]*aria-current="page"/,

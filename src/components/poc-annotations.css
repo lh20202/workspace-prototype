@@ -112,33 +112,6 @@
   min-width: 0;
   margin-left: auto;
 }
-:root .demo-control-frame > .demo-fictional-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 3px 8px;
-  min-height: 26px;
-  padding: 3px 14px;
-  border: 1px solid #bdd4df;
-  border-top: 0;
-  border-radius: 0 0 3px 3px;
-  background: #eaf3f8;
-  color: #31566a;
-  font:
-    12px/18px "Inter Variable",
-    Inter,
-    "Segoe UI",
-    system-ui,
-    sans-serif;
-}
-:root .demo-fictional-status > svg {
-  flex: none;
-}
-:root .demo-fictional-status .demo-fictional-support {
-  padding-left: 8px;
-  border-left: 1px solid #bdd4df;
-}
 :root .poc-controls .response-preview {
   display: flex;
   align-items: center;
@@ -471,10 +444,6 @@
   }
   :root .poc-controls .response-preview {
     grid-row: 2;
-  }
-  :root .demo-control-frame > .demo-fictional-status {
-    justify-content: flex-start;
-    padding-inline: 10px;
   }
 }
 @media (max-width: 600px) {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight20Regular,
   BookOpen24Regular,
@@ -17,6 +17,7 @@ import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { matchesDisplayText } from "../i18n/search";
+import { annotationConnectorPath } from "./annotationGeometry";
 import {
   activityChannels,
   activityFiles,
@@ -328,6 +329,14 @@ function ActivityDirectory() {
   const [activeAnnotation, setActiveAnnotation] = useState(0);
   const [annotationVisible, setAnnotationVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [arrow, setArrow] = useState({
+    width: 1,
+    height: 1,
+    path: "",
+    forIndex: -1,
+  });
+  const stageRef = useRef<HTMLElement>(null);
+  const arrowRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(preference.matches);
@@ -347,62 +356,102 @@ function ActivityDirectory() {
       transitionTimer = window.setTimeout(() => {
         setActiveAnnotation((current) => (current + 1) % 6);
         setAnnotationVisible(true);
-      }, 820);
-    }, 5200);
+      }, 320);
+    }, 3400);
     return () => {
       window.clearInterval(timer);
-      if (transitionTimer !== undefined)
-        window.clearTimeout(transitionTimer);
+      if (transitionTimer !== undefined) window.clearTimeout(transitionTimer);
     };
   }, [reducedMotion]);
+  useEffect(() => {
+    const stage = stageRef.current;
+    const arrowOverlay = arrowRef.current;
+    if (!stage || !arrowOverlay) return;
+    const targetName = [
+      "tour-navigation",
+      "tour-channels",
+      "tour-naming",
+      "tour-status",
+      "tour-metadata",
+      "tour-sensitivity",
+    ][activeAnnotation];
+    const label = stage.querySelector<HTMLElement>(
+      `[data-tour-annotation="${activeAnnotation}"]`,
+    );
+    const target = stage.querySelector<HTMLElement>(
+      `[data-tour-target="${targetName}"]`,
+    );
+    if (!label || !target) return;
+    const updateArrow = () => {
+      const overlayRect = arrowOverlay.getBoundingClientRect();
+      if (!overlayRect.width || !overlayRect.height) return;
+      const toRelativeRect = (element: HTMLElement) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          left: rect.left - overlayRect.left,
+          top: rect.top - overlayRect.top,
+          width: rect.width,
+          height: rect.height,
+        };
+      };
+      setArrow({
+        width: overlayRect.width,
+        height: overlayRect.height,
+        path: annotationConnectorPath(
+          toRelativeRect(label),
+          toRelativeRect(target),
+        ),
+        forIndex: activeAnnotation,
+      });
+    };
+    updateArrow();
+    const observer = new ResizeObserver(updateArrow);
+    observer.observe(stage);
+    observer.observe(arrowOverlay);
+    observer.observe(label);
+    observer.observe(target);
+    window.addEventListener("resize", updateArrow);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateArrow);
+    };
+  }, [activeAnnotation]);
   const annotations = [
     {
       id: "navigation",
       title: "Consistent navigation",
       body: "A familiar menu makes it easy to find your way around.",
       className: "annotation-navigation",
-      path: "M160 158 C137 172 108 192 78 216",
-      mobilePath: "M151 207 C127 211 101 220 75 232",
     },
     {
       id: "channels",
       title: "Channels for live coordination",
       body: "Talk through day-to-day work while shared files stay in the workspace.",
       className: "annotation-channels",
-      path: "M860 72 C884 68 907 71 930 77",
-      mobilePath: "M312 66 C315 69 319 73 322 78",
     },
     {
       id: "naming",
       title: "Naming convention",
       body: "Clear names make documents easier to recognise and search.",
       className: "annotation-naming",
-      path: "M320 307 C311 329 300 352 290 378",
-      mobilePath: "M226 510 C205 503 180 490 155 480",
     },
     {
       id: "status",
       title: "Status",
       body: "See whether a document is draft, in review or complete.",
       className: "annotation-status",
-      path: "M710 307 C705 329 699 353 700 378",
-      mobilePath: "M164 592 C205 566 246 520 286 480",
     },
     {
       id: "metadata",
       title: "Automatic metadata",
       body: "Useful details are applied consistently, making files easier to organise, filter and find.",
       className: "annotation-metadata",
-      path: "M558 302 C561 315 564 328 567 340",
-      mobilePath: "M164 470 C184 473 204 477 221 480",
     },
     {
       id: "sensitivity",
       title: "Sensitivity",
       body: "Clear labels show how information should be handled.",
       className: "annotation-sensitivity",
-      path: "M900 418 C915 405 930 390 944 378",
-      mobilePath: "M226 592 C264 561 308 520 350 480",
     },
   ];
   return (
@@ -419,6 +468,7 @@ function ActivityDirectory() {
           </div>
         </div>
         <section
+          ref={stageRef}
           className="workspace-tour-directory-stage"
           aria-label="Preview of a workspace with explanatory annotations"
         >
@@ -435,13 +485,20 @@ function ActivityDirectory() {
             <div className="tour-scene-titlebar">
               <span className="tour-scene-mark">⌁</span>
               <b>Planning</b>
-              <span className="tour-scene-channels">▣ Channels</span>
+              <span
+                className="tour-scene-channels"
+                data-tour-target="tour-channels"
+              >
+                ▣ Channels
+              </span>
             </div>
             <div className="tour-scene-layout">
               <nav className="tour-scene-nav">
                 <b>Home</b>
                 <small>DOCUMENT LIBRARIES</small>
-                <b className="selected">▱ Planning Cycles</b>
+                <b className="selected" data-tour-target="tour-navigation">
+                  ▱ Planning Cycles
+                </b>
                 <b>▱ Strategy Development</b>
                 <b>▱ Performance &amp; Reporting</b>
                 <b>▱ Approved Plans &amp; Reports</b>
@@ -454,7 +511,7 @@ function ActivityDirectory() {
                 </small>
                 <div className="tour-scene-heading">
                   <div>
-                    <h3>2026 Year End Review</h3>
+                    <h3 data-tour-target="tour-naming">2026 Year End Review</h3>
                     <span>
                       Active annual planning and review. Contribute, coordinate
                       and develop the next organisational plan.
@@ -488,7 +545,12 @@ function ActivityDirectory() {
                     <span>2026 Year End Review</span>
                     <span>Presentation</span>
                     <span>
-                      <i className="status review">In review</i>
+                      <i
+                        className="status review"
+                        data-tour-target="tour-status"
+                      >
+                        In review
+                      </i>
                     </span>
                     <span>Alex Morgan</span>
                     <span>
@@ -500,14 +562,21 @@ function ActivityDirectory() {
                       <i className="file-icon xls">X</i> Planning assumptions
                       register.xlsx
                     </span>
-                    <span>2026 Year End Review</span>
+                    <span data-tour-target="tour-metadata">
+                      2026 Year End Review
+                    </span>
                     <span>Supporting data</span>
                     <span>
                       <i className="status progress">In progress</i>
                     </span>
                     <span>Alex Morgan</span>
                     <span>
-                      <i className="sensitivity">Internal</i>
+                      <i
+                        className="sensitivity"
+                        data-tour-target="tour-sensitivity"
+                      >
+                        Internal
+                      </i>
                     </span>
                   </div>
                   <div className="tour-scene-row">
@@ -530,62 +599,32 @@ function ActivityDirectory() {
             </div>
           </div>
           <svg
+            ref={arrowRef}
             className="workspace-tour-annotation-arrows"
-            viewBox="0 0 1000 620"
+            viewBox={`0 0 ${arrow.width} ${arrow.height}`}
             preserveAspectRatio="none"
+            style={{
+              opacity:
+                annotationVisible && arrow.forIndex === activeAnnotation
+                  ? 0.55
+                  : 0,
+            }}
             aria-hidden="true"
           >
             <defs>
               <marker
                 id="tour-arrowhead"
-                markerWidth="6"
-                markerHeight="6"
+                markerWidth="8"
+                markerHeight="8"
                 markerUnits="userSpaceOnUse"
-                refX="5"
-                refY="3"
+                refX="7"
+                refY="4"
                 orient="auto"
               >
-                <path d="M1 1 L5 3 L1 5" />
+                <path d="M1 1 L7 4 L1 7" />
               </marker>
             </defs>
-            {annotations
-              .filter((_, index) => reducedMotion || index === activeAnnotation)
-              .map((annotation) => (
-                <path
-                  key={annotation.id}
-                  d={annotation.path}
-                  markerEnd="url(#tour-arrowhead)"
-                />
-              ))}
-          </svg>
-          <svg
-            className="workspace-tour-annotation-arrows workspace-tour-annotation-arrows-mobile"
-            viewBox="0 0 390 1020"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <defs>
-              <marker
-                id="tour-arrowhead-mobile"
-                markerWidth="6"
-                markerHeight="6"
-                markerUnits="userSpaceOnUse"
-                refX="5"
-                refY="3"
-                orient="auto"
-              >
-                <path d="M1 1 L5 3 L1 5" />
-              </marker>
-            </defs>
-            {annotations
-              .filter((_, index) => reducedMotion || index === activeAnnotation)
-              .map((annotation) => (
-                <path
-                  key={annotation.id}
-                  d={annotation.mobilePath}
-                  markerEnd="url(#tour-arrowhead-mobile)"
-                />
-              ))}
+            <path d={arrow.path} markerEnd="url(#tour-arrowhead)" />
           </svg>
           <div
             className="workspace-tour-annotations"
@@ -594,12 +633,13 @@ function ActivityDirectory() {
           >
             {annotations.map((annotation, index) => {
               const visible =
-                reducedMotion ||
-                (index === activeAnnotation && annotationVisible);
+                index === activeAnnotation &&
+                (reducedMotion || annotationVisible);
               return (
                 <div
                   className={`workspace-tour-annotation demo-paper-surface ${annotation.className}${visible ? " is-current" : ""}`}
                   key={annotation.id}
+                  data-tour-annotation={index}
                   aria-hidden={!visible}
                 >
                   <strong>{annotation.title}</strong>

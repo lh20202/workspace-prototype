@@ -54,24 +54,25 @@ describe("Activity Workspace walkthrough", () => {
     expect(html).toContain("Sensitivity");
     expect(html).toContain('class="workspace-tour-annotation-arrows"');
     expect(html).toContain(
-      'class="workspace-tour-annotation-arrows" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"',
+      'class="workspace-tour-annotation-arrows" viewBox="0 0 1 1" preserveAspectRatio="none"',
     );
     const arrowLayers = html.match(
       /<svg class="workspace-tour-annotation-arrows[^>]*>[\s\S]*?<\/svg>/g,
     );
-    expect(arrowLayers).toHaveLength(2);
+    expect(arrowLayers).toHaveLength(1);
     for (const layer of arrowLayers ?? [])
-      expect(
-        layer.match(/marker-end="url\(#tour-arrowhead(?:-mobile)?\)"/g),
-      ).toHaveLength(1);
-    expect(html.match(/workspace-tour-annotation[^\"]* is-current/g)).toHaveLength(
-      1,
-    );
+      expect(layer.match(/marker-end="url\(#tour-arrowhead\)"/g)).toHaveLength(
+        1,
+      );
+    expect(
+      html.match(/workspace-tour-annotation[^\"]* is-current/g),
+    ).toHaveLength(1);
     expect(
       html.match(
         /class="workspace-tour-annotation demo-paper-surface annotation-/g,
       ),
     ).toHaveLength(6);
+    expect(html.match(/data-tour-target="tour-[^"]+"/g)).toHaveLength(6);
     for (const label of [
       "Automatic metadata",
       "Status",

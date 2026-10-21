@@ -251,13 +251,9 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-  opacity: 0.42;
-  filter: blur(0.3px);
+  opacity: 0.55;
   pointer-events: none;
-  transition: opacity 800ms ease;
-}
-.workspace-tour-annotation-arrows-mobile {
-  display: none;
+  transition: opacity 320ms ease;
 }
 .workspace-tour-annotation-arrows > path {
   fill: none;
@@ -292,15 +288,16 @@
   line-height: 1.4;
   opacity: 0;
   visibility: hidden;
-  filter: blur(0.45px);
+  filter: blur(0.25px);
   transition:
-    opacity 760ms ease,
-    visibility 760ms;
+    opacity 320ms ease,
+    visibility 0s linear 320ms;
   will-change: opacity;
 }
 .workspace-tour-annotation.is-current {
-  opacity: 0.9;
+  opacity: 0.96;
   visibility: visible;
+  transition-delay: 0s;
 }
 .workspace-tour-annotation::before {
   position: absolute;
@@ -393,8 +390,7 @@
   line-height: 1.45;
 }
 .workspace-tour-planning-scene {
-  animation: workspace-tour-soft-focus 1.35s cubic-bezier(0.2, 0.7, 0.3, 1)
-    both;
+  animation: workspace-tour-soft-focus 1.35s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 @keyframes workspace-tour-soft-focus {
   from {
@@ -1108,14 +1104,6 @@
   .annotation-sensitivity {
     top: 58%;
     right: 2%;
-  }
-  .workspace-tour-annotation-arrows:not(
-    .workspace-tour-annotation-arrows-mobile
-  ) {
-    display: none;
-  }
-  .workspace-tour-annotation-arrows-mobile {
-    display: block;
   }
   .tour-scene-table {
     transform: scaleX(0.32);

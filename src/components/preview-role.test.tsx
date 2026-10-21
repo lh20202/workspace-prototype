@@ -40,18 +40,20 @@ describe("outer demo navigation", () => {
     expect(html).toContain('href="/architecture?staff=jamie"');
   });
 
-  it("keeps fictional-content guidance outside the navigation actions", () => {
+  it("keeps the fictional-content label separate from the demo controls", () => {
     vi.stubGlobal("location", new URL("/architecture", "https://example.test"));
     vi.stubGlobal("sessionStorage", { getItem: () => null });
     const html = renderToStaticMarkup(createElement(PrototypeNavigator));
     const navEnd = html.indexOf("</nav>");
     const note = html.match(
-      /<div[^>]*class="demo-fictional-status"[^>]*role="note"[^>]*>[\s\S]*?<\/div>/,
+      /<div[^>]*class="demo-paper-surface demo-fictional-label"[^>]*role="note"[^>]*>[\s\S]*?<\/div>/,
     )?.[0];
     expect(note).toBeTruthy();
     expect(html.indexOf(note!)).toBeGreaterThan(navEnd);
-    expect(note).toContain("Fictional names &amp; content");
-    expect(note).toContain("No company data used");
+    expect(note).toContain(
+      "Illustrative, fictional content. No company data used",
+    );
+    expect(html).not.toContain("demo-fictional-status");
     expect(note).not.toMatch(/<(?:a|button|select)\b/);
   });
 
