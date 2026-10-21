@@ -261,18 +261,47 @@
   min-width: 0;
   min-height: 52px;
   padding: 10px 12px;
-  border: 1px solid #e3e9e7;
-  background: white;
-  color: #2d5362;
+  border: 0;
+  background: transparent;
+  color: var(--frontline-link-color);
   font-size: 14px;
   font-weight: 550;
   line-height: 20px;
   text-decoration: none;
 }
+.architecture-frontline-link[data-frontline-workspace="frontline-logistics"] {
+  --frontline-link-color: #984817;
+  --frontline-icon-hue: 0deg;
+}
+.architecture-frontline-link[data-frontline-workspace="frontline-supply"] {
+  --frontline-link-color: #586a18;
+  --frontline-icon-hue: 32deg;
+}
+.architecture-frontline-link[data-frontline-workspace="frontline-warehouses"] {
+  --frontline-link-color: #17634d;
+  --frontline-icon-hue: 72deg;
+}
+.architecture-frontline-link[data-frontline-workspace="frontline-science-wiki"] {
+  --frontline-link-color: #76521c;
+  --frontline-icon-hue: 350deg;
+}
+.architecture-frontline-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .architecture-frontline-link > :first-child {
   flex: 0 0 28px;
   width: 28px;
   height: 28px;
+}
+.architecture-frontline-link .architecture-workspace-icon img {
+  filter: grayscale(1) sepia(1) saturate(3)
+    hue-rotate(var(--frontline-icon-hue, 0deg));
+}
+.architecture-frontline-link[data-frontline-workspace="frontline-science-wiki"]
+  > :first-child {
+  filter: sepia(1) saturate(2.5)
+    hue-rotate(var(--frontline-icon-hue, 0deg));
 }
 .architecture-frontline-link span {
   min-width: 0;
@@ -311,7 +340,7 @@
   font-size: 13px;
 }
 .architecture-branch-list .architecture-branch-link {
-  display: inline-block;
+  display: block;
   margin: 0 0 3px;
   color: #263c39;
   font-size: 15px;
@@ -328,6 +357,8 @@
   outline-offset: 3px;
 }
 .architecture-branch-list small {
+  display: block;
+  margin-top: 2px;
   color: #46514e;
   font-size: 13px;
   line-height: 1.5;

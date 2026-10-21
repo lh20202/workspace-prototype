@@ -253,6 +253,7 @@ function FrontlineSection() {
           <StaffLink
             key={id}
             className="architecture-frontline-link"
+            data-frontline-workspace={id}
             href={
               wiki
                 ? "/frontline/science-wiki"
