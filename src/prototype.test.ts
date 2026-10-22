@@ -56,7 +56,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain("BETA TEST");
     expect(launcher).toContain('aria-label="About beta test"');
     expect(launcher).toContain('aria-label="Proof of concept"');
-    expect(launcher).toContain("How was this created?");
+    expect(launcher).not.toContain("How was this created?");
     expect(launcher).toContain(
       "Illustrative, fictional content. No company data used",
     );

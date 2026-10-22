@@ -3,16 +3,6 @@ import {
   BookOpen24Regular,
   Organization24Regular,
 } from "@fluentui/react-icons";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogBody,
-  DialogContent,
-  DialogSurface,
-  DialogTitle,
-  DialogTrigger,
-} from "@fluentui/react-components";
 import "./launcher.css";
 import { LanguageToggle } from "../i18n/Language";
 import { DemoInfo, proofOfConceptInfoText } from "../components/DemoInfo";
@@ -22,7 +12,6 @@ import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
 import WorkspaceFAQ from "../components/WorkspaceFAQ";
 import IllustrativeContentLabel from "../components/IllustrativeContentLabel";
-import { creationExplanation } from "../components/workspaceFAQContent";
 const choices = [
   {
     title: "Planning",
@@ -60,26 +49,6 @@ export default function Launcher() {
           </DemoInfo>
         </div>
         <div className="launcher-secondary-links">
-          <Dialog>
-            <DialogTrigger disableButtonEnhancement>
-              <button className="launcher-created-link" type="button">
-                How was this created?
-              </button>
-            </DialogTrigger>
-            <DialogSurface className="launcher-created-dialog">
-              <DialogBody>
-                <DialogTitle>How was this created?</DialogTitle>
-                <DialogContent>
-                  <p>{creationExplanation}</p>
-                </DialogContent>
-                <DialogActions>
-                  <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="primary">Close</Button>
-                  </DialogTrigger>
-                </DialogActions>
-              </DialogBody>
-            </DialogSurface>
-          </Dialog>
           <WorkspaceFAQ />
         </div>
         <div className="launcher-home-columns">
