@@ -28,6 +28,7 @@ const WorkspaceTour = lazy(() => import("./workspace-tour/WorkspaceTour"));
 import { siteAdministrationPage } from "./administration/routes";
 import { defaultPreviewRoleId } from "./access/policy";
 import { confidentialClassificationForRoute } from "./access/confidentialRoute";
+import { LockClosed20Regular } from "@fluentui/react-icons";
 export default function AppRouter() {
   const prototype = prototypeForPath(location.pathname);
   const external = externalPreviewForPath(location.pathname);
@@ -133,8 +134,14 @@ export default function AppRouter() {
         }
       >
         {classification ? (
-          <div className="confidential-route-zone">
-            <span className="confidential-route-badge">{classification}</span>
+          <div
+            className="confidential-route-zone"
+            data-classification={classification}
+          >
+            <span className="confidential-route-badge">
+              <LockClosed20Regular aria-hidden="true" />
+              <span>{classification}</span>
+            </span>
             {routedApp}
           </div>
         ) : (

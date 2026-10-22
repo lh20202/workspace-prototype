@@ -91,6 +91,27 @@ describe("Pet photos threads", () => {
       "/images/pets/garden-cat.jpg",
       "/images/pets/judgement.jpg",
       "/images/pets/greyhound-serenade.jpg",
+      "/images/pets/flex-room.jpg",
+    ]);
+  });
+
+  it("gives Jordan Lee’s flex-room update its photo and light replies", () => {
+    expect(byId("history-pets-chair")).toMatchObject({
+      text: "Flex room desk booking update",
+      image: {
+        src: "/images/pets/flex-room.jpg",
+        width: 536,
+        height: 720,
+      },
+      reactions: [
+        { emoji: "😂", count: 8 },
+        { emoji: "🐱", count: 5 },
+        { emoji: "🪑", count: 3 },
+      ],
+    });
+    expect(postReplies(byId("history-pets-chair")).map(({ text }) => text)).toEqual([
+      "The cat’s on the flex desk. The human is on the call. 🐱",
+      "At least someone remembered to book the room. 🪑",
     ]);
   });
 
@@ -155,7 +176,7 @@ describe("Pet photos threads", () => {
     );
     expect(postReplies(byId("post-serenade")).map(({ text }) => text)).toEqual([
       "Have you checked the battery in your dog?",
-      "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.",
+      "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through FluffyProblems@IT.services.",
     ]);
   });
 

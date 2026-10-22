@@ -72,6 +72,8 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     expect(daisy.indexOf("take me to your leader")).toBeLessThan(
       daisy.indexOf("I feel her staring into the depths of my soul."),
     );
+    expect(daisy).toContain('aria-label="Add reaction"');
+    expect(daisy).toContain('aria-expanded="false"');
 
     const goats = rootPost("post-goats");
     expect(goats).toContain(
@@ -127,7 +129,7 @@ describe("ordinary contextual channel previews and real private boundaries", () 
     expect(
       mosquito.indexOf("Have you checked the battery in your dog?"),
     ).toBeLessThan(mosquito.indexOf("Have you tried a manual reboot?"));
-    expect(mosquito).toContain("Snuffles@IT.service.");
+    expect(mosquito).toContain("FluffyProblems@IT.services.");
     expect(html.match(/<article class="teams-post/g)).toHaveLength(12);
   });
 

@@ -1320,7 +1320,7 @@ tbody tr:hover {
   position: relative;
   isolation: isolate;
   min-height: 100%;
-  padding: 34px 12px 12px;
+  padding: 12px;
   border: 1px solid #ead7dc;
   background: #fdf8f9;
 }
@@ -1340,20 +1340,37 @@ tbody tr:hover {
   background: #fbf3f5;
 }
 .confidential-route-badge {
-  position: absolute;
-  /* Keep the cue below the workspace header, in the breathing room before content. */
-  top: 226px;
-  right: 12px;
+  position: relative;
+  z-index: 6;
+  display: flex;
+  width: fit-content;
+  max-width: min(100%, 420px);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 12px;
   padding: 3px 8px;
-  border: 1px solid #e2c8cf;
-  border-radius: 3px;
-  background: #fffafb;
-  color: #783d4a;
-  font-size: 11px;
-  font-weight: 650;
+  border: 1px solid #d8aeb7;
+  border-radius: 999px;
+  background: #fff8f9;
+  box-shadow: 0 2px 5px #521b2414;
+  color: #762b39;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  line-height: 1.35;
+  text-align: center;
+  text-transform: uppercase;
+}
+.confidential-route-badge svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 @media (max-width: 640px) {
   .confidential-route-badge {
-    top: 280px;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    font-size: 11px;
   }
 }

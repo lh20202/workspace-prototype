@@ -952,6 +952,11 @@ export const posts: Post[] = [
         time: "10:28",
       },
     ],
+    reactions: [
+      { emoji: "😍", count: 14 },
+      { emoji: "❤️", count: 8 },
+      { emoji: "👀", count: 5 },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/daisy.jpg",
@@ -977,6 +982,11 @@ export const posts: Post[] = [
         text: "Sophisticated, dignified and refined.",
         time: "10:11",
       },
+    ],
+    reactions: [
+      { emoji: "😍", count: 12 },
+      { emoji: "🎀", count: 6 },
+      { emoji: "❤️", count: 7 },
     ],
     fileIds: [],
     image: {
@@ -1033,6 +1043,11 @@ export const posts: Post[] = [
         time: "17 October 2026, 14:17",
       },
     ],
+    reactions: [
+      { emoji: "🐐", count: 10 },
+      { emoji: "😂", count: 6 },
+      { emoji: "❤️", count: 4 },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/goats.jpg",
@@ -1070,6 +1085,11 @@ export const posts: Post[] = [
         time: "17 October 2026, 14:25",
       },
     ],
+    reactions: [
+      { emoji: "😂", count: 11 },
+      { emoji: "🐐", count: 7 },
+      { emoji: "👍", count: 3 },
+    ],
     fileIds: [],
   },
   {
@@ -1089,6 +1109,11 @@ export const posts: Post[] = [
         text: "What's wrong with your chicken? Call a vet.",
         time: "17 October 2026, 13:22",
       },
+    ],
+    reactions: [
+      { emoji: "😳", count: 9 },
+      { emoji: "👀", count: 5 },
+      { emoji: "🐕", count: 3 },
     ],
     fileIds: [],
     image: {
@@ -1111,6 +1136,11 @@ export const posts: Post[] = [
         text: "#science",
         time: "16 October 2026, 16:15",
       },
+    ],
+    reactions: [
+      { emoji: "😂", count: 13 },
+      { emoji: "🐧", count: 8 },
+      { emoji: "📐", count: 2 },
     ],
     fileIds: [],
     image: {
@@ -1139,6 +1169,11 @@ export const posts: Post[] = [
         time: "16 October 2026, 15:27",
       },
     ],
+    reactions: [
+      { emoji: "😌", count: 7 },
+      { emoji: "❤️", count: 5 },
+      { emoji: "🧘", count: 3 },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/metaverse.jpg",
@@ -1166,6 +1201,11 @@ export const posts: Post[] = [
         time: "16 October 2026, 14:12",
       },
     ],
+    reactions: [
+      { emoji: "😼", count: 6 },
+      { emoji: "😂", count: 4 },
+      { emoji: "❤️", count: 3 },
+    ],
     fileIds: [],
     image: {
       src: "/images/pets/garden-cat.jpg",
@@ -1187,6 +1227,11 @@ export const posts: Post[] = [
         text: "No notes. Just prolonged eye contact.",
         time: "16 October 2026, 12:23",
       },
+    ],
+    reactions: [
+      { emoji: "😂", count: 15 },
+      { emoji: "👀", count: 6 },
+      { emoji: "😼", count: 4 },
     ],
     fileIds: [],
     image: {
@@ -1211,9 +1256,14 @@ export const posts: Post[] = [
       },
       {
         author: "Ari Morgan",
-        text: "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.",
+        text: "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through FluffyProblems@IT.services.",
         time: "16 October 2026, 11:18",
       },
+    ],
+    reactions: [
+      { emoji: "😂", count: 11 },
+      { emoji: "🦟", count: 5 },
+      { emoji: "🐶", count: 3 },
     ],
     fileIds: [],
     image: {
@@ -1291,10 +1341,31 @@ export const posts: Post[] = [
     channel: "pets",
     author: "Jordan Lee",
     time: "2 October 2026, 15:05",
-    text: "The sunny chair is apparently reserved for the cat now. My application to sit there has been declined.",
-    replyTime: "2 October 2026, 15:18",
-    reply: "Maya Chen: A firm but fair seating policy. 🐱",
+    text: "Flex room desk booking update",
+    replies: [
+      {
+        author: "Maya Chen",
+        text: "The cat’s on the flex desk. The human is on the call. 🐱",
+        time: "2 October 2026, 15:12",
+      },
+      {
+        author: "Sam Patel",
+        text: "At least someone remembered to book the room. 🪑",
+        time: "2 October 2026, 15:18",
+      },
+    ],
+    reactions: [
+      { emoji: "😂", count: 8 },
+      { emoji: "🐱", count: 5 },
+      { emoji: "🪑", count: 3 },
+    ],
     fileIds: [],
+    image: {
+      src: "/images/pets/flex-room.jpg",
+      alt: "A cat seated at a small desk beside a person working at a computer",
+      width: 536,
+      height: 720,
+    },
   },
 ];
 export type TaskState = "To do" | "In progress" | "Blocked" | "Done";

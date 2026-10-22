@@ -51,7 +51,7 @@ describe("outer demo navigation", () => {
     expect(note).toBeTruthy();
     expect(html.indexOf(note!)).toBeGreaterThan(navEnd);
     expect(note).toContain(
-      "Illustrative, fictional content. No company data used",
+      "Simulation only. Fictional content. No company data used",
     );
     expect(html).not.toContain("demo-fictional-status");
     expect(note).not.toMatch(/<(?:a|button|select)\b/);

@@ -381,18 +381,8 @@ export default function TeamsView({
                 {p.image && (
                   <PostPhoto image={p.image} first={p.id === "post-daisy"} />
                 )}
-                {!!p.reactions?.length && (
-                  <div
-                    className="thread-reactions post-reactions"
-                    aria-label="Post reactions"
-                  >
-                    {p.reactions.map(({ emoji, count }) => (
-                      <span className="post-reaction-chip" key={emoji}>
-                        <span aria-hidden="true">{emoji}</span>
-                        {count}
-                      </span>
-                    ))}
-                  </div>
+                {channel.id === "pets" && (
+                  <PostReactions reactions={p.reactions || []} t={t} />
                 )}
                 {p.fileIds.length > 0 && (
                   <div className="post-file-links">
@@ -651,6 +641,85 @@ function librariesName(id: string) {
       records: "Completed Campaign Records",
     } as Record<string, string>
   )[id];
+}
+
+function PostReactions({
+  reactions,
+  t,
+}: {
+  reactions: NonNullable<Post["reactions"]>;
+  t: (key: string) => string;
+}) {
+  const [counts, setCounts] = useState(reactions);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const choices = [
+    { emoji: "👍", name: "Like" },
+    { emoji: "❤️", name: "Love" },
+    { emoji: "😂", name: "Laugh" },
+    { emoji: "😮", name: "Surprised" },
+    { emoji: "🎉", name: "Celebrate" },
+  ];
+
+  function toggle(emoji: string) {
+    const removing = selected.includes(emoji);
+    setSelected((current) =>
+      removing ? current.filter((item) => item !== emoji) : [...current, emoji],
+    );
+    setCounts((current) => {
+      const found = current.find((item) => item.emoji === emoji);
+      if (!found) return removing ? current : [...current, { emoji, count: 1 }];
+      const count = found.count + (removing ? -1 : 1);
+      return count > 0
+        ? current.map((item) =>
+            item.emoji === emoji ? { ...item, count } : item,
+          )
+        : current.filter((item) => item.emoji !== emoji);
+    });
+  }
+
+  return (
+    <div className="thread-reactions post-reactions" aria-label="Post reactions">
+      {counts.map(({ emoji, count }) => (
+        <button
+          className="post-reaction-chip"
+          key={emoji}
+          aria-label={`${emoji}, ${count} reactions`}
+          aria-pressed={selected.includes(emoji)}
+          onClick={() => toggle(emoji)}
+        >
+          <span aria-hidden="true">{emoji}</span>
+          {count}
+        </button>
+      ))}
+      <button
+        className="post-reaction-add"
+        aria-label={t("Add reaction")}
+        aria-expanded={pickerOpen}
+        onClick={() => setPickerOpen((open) => !open)}
+      >
+        <span aria-hidden="true">+</span>
+      </button>
+      {pickerOpen && (
+        <div className="post-reaction-picker" role="group" aria-label={t("Choose a reaction")}>
+          {choices.map(({ emoji, name }) => (
+            <button
+              key={emoji}
+              title={t(name)}
+              aria-label={t(name)}
+              aria-pressed={selected.includes(emoji)}
+              onClick={() => {
+                toggle(emoji);
+                setPickerOpen(false);
+              }}
+            >
+              {emoji}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function PostPhoto({

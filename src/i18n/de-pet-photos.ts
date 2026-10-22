@@ -45,6 +45,13 @@ export const germanPetPhotos: Record<string, string> = {
   "I've been refused entry to my own house.":
     "Mir wurde der Zutritt zu meinem eigenen Haus verweigert.",
   "Firm but fair policy.": "Konsequent, aber fair.",
+  "Flex room desk booking update": "Update zur Buchung des Flex-Arbeitsplatzes",
+  "The cat’s on the flex desk. The human is on the call. 🐱":
+    "Die Katze sitzt am Flex-Arbeitsplatz. Der Mensch ist im Gespräch. 🐱",
+  "At least someone remembered to book the room. 🪑":
+    "Wenigstens hat jemand daran gedacht, den Raum zu buchen. 🪑",
+  "A cat seated at a small desk beside a person working at a computer":
+    "Eine Katze sitzt an einem kleinen Schreibtisch neben einer Person am Computer",
   "Performance review came back.": "Die Leistungsbeurteilung ist da.",
   "No notes. Just prolonged eye contact.":
     "Keine Anmerkungen. Nur anhaltender Blickkontakt.",
@@ -54,8 +61,8 @@ export const germanPetPhotos: Record<string, string> = {
     "Weiß jemand, wie man diese Mücke stummschaltet?",
   "Have you checked the battery in your dog?":
     "Hast du die Batterie in deinem Hund geprüft?",
-  "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through Snuffles@IT.service.":
-    "Hast du einen Neustart versucht? Stups die Nase an und halte sie drei Sekunden gedrückt. Wenn es dann noch nicht klappt, melde es über Snuffles@IT.service.",
+  "Have you tried a manual reboot? Boop the snoot and hold for 3 seconds. If it still doesn't work, raise a ticket through FluffyProblems@IT.services.":
+    "Hast du einen Neustart versucht? Stups die Nase an und halte sie drei Sekunden gedrückt. Wenn es dann noch nicht klappt, melde es über FluffyProblems@IT.services.",
   "Louis, a black and white Devon Rex cat wearing a checked bow tie":
     "Louis, ein schwarz-weißer Devon-Rex-Kater mit karierter Fliege",
   "A tiny black and tan dachshund puppy resting in a hand":

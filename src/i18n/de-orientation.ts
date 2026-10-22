@@ -41,6 +41,6 @@ export const germanOrientation: Record<string, string> = {
     "Alle Arbeitsbereiche | Demoseite für digitale Arbeitsbereiche",
   "Fictional names & content": "Fiktive Namen und Inhalte",
   "No company data used": "Keine Unternehmensdaten verwendet",
-  "Illustrative, fictional content. No company data used":
-    "Beispielhafte, fiktive Inhalte. Keine Unternehmensdaten verwendet",
+  "Simulation only. Fictional content. No company data used":
+    "Nur eine Simulation. Fiktive Inhalte. Keine Unternehmensdaten verwendet",
 };

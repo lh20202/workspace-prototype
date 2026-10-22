@@ -492,6 +492,8 @@ export const germanMessages: Record<string, string> = {
   "Expand compose box": "Eingabefeld vergrößern",
   "Collapse compose box": "Eingabefeld verkleinern",
   Like: "Gefällt mir",
+  "Add reaction": "Reaktion hinzufügen",
+  "Choose a reaction": "Reaktion auswählen",
   Liked: "Gefällt Ihnen",
   Laugh: "Lachen",
   Love: "Herz",
