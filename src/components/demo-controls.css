@@ -49,7 +49,8 @@
 .demo-fictional-label {
   position: fixed;
   z-index: 29;
-  top: calc(env(safe-area-inset-top, 0px) + 56px);
+  /* Sit below the expanded black demo-navigation strip. */
+  top: calc(env(safe-area-inset-top, 0px) + 76px);
   right: 16px;
   width: min(320px, calc(100vw - 32px));
   padding: 10px 14px;
@@ -74,7 +75,8 @@
     top: auto;
     right: auto;
     align-self: flex-end;
-    margin: 20px 8px 0 auto;
+    /* In the narrow layout the demo menu opens over the top of the page. */
+    margin: 76px 8px 0 auto;
     width: min(260px, calc(100vw - 16px));
     padding: 8px 11px;
     font-size: 14px;

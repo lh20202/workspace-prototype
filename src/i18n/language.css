@@ -1,7 +1,7 @@
 .language-toggle {
   position: fixed;
   z-index: 10001;
-  top: calc(env(safe-area-inset-top, 0px) + 140px);
+  top: calc(env(safe-area-inset-top, 0px) + 180px);
   right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px));
   display: inline-flex;
   align-items: center;
