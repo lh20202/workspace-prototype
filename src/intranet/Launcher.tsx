@@ -27,9 +27,11 @@ const choices = [
 export default function Launcher() {
   return (
     <main className="prototype-launcher">
-      <IllustrativeContentLabel />
-      <div className="launcher-language">
-        <LanguageToggle />
+      <div className="launcher-utility-row">
+        <div className="launcher-language">
+          <LanguageToggle />
+        </div>
+        <IllustrativeContentLabel />
       </div>
       <div className="launcher-content">
         <h1>Welcome to the Digital Workspace demo site!</h1>

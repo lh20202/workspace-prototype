@@ -175,7 +175,9 @@ export default function PrototypeNavigator({
           </nav>
         </div>
       </div>
-      <IllustrativeContentLabel />
+      <div className="demo-utility-strip">
+        <IllustrativeContentLabel />
+      </div>
     </>
   );
 }

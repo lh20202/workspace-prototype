@@ -7,10 +7,21 @@
   color: #242424;
   padding: 48px 24px;
 }
-:root .prototype-launcher > .launcher-language {
-  position: static;
-  width: auto;
-  max-width: none;
+:root .prototype-launcher .launcher-utility-row {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+:root .prototype-launcher .launcher-utility-row .launcher-language {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+:root .prototype-launcher .launcher-utility-row .demo-fictional-label {
+  width: min(420px, calc(100vw - 32px));
 }
 :root .prototype-launcher > .launcher-content {
   width: min(1120px, 100%);
@@ -189,10 +200,13 @@
     align-items: stretch;
     padding: 20px 16px 32px;
   }
-  :root .prototype-launcher > .launcher-language {
+  :root .prototype-launcher .launcher-utility-row {
+    flex-wrap: wrap;
+  }
+  :root .prototype-launcher .launcher-utility-row .launcher-language {
     display: flex;
     justify-content: flex-end;
-    margin: 8px 8px 16px;
+    margin: 0;
   }
   :root .prototype-launcher > .launcher-content {
     align-self: center;

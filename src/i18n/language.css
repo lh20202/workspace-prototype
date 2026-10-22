@@ -1,8 +1,8 @@
 .language-toggle {
-  position: fixed;
-  z-index: 10001;
-  top: calc(env(safe-area-inset-top, 0px) + 180px);
-  right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px));
+  position: static;
+  z-index: auto;
+  top: auto;
+  right: auto;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -68,7 +68,7 @@
   gap: 20px;
 }
 :root .service-desk-user {
-  margin-left: auto;
+  margin-left: 0;
 }
 .external-preview-language {
   position: static;

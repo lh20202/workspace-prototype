@@ -46,13 +46,20 @@
 .demo-controls-reveal .demo-controls-panel[hidden] {
   display: none;
 }
+.demo-utility-strip {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 76px;
+  padding: 8px 16px;
+}
+.demo-control-frame[data-expanded="true"] + .demo-utility-strip {
+  padding-top: 68px;
+}
 .demo-fictional-label {
-  position: fixed;
-  z-index: 29;
-  /* Sit below the expanded black demo-navigation strip. */
-  top: calc(env(safe-area-inset-top, 0px) + 76px);
-  right: 16px;
-  width: min(320px, calc(100vw - 32px));
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
   padding: 10px 14px;
   color: #263a47;
   font:
@@ -68,19 +75,13 @@
   .demo-controls-reveal .demo-controls-panel {
     padding-inline: 8px;
   }
-}
-@media (max-width: 800px) {
+  .demo-utility-strip {
+    min-height: 0;
+    padding: 8px 12px;
+  }
   .demo-fictional-label {
-    position: relative;
-    top: auto;
-    right: auto;
-    align-self: flex-end;
-    /* In the narrow layout the demo menu opens over the top of the page. */
-    margin: 76px 8px 0 auto;
-    width: min(260px, calc(100vw - 16px));
+    width: min(420px, calc(100vw - 24px));
     padding: 8px 11px;
-    font-size: 14px;
-    line-height: 18px;
     transform: none;
   }
 }
