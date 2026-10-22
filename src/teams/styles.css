@@ -259,10 +259,12 @@
   color: #4f52b2;
 }
 .m365-teams-nav-scroll {
+  flex: 1 1 0;
   overflow: auto;
   min-height: 0;
   padding: 12px 8px;
   scrollbar-width: thin;
+  overscroll-behavior: contain;
 }
 .m365-teams-section-label {
   font-size: 12px;
