@@ -2,6 +2,48 @@
 export const germanWorkspaceTour: Record<string, string> = {
   "What is a workspace?": "Was ist ein Arbeitsbereich?",
   "Interactive tour": "Interaktive Tour",
+  "Follow a real Planning workspace from its home to files and focused conversations.":
+    "Folgen Sie dem Arbeitsbereich Planung von der Startseite über Dateien bis zu den Gesprächen.",
+  "Planning workspace tour": "Rundgang durch den Arbeitsbereich Planung",
+  "Planning workspace shown on a laptop":
+    "Arbeitsbereich Planung auf einem Laptop",
+  "Planning workspace tour preview": "Vorschau des Arbeitsbereichs Planung",
+  "Live preview of the Planning workspace":
+    "Live-Vorschau des Arbeitsbereichs Planung",
+  "A guided look": "Ein geführter Einblick",
+  "A shared starting point": "Ein gemeinsamer Ausgangspunkt",
+  "Planning brings current priorities, useful links and recent files together in one familiar place.":
+    "Planung bündelt aktuelle Prioritäten, nützliche Links und kürzlich verwendete Dateien an einem vertrauten Ort.",
+  "A clear way around": "Klare Orientierung",
+  "The left-hand menu stays consistent as you move between the workspace home and its document libraries.":
+    "Das Menü links bleibt gleich, wenn Sie zwischen der Startseite und den Dokumentbibliotheken wechseln.",
+  "Open the right library": "Die passende Bibliothek öffnen",
+  "Planning Cycles keeps active planning files together. Watch the pointer open it from the menu.":
+    "In „Planungszyklen“ liegen die aktuellen Planungsdateien zusammen. Der Mauszeiger öffnet die Bibliothek über das Menü.",
+  "Work is grouped by cycle": "Arbeit nach Planungszyklus ordnen",
+  "Folders bring each planning cycle and its working material into a clear, predictable structure.":
+    "Ordner bündeln die Unterlagen jedes Planungszyklus in einer klaren, vertrauten Struktur.",
+  "Keep related files together": "Zusammengehörige Dateien bündeln",
+  "Guidance and decisions sit together inside the cycle, close to the work they support.":
+    "Anleitungen und Entscheidungen liegen im jeweiligen Zyklus direkt bei der Arbeit, für die sie gebraucht werden.",
+  "Useful details at a glance": "Wichtige Angaben auf einen Blick",
+  "Clear file names work alongside planning cycle, document type, status, owner and sensitivity, so people can scan what matters to this workflow.":
+    "Aussagekräftige Dateinamen und Angaben zu Planungszyklus, Dokumenttyp, Status, Zuständigkeit und Vertraulichkeit zeigen schnell, was wichtig ist.",
+  "Move from files to discussion": "Von Dateien zum Austausch wechseln",
+  "Planning conversations are one click away, connected to the workspace without interrupting the file structure.":
+    "Gespräche zur Planung sind mit einem Klick erreichbar und ergänzen den Arbeitsbereich, ohne die Dateiablage zu unterbrechen.",
+  "Conversations stay focused": "Gespräche bleiben beim Thema",
+  "Planning & Reporting keeps updates and coordination centred on the planning work.":
+    "„Planung und Berichte“ bündelt Neuigkeiten und Abstimmungen zur Planungsarbeit.",
+  "Follow the Planning workspace": "Dem Arbeitsbereich Planung folgen",
+  "Opening the Planning workspace…":
+    "Der Arbeitsbereich Planung wird geöffnet …",
+  Back: "Zurück",
+  Next: "Weiter",
+  Pause: "Pause",
+  Continue: "Weiter",
+  "Replay tour": "Rundgang wiederholen",
+  "Tour chapters": "Abschnitte des Rundgangs",
   "Interactive tour guide": "Anleitung zur interaktiven Tour",
   "Coming soon": "Demnächst verfügbar",
   "COMING SOON": "IN VORBEREITUNG",

@@ -31,60 +31,25 @@ describe("Activity Workspace walkthrough", () => {
     );
   });
 
-  it("shows the coming-soon workspace teaser with six explanatory annotations", () => {
+  it("shows the guided Planning workspace tour in a laptop preview", () => {
     const html = renderTour("/workspace-tour?staff=taylor&demo=standalone");
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
     expect(html).toContain(
-      "Explore how workspaces, files and channels fit together.",
+      "Follow a real Planning workspace from its home to files and focused conversations.",
     );
-    expect(html).toContain('class="workspace-tour-coming-soon" role="status"');
-    expect(html).toContain("COMING SOON");
-    expect(html).toContain(
-      "The interactive walkthrough is currently in development.",
-    );
+    expect(html).toContain('class="cinematic-laptop"');
+    expect(html).toContain('title="Planning workspace tour preview"');
+    expect(html).toContain('src="/planning?demo=standalone"');
+    expect(html).toContain('class="cinematic-tour-note demo-paper-surface"');
+    expect(html).toContain("A shared starting point");
+    expect(html).toContain("Planning brings current priorities");
+    expect(html).toContain('class="cinematic-tour-arrow"');
+    expect(html).toContain('aria-label="Tour chapters"');
+    expect(html).toContain("Pause");
+    expect(html).not.toContain("COMING SOON");
     expect(html).not.toContain("Explore Activity Workspace");
-    expect(html).not.toContain("Guided example");
-    expect(html).not.toContain('class="workspace-tour-entry-card"');
-    expect(html).toContain(
-      'class="workspace-tour-planning-scene" aria-hidden="true" inert=""',
-    );
-    expect(html).toContain("2026 Year End Review");
-    expect(html).toContain("Planning Cycles");
-    expect(html).toContain("Sensitivity");
-    expect(html).toContain('class="workspace-tour-annotation-arrows"');
-    expect(html).toContain(
-      'class="workspace-tour-annotation-arrows" viewBox="0 0 1 1" preserveAspectRatio="none"',
-    );
-    const arrowLayers = html.match(
-      /<svg class="workspace-tour-annotation-arrows[^>]*>[\s\S]*?<\/svg>/g,
-    );
-    expect(arrowLayers).toHaveLength(1);
-    for (const layer of arrowLayers ?? [])
-      expect(layer.match(/marker-end="url\(#tour-arrowhead\)"/g)).toHaveLength(
-        1,
-      );
-    expect(
-      html.match(/workspace-tour-annotation[^\"]* is-current/g),
-    ).toHaveLength(1);
-    expect(
-      html.match(
-        /class="workspace-tour-annotation demo-paper-surface annotation-/g,
-      ),
-    ).toHaveLength(6);
-    expect(html.match(/data-tour-target="tour-[^"]+"/g)).toHaveLength(6);
-    for (const label of [
-      "Automatic metadata",
-      "Status",
-      "Sensitivity",
-      "Naming convention",
-      "Consistent navigation",
-      "Channels for live coordination",
-    ])
-      expect(html).toContain(label);
-    expect(html).not.toContain("How to find your way");
-    expect(html).not.toContain("Activity Workspace");
-    expect(html).not.toContain('href="/activity-workspace');
+    expect(html).not.toContain("How was this created");
     expect(
       environmentRegistry.some((item) => item.id === "activity-workspace"),
     ).toBe(false);

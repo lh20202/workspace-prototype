@@ -1156,3 +1156,409 @@
     justify-content: center;
   }
 }
+
+/* Root tour: a real workspace in a quiet, responsive laptop frame. */
+.cinematic-tour {
+  --tour-ink: #243746;
+  --tour-red: #b63b32;
+  --tour-paper: #fff7db;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid #dce2e7;
+  border-radius: 12px;
+  padding: clamp(20px, 3vw, 42px);
+  background: radial-gradient(
+    ellipse at 50% 105%,
+    #e4e9ec 0,
+    #f4f5f4 42%,
+    #fff 78%
+  );
+  color: var(--tour-ink);
+}
+.cinematic-tour-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 300px);
+  align-items: center;
+  gap: clamp(20px, 3vw, 38px);
+  padding: 0 0 20px;
+}
+.cinematic-laptop {
+  position: relative;
+  width: min(100%, 1060px);
+  justify-self: center;
+  filter: drop-shadow(0 22px 26px #15263326);
+}
+.cinematic-laptop-screen {
+  position: relative;
+  padding: 17px 17px 16px;
+  border: 1px solid #151a1f;
+  border-radius: 15px 15px 8px 8px;
+  background: linear-gradient(145deg, #31383e, #111518 70%);
+}
+.cinematic-webcam {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #65717b;
+  transform: translateX(-50%);
+}
+.cinematic-screen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9.5;
+  border: 1px solid #9da4a9;
+  border-radius: 2px;
+  background: #fff;
+}
+.cinematic-camera {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 1050ms cubic-bezier(0.2, 0.72, 0.25, 1);
+  will-change: transform;
+}
+.cinematic-camera-navigation {
+  transform: scale(1.48);
+  transform-origin: 8% 32%;
+}
+.cinematic-camera-folder {
+  transform: scale(1.2);
+  transform-origin: 28% 53%;
+}
+.cinematic-camera-metadata {
+  transform: scale(1.43);
+  transform-origin: 67% 57%;
+}
+.cinematic-camera-channels {
+  transform: scale(1.24);
+  transform-origin: 91% 23%;
+}
+.cinematic-camera iframe {
+  display: block;
+  width: 1440px;
+  height: 900px;
+  border: 0;
+  background: #fff;
+  transform: scale(var(--tour-fit, 0.7));
+  transform-origin: top left;
+  pointer-events: none;
+}
+.cinematic-laptop-base {
+  position: relative;
+  width: 112%;
+  height: 17px;
+  margin: 0 0 0 -6%;
+  border: 1px solid #aeb5ba;
+  border-radius: 1px 1px 13px 13px;
+  background: linear-gradient(#dce0e3, #aeb5ba 60%, #858e94);
+}
+.cinematic-laptop-base span {
+  position: absolute;
+  top: 0;
+  left: 42%;
+  width: 16%;
+  height: 4px;
+  border-radius: 0 0 6px 6px;
+  background: #929ba1;
+}
+.cinematic-pointer {
+  position: absolute;
+  z-index: 4;
+  width: 34px;
+  height: 42px;
+  opacity: 0;
+  transform: translate(-2px, -2px) scale(0.82);
+  transition:
+    opacity 240ms ease,
+    transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.cinematic-pointer.is-visible {
+  opacity: 1;
+  transform: translate(-2px, -2px) scale(1);
+}
+.cinematic-pointer svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 2px #0008);
+}
+.cinematic-pointer path {
+  fill: #fff;
+  stroke: #252b31;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.cinematic-pointer.is-clicking {
+  transform: translate(-2px, -2px) scale(0.78);
+}
+.cinematic-tour-note {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 19px 21px 22px;
+  border: 1px solid #cfbb70;
+  border-radius: 4px 8px 5px 6px;
+  background: var(--tour-paper);
+  box-shadow:
+    0 12px 26px #14253630,
+    0 2px 5px #1425361c;
+  color: var(--tour-ink);
+  transform: rotate(1deg);
+  animation: cinematic-note-in 560ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+@keyframes cinematic-note-in {
+  from {
+    opacity: 0;
+    transform: translateY(9px) rotate(1deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(1deg);
+  }
+}
+.cinematic-note-kicker {
+  color: #6c4d1c;
+  font:
+    700 12px/1.2 "IBM Plex Sans",
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cinematic-tour-note h2 {
+  margin: 0;
+  color: #253d4c;
+  font:
+    650 22px/1.18 "Caveat",
+    "Chalkboard SE",
+    "Comic Sans MS",
+    system-ui,
+    sans-serif;
+}
+.cinematic-tour-note p {
+  margin: 0;
+  color: #243746;
+  font:
+    500 15px/1.5 "IBM Plex Sans",
+    system-ui,
+    sans-serif;
+}
+.cinematic-note-index {
+  justify-self: end;
+  color: #5f6870;
+  font:
+    600 12px/1 "IBM Plex Sans",
+    system-ui,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.cinematic-tour-arrow {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+.cinematic-tour-arrow > path {
+  fill: none;
+  stroke: var(--tour-red);
+  stroke-width: 2.4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  marker-end: url(#cinematic-arrowhead);
+  vector-effect: non-scaling-stroke;
+}
+.cinematic-tour-arrow marker path {
+  fill: none;
+  stroke: var(--tour-red);
+  stroke-width: 1.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cinematic-tour-controls {
+  width: min(1060px, 100%);
+  margin: 8px auto 0;
+}
+.cinematic-tour-progress {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #dfe4e7;
+}
+.cinematic-tour-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #b5322b;
+  transition: width 480ms ease;
+}
+.cinematic-tour-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+}
+.cinematic-tour-caption {
+  color: #4c5962;
+  font:
+    500 14px/1.4 "IBM Plex Sans",
+    system-ui,
+    sans-serif;
+}
+.cinematic-tour-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cinematic-tour-buttons button,
+.cinematic-step-list button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 7px 13px;
+  border: 1px solid #cbd3d8;
+  border-radius: 5px;
+  background: #fff;
+  color: #293b47;
+  font:
+    600 14px/1 "IBM Plex Sans",
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.cinematic-tour-buttons button:hover,
+.cinematic-step-list button:hover {
+  background: #f2f5f6;
+}
+.cinematic-tour-buttons button:focus-visible,
+.cinematic-step-list button:focus-visible {
+  outline: 3px solid #2a78ac;
+  outline-offset: 2px;
+}
+.cinematic-tour-buttons button:disabled {
+  color: #7b858c;
+  background: #f4f5f5;
+  cursor: default;
+}
+.cinematic-tour-buttons .cinematic-primary-control {
+  gap: 6px;
+  border-color: #a62e28;
+  background: #b5322b;
+  color: #fff;
+}
+.cinematic-tour-buttons .cinematic-primary-control:hover {
+  background: #982720;
+}
+.cinematic-step-list {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 13px;
+}
+.cinematic-step-list button {
+  min-width: 34px;
+  min-height: 31px;
+  padding: 6px;
+  color: #5c6971;
+  font-size: 12px;
+}
+.cinematic-step-list button[aria-current="step"] {
+  border-color: #9c332c;
+  background: #fff0ed;
+  color: #8d2d26;
+}
+
+@media (max-width: 800px) {
+  .cinematic-tour {
+    padding: 18px 14px;
+  }
+  .cinematic-tour-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+    padding-bottom: 12px;
+  }
+  .cinematic-laptop-screen {
+    padding: 11px 11px 10px;
+    border-radius: 11px 11px 5px 5px;
+  }
+  .cinematic-webcam {
+    top: 3px;
+    width: 4px;
+    height: 4px;
+  }
+  .cinematic-laptop-base {
+    height: 12px;
+  }
+  .cinematic-tour-note {
+    justify-self: center;
+    width: min(480px, 96%);
+    padding: 15px 17px 17px;
+  }
+  .cinematic-tour-note h2 {
+    font-size: 21px;
+  }
+  .cinematic-tour-note p {
+    font-size: 14px;
+  }
+  .cinematic-tour-arrow {
+    display: none;
+  }
+  .cinematic-tour-control-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .cinematic-tour-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .cinematic-tour-buttons button {
+    min-height: 42px;
+  }
+}
+@media (max-width: 480px) {
+  .cinematic-tour-stage {
+    gap: 12px;
+  }
+  .cinematic-laptop-screen {
+    padding: 8px 8px 7px;
+  }
+  .cinematic-laptop-base {
+    height: 9px;
+  }
+  .cinematic-tour-note {
+    width: 100%;
+  }
+  .cinematic-tour-caption {
+    font-size: 13px;
+  }
+  .cinematic-tour-buttons {
+    gap: 5px;
+  }
+  .cinematic-tour-buttons button {
+    padding-inline: 9px;
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-camera,
+  .cinematic-tour-note,
+  .cinematic-pointer,
+  .cinematic-tour-progress span {
+    animation: none;
+    transition: none;
+  }
+}

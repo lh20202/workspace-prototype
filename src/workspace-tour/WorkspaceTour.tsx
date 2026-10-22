@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight20Regular,
   BookOpen24Regular,
@@ -17,7 +17,6 @@ import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { withExplicitStaff } from "../utils/staffNavigation";
 import { matchesDisplayText } from "../i18n/search";
-import { annotationConnectorPath } from "./annotationGeometry";
 import {
   activityChannels,
   activityFiles,
@@ -32,6 +31,7 @@ import "../sharepoint/fidelity.css";
 import "../sharepoint/styles.css";
 import "../teams/styles.css";
 import "./styles.css";
+import CinematicWorkspaceTour from "./CinematicWorkspaceTour";
 
 function destination(path: string) {
   return withExplicitStaff(path);
@@ -326,134 +326,6 @@ function IntranetHeader({ active = false }: { active?: boolean }) {
 }
 
 function ActivityDirectory() {
-  const [activeAnnotation, setActiveAnnotation] = useState(0);
-  const [annotationVisible, setAnnotationVisible] = useState(true);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [arrow, setArrow] = useState({
-    width: 1,
-    height: 1,
-    path: "",
-    forIndex: -1,
-  });
-  const stageRef = useRef<HTMLElement>(null);
-  const arrowRef = useRef<SVGSVGElement>(null);
-  useEffect(() => {
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(preference.matches);
-    const updatePreference = (event: MediaQueryListEvent) =>
-      setReducedMotion(event.matches);
-    preference.addEventListener("change", updatePreference);
-    return () => preference.removeEventListener("change", updatePreference);
-  }, []);
-  useEffect(() => {
-    if (reducedMotion) {
-      setAnnotationVisible(true);
-      return;
-    }
-    let transitionTimer: number | undefined;
-    const timer = window.setInterval(() => {
-      setAnnotationVisible(false);
-      transitionTimer = window.setTimeout(() => {
-        setActiveAnnotation((current) => (current + 1) % 6);
-        setAnnotationVisible(true);
-      }, 320);
-    }, 3400);
-    return () => {
-      window.clearInterval(timer);
-      if (transitionTimer !== undefined) window.clearTimeout(transitionTimer);
-    };
-  }, [reducedMotion]);
-  useEffect(() => {
-    const stage = stageRef.current;
-    const arrowOverlay = arrowRef.current;
-    if (!stage || !arrowOverlay) return;
-    const targetName = [
-      "tour-navigation",
-      "tour-channels",
-      "tour-naming",
-      "tour-status",
-      "tour-metadata",
-      "tour-sensitivity",
-    ][activeAnnotation];
-    const label = stage.querySelector<HTMLElement>(
-      `[data-tour-annotation="${activeAnnotation}"]`,
-    );
-    const target = stage.querySelector<HTMLElement>(
-      `[data-tour-target="${targetName}"]`,
-    );
-    if (!label || !target) return;
-    const updateArrow = () => {
-      const overlayRect = arrowOverlay.getBoundingClientRect();
-      if (!overlayRect.width || !overlayRect.height) return;
-      const toRelativeRect = (element: HTMLElement) => {
-        const rect = element.getBoundingClientRect();
-        return {
-          left: rect.left - overlayRect.left,
-          top: rect.top - overlayRect.top,
-          width: rect.width,
-          height: rect.height,
-        };
-      };
-      setArrow({
-        width: overlayRect.width,
-        height: overlayRect.height,
-        path: annotationConnectorPath(
-          toRelativeRect(label),
-          toRelativeRect(target),
-        ),
-        forIndex: activeAnnotation,
-      });
-    };
-    updateArrow();
-    const observer = new ResizeObserver(updateArrow);
-    observer.observe(stage);
-    observer.observe(arrowOverlay);
-    observer.observe(label);
-    observer.observe(target);
-    window.addEventListener("resize", updateArrow);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", updateArrow);
-    };
-  }, [activeAnnotation]);
-  const annotations = [
-    {
-      id: "navigation",
-      title: "Consistent navigation",
-      body: "A familiar menu makes it easy to find your way around.",
-      className: "annotation-navigation",
-    },
-    {
-      id: "channels",
-      title: "Channels for live coordination",
-      body: "Talk through day-to-day work while shared files stay in the workspace.",
-      className: "annotation-channels",
-    },
-    {
-      id: "naming",
-      title: "Naming convention",
-      body: "Clear names make documents easier to recognise and search.",
-      className: "annotation-naming",
-    },
-    {
-      id: "status",
-      title: "Status",
-      body: "See whether a document is draft, in review or complete.",
-      className: "annotation-status",
-    },
-    {
-      id: "metadata",
-      title: "Automatic metadata",
-      body: "Useful details are applied consistently, making files easier to organise, filter and find.",
-      className: "annotation-metadata",
-    },
-    {
-      id: "sensitivity",
-      title: "Sensitivity",
-      body: "Clear labels show how information should be handled.",
-      className: "annotation-sensitivity",
-    },
-  ];
   return (
     <div className="workspace-tour-directory-page">
       <IntranetHeader active />
@@ -464,198 +336,13 @@ function ActivityDirectory() {
             <p className="workspace-tour-directory-subtitle">
               Interactive tour
             </p>
-            <p>Explore how workspaces, files and channels fit together.</p>
+            <p>
+              Follow a real Planning workspace from its home to files and
+              focused conversations.
+            </p>
           </div>
         </div>
-        <section
-          ref={stageRef}
-          className="workspace-tour-directory-stage"
-          aria-label="Preview of a workspace with explanatory annotations"
-        >
-          <div
-            className="workspace-tour-planning-scene"
-            aria-hidden="true"
-            inert
-          >
-            <div className="tour-scene-topbar">
-              <span className="tour-scene-apps">⠿</span>
-              <b>Site</b>
-              <span className="tour-scene-search" />
-            </div>
-            <div className="tour-scene-titlebar">
-              <span className="tour-scene-mark">⌁</span>
-              <b>Planning</b>
-              <span
-                className="tour-scene-channels"
-                data-tour-target="tour-channels"
-              >
-                ▣ Channels
-              </span>
-            </div>
-            <div className="tour-scene-layout">
-              <nav className="tour-scene-nav">
-                <b>Home</b>
-                <small>DOCUMENT LIBRARIES</small>
-                <b className="selected" data-tour-target="tour-navigation">
-                  ▱ Planning Cycles
-                </b>
-                <b>▱ Strategy Development</b>
-                <b>▱ Performance &amp; Reporting</b>
-                <b>▱ Approved Plans &amp; Reports</b>
-                <small>JUMP TO</small>
-                <b>▱ Department submissions</b>
-              </nav>
-              <div className="tour-scene-library">
-                <small>
-                  Workspace / Planning Cycles / 2026 Year End Review
-                </small>
-                <div className="tour-scene-heading">
-                  <div>
-                    <h3 data-tour-target="tour-naming">2026 Year End Review</h3>
-                    <span>
-                      Active annual planning and review. Contribute, coordinate
-                      and develop the next organisational plan.
-                    </span>
-                  </div>
-                  <span>□ Working information</span>
-                </div>
-                <div className="tour-scene-toolbar">
-                  <b>＋ New</b>
-                  <span>↑ Upload</span>
-                  <span>↗ Copy link</span>
-                  <span className="view">All Documents ⌄ ≡ Filters</span>
-                </div>
-                <div className="tour-scene-search-library">
-                  ⌕ Search this library
-                </div>
-                <div className="tour-scene-table">
-                  <div className="tour-scene-row tour-scene-columns">
-                    <span>Name ↑</span>
-                    <span>Planning cycle</span>
-                    <span>Document type</span>
-                    <span>Status</span>
-                    <span>Owner</span>
-                    <span>Sensitivity</span>
-                  </div>
-                  <div className="tour-scene-row">
-                    <span>
-                      <i className="file-icon ppt">P</i> Organisational outcomes
-                      map.pptx
-                    </span>
-                    <span>2026 Year End Review</span>
-                    <span>Presentation</span>
-                    <span>
-                      <i
-                        className="status review"
-                        data-tour-target="tour-status"
-                      >
-                        In review
-                      </i>
-                    </span>
-                    <span>Alex Morgan</span>
-                    <span>
-                      <i className="sensitivity">Internal</i>
-                    </span>
-                  </div>
-                  <div className="tour-scene-row">
-                    <span>
-                      <i className="file-icon xls">X</i> Planning assumptions
-                      register.xlsx
-                    </span>
-                    <span data-tour-target="tour-metadata">
-                      2026 Year End Review
-                    </span>
-                    <span>Supporting data</span>
-                    <span>
-                      <i className="status progress">In progress</i>
-                    </span>
-                    <span>Alex Morgan</span>
-                    <span>
-                      <i
-                        className="sensitivity"
-                        data-tour-target="tour-sensitivity"
-                      >
-                        Internal
-                      </i>
-                    </span>
-                  </div>
-                  <div className="tour-scene-row">
-                    <span>
-                      <i className="file-icon doc">W</i> Year end planning
-                      lessons 2026.docx
-                    </span>
-                    <span>2026 Year End Review</span>
-                    <span>Analysis</span>
-                    <span>
-                      <i className="status draft">Draft</i>
-                    </span>
-                    <span>Alex Morgan</span>
-                    <span>
-                      <i className="sensitivity">Internal</i>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <svg
-            ref={arrowRef}
-            className="workspace-tour-annotation-arrows"
-            viewBox={`0 0 ${arrow.width} ${arrow.height}`}
-            preserveAspectRatio="none"
-            style={{
-              opacity:
-                annotationVisible && arrow.forIndex === activeAnnotation
-                  ? 0.55
-                  : 0,
-            }}
-            aria-hidden="true"
-          >
-            <defs>
-              <marker
-                id="tour-arrowhead"
-                markerWidth="8"
-                markerHeight="8"
-                markerUnits="userSpaceOnUse"
-                refX="7"
-                refY="4"
-                orient="auto"
-              >
-                <path d="M1 1 L7 4 L1 7" />
-              </marker>
-            </defs>
-            <path d={arrow.path} markerEnd="url(#tour-arrowhead)" />
-          </svg>
-          <div
-            className="workspace-tour-annotations"
-            role="group"
-            aria-label="Workspace guidance annotations"
-          >
-            {annotations.map((annotation, index) => {
-              const visible =
-                index === activeAnnotation &&
-                (reducedMotion || annotationVisible);
-              return (
-                <div
-                  className={`workspace-tour-annotation demo-paper-surface ${annotation.className}${visible ? " is-current" : ""}`}
-                  key={annotation.id}
-                  data-tour-annotation={index}
-                  aria-hidden={!visible}
-                >
-                  <strong>{annotation.title}</strong>
-                  <span>{annotation.body}</span>
-                </div>
-              );
-            })}
-          </div>
-          <div className="workspace-tour-coming-soon" role="status">
-            <span>COMING SOON</span>
-            <p>The interactive walkthrough is currently in development.</p>
-          </div>
-        </section>
-        <p className="workspace-tour-fiction-note">
-          Fictional names and sample content for this walkthrough.
-        </p>
+        <CinematicWorkspaceTour />
       </main>
     </div>
   );
