@@ -18,6 +18,7 @@ export default function ExternalEnvironmentPreview({
     environment || getExternalEnvironment(environmentId || "");
   if (!destination) return null;
   const frontline = destination.variant === "frontline";
+  const comingSoon = destination.variant === "coming-soon";
   const returnHref = externalReturnHref(
     typeof location === "undefined" ? "" : location.search,
     typeof document === "undefined" ? "" : document.referrer,
@@ -88,15 +89,16 @@ export default function ExternalEnvironmentPreview({
           <EnvironmentIcon type="portal" size={40} />
         )}
         <h1 id="external-environment-title">{destination.name}</h1>
-        {frontline ? (
+        {frontline || comingSoon ? (
           <>
             <div className="external-coming-soon">
               <Toolbox24Regular aria-hidden="true" />
               <span>COMING SOON</span>
             </div>
             <p>
-              In development — a separate experience for frontline crew with the
-              information and tools they need for day-to-day operations.
+              {frontline
+                ? "In development — a separate experience for frontline crew with the information and tools they need for day-to-day operations."
+                : "A shared landing page for linked work tools is in development."}
             </p>
           </>
         ) : (

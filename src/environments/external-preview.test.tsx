@@ -63,11 +63,11 @@ describe("shared external boundary", () => {
         /target="_blank"|<nav|m365-header|hub-navigation|teams-shell|workspace-icon/,
       );
       expect(html).not.toMatch(/unsupported|not included|unfinished|missing/i);
-      expect(html).toContain(
-        environment.variant
-          ? "COMING SOON"
-          : "This linked environment is represented at a high level in this demo.",
-      );
+      if (environment.variant) expect(html).toContain("COMING SOON");
+      else
+        expect(html).toContain(
+          "This linked environment is represented at a high level in this demo.",
+        );
       if (!environment.variant) expect(html).not.toContain("COMING SOON");
     },
   );

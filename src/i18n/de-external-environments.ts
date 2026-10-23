@@ -6,6 +6,11 @@ export const germanExternalEnvironments: Record<string, string> = {
     "Entdecken Sie, wie Ihre neuen Arbeitsbereiche aussehen und funktionieren könnten.",
   "Browse all company workspaces and wikis.":
     "Entdecken Sie alle Arbeitsbereiche und Wikis des Unternehmens.",
+  "External tools": "Externe Tools",
+  "A shared landing page for linked tools.":
+    "Eine gemeinsame Startseite für verknüpfte Tools.",
+  "A shared landing page for linked work tools is in development.":
+    "Eine gemeinsame Startseite für verknüpfte Arbeitstools ist in Entwicklung.",
   "No company data was used to create this demo site.":
     "Für diese Demoseite wurden keine Unternehmensdaten verwendet.",
   Tools: "Tools",

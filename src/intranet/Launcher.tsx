@@ -1,7 +1,7 @@
 import {
   ArrowRight24Regular,
-  BookOpen24Regular,
   Organization24Regular,
+  Toolbox24Regular,
 } from "@fluentui/react-icons";
 import "./launcher.css";
 import { LanguageToggle } from "../i18n/Language";
@@ -12,6 +12,7 @@ import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
 import WorkspaceFAQ from "../components/WorkspaceFAQ";
 import IllustrativeContentLabel from "../components/IllustrativeContentLabel";
+import { externalPreviewHref } from "../environments/catalog";
 const choices = [
   {
     title: "Planning",
@@ -81,27 +82,23 @@ export default function Launcher() {
           <section className="launcher-beta-column">
             <h2 className="launcher-development-heading">Development betas</h2>
             <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
-              <BookOpen24Regular aria-hidden="true" />
+              <Toolbox24Regular aria-hidden="true" />
               <div>
                 <div className="launcher-choice-title">
                   <h3>
                     <a
                       href={withExplicitStaff(
-                        "/workspace-tour?demo=standalone",
+                        externalPreviewHref("external-tools", "/"),
                       )}
                       className="launcher-complete-link"
-                      onClick={markWelcomeEntry}
                     >
-                      What is a workspace?
-                      <span className="launcher-tour-subtitle">
-                        Interactive tour
-                      </span>
+                      External tools
                     </a>
                   </h3>
-                  <BetaBadge />
+                  <span className="launcher-coming-soon">COMING SOON</span>
                 </div>
                 <span className="launcher-action">
-                  See how workspaces, files and channels fit together.
+                  A shared landing page for linked tools.
                 </span>
               </div>
               <ArrowRight24Regular aria-hidden="true" />

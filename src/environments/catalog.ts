@@ -6,7 +6,7 @@ export interface ExternalEnvironment {
   id: string;
   name: string;
   theme: ExternalTheme;
-  variant?: "frontline";
+  variant?: "frontline" | "coming-soon";
   logo?: string;
 }
 export interface AdminPlatform extends ExternalEnvironment {
@@ -107,6 +107,12 @@ export function adminPlatformsForHub(hub: AdminHubId) {
   return adminPlatforms.filter((platform) => platform.hubs.includes(hub));
 }
 export const externalEnvironments: ExternalEnvironment[] = [
+  {
+    id: "external-tools",
+    name: "External tools",
+    theme: "navy",
+    variant: "coming-soon",
+  },
   {
     id: "frontline",
     name: "Local Crew Portal",
