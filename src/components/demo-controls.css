@@ -59,16 +59,15 @@
 }
 .demo-fictional-label {
   box-sizing: border-box;
-  width: min(340px, calc(100vw - 32px));
-  padding: 10px 13px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 9px 12px;
   color: #182d3b;
   font:
-    650 17px/1.35 "Caveat",
+    600 16px/1.35 "Caveat",
     "Chalkboard SE",
     "Comic Sans MS",
     "Segoe Print",
-    system-ui,
-    sans-serif;
+    cursive;
   text-align: center;
   pointer-events: none;
   transform: rotate(-0.6deg);
@@ -82,9 +81,9 @@
     padding: 8px 12px;
   }
   .demo-fictional-label {
-    width: min(320px, calc(100vw - 24px));
-    padding: 8px 11px;
-    font-size: 16px;
+    width: min(280px, calc(100vw - 24px));
+    padding: 8px 10px;
+    font-size: 15px;
     transform: none;
   }
 }

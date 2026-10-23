@@ -21,7 +21,7 @@
   margin: 0;
 }
 :root .prototype-launcher .launcher-utility-row .demo-fictional-label {
-  width: min(340px, calc(100vw - 32px));
+  width: min(300px, calc(100vw - 32px));
 }
 :root .prototype-launcher > .launcher-content {
   width: min(1120px, 100%);
