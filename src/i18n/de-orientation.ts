@@ -27,6 +27,8 @@ export const germanOrientation: Record<string, string> = {
     "Die an Microsoft angelehnten Oberflächen sind Simulationen – sie sind nicht mit produktivem SharePoint, Teams oder anderen Unternehmenssystemen verbunden.",
   "Explore this workspace": "Diesen Arbeitsbereich erkunden",
   "Explore all workspaces & wikis": "Alle Arbeitsbereiche und Wikis entdecken",
+  "Coming soon": "Demnächst verfügbar",
+  "A virtual tour": "Ein virtueller Rundgang",
   BETA: "BETA",
   "BETA TEST": "BETATEST",
   "About beta test": "Informationen zum Betatest",

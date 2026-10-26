@@ -1,7 +1,7 @@
 import {
   ArrowRight24Regular,
+  BookOpen24Regular,
   Organization24Regular,
-  Toolbox24Regular,
 } from "@fluentui/react-icons";
 import "./launcher.css";
 import { LanguageToggle } from "../i18n/Language";
@@ -12,7 +12,6 @@ import WorkspaceIcon from "../components/WorkspaceIcon";
 import { markWelcomeEntry } from "../components/demoControls";
 import WorkspaceFAQ from "../components/WorkspaceFAQ";
 import IllustrativeContentLabel from "../components/IllustrativeContentLabel";
-import { externalPreviewHref } from "../environments/catalog";
 const choices = [
   {
     title: "Planning",
@@ -79,52 +78,47 @@ export default function Launcher() {
               ))}
             </div>
           </section>
-          <section className="launcher-beta-column">
-            <h2 className="launcher-development-heading">Development betas</h2>
-            <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
-              <Toolbox24Regular aria-hidden="true" />
-              <div>
-                <div className="launcher-choice-title">
-                  <h3>
-                    <a
-                      href={withExplicitStaff(
-                        externalPreviewHref("external-tools", "/"),
-                      )}
-                      className="launcher-complete-link"
-                    >
-                      External tools
-                    </a>
-                  </h3>
-                  <span className="launcher-coming-soon">COMING SOON</span>
+          <div className="launcher-side-sections">
+            <section className="launcher-beta-column">
+              <h2 className="launcher-development-heading">
+                Development betas
+              </h2>
+              <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
+                <Organization24Regular aria-hidden="true" />
+                <div>
+                  <div className="launcher-choice-title">
+                    <h3>
+                      <a
+                        href={withExplicitStaff("/architecture?demo=beta")}
+                        className="launcher-complete-link"
+                        onClick={markWelcomeEntry}
+                      >
+                        Explore all workspaces &amp; wikis
+                      </a>
+                    </h3>
+                    <BetaBadge />
+                  </div>
+                  <span className="launcher-action">
+                    Browse all company workspaces and wikis.
+                  </span>
                 </div>
-                <span className="launcher-action">
-                  A shared landing page for linked tools.
-                </span>
-              </div>
-              <ArrowRight24Regular aria-hidden="true" />
-            </article>
-            <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
-              <Organization24Regular aria-hidden="true" />
-              <div>
-                <div className="launcher-choice-title">
-                  <h3>
-                    <a
-                      href={withExplicitStaff("/architecture?demo=beta")}
-                      className="launcher-complete-link"
-                      onClick={markWelcomeEntry}
-                    >
-                      Explore all workspaces &amp; wikis
-                    </a>
-                  </h3>
-                  <BetaBadge />
+                <ArrowRight24Regular aria-hidden="true" />
+              </article>
+            </section>
+            <section
+              className="launcher-coming-soon-column"
+              aria-labelledby="launcher-coming-soon-title"
+            >
+              <h2 id="launcher-coming-soon-title">Coming soon</h2>
+              <div className="launcher-coming-soon-card" aria-disabled="true">
+                <BookOpen24Regular aria-hidden="true" />
+                <div>
+                  <h3>What is a workspace?</h3>
+                  <p>A virtual tour</p>
                 </div>
-                <span className="launcher-action">
-                  Browse all company workspaces and wikis.
-                </span>
               </div>
-              <ArrowRight24Regular aria-hidden="true" />
-            </article>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
     </main>
