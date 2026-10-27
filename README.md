@@ -10,7 +10,7 @@ An interactive React/TypeScript/Vite proof of concept for a SharePoint intranet,
 
 All site content must remain anonymous. Refer to the organisation as **the company** (or the natural German equivalent), including when adapting supplied documents. Do not copy real organisation names into visible text, translations, metadata or public assets. The experience is technology agnostic: use sites, channels, libraries and personal drives instead of vendor product names or logos. Drive terminology: use **P drive** only within the Archives workspace; elsewhere, use **the shared drive**, with the natural German equivalent. Internal identifiers and routes remain stable. The production build runs a site-wide anonymity check before compilation.
 
-Use Node 24 (Render uses 24.19.0).
+Use Node 24.22.1 or a newer 24.x release. Render’s `NODE_VERSION` and `.node-version` pins must stay aligned.
 
 ```sh
 npm ci
@@ -133,7 +133,7 @@ Existing Render static service: `workspace-prototype` (`srv-db7sdaom7kps73cml6sg
 
 - Build: `npm ci && npm run build`
 - Publish: `dist`
-- Node: `24.19.0`
+- Node: `24.22.1`
 - SPA rewrite: all routes to `/index.html`
 - Live: https://workspace-prototype.onrender.com/
 
