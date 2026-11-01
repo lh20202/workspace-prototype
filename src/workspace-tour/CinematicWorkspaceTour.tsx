@@ -286,56 +286,88 @@ export default function CinematicWorkspaceTour() {
         ([key, value]) => current.searchParams.get(key) === value,
       );
     if (!routeMatches) return;
-    doc
-      .querySelectorAll(".cinematic-tour-focus")
-      .forEach((element) => element.classList.remove("cinematic-tour-focus"));
-    const target = findTarget(doc, step);
     camera.style.transformOrigin = "top left";
-    if (!target) {
-      camera.style.transform = "translate3d(0, 0, 0) scale(1)";
-      const revealTimer = window.setTimeout(
+    let revealTimer: number | undefined;
+    let targetObserver: MutationObserver | undefined;
+    let resizeObserver: ResizeObserver | undefined;
+    let cancelled = false;
+
+    const focusTarget = (target: HTMLElement) => {
+      doc
+        .querySelectorAll(".cinematic-tour-focus")
+        .forEach((element) => element.classList.remove("cinematic-tour-focus"));
+      // Keep the workspace itself still when the target is already in view,
+      // then move the camera smoothly onto the feature being described.
+      scrollTargetInsideFrame(target, frame, "instant");
+      target.classList.add("cinematic-tour-focus");
+      const updateCamera = () => {
+        if (cancelled) return;
+        const bounds = target.getBoundingClientRect();
+        const centerX = bounds.left + bounds.width / 2;
+        const centerY = bounds.top + bounds.height / 2;
+        const zoom = {
+          wide: 1.12,
+          navigation: 1.45,
+          folder: 1.35,
+          metadata: 1.4,
+          channels: 1.3,
+        }[step.camera];
+        const fit = Math.max(Math.min(screenNode.clientWidth / 1440, 1), 0.1);
+        // The iframe is already scaled to fit the stage. Compensate for that
+        // scale so the requested zoom stays consistent at every viewport size.
+        const cameraScale = zoom / fit;
+        const translateX = screenNode.clientWidth / 2 - centerX * zoom;
+        const translateY = screenNode.clientHeight / 2 - centerY * zoom;
+        camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${cameraScale})`;
+      };
+      updateCamera();
+      resizeObserver = new ResizeObserver(() =>
+        requestAnimationFrame(updateCamera),
+      );
+      resizeObserver.observe(screenNode);
+      revealTimer = window.setTimeout(
         () => setNoteVisible(true),
         reducedMotion ? 0 : 760,
       );
-      return () => window.clearTimeout(revealTimer);
-    }
-    // Keep the workspace itself still, then move the camera smoothly to the
-    // chapter's subject. This is more reliable and readable than a connector
-    // arrow, especially when the laptop preview is small.
-    scrollTargetInsideFrame(target, frame, "instant");
-    target.classList.add("cinematic-tour-focus");
-    const updateCamera = () => {
-      const bounds = target.getBoundingClientRect();
-      const centerX = bounds.left + bounds.width / 2;
-      const centerY = bounds.top + bounds.height / 2;
-      const zoom = {
-        wide: 1.12,
-        navigation: 1.45,
-        folder: 1.35,
-        metadata: 1.4,
-        channels: 1.3,
-      }[step.camera];
-      const fit = Math.min(screenNode.clientWidth / 1440, 1);
-      // The iframe is already scaled to fit the stage. Compensate for that
-      // scale here so the requested zoom stays consistent at every viewport
-      // size and the highlighted target lands at the centre of the camera.
-      const cameraScale = zoom / fit;
-      const translateX = screenNode.clientWidth / 2 - centerX * zoom;
-      const translateY = screenNode.clientHeight / 2 - centerY * zoom;
-      camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${cameraScale})`;
     };
-    updateCamera();
-    const revealTimer = window.setTimeout(
-      () => setNoteVisible(true),
-      reducedMotion ? 0 : 760,
-    );
-    const observer = new ResizeObserver(() =>
-      requestAnimationFrame(updateCamera),
-    );
-    observer.observe(screenNode);
+
+    const target = findTarget(doc, step);
+    if (target) {
+      focusTarget(target);
+    } else if (step.selector && doc.documentElement) {
+      // The iframe load event can fire before the workspace finishes rendering.
+      // Wait briefly for the target, instead of showing a new label over a blank
+      // or unfocused frame.
+      targetObserver = new MutationObserver(() => {
+        const loadedTarget = findTarget(doc, step);
+        if (!loadedTarget) return;
+        targetObserver?.disconnect();
+        window.clearTimeout(revealTimer);
+        focusTarget(loadedTarget);
+      });
+      targetObserver.observe(doc.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+      revealTimer = window.setTimeout(
+        () => {
+          targetObserver?.disconnect();
+          if (!cancelled) setNoteVisible(true);
+        },
+        reducedMotion ? 0 : 2400,
+      );
+    } else {
+      camera.style.transform = "translate3d(0, 0, 0) scale(1)";
+      revealTimer = window.setTimeout(
+        () => setNoteVisible(true),
+        reducedMotion ? 0 : 760,
+      );
+    }
     return () => {
-      observer.disconnect();
-      window.clearTimeout(revealTimer);
+      cancelled = true;
+      targetObserver?.disconnect();
+      resizeObserver?.disconnect();
+      if (revealTimer !== undefined) window.clearTimeout(revealTimer);
     };
   }, [frameReady, loadRevision, index, reducedMotion, step]);
 
