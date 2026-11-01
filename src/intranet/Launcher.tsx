@@ -1,7 +1,7 @@
 import {
   ArrowRight24Regular,
-  BookOpen24Regular,
-  Organization24Regular,
+  Beaker24Regular,
+  PlayCircle24Regular,
 } from "@fluentui/react-icons";
 import "./launcher.css";
 import { LanguageToggle } from "../i18n/Language";
@@ -69,6 +69,7 @@ export default function Launcher() {
                   <WorkspaceIcon />
                   <div>
                     <div className="launcher-choice-title">
+                      <span className="launcher-choice-kind">Workspace demo</span>
                       <h3>{title}</h3>
                     </div>
                     <span className="launcher-action">{action}</span>
@@ -84,9 +85,12 @@ export default function Launcher() {
                 Development betas
               </h2>
               <article className="launcher-choice launcher-complete-choice launcher-beta-choice">
-                <Organization24Regular aria-hidden="true" />
+                <span className="launcher-beta-emblem" aria-hidden="true">
+                  <Beaker24Regular />
+                </span>
                 <div>
                   <div className="launcher-choice-title">
+                    <span className="launcher-beta-kind">In development</span>
                     <h3>
                       <a
                         href={withExplicitStaff("/architecture?demo=beta")}
@@ -109,14 +113,17 @@ export default function Launcher() {
               className="launcher-coming-soon-column launcher-tour-column"
               aria-labelledby="launcher-tour-title"
             >
-              <h2 id="launcher-tour-title">Workspace tour</h2>
+              <h2 id="launcher-tour-title">Guided tour</h2>
               <a
                 className="launcher-coming-soon-card launcher-tour-card"
                 href={withExplicitStaff("/workspace-tour?demo=standalone")}
                 onClick={markWelcomeEntry}
               >
-                <BookOpen24Regular aria-hidden="true" />
+                <span className="launcher-tour-emblem" aria-hidden="true">
+                  <PlayCircle24Regular />
+                </span>
                 <div>
+                  <span className="launcher-tour-kind">Interactive tour</span>
                   <h3>What is a workspace?</h3>
                   <p>A virtual tour</p>
                 </div>

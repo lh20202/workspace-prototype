@@ -197,6 +197,129 @@
 :root .prototype-launcher .launcher-tour-card > svg:last-child {
   color: #547d78;
 }
+:root .prototype-launcher .launcher-choice-kind {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 7px;
+  border: 1px solid #c4dfe0;
+  border-radius: 999px;
+  color: #28666d;
+  background: #edf7f6;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+:root .prototype-launcher .launcher-beta-column {
+  overflow: hidden;
+  border-color: #d8cce5;
+  border-top: 4px solid #796097;
+  background: linear-gradient(145deg, #f5f0fa, #ece5f3);
+}
+:root .prototype-launcher .launcher-beta-column .launcher-development-heading {
+  color: #5c466f;
+}
+:root .prototype-launcher .launcher-beta-column .launcher-beta-choice {
+  grid-template-columns: 42px minmax(0, 1fr) 18px;
+  gap: 12px;
+  padding: 14px 4px 8px;
+  border-bottom-color: #d6c9e2;
+}
+:root .prototype-launcher .launcher-beta-emblem {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #c9b7da;
+  border-radius: 11px;
+  background: #fff;
+  color: #72558d;
+  box-shadow: 0 2px 5px #4a32521a;
+}
+:root .prototype-launcher .launcher-beta-emblem svg {
+  width: 25px;
+  height: 25px;
+}
+:root .prototype-launcher .launcher-beta-choice .launcher-choice-title {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+:root .prototype-launcher .launcher-beta-kind,
+:root .prototype-launcher .launcher-tour-kind {
+  color: #6b507f;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+:root .prototype-launcher .launcher-beta-choice h3 {
+  color: #3e2d50;
+  font-size: 16px;
+  line-height: 20px;
+}
+:root .prototype-launcher .launcher-beta-choice .beta-badge {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+}
+:root .prototype-launcher .launcher-beta-choice .launcher-action {
+  color: #5e5666;
+  font-size: 12px;
+}
+:root .prototype-launcher .launcher-tour-column {
+  overflow: hidden;
+  border-color: #ddc980;
+  background: #fbf5dc;
+  box-shadow: 0 5px 14px #473b1d12;
+}
+:root .prototype-launcher .launcher-tour-column h2 {
+  color: #6c571e;
+}
+:root .prototype-launcher .launcher-tour-card {
+  grid-template-columns: 44px minmax(0, 1fr) 20px;
+  min-height: 78px;
+  gap: 12px;
+  border-top-color: #e2d49e;
+  color: #3f3b32;
+}
+:root .prototype-launcher .launcher-tour-emblem {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #fff;
+  background: #7a6327;
+  box-shadow: 0 2px 5px #473b1d28;
+}
+:root .prototype-launcher .launcher-tour-emblem svg {
+  width: 26px;
+  height: 26px;
+}
+:root .prototype-launcher .launcher-tour-column .launcher-tour-kind {
+  display: block;
+  margin-bottom: 3px;
+  color: #6c571e;
+}
+:root .prototype-launcher .launcher-tour-card h3 {
+  color: #302c25;
+}
+:root .prototype-launcher .launcher-tour-card p {
+  color: #655a40;
+}
+:root .prototype-launcher .launcher-tour-card:hover {
+  background: #f5ebc4;
+}
+:root .prototype-launcher .launcher-tour-card:focus-visible {
+  outline-color: #8a6b22;
+}
+:root .prototype-launcher .launcher-tour-card > svg:last-child {
+  color: #806925;
+}
 :root .prototype-launcher .launcher-choice {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr) 24px;
