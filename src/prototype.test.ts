@@ -71,7 +71,10 @@ describe("launcher and service desk routes", () => {
     expect(launcher).not.toContain("Work in progress · expect rough edges");
     expect(launcher).toContain('href="/planning?demo=standalone"');
     expect(launcher).toContain('href="/logistics?demo=standalone"');
-    expect(launcher).toContain('href="/workspace-tour?demo=standalone"');
+    expect(launcher).toContain(
+      'class="launcher-coming-soon-card launcher-tour-card" aria-disabled="true"',
+    );
+    expect(launcher).not.toContain('href="/workspace-tour?demo=standalone"');
     expect(launcher).not.toContain(
       'href="/external/external-tools?returnTo=%2F"',
     );

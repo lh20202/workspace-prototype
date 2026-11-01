@@ -120,21 +120,19 @@ export default function Launcher() {
               aria-labelledby="launcher-tour-title"
             >
               <h2 id="launcher-tour-title">Guided tour</h2>
-              <a
+              <div
                 className="launcher-coming-soon-card launcher-tour-card"
-                href={withExplicitStaff("/workspace-tour?demo=standalone")}
-                onClick={markWelcomeEntry}
+                aria-disabled="true"
               >
                 <span className="launcher-tour-emblem" aria-hidden="true">
                   <PlayCircle24Regular />
                 </span>
                 <div>
-                  <span className="launcher-tour-kind">Interactive tour</span>
+                  <span className="launcher-tour-kind">Coming soon</span>
                   <h3>What is a workspace?</h3>
                   <p>A virtual tour</p>
                 </div>
-                <ArrowRight24Regular aria-hidden="true" />
-              </a>
+              </div>
             </section>
           </div>
         </div>
