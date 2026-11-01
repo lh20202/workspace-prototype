@@ -190,7 +190,7 @@ export default function CinematicWorkspaceTour() {
       style.textContent = `
         .demo-control-frame, .prototype-navigator, .demo-fictional-label { display: none !important; }
         html, body, #root { min-width: 0 !important; }
-        .prototype-frame { min-height: 100% !important; overflow: auto !important; }
+        .prototype-frame { min-height: 100vh !important; overflow: auto !important; }
         .cinematic-tour-focus { position: relative !important; z-index: 1 !important; outline: 3px solid #bd3028 !important; outline-offset: 4px !important; box-shadow: 0 0 0 7px #bd302822 !important; border-radius: 3px; }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
       `;
@@ -199,6 +199,21 @@ export default function CinematicWorkspaceTour() {
     setFrameReady(true);
     setLoadRevision((revision) => revision + 1);
   };
+
+  useEffect(() => {
+    const screenNode = screen.current;
+    if (!screenNode) return;
+    const updateFit = () => {
+      screenNode.style.setProperty(
+        "--tour-fit",
+        String(Math.min(screenNode.clientWidth / 1440, 1)),
+      );
+    };
+    updateFit();
+    const observer = new ResizeObserver(updateFit);
+    observer.observe(screenNode);
+    return () => observer.disconnect();
+  }, []);
 
   function findTarget(doc: Document, targetStep: TourStep) {
     if (!targetStep.selector) return null;
