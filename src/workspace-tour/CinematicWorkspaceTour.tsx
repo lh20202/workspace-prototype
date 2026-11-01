@@ -3,6 +3,7 @@ import { useTranslation } from "../i18n/Language";
 
 type TourStep = {
   id: string;
+  focusLabel: string;
   title: string;
   body: string;
   route: string;
@@ -55,6 +56,7 @@ export default function CinematicWorkspaceTour() {
   const iframe = useRef<HTMLIFrameElement>(null);
   const screen = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
+  const [noteVisible, setNoteVisible] = useState(true);
   const [frameReady, setFrameReady] = useState(false);
   const [loadRevision, setLoadRevision] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(
@@ -67,6 +69,7 @@ export default function CinematicWorkspaceTour() {
     () => [
       {
         id: "home",
+        focusLabel: "Current planning cycle",
         title: "Start with the work that matters",
         body: "The Planning home brings the current cycle, useful links and recent work together. This walkthrough stays beside the workspace so the product view remains familiar.",
         route: "/planning?demo=standalone",
@@ -75,7 +78,8 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "navigation",
-        title: "A consistent way around",
+        focusLabel: "Workspace navigation",
+        title: "Find your way around",
         body: "The left-hand navigation stays in place as you move between the home page and document libraries. Try a link in the workspace, or continue with Next.",
         route: "/planning?demo=standalone",
         selector: ".sidebar nav",
@@ -83,6 +87,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "folders",
+        focusLabel: "Planning Cycles library",
         title: "Simple, predictable folders",
         body: "Planning Cycles groups work by cycle, with guidance and decisions close to the files they support. Open the highlighted library yourself, or continue to see an example.",
         route: "/planning/cycles?demo=standalone",
@@ -92,6 +97,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "cycle-folder",
+        focusLabel: "Guidance & decisions folder",
         title: "Keep related files together",
         body: "A planning cycle opens into a small set of clear folders. The structure helps people find guidance, working files and completed material without learning a new system for every project.",
         route: "/planning/cycles?folder=2027+Annual+Planning&demo=standalone",
@@ -101,6 +107,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "metadata",
+        focusLabel: "Library details",
         title: "Useful details, already organised",
         body: "Files carry predefined details such as owner, status, document type and sensitivity. Classification labels make handling expectations clearer, while columns help people scan and filter the library.",
         route:
@@ -111,6 +118,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "restricted",
+        focusLabel: "Restricted access page",
         title: "Access follows the person’s role",
         body: "Permissions are applied to the area, so people only see content available to their role. A restricted landing page explains the boundary and provides a clear next step.",
         route: "/planning/restricted?demo=standalone",
@@ -119,6 +127,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "support",
+        focusLabel: "Access contact",
         title: "Know who can help",
         body: "The restricted page names a focal point for access questions. Contacting them gives the person and context needed to resolve an access issue.",
         route: "/planning/restricted?demo=standalone",
@@ -127,6 +136,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "urgent",
+        focusLabel: "Urgent escalation",
         title: "Escalate urgent access needs",
         body: "If the focal point is unavailable and access cannot wait, the restricted page provides a clear urgent escalation route.",
         route: "/planning/restricted?demo=standalone",
@@ -135,6 +145,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "reveal",
+        focusLabel: "Reveal restricted content",
         title: "See the demonstration content",
         body: "Reveal restricted content is a demo-only control on this page. It shows an illustrative example without changing a person’s permissions.",
         route: "/planning/restricted?demo=standalone",
@@ -143,6 +154,7 @@ export default function CinematicWorkspaceTour() {
       },
       {
         id: "links",
+        focusLabel: "Tools and conversations",
         title: "Open tools and conversations nearby",
         body: "Important tools and Planning & Reporting are linked from the workspace home. They open when you need them, while files stay organised in their libraries.",
         route: "/planning?demo=standalone",
@@ -246,6 +258,20 @@ export default function CinematicWorkspaceTour() {
     const screenNode = screen.current;
     const camera = frame?.parentElement as HTMLElement | null;
     if (!frame || !doc || !screenNode || !camera) return;
+    let expected: URL;
+    let current: URL;
+    try {
+      expected = new URL(step.route, window.location.origin);
+      current = new URL(frame.contentWindow!.location.href);
+    } catch {
+      return;
+    }
+    const routeMatches =
+      current.pathname === expected.pathname &&
+      Array.from(expected.searchParams.entries()).every(
+        ([key, value]) => current.searchParams.get(key) === value,
+      );
+    if (!routeMatches) return;
     doc
       .querySelectorAll(".cinematic-tour-focus")
       .forEach((element) => element.classList.remove("cinematic-tour-focus"));
@@ -253,7 +279,11 @@ export default function CinematicWorkspaceTour() {
     camera.style.transformOrigin = "top left";
     if (!target) {
       camera.style.transform = "translate3d(0, 0, 0) scale(1)";
-      return;
+      const revealTimer = window.setTimeout(
+        () => setNoteVisible(true),
+        reducedMotion ? 0 : 760,
+      );
+      return () => window.clearTimeout(revealTimer);
     }
     // Keep the workspace itself still, then move the camera smoothly to the
     // chapter's subject. This is more reliable and readable than a connector
@@ -280,25 +310,37 @@ export default function CinematicWorkspaceTour() {
       camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoom})`;
     };
     updateCamera();
+    const revealTimer = window.setTimeout(
+      () => setNoteVisible(true),
+      reducedMotion ? 0 : 760,
+    );
     const observer = new ResizeObserver(() => requestAnimationFrame(updateCamera));
     observer.observe(screenNode);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(revealTimer);
+    };
   }, [frameReady, loadRevision, index, reducedMotion, step]);
 
+  const goToStep = (nextIndex: number) => {
+    if (nextIndex === index) return;
+    setNoteVisible(false);
+    setIndex(nextIndex);
+  };
   const advance = () => {
     if (index === steps.length - 1) {
       location.assign("/");
       return;
     }
-    setIndex((current) => Math.min(steps.length - 1, current + 1));
+    goToStep(Math.min(steps.length - 1, index + 1));
   };
   const goBack = () => {
-    setIndex((current) => Math.max(0, current - 1));
+    goToStep(Math.max(0, index - 1));
   };
 
   return (
     <section
-      className="cinematic-tour"
+      className={`cinematic-tour${noteVisible ? "" : " is-transitioning"}`}
       aria-label={t("Planning workspace tour")}
       data-camera={step.camera}
       data-step={step.id}
@@ -331,12 +373,13 @@ export default function CinematicWorkspaceTour() {
           </div>
         </div>
         <aside
-          className="cinematic-tour-note demo-paper-surface"
-          key={step.id}
+          className={`cinematic-tour-note demo-paper-surface${noteVisible ? " is-visible" : ""}`}
           aria-live="polite"
           aria-atomic="true"
         >
-          <span className="cinematic-note-kicker">{t("A guided look")}</span>
+          <span className="cinematic-note-kicker">
+            {t("In focus")}: {t(step.focusLabel)}
+          </span>
           <h2>{t(step.title)}</h2>
           <p>{t(step.body)}</p>
           <span className="cinematic-note-index">
@@ -352,7 +395,9 @@ export default function CinematicWorkspaceTour() {
         <div className="cinematic-tour-control-row">
           <span className="cinematic-tour-caption">
             {frameReady
-              ? t("The laptop view zooms in on each feature as you move through the tour.")
+              ? noteVisible
+                ? t("The highlighted area on the laptop matches this note.")
+                : t("Moving to the next feature…")
               : t("Opening the Planning workspace…")}
           </span>
           <div className="cinematic-tour-buttons">
@@ -383,7 +428,7 @@ export default function CinematicWorkspaceTour() {
               aria-current={itemIndex === index ? "step" : undefined}
               aria-label={`${itemIndex + 1}. ${t(item.title)}`}
               onClick={() => {
-                setIndex(itemIndex);
+                goToStep(itemIndex);
               }}
             >
               {String(itemIndex + 1).padStart(2, "0")}

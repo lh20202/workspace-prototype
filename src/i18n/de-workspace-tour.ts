@@ -14,10 +14,21 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Live preview of the Planning workspace":
     "Live-Vorschau des Arbeitsbereichs Planung",
   "A guided look": "Ein geführter Einblick",
+  "In focus": "Im Fokus",
+  "Current planning cycle": "Aktueller Planungszyklus",
+  "Workspace navigation": "Navigation im Arbeitsbereich",
+  "Planning Cycles library": "Bibliothek „Planungszyklen“",
+  "Guidance & decisions folder": "Ordner „Anleitungen und Entscheidungen“",
+  "Library details": "Bibliotheksangaben",
+  "Restricted access page": "Seite mit Zugriffsbeschränkung",
+  "Access contact": "Kontakt für Zugriffsfragen",
+  "Urgent escalation": "Dringende Eskalation",
+  "Reveal restricted content": "Eingeschränkte Inhalte anzeigen",
+  "Tools and conversations": "Werkzeuge und Gespräche",
   "Start with the work that matters": "Beginnen Sie mit dem Wesentlichen",
   "The Planning home brings the current cycle, useful links and recent work together. This walkthrough stays beside the workspace so the product view remains familiar.":
     "Die Startseite Planung bündelt den aktuellen Zyklus, nützliche Links und laufende Arbeit. Die Hinweise bleiben neben dem Arbeitsbereich, damit die gewohnte Ansicht erkennbar bleibt.",
-  "A consistent way around": "Gleichbleibende Orientierung",
+  "Find your way around": "Finden Sie sich zurecht",
   "The left-hand navigation stays in place as you move between the home page and document libraries. Try a link in the workspace, or continue with Next.":
     "Die linke Navigation bleibt beim Wechsel zwischen Startseite und Dokumentbibliotheken an derselben Stelle. Probieren Sie einen Link im Arbeitsbereich aus oder fahren Sie mit „Weiter“ fort.",
   "Simple, predictable folders": "Einfache, übersichtliche Ordner",
@@ -71,6 +82,9 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Follow the Planning workspace": "Dem Arbeitsbereich Planung folgen",
   "The laptop view zooms in on each feature as you move through the tour.":
     "Die Laptopansicht zoomt während des Rundgangs auf jedes vorgestellte Element.",
+  "The highlighted area on the laptop matches this note.":
+    "Der markierte Bereich auf dem Laptop gehört zu diesem Hinweis.",
+  "Moving to the next feature…": "Das nächste Element wird angezeigt …",
   "Opening the Planning workspace…":
     "Der Arbeitsbereich Planung wird geöffnet …",
   Back: "Zurück",
