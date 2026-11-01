@@ -45,13 +45,19 @@ export default function Launcher() {
         <p className="launcher-intro">
           Explore what your new Digital Workspaces could look and feel like.
         </p>
-        <div className="launcher-explanation">
-          <DemoInfo label="Proof of concept" buttonText="Proof of concept">
-            {proofOfConceptInfoText}
-          </DemoInfo>
-        </div>
-        <div className="launcher-secondary-links">
-          <WorkspaceFAQ />
+        <div className="launcher-information-actions">
+          <div className="launcher-explanation">
+            <DemoInfo
+              label="Proof of concept"
+              buttonText="Proof of concept"
+              displayAsDialog
+            >
+              {proofOfConceptInfoText}
+            </DemoInfo>
+          </div>
+          <div className="launcher-secondary-links">
+            <WorkspaceFAQ />
+          </div>
         </div>
         <div className="launcher-home-columns">
           <section className="launcher-primary-workspaces">

@@ -1,10 +1,19 @@
 import { useId, useRef, useState, type ReactNode } from "react";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogContent,
+  DialogSurface,
+  DialogTitle,
+  DialogTrigger,
   Popover,
   PopoverSurface,
   PopoverTrigger,
 } from "@fluentui/react-components";
 import { Info16Regular } from "@fluentui/react-icons";
+import { useTranslation } from "../i18n/Language";
 import "./demo-info.css";
 
 export const proofOfConceptInfoText =
@@ -15,15 +24,52 @@ export function DemoInfo({
   children,
   buttonText,
   className = "",
+  displayAsDialog = false,
 }: {
   label: string;
   children: ReactNode;
   buttonText?: string;
   className?: string;
+  displayAsDialog?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const descriptionId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
+  const { t } = useTranslation();
+  if (displayAsDialog) {
+    return (
+      <span className={`demo-info ${className}`.trim()}>
+        <Dialog>
+          <DialogTrigger disableButtonEnhancement>
+            <button
+              type="button"
+              className={`demo-info-trigger demo-info-text-trigger${buttonText ? "" : " demo-info-icon-trigger"}`}
+              aria-label={t(label)}
+              aria-haspopup="dialog"
+            >
+              {buttonText && <span>{t(buttonText)}</span>}
+              <Info16Regular aria-hidden="true" />
+            </button>
+          </DialogTrigger>
+          <DialogSurface className="demo-info-dialog">
+            <DialogBody>
+              <DialogTitle>{t(buttonText || label)}</DialogTitle>
+              <DialogContent>
+                <p data-no-translate>
+                  {typeof children === "string" ? t(children) : children}
+                </p>
+              </DialogContent>
+              <DialogActions>
+                <DialogTrigger disableButtonEnhancement>
+                  <Button>{t("Close")}</Button>
+                </DialogTrigger>
+              </DialogActions>
+            </DialogBody>
+          </DialogSurface>
+        </Dialog>
+      </span>
+    );
+  }
   return (
     <span className={`demo-info ${className}`.trim()}>
       <Popover

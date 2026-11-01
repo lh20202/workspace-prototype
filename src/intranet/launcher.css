@@ -46,11 +46,49 @@
   height: 24px;
   margin: 1px 10px 0 0;
 }
-:root .prototype-launcher .launcher-explanation {
-  clear: both;
+:root .prototype-launcher .launcher-information-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 14px;
 }
-:root .prototype-launcher .launcher-explanation {
-  margin-top: 12px;
+:root .prototype-launcher .launcher-explanation,
+:root .prototype-launcher .launcher-secondary-links {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+:root .prototype-launcher .launcher-information-actions .demo-info-trigger,
+:root .prototype-launcher .launcher-information-actions .workspace-faq-link {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #d2d9dd;
+  border-radius: 4px;
+  background: #fff;
+  color: #31566a;
+  font:
+    500 13px/20px "Inter Variable",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+:root .prototype-launcher .launcher-information-actions .demo-info-trigger {
+  gap: 7px;
+}
+:root .prototype-launcher .launcher-information-actions .demo-info-trigger:hover,
+:root .prototype-launcher .launcher-information-actions .workspace-faq-link:hover {
+  border-color: #aabac3;
+  background: #f3f7f8;
+  color: #17445c;
+}
+:root .prototype-launcher .launcher-information-actions .demo-info-trigger:focus-visible,
+:root .prototype-launcher .launcher-information-actions .workspace-faq-link:focus-visible {
+  outline: 2px solid #0078d4;
+  outline-offset: 3px;
 }
 :root .prototype-launcher .launcher-stage-note {
   clear: both;

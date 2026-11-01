@@ -50,6 +50,15 @@
     sans-serif;
   overflow-wrap: break-word;
 }
+.demo-info-dialog {
+  width: min(480px, calc(100vw - 32px));
+}
+.demo-info-dialog p {
+  margin: 0;
+  color: #424242;
+  font-size: 15px;
+  line-height: 1.6;
+}
 .beta-badge {
   display: inline-flex;
   align-items: center;
