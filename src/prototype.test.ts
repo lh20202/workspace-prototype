@@ -50,7 +50,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).toContain('src="/images/site-mark.svg"');
     expect(launcher).toContain("Explore all workspaces &amp; wikis");
     expect(launcher).toContain("Browse all company workspaces and wikis.");
-    expect(launcher).toContain("Coming soon");
+    expect(launcher).toContain("Workspace tour");
     expect(launcher).toContain("What is a workspace?");
     expect(launcher).toContain("A virtual tour");
     expect(launcher.indexOf("Explore all workspaces &amp; wikis")).toBeLessThan(
@@ -71,7 +71,7 @@ describe("launcher and service desk routes", () => {
     expect(launcher).not.toContain("Work in progress · expect rough edges");
     expect(launcher).toContain('href="/planning?demo=standalone"');
     expect(launcher).toContain('href="/logistics?demo=standalone"');
-    expect(launcher).not.toContain('href="/workspace-tour?demo=standalone"');
+    expect(launcher).toContain('href="/workspace-tour?demo=standalone"');
     expect(launcher).not.toContain(
       'href="/external/external-tools?returnTo=%2F"',
     );

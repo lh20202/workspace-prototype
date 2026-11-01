@@ -1,18 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  Pause20Regular,
-  Play20Regular,
-  Replay20Regular,
-} from "@fluentui/react-icons";
 import { useTranslation } from "../i18n/Language";
 import { annotationConnectorPath } from "./annotationGeometry";
 
-type Pointer = {
-  left: number;
-  top: number;
-  visible: boolean;
-  clicking: boolean;
-};
 type TourStep = {
   id: string;
   title: string;
@@ -21,21 +10,7 @@ type TourStep = {
   selector?: string;
   matchText?: string;
   camera: "wide" | "navigation" | "folder" | "metadata" | "channels";
-  click?: boolean;
-  duration: number;
 };
-
-function planningChannelUrl() {
-  const staff = new URLSearchParams(location.search).get("staff") || "taylor";
-  return `/teams?${new URLSearchParams({
-    staff,
-    workspace: "planning",
-    context: "workspace:planning",
-    channel: "Planning & Reporting",
-    tab: "Posts",
-    demo: "standalone",
-  })}`;
-}
 
 function mapTargetToScreen(
   target: HTMLElement,
@@ -75,11 +50,6 @@ export default function CinematicWorkspaceTour() {
   const screen = useRef<HTMLDivElement>(null);
   const note = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(() =>
-    typeof window === "undefined"
-      ? true
-      : !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
   const [frameReady, setFrameReady] = useState(false);
   const [loadRevision, setLoadRevision] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(
@@ -87,96 +57,92 @@ export default function CinematicWorkspaceTour() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
-  const [pointer, setPointer] = useState<Pointer>({
-    left: -40,
-    top: -40,
-    visible: false,
-    clicking: false,
-  });
   const [arrow, setArrow] = useState({ width: 1, height: 1, path: "" });
 
   const steps = useMemo<TourStep[]>(
     () => [
       {
         id: "home",
-        title: "A shared starting point",
-        body: "Planning brings current priorities, useful links and recent files together in one familiar place.",
+        title: "Start with the work that matters",
+        body: "The Planning home brings the current cycle, useful links and recent work together. This walkthrough stays beside the workspace so the product view remains familiar.",
         route: "/planning?demo=standalone",
-        selector: ".site-header",
+        selector: ".current-cycle",
         camera: "wide",
-        duration: 5200,
       },
       {
         id: "navigation",
-        title: "A clear way around",
-        body: "The left-hand menu stays consistent as you move between the workspace home and its document libraries.",
+        title: "A consistent way around",
+        body: "The left-hand navigation stays in place as you move between the home page and document libraries. Try a link in the workspace, or continue with Next.",
         route: "/planning?demo=standalone",
         selector: ".sidebar nav",
         camera: "navigation",
-        duration: 5600,
       },
       {
-        id: "open-library",
-        title: "Open the right library",
-        body: "Planning Cycles keeps active planning files together. Watch the pointer open it from the menu.",
-        route: "/planning?demo=standalone",
+        id: "folders",
+        title: "Simple, predictable folders",
+        body: "Planning Cycles groups work by cycle, with guidance and decisions close to the files they support. Open the highlighted library yourself, or continue to see an example.",
+        route: "/planning/cycles?demo=standalone",
         selector: ".sidebar nav button",
         matchText: "Planning Cycles",
-        camera: "wide",
-        click: true,
-        duration: 5600,
+        camera: "folder",
       },
       {
         id: "cycle-folder",
-        title: "Work is grouped by cycle",
-        body: "Folders bring each planning cycle and its working material into a clear, predictable structure.",
-        route: "/planning/cycles?demo=standalone",
-        selector: ".main-content button",
-        matchText: "2027 Annual Planning",
-        camera: "wide",
-        click: true,
-        duration: 5600,
-      },
-      {
-        id: "guidance-folder",
         title: "Keep related files together",
-        body: "Guidance and decisions sit together inside the cycle, close to the work they support.",
+        body: "A planning cycle opens into a small set of clear folders. The structure helps people find guidance, working files and completed material without learning a new system for every project.",
         route: "/planning/cycles?folder=2027+Annual+Planning&demo=standalone",
         selector: ".main-content button",
         matchText: "Guidance & decisions",
-        camera: "wide",
-        click: true,
-        duration: 5600,
+        camera: "folder",
       },
       {
         id: "metadata",
-        title: "Useful details at a glance",
-        body: "Clear file names work alongside planning cycle, document type, status, owner and sensitivity, so people can scan what matters to this workflow.",
+        title: "Useful details, already organised",
+        body: "Files carry predefined details such as owner, status, document type and sensitivity. Classification labels make handling expectations clearer, while columns help people scan and filter the library.",
         route:
           "/planning/cycles?folder=2027+Annual+Planning%2FGuidance+%26+decisions&demo=standalone",
         selector: ".main-content table tbody tr:first-child",
         camera: "metadata",
-        duration: 6800,
       },
       {
-        id: "open-channels",
-        title: "Move from files to discussion",
-        body: "Planning conversations are one click away, connected to the workspace without interrupting the file structure.",
-        route:
-          "/planning/cycles?folder=2027+Annual+Planning%2FGuidance+%26+decisions&demo=standalone",
-        selector: ".teams-button",
+        id: "restricted",
+        title: "Access follows the person’s role",
+        body: "Permissions are applied to the area, so people only see content available to their role. A restricted landing page explains the boundary and provides a clear next step.",
+        route: "/planning/restricted?demo=standalone",
+        selector: ".access-boundary",
         camera: "wide",
-        click: true,
-        duration: 5600,
       },
       {
-        id: "channels",
-        title: "Conversations stay focused",
-        body: "Planning & Reporting keeps updates and coordination centred on the planning work.",
-        route: planningChannelUrl(),
-        selector: ".m365-teams-channel-header",
+        id: "support",
+        title: "Know who can help",
+        body: "The restricted page names a focal point for access questions. Contacting them gives the person and context needed to resolve an access issue.",
+        route: "/planning/restricted?demo=standalone",
+        selector: ".access-boundary-main .access-boundary > button",
+        camera: "wide",
+      },
+      {
+        id: "urgent",
+        title: "Escalate urgent access needs",
+        body: "If the focal point is unavailable and access cannot wait, the restricted page provides a clear urgent escalation route.",
+        route: "/planning/restricted?demo=standalone",
+        selector: ".access-boundary-urgent",
+        camera: "wide",
+      },
+      {
+        id: "reveal",
+        title: "See the demonstration content",
+        body: "Reveal restricted content is a demo-only control on this page. It shows an illustrative example without changing a person’s permissions.",
+        route: "/planning/restricted?demo=standalone",
+        selector: ".access-boundary-reveal",
+        camera: "wide",
+      },
+      {
+        id: "links",
+        title: "Open tools and conversations nearby",
+        body: "Important tools and Planning & Reporting are linked from the workspace home. They open when you need them, while files stay organised in their libraries.",
+        route: "/planning?demo=standalone",
+        selector: ".home-aside",
         camera: "channels",
-        duration: 6200,
       },
     ],
     [],
@@ -187,7 +153,6 @@ export default function CinematicWorkspaceTour() {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const listener = (event: MediaQueryListEvent) => {
       setReducedMotion(event.matches);
-      if (event.matches) setPlaying(false);
     };
     preference.addEventListener("change", listener);
     return () => preference.removeEventListener("change", listener);
@@ -250,8 +215,7 @@ export default function CinematicWorkspaceTour() {
   useEffect(() => {
     if (!frameReady) return;
     const frame = iframe.current;
-    const doc = frame?.contentDocument;
-    if (!frame || !doc) return;
+    if (!frame) return;
     let expected: URL;
     let current: URL;
     try {
@@ -267,9 +231,14 @@ export default function CinematicWorkspaceTour() {
       );
     if (!routeMatches) {
       frame.src = `${expected.pathname}${expected.search}`;
-      return;
     }
+  }, [frameReady, index, step.route]);
 
+  useEffect(() => {
+    if (!frameReady) return;
+    const frame = iframe.current;
+    const doc = frame?.contentDocument;
+    if (!frame || !doc) return;
     doc
       .querySelectorAll(".cinematic-tour-focus")
       .forEach((element) => element.classList.remove("cinematic-tour-focus"));
@@ -281,50 +250,7 @@ export default function CinematicWorkspaceTour() {
       inline: "nearest",
     });
     target.classList.add("cinematic-tour-focus");
-
-    if (!step.click) return;
-
-    const updatePointer = () => {
-      const screenNode = screen.current;
-      if (!screenNode) return;
-      const targetRect = mapTargetToScreen(target, frame, screenNode);
-      setPointer({
-        left: targetRect.left + targetRect.width / 2,
-        top: targetRect.top + targetRect.height / 2,
-        visible: true,
-        clicking: false,
-      });
-    };
-    const pointerFrame = requestAnimationFrame(updatePointer);
-    const clickTimer = window.setTimeout(
-      () => {
-        setPointer((currentPointer) => ({ ...currentPointer, clicking: true }));
-        target.click();
-        window.setTimeout(
-          () =>
-            setPointer((currentPointer) => ({
-              ...currentPointer,
-              clicking: false,
-            })),
-          360,
-        );
-      },
-      reducedMotion ? 180 : 1500,
-    );
-    return () => {
-      cancelAnimationFrame(pointerFrame);
-      window.clearTimeout(clickTimer);
-    };
   }, [frameReady, loadRevision, index, reducedMotion, step]);
-
-  useEffect(() => {
-    if (!frameReady || !playing) return;
-    const timer = window.setTimeout(() => {
-      if (index === steps.length - 1) setPlaying(false);
-      else setIndex((current) => current + 1);
-    }, step.duration);
-    return () => window.clearTimeout(timer);
-  }, [frameReady, playing, index, step.duration, steps.length]);
 
   useEffect(() => {
     const updateArrow = () => {
@@ -388,17 +314,12 @@ export default function CinematicWorkspaceTour() {
 
   const advance = () => {
     if (index === steps.length - 1) {
-      const frame = iframe.current;
-      if (frame) frame.src = "/planning?demo=standalone";
-      setFrameReady(false);
-      setIndex(0);
-      setPlaying(true);
+      location.assign("/");
       return;
     }
     setIndex((current) => Math.min(steps.length - 1, current + 1));
   };
   const goBack = () => {
-    setPlaying(false);
     setIndex((current) => Math.max(0, current - 1));
   };
 
@@ -427,18 +348,9 @@ export default function CinematicWorkspaceTour() {
                   title={t("Planning workspace tour preview")}
                   src="/planning?demo=standalone"
                   onLoad={prepareFrame}
-                  tabIndex={-1}
+                  tabIndex={0}
                   aria-label={t("Live preview of the Planning workspace")}
                 />
-              </div>
-              <div
-                className={`cinematic-pointer${pointer.visible && step.click ? " is-visible" : ""}${pointer.clicking ? " is-clicking" : ""}`}
-                style={{ left: pointer.left, top: pointer.top }}
-                aria-hidden="true"
-              >
-                <svg viewBox="0 0 28 36">
-                  <path d="M3 2 24 21l-9 1 5 10-5 2-5-11-6 7Z" />
-                </svg>
               </div>
             </div>
           </div>
@@ -490,42 +402,24 @@ export default function CinematicWorkspaceTour() {
         <div className="cinematic-tour-control-row">
           <span className="cinematic-tour-caption">
             {frameReady
-              ? t("Follow the Planning workspace")
+              ? t(
+                  "Use Next at your pace. You can also click highlighted areas.",
+                )
               : t("Opening the Planning workspace…")}
           </span>
           <div className="cinematic-tour-buttons">
             <button type="button" onClick={goBack} disabled={index === 0}>
               {t("Back")}
             </button>
-            {index === steps.length - 1 ? (
-              <button
-                type="button"
-                className="cinematic-primary-control"
-                onClick={advance}
-              >
-                <Replay20Regular aria-hidden="true" /> {t("Replay tour")}
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="cinematic-primary-control"
-                onClick={() => setPlaying(!playing)}
-                aria-pressed={playing}
-              >
-                {playing ? (
-                  <Pause20Regular aria-hidden="true" />
-                ) : (
-                  <Play20Regular aria-hidden="true" />
-                )}
-                {playing ? t("Pause") : t("Continue")}
-              </button>
-            )}
             <button
               type="button"
               onClick={advance}
-              disabled={index === steps.length - 1}
+              className="cinematic-primary-control"
             >
-              {t("Next")}
+              {index === steps.length - 1 ? t("Finish") : t("Next")}
+            </button>
+            <button type="button" onClick={() => location.assign("/")}>
+              {t("Exit tour")}
             </button>
           </div>
         </div>
@@ -539,8 +433,8 @@ export default function CinematicWorkspaceTour() {
               type="button"
               key={item.id}
               aria-current={itemIndex === index ? "step" : undefined}
+              aria-label={`${itemIndex + 1}. ${t(item.title)}`}
               onClick={() => {
-                setPlaying(false);
                 setIndex(itemIndex);
               }}
             >

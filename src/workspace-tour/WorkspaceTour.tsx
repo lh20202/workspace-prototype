@@ -16,6 +16,7 @@ import type { OperationalFile } from "../logistics/data";
 import DocumentLibrary from "../sharepoint/DocumentLibrary";
 import TeamsShell, { TeamsComposer } from "../teams/TeamsShell";
 import { withExplicitStaff } from "../utils/staffNavigation";
+import { useTranslation } from "../i18n/Language";
 import { matchesDisplayText } from "../i18n/search";
 import {
   activityChannels,
@@ -326,6 +327,7 @@ function IntranetHeader({ active = false }: { active?: boolean }) {
 }
 
 function ActivityDirectory() {
+  const { t } = useTranslation();
   return (
     <div className="workspace-tour-directory-page">
       <IntranetHeader active />
@@ -337,8 +339,9 @@ function ActivityDirectory() {
               Interactive tour
             </p>
             <p>
-              Follow a real Planning workspace from its home to files and
-              focused conversations.
+              {t(
+                "Follow the Planning workspace from its home through libraries, access guidance and connected conversations. Move at your own pace with Next, or explore the highlighted areas yourself.",
+              )}
             </p>
           </div>
         </div>

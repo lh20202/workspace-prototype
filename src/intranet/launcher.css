@@ -144,13 +144,14 @@
 }
 :root .prototype-launcher .launcher-coming-soon-card {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
+  grid-template-columns: 24px minmax(0, 1fr) 20px;
   align-items: center;
   gap: 13px;
   min-height: 68px;
   padding: 14px 3px 4px;
   border-top: 1px solid #d5dce7;
   color: #5f6f82;
+  text-decoration: none;
 }
 :root .prototype-launcher .launcher-coming-soon-card > svg {
   width: 22px;
@@ -168,6 +169,33 @@
   color: #687789;
   font-size: 12px;
   line-height: 17px;
+}
+:root .prototype-launcher .launcher-tour-column {
+  border-color: #c9dedb;
+  background: #edf5f3;
+  color: #285c57;
+}
+:root .prototype-launcher .launcher-tour-column h2,
+:root
+  .prototype-launcher
+  .launcher-tour-column
+  .launcher-coming-soon-card
+  > svg {
+  color: #3d716b;
+}
+:root .prototype-launcher .launcher-tour-card {
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+:root .prototype-launcher .launcher-tour-card:hover {
+  background: #e1efec;
+}
+:root .prototype-launcher .launcher-tour-card:focus-visible {
+  outline: 3px solid #24736b;
+  outline-offset: 3px;
+}
+:root .prototype-launcher .launcher-tour-card > svg:last-child {
+  color: #547d78;
 }
 :root .prototype-launcher .launcher-choice {
   display: grid;

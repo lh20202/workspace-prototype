@@ -106,17 +106,22 @@ export default function Launcher() {
               </article>
             </section>
             <section
-              className="launcher-coming-soon-column"
-              aria-labelledby="launcher-coming-soon-title"
+              className="launcher-coming-soon-column launcher-tour-column"
+              aria-labelledby="launcher-tour-title"
             >
-              <h2 id="launcher-coming-soon-title">Coming soon</h2>
-              <div className="launcher-coming-soon-card" aria-disabled="true">
+              <h2 id="launcher-tour-title">Workspace tour</h2>
+              <a
+                className="launcher-coming-soon-card launcher-tour-card"
+                href={withExplicitStaff("/workspace-tour?demo=standalone")}
+                onClick={markWelcomeEntry}
+              >
                 <BookOpen24Regular aria-hidden="true" />
                 <div>
                   <h3>What is a workspace?</h3>
                   <p>A virtual tour</p>
                 </div>
-              </div>
+                <ArrowRight24Regular aria-hidden="true" />
+              </a>
             </section>
           </div>
         </div>

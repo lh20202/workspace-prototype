@@ -36,17 +36,22 @@ describe("Activity Workspace walkthrough", () => {
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
     expect(html).toContain(
-      "Follow a real Planning workspace from its home to files and focused conversations.",
+      "Follow the Planning workspace from its home through libraries, access guidance and connected conversations. Move at your own pace with Next, or explore the highlighted areas yourself.",
     );
     expect(html).toContain('class="cinematic-laptop"');
     expect(html).toContain('title="Planning workspace tour preview"');
     expect(html).toContain('src="/planning?demo=standalone"');
     expect(html).toContain('class="cinematic-tour-note demo-paper-surface"');
-    expect(html).toContain("A shared starting point");
-    expect(html).toContain("Planning brings current priorities");
+    expect(html).toContain("Start with the work that matters");
+    expect(html).toContain("The Planning home brings the current cycle");
     expect(html).toContain('class="cinematic-tour-arrow"');
     expect(html).toContain('aria-label="Tour chapters"');
-    expect(html).toContain("Pause");
+    expect(html).toContain("Access follows the person’s role");
+    expect(html).toContain("Know who can help");
+    expect(html).toContain("Escalate urgent access needs");
+    expect(html).toContain("See the demonstration content");
+    expect(html).toContain("Exit tour");
+    expect(html).not.toContain("cinematic-pointer");
     expect(html).not.toContain("COMING SOON");
     expect(html).not.toContain("Explore Activity Workspace");
     expect(html).not.toContain("How was this created");
@@ -126,6 +131,7 @@ describe("Activity Workspace walkthrough", () => {
     for (const [source, german] of [
       ["What is a workspace?", "Was ist ein Arbeitsbereich?"],
       ["Interactive tour", "Interaktive Tour"],
+      ["Start with the work that matters", "Beginnen Sie mit dem Wesentlichen"],
       ["Interactive tour guide", "Anleitung zur interaktiven Tour"],
       ["Coming soon", "Demnächst verfügbar"],
       [

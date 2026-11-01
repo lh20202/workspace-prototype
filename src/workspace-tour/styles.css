@@ -1248,7 +1248,6 @@
   background: #fff;
   transform: scale(var(--tour-fit, 0.7));
   transform-origin: top left;
-  pointer-events: none;
 }
 .cinematic-laptop-base {
   position: relative;
@@ -1465,6 +1464,7 @@
 }
 .cinematic-step-list {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   padding-top: 13px;
