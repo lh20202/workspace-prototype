@@ -318,6 +318,9 @@
   color: #3f3b32;
   cursor: default;
 }
+:root .prototype-launcher .launcher-tour-card > svg:last-child {
+  display: none;
+}
 :root .prototype-launcher .launcher-tour-emblem {
   display: grid;
   place-items: center;
