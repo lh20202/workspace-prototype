@@ -43,6 +43,45 @@ function mapTargetToScreen(
   };
 }
 
+function scrollTargetInsideFrame(
+  target: HTMLElement,
+  frame: HTMLIFrameElement,
+  behavior: ScrollBehavior,
+) {
+  const view = frame.contentWindow;
+  if (!view) return;
+
+  // Scrolling an element with scrollIntoView() can also scroll the host page
+  // around the iframe. Keep chapter changes inside the workspace preview so
+  // the tour controls stay in the same place on short laptop screens.
+  let ancestor = target.parentElement;
+  while (ancestor && ancestor !== target.ownerDocument.body) {
+    const style = view.getComputedStyle(ancestor);
+    if (
+      /(auto|scroll|overlay)/.test(style.overflowY) &&
+      ancestor.scrollHeight > ancestor.clientHeight
+    ) {
+      const targetRect = target.getBoundingClientRect();
+      const ancestorRect = ancestor.getBoundingClientRect();
+      const targetTop =
+        ancestor.scrollTop + targetRect.top - ancestorRect.top - ancestor.clientTop;
+      ancestor.scrollTo({
+        top: targetTop - (ancestor.clientHeight - targetRect.height) / 2,
+        behavior,
+      });
+      return;
+    }
+    ancestor = ancestor.parentElement;
+  }
+
+  const targetRect = target.getBoundingClientRect();
+  const targetTop = targetRect.top + view.scrollY;
+  view.scrollTo({
+    top: targetTop - (view.innerHeight - targetRect.height) / 2,
+    behavior,
+  });
+}
+
 export default function CinematicWorkspaceTour() {
   const { t } = useTranslation();
   const iframe = useRef<HTMLIFrameElement>(null);
@@ -244,11 +283,11 @@ export default function CinematicWorkspaceTour() {
       .forEach((element) => element.classList.remove("cinematic-tour-focus"));
     const target = findTarget(doc, step);
     if (!target) return;
-    target.scrollIntoView({
-      behavior: reducedMotion ? "instant" : "smooth",
-      block: "center",
-      inline: "nearest",
-    });
+    scrollTargetInsideFrame(
+      target,
+      frame,
+      reducedMotion ? "instant" : "smooth",
+    );
     target.classList.add("cinematic-tour-focus");
   }, [frameReady, loadRevision, index, reducedMotion, step]);
 

@@ -1562,3 +1562,145 @@
     transition: none;
   }
 }
+
+/* Keep the main Planning tour and its controls together on short laptop screens. */
+.workspace-tour-frame:has(.workspace-tour-directory-page) {
+  height: calc(100vh - 6px);
+  height: calc(100dvh - 6px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.workspace-tour-frame:has(.workspace-tour-directory-page) > .demo-control-frame {
+  flex: 0 0 6px;
+}
+.workspace-tour-directory-page:has(.cinematic-tour) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.workspace-tour-directory-main:has(.cinematic-tour) {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: min(100%, 1480px);
+  margin: 0 auto;
+  padding: 10px clamp(16px, 2vw, 28px) 12px;
+  display: flex;
+  flex-direction: column;
+}
+.workspace-tour-directory-main:has(.cinematic-tour) > .directory-heading {
+  flex: 0 0 auto;
+  margin-bottom: 10px;
+}
+.workspace-tour-directory-main:has(.cinematic-tour) .directory-heading h1 {
+  margin: 0 0 3px;
+  font-size: clamp(22px, 3vh, 28px);
+  line-height: 1.2;
+}
+.workspace-tour-directory-main:has(.cinematic-tour) .directory-heading p {
+  max-width: 950px;
+  font-size: clamp(13px, 1.7vh, 15px);
+  line-height: 1.35;
+}
+.cinematic-tour {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 1.3vh, 18px);
+}
+.cinematic-tour-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: clamp(6px, 1vh, 14px);
+  gap: clamp(14px, 2vw, 28px);
+}
+.cinematic-laptop {
+  width: min(100%, calc((100dvh - 460px) * 1.68), 1060px);
+}
+.cinematic-laptop-screen {
+  padding: clamp(8px, 1.2vh, 15px);
+}
+.cinematic-tour-note {
+  gap: 6px;
+  padding: clamp(12px, 1.5vh, 18px);
+}
+.cinematic-tour-note h2 {
+  font-size: clamp(18px, 2.5vh, 22px);
+}
+.cinematic-tour-note p {
+  font-size: clamp(13px, 1.7vh, 15px);
+  line-height: 1.4;
+}
+.cinematic-tour-controls {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+.cinematic-tour-control-row {
+  gap: 12px;
+  padding-top: 9px;
+}
+.cinematic-step-list {
+  gap: 6px;
+  padding-top: 8px;
+}
+
+@media (max-width: 800px) {
+  .workspace-tour-frame:has(.workspace-tour-directory-page) {
+    height: auto;
+    min-height: calc(100dvh - 6px);
+    overflow: visible;
+  }
+  .workspace-tour-directory-page:has(.cinematic-tour) {
+    flex: 1 0 auto;
+    overflow: visible;
+  }
+  .workspace-tour-directory-main:has(.cinematic-tour) {
+    flex: 0 0 auto;
+  }
+  .cinematic-tour {
+    flex: 0 0 auto;
+  }
+  .cinematic-tour-stage {
+    flex: 0 0 auto;
+  }
+  .cinematic-laptop {
+    width: min(100%, 1060px);
+  }
+  .cinematic-tour-controls {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 801px) and (max-height: 760px) {
+  .workspace-tour-directory-main:has(.cinematic-tour) {
+    padding-top: 6px;
+    padding-bottom: 8px;
+  }
+  .workspace-tour-directory-main:has(.cinematic-tour) > .directory-heading {
+    margin-bottom: 6px;
+  }
+  .cinematic-tour-stage {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 270px);
+  }
+  .cinematic-tour-note p {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .cinematic-tour-control-row {
+    padding-top: 6px;
+  }
+  .cinematic-tour-caption {
+    font-size: 13px;
+  }
+  .cinematic-tour-buttons button {
+    min-height: 34px;
+    padding-block: 5px;
+  }
+  .cinematic-step-list {
+    padding-top: 5px;
+  }
+}
