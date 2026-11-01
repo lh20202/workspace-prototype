@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "../i18n/Language";
-import { annotationConnectorPath } from "./annotationGeometry";
 
 type TourStep = {
   id: string;
@@ -11,37 +10,6 @@ type TourStep = {
   matchText?: string;
   camera: "wide" | "navigation" | "folder" | "metadata" | "channels";
 };
-
-function mapTargetToScreen(
-  target: HTMLElement,
-  frame: HTMLIFrameElement,
-  screen: HTMLElement,
-) {
-  const targetRect = target.getBoundingClientRect();
-  const fit =
-    Number.parseFloat(
-      getComputedStyle(screen).getPropertyValue("--tour-fit"),
-    ) || 0.7;
-  const camera = frame.parentElement;
-  const cameraStyle = camera ? getComputedStyle(camera) : null;
-  const zoom = cameraStyle ? new DOMMatrixReadOnly(cameraStyle.transform).a : 1;
-  const [originX = "50%", originY = "50%"] =
-    cameraStyle?.transformOrigin.split(" ") ?? [];
-  const origin = (value: string, size: number) =>
-    value.endsWith("%")
-      ? (Number.parseFloat(value) / 100) * size
-      : Number.parseFloat(value);
-  const originLeft = origin(originX, screen.clientWidth);
-  const originTop = origin(originY, screen.clientHeight);
-  const left = originLeft + (targetRect.left * fit - originLeft) * zoom;
-  const top = originTop + (targetRect.top * fit - originTop) * zoom;
-  return {
-    left,
-    top,
-    width: targetRect.width * fit * zoom,
-    height: targetRect.height * fit * zoom,
-  };
-}
 
 function scrollTargetInsideFrame(
   target: HTMLElement,
@@ -85,9 +53,7 @@ function scrollTargetInsideFrame(
 export default function CinematicWorkspaceTour() {
   const { t } = useTranslation();
   const iframe = useRef<HTMLIFrameElement>(null);
-  const stage = useRef<HTMLElement>(null);
   const screen = useRef<HTMLDivElement>(null);
-  const note = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
   const [frameReady, setFrameReady] = useState(false);
   const [loadRevision, setLoadRevision] = useState(0);
@@ -96,7 +62,6 @@ export default function CinematicWorkspaceTour() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
-  const [arrow, setArrow] = useState({ width: 1, height: 1, path: "" });
 
   const steps = useMemo<TourStep[]>(
     () => [
@@ -140,7 +105,8 @@ export default function CinematicWorkspaceTour() {
         body: "Files carry predefined details such as owner, status, document type and sensitivity. Classification labels make handling expectations clearer, while columns help people scan and filter the library.",
         route:
           "/planning/cycles?folder=2027+Annual+Planning%2FGuidance+%26+decisions&demo=standalone",
-        selector: ".main-content table tbody tr:first-child",
+        selector:
+          '.main-content .sp-library-table thead [data-tour-target="library-metadata"]',
         camera: "metadata",
       },
       {
@@ -277,79 +243,47 @@ export default function CinematicWorkspaceTour() {
     if (!frameReady) return;
     const frame = iframe.current;
     const doc = frame?.contentDocument;
-    if (!frame || !doc) return;
+    const screenNode = screen.current;
+    const camera = frame?.parentElement as HTMLElement | null;
+    if (!frame || !doc || !screenNode || !camera) return;
     doc
       .querySelectorAll(".cinematic-tour-focus")
       .forEach((element) => element.classList.remove("cinematic-tour-focus"));
     const target = findTarget(doc, step);
-    if (!target) return;
-    scrollTargetInsideFrame(
-      target,
-      frame,
-      reducedMotion ? "instant" : "smooth",
-    );
+    camera.style.transformOrigin = "top left";
+    if (!target) {
+      camera.style.transform = "translate3d(0, 0, 0) scale(1)";
+      return;
+    }
+    // Keep the workspace itself still, then move the camera smoothly to the
+    // chapter's subject. This is more reliable and readable than a connector
+    // arrow, especially when the laptop preview is small.
+    scrollTargetInsideFrame(target, frame, "instant");
     target.classList.add("cinematic-tour-focus");
+    const updateCamera = () => {
+      const fit =
+        Number.parseFloat(
+          getComputedStyle(screenNode).getPropertyValue("--tour-fit"),
+        ) || 0.7;
+      const bounds = target.getBoundingClientRect();
+      const centerX = (bounds.left + bounds.width / 2) * fit;
+      const centerY = (bounds.top + bounds.height / 2) * fit;
+      const zoom = {
+        wide: 1.25,
+        navigation: 1.6,
+        folder: 1.55,
+        metadata: 1.65,
+        channels: 1.45,
+      }[step.camera];
+      const translateX = screenNode.clientWidth / 2 - centerX * zoom;
+      const translateY = screenNode.clientHeight / 2 - centerY * zoom;
+      camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoom})`;
+    };
+    updateCamera();
+    const observer = new ResizeObserver(() => requestAnimationFrame(updateCamera));
+    observer.observe(screenNode);
+    return () => observer.disconnect();
   }, [frameReady, loadRevision, index, reducedMotion, step]);
-
-  useEffect(() => {
-    const updateArrow = () => {
-      const frame = iframe.current;
-      const doc = frame?.contentDocument;
-      const stageNode = stage.current;
-      const screenNode = screen.current;
-      const noteNode = note.current;
-      if (!frame || !doc || !stageNode || !screenNode || !noteNode) return;
-      const stageRect = stageNode.getBoundingClientRect();
-      const screenRect = screenNode.getBoundingClientRect();
-      const noteRect = noteNode.getBoundingClientRect();
-      const target = findTarget(doc, step);
-      if (!target || !stageRect.width || !stageRect.height) {
-        setArrow({
-          width: stageRect.width || 1,
-          height: stageRect.height || 1,
-          path: "",
-        });
-        return;
-      }
-      const targetRect = mapTargetToScreen(target, frame, screenNode);
-      const targetInStage = {
-        left: screenRect.left + targetRect.left - stageRect.left,
-        top: screenRect.top + targetRect.top - stageRect.top,
-        width: targetRect.width,
-        height: targetRect.height,
-      };
-      const noteInStage = {
-        left: noteRect.left - stageRect.left,
-        top: noteRect.top - stageRect.top,
-        width: noteRect.width,
-        height: noteRect.height,
-      };
-      setArrow({
-        width: stageRect.width,
-        height: stageRect.height,
-        path: annotationConnectorPath(noteInStage, targetInStage),
-      });
-    };
-    updateArrow();
-    const observer = new ResizeObserver(updateArrow);
-    if (stage.current) observer.observe(stage.current);
-    if (screen.current) observer.observe(screen.current);
-    if (note.current) observer.observe(note.current);
-    let animationFrame = 0;
-    const startedAt = performance.now();
-    const followCamera = (now: number) => {
-      updateArrow();
-      if (now - startedAt < 1500)
-        animationFrame = requestAnimationFrame(followCamera);
-    };
-    animationFrame = requestAnimationFrame(followCamera);
-    window.addEventListener("resize", updateArrow);
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", updateArrow);
-    };
-  }, [index, frameReady, loadRevision, step]);
 
   const advance = () => {
     if (index === steps.length - 1) {
@@ -364,7 +298,6 @@ export default function CinematicWorkspaceTour() {
 
   return (
     <section
-      ref={stage}
       className="cinematic-tour"
       aria-label={t("Planning workspace tour")}
       data-camera={step.camera}
@@ -398,7 +331,6 @@ export default function CinematicWorkspaceTour() {
           </div>
         </div>
         <aside
-          ref={note}
           className="cinematic-tour-note demo-paper-surface"
           key={step.id}
           aria-live="polite"
@@ -412,27 +344,6 @@ export default function CinematicWorkspaceTour() {
             {String(steps.length).padStart(2, "0")}
           </span>
         </aside>
-        <svg
-          className="cinematic-tour-arrow"
-          viewBox={`0 0 ${arrow.width} ${arrow.height}`}
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          style={{ opacity: arrow.path ? 1 : 0 }}
-        >
-          <defs>
-            <marker
-              id="cinematic-arrowhead"
-              markerWidth="12"
-              markerHeight="12"
-              refX="10"
-              refY="6"
-              orient="auto"
-            >
-              <path d="M2 2 10 6 2 10" />
-            </marker>
-          </defs>
-          <path d={arrow.path} markerEnd="url(#cinematic-arrowhead)" />
-        </svg>
       </div>
       <div className="cinematic-tour-controls">
         <div className="cinematic-tour-progress" aria-hidden="true">
@@ -441,9 +352,7 @@ export default function CinematicWorkspaceTour() {
         <div className="cinematic-tour-control-row">
           <span className="cinematic-tour-caption">
             {frameReady
-              ? t(
-                  "Use Next at your pace. You can also click highlighted areas.",
-                )
+              ? t("The laptop view zooms in on each feature as you move through the tour.")
               : t("Opening the Planning workspace…")}
           </span>
           <div className="cinematic-tour-buttons">

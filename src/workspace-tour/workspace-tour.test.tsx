@@ -36,15 +36,16 @@ describe("Activity Workspace walkthrough", () => {
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
     expect(html).toContain(
-      "Follow the Planning workspace from its home through libraries, access guidance and connected conversations. Move at your own pace with Next, or explore the highlighted areas yourself.",
+      "Follow a sample Planning workspace through its home, libraries, access guidance and connected conversations.",
     );
+    expect(html).toContain("Back to homepage");
     expect(html).toContain('class="cinematic-laptop"');
     expect(html).toContain('title="Planning workspace tour preview"');
     expect(html).toContain('src="/planning?demo=standalone"');
     expect(html).toContain('class="cinematic-tour-note demo-paper-surface"');
     expect(html).toContain("Start with the work that matters");
     expect(html).toContain("The Planning home brings the current cycle");
-    expect(html).toContain('class="cinematic-tour-arrow"');
+    expect(html).not.toContain('class="cinematic-tour-arrow"');
     expect(html).toContain('aria-label="Tour chapters"');
     expect(html).toContain("Access follows the person’s role");
     expect(html).toContain("Know who can help");

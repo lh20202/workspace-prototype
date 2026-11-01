@@ -2,8 +2,9 @@
 export const germanWorkspaceTour: Record<string, string> = {
   "What is a workspace?": "Was ist ein Arbeitsbereich?",
   "Interactive tour": "Interaktive Tour",
-  "Follow the Planning workspace from its home through libraries, access guidance and connected conversations. Move at your own pace with Next, or explore the highlighted areas yourself.":
-    "Folgen Sie dem Arbeitsbereich Planung von der Startseite über Bibliotheken und Zugriffshinweise bis zu den passenden Gesprächen. Gehen Sie mit „Weiter“ in Ihrem Tempo vor oder erkunden Sie die markierten Bereiche selbst.",
+  "Follow a sample Planning workspace through its home, libraries, access guidance and connected conversations.":
+    "Folgen Sie einem beispielhaften Arbeitsbereich Planung von der Startseite über Bibliotheken und Zugriffshinweise bis zu den passenden Gesprächen.",
+  "Back to homepage": "Zur Startseite",
   "Follow a real Planning workspace from its home to files and focused conversations.":
     "Folgen Sie dem Arbeitsbereich Planung von der Startseite über Dateien bis zu den Gesprächen.",
   "Planning workspace tour": "Rundgang durch den Arbeitsbereich Planung",
@@ -68,8 +69,8 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Planning & Reporting keeps updates and coordination centred on the planning work.":
     "„Planung und Berichte“ bündelt Neuigkeiten und Abstimmungen zur Planungsarbeit.",
   "Follow the Planning workspace": "Dem Arbeitsbereich Planung folgen",
-  "Use Next at your pace. You can also click highlighted areas.":
-    "Gehen Sie mit „Weiter“ in Ihrem Tempo vor. Sie können auch auf markierte Bereiche klicken.",
+  "The laptop view zooms in on each feature as you move through the tour.":
+    "Die Laptopansicht zoomt während des Rundgangs auf jedes vorgestellte Element.",
   "Opening the Planning workspace…":
     "Der Arbeitsbereich Planung wird geöffnet …",
   Back: "Zurück",

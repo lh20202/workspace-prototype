@@ -285,53 +285,14 @@ const channelPostTopics: TourTopic[] = [
 
 const channelSharedTopics: TourTopic[] = libraryTopics;
 
-function IntranetHeader({ active = false }: { active?: boolean }) {
-  return (
-    <div className="workspace-tour-intranet-chrome">
-      <header className="directory-brand">
-        <span className="workspace-tour-app-grid" aria-hidden="true">
-          •••
-          <br />
-          •••
-          <br />
-          •••
-        </span>
-        <strong>Site</strong>
-        <span className="directory-brand-end">Company intranet</span>
-      </header>
-      <nav className="directory-nav" aria-label="Intranet navigation">
-        <img
-          className="directory-company-mark"
-          src="/images/company-mark.png"
-          alt=""
-          width="40"
-          height="32"
-        />
-        <strong>Sample Organisation</strong>
-        {["Home", "News", "Our organisation", "Tools & support"].map(
-          (label) => (
-            <button type="button" disabled key={label}>
-              {label}
-            </button>
-          ),
-        )}
-        <a
-          href={destination("/architecture")}
-          aria-current={active ? "page" : undefined}
-        >
-          Digital Workspaces
-        </a>
-      </nav>
-    </div>
-  );
-}
-
 function ActivityDirectory() {
   const { t } = useTranslation();
   return (
     <div className="workspace-tour-directory-page">
-      <IntranetHeader active />
       <main className="workspace-tour-directory-main">
+        <a className="workspace-tour-home-link" href={destination("/")}>
+          ← {t("Back to homepage")}
+        </a>
         <div className="directory-heading">
           <div>
             <h1>What is a workspace?</h1>
@@ -340,7 +301,7 @@ function ActivityDirectory() {
             </p>
             <p>
               {t(
-                "Follow the Planning workspace from its home through libraries, access guidance and connected conversations. Move at your own pace with Next, or explore the highlighted areas yourself.",
+                "Follow a sample Planning workspace through its home, libraries, access guidance and connected conversations.",
               )}
             </p>
           </div>
