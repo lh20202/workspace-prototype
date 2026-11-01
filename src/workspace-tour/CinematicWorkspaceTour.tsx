@@ -20,6 +20,16 @@ function scrollTargetInsideFrame(
   const view = frame.contentWindow;
   if (!view) return;
 
+  const targetRect = target.getBoundingClientRect();
+  const viewportTop = 0;
+  const viewportBottom = view.innerHeight;
+  // Leave the workspace at its natural scroll position whenever the target is
+  // already visible. In particular, moving the whole page to centre a tall
+  // navigation rail makes the tour appear to show an empty screen.
+  if (targetRect.top >= viewportTop && targetRect.bottom <= viewportBottom) {
+    return;
+  }
+
   // Scrolling an element with scrollIntoView() can also scroll the host page
   // around the iframe. Keep chapter changes inside the workspace preview so
   // the tour controls stay in the same place on short laptop screens.
@@ -30,7 +40,6 @@ function scrollTargetInsideFrame(
       /(auto|scroll|overlay)/.test(style.overflowY) &&
       ancestor.scrollHeight > ancestor.clientHeight
     ) {
-      const targetRect = target.getBoundingClientRect();
       const ancestorRect = ancestor.getBoundingClientRect();
       const targetTop =
         ancestor.scrollTop +
@@ -38,7 +47,10 @@ function scrollTargetInsideFrame(
         ancestorRect.top -
         ancestor.clientTop;
       ancestor.scrollTo({
-        top: targetTop - (ancestor.clientHeight - targetRect.height) / 2,
+        top:
+          targetRect.top < ancestorRect.top
+            ? targetTop
+            : targetTop - ancestor.clientHeight + targetRect.height,
         behavior,
       });
       return;
@@ -46,12 +58,12 @@ function scrollTargetInsideFrame(
     ancestor = ancestor.parentElement;
   }
 
-  const targetRect = target.getBoundingClientRect();
   const targetTop = targetRect.top + view.scrollY;
-  view.scrollTo({
-    top: targetTop - (view.innerHeight - targetRect.height) / 2,
-    behavior,
-  });
+  const top =
+    targetRect.top < viewportTop
+      ? targetTop
+      : targetTop - view.innerHeight + targetRect.height;
+  view.scrollTo({ top, behavior });
 }
 
 export default function CinematicWorkspaceTour() {
