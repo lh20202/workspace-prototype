@@ -315,9 +315,14 @@ export default function CinematicWorkspaceTour() {
         metadata: 1.4,
         channels: 1.3,
       }[step.camera];
+      const fit = Math.min(screenNode.clientWidth / 1440, 1);
+      // The iframe is already scaled to fit the stage. Compensate for that
+      // scale here so the requested zoom stays consistent at every viewport
+      // size and the highlighted target lands at the centre of the camera.
+      const cameraScale = zoom / fit;
       const translateX = screenNode.clientWidth / 2 - centerX * zoom;
       const translateY = screenNode.clientHeight / 2 - centerY * zoom;
-      camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoom})`;
+      camera.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${cameraScale})`;
     };
     updateCamera();
     const revealTimer = window.setTimeout(
