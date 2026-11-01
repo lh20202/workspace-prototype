@@ -33,7 +33,10 @@ function scrollTargetInsideFrame(
       const targetRect = target.getBoundingClientRect();
       const ancestorRect = ancestor.getBoundingClientRect();
       const targetTop =
-        ancestor.scrollTop + targetRect.top - ancestorRect.top - ancestor.clientTop;
+        ancestor.scrollTop +
+        targetRect.top -
+        ancestorRect.top -
+        ancestor.clientTop;
       ancestor.scrollTo({
         top: targetTop - (ancestor.clientHeight - targetRect.height) / 2,
         behavior,
@@ -70,8 +73,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "home",
         focusLabel: "Current planning cycle",
-        title: "Start with the work that matters",
-        body: "The Planning home brings the current cycle, useful links and recent work together. This walkthrough stays beside the workspace so the product view remains familiar.",
+        title: "See the current cycle at a glance",
+        body: "The current cycle, key links and recent files are together on the workspace home.",
         route: "/planning?demo=standalone",
         selector: ".current-cycle",
         camera: "wide",
@@ -79,8 +82,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "navigation",
         focusLabel: "Workspace navigation",
-        title: "Find your way around",
-        body: "The left-hand navigation stays in place as you move between the home page and document libraries. Try a link in the workspace, or continue with Next.",
+        title: "Move around without losing your place",
+        body: "Home and document libraries stay in the left menu as you move through the workspace.",
         route: "/planning?demo=standalone",
         selector: ".sidebar nav",
         camera: "navigation",
@@ -88,8 +91,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "folders",
         focusLabel: "Planning Cycles library",
-        title: "Simple, predictable folders",
-        body: "Planning Cycles groups work by cycle, with guidance and decisions close to the files they support. Open the highlighted library yourself, or continue to see an example.",
+        title: "Group work by planning cycle",
+        body: "Each cycle keeps its guidance, decisions and working files together.",
         route: "/planning/cycles?demo=standalone",
         selector: ".sidebar nav button",
         matchText: "Planning Cycles",
@@ -99,7 +102,7 @@ export default function CinematicWorkspaceTour() {
         id: "cycle-folder",
         focusLabel: "Guidance & decisions folder",
         title: "Keep related files together",
-        body: "A planning cycle opens into a small set of clear folders. The structure helps people find guidance, working files and completed material without learning a new system for every project.",
+        body: "Clear folders make guidance, working files and completed material easy to find.",
         route: "/planning/cycles?folder=2027+Annual+Planning&demo=standalone",
         selector: ".main-content button",
         matchText: "Guidance & decisions",
@@ -108,8 +111,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "metadata",
         focusLabel: "Library details",
-        title: "Useful details, already organised",
-        body: "Files carry predefined details such as owner, status, document type and sensitivity. Classification labels make handling expectations clearer, while columns help people scan and filter the library.",
+        title: "Find files by useful details",
+        body: "Owner, status, document type and sensitivity help people scan and filter the library.",
         route:
           "/planning/cycles?folder=2027+Annual+Planning%2FGuidance+%26+decisions&demo=standalone",
         selector:
@@ -119,8 +122,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "restricted",
         focusLabel: "Restricted access page",
-        title: "Access follows the person’s role",
-        body: "Permissions are applied to the area, so people only see content available to their role. A restricted landing page explains the boundary and provides a clear next step.",
+        title: "Access follows each person’s role",
+        body: "A restricted landing page explains why an area is unavailable and what to do next.",
         route: "/planning/restricted?demo=standalone",
         selector: ".access-boundary",
         camera: "wide",
@@ -129,7 +132,7 @@ export default function CinematicWorkspaceTour() {
         id: "support",
         focusLabel: "Access contact",
         title: "Know who can help",
-        body: "The restricted page names a focal point for access questions. Contacting them gives the person and context needed to resolve an access issue.",
+        body: "The page names a contact for questions about access.",
         route: "/planning/restricted?demo=standalone",
         selector: ".access-boundary-main .access-boundary > button",
         camera: "wide",
@@ -137,8 +140,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "urgent",
         focusLabel: "Urgent escalation",
-        title: "Escalate urgent access needs",
-        body: "If the focal point is unavailable and access cannot wait, the restricted page provides a clear urgent escalation route.",
+        title: "Escalate urgent requests",
+        body: "If access cannot wait, the page explains how to raise an urgent request.",
         route: "/planning/restricted?demo=standalone",
         selector: ".access-boundary-urgent",
         camera: "wide",
@@ -146,8 +149,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "reveal",
         focusLabel: "Reveal restricted content",
-        title: "See the demonstration content",
-        body: "Reveal restricted content is a demo-only control on this page. It shows an illustrative example without changing a person’s permissions.",
+        title: "Preview restricted content",
+        body: "The demo can reveal an example here. It does not change anyone’s access.",
         route: "/planning/restricted?demo=standalone",
         selector: ".access-boundary-reveal",
         camera: "wide",
@@ -155,8 +158,8 @@ export default function CinematicWorkspaceTour() {
       {
         id: "links",
         focusLabel: "Tools and conversations",
-        title: "Open tools and conversations nearby",
-        body: "Important tools and Planning & Reporting are linked from the workspace home. They open when you need them, while files stay organised in their libraries.",
+        title: "Keep useful links close by",
+        body: "Open related tools and Planning & Reporting from the workspace home.",
         route: "/planning?demo=standalone",
         selector: ".home-aside",
         camera: "channels",
@@ -187,7 +190,7 @@ export default function CinematicWorkspaceTour() {
       style.textContent = `
         .demo-control-frame, .prototype-navigator, .demo-fictional-label { display: none !important; }
         html, body, #root { min-width: 0 !important; }
-        .prototype-frame { min-height: 100vh !important; overflow: auto !important; }
+        .prototype-frame { min-height: 100% !important; overflow: auto !important; }
         .cinematic-tour-focus { position: relative !important; z-index: 1 !important; outline: 3px solid #bd3028 !important; outline-offset: 4px !important; box-shadow: 0 0 0 7px #bd302822 !important; border-radius: 3px; }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
       `;
@@ -196,22 +199,6 @@ export default function CinematicWorkspaceTour() {
     setFrameReady(true);
     setLoadRevision((revision) => revision + 1);
   };
-
-  useEffect(() => {
-    const screenNode = screen.current;
-    if (!screenNode) return;
-    const updateFit = () => {
-      const scale = Math.min(
-        screenNode.clientWidth / 1440,
-        screenNode.clientHeight / 900,
-      );
-      screenNode.style.setProperty("--tour-fit", String(scale));
-    };
-    updateFit();
-    const observer = new ResizeObserver(updateFit);
-    observer.observe(screenNode);
-    return () => observer.disconnect();
-  }, []);
 
   function findTarget(doc: Document, targetStep: TourStep) {
     if (!targetStep.selector) return null;
@@ -291,19 +278,15 @@ export default function CinematicWorkspaceTour() {
     scrollTargetInsideFrame(target, frame, "instant");
     target.classList.add("cinematic-tour-focus");
     const updateCamera = () => {
-      const fit =
-        Number.parseFloat(
-          getComputedStyle(screenNode).getPropertyValue("--tour-fit"),
-        ) || 0.7;
       const bounds = target.getBoundingClientRect();
-      const centerX = (bounds.left + bounds.width / 2) * fit;
-      const centerY = (bounds.top + bounds.height / 2) * fit;
+      const centerX = bounds.left + bounds.width / 2;
+      const centerY = bounds.top + bounds.height / 2;
       const zoom = {
-        wide: 1.25,
-        navigation: 1.6,
-        folder: 1.55,
-        metadata: 1.65,
-        channels: 1.45,
+        wide: 1.12,
+        navigation: 1.45,
+        folder: 1.35,
+        metadata: 1.4,
+        channels: 1.3,
       }[step.camera];
       const translateX = screenNode.clientWidth / 2 - centerX * zoom;
       const translateY = screenNode.clientHeight / 2 - centerY * zoom;
@@ -314,7 +297,9 @@ export default function CinematicWorkspaceTour() {
       () => setNoteVisible(true),
       reducedMotion ? 0 : 760,
     );
-    const observer = new ResizeObserver(() => requestAnimationFrame(updateCamera));
+    const observer = new ResizeObserver(() =>
+      requestAnimationFrame(updateCamera),
+    );
     observer.observe(screenNode);
     return () => {
       observer.disconnect();
@@ -349,10 +334,9 @@ export default function CinematicWorkspaceTour() {
       <div className="cinematic-tour-stage">
         <div
           className="cinematic-laptop"
-          aria-label={t("Planning workspace shown on a laptop")}
+          aria-label={t("Planning workspace preview")}
         >
           <div className="cinematic-laptop-screen">
-            <div className="cinematic-webcam" aria-hidden="true" />
             <div className="cinematic-screen" ref={screen}>
               <div
                 className={`cinematic-camera cinematic-camera-${step.camera}`}
@@ -368,24 +352,16 @@ export default function CinematicWorkspaceTour() {
               </div>
             </div>
           </div>
-          <div className="cinematic-laptop-base" aria-hidden="true">
-            <span />
-          </div>
         </div>
         <aside
-          className={`cinematic-tour-note demo-paper-surface${noteVisible ? " is-visible" : ""}`}
+          className={`cinematic-tour-note${noteVisible ? " is-visible" : ""}`}
           aria-live="polite"
           aria-atomic="true"
         >
-          <span className="cinematic-note-kicker">
-            {t("In focus")}: {t(step.focusLabel)}
-          </span>
+          <span className="cinematic-note-kicker">{t("Looking at")}</span>
+          <span className="cinematic-note-target">{t(step.focusLabel)}</span>
           <h2>{t(step.title)}</h2>
           <p>{t(step.body)}</p>
-          <span className="cinematic-note-index">
-            {String(index + 1).padStart(2, "0")} /{" "}
-            {String(steps.length).padStart(2, "0")}
-          </span>
         </aside>
       </div>
       <div className="cinematic-tour-controls">
@@ -393,12 +369,9 @@ export default function CinematicWorkspaceTour() {
           <span style={{ width: `${((index + 1) / steps.length) * 100}%` }} />
         </div>
         <div className="cinematic-tour-control-row">
-          <span className="cinematic-tour-caption">
-            {frameReady
-              ? noteVisible
-                ? t("The highlighted area on the laptop matches this note.")
-                : t("Moving to the next feature…")
-              : t("Opening the Planning workspace…")}
+          <span className="cinematic-tour-caption" aria-live="polite">
+            {t("Step")} {String(index + 1).padStart(2, "0")} {t("of")}{" "}
+            {String(steps.length).padStart(2, "0")}
           </span>
           <div className="cinematic-tour-buttons">
             <button type="button" onClick={goBack} disabled={index === 0}>
@@ -415,25 +388,6 @@ export default function CinematicWorkspaceTour() {
               {t("Exit tour")}
             </button>
           </div>
-        </div>
-        <div
-          className="cinematic-step-list"
-          role="group"
-          aria-label={t("Tour chapters")}
-        >
-          {steps.map((item, itemIndex) => (
-            <button
-              type="button"
-              key={item.id}
-              aria-current={itemIndex === index ? "step" : undefined}
-              aria-label={`${itemIndex + 1}. ${t(item.title)}`}
-              onClick={() => {
-                goToStep(itemIndex);
-              }}
-            >
-              {String(itemIndex + 1).padStart(2, "0")}
-            </button>
-          ))}
         </div>
       </div>
     </section>

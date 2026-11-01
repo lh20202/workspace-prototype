@@ -31,7 +31,7 @@ describe("Activity Workspace walkthrough", () => {
     );
   });
 
-  it("shows the guided Planning workspace tour in a laptop preview", () => {
+  it("shows the guided Planning workspace tour with a readable workspace preview", () => {
     const html = renderTour("/workspace-tour?staff=taylor&demo=standalone");
     expect(html).toContain("What is a workspace?");
     expect(html).toContain("Interactive tour");
@@ -42,16 +42,16 @@ describe("Activity Workspace walkthrough", () => {
     expect(html).toContain('class="cinematic-laptop"');
     expect(html).toContain('title="Planning workspace tour preview"');
     expect(html).toContain('src="/planning?demo=standalone"');
-    expect(html).toContain('class="cinematic-tour-note demo-paper-surface"');
-    expect(html).toContain("Start with the work that matters");
-    expect(html).toContain("The Planning home brings the current cycle");
+    expect(html).toContain('class="cinematic-tour-note is-visible"');
+    expect(html).toContain("Looking at");
+    expect(html).toContain("See the current cycle at a glance");
+    expect(html).toContain("current cycle, key links and recent files");
     expect(html).not.toContain('class="cinematic-tour-arrow"');
-    expect(html).toContain('aria-label="Tour chapters"');
-    expect(html).toContain("Access follows the person’s role");
-    expect(html).toContain("Know who can help");
-    expect(html).toContain("Escalate urgent access needs");
-    expect(html).toContain("See the demonstration content");
+    expect(html).not.toContain('aria-label="Tour chapters"');
+    expect(html).toContain("Step");
+    expect(html).toContain("of");
     expect(html).toContain("Exit tour");
+    expect(html).not.toContain("cinematic-step-list");
     expect(html).not.toContain("cinematic-pointer");
     expect(html).not.toContain("COMING SOON");
     expect(html).not.toContain("Explore Activity Workspace");

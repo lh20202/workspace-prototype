@@ -8,6 +8,7 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Follow a real Planning workspace from its home to files and focused conversations.":
     "Folgen Sie dem Arbeitsbereich Planung von der Startseite über Dateien bis zu den Gesprächen.",
   "Planning workspace tour": "Rundgang durch den Arbeitsbereich Planung",
+  "Planning workspace preview": "Vorschau des Arbeitsbereichs Planung",
   "Planning workspace shown on a laptop":
     "Arbeitsbereich Planung auf einem Laptop",
   "Planning workspace tour preview": "Vorschau des Arbeitsbereichs Planung",
@@ -15,6 +16,9 @@ export const germanWorkspaceTour: Record<string, string> = {
     "Live-Vorschau des Arbeitsbereichs Planung",
   "A guided look": "Ein geführter Einblick",
   "In focus": "Im Fokus",
+  "Looking at": "Im Blick",
+  Step: "Schritt",
+  of: "von",
   "Current planning cycle": "Aktueller Planungszyklus",
   "Workspace navigation": "Navigation im Arbeitsbereich",
   "Planning Cycles library": "Bibliothek „Planungszyklen“",
@@ -25,36 +29,36 @@ export const germanWorkspaceTour: Record<string, string> = {
   "Urgent escalation": "Dringende Eskalation",
   "Reveal restricted content": "Eingeschränkte Inhalte anzeigen",
   "Tools and conversations": "Werkzeuge und Gespräche",
-  "Start with the work that matters": "Beginnen Sie mit dem Wesentlichen",
-  "The Planning home brings the current cycle, useful links and recent work together. This walkthrough stays beside the workspace so the product view remains familiar.":
-    "Die Startseite Planung bündelt den aktuellen Zyklus, nützliche Links und laufende Arbeit. Die Hinweise bleiben neben dem Arbeitsbereich, damit die gewohnte Ansicht erkennbar bleibt.",
-  "Find your way around": "Finden Sie sich zurecht",
-  "The left-hand navigation stays in place as you move between the home page and document libraries. Try a link in the workspace, or continue with Next.":
-    "Die linke Navigation bleibt beim Wechsel zwischen Startseite und Dokumentbibliotheken an derselben Stelle. Probieren Sie einen Link im Arbeitsbereich aus oder fahren Sie mit „Weiter“ fort.",
-  "Simple, predictable folders": "Einfache, übersichtliche Ordner",
-  "Planning Cycles groups work by cycle, with guidance and decisions close to the files they support. Open the highlighted library yourself, or continue to see an example.":
-    "Planungszyklen ordnet die Arbeit nach Zyklen. Anleitungen und Entscheidungen liegen direkt bei den zugehörigen Dateien. Öffnen Sie die markierte Bibliothek selbst oder fahren Sie mit „Weiter“ fort.",
-  "A planning cycle opens into a small set of clear folders. The structure helps people find guidance, working files and completed material without learning a new system for every project.":
-    "Ein Planungszyklus enthält nur wenige, klar benannte Ordner. So finden Sie Anleitungen, Arbeitsdateien und abgeschlossene Unterlagen, ohne für jedes Projekt eine neue Ablage lernen zu müssen.",
-  "Useful details, already organised": "Wichtige Angaben, schon geordnet",
-  "Files carry predefined details such as owner, status, document type and sensitivity. Classification labels make handling expectations clearer, while columns help people scan and filter the library.":
-    "Dateien enthalten vordefinierte Angaben wie Zuständigkeit, Status, Dokumenttyp und Vertraulichkeit. Klassifizierungen zeigen, wie mit einer Datei umzugehen ist; Spalten erleichtern das Überfliegen und Filtern der Bibliothek.",
-  "Access follows the person’s role": "Zugriff richtet sich nach der Rolle",
-  "Permissions are applied to the area, so people only see content available to their role. A restricted landing page explains the boundary and provides a clear next step.":
-    "Berechtigungen gelten für den jeweiligen Bereich. Personen sehen nur Inhalte, die für ihre Rolle freigegeben sind. Eine eingeschränkte Startseite erklärt den Zugriff und zeigt den nächsten Schritt.",
-  "Know who can help": "Wissen, wer helfen kann",
-  "The restricted page names a focal point for access questions. Contacting them gives the person and context needed to resolve an access issue.":
-    "Die eingeschränkte Seite nennt eine Ansprechperson für Zugriffsfragen. Bei Kontaktaufnahme erhält sie die nötigen Angaben, um beim Zugriff zu helfen.",
-  "Escalate urgent access needs": "Dringenden Zugriff eskalieren",
-  "If the focal point is unavailable and access cannot wait, the restricted page provides a clear urgent escalation route.":
-    "Wenn die Ansprechperson nicht erreichbar ist und es nicht warten kann, bietet die eingeschränkte Seite einen klaren dringenden Eskalationsweg.",
-  "See the demonstration content": "Beispielinhalte anzeigen",
-  "Reveal restricted content is a demo-only control on this page. It shows an illustrative example without changing a person’s permissions.":
-    "„Eingeschränkte Inhalte anzeigen“ ist auf dieser Seite nur eine Demo-Funktion. Sie zeigt ein Beispiel, ohne die Berechtigungen einer Person zu ändern.",
-  "Open tools and conversations nearby":
-    "Verknüpfte Werkzeuge und Gespräche öffnen",
-  "Important tools and Planning & Reporting are linked from the workspace home. They open when you need them, while files stay organised in their libraries.":
-    "Wichtige Werkzeuge und „Planung und Berichte“ sind auf der Startseite verlinkt. Sie öffnen sich bei Bedarf; die Dateien bleiben in ihren Bibliotheken geordnet.",
+  "See the current cycle at a glance":
+    "Den aktuellen Zyklus auf einen Blick sehen",
+  "The current cycle, key links and recent files are together on the workspace home.":
+    "Der aktuelle Zyklus, wichtige Links und kürzlich verwendete Dateien befinden sich gemeinsam auf der Startseite des Arbeitsbereichs.",
+  "Move around without losing your place": "Orientierung beim Wechsel behalten",
+  "Home and document libraries stay in the left menu as you move through the workspace.":
+    "Startseite und Dokumentbibliotheken bleiben beim Wechsel im linken Menü sichtbar.",
+  "Group work by planning cycle": "Arbeit nach Planungszyklus ordnen",
+  "Each cycle keeps its guidance, decisions and working files together.":
+    "Zu jedem Zyklus gehören die passenden Anleitungen, Entscheidungen und Arbeitsdateien.",
+  "Clear folders make guidance, working files and completed material easy to find.":
+    "Klare Ordner erleichtern das Finden von Anleitungen, Arbeitsdateien und abgeschlossenen Unterlagen.",
+  "Find files by useful details": "Dateien über hilfreiche Angaben finden",
+  "Owner, status, document type and sensitivity help people scan and filter the library.":
+    "Zuständigkeit, Status, Dokumenttyp und Vertraulichkeit erleichtern das Überfliegen und Filtern der Bibliothek.",
+  "Access follows each person’s role":
+    "Zugriff richtet sich nach der jeweiligen Rolle",
+  "A restricted landing page explains why an area is unavailable and what to do next.":
+    "Eine eingeschränkte Startseite erklärt, warum ein Bereich nicht verfügbar ist und was als Nächstes zu tun ist.",
+  "The page names a contact for questions about access.":
+    "Die Seite nennt eine Ansprechperson für Fragen zum Zugriff.",
+  "Escalate urgent requests": "Dringende Anfragen eskalieren",
+  "If access cannot wait, the page explains how to raise an urgent request.":
+    "Wenn es mit dem Zugriff dringend ist, erklärt die Seite, wie eine dringende Anfrage gestellt wird.",
+  "Preview restricted content": "Eingeschränkte Inhalte ansehen",
+  "The demo can reveal an example here. It does not change anyone’s access.":
+    "Die Demo zeigt hier beispielhafte Inhalte. Der Zugriff wird dadurch nicht geändert.",
+  "Keep useful links close by": "Nützliche Links griffbereit haben",
+  "Open related tools and Planning & Reporting from the workspace home.":
+    "Zugehörige Werkzeuge und „Planung und Berichte“ lassen sich von der Startseite des Arbeitsbereichs öffnen.",
   "A shared starting point": "Ein gemeinsamer Ausgangspunkt",
   "Planning brings current priorities, useful links and recent files together in one familiar place.":
     "Planung bündelt aktuelle Prioritäten, nützliche Links und kürzlich verwendete Dateien an einem vertrauten Ort.",
