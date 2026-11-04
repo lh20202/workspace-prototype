@@ -397,7 +397,7 @@ export default function AudienceApp() {
             </StaffLink>
             {activeLibrary?.id === "research" && (
               <details className="functional-navigation-group" open>
-                <summary>Restricted content</summary>
+                <summary>Research participant administration</summary>
                 <StaffLink
                   className="rd-protected-link"
                   href={`${base}/research/website-usability/participant-administration`}

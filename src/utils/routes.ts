@@ -164,7 +164,7 @@ export function pageTitle(pathname: string) {
     : "Planning";
 }
 export function accessRequestHref(folder = "") {
-  const path = ["Planning", "Restricted Planning", folder]
+  const path = ["Planning", "CEO-only Planning", folder]
     .filter(Boolean)
     .join(" / ");
   return (

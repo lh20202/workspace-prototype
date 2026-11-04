@@ -601,8 +601,7 @@ export const germanMessages: Record<string, string> = {
   "Department access": "Abteilungszugriff",
   "Department-only": "Nur für die Abteilung",
   "Unit-only": "Nur für die Organisationseinheit",
-  "Restricted department coordination":
-    "Zugriffsbeschränkte Abteilungskoordination",
+  "Unit planning and coordination": "Planung und Koordination der Einheit",
   "Council participation": "Beteiligung an der Personalvertretung",
   "No governance membership": "Keine Mitgliedschaft in einem Gremium",
   "Controlled Access": "Kontrollierter Zugriff",
@@ -754,7 +753,8 @@ export const germanMessages: Record<string, string> = {
   "Strategy Development": "Strategieentwicklung",
   "Performance & Reporting": "Leistungsmessung und Berichtswesen",
   "Approved Plans & Reports": "Genehmigte Pläne und Berichte",
-  "Restricted Planning": "Zugriffsbeschränkte Planung",
+  "CEO-only Planning": "Planung nur für die Geschäftsführung",
+  "Historical Collections": "Historische Sammlungen",
   "2027 Annual Planning": "Jahresplanung 2027",
   "2027 Annual Planning milestones": "Meilensteine der Jahresplanung 2027",
   "Open for contributions": "Offen für Beiträge",
@@ -1439,8 +1439,8 @@ export const germanMessages: Record<string, string> = {
   "Production Credentials": "Produktionszugangsdaten",
   "Security Vulnerabilities": "Sicherheitslücken",
   "Production Environment Administration": "Verwaltung der Produktionsumgebung",
-  "Restricted Web Platform Engineering":
-    "Zugriffsbeschränkte Webplattformentwicklung",
+  "Privileged Web Platform Engineering":
+    "Privilegierte Webplattform-Entwicklung",
   "Critical Platform Recovery": "Wiederherstellung kritischer Plattformen",
   "Service desk": "Service Desk",
   "Fictional Company Git": "Fiktives Unternehmens-Git",
@@ -1552,8 +1552,7 @@ export const germanMessages: Record<string, string> = {
     "Gemeinsame Verfahren für Beschäftigungsänderungen und autorisierte Systemübergaben.",
   "Payroll & Benefits Coordination":
     "Koordination von Entgeltabrechnung und Zusatzleistungen",
-  "Restricted Employment Information":
-    "Zugriffsbeschränkte Personalinformationen",
+  "Candidate & Employment Records": "Bewerbungs- und Personalakten",
   "Vacancy setup & panel readiness":
     "Stelleneinrichtung und Vorbereitung des Auswahlgremiums",
   "Confirm the approval route and shared panel timetable in Greenhouse":
@@ -1664,7 +1663,7 @@ export const germanMessages: Record<string, string> = {
   "Live Action Register": "Laufendes Maßnahmenregister",
   Priority: "Priorität",
   "Response timeline": "Zeitlicher Einsatzablauf",
-  "Restricted Decision Log": "Zugriffsbeschränktes Entscheidungsprotokoll",
+  "Incident Decision Log": "Entscheidungsprotokoll zum Vorfall",
   Rationale: "Begründung",
   "· Separate Leadership Team permission ↗":
     "· Gesonderte Berechtigung des Führungsteams ↗",
@@ -1848,7 +1847,6 @@ export const germanMessages: Record<string, string> = {
     "Ziele, Optionen, Befugnisse und Eskalationsweg",
   "By activity": "Nach Aktivität",
   "Private Staff Communities": "Private Mitarbeitendennetzwerke",
-  "Restricted Information": "Zugriffsbeschränkte Informationen",
   "Protected Customer Matters": "Geschützte Kundenangelegenheiten",
   "Commercial & Visitor Access": "Kaufmännischer und besuchsbezogener Zugriff",
   "Protected Legal Matters": "Geschützte Rechtsangelegenheiten",

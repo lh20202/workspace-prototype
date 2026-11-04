@@ -543,7 +543,7 @@ export const controlledResourceInventory: ControlledResourceDefinition[] = [
   areaDefinition(
     "planning",
     "restricted",
-    "Restricted Planning",
+    "CEO-only Planning",
     "/planning/restricted",
   ),
   ...["control", "reviews"].map((id) =>

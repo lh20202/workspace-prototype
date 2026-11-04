@@ -36,7 +36,7 @@ export default function AccessRequest() {
     : accessWorkspaceId(params.get("workspace"), params.get("workspaceId"));
   const area = isSupport
     ? "Service & Platform Operations"
-    : params.get("area") || "Restricted Planning";
+    : params.get("area") || "CEO-only Planning";
   const context = {
     workspaceId,
     area,

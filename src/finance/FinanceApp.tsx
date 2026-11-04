@@ -230,7 +230,7 @@ export default function FinanceApp() {
         : page === "reconciliation-issues"
           ? "Reconciliation Issues"
           : page === "restricted"
-            ? "Restricted"
+            ? "Sensitive Finance Reviews"
             : area?.name || library?.name || system?.name || "Home";
   const relatedToolByLibrary: Record<string, string> = {
     "income-documents": "blackline",
@@ -291,7 +291,7 @@ export default function FinanceApp() {
               ["close-checklist", "Close Checklist"],
               ["reconciliation-issues", "Reconciliation Issues"],
               ["calendar", "Financial Calendar"],
-              ["restricted", "Restricted"],
+              ["restricted", "Sensitive Finance Reviews"],
             ].map(([id, name]) => (
               <StaffLink
                 key={id}
@@ -452,7 +452,7 @@ export default function FinanceApp() {
             </>
           ) : page === "restricted" ? (
             <>
-              <h1>Restricted</h1>
+              <h1>Sensitive Finance Reviews</h1>
               <div className="finance-protected-links">
                 {Object.entries(protectedSubjects).flatMap(([id, entries]) =>
                   entries.map(([key, name]) => (

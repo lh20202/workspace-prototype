@@ -782,7 +782,7 @@ export default function App() {
                     {page === "approved"
                       ? "Approved records"
                       : page === "restricted"
-                        ? "Restricted"
+                        ? "CEO-only"
                         : "Working information"}
                   </span>
                 </div>
@@ -791,10 +791,10 @@ export default function App() {
                     workspaceId="planning"
                     area={
                       validRoute
-                        ? "Restricted Planning"
+                        ? "CEO-only Planning"
                         : "Unavailable location"
                     }
-                    location={["Planning", "Restricted Planning", folder]
+                    location={["Planning", "CEO-only Planning", folder]
                       .filter(Boolean)
                       .join(" / ")}
                     personId={person.id}

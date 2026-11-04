@@ -390,7 +390,7 @@ const seeds = {
       ],
       [
         "restricted-web",
-        "Restricted Web Platform Engineering",
+        "Privileged Web Platform Engineering",
         "protected",
         true,
       ],
@@ -707,7 +707,7 @@ const seeds = {
       ],
       [
         "protected",
-        "Restricted Employment Information",
+        "Candidate & Employment Records",
         "Separate authorisation for candidate subjects, individual employment records and cases.",
       ],
     ],
@@ -1007,7 +1007,7 @@ const seeds = {
       ["projects", "Institutional Memory — Description Plan.docx"],
     ],
     protected: [
-      ["historical", "Restricted Historical Collection", "collections", false],
+      ["historical", "Historical Collections", "collections", false],
     ],
     tools: [
       ["archivesspace", "ArchivesSpace", "Catalogue and description"],

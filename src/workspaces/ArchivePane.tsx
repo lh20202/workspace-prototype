@@ -179,7 +179,7 @@ export default function ArchivePane({
           )}
           {catalogue}
           <a href="/archives/collections/historical">
-            Restricted Historical Collection · Controlled access →
+            Historical Collections · Controlled access →
           </a>
         </>
       ) : page === "legacy-drive" ? (

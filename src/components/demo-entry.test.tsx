@@ -131,7 +131,7 @@ describe("standalone workspace demos and the beta entry", () => {
         <PreviewRoleProvider>
           <AccessBoundary
             workspaceId="planning"
-            area="Restricted Planning"
+            area="CEO-only Planning"
             personId="taylor"
             resource={{
               kind: "area",

@@ -71,7 +71,7 @@ export const libraries: {
   },
   {
     id: "restricted",
-    name: "Restricted Planning",
+    name: "CEO-only Planning",
     description:
       "Sensitive planning scenarios for a specifically authorised review group.",
     folders: [],

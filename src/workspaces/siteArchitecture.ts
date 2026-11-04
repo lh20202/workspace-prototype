@@ -634,7 +634,7 @@ export function functionalLibraryDocuments(
 export const protectedNavigation: Record<string, string> = {
   digital: "Protected Technology",
   people: "Private Staff Communities",
-  employment: "Restricted Information",
+  employment: "Candidate & Employment Records",
   customer: "Protected Customer Matters",
 };
 export const protectedHeading: Record<string, string> = {
@@ -642,7 +642,7 @@ export const protectedHeading: Record<string, string> = {
   digital: "Protected Technology",
   legal: "Protected Legal Matters",
   people: "Private Staff Communities",
-  employment: "Restricted Employment Information",
+  employment: "Candidate & Employment Records",
   customer: "Protected Customer Matters",
 };
 

@@ -694,7 +694,7 @@ export default function DepartmentChannel({
                 workspaceId="department"
                 department={department.id}
                 resource={deniedResource}
-                area={denied || "Restricted department coordination"}
+                area={denied || "Unit planning and coordination"}
                 personId={person.id}
                 headingLevel={2}
                 compact

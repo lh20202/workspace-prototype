@@ -459,7 +459,7 @@ export default function EmergencyApp() {
                   </section>
                 ) : tab === "Decisions" ? (
                   <section>
-                    <h2>Restricted Decision Log</h2>
+                    <h2>Incident Decision Log</h2>
                     <div className="incident-table">
                       <table>
                         <thead>

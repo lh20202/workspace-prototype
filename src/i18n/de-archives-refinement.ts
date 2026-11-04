@@ -90,9 +90,9 @@ export const germanArchivesRefinement: Record<string, string> = {
   "Records & Retention": "Unterlagen & Aufbewahrung",
   "Current archive work": "Aktuelle Archivaufgaben",
   "Archive catalogue": "Archivkatalog",
-  "Restricted Historical Collection": "Geschützte historische Sammlung",
-  "Restricted Historical Collection · Controlled access →":
-    "Geschützte historische Sammlung · Zugriff beschränkt →",
+  "Historical Collections": "Historische Sammlungen",
+  "Historical Collections · Controlled access →":
+    "Historische Sammlungen · Kontrollierter Zugriff →",
   "Historical reference location. Continue active work in its functional workspace.":
     "Historischer Ablageort zur Recherche. Aktuelle Aufgaben werden im jeweiligen fachlichen Arbeitsbereich bearbeitet.",
   "Legacy P drive folders": "Ordner des alten Laufwerks P:",
